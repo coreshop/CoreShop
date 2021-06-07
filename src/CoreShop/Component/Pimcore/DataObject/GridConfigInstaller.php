@@ -10,16 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\GridConfig;
 
 class GridConfigInstaller implements GridConfigInstallerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function installGridConfig($config, $name, $classId, $overwrite = false)
+    public function installGridConfig(array $config, string $name, string $class, bool $overwrite = false): void
     {
         $list = new GridConfig\Listing();
         $list->addConditionParam('name = ?', $name);
@@ -33,7 +32,7 @@ class GridConfigInstaller implements GridConfigInstallerInterface
             return;
         }
 
-        $config['classId'] = $classId;
+        $config['classId'] = $class;
 
         $configDataEncoded = json_encode($config);
         $gridConfig->setName($name);
@@ -41,7 +40,7 @@ class GridConfigInstaller implements GridConfigInstallerInterface
         $gridConfig->setConfig($configDataEncoded);
         $gridConfig->setOwnerId(0);
         $gridConfig->setSearchType('folder');
-        $gridConfig->setClassId($classId);
+        $gridConfig->setClassId($class);
         $gridConfig->save();
     }
 }

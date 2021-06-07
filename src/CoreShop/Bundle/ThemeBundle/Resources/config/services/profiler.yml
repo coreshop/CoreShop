@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\ThemeBundle\Collector\ThemeCollector:
+        arguments:
+            - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface'
+        tags:
+            - { name: data_collector, template: '@CoreShopTheme/Collector/theme.html.twig', id: coreshop.theme_collector }

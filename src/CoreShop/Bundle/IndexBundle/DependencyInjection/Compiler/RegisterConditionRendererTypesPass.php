@@ -10,18 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterConditionRendererTypesPass extends RegisterSimpleRegistryTypePass
 {
+    public const INDEX_CONDITION_RENDERER_TAG = 'coreshop.index.condition.renderer';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.index.condition.renderers',
             'coreshop.index.condition.renderers',
-            'coreshop.index.condition.renderer'
+            self::INDEX_CONDITION_RENDERER_TAG
         );
     }
 }

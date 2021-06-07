@@ -10,15 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Registry;
 
 class PriorityMap implements \Iterator, \Countable
 {
-    private $lastSequence = 0;
-    private $list = [];
     const ORDER_ASC = 'asc';
     const ORDER_DESC = 'desc';
-    private $order = self::ORDER_ASC;
+
+    private int $lastSequence = 0;
+    private array $list = [];
+    private string $order = self::ORDER_ASC;
 
     /**
      * Get scalar key from mixed.
@@ -39,7 +42,7 @@ class PriorityMap implements \Iterator, \Countable
      * @param string $value    value
      * @param int    $priority priority
      *
-     * @return PriorityMap
+     * @return \stdClass
      */
     public function set($key, $value, $priority = 0)
     {

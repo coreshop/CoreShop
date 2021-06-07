@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle;
 
 use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
@@ -29,9 +31,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopProductBundle extends AbstractResourceBundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -39,10 +38,7 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -57,9 +53,6 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ProductDiscountCalculatorsPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         parent::registerDependentBundles($collection);
@@ -68,9 +61,6 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopRuleBundle(), 3500);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Product\Model';

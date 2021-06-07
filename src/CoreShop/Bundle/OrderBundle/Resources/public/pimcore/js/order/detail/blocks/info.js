@@ -10,24 +10,50 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.detail.blocks.info');
-coreshop.order.order.detail.blocks.info = Class.create(coreshop.order.sale.detail.blocks.info, {
+pimcore.registerNS('coreshop.order.order.detail.blocks.info');
+coreshop.order.order.detail.blocks.info = Class.create(coreshop.order.order.detail.abstractBlock, {
     saleStatesStore: null,
 
-    initBlock: function ($super) {
-        $super();
-
+    initBlock: function () {
         var me = this;
+
+        me.saleInfo = Ext.create('Ext.panel.Panel', {
+            margin: '0 20 20 0',
+            border: true,
+            flex: 8,
+            iconCls: this.iconCls,
+            tools: [
+                {
+                    type: 'coreshop-open',
+                    tooltip: t('open'),
+                    handler: function () {
+                        pimcore.helpers.openObject(me.sale.o_id);
+                    }
+                }
+            ]
+        });
 
         me.saleStatesStore = new Ext.data.JsonStore({
             data: []
         });
     },
 
-    updateSale: function ($super) {
-        $super();
+    getPriority: function () {
+        return 10;
+    },
 
+    getPosition: function () {
+        return 'left';
+    },
+
+    getPanel: function () {
+        return this.saleInfo;
+    },
+
+    updateSale: function () {
         var me = this;
+
+        me.saleInfo.setTitle(t('coreshop_' + me.panel.type) + ': ' + this.sale.saleNumber + ' (' + this.sale.o_id + ')');
 
         me.saleInfo.removeAll();
         me.saleStatesStore.loadRawData(me.sale.statesHistory);
@@ -37,7 +63,7 @@ coreshop.order.order.detail.blocks.info = Class.create(coreshop.order.sale.detai
                 changeStateRequest = function (context, btn, transitionInfo) {
                     btn.disable();
                     Ext.Ajax.request({
-                        url: '/admin/coreshop/order/update-order-state',
+                        url: Routing.generate('coreshop_admin_order_update_order_state'),
                         params: {
                             transition: transitionInfo.transition,
                             o_id: context.sale.o_id

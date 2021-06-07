@@ -1,0 +1,13 @@
+imports:
+    - { resource: services/rules.yml }
+    - { resource: services/product-quantity-price-rules.yml }
+    - { resource: services/actions.yml }
+    - { resource: services/calculator.yml }
+
+services:
+    CoreShop\Bundle\ProductQuantityPriceRulesBundle\Twig\ProductQuantityPriceRuleRangesExtension:
+        public: false
+        arguments:
+            - '@CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetector'
+        tags:
+            - { name: twig.extension }

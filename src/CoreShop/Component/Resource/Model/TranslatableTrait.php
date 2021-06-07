@@ -10,15 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\PersistentCollection;
 
 trait TranslatableTrait
 {
     /**
-     * @var ArrayCollection|PersistentCollection|TranslationInterface[]
+     * @var ArrayCollection|PersistentCollection|ArrayCollection<TranslationInterface>
      */
     protected $translations;
 
@@ -45,6 +48,11 @@ trait TranslatableTrait
     protected $fallbackLocale;
 
     public function __construct()
+    {
+        $this->initializeTranslationCollection();
+    }
+
+    protected function initializeTranslationCollection()
     {
         $this->translations = new ArrayCollection();
     }
@@ -93,7 +101,7 @@ trait TranslatableTrait
     }
 
     /**
-     * @return TranslationInterface[]
+     * @return TranslationInterface[]|Collection
      */
     public function getTranslations()
     {

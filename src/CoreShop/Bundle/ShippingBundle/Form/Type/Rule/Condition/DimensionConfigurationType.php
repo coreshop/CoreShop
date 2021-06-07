@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
 
 use Symfony\Component\Form\AbstractType;
@@ -21,35 +23,42 @@ use Symfony\Component\Validator\Constraints\Type;
 final class DimensionConfigurationType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @var string[]
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected array $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('height', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ])
             ->add('width', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ])
             ->add('depth', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_rule_condition_dimension';
     }

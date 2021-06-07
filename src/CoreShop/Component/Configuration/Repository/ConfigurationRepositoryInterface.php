@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Configuration\Repository;
 
 use CoreShop\Component\Configuration\Model\ConfigurationInterface;
@@ -17,10 +19,5 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface ConfigurationRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @param string $key
-     *
-     * @return ConfigurationInterface
-     */
-    public function findByKey($key);
+    public function findByKey(string $key): ?ConfigurationInterface;
 }

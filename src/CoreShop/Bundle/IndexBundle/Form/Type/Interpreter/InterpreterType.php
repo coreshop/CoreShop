@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Interpreter;
 
 use CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnInterpreterChoiceType;
@@ -23,23 +25,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class InterpreterType extends AbstractType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $formTypeRegistry;
+    private FormTypeRegistryInterface $formTypeRegistry;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(FormTypeRegistryInterface $formTypeRegistry)
     {
         $this->formTypeRegistry = $formTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
@@ -49,7 +42,12 @@ final class InterpreterType extends AbstractType
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
+
                 if (null === $type) {
+                    return;
+                }
+
+                if (!$this->formTypeRegistry->has($type, 'default')) {
                     return;
                 }
 
@@ -70,14 +68,15 @@ final class InterpreterType extends AbstractType
                     return;
                 }
 
+                if (!$this->formTypeRegistry->has($data['type'], 'default')) {
+                    return;
+                }
+
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['type'], 'default'));
             });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -90,7 +89,7 @@ final class InterpreterType extends AbstractType
      * @param FormInterface $form
      * @param string        $configurationType
      */
-    protected function addConfigurationFields(FormInterface $form, $configurationType)
+    protected function addConfigurationFields(FormInterface $form, $configurationType): void
     {
         $form->add('interpreterConfig', $configurationType);
     }
@@ -101,7 +100,7 @@ final class InterpreterType extends AbstractType
      *
      * @return string|null
      */
-    protected function getRegistryIdentifier(FormInterface $form, $data = null)
+    protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
         if (null !== $data && null !== $data['type']) {
             return $data['type'];

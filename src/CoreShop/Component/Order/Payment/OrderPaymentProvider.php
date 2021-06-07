@@ -12,33 +12,37 @@
 
 namespace CoreShop\Component\Order\Payment;
 
-use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
+use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Model\Payment;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $paymentFactory;
+    private FactoryInterface $paymentFactory;
+    private int $decimalFactor;
+    private int $decimalPrecision;
+    private TranslatorInterface $translator;
 
-    /**
-     * @param FactoryInterface $paymentFactory
-     */
-    public function __construct(FactoryInterface $paymentFactory)
+    public function __construct(
+        FactoryInterface $paymentFactory,
+        int $decimalFactor,
+        int $decimalPrecision,
+        TranslatorInterface $translator
+    )
     {
         $this->paymentFactory = $paymentFactory;
+        $this->decimalFactor = $decimalFactor;
+        $this->decimalPrecision = $decimalPrecision;
+        $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function provideOrderPayment(OrderInterface $order)
+    public function provideOrderPayment(OrderInterface $order): PaymentInterface
     {
         $tokenGenerator = new UniqueTokenGenerator(true);
         $uniqueId = $tokenGenerator->generate(15);
@@ -46,33 +50,36 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
 
         /**
          * @var PaymentInterface $payment
-         * @var Payment          $payment
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);
+        $payment->setTotalAmount($order->getPaymentTotal());
         $payment->setPaymentProvider($order->getPaymentProvider());
-        $payment->setTotalAmount($order->getTotal());
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(new \DateTime());
         $payment->setCurrency($order->getCurrency());
 
         if ($order instanceof PaymentSettingsAwareInterface) {
-            $payment->setDetails($order->getPaymentSettings());
+            $payment->setDetails(new ArrayObject($order->getPaymentSettings() ?? []));
         }
 
         if ($payment instanceof OrderPaymentInterface) {
             $payment->setOrder($order);
         }
 
-        $description = sprintf(
-            'Payment contains %s item(s) for a total of %s.',
-            count($order->getItems()),
-            round($order->getTotal() / 100, 2)
+        $description = $this->translator->trans(
+            'coreshop.order_payment.total',
+            [
+                '%items%' => count($order->getItems()),
+                '%total%' => round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision),
+            ]
         );
 
         //payum setters
-        $payment->setCurrencyCode($payment->getCurrency()->getIsoCode());
-        $payment->setDescription($description);
+        if ($payment instanceof Payment) {
+            $payment->setCurrencyCode($payment->getCurrency()->getIsoCode());
+            $payment->setDescription($description);
+        }
 
         return $payment;
     }

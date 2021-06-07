@@ -1,7 +1,7 @@
 default:
     suites:
         domain_order:
-            contexts_services:
+            contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
 
@@ -41,6 +41,7 @@ default:
                 - coreshop.behat.context.setup.cart_price_rule
 
                 - coreshop.behat.context.domain.order
+                - coreshop.behat.context.domain.customer
                 - coreshop.behat.context.domain.notification_rule
             filters:
-                tags: "@order"
+                tags: "@domain && @order"

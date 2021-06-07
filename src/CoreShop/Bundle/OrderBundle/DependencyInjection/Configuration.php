@@ -10,31 +10,34 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
+use CoreShop\Bundle\OrderBundle\Controller\AddressCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
+use CoreShop\Bundle\OrderBundle\Controller\CustomerCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCommentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController;
+use CoreShop\Bundle\OrderBundle\Controller\OrderEditController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderPaymentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderShipmentController;
-use CoreShop\Bundle\OrderBundle\Controller\QuoteController;
-use CoreShop\Bundle\OrderBundle\Controller\QuoteCreationController;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleRepository;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherRepository;
+use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleTranslationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
-use CoreShop\Bundle\OrderBundle\Pimcore\Repository\CartRepository;
-use CoreShop\Bundle\OrderBundle\Pimcore\Repository\CartItemRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderInvoiceRepository;
+use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderItemRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderShipmentRepository;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRule;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleTranslation;
+use CoreShop\Component\Order\Model\CartPriceRuleTranslationInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -45,8 +48,6 @@ use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Order\Model\QuoteInterface;
-use CoreShop\Component\Order\Model\QuoteItemInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -55,17 +56,14 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_order');
+        $treeBuilder = new TreeBuilder('core_shop_order');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->booleanNode('legacy_serialization')->defaultTrue()->end()
             ->end();
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
@@ -113,7 +111,12 @@ final class Configuration implements ConfigurationInterface
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('purchasable')->defaultValue(PurchasableInterface::class)->cannotBeEmpty()->end()
-
+                    ->scalarNode('order')->defaultValue(OrderInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('order_item')->defaultValue(OrderItemInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('order_invoice')->defaultValue(OrderInvoiceInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('order_invoice_item')->defaultValue(OrderInvoiceItemInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('order_shipment')->defaultValue(OrderShipmentInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('order_shipment_item')->defaultValue(OrderShipmentItemInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
         ->end();
@@ -145,6 +148,22 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('form')->defaultValue(CartPriceRuleType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('options')->end()
+                                        ->arrayNode('classes')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('model')->defaultValue(CartPriceRuleTranslation::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('interface')->defaultValue(CartPriceRuleTranslationInterface::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('repository')->cannotBeEmpty()->end()
+                                                ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                                ->scalarNode('form')->defaultValue(CartPriceRuleTranslationType::class)->cannotBeEmpty()->end()
+                                            ->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
                             ->end()
                         ->end()
                         ->arrayNode('cart_price_rule_voucher_code')
@@ -169,48 +188,17 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('pimcore')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('cart')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->variableNode('options')->end()
-                                ->scalarNode('path')->defaultValue('carts')->end()
-                                ->arrayNode('classes')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopCart')->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(CartInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(CartRepository::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopCart.json')->end()
-                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('cart_item')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->variableNode('options')->end()
-                                ->scalarNode('path')->defaultValue('items')->end()
-                                ->arrayNode('classes')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopCartItem')->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(CartItemInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(CartItemRepository::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopCartItem.json')->end()
-                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
                         ->arrayNode('order')
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->variableNode('options')->end()
-                                ->scalarNode('path')->defaultValue('orders')->end()
+                                ->arrayNode('path')
+                                    ->children()
+                                        ->scalarNode('order')->defaultValue('orders')->end()
+                                        ->scalarNode('quote')->defaultValue('quotes')->end()
+                                        ->scalarNode('cart')->defaultValue('carts')->end()
+                                    ->end()
+                                ->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
@@ -225,8 +213,11 @@ final class Configuration implements ConfigurationInterface
                                             ->children()
                                                 ->scalarNode('default')->defaultValue(OrderController::class)->end()
                                                 ->scalarNode('creation')->defaultValue(OrderCreationController::class)->end()
+                                                ->scalarNode('edit')->defaultValue(OrderEditController::class)->end()
                                                 ->scalarNode('payment')->defaultValue(OrderPaymentController::class)->end()
                                                 ->scalarNode('comment')->defaultValue(OrderCommentController::class)->end()
+                                                ->scalarNode('customer_creation')->defaultValue(CustomerCreationController::class)->end()
+                                                ->scalarNode('address_creation')->defaultValue(AddressCreationController::class)->end()
                                             ->end()
                                         ->end()
                                     ->end()
@@ -244,7 +235,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopOrderItem')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(OrderItemInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(OrderItemRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopOrderItem.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
                                     ->end()
@@ -342,49 +333,6 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
-                        ->arrayNode('quote')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->variableNode('options')->end()
-                                ->scalarNode('path')->defaultValue('quotes')->end()
-                                ->arrayNode('classes')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopQuote')->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(QuoteInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
-                                        ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopQuote.json')->end()
-                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
-                                        ->arrayNode('pimcore_controller')
-                                            ->addDefaultsIfNotSet()
-                                            ->children()
-                                                ->scalarNode('default')->defaultValue(QuoteController::class)->end()
-                                                ->scalarNode('creation')->defaultValue(QuoteCreationController::class)->end()
-                                            ->end()
-                                        ->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('quote_item')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->variableNode('options')->end()
-                                ->scalarNode('path')->defaultValue('items')->end()
-                                ->arrayNode('classes')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopQuoteItem')->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(QuoteItemInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
-                                        ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopQuoteItem.json')->end()
-                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
                         ->arrayNode('adjustment')
                             ->addDefaultsIfNotSet()
                             ->children()
@@ -434,7 +382,18 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['cart_price_rule', 'order_list', 'order_detail', 'order_create', 'quote_list', 'quote_detail', 'quote_create'])
+                        ->defaultValue([
+                            'cart_price_rule',
+                            'order_list',
+                            'order_detail',
+                            'order_create',
+                            'quote_list',
+                            'quote_detail',
+                            'quote_create',
+                            'cart_list',
+                            'cart_detail',
+                            'cart_create',
+                        ])
                     ->end()
                     ->arrayNode('install')
                         ->addDefaultsIfNotSet()
@@ -448,6 +407,11 @@ final class Configuration implements ConfigurationInterface
                                 ->treatNullLike([])
                                 ->scalarPrototype()->end()
                                 ->defaultValue(['@CoreShopOrderBundle/Resources/install/pimcore/grid-config.yml'])
+                            ->end()
+                            ->arrayNode('translations')
+                                ->treatNullLike([])
+                                ->scalarPrototype()->end()
+                                ->defaultValue(['@CoreShopOrderBundle/Resources/install/pimcore/translations.yml'])
                             ->end()
                         ->end()
                     ->end()

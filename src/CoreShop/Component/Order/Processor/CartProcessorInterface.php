@@ -10,14 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Processor;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CartProcessorInterface
 {
-    /**
-     * @param CartInterface $cart
-     */
-    public function process(CartInterface $cart);
+    public function process(OrderInterface $cart): void;
 }

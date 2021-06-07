@@ -10,13 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Context;
 
 class CartNotFoundException extends \RuntimeException
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($message = null, \Exception $previousException = null)
     {
         parent::__construct($message ?: 'CoreShop was not able to figure out the current cart.', 0, $previousException);

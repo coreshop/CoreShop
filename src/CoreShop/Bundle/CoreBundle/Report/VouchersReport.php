@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
@@ -26,43 +28,13 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class VouchersReport implements ReportInterface, ExportReportInterface
 {
-    /**
-     * @var int
-     */
-    private $totalRecords = 0;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private MoneyFormatterInterface $moneyFormatter;
+    private LocaleContextInterface $localeContext;
+    private PimcoreRepositoryInterface $orderRepository;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var Connection
-     */
-    private $db;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
-
-    /**
-     * @var LocaleContextInterface
-     */
-    private $localeContext;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param MoneyFormatterInterface    $moneyFormatter
-     * @param LocaleContextInterface     $localeContext
-     * @param PimcoreRepositoryInterface $orderRepository
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
@@ -77,10 +49,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -96,7 +65,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
 
         $classId = $this->orderRepository->getClassId();
 
-        if (is_null($storeId)) {
+        if (null === $storeId) {
             return [];
         }
 
@@ -120,8 +89,8 @@ class VouchersReport implements ReportInterface, ExportReportInterface
               ORDER BY orders.orderDate DESC
               LIMIT $offset,$limit";
 
-        $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
-        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
+        $results = $this->db->fetchAllAssociative($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($results as $result) {
             $date = Carbon::createFromTimestamp($result['orderDate']);
@@ -136,10 +105,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
         return array_values($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExportReportData(ParameterBag $parameterBag)
+    public function getExportReportData(ParameterBag $parameterBag): array
     {
         $data = $this->getReportData($parameterBag);
 
@@ -152,10 +118,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
         return $data;
     }
 
-    /**
-     * @return int
-     */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

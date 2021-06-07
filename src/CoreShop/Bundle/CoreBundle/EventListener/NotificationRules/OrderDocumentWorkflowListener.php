@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
@@ -18,23 +20,14 @@ use Webmozart\Assert\Assert;
 
 final class OrderDocumentWorkflowListener extends AbstractNotificationRuleListener
 {
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
-    /**
-     * @param string $type
-     */
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * @param Event $event
-     */
-    public function applyDocumentWorkflowTransitionCompleted(Event $event)
+    public function applyDocumentWorkflowTransitionCompleted(Event $event): void
     {
         $subject = $event->getSubject();
 

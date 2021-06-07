@@ -10,19 +10,33 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Command;
 
 use CoreShop\Bundle\CoreBundle\Installer\Executor\CommandExecutor;
+use Pimcore\Tool\Console;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 final class MigrateCommand extends Command
 {
     /**
-     * {@inheritdoc}
+     * @var array
      */
-    protected function configure()
+    protected array $dependantBundles = [];
+
+    public function __construct(array $dependantBundles)
+    {
+        parent::__construct();
+
+        $this->dependantBundles = $dependantBundles;
+    }
+
+
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:migrate')
@@ -34,16 +48,32 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $application = $this->getApplication();
         $application->setCatchExceptions(false);
 
         $commandExecutor = new CommandExecutor($input, $output, $application);
         $commandExecutor->runCommand('pimcore:migrations:migrate', ['--bundle' => 'CoreShopCoreBundle'], $output);
+
+        $phpCli = Console::getPhpCli();
+
+        $output->writeln('');
+
+        foreach ($this->dependantBundles as $bundle) {
+            $process = new Process(
+                 array_merge(
+                    [$phpCli],
+                    [
+                        'bin/console',
+                        'pimcore:migrations:migrate',
+                        '--bundle='.$bundle,
+                    ]
+                )
+            );
+            $process->setTty(true);
+            $process->run();
+        }
 
         return 0;
     }

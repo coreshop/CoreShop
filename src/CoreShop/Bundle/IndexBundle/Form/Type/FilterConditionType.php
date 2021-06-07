@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
@@ -22,27 +24,18 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class FilterConditionType extends AbstractResourceType
+class FilterConditionType extends AbstractResourceType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $formTypeRegistry;
+    private FormTypeRegistryInterface $formTypeRegistry;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
+    public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups);
 
         $this->formTypeRegistry = $formTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
@@ -55,6 +48,10 @@ final class FilterConditionType extends AbstractResourceType
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
+                    return;
+                }
+
+                if (!$this->formTypeRegistry->has($type, 'default')) {
                     return;
                 }
 
@@ -75,14 +72,15 @@ final class FilterConditionType extends AbstractResourceType
                     return;
                 }
 
+                if (!$this->formTypeRegistry->has($data['type'], 'default')) {
+                    return;
+                }
+
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['type'], 'default'));
             });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -115,10 +113,7 @@ final class FilterConditionType extends AbstractResourceType
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_filter_condition';
     }

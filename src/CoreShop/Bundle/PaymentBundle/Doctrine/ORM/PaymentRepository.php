@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PaymentBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
@@ -18,10 +20,7 @@ use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 
 class PaymentRepository extends EntityRepository implements PaymentRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findForPayable(PayableInterface $payable)
+    public function findForPayable(PayableInterface $payable): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.orderId = :orderId')

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -18,9 +20,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class RegisterExtensionsPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    public const INDEX_EXTENSION_TAG = 'coreshop.index.extension';
+
     public function process(ContainerBuilder $container)
     {
         if (!$container->has('coreshop.registry.index.extensions')) {
@@ -29,7 +30,7 @@ final class RegisterExtensionsPass implements CompilerPassInterface
 
         $registry = $container->getDefinition('coreshop.registry.index.extensions');
 
-        foreach ($container->findTaggedServiceIds('coreshop.index.extension') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds(self::INDEX_EXTENSION_TAG) as $id => $attributes) {
             $registry->addMethodCall('register', [$id, new Reference($id)]);
         }
     }

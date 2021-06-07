@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -18,14 +20,13 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class AmountConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration): bool
     {
         $minAmount = $configuration['minAmount'];
         $maxAmount = $configuration['maxAmount'];
-        $totalAmount = $shippable->getSubtotal();
+        $gross = $configuration['gross'] ?? true;
+
+        $totalAmount = $shippable->getSubtotal($gross);
 
         if ($minAmount > 0) {
             if ($totalAmount < $minAmount) {

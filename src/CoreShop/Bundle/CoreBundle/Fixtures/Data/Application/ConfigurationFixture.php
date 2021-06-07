@@ -10,41 +10,32 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
+use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ConfigurationFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return '2.0';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $configurations = [
             'system.guest.checkout' => true,
@@ -67,7 +58,7 @@ class ConfigurationFixture extends AbstractFixture implements ContainerAwareInte
         ];
 
         foreach ($configurations as $key => $value) {
-            $this->container->get('coreshop.configuration.service')->set($key, $value);
+            $this->container->get(ConfigurationServiceInterface::class)->set($key, $value);
         }
     }
 }

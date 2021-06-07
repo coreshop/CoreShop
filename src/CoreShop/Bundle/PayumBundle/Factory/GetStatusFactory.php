@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\Factory;
 
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
@@ -17,9 +19,6 @@ use Payum\Core\Request\GetStatusInterface;
 
 final class GetStatusFactory implements GetStatusFactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createNewWithModel($model): GetStatusInterface
     {
         return new GetStatus($model);

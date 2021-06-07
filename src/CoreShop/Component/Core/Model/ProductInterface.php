@@ -10,54 +10,57 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Model\ProductInterface as BaseProductInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
-interface ProductInterface extends BaseProductInterface, IndexableInterface, PurchasableInterface, StockableInterface, PimcoreSEOAwareInterface, SEOImageAwareInterface, SEOOpenGraphAwareInterface
+interface ProductInterface extends
+    BaseProductInterface,
+    IndexableInterface,
+    PurchasableInterface,
+    StockableInterface,
+    PimcoreSEOAwareInterface,
+    SEOImageAwareInterface,
+    SEOOpenGraphAwareInterface,
+    QuantityRangePriceAwareInterface,
+    PimcoreStoresAwareInterface
 {
     /**
-     * @return StoreInterface[]
+     * @return \CoreShop\Component\Core\Model\ProductStoreValuesInterface[]
      */
-    public function getStores();
+    public function getStoreValues (): array;
 
-    /**
-     * @param StoreInterface[] $stores
-     */
-    public function setStores($stores);
+    public function setStoreValues (array $storeValues): self;
 
-    /**
-     * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
-     *
-     * @return int
-     */
-    public function getStorePrice(\CoreShop\Component\Store\Model\StoreInterface $store = null);
+    public function getStoreValuesForStore (\CoreShop\Component\Store\Model\StoreInterface $store): ?\CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 
-    /**
-     * @param int                                                 $price
-     * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
-     */
-    public function setStorePrice($price, \CoreShop\Component\Store\Model\StoreInterface $store = null);
+    public function setStoreValuesForStore(ProductStoreValuesInterface $storeValues, \CoreShop\Component\Store\Model\StoreInterface $store): self;
 
-    /**
-     * @param TaxRuleGroupInterface $taxRule
-     */
-    public function setTaxRule($taxRule);
+    public function getStoreValuesOfType(string $type, \CoreShop\Component\Store\Model\StoreInterface $store);
 
-    /**
-     * @return bool
-     */
-    public function getDigitalProduct();
+    public function setStoreValuesOfType(string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store): self;
 
-    /**
-     * @param bool $digitalProduct
-     */
-    public function setDigitalProduct($digitalProduct);
+    public function setTaxRule(?TaxRuleGroupInterface $taxRule);
+
+    public function getDigitalProduct(): ?bool;
+
+    public function setDigitalProduct(?bool $digitalProduct);
+
+    public function getMinimumQuantityToOrder(): ?int;
+
+    public function setMinimumQuantityToOrder(?int $minimumQuantity);
+
+    public function getMaximumQuantityToOrder(): ?int;
+
+    public function setMaximumQuantityToOrder(?int $maximumQuantity);
 }

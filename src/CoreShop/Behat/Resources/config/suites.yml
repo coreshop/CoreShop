@@ -1,17 +1,4 @@
 imports:
-    - suites/domain/product.yml
-    - suites/domain/currency.yml
-    - suites/domain/taxation.yml
-    - suites/domain/cart.yml
-    - suites/domain/category.yml
-    - suites/domain/shipping.yml
-    - suites/domain/country.yml
-    - suites/domain/index.yml
-    - suites/domain/index_condition.yml
-    - suites/domain/pimcore.yml
-    - suites/domain/order.yml
-    - suites/domain/seo.yml
-    - suites/domain/placeholder.yml
-    - suites/domain/cli.yml
-    - suites/domain/filter.yml
-    - suites/domain/tracking.yml
+    - suites/domain.yml
+    - suites/ui.yml
+    - suites/ui_pimcore.yml

@@ -1,0 +1,17 @@
+CoreShop\Component\Product\Model\ProductUnitDefinitionPrice:
+    exclusion_policy: ALL
+    xml_root_name: product_unit_definition_price
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        price:
+            expose: true
+            type: integer
+            groups: [List, Detailed, Version]
+        unitDefinition:
+            expose: true
+            type: CoreShop\Component\Product\Model\ProductUnitDefinition
+            groups: [List, Detailed, Version]

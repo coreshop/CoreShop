@@ -1,0 +1,18 @@
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Component\Core\Shipping\Taxation\TaxCalculationStrategyTaxRule:
+        arguments:
+            - '@CoreShop\Component\Taxation\Collector\TaxCollectorInterface'
+            - '@CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface'
+        tags:
+            - { name: coreshop.shipping.tax_calculation_strategy, type: taxRule }
+
+    CoreShop\Component\Core\Shipping\Taxation\TaxCalculationStrategyCartItems:
+        arguments:
+            - '@CoreShop\Component\Taxation\Collector\TaxCollectorInterface'
+            - '@CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface'
+            - '@CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface'
+        tags:
+            - { name: coreshop.shipping.tax_calculation_strategy, type: cartItems }

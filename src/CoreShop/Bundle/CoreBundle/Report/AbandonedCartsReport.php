@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
@@ -17,50 +19,21 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class AbandonedCartsReport implements ReportInterface, ExportReportInterface
+final class AbandonedCartsReport implements ReportInterface, ExportReportInterface
 {
-    /**
-     * @var int
-     */
-    private $totalRecords = 0;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private PimcoreRepositoryInterface $cartRepository;
+    private PimcoreRepositoryInterface $customerRepository;
+    private LocaleContextInterface $localeContext;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var Connection
-     */
-    private $db;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $cartRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $customerRepository;
-
-    /**
-     * @var LocaleContextInterface
-     */
-    private $localeContext;
-
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param PimcoreRepositoryInterface $cartRepository,
-     * @param PimcoreRepositoryInterface $customerRepository
-     * @param LocaleContextInterface     $localeContext
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
@@ -75,10 +48,7 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
         $this->localeContext = $localeContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -113,7 +83,7 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
             $toTimestamp = $to->getTimestamp();
         }
 
-        if (is_null($storeId)) {
+        if (null === $storeId) {
             return [];
         }
 
@@ -137,12 +107,13 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
                           AND cart.order__id IS NULL
                           AND cart.o_creationDate > ?
                           AND cart.o_creationDate < ?
+                          AND cart.saleState === '".OrderSaleStates::STATE_CART."'
                      GROUP BY cart.oo_id
                      ORDER BY cart.o_creationDate DESC
                      LIMIT $offset,$limit";
 
-        $data = $this->db->fetchAll($sqlQuery, [$fromTimestamp, $toTimestamp]);
-        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
+        $data = $this->db->fetchAllAssociative($sqlQuery, [$fromTimestamp, $toTimestamp]);
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($data as &$entry) {
             $entry['itemsInCart'] = count(array_filter(explode(',', $entry['items'])));
@@ -156,10 +127,7 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
         return array_values($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExportReportData(ParameterBag $parameterBag)
+    public function getExportReportData(ParameterBag $parameterBag): array
     {
         $data = $this->getReportData($parameterBag);
 
@@ -173,10 +141,7 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
         return $data;
     }
 
-    /**
-     * @return int
-     */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

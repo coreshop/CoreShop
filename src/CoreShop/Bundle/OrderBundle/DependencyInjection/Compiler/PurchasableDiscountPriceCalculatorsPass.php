@@ -10,35 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
-final class PurchasableDiscountPriceCalculatorsPass implements CompilerPassInterface
+final class PurchasableDiscountPriceCalculatorsPass extends RegisterSimpleRegistryTypePass
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public const PURCHASABLE_DISCOUNT_PRICE_CALCULATOR_TAG = 'coreshop.order.purchasable.discount_price_calculator';
+
+    public function __construct()
     {
-        if (!$container->has('coreshop.registry.order.purchasable.discount_price_calculators')) {
-            return;
-        }
-
-        $registry = $container->getDefinition('coreshop.registry.order.purchasable.discount_price_calculators');
-
-        $map = [];
-        foreach ($container->findTaggedServiceIds('coreshop.order.purchasable.discount_price_calculator') as $id => $attributes) {
-            if (!isset($attributes[0]['priority']) || !isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged PriceCalculator `' . $id . '` needs to have `priority`, `type` attributes.');
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'], new Reference($id)]);
-        }
-
-        $container->setParameter('coreshop.order.purchasable.discount_price_calculators', $map);
+        parent::__construct(
+            'coreshop.registry.order.purchasable.discount_price_calculators',
+            'coreshop.order.purchasable.discount_price_calculator',
+            self::PURCHASABLE_DISCOUNT_PRICE_CALCULATOR_TAG
+        );
     }
 }

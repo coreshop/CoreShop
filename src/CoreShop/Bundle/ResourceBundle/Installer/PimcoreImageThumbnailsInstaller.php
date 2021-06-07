@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\ImageThumbnailConfiguration;
@@ -22,23 +24,14 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
-    /**<
-     * @param KernelInterface $kernel
-     */
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.image_thumbnails', $applicationName) : 'coreshop.all.pimcore.admin.install.image_thumbnails';
 
@@ -72,7 +65,7 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
             $progress->start(count($thumbnailsToInstall));
 
             foreach ($thumbnailsToInstall as $name => $thumbnailData) {
-                $progress->setMessage(sprintf('<error>Install Image Thumbnail %s</error>', $name));
+                $progress->setMessage(sprintf('Install Image Thumbnail %s', $name));
 
                 $this->installThumbnail($name, $thumbnailData);
 
@@ -80,18 +73,13 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>Image Thumbnails have been installed successfully</info>');
         }
     }
 
-    /**
-     * Check if Image Thumbnail is already installed.
-     *
-     * @param string $name
-     * @param array  $properties
-     *
-     * @return Config
-     */
-    private function installThumbnail($name, $properties)
+    private function installThumbnail(string $name, array $properties): Config
     {
         $thumbnailConfig = new Config();
 
@@ -106,7 +94,8 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
             $thumbnailConfig = new Config();
             $thumbnailConfig->setName($name);
             $thumbnailConfig->setItems($properties['items']);
-            $thumbnailConfig->setDescription($properties['description']);
+            $thumbnailConfig->setDescription($properties['description'] ?? '');
+            $thumbnailConfig->setGroup($properties['group']);
             $thumbnailConfig->setFormat($properties['format']);
             $thumbnailConfig->setQuality($properties['quality']);
             $thumbnailConfig->setHighResolution($properties['highResolution']);

@@ -10,19 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
+use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 class RegisterInterpreterPass extends RegisterRegistryTypePass
 {
+    public const INDEX_INTERPRETER_TAG = 'coreshop.index.interpreter';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.index.interpreter',
             'coreshop.form_registry.index.interpreter',
             'coreshop.index.interpreters',
-            'coreshop.index.interpreter'
+            self::INDEX_INTERPRETER_TAG
         );
     }
 }

@@ -21,10 +21,32 @@ coreshop.index.fields = Class.create({
         this.class = klass;
     },
 
+    setClass: function(klass) {
+        this.class = klass;
+    },
+
+    reload: function() {
+        if (this.classDefinitionTreePanel) {
+            this.classDefinitionTreePanel.destroy();
+        }
+
+        this.classDefinitionTreePanel = this.getClassTree(Routing.generate('coreshop_index_getClassDefinitionForFieldSelection'), this.class);
+
+        this.configPanel.add(this.classDefinitionTreePanel);
+    },
+
     getLayout: function () {
+        var items = [
+            this.getSelectionPanel()
+        ];
+
+        if (this.class) {
+            items.push(this.getClassDefinitionTreePanel());
+        }
+
         this.configPanel = new Ext.Panel({
             layout: 'border',
-            items: [this.getSelectionPanel(), this.getClassDefinitionTreePanel()]
+            items: items
 
         });
 
@@ -127,9 +149,12 @@ coreshop.index.fields = Class.create({
                             var target = overModel.getOwnerTree().getView();
                             var source = data.view;
 
-                            if (target != source) {
+                            if (target !== source) {
                                 var record = data.records[0];
                                 var copy = record.createNode(Ext.apply({}, record.data));
+
+                                copy.id = Ext.id();
+
                                 var element = this.getConfigElement(copy);
 
                                 element.getConfigDialog(copy);
@@ -200,7 +225,10 @@ coreshop.index.fields = Class.create({
     getClassDefinitionTreePanel: function () {
         if (!this.classDefinitionTreePanel) {
             this.brickKeys = [];
-            this.classDefinitionTreePanel = this.getClassTree('/admin/coreshop/indices/get-class-definition-for-field-selection', this.class);
+
+            if (this.class) {
+                this.classDefinitionTreePanel = this.getClassTree(Routing.generate('coreshop_index_getClassDefinitionForFieldSelection'), this.class);
+            }
         }
 
         return this.classDefinitionTreePanel;
@@ -242,17 +270,16 @@ coreshop.index.fields = Class.create({
         });
 
         tree.addListener('itemdblclick', function (tree, record, item, index, e, eOpts) {
-            if (!record.data.root && record.datatype != 'layout'
-                && record.data.dataType != 'localizedfields') {
+            if (!record.data.root && record.datatype !== 'layout' && record.data.dataType !== 'localizedfields') {
                 var copy = Ext.apply({}, record.data);
 
-                if (this.selectionPanel && !this.selectionPanel.getRootNode().findChild('name', record.data.name)) {
-                    this.selectionPanel.getRootNode().appendChild(copy);
-                }
+                copy.id = Ext.id();
 
-                if (record.data.dataType == 'keyValue') {
-                    var ccd = new pimcore.object.keyvalue.columnConfigDialog();
-                    ccd.getConfigDialog(copy, this.selectionPanel);
+                if (this.selectionPanel && !this.selectionPanel.getRootNode().findChild('name', record.data.name)) {
+                    var node = this.selectionPanel.getRootNode().appendChild(copy);
+
+                    var element = this.getConfigElement(node);
+                    element.getConfigDialog(node);
                 }
             }
         }.bind(this));

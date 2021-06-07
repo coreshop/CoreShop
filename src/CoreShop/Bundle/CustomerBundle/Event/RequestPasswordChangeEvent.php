@@ -10,45 +10,30 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CustomerBundle\Event;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class RequestPasswordChangeEvent extends Event
 {
-    /**
-     * @var CustomerInterface
-     */
-    private $customer;
+    private CustomerInterface $customer;
+    private string $resetLink;
 
-    /**
-     * @var string
-     */
-    private $resetLink;
-
-    /**
-     * @param CustomerInterface $customer
-     * @param string            $resetLink
-     */
-    public function __construct(CustomerInterface $customer, $resetLink)
+    public function __construct(CustomerInterface $customer, string $resetLink)
     {
         $this->customer = $customer;
         $this->resetLink = $resetLink;
     }
 
-    /**
-     * @return CustomerInterface
-     */
-    public function getCustomer()
+    public function getCustomer(): CustomerInterface
     {
         return $this->customer;
     }
 
-    /**
-     * @return string
-     */
-    public function getResetLink()
+    public function getResetLink(): string
     {
         return $this->resetLink;
     }

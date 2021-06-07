@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\DataTransformer\PimcoreResourceDataTransformer;
@@ -21,39 +23,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PimcoreResourceSelectionType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
     protected $repository;
 
-    /**
-     * @param RepositoryInterface $repository
-     */
     public function __construct(RepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new PimcoreResourceDataTransformer($this->repository));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return NumberType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection' => false,

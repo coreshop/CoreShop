@@ -25,23 +25,14 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**<
-     * @param KernelInterface $kernel
-     */
+    private KernelInterface $kernel;
+    
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf(
             '%s.pimcore.admin.install.documents',
@@ -101,7 +92,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 
             foreach ($docsToInstall as $docData) {
                 $progress->setMessage(
-                    sprintf('<error>Install Document %s/%s</error>', $docData['path'], $docData['key'])
+                    sprintf('Install Document %s/%s', $docData['path'], $docData['key'])
                 );
 
                 foreach ($validLanguages as $language) {
@@ -137,17 +128,13 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>Documents have been installed successfully</info>');
         }
     }
 
-    /**
-     * @param Document $rootDocument
-     * @param string   $language
-     * @param array    $properties
-     *
-     * @return Document
-     */
-    private function installDocument(Document $rootDocument, $language, $properties)
+    private function installDocument(Document $rootDocument, string $language, array $properties): ?Document
     {
         $path = $rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'] . '/' . $properties['key'];
 
@@ -164,20 +151,11 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 $document->setKey(Service::getValidKey($properties['key'], 'document'));
                 $document->setProperty('language', $language, 'text', true);
 
-                if (isset($properties['name'])) {
-                    $document->setName($properties['name']);
-                }
                 if (isset($properties['title'])) {
                     $document->setTitle($properties['title']);
                 }
-                if (isset($properties['module'])) {
-                    $document->setModule($properties['module']);
-                }
                 if (isset($properties['controller'])) {
                     $document->setController($properties['controller']);
-                }
-                if (isset($properties['action'])) {
-                    $document->setAction($properties['action']);
                 }
                 if (isset($properties['template'])) {
                     $document->setTemplate($properties['template']);
@@ -201,11 +179,15 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                                 if ($type === 'objectProperty') {
                                     $document->setValue($key, $content);
                                 } else {
-                                    $document->setRawElement($key, $type, $content);
+                                    $document->setRawEditable($key, $type, $content);
                                 }
                             }
                         }
                     }
+                }
+
+                if ($document instanceof Document\PageSnippet) {
+                    $document->setMissingRequiredEditable(false);
                 }
 
                 $document->setPublished(true);
@@ -214,5 +196,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 return $document;
             }
         }
+
+        return null;
     }
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\AddressBundle\Collector;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
@@ -20,15 +22,8 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class CountryCollector extends DataCollector
 {
-    /**
-     * @var CountryContextInterface
-     */
-    private $countryContext;
+    private CountryContextInterface $countryContext;
 
-    /**
-     * @param CountryContextInterface $countryContext
-     * @param bool                    $countryChangeSupport
-     */
     public function __construct(
         CountryContextInterface $countryContext,
         $countryChangeSupport = false
@@ -41,47 +36,33 @@ final class CountryCollector extends DataCollector
         ];
     }
 
-    /**
-     * @return CountryInterface
-     */
-    public function getCountry()
+    public function getCountry(): ?CountryInterface
     {
         return $this->data['country'];
     }
 
-    /**
-     * @return bool
-     */
-    public function isCountryChangeSupported()
+    public function isCountryChangeSupported(): bool
     {
         return $this->data['country_change_support'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         try {
             $this->data['country'] = $this->countryContext->getCountry();
-            $this->data['countryName'] = $this->data['country']->getName();
+            $this->data['country_name'] = $this->countryContext->getCountry() ? $this->countryContext->getCountry()->getName() : null;
+            $this->data['country_change_support'] = $this->isCountryChangeSupported();
         } catch (\Exception $exception) {
             //If something went wrong, we don't have any country, which we can safely ignore
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop.country_collector';
     }

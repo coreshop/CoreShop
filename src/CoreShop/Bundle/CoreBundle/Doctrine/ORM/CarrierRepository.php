@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
@@ -18,18 +20,13 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class CarrierRepository extends EntityRepository implements CarrierRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findForStore(StoreInterface $store)
+    public function findForStore(StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.stores', 's')
             ->andWhere('s.id = :store')
             ->setParameter('store', [$store])
             ->getQuery()
-            ->useResultCache(true)
-            ->useQueryCache(true)
             ->getResult();
     }
 }

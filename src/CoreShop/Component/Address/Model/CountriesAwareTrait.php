@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,25 +29,16 @@ trait CountriesAwareTrait
         $this->countries = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCountries()
     {
         return $this->countries;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCountries()
     {
         return !$this->countries->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCountry(CountryInterface $store)
     {
         if (!$this->hasCountry($store)) {
@@ -53,9 +46,6 @@ trait CountriesAwareTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeCountry(CountryInterface $store)
     {
         if ($this->hasCountry($store)) {
@@ -63,9 +53,6 @@ trait CountriesAwareTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCountry(CountryInterface $store)
     {
         return $this->countries->contains($store);

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexColumnInterface;
@@ -18,9 +20,6 @@ use Pimcore\Model\DataObject\Classificationstore;
 
 class ClassificationStoreGetter implements GetterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function get(IndexableInterface $object, IndexColumnInterface $config)
     {
         $columnConfig = $config->getConfiguration();

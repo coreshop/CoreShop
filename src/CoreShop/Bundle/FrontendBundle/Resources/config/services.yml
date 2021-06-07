@@ -1,5 +1,6 @@
 imports:
-    - { resource: "services/wishlist.yml" }
+    - { resource: services/wishlist.yml }
+    - { resource: services_alias.yml }
 
 services:
     coreshop.frontend.controller.abstract:
@@ -7,107 +8,34 @@ services:
         abstract: true
         calls:
             - [setContainer, ['@service_container']]
-            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
+            - [setTemplateConfigurator, ['@CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface']]
 
-    coreshop.frontend.controller.index:
-        class: '%coreshop.frontend.controller.index%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.register:
-        class: '%coreshop.frontend.controller.register%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.customer:
-        class: '%coreshop.frontend.controller.customer%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.currency:
-        class: '%coreshop.frontend.controller.currency%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.search:
-        class: '%coreshop.frontend.controller.search%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.cart:
-        class: '%coreshop.frontend.controller.cart%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.checkout:
-        class: '%coreshop.frontend.controller.checkout%'
-        arguments:
-            - '@coreshop.checkout_manager.factory'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.order:
-        class: '%coreshop.frontend.controller.order%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.category:
-        class: '%coreshop.frontend.controller.category%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.product:
-        class: '%coreshop.frontend.controller.product%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.quote:
-        class: '%coreshop.frontend.controller.quote%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.mail:
-        class: '%coreshop.frontend.controller.mail%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.security:
-        class: '%coreshop.frontend.controller.security%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-        arguments:
-            - '@security.authentication_utils'
-            - '@form.factory'
-            - '@coreshop.context.shopper'
-
-    coreshop.frontend.controller.wishlist:
-        class: '%coreshop.frontend.controller.wishlist%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
-    coreshop.frontend.controller.payment:
-        class: '%coreshop.frontend.controller.payment%'
-        public: true
-        arguments:
-            - '@coreshop.order.payment_provider'
-            - '@coreshop.repository.order'
-            - '@coreshop.factory.payum_get_status'
-            - '@coreshop.factory.payum_resolve_next_route'
-            - '@coreshop.factory.payum_confirm_order'
-        calls:
-            - [setContainer, ['@service_container']]
-
-    coreshop.frontend.template_configurator:
-        class: CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator
+    CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface: '@CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator'
+    CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator:
         public: true
         arguments:
             - '%coreshop.frontend.view_bundle%'
             - '%coreshop.frontend.view_suffix%'
 
-    coreshop.frontend.twig.locale_switcher:
-        class: CoreShop\Bundle\FrontendBundle\Twig\LocaleSwitcherExtension
+    CoreShop\Bundle\FrontendBundle\Twig\LocaleSwitcherExtension:
         arguments:
             - '@Pimcore\Model\Document\Service'
-            - '@coreshop.context.shopper'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+        tags:
+            - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\TestHtmlAttributeExtension:
+        arguments:
+            - '%kernel.environment%'
+        tags:
+            - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\TestFormAttributeExtension:
+        arguments:
+            - '%kernel.environment%'
+        tags:
+            - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\MergeRecursiveExtension:
         tags:
             - { name: twig.extension }

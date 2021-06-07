@@ -1,0 +1,20 @@
+﻿<!--
+  ~ CoreShop.
+  ~
+  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
+  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+  ~ files that are distributed with this source code.
+  ~
+  ~ @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+  ~ @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+  ~
+  -->
+
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+<g>
+	<path fill="none" stroke="white" stroke-width="2" d="M23.57,35.903c-0.493,1.581-2.175,2.466-3.757,1.973l-5.728-1.785&#10;&#9;&#9;c-1.582-0.493-2.464-2.175-1.972-3.757l2.083-6.683c0.493-1.581,2.175-2.466,3.757-1.972l5.728,1.785&#10;&#9;&#9;c1.582,0.492,2.464,2.175,1.972,3.756L23.57,35.903z"/>
+	<rect x="3" y="19" fill="white" width="3" height="10"/>
+	<rect x="42" y="8" fill="white" width="3" height="32"/>
+</g>
+<polygon fill="white" points="6,19.71 6,28.29 42,38.711 42,9.29 "/>
+</svg>

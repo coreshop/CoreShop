@@ -10,25 +10,28 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Repository;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 interface OrderRepositoryInterface extends PimcoreRepositoryInterface
 {
-    /**
-     * @param CustomerInterface $customer
-     *
-     * @return OrderInterface[]
-     */
-    public function findByCustomer(CustomerInterface $customer);
+    public function findCartByCustomer(CustomerInterface $customer): array;
 
-    /**
-     * @param int $days
-     *
-     * @return OrderInterface[]
-     */
-    public function findExpiredOrders($days);
+    public function findByCartId(int $id): ?OrderInterface;
+
+    public function findLatestCartByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface;
+
+    public function findExpiredCarts(int $days, bool $anonymous, bool $customer): array;
+
+    public function findByCustomer(CustomerInterface $customer): array;
+
+    public function hasCustomerOrders(CustomerInterface $customer): bool;
+
+    public function findExpiredOrders(int $days): array;
 }

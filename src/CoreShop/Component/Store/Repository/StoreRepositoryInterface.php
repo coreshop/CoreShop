@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Repository;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -21,17 +23,9 @@ interface StoreRepositoryInterface extends RepositoryInterface
     /**
      * @return QueryBuilder
      */
-    public function createListQueryBuilder();
+    public function createListQueryBuilder(): QueryBuilder;
 
-    /**
-     * @param int $siteId
-     *
-     * @return StoreInterface
-     */
-    public function findOneBySite($siteId);
+    public function findOneBySite(int $siteId): ?StoreInterface;
 
-    /**
-     * @return StoreInterface
-     */
-    public function findStandard();
+    public function findStandard(): ?StoreInterface;
 }

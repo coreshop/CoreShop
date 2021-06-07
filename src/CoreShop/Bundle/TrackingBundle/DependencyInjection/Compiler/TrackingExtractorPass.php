@@ -10,18 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class TrackingExtractorPass extends RegisterSimpleRegistryTypePass
 {
+    public const TRACKING_EXTRACTOR_TAG = 'coreshop.tracking.extractor';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.tracking.extractor',
             'coreshop.tracking.extractors',
-            'coreshop.tracking.extractor'
+            self::TRACKING_EXTRACTOR_TAG
         );
     }
 }

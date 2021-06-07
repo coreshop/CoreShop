@@ -1,7 +1,6 @@
 services:
-    coreshop.checkout.listener.assign_cart_locale:
-        class: CoreShop\Bundle\OrderBundle\EventListener\CheckoutCartLocaleAssignerListener
+    CoreShop\Bundle\OrderBundle\EventListener\CheckoutCartLocaleAssignerListener:
         arguments:
-            - '@coreshop.context.locale'
+            - '@CoreShop\Component\Locale\Context\LocaleContextInterface'
         tags:
             - { name: kernel.event_listener, event: coreshop.checkout.do.pre, method: assignLocaleOnCheckout }

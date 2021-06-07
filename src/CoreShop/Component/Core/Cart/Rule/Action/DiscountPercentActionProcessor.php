@@ -10,77 +10,58 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
-use CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplierInterface;
+use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    /**
-     * @var DiscountApplierInterface
-     */
-    protected $discountApplier;
+    protected $cartRuleApplier;
 
-    /**
-     * @param DiscountApplierInterface $discountApplier
-     */
-    public function __construct(DiscountApplierInterface $discountApplier)
+    public function __construct(CartRuleApplierInterface $cartRuleApplier)
     {
-        $this->discountApplier = $discountApplier;
+        $this->cartRuleApplier = $cartRuleApplier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
-        $discount = $this->getDiscount($cart, $configuration);
+        /**
+         * @var StoreInterface $store
+         */
+        $store = $cart->getStore();
+
+        $discount = $this->getDiscount($cart, $configuration, $store->getUseGrossPrice());
 
         if ($discount <= 0) {
             return false;
         }
 
-        $this->discountApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, false);
+        $this->cartRuleApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, $store->getUseGrossPrice());
 
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDiscount(CartInterface $cart, array $configuration)
+    protected function getDiscount(OrderInterface $cart, array $configuration, $withTax = false)
     {
-        $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
-
-        if ('total' === $applyOn) {
-            $total = $cart->getTotal(false);
-        } else {
-            $total = $cart->getSubtotal(false);
-        }
+        $total = $cart->getSubtotal($withTax);
 
         $amount = (int) round(($configuration['percent'] / 100) * $total);
 
         return $this->getApplicableAmount($amount, $amount);
     }
 
-    /**
-     * @param int $cartAmount
-     * @param int $ruleAmount
-     *
-     * @return int
-     */
-    protected function getApplicableAmount($cartAmount, $ruleAmount)
+    protected function getApplicableAmount(int $cartAmount, int $ruleAmount): int
     {
         return min($cartAmount, $ruleAmount);
     }

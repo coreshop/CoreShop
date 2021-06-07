@@ -10,41 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\StorageList\Model;
 
 interface StorageListInterface
 {
-    /**
-     * @param StorageListProductInterface $product
-     *
-     * @return StorageListItemInterface|null
-     */
-    public function getItemForProduct(StorageListProductInterface $product);
+    public function getItems(): ?array;
 
-    /**
-     * @return StorageListItemInterface[]
-     */
-    public function getItems();
+    public function hasItems(): bool;
 
-    /**
-     * @return bool
-     */
-    public function hasItems();
+    public function addItem($item): void;
 
-    /**
-     * @param StorageListItemInterface $item
-     */
-    public function addItem($item);
+    public function removeItem($item): void;
 
-    /**
-     * @param StorageListItemInterface $item
-     */
-    public function removeItem($item);
-
-    /**
-     * @param StorageListItemInterface $item
-     *
-     * @return bool
-     */
-    public function hasItem($item);
+    public function hasItem($item): bool;
 }

@@ -12,16 +12,20 @@
 
 namespace CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Customer\Context\CompositeCustomerContext;
+use CoreShop\Component\Customer\Context\CustomerContextInterface;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeCustomerContextPass extends PrioritizedCompositeServicePass
 {
+    public const CUSTOMER_CONTEXT_SERVICE_TAG = 'coreshop.context.customer';
+
     public function __construct()
     {
         parent::__construct(
-            'coreshop.context.customer',
-            'coreshop.context.customer.composite',
-            'coreshop.context.customer',
+            CustomerContextInterface::class,
+            CompositeCustomerContext::class,
+            self::CUSTOMER_CONTEXT_SERVICE_TAG,
             'addContext'
         );
     }

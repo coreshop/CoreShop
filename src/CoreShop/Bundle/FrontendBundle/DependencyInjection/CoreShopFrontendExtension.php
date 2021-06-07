@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
@@ -19,10 +21,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopFrontendExtension extends AbstractModelExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
 
@@ -31,6 +30,8 @@ final class CoreShopFrontendExtension extends AbstractModelExtension
         }
 
         if (array_key_exists('controllers', $config)) {
+            $container->setParameter('coreshop.frontend.controllers', $config['controllers']);
+
             foreach ($config['controllers'] as $key => $value) {
                 $container->setParameter(sprintf('coreshop.frontend.controller.%s', $key), $value);
             }

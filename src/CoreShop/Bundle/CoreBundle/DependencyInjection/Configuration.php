@@ -10,12 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
-use CoreShop\Bundle\CoreBundle\Doctrine\ORM\ProductStorePriceRepository;
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Component\Core\Model\ProductStorePrice;
-use CoreShop\Component\Core\Model\ProductStorePriceInterface;
+use CoreShop\Bundle\CoreBundle\Doctrine\ORM\ProductStoreValuesRepository;
+use CoreShop\Component\Core\Model\ProductStoreValues;
+use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -23,17 +24,13 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_core');
+        $treeBuilder = new TreeBuilder('core_shop_core');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->scalarNode('send_usage_log')->defaultValue(true)->end()
                 ->scalarNode('checkout_manager_factory')->cannotBeEmpty()->end()
                 ->scalarNode('after_logout_redirect_route')->defaultValue('coreshop_index')->cannotBeEmpty()->end()
@@ -45,27 +42,24 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
                 ->arrayNode('resources')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('product_store_price')
+                        ->arrayNode('product_store_values')
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->variableNode('options')->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue(ProductStorePrice::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(ProductStorePriceInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue(ProductStoreValues::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(ProductStoreValuesInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(ProductStorePriceRepository::class)->end()
+                                        ->scalarNode('repository')->defaultValue(ProductStoreValuesRepository::class)->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -75,10 +69,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -95,6 +86,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('core')->defaultValue('/bundles/coreshopcore/pimcore/css/core.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['ctc_assign_to_new', 'ctc_assign_to_existing'])
+                    ->end()
                     ->arrayNode('editmode_js')
                         ->useAttributeAsKey('name')
                         ->prototype('scalar')->end()
@@ -103,15 +98,22 @@ final class Configuration implements ConfigurationInterface
                         ->useAttributeAsKey('name')
                         ->prototype('scalar')->end()
                     ->end()
+                    ->arrayNode('install')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->arrayNode('admin_translations')
+                                ->treatNullLike([])
+                                ->scalarPrototype()->end()
+                                ->defaultValue(['@CoreShopCoreBundle/Resources/install/pimcore/admin-translations.yml'])
+                            ->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addCheckoutConfigurationSection(ArrayNodeDefinition $node)
+    private function addCheckoutConfigurationSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('checkout')

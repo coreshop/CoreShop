@@ -6,23 +6,20 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.payment_provider_choice:
-        class: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType:
         arguments:
-            - '@coreshop.payment.payment_provider_resolver'
+            - '@CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.payment_provider:
-        class: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType:
         arguments:
             - '%coreshop.model.payment_provider.class%'
             - '%coreshop.form.type.payment_provider.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.payment_provider_translation:
-        class: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType:
         arguments:
             - '%coreshop.model.payment_provider_translation.class%'
             - '%coreshop.form.type.payment_provider_translation.validation_groups%'

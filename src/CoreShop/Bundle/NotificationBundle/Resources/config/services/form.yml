@@ -9,47 +9,40 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.notification_rule:
-      class: CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleType
-      arguments:
-          - '%coreshop.model.notification_rule.class%'
-          - '%coreshop.form.type.notification_rule.validation_groups%'
-      tags:
-          - { name: form.type }
+    CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleType:
+        arguments:
+            - '%coreshop.model.notification_rule.class%'
+            - '%coreshop.form.type.notification_rule.validation_groups%'
+        tags:
+            - { name: form.type }
 
-    coreshop.form.type.notification_rule.rule_action:
-      class: CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleActionType
-      arguments:
-          - '%coreshop.model.rule_action.class%'
-          - '%coreshop.form.type.notification_rule.rule_action.validation_groups%'
-          - '@coreshop.form_registry.notification_rule.actions'
-      tags:
-          - { name: form.type }
+    CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleActionType:
+        arguments:
+            - '%coreshop.model.rule_action.class%'
+            - '%coreshop.form.type.notification_rule.rule_action.validation_groups%'
+            - '@coreshop.form_registry.notification_rule.actions'
+        tags:
+            - { name: form.type }
 
-    coreshop.form.notification_rule.type.rule_action.collection:
-        class: CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleActionCollectionType
+    CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleActionCollectionType:
         arguments:
             - '@coreshop.registry.notification_rule.actions'
         tags:
             - { name: form.type }
 
-
-    coreshop.form.notification_rule.type.rule_condition.collection:
-        class: CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleConditionCollectionType
+    CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleConditionCollectionType:
         arguments:
             - '@coreshop.registry.notification_rule.conditions'
         tags:
             - { name: form.type }
 
-    coreshop.form.notification_rule.type.rule_action_choice:
-        class: CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleActionChoiceType
+    CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleActionChoiceType:
         arguments:
             - '%coreshop.notification_rule.actions%'
         tags:
             - { name: form.type }
 
-    coreshop.form.notification_rule.type.rule_condition:
-        class: CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleConditionType
+    CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleConditionType:
         arguments:
             - '%coreshop.model.rule_condition.class%'
             - '%coreshop.form.type.notification_rule.rule_condition.validation_groups%'
@@ -57,15 +50,14 @@ services:
         tags:
             - { name: form.type }
 
-    coreshop.form.notification_rule.type.rule_condition_choice:
-        class: CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleConditionChoiceType
+    CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleConditionChoiceType:
         arguments:
             - '%coreshop.notification_rule.conditions%'
         tags:
             - { name: form.type }
 
-    coreshop.form.notification_rule_type.type_choice:
-        class: CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleTypeChoiceType
-        arguments: ['%coreshop.notification_rule.actions.types%']
+    CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleTypeChoiceType:
+        arguments:
+            - '%coreshop.notification_rule.actions.types%'
         tags:
             - { name: form.type }

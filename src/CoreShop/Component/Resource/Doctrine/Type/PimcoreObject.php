@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Doctrine\Type;
 
 use Doctrine\DBAL\ParameterType;
@@ -21,25 +23,16 @@ class PimcoreObject extends Type
 {
     public const PIMCORE_OBJECT = 'pimcoreObject';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getIntegerTypeDeclarationSQL($fieldDeclaration);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         return AbstractObject::getById($value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value instanceof AbstractObject) {
@@ -49,19 +42,18 @@ class PimcoreObject extends Type
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBindingType()
     {
         return ParameterType::INTEGER;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return self::PIMCORE_OBJECT;
+    }
+
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
     }
 }

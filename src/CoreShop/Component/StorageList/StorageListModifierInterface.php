@@ -10,38 +10,24 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\StorageList;
 
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
 
 interface StorageListModifierInterface
 {
     /**
-     * @param StorageListInterface        $storageList
-     * @param StorageListProductInterface $product
-     * @param int                         $quantity
-     *
-     * @return mixed
+     * @param StorageListInterface     $storageList
+     * @param StorageListItemInterface $item
      */
-    public function addItem(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 1);
+    public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void;
 
     /**
      * @param StorageListInterface     $storageList
      * @param StorageListItemInterface $item
-     *
-     * @return mixed
      */
-    public function removeItem(StorageListInterface $storageList, StorageListItemInterface $item);
-
-    /**
-     * @param StorageListInterface        $storageList
-     * @param StorageListProductInterface $product
-     * @param int                         $quantity
-     * @param bool                        $increaseAmount
-     *
-     * @return mixed
-     */
-    public function updateItemQuantity(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 0, $increaseAmount = false);
+    public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void;
 }

@@ -10,10 +10,10 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Repository;
 
-use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
-
-interface ProductPriceRuleRepositoryInterface extends RuleRepositoryInterface
+interface ProductPriceRuleRepositoryInterface extends PriceRuleRepositoryInterface
 {
 }

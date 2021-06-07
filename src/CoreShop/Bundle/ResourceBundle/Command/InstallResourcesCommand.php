@@ -10,26 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class InstallResourcesCommand extends ContainerAwareCommand
+final class InstallResourcesCommand extends Command
 {
-    /**
-     * @var ResourceInstallerInterface
-     */
     protected $resourceInstaller;
 
-    /**
-     * @param ResourceInstallerInterface $resourceInstaller
-     */
     public function __construct(ResourceInstallerInterface $resourceInstaller)
     {
         $this->resourceInstaller = $resourceInstaller;
@@ -37,10 +33,7 @@ final class InstallResourcesCommand extends ContainerAwareCommand
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:resources:install')
@@ -57,10 +50,7 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /**
          * @var Application $application

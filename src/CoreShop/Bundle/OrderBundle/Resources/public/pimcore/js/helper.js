@@ -20,9 +20,10 @@ coreshop.order.helper.openSale = function (id, type, callback) {
         pimcore.globalmanager.add(cacheIdentifier, true);
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/'+type+'/detail',
+            url: Routing.generate('coreshop_admin_order_get_order'),
             params: {
-                id: id
+                id: id,
+                saleType: type
             },
             success: function (response) {
                 var res = Ext.decode(response.responseText);
@@ -53,10 +54,6 @@ coreshop.order.helper.openSale = function (id, type, callback) {
 
 
 coreshop.order.helper.openSaleByNumberDialog = function(type, keyCode, e) {
-    if (e['stopEvent']) {
-        e.stopEvent();
-    }
-
     Ext.MessageBox.prompt(t('coreshop_'+type+'_by_number'), t('coreshop_please_enter_the_number_of_the_' + type),
         function (button, value) {
             if (button === 'ok' && !Ext.isEmpty(value)) {
@@ -69,7 +66,7 @@ coreshop.order.helper.openSaleByNumberDialog = function(type, keyCode, e) {
 
 coreshop.order.helper.openSaleByNumber = function (type, number) {
     Ext.Ajax.request({
-        url: '/admin/coreshop/'+type+'/find',
+        url: Routing.generate('coreshop_admin_'+type+'_find'),
         params: {
             number: number
         },
@@ -90,4 +87,8 @@ coreshop.order.helper.openOrder = function (id, callback) {
 
 coreshop.order.helper.openQuote = function (id, callback) {
     coreshop.order.helper.openSale(id, 'quote', callback);
+};
+
+coreshop.order.helper.openCart = function (id, callback) {
+    coreshop.order.helper.openSale(id, 'cart', callback);
 };

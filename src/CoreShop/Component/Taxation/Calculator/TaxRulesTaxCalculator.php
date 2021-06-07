@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Taxation\Calculator;
 
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
@@ -22,50 +24,37 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
     public $taxRates;
 
     /**
-     * @var int (COMBINE_METHOD | ONE_AFTER_ANOTHER_METHOD)
+     * @var int
      */
     public $computationMethod;
 
-    /**
-     * @param array $taxRates
-     * @param int   $computationMethod
-     */
     public function __construct(array $taxRates = [], $computationMethod = self::COMBINE_METHOD)
     {
         $this->taxRates = $taxRates;
         $this->computationMethod = (int) $computationMethod;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function applyTaxes($price)
+    public function applyTaxes(int $price): int
     {
         return (int) round($price * (1 + ($this->getTotalRate() / 100)));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removeTaxes($price)
+    public function removeTaxes(int $price): int
     {
         return (int) round($price / (1 + $this->getTotalRate() / 100));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalRate()
+    public function getTotalRate(): float
     {
         $taxes = 0;
-        if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
+        if ($this->computationMethod === self::ONE_AFTER_ANOTHER_METHOD) {
             $taxes = 1;
             foreach ($this->getTaxRates() as $tax) {
                 $taxes *= (1 + (abs($tax->getRate()) / 100));
             }
 
-            $taxes = $taxes - 1;
-            $taxes = $taxes * 100;
+            --$taxes;
+            $taxes *= 100;
         } else {
             foreach ($this->getTaxRates() as $tax) {
                 $taxes += abs($tax->getRate());
@@ -75,74 +64,51 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
         return (float) $taxes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaxesAmountFromGross($price, $asArray = false)
+    public function getTaxesAmountFromGross(int $price): int
+    {
+        return array_sum($this->getTaxesAmountFromGrossAsArray($price));
+    }
+
+    public function getTaxesAmountFromGrossAsArray(int $price): array
     {
         $taxesAmounts = [];
-        $taxAmount = 0;
+
         foreach ($this->getTaxRates() as $tax) {
-            if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
+            if ($this->computationMethod === self::ONE_AFTER_ANOTHER_METHOD) {
                 $taxesAmounts[$tax->getId()] = (int) round($price - ($price / (1 + ($tax->getRate() / 100))));
-                $price = $price - $taxesAmounts[$tax->getId()];
+                $price -= $taxesAmounts[$tax->getId()];
             } else {
                 $taxesAmounts[$tax->getId()] = (int) round($price - ($price / (1 + ($tax->getRate() / 100))));
             }
         }
 
-        if ($asArray) {
-            return $taxesAmounts;
-        }
-
-        foreach ($taxesAmounts as $t) {
-            $taxAmount += $t;
-        }
-
-        return $taxAmount;
+        return $taxesAmounts;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaxesAmount($price, $asArray = false)
+    public function getTaxesAmount(int $price): int
+    {
+        return array_sum($this->getTaxesAmountAsArray($price));
+    }
+
+    public function getTaxesAmountAsArray(int $price): array
     {
         $taxesAmounts = [];
-        $taxAmount = 0;
 
         foreach ($this->getTaxRates() as $tax) {
-            if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
+            if ($this->computationMethod === self::ONE_AFTER_ANOTHER_METHOD) {
                 $taxesAmounts[$tax->getId()] = (int) round($price * (abs($tax->getRate()) / 100));
-                $price = $price + $taxesAmounts[$tax->getId()];
+                $price += $taxesAmounts[$tax->getId()];
             } else {
                 $taxesAmounts[$tax->getId()] = (int) round(($price * (abs($tax->getRate()) / 100)));
             }
         }
 
-        if ($asArray) {
-            return $taxesAmounts;
-        }
-
-        foreach ($taxesAmounts as $t) {
-            $taxAmount += $t;
-        }
-
-        return $taxAmount;
+        return $taxesAmounts;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaxRates()
+
+    public function getTaxRates(): array
     {
         return $this->taxRates;
-    }
-
-    /**
-     *  return computation mode.
-     */
-    private function getComputationMethod()
-    {
-        return $this->computationMethod;
     }
 }

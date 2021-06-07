@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -86,7 +88,7 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
     public function hasPreCondition(FilterConditionInterface $preCondition);
 
     /**
-     * @return Collection|array
+     * @return Collection|FilterConditionInterface[]
      */
     public function getConditions();
 

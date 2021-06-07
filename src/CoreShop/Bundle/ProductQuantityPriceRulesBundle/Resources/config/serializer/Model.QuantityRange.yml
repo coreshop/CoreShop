@@ -1,0 +1,26 @@
+CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange:
+    exclusion_policy: ALL
+    xml_root_name: coreshop_quantity_range
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed, Version]
+        rangeStartingFrom:
+            expose: true
+            type: int
+            groups: [Detailed, Version]
+        pricingBehaviour:
+            expose: true
+            type: string
+            groups: [Detailed, Version]
+        percentage:
+            expose: true
+            type: float
+            groups: [Detailed, Version]
+        highlighted:
+            expose: true
+            type: bool
+            groups: [Detailed, Version]
+

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\DependencyInjection;
 
 use CoreShop\Bundle\FrontendBundle\Controller\CartController;
@@ -33,13 +35,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_frontend');
+        $treeBuilder = new TreeBuilder('core_shop_frontend');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -18,32 +20,18 @@ use Symfony\Component\DependencyInjection\Reference;
 
 abstract class RegisterImplementationLoaderPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
-    protected $implementationLoader;
+    protected string $implementationLoader;
+    protected string $tag;
 
-    /**
-     * @var string
-     */
-    protected $tag;
-
-    /**
-     * @param string $implementationLoader
-     * @param string $tag
-     */
     public function __construct(string $implementationLoader, string $tag)
     {
         $this->implementationLoader = $implementationLoader;
         $this->tag = $tag;
     }
 
-    /**
-     * @param ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has($this->implementationLoader)) {
+        if (!$container->hasDefinition($this->implementationLoader)) {
             return;
         }
 

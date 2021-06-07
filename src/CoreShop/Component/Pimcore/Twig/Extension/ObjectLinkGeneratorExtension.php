@@ -10,30 +10,28 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
 use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
 use Pimcore\Model\DataObject\Concrete;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-final class ObjectLinkGeneratorExtension extends \Twig_Extension
+final class ObjectLinkGeneratorExtension extends AbstractExtension
 {
-    /**
-     * @var LinkGeneratorInterface
-     */
-    private $objectLinkGenerator;
+    private LinkGeneratorInterface $objectLinkGenerator;
 
-    /**
-     * @param LinkGeneratorInterface $objectLinkGenerator
-     */
     public function __construct(LinkGeneratorInterface $objectLinkGenerator)
     {
         $this->objectLinkGenerator = $objectLinkGenerator;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_Function('object_link', function (Concrete $object, array $params = []) {
+            new TwigFunction('object_link', function (Concrete $object, array $params = []) {
                 return $this->objectLinkGenerator->generate($object);
             }),
         ];

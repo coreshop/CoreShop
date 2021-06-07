@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -18,15 +20,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ShippingRuleGroupCollectionType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return CollectionType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 

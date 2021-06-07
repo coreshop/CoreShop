@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ CoreShop.
+  ~
+  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
+  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+  ~ files that are distributed with this source code.
+  ~
+  ~ @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+  ~ @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+  ~
+  -->
+
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Ð¡Ð»Ð¾Ð¹_1" x="0px" y="0px"   viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+<g>
+	<path fill="white" d="M25.016,4L10.751,7.206C10.456,7.282,8,7.873,8,9.29v26.702C8.373,36,8.719,36,9.016,36l16-5   c0,0,1-0.375,1-2c0-1,0-24.002,0-24.002C26.016,4.447,25.568,4,25.016,4z"/>
+	<path fill="white" d="M25.016,4L10.751,7.206C10.456,7.282,8,7.873,8,9.29v26.702C8.373,36,8.719,36,9.016,36l16-5   c0,0,1-0.375,1-2c0-1,0-24.002,0-24.002C26.016,4.447,25.568,4,25.016,4z"/>
+</g>
+<g>
+	<path fill="white" d="M31,7.29l-16,4c-2.25,0.583-7.016,1-7-2H7.984c0,9.66,0,26.71,0,26.71H8c-0.016,3,4.793,3,7,3l16-5   c0,0,1-0.375,1-2c0-1,0-23.712,0-23.712C32,7.737,31.553,7.29,31,7.29z"/>
+</g>
+<g>
+	<path fill="white" d="M33.016,8.625l-14.265,3.581C18.456,12.282,16,12.873,16,14.29v26.702C16.373,41,16.719,41,17.016,41l16-5   c0,0,1-0.375,1-2c0-1,0-24.377,0-24.377C34.016,9.072,33.568,8.625,33.016,8.625z"/>
+	<path fill="white" d="M33.016,8.625l-14.265,3.581C18.456,12.282,16,12.873,16,14.29v26.702C16.373,41,16.719,41,17.016,41l16-5   c0,0,1-0.375,1-2c0-1,0-24.377,0-24.377C34.016,9.072,33.568,8.625,33.016,8.625z"/>
+</g>
+<g>
+	<path fill="white" d="M16,40.992c-0.016,3,4.793,3.008,7,3.008l16-5.333c0,0,1-0.375,1-2c0-1,0-23.667,0-23.667   c0-0.551-0.447-0.998-1-0.998L23,16.29c-2.25,0.583-7.016,1-7-2"/>
+	<path fill="white" d="M16,40.992c-0.016,3,4.793,3.008,7,3.008l16-5.333c0,0,1-0.375,1-2c0-1,0-23.667,0-23.667   c0-0.551-0.447-0.998-1-0.998L23,16.29c-2.25,0.583-7.016,1-7-2"/>
+</g>
+<g>
+	<path fill="black" d="M11,10.542c0.755,0.437,1.962,0.749,3.021,0.958c0.357-0.063,0.689-0.134,0.979-0.209l14.516-3.629L25,6   L12.083,9.125C12.083,9.125,9.417,9.626,11,10.542z"/>
+	<path fill="black" d="M19,15.542c0.755,0.437,1.962,0.749,3.021,0.958c0.357-0.063,0.689-0.134,0.979-0.209l14.894-3.992   L33,10.625l-12.917,3.5C20.083,14.125,17.417,14.626,19,15.542z"/>
+</g>
+<polygon fill="black" points="38,25 38,20 24,24 24,29 "/>
+</svg>

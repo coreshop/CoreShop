@@ -1,0 +1,19 @@
+services:
+    coreshop.datahub.graphql.querytypegenerator.resource.product_store_price:
+        class: CoreShop\Component\Resource\DataHub\QueryType\ResourceList
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@coreshop.data_hub.doctrine_provider'
+            - '%coreshop.model.product_store_price.class%'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopStorePrice }
+
+
+    coreshop.datahub.graphql.querytypegenerator.resource.product_store_values:
+        class: CoreShop\Component\Resource\DataHub\QueryType\ResourceList
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@coreshop.data_hub.doctrine_provider'
+            - '%coreshop.model.product_store_values.class%'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopStoreValues }

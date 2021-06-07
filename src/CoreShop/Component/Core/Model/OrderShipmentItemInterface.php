@@ -10,19 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface as BaseOrderShipmentItemInterface;
 
 interface OrderShipmentItemInterface extends BaseOrderShipmentItemInterface
 {
-    /**
-     * @return float
-     */
-    public function getWeight();
+    public function getWeight(): ?float;
 
-    /**
-     * @param float $weight
-     */
-    public function setWeight($weight);
+    public function setWeight(?float $weight);
 }

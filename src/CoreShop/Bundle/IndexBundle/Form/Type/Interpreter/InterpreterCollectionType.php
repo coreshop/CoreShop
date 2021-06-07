@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Interpreter;
 
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -22,23 +24,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class InterpreterCollectionType extends AbstractType
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    protected $registry;
+    protected ServiceRegistryInterface $registry;
 
-    /**
-     * @param ServiceRegistryInterface $registry
-     */
     public function __construct(ServiceRegistryInterface $registry)
     {
         $this->registry = $registry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $prototypes = [];
         foreach (array_keys($this->registry->all()) as $type) {
@@ -57,10 +50,7 @@ final class InterpreterCollectionType extends AbstractType
         $builder->setAttribute('prototypes', $prototypes);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['prototypes'] = [];
 
@@ -70,10 +60,7 @@ final class InterpreterCollectionType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'allow_add' => true,
@@ -84,10 +71,7 @@ final class InterpreterCollectionType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return CollectionType::class;
     }

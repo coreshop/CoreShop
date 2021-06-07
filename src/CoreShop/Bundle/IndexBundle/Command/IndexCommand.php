@@ -10,63 +10,94 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Command;
 
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
+use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class IndexCommand extends Command
 {
-    /**
-     * @var RepositoryInterface
-     */
-    protected $indexRepository;
+    private RepositoryInterface $indexRepository;
+    private IndexUpdaterServiceInterface $indexUpdater;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var IndexUpdaterServiceInterface
-     */
-    protected $indexUpdater;
+    public function __construct(
+        RepositoryInterface $indexRepository,
+        IndexUpdaterServiceInterface $indexUpdater,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        parent::__construct();
 
-    /**
-     * @param RepositoryInterface          $indexRepository
-     * @param IndexUpdaterServiceInterface $indexUpdater
-     */
-    public function __construct(RepositoryInterface $indexRepository, IndexUpdaterServiceInterface $indexUpdater)
-    {
         $this->indexRepository = $indexRepository;
         $this->indexUpdater = $indexUpdater;
-
-        parent::__construct();
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * configure command.
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:index')
-            ->setDescription('Reindex all Objects');
+            ->setDescription('Reindex all Objects')
+            ->addArgument(
+                'indices',
+                InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
+                'IDs or names of Indices which are re-indexed',
+                null
+            );
     }
 
-    /**
-     * Execute command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $indices = $this->indexRepository->findAll();
-        $classesToUpdate = [];
+        $indices = $classesToUpdate = [];
+        $indexIds = $input->getArgument('indices');
+
+        if (empty($indexIds)) {
+            $indices = $this->indexRepository->findAll();
+        } else {
+            foreach ($indexIds as $id) {
+                if (is_numeric($id)) {
+                    $index = $this->indexRepository->find($id);
+                } else {
+                    $index = $this->indexRepository->findOneBy(['name' => $id]);
+                }
+
+                if (null === $index) {
+                    continue;
+                }
+
+                $indices[] = $index;
+            }
+        }
+
+        if (empty($indices)) {
+            if (null === $indexIds) {
+                $output->writeln('<info>No Indices available, you have to first create an Index.</info>');
+                $this->dispatchInfo('status', 'No Indices available, you have to first create an Index.');
+            } else {
+                $output->writeln(
+                    sprintf('<info>No Indices found for %s</info>', implode(', ', $indexIds))
+                );
+                $this->dispatchInfo(
+                    'status',
+                    sprintf('No Indices found for %s', implode(', ', $indexIds))
+                );
+            }
+
+            return 0;
+        }
 
         /**
          * @var IndexInterface $index
@@ -77,21 +108,46 @@ final class IndexCommand extends Command
             }
         }
 
+        $this->dispatchInfo('classes', 'Classes: ' . implode(', ', $classesToUpdate));
+
+        $batchLists = [];
+        $total = 0;
+
         foreach ($classesToUpdate as $class) {
             $class = ucfirst($class);
 
+            /**
+             * @var Listing $list
+             */
             $list = '\Pimcore\Model\DataObject\\' . $class . '\Listing';
             $list = new $list();
 
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
-            $total = $list->getTotalCount();
             $perLoop = 10;
+
+            $batchList = new BatchListing($list, $perLoop);
+
+            $batchLists[$class] = $batchList;
+
+            $total += $batchList->count();
+        }
+
+        $this->dispatchInfo('start', $total);
+
+        /**
+         * @var BatchListing $batchList
+         */
+        foreach ($batchLists as $class => $batchList) {
+            $total = $batchList->count();
 
             if (0 === $total) {
                 $output->writeln(sprintf('<info>No Object found for class %s</info>', $class));
+                $this->dispatchInfo('status', sprintf('No Object found for class %s', $class));
 
                 continue;
             }
+
+            $this->dispatchInfo('status', sprintf('Processing %s Objects of class "%s"', $total, $class));
 
             $output->writeln(sprintf('<info>Processing %s Objects of class "%s"</info>', $total, $class));
             $progress = new ProgressBar($output, $total);
@@ -100,28 +156,31 @@ final class IndexCommand extends Command
             );
             $progress->start();
 
-            for ($i = 0; $i < (ceil($total / $perLoop)); $i++) {
-                $list->setLimit($perLoop);
-                $list->setOffset($i * $perLoop);
-                $objects = $list->load();
+            foreach ($batchList as $object) {
+                $progress->setMessage(sprintf('Index %s (%s)', $object->getFullPath(), $object->getId()));
+                $progress->advance();
 
-                foreach ($objects as $object) {
-                    $progress->setMessage(sprintf('Index %s (%s)', $object->getFullPath(), $object->getId()));
-                    $progress->advance();
+                $this->dispatchInfo('progress', sprintf('Index %s (%s)', $object->getFullPath(), $object->getId()));
 
-                    $this->indexUpdater->updateIndices($object);
-                }
-
-                //\Pimcore::collectGarbage();
+                $this->indexUpdater->updateIndices($object);
             }
 
             $progress->finish();
             $output->writeln('');
+
+            $this->dispatchInfo('status', sprintf('Processed %s Objects of class "%s"', $total, $class));
         }
 
         $output->writeln('');
         $output->writeln('<info>Done</info>');
 
+        $this->dispatchInfo('finished', sprintf('Finished Indexing Classes %s', implode(', ', $classesToUpdate)));
+
         return 0;
+    }
+
+    private function dispatchInfo(string $type, $info): void
+    {
+        $this->eventDispatcher->dispatch(new GenericEvent($info), sprintf('coreshop.index.%s', $type));
     }
 }

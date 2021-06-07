@@ -42,7 +42,7 @@ coreshop.filter.conditions.nested = Class.create(coreshop.filter.conditions.abst
         // add saved conditions
         if (this.data && this.data.configuration.conditions) {
             Ext.each(this.data.configuration.conditions, function (condition) {
-                this.conditions.addCondition(condition.type, condition);
+                this.conditions.addCondition(condition.type, condition, false);
             }.bind(this));
         }
 

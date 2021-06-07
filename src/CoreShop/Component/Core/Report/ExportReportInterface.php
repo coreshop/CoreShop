@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Report;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -23,5 +25,5 @@ interface ExportReportInterface
      *
      * @return array
      */
-    public function getExportReportData(ParameterBag $parameterBag);
+    public function getExportReportData(ParameterBag $parameterBag): array;
 }

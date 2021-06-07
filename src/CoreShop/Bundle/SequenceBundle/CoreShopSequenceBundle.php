@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\SequenceBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
@@ -18,9 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopSequenceBundle extends AbstractResourceBundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -28,17 +27,11 @@ final class CoreShopSequenceBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Sequence\Model';

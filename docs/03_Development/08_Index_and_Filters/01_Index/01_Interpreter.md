@@ -53,7 +53,7 @@ use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 
 class MyInterpreter implements InterpreterInterface
 {
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []) {
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = []) {
         //Do some interpretation here
 
         return $value;

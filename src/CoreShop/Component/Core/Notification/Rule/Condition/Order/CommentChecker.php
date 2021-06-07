@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Notification\Rule\Condition\Order;
 
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
@@ -17,16 +19,14 @@ use Pimcore\Model\Element\Note;
 
 class CommentChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isNotificationRuleValid($subject, $params, array $configuration)
+    public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
-        $type = $params['type'];
-        $comment = $params['comment'];
-        $submitAsEmail = $params['submitAsEmail'];
+        $type = $params['type'] ?? null;
+        $comment = $params['comment'] ?? null;
+        $submitAsEmail = $params['submitAsEmail'] ?? null;
 
         $commentAction = $configuration['commentAction'];
+
         if ($comment instanceof Note) {
             return $submitAsEmail === true && $commentAction === $type;
         }

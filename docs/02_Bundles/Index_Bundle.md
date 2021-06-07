@@ -2,7 +2,7 @@
 
 ## Installation
 ```bash
-$ composer require coreshop/index-bundle:^2.0
+$ composer require coreshop/index-bundle:^3.0
 ```
 
 ### Adding required bundles to kernel
@@ -51,7 +51,7 @@ $filteredList->load();
 ## Pimcore UI
 
  - Index Configuration
- - Fitler Configuration
+ - Filter Configuration
 
 How to use?
 

@@ -10,39 +10,35 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\StorageList;
 
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
+use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 class SessionStorageListModifier extends SimpleStorageListModifier
 {
-    /**
-     * @var StorageListManagerInterface
-     */
-    private $manager;
+    private StorageListManagerInterface $manager;
 
-    /**
-     * @param FactoryInterface            $storageListItemFactory
-     * @param StorageListManagerInterface $manager
-     */
-    public function __construct(FactoryInterface $storageListItemFactory, StorageListManagerInterface $manager)
+    public function __construct(StorageListManagerInterface $manager)
     {
-        parent::__construct($storageListItemFactory);
+        parent::__construct();
 
         $this->manager = $manager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function updateItemQuantity(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 0, $increaseAmount = false)
+    public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
-        $item = parent::updateItemQuantity($storageList, $product, $quantity, $increaseAmount);
+        parent::addToList($storageList, $item);
 
         $this->manager->persist($storageList);
+    }
 
-        return $item;
+    public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
+    {
+        parent::removeFromList($storageList, $item);
+
+        $this->manager->persist($storageList);
     }
 }

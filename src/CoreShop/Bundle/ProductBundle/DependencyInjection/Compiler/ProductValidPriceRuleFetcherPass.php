@@ -10,9 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class ProductValidPriceRuleFetcherPass extends RegisterSimpleRegistryTypePass
 {

@@ -12,16 +12,20 @@
 
 namespace CoreShop\Bundle\AddressBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Address\Context\CompositeCountryContext;
+use CoreShop\Component\Address\Context\CountryContextInterface;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeCountryContextPass extends PrioritizedCompositeServicePass
 {
+    public const COUNTRY_CONTEXT_SERVICE_TAG = 'coreshop.context.country';
+
     public function __construct()
     {
         parent::__construct(
-            'coreshop.context.country',
-            'coreshop.context.country.composite',
-            'coreshop.context.country',
+            CountryContextInterface::class,
+            CompositeCountryContext::class,
+            self::COUNTRY_CONTEXT_SERVICE_TAG,
             'addContext'
         );
     }

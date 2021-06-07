@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TaxationBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -21,23 +23,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TaxRuleGroupChoiceType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $taxRuleGroupRepository;
+    private RepositoryInterface $taxRuleGroupRepository;
 
-    /**
-     * @param RepositoryInterface $taxRuleGroupRepository
-     */
     public function __construct(RepositoryInterface $taxRuleGroupRepository)
     {
         $this->taxRuleGroupRepository = $taxRuleGroupRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -56,18 +49,12 @@ final class TaxRuleGroupChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_tax_rule_group_choice';
     }

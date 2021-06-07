@@ -37,18 +37,28 @@ coreshop.rules.item = Class.create(coreshop.resource.item, {
         // add saved conditions
         if (this.data.conditions) {
             Ext.each(this.data.conditions, function (condition) {
-                this.conditions.addCondition(condition.type, condition);
+                this.conditions.addCondition(condition.type, condition, false);
             }.bind(this));
         }
 
         // add saved actions
         if (this.data.actions) {
             Ext.each(this.data.actions, function (action) {
-                this.actions.addAction(action.type, action);
+                this.actions.addAction(action.type, action, false);
             }.bind(this));
         }
 
         return items;
+    },
+
+    resetDirty: function() {
+        if (this.actions) {
+            this.actions.setDirty(false);
+        }
+
+        if (this.conditions) {
+            this.conditions.setDirty(false);
+        }
     },
 
     getSaveData: function () {

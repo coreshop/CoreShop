@@ -10,22 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Doctrine\ORM;
 
-use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 
-class ProductSpecificPriceRuleRepository extends RuleRepository implements ProductSpecificPriceRuleRepositoryInterface
+class ProductSpecificPriceRuleRepository extends PriceRuleRepository implements ProductSpecificPriceRuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findForProduct(ProductInterface $product)
+    public function findForProduct(ProductInterface $product): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :productId')
             ->setParameter('productId', $product->getId())
+            ->addOrderBy('o.priority', 'ASC')
             ->getQuery()
             ->getResult();
     }

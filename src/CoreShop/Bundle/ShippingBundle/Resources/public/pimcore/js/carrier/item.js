@@ -15,8 +15,8 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_carrier',
 
-    url: {
-        save: '/admin/coreshop/carriers/save'
+    routing: {
+        save: 'coreshop_carrier_save'
     },
 
     initialize: function (parentPanel, data, panelKey, type) {
@@ -115,7 +115,9 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                         name: 'trackingUrl',
                         fieldLabel: t('coreshop_carrier_trackingUrl'),
                         value: data.trackingUrl
-                    }, {
+                    },
+                    this.getLogoSelect().getLayoutEdit(),
+                    {
                         xtype: 'tabpanel',
                         activeTab: 0,
                         defaults: {
@@ -123,12 +125,36 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                             bodyStyle: 'padding:10px;'
                         },
                         items: langTabs
+                    },
+                    {
+                        xtype: 'combo',
+                        name: 'taxCalculationStrategy',
+                        fieldLabel: t('coreshop_shipping_tax_calc_strategy'),
+                        value: data.taxCalculationStrategy,
+                        forceSelection: true,
+                        queryMode: 'local',
+                        valueField: 'value',
+                        displayField: 'label',
+                        store: pimcore.globalmanager.get('coreshop_shipping_tax_calculation_strategies')
                     }
                 ]
             }]
         });
 
         return this.settingsForm;
+    },
+
+    getLogoSelect: function () {
+        return new coreshop.object.elementHref({
+            id: this.data.logo,
+            type: 'asset',
+            subtype: 'image'
+        }, {
+            classes: [],
+            assetsAllowed: true,
+            name: 'logo',
+            title: t('coreshop_logo')
+        });
     },
 
     getShippingRulesGrid: function () {
@@ -140,10 +166,11 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         });
 
         var store = Ext.create('store.coreshop_carrier_shipping_rules');
-        store.load();
+        store.load(function() {
+            this.shippingRuleGroupsGrid.setStore(this.shippingRuleGroupsStore);
+        }.bind(this));
 
         this.shippingRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
-            store: this.shippingRuleGroupsStore,
             columns: [
                 {
                     header: t('coreshop_carriers_shipping_rule'),
@@ -246,7 +273,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 name: 'isFree',
                 fieldLabel: t('coreshop_carrier_isFree'),
                 width: 250,
-                value: parseInt(this.data.isFree)
+                value: this.data.isFree
             }, this.getShippingRulesGrid()]
         });
 

@@ -14,9 +14,9 @@ namespace CoreShop\Bundle\ResourceBundle\CoreExtension\Document;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Pimcore\Model\Document\Tag;
+use Pimcore\Model\Document\Editable;
 
-class Select extends Tag
+class Select extends Editable
 {
     /**
      * @var ResourceInterface|null
@@ -50,17 +50,11 @@ class Select extends Tag
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function frontend()
     {
         return '';
@@ -77,15 +71,21 @@ class Select extends Tag
     public function getResourceObject()
     {
         if ($this->resource) {
-            return $this->getRepository()->find($this->resource);
+            $object = $this->getRepository()->find($this->resource);
+
+            if ($object instanceof ResourceInterface) {
+                return $object;
+            }
         }
 
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function isEmpty()
+    {
+        return !$this->getResourceObject() instanceof ResourceInterface;
+    }
+
     public function getOptions()
     {
         $data = $this->getRepository()->findAll();
@@ -101,31 +101,29 @@ class Select extends Tag
                 $this->getResourceName($resource),
             ];
         }
-        $options = parent::getOptions();
 
+        $options = [];
         $options['store'] = $result;
 
         return $options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDataFromEditmode($data)
     {
         $this->resource = $data;
+
+        return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDataFromResource($data)
     {
         $this->resource = $data;
+
+        return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
     public function getForWebserviceExport($document = null, $params = [])
     {
@@ -161,6 +159,12 @@ class Select extends Tag
      */
     private function getRepository()
     {
-        return \Pimcore::getContainer()->get($this->repositoryName);
+        $repo = \Pimcore::getContainer()->get($this->repositoryName);
+
+        if (!$repo instanceof RepositoryInterface) {
+            throw new \InvalidArgumentException(sprintf('Repository with Identifier %s not found or not public', $this->repositoryName));
+        }
+
+        return $repo;
     }
 }

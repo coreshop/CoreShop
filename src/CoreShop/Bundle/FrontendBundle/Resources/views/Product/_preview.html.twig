@@ -3,16 +3,16 @@
 
 <div class="product-col">
     <div class="image">
-        {% if product.getImage() %}
+        {% if product.image is pimcore_asset_image %}
             <a href="{{ href }}">
-                {{ product.getImage().getThumbnail('coreshop_productList').getHtml({'class': 'img-fluid', 'alt': product.getName(), 'id': 'image' ~ product.getId()})|raw }}
+                {{ product.image|pimcore_image_thumbnail_html('coreshop_productList', {'class': 'img-fluid', 'alt': product.name, 'id': 'image' ~ product.id}) }}
             </a>
         {% endif %}
     </div>
     <div class="caption">
-        <h4><a href="{{ href }}">{{ product.getName() }}</a></h4>
+        <h4><a href="{{ href }}" {{ coreshop_test_html_attribute('product-name', product.name) }}>{{ product.name }}</a></h4>
         <div class="description">
-            {{ product.getShortDescription() }}
+            {{ product.shortDescription }}
         </div>
 
         <div class="price">
@@ -21,13 +21,7 @@
 
         {% if coreshop_inventory_is_available(product) %}
         <div class="cart-button">
-            <form action="{{ coreshop_path(coreshop.cart, 'coreshop_cart_add', {product: product.id}) }}" method="post">
-                <button type="submit" class="btn btn-cart"
-                   rel="nofollow">
-                    {{ 'coreshop.ui.add_to_cart'|trans }}
-                    <i class="fa fa-shopping-cart"></i>
-                </button>
-            </form>
+            {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
         </div>
         {% endif %}
     </div>

@@ -1,0 +1,41 @@
+services:
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartAvailabilityValidator:
+        arguments:
+            - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
+            - '@CoreShop\Component\Order\Cart\CartItemResolver'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_add_to_cart_availability }
+
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\CartStockAvailabilityValidator:
+        arguments:
+            - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_cart_stock_availability }
+
+    CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService: ~
+
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartMaximumQuantityValidator:
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+            - '@CoreShop\Component\Order\Cart\CartItemResolver'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_add_to_cart_maximum_quantity }
+
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartMinimumQuantityValidator:
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+            - '@CoreShop\Component\Order\Cart\CartItemResolver'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_add_to_cart_minimum_quantity }
+
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\CartMaximumQuantityValidator:
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_cart_maximum_quantity }
+
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\CartMinimumQuantityValidator:
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_cart_minimum_quantity }

@@ -10,13 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
-use Pimcore\Model\DataObject\AbstractObject;
-use CoreShop\Component\Pimcore\BCLayer\Multihref;
-use Pimcore\Model\DataObject\Service;
-
-class ItemSelector extends Multihref
+class ItemSelector extends DynamicDropdownMultiple
 {
     /**
      * Static type of this element.
@@ -25,154 +23,6 @@ class ItemSelector extends Multihref
      */
     public $fieldtype = 'coreShopItemSelector';
 
-    /**
-     * @var string
-     */
-    public $folderName;
-
-    /**
-     * @var string
-     */
-    public $className;
-
-    /**
-     * @var string
-     */
-    public $methodName;
-
-    /**
-     * @var string
-     */
-    public $recursive;
-
-    /**
-     * @var string
-     */
-    public $sortBy;
-
-    /**
-     * @return mixed
-     */
-    public function getFolderName()
-    {
-        return $this->folderName;
-    }
-
-    /**
-     * @param mixed $folderName
-     */
-    public function setFolderName($folderName)
-    {
-        $this->folderName = $folderName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getClassName()
-    {
-        return $this->className;
-    }
-
-    /**
-     * @param mixed $className
-     */
-    public function setClassName($className)
-    {
-        $this->className = $className;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMethodName()
-    {
-        return $this->methodName;
-    }
-
-    /**
-     * @param mixed $methodName
-     */
-    public function setMethodName($methodName)
-    {
-        $this->methodName = $methodName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRecursive()
-    {
-        return $this->recursive;
-    }
-
-    /**
-     * @param mixed $recursive
-     */
-    public function setRecursive($recursive)
-    {
-        $this->recursive = $recursive;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSortBy()
-    {
-        return $this->sortBy;
-    }
-
-    /**
-     * @param mixed $sortBy
-     */
-    public function setSortBy($sortBy)
-    {
-        $this->sortBy = $sortBy;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataFromEditmode($data, $object = null, $params = [])
-    {
-        //if not set, return null
-        if ($data === null or $data === false) {
-            return null;
-        }
-
-        $elements = array();
-        if (is_array($data) && count($data) > 0) {
-            foreach ($data as $id) {
-                $elements[] = Service::getElementById('object', $id);
-            }
-        }
-
-        //must return array if data shall be set
-        return $elements;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataForEditmode($data, $object = null, $params = [])
-    {
-        $return = array();
-
-        if (is_array($data) && count($data) > 0) {
-            foreach ($data as $element) {
-                /** @var AbstractObject $element */
-                $return[] = $element->getId();
-            }
-
-            return implode(',', $return);
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getObjectsAllowed()
     {
         return true;

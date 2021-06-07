@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Notification\Rule\Condition;
 
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
@@ -17,30 +19,16 @@ use Webmozart\Assert\Assert;
 
 final class StateTransitionChecker extends AbstractConditionChecker
 {
-    /**
-     * @var string
-     */
     private $interface;
-
-    /**
-     * @var string
-     */
     private $workflowName;
 
-    /**
-     * @param string $interface
-     * @param string $workflowName
-     */
     public function __construct(string $interface, string $workflowName)
     {
         $this->interface = $interface;
         $this->workflowName = $workflowName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isNotificationRuleValid($subject, $params, array $configuration)
+    public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         Assert::isInstanceOf($subject, $this->interface);
 

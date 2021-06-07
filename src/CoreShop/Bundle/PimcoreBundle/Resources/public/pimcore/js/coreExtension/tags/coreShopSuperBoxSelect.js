@@ -10,14 +10,22 @@
  */
 
 pimcore.registerNS('pimcore.object.tags.coreShopSuperBoxSelect');
-pimcore.object.tags.coreShopSuperBoxSelect = Class.create(pimcore.object.tags.multihref, {
+pimcore.object.tags.coreShopSuperBoxSelect = Class.create(pimcore.object.tags.manyToManyRelation, {
     type: 'coreShopSuperBoxSelect',
+
+     initialize: function (data, fieldConfig) {
+        this.data = data;
+        this.data_mapped = (data ? data : []).map(function(data) {
+            return parseInt(data.id);
+        });
+        this.fieldConfig = fieldConfig;
+    },
 
     getLayoutEdit: function () {
         this.options_store = new Ext.data.JsonStore({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/dynamic-dropdown/options',
+                url: Routing.generate('coreshop_dynamic_dropdown_options'),
                 extraParams: {
                     folderName: this.fieldConfig.folderName,
                     methodName: this.fieldConfig.methodName,
@@ -42,7 +50,7 @@ pimcore.object.tags.coreShopSuperBoxSelect = Class.create(pimcore.object.tags.mu
                     }
 
                     // FIXME is this necessary?
-                    this.component.setValue(this.data, null, true);
+                    this.component.setValue(this.data_mapped, null, true);
                 }.bind(this)
             },
             autoLoad: true

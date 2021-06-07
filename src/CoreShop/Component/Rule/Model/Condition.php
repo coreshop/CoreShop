@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Rule\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
@@ -19,7 +21,7 @@ class Condition implements ConditionInterface
     use SetValuesTrait;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -33,17 +35,11 @@ class Condition implements ConditionInterface
      */
     protected $configuration;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setType($type)
     {
         $this->type = $type;
@@ -51,9 +47,6 @@ class Condition implements ConditionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setConfiguration(array $configuration)
     {
         $this->configuration = $configuration;
@@ -61,19 +54,22 @@ class Condition implements ConditionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfiguration()
     {
         return $this->configuration;
+    }
+
+    public function __clone()
+    {
+        if ($this->id === null) {
+            return;
+        }
+
+        $this->id = null;
     }
 }

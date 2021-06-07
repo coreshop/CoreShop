@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    CoreShop\Bundle\IndexBundle\Installer:
+        public: true
+        arguments:
+            $kernel: "@kernel"

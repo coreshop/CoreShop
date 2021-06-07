@@ -1,5 +1,5 @@
 <a class="Brand" href="<?= $params['base_page'] . $params['index']->getUri(); ?>">
-    <img src="<?=$base_url?>themes/coreshop/img/logo-full.svg" width="220px"> 2.0.x
+    <img src="<?=$base_url?>themes/coreshop/img/logo-full.svg" width="220px"> 2.2.x
 </a>
 
 <?php if ($params['html']['search']) { ?>

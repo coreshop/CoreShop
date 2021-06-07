@@ -16,8 +16,8 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_notification_rule',
 
-    url: {
-        save: '/admin/coreshop/notification_rules/save'
+    routing: {
+        save: 'coreshop_notification_rule_save'
     },
 
     getPanel: function () {
@@ -141,7 +141,7 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
                 var conditionType = condition.type.replace(type + '.', '');
 
                 if (allowedConditions.indexOf(conditionType) >= 0) {
-                    this.conditions.addCondition(conditionType, condition);
+                    this.conditions.addCondition(conditionType, condition, false);
                 }
             }.bind(this));
         }
@@ -152,7 +152,7 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
                 var actionType = action.type.replace(type + '.', '');
 
                 if (allowedActions.indexOf(actionType) >= 0) {
-                    this.actions.addAction(actionType, action);
+                    this.actions.addAction(actionType, action, false);
                 }
             }.bind(this));
         }

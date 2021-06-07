@@ -10,16 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Model;
 
-use CoreShop\Component\Rule\Model\RuleTrait;
-
-class ProductSpecificPriceRule implements ProductSpecificPriceRuleInterface
+class ProductSpecificPriceRule extends AbstractPriceRule implements ProductSpecificPriceRuleInterface
 {
-    use RuleTrait;
-
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -33,30 +31,11 @@ class ProductSpecificPriceRule implements ProductSpecificPriceRuleInterface
      */
     protected $inherit = false;
 
-    /**
-     * @var int
-     */
-    protected $priority = 0;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getProduct()
     {
         return $this->product;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setProduct($product)
     {
         $this->product = $product;
@@ -64,17 +43,11 @@ class ProductSpecificPriceRule implements ProductSpecificPriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInherit()
     {
         return $this->inherit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setInherit($inherit)
     {
         $this->inherit = $inherit;
@@ -82,21 +55,13 @@ class ProductSpecificPriceRule implements ProductSpecificPriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
+    protected function createTranslation()
     {
-        return $this->priority;
+        return new ProductSpecificPriceRuleTranslation();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setPriority($priority)
+    public function __clone()
     {
-        $this->priority = $priority;
-
-        return $this;
+        $this->id = null;
     }
 }

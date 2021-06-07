@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Notification\Model;
 
 use CoreShop\Component\Rule\Model\RuleTrait;
@@ -33,41 +35,26 @@ class NotificationRule implements NotificationRuleInterface
      */
     protected $sort;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setType($type)
     {
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSort()
     {
         return $this->sort;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setSort($sort)
     {
         $this->sort = $sort;

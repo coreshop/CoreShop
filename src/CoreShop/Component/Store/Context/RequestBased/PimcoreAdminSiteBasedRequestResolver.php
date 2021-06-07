@@ -10,8 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Context\RequestBased;
 
+use CoreShop\Component\Store\Context\StoreNotFoundException;
+use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Http\RequestHelper;
 use Pimcore\Model\Document;
@@ -21,26 +25,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInterface
 {
-    /**
-     * @var StoreRepositoryInterface
-     */
-    private $storeRepository;
+    private StoreRepositoryInterface $storeRepository;
+    private RequestHelper $requestHelper;
+    private Service $documentService;
 
-    /**
-     * @var RequestHelper
-     */
-    private $requestHelper;
-
-    /**
-     * @var Service
-     */
-    private $documentService;
-
-    /**
-     * @param StoreRepositoryInterface $storeRepository
-     * @param RequestHelper            $requestHelper
-     * @param Service                  $documentService
-     */
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         RequestHelper $requestHelper,
@@ -51,10 +39,7 @@ final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInter
         $this->documentService = $documentService;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findStore(Request $request)
+    public function findStore(Request $request): ?StoreInterface
     {
         if ($this->requestHelper->isFrontendRequestByAdmin($request)) {
             $document = $this->documentService->getNearestDocumentByPath($request->getPathInfo());
@@ -76,6 +61,6 @@ final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInter
             }
         }
 
-        return null;
+        throw new StoreNotFoundException();
     }
 }

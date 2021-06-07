@@ -12,16 +12,20 @@
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Context\CompositeCartContext;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class RegisterCartContextsPass extends PrioritizedCompositeServicePass
 {
+    public const CART_CONTEXT_TAG = 'coreshop.context.cart';
+
     public function __construct()
     {
         parent::__construct(
-            'coreshop.context.cart',
-            'coreshop.context.cart.composite',
-            'coreshop.context.cart',
+            CartContextInterface::class,
+            CompositeCartContext::class,
+            self::CART_CONTEXT_TAG,
             'addContext'
         );
     }

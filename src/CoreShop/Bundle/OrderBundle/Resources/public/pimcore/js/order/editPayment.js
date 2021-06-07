@@ -66,7 +66,7 @@ coreshop.order.order.editPayment = {
                         name: 'total_amount',
                         fieldLabel: t('coreshop_amount'),
                         disabled: true,
-                        value: payment.get('amount') / 100
+                        value: payment.get('amount') / pimcore.globalmanager.get('coreshop.currency.decimal_factor')
                     },
                     {
                         xtype: 'gridpanel',

@@ -1,4 +1,4 @@
-f# CoreShop Pimcore Component
+# CoreShop Pimcore Component
 
 ## Features
 
@@ -153,41 +153,6 @@ use CoreShop\Component\Pimcore\Migration\SharedTranslation;
 
 SharedTranslation::add('key', 'en', 'value');
 ```
-
-### Placeholder Features
-CoreShop also extends Pimcores Placeholder features with an additional feature to use the Symfony Expression Language.
-
-#### Expression Placeholder
-
-```
-%Expression(expression, {'expression' : 'parameter(\'kernel.environment\')'});
-```
-
-```
-%Expression(expression, {'expression' : 'object(1).getProperty(\'test\')'});
-```
-
-```
-%Expression(product, {'expression' : 'value.getProperty(\'test\')'});
-```
-
-```
-%Expression(expression, {'expression' : 'service(\'coreshop.money_formatter\').format(100, \'EUR\', \'en\')'});
-```
-
-#### Twig Placeholder
-
-```
-%Twig(keyOfParams, {'template' : ':Mail/includes:files.html.twig'});
-```
-
-This will render your twig view with following parameters:
-
- - keyOfParams: valueForKeyOfParams
- - value: valueForKeyOfParams
- - config: Placeholder Config
- - params: all params available in the mail
- - placeholder: object for the placeholder
 
 ### Routing Features
 

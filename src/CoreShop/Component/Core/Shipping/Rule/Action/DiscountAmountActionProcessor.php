@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -20,53 +22,35 @@ use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface;
+use CoreShop\Component\Shipping\Rule\Action\CarrierPriceModificationActionProcessorInterface;
 use Webmozart\Assert\Assert;
 
-class DiscountAmountActionProcessor implements CarrierPriceActionProcessorInterface
+class DiscountAmountActionProcessor implements CarrierPriceModificationActionProcessorInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
     protected $moneyConverter;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
     protected $currencyRepository;
 
-    /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyConverterInterface  $moneyConverter
-     */
     public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {
         $this->currencyRepository = $currencyRepository;
         $this->moneyConverter = $moneyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
+    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration, array $context): int
     {
-        return false;
-    }
+        Assert::keyExists($context, 'currency');
+        Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
-    {
+        /**
+         * @var CurrencyInterface $contextCurrency
+         */
+        $contextCurrency = $context['currency'];
         $amount = $configuration['amount'];
 
-        if ($shippable instanceof CurrencyAwareInterface) {
-            $currency = $this->currencyRepository->find($configuration['currency']);
+        $currency = $this->currencyRepository->find($configuration['currency']);
 
-            Assert::isInstanceOf($currency, CurrencyInterface::class);
+        Assert::isInstanceOf($currency, CurrencyInterface::class);
 
-            return -1 * $this->moneyConverter->convert($amount, $currency->getIsoCode(), $shippable->getCurrency()->getIsoCode());
-        }
-
-        return $amount;
+        return -1 * $this->moneyConverter->convert($amount, $currency->getIsoCode(), $contextCurrency->getIsoCode());
     }
 }

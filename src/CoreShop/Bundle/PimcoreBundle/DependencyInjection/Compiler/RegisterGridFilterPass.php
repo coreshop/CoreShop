@@ -10,16 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
+
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterGridFilterPass extends RegisterSimpleRegistryTypePass
 {
+    public const GRID_FILTER_TAG = 'coreshop.grid.filter';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.grid.filter',
             'coreshop.grid.filters',
-            'coreshop.grid.filter'
+            self::GRID_FILTER_TAG
         );
     }
 }

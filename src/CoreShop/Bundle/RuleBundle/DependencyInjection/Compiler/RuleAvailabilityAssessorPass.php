@@ -10,18 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RuleAvailabilityAssessorPass extends RegisterSimpleRegistryTypePass
 {
+    public const RULE_AVAILABILITY_ASSESSOR_TAG = 'coreshop.registry.rule_availability_assessor';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.rule_availability_assessor',
             'coreshop.registry.rule_availability_assessors',
-            'coreshop.registry.rule_availability_assessor'
+            self::RULE_AVAILABILITY_ASSESSOR_TAG
         );
     }
 }

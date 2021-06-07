@@ -10,19 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
+use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 class RegisterGetterPass extends RegisterRegistryTypePass
 {
+    public const INDEX_GETTER_TAG = 'coreshop.index.getter';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.index.getter',
             'coreshop.form_registry.index.getter',
             'coreshop.index.getters',
-            'coreshop.index.getter'
+            self::INDEX_GETTER_TAG
         );
     }
 }

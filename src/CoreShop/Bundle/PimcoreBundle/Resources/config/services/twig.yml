@@ -2,31 +2,14 @@ services:
     _defaults:
         public: true
 
-    coreshop.twig.extension.pimcore_asset:
-        class: CoreShop\Component\Pimcore\Twig\Extension\AssetHelperExtensions
-        tags:
-            - { name: twig.extension }
-
-    coreshop.twig.extension.pimcore_document:
-        class: CoreShop\Component\Pimcore\Twig\Extension\DocumentHelperExtensions
-        tags:
-            - { name: twig.extension }
-
-    coreshop.twig.extension.pimcore_object:
-        class: CoreShop\Component\Pimcore\Twig\Extension\ObjectHelperExtensions
-        tags:
-            - { name: twig.extension }
-
-    coreshop.twig.extension.pimcore_object_link_generator:
-        class: CoreShop\Component\Pimcore\Twig\Extension\ObjectLinkGeneratorExtension
+    CoreShop\Component\Pimcore\Twig\Extension\ObjectLinkGeneratorExtension:
         arguments:
-            - '@coreshop.object_link_generator'
+            - '@CoreShop\Component\Pimcore\DataObject\LinkGenerator'
         tags:
             - { name: twig.extension }
 
-    coreshop.twig.extension.link_generator:
-        class: CoreShop\Component\Pimcore\Twig\Extension\LinkGeneratorExtensions
+    CoreShop\Component\Pimcore\Twig\Extension\LinkGeneratorExtensions:
         arguments:
-            - '@coreshop.templating.helper.link_generator'
+            - '@CoreShop\Component\Pimcore\Templating\Helper\LinkGeneratorHelper'
         tags:
             - { name: twig.extension }

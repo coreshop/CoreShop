@@ -1,62 +1,33 @@
 imports:
-    - { resource: "services/form.yml" }
-    - { resource: "services/pimcore.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/form.yml }
+    - { resource: services/pimcore.yml }
+    - { resource: services/twig.yml }
 
 services:
     _defaults:
         public: true
 
-    coreshop.currency_converter:
-        class: CoreShop\Component\Currency\Converter\CurrencyConverter
+    CoreShop\Component\Currency\Converter\CurrencyConverterInterface: '@CoreShop\Component\Currency\Converter\CurrencyConverter'
+    CoreShop\Component\Currency\Converter\CurrencyConverter:
         arguments:
             - '@coreshop.repository.exchange_rate'
             - '@coreshop.repository.currency'
 
-    coreshop.templating.helper.currency:
-        class: CoreShop\Bundle\CurrencyBundle\Templating\Helper\CurrencyHelper
-        lazy: true
-        tags:
-            - { name: templating.helper, alias: coreshop_currency }
-
-    coreshop.twig.extension.currency:
-        class: CoreShop\Bundle\CurrencyBundle\Twig\CurrencyExtension
-        public: false
-        arguments:
-            - '@coreshop.templating.helper.currency'
-        tags:
-            - { name: twig.extension }
-
-    coreshop.context.currency.composite:
-        class: CoreShop\Component\Currency\Context\CompositeCurrencyContext
-        decorates: coreshop.context.currency
-        decoration_priority: 256
+    CoreShop\Component\Currency\Context\CurrencyContextInterface: '@CoreShop\Component\Currency\Context\CompositeCurrencyContext'
+    CoreShop\Component\Currency\Context\CompositeCurrencyContext:
         public: false
 
-    coreshop.context.currency.cached:
-        class: CoreShop\Component\Currency\Context\CachedCurrencyContext
-        decorates: coreshop.context.currency
+    CoreShop\Component\Currency\Context\CachedCurrencyContext:
+        decorates: CoreShop\Component\Currency\Context\CurrencyContextInterface
         decoration_priority: 255
         arguments:
-            - '@coreshop.context.currency.cached.inner'
+            - '@CoreShop\Component\Currency\Context\CachedCurrencyContext.inner'
             - '@request_stack'
 
-    coreshop.context.currency.fixed:
-        class: CoreShop\Component\Currency\Context\FixedCurrencyContext
+    CoreShop\Component\Currency\Context\FixedCurrencyContext:
         tags:
-            - { name: 'coreshop.context.currency' }
+            - { name: coreshop.context.currency }
 
-    coreshop.templating.helper.convert_currency:
-        class: CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelper
-        lazy: true
-        arguments:
-            - '@coreshop.currency_converter'
-        tags:
-            - { name: templating.helper, alias: coreshop_convert_currency }
-
-    coreshop.twig.extension.convert_amount:
-        class: CoreShop\Bundle\CurrencyBundle\Twig\ConvertCurrencyExtension
-        public: false
-        arguments:
-            - '@coreshop.templating.helper.convert_currency'
-        tags:
-            - { name: twig.extension }
+    CoreShop\Component\Currency\Display\DisplayFractionProviderInterface: '@CoreShop\Component\Currency\Display\DefaultDisplayFractionProvider'
+    CoreShop\Component\Currency\Display\DefaultDisplayFractionProvider: ~

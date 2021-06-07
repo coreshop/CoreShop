@@ -10,14 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FixtureBundle\Fixture;
 
 interface VersionedFixtureInterface
 {
-    /**
-     * Return current fixture version.
-     *
-     * @return string
-     */
-    public function getVersion();
+    public function getVersion(): string;
 }

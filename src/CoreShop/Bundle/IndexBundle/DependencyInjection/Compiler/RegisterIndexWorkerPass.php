@@ -10,19 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
+use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 class RegisterIndexWorkerPass extends RegisterRegistryTypePass
 {
+    public const INDEX_WORKER_TAG = 'coreshop.index.worker';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.index.worker',
             'coreshop.form_registry.index.worker',
             'coreshop.index.workers',
-            'coreshop.index.worker'
+            self::INDEX_WORKER_TAG
         );
     }
 }

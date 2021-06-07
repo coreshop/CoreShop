@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Checkout;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
@@ -20,31 +22,22 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class SummaryType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('acceptTerms', CheckboxType::class, [
-                'constraints' => [new NotBlank(['groups' => ['coreshop']])],
+                'constraints' => [new NotBlank(['groups' => $this->validationGroups])],
                 'label' => 'coreshop.ui.accept_terms',
                 'mapped' => false,
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_checkout_summary';
     }

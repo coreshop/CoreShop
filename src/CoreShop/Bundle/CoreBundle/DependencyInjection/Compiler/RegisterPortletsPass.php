@@ -10,18 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterPortletsPass extends RegisterSimpleRegistryTypePass
 {
+    public const PORTLET_TAG = 'coreshop.portlet';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.portlets',
             'coreshop.portlets',
-            'coreshop.portlet'
+            self::PORTLET_TAG
         );
     }
 }

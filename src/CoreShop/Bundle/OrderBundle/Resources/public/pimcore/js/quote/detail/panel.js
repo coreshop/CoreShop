@@ -11,6 +11,10 @@
  */
 
 pimcore.registerNS('coreshop.order.quote.detail.panel');
-coreshop.order.quote.detail.panel = Class.create(coreshop.order.sale.detail.panel, {
-    type: 'quote'
+coreshop.order.quote.detail.panel = Class.create(coreshop.order.order.detail.panel, {
+    type: 'quote',
+
+    getBlockIdentifier: function () {
+        return coreshop.order.quote.detail.blocks;
+    },
 });

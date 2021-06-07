@@ -10,19 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 final class StackRepositoryPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasParameter('coreshop.all.stack.pimcore_class_names') ||
@@ -38,11 +39,12 @@ final class StackRepositoryPass implements CompilerPassInterface
             $definition = new Definition(Metadata::class);
             $definition
                 ->setFactory([Metadata::class, 'fromAliasAndConfiguration'])
-                ->setArguments([$alias, []]);
+                ->setArguments([$alias, ['driver' => CoreShopResourceBundle::DRIVER_PIMCORE]]);
 
             $repositoryDefinition = new Definition(StackRepository::class);
             $repositoryDefinition->setArguments([
                 $definition,
+                new Reference('doctrine.dbal.default_connection'),
                 $stackConfig[$alias],
                 $classes,
             ]);

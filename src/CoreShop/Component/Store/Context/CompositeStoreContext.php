@@ -10,35 +10,28 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Context;
 
-use Zend\Stdlib\PriorityQueue;
+use CoreShop\Component\Store\Model\StoreInterface;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeStoreContext implements StoreContextInterface
 {
-    /**
-     * @var PriorityQueue|StoreContextInterface[]
-     */
-    private $storeContexts;
+    private PriorityQueue $storeContexts;
 
     public function __construct()
     {
         $this->storeContexts = new PriorityQueue();
     }
 
-    /**
-     * @param StoreContextInterface $storeContext
-     * @param int                   $priority
-     */
-    public function addContext(StoreContextInterface $storeContext, $priority = 0)
+    public function addContext(StoreContextInterface $storeContext, int $priority = 0): void
     {
         $this->storeContexts->insert($storeContext, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStore()
+    public function getStore(): StoreInterface
     {
         foreach ($this->storeContexts as $storeContext) {
             try {

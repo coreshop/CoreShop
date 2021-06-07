@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Factory;
 
 use CoreShop\Component\Index\Listing\ListingInterface;
@@ -18,11 +20,5 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 interface FilteredListingFactoryInterface
 {
-    /**
-     * @param FilterInterface $filter
-     * @param ParameterBag    $parameterBag
-     *
-     * @return ListingInterface
-     */
-    public function createList(FilterInterface $filter, ParameterBag $parameterBag);
+    public function createList(FilterInterface $filter, ParameterBag $parameterBag): ListingInterface;
 }

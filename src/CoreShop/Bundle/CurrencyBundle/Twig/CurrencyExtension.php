@@ -10,32 +10,25 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CurrencyBundle\Twig;
 
-use CoreShop\Bundle\CurrencyBundle\Templating\Helper\CurrencyHelperInterface;
+use Symfony\Component\Intl\Currencies;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-final class CurrencyExtension extends \Twig_Extension
+final class CurrencyExtension extends AbstractExtension
 {
-    /**
-     * @var CurrencyHelperInterface
-     */
-    private $helper;
-
-    /**
-     * @param CurrencyHelperInterface $helper
-     */
-    public function __construct(CurrencyHelperInterface $helper)
-    {
-        $this->helper = $helper;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig_Filter('coreshop_currency_symbol', [$this->helper, 'convertCurrencyCodeToSymbol']),
+            new TwigFilter('coreshop_currency_symbol', [$this, 'convertCurrencyCodeToSymbol']),
         ];
+    }
+
+    public function convertCurrencyCodeToSymbol(string $code, ?string $locale = null): string
+    {
+        return Currencies::getSymbol($code);
     }
 }

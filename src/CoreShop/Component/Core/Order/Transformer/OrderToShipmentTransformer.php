@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Order\Transformer;
 
 use CoreShop\Component\Core\Model\OrderShipmentInterface;
@@ -32,9 +34,6 @@ final class OrderToShipmentTransformer implements OrderDocumentTransformerInterf
         $this->inner = $inner;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform(OrderInterface $order, OrderDocumentInterface $document, $items)
     {
         if ($document instanceof OrderShipmentInterface && $order instanceof \CoreShop\Component\Core\Model\OrderInterface) {

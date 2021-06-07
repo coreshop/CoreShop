@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Filter;
 
 use CoreShop\Component\Index\Condition\InCondition;
@@ -22,10 +24,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class RelationalMultiselectConditionProcessor implements FilterConditionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = $condition->getConfiguration()['field'];
 
@@ -50,16 +49,13 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = $condition->getConfiguration()['field'];
 
         $values = $parameterBag->get($field);
 
-        if (empty($values)) {
+        if (empty($values) && isset($condition->getConfiguration()['preSelects'])) {
             $values = $condition->getConfiguration()['preSelects'];
         }
 
@@ -72,9 +68,7 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
         if (!empty($values)) {
             $fieldName = $isPrecondition ? 'PRECONDITION_' . $field : $field;
 
-            if (!empty($values)) {
-                $list->addRelationCondition(new InCondition('dest', $values), $fieldName);
-            }
+            $list->addRelationCondition(new InCondition('dest', $values), $fieldName);
         }
 
         return $currentFilter;

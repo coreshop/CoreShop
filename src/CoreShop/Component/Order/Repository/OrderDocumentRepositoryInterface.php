@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Repository;
 
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
@@ -23,7 +25,7 @@ interface OrderDocumentRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return OrderDocumentInterface[]
      */
-    public function getDocuments(OrderInterface $order);
+    public function getDocuments(OrderInterface $order): array;
 
     /**
      * @param OrderInterface $order
@@ -31,7 +33,7 @@ interface OrderDocumentRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return OrderDocumentInterface[]
      */
-    public function getDocumentsInState(OrderInterface $order, $state);
+    public function getDocumentsInState(OrderInterface $order, string $state): array;
 
     /**
      * @param OrderInterface $order
@@ -39,5 +41,5 @@ interface OrderDocumentRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return OrderDocumentInterface[]
      */
-    public function getDocumentsNotInState(OrderInterface $order, $state);
+    public function getDocumentsNotInState(OrderInterface $order, string $state): array;
 }

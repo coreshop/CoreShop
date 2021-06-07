@@ -1,0 +1,99 @@
+parameters:
+    coreshop.form.type.product_quantity_price_rules.validation_groups: [coreshop]
+    coreshop.form.type.product_quantity_price_rules.rule_condition.validation_groups: [coreshop]
+    coreshop.form.type.product_quantity_price_rules.range.validation_groups: [coreshop]
+
+services:
+    _defaults:
+        public: true
+
+    # Forms
+    CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType:
+        arguments:
+            - '%coreshop.model.product_quantity_price_rule.class%'
+            - '%coreshop.form.type.product_quantity_price_rules.validation_groups%'
+            - '%coreshop.product_quantity_price_rules.calculators%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityRangeType:
+        arguments:
+            - '%coreshop.model.product_quantity_price_rule_range.class%'
+            - '%coreshop.form.type.product_quantity_price_rules.range.validation_groups%'
+            - '%coreshop.product_quantity_price_rules.actions%'
+            - '%coreshop.product_quantity_price_rules.ranges.action_constraints%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleConditionCollectionType:
+        arguments:
+            - '@coreshop.registry.product_specific_price_rule.conditions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleConditionType:
+        arguments:
+            - '%coreshop.model.rule_condition.class%'
+            - '%coreshop.form.type.product_quantity_price_rules.rule_condition.validation_groups%'
+            - '@coreshop.form_registry.product_specific_price_rule.conditions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleConditionChoiceType:
+        arguments:
+            - '%coreshop.product_quantity_price_rules.conditions%'
+        tags:
+            - { name: form.type }
+
+    # Services
+    coreshop.registry.product_quantity_price_rules.conditions:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
+            - product-quantity-price-rules-conditions
+        tags:
+            - { name: coreshop.registry, type_hint: productQuantityPriceRuleConditions }
+
+    coreshop.form_registry.product_quantity_price_rules.conditions:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+    # Price Rule Processor
+    coreshop.product_quantity_price_rules.conditions.processor:
+        class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
+        shared: false
+        arguments:
+            - '@coreshop.registry.product_quantity_price_rules.conditions'
+            - 'Product Quantity Price Rules'
+
+    coreshop.product_quantity_price_rules.processor:
+        class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
+        arguments:
+            - '@coreshop.product_quantity_price_rules.conditions.processor'
+
+    # Rule Fetcher
+    CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidRulesFetcherInterface: '@CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidProductQuantityPriceRuleFetcher'
+    CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidProductQuantityPriceRuleFetcher:
+        arguments:
+            - '@coreshop.product_quantity_price_rules.processor'
+
+    CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\MemoryCachedValidRuleFetcher:
+        decorates: 'CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidProductQuantityPriceRuleFetcher'
+        arguments:
+            - '@CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\MemoryCachedValidRuleFetcher.inner'
+            - '@request_stack'
+
+    # Detectors
+    CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface: '@CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetector'
+    CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetector:
+      arguments:
+          - '@CoreShop\Component\ProductQuantityPriceRules\Fetcher\QuantityRuleFetcher'
+          - '@CoreShop\Component\ProductQuantityPriceRules\Fetcher\QuantityPriceFetcher'
+
+    # Quantity Data Fetcher
+    CoreShop\Component\ProductQuantityPriceRules\Fetcher\QuantityPriceFetcher:
+      arguments:
+          - '@coreshop.registry.product_quantity_price_rules.calculators'
+
+    CoreShop\Component\ProductQuantityPriceRules\Fetcher\QuantityRuleFetcher:
+        arguments:
+            - '@CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidRulesFetcherInterface'

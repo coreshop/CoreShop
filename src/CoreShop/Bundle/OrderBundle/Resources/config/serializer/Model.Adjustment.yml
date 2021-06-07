@@ -1,0 +1,45 @@
+CoreShop\Component\Order\Model\Adjustment:
+    exclusion_policy: ALL
+    xml_root_name: cart_price_rule
+    virtual_properties:
+        id:
+            serialized_name: id
+            exp: object.getId()
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        amountNet:
+            serialized_name: amountNet
+            exp: object.getAmount(false)
+            type: integer
+            groups: [Detailed]
+        amountGross:
+            serialized_name: amountGross
+            exp: object.getAmount(true)
+            type: integer
+            groups: [Detailed]
+        neutral:
+            serialized_name: neutral
+            exp: object.getNeutral()
+            type: boolean
+            groups: [Detailed]
+        isCharge:
+            serialized_name: isCharge
+            exp: object.isCharge()
+            type: boolean
+            groups: [Detailed]
+        isCredit:
+            serialized_name: isCredit
+            exp: object.isCredit()
+            type: boolean
+            groups: [Detailed]
+        typeIdentifier:
+            serialized_name: typeIdentifier
+            exp: object.getTypeIdentifier()
+            type: boolean
+            groups: [Detailed]
+        label:
+            serialized_name: label
+            exp: object.getLabel()
+            type: boolean
+            groups: [Detailed]

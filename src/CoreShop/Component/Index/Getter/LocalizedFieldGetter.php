@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexColumnInterface;
@@ -19,22 +21,13 @@ use Pimcore\Model\DataObject;
 
 class LocalizedFieldGetter implements GetterInterface
 {
-    /**
-     * @var TranslationLocaleProviderInterface
-     */
-    protected $localeProvider;
+    protected TranslationLocaleProviderInterface $localeProvider;
 
-    /**
-     * @param TranslationLocaleProviderInterface $localeProvider
-     */
     public function __construct(TranslationLocaleProviderInterface $localeProvider)
     {
         $this->localeProvider = $localeProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(IndexableInterface $object, IndexColumnInterface $config)
     {
         $getter = 'get' . ucfirst($config->getObjectKey());

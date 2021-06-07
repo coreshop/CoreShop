@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <mapped-superclass name="CoreShop\Component\Core\Model\ProductUnitDefinitionPrice" table="coreshop_product_unit_definition_price">
+
+        <many-to-one field="productStoreValues" target-entity="CoreShop\Component\Core\Model\ProductStoreValuesInterface" inversed-by="productUnitDefinitionPrices">
+            <join-column name="product_store_values" referenced-column-name="id" on-delete="CASCADE"/>
+            <cascade>
+                <cascade-merge/>
+            </cascade>
+        </many-to-one>
+
+    </mapped-superclass>
+</doctrine-mapping>

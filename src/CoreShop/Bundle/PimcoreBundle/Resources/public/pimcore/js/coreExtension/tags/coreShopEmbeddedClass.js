@@ -97,7 +97,7 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
             pimcore.globalmanager.get('coreshop_embedded_class_layouts_loading')[cacheKey] = true;
 
             Ext.Ajax.request({
-                url: '/admin/coreshop/embedded-class/get-layout-configuration',
+                url: Routing.generate('coreshop_pimcore_embedded_class_get_layout_configuration'),
                 params: {
                     className: className,
                     layoutId: layoutId
@@ -141,10 +141,10 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
                 index: t('new')
             },
             object = {
+                general: general,
                 data: data,
                 metaData: {}
             };
-
         me.addEmbeddedClass(object, general, false);
     },
 

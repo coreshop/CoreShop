@@ -16,8 +16,8 @@ coreshop.shippingrule.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_carrier_shipping_rule',
 
-    url: {
-        save: '/admin/coreshop/shipping_rules/save'
+    routing: {
+        save: 'coreshop_shipping_rule_save'
     },
 
     getPanel: function () {
@@ -68,50 +68,50 @@ coreshop.shippingrule.item = Class.create(coreshop.rules.item, {
 
         return this.settingsForm;
     },
-
-    getUsedByPanel: function () {
-        this.store = new Ext.data.JsonStore({
-            fields: [
-                'id',
-                'name'
-            ],
-            proxy: {
-                type: 'ajax',
-                url: '/admin/coreshop/carrier-shipping-rule/get-used-by-carriers',
-                reader: {
-                    type: 'json',
-                    rootProperty: 'carriers'
-                },
-                extraParams: {
-                    id: this.data.id
-                }
-            }
-        });
-
-        var columns = [
-            {
-                text: t('id'),
-                dataIndex: 'id'
-            },
-            {
-                text: t('coreshop_carrier'),
-                dataIndex: 'name',
-                flex: 1
-            }
-        ];
-
-        this.grid = Ext.create('Ext.grid.Panel', {
-            title: t('coreshop_carriers'),
-            iconCls: 'coreshop_icon_carriers',
-            store: this.store,
-            columns: columns,
-            region: 'center'
-        });
-
-        this.store.load();
-
-        return this.grid;
-    },
+    //
+    // getUsedByPanel: function () {
+    //     this.store = new Ext.data.JsonStore({
+    //         fields: [
+    //             'id',
+    //             'name'
+    //         ],
+    //         proxy: {
+    //             type: 'ajax',
+    //             url: '/admin/coreshop/carrier-shipping-rule/get-used-by-carriers',
+    //             reader: {
+    //                 type: 'json',
+    //                 rootProperty: 'carriers'
+    //             },
+    //             extraParams: {
+    //                 id: this.data.id
+    //             }
+    //         }
+    //     });
+    //
+    //     var columns = [
+    //         {
+    //             text: t('id'),
+    //             dataIndex: 'id'
+    //         },
+    //         {
+    //             text: t('coreshop_carrier'),
+    //             dataIndex: 'name',
+    //             flex: 1
+    //         }
+    //     ];
+    //
+    //     this.grid = Ext.create('Ext.grid.Panel', {
+    //         title: t('coreshop_carriers'),
+    //         iconCls: 'coreshop_icon_carriers',
+    //         store: this.store,
+    //         columns: columns,
+    //         region: 'center'
+    //     });
+    //
+    //     this.store.load();
+    //
+    //     return this.grid;
+    // },
 
     getActionContainerClass: function () {
         return coreshop.shippingrule.action;

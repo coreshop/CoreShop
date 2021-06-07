@@ -15,12 +15,31 @@ coreshop.product.pricerule.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_price_rule',
 
-    url: {
-        save: '/admin/coreshop/product_price_rules/save'
+    routing: {
+        save: 'coreshop_product_price_rule_save'
     },
 
     getSettings: function () {
-        var data = this.data;
+        var data = this.data,
+            langTabs = [];
+
+        Ext.each(pimcore.settings.websiteLanguages, function (lang) {
+            var tab = {
+                title: pimcore.available_languages[lang],
+                iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
+                layout: 'form',
+                items: [{
+                    xtype: 'textfield',
+                    name: 'translations.' + lang + '.label',
+                    fieldLabel: t('coreshop_price_rule_label'),
+                    width: 400,
+                    value: data.translations && data.translations[lang] ? data.translations[lang].label : ''
+                }]
+            };
+
+            langTabs.push(tab);
+        });
+
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
             iconCls: 'coreshop_icon_settings',
@@ -35,10 +54,30 @@ coreshop.product.pricerule.item = Class.create(coreshop.rules.item, {
                 width: 250,
                 value: data.name
             }, {
+                xtype: 'numberfield',
+                name: 'priority',
+                fieldLabel: t('coreshop_priority'),
+                value: this.data.priority ? this.data.priority : 0,
+                width: 250
+            }, {
+                xtype: 'checkbox',
+                name: 'stopPropagation',
+                fieldLabel: t('coreshop_stop_propagation'),
+                checked: this.data.stopPropagation
+            }, {
                 xtype: 'checkbox',
                 name: 'active',
                 fieldLabel: t('active'),
                 checked: this.data.active
+            }, {
+                xtype: 'tabpanel',
+                activeTab: 0,
+                defaults: {
+                    autoHeight: true,
+                    bodyStyle: 'padding:10px;'
+                },
+                width: '100%',
+                items: langTabs
             }]
         });
 

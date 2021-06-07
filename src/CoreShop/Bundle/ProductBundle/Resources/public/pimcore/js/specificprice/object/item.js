@@ -49,7 +49,6 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
     initPanel: function () {
         this.panel = this.getPanel();
         this.parentPanel.getTabPanel().add(this.panel);
-        this.parentPanel.getTabPanel().setActiveTab(this.panel);
     },
 
     getActionContainerClass: function () {
@@ -61,7 +60,25 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
     },
 
     getSettings: function () {
-        var data = this.data;
+        var data = this.data,
+            langTabs = [];
+
+        Ext.each(pimcore.settings.websiteLanguages, function (lang) {
+            var tab = {
+                title: pimcore.available_languages[lang],
+                iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
+                layout: 'form',
+                items: [{
+                    xtype: 'textfield',
+                    name: 'translations.' + lang + '.label',
+                    fieldLabel: t('coreshop_price_rule_label'),
+                    width: 400,
+                    value: data.translations && data.translations[lang] ? data.translations[lang].label : ''
+                }]
+            };
+
+            langTabs.push(tab);
+        });
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
             iconCls: 'coreshop_icon_settings',
@@ -77,7 +94,7 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
                 value: data.name,
                 enableKeyEvents: true,
                 listeners: {
-                    keyup: function(field) {
+                    keyup: function (field) {
                         var activeField = field.up('form').getForm().findField('active');
                         this.panel.setTitle(this.generatePanelTitle(field.getValue(), activeField.getValue()));
                     }.bind(this)
@@ -100,11 +117,25 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
                 fieldLabel: t('active'),
                 checked: this.data.active,
                 listeners: {
-                    change: function(field, state) {
+                    change: function (field, state) {
                         var nameField = field.up('form').getForm().findField('name');
                         this.panel.setTitle(this.generatePanelTitle(nameField.getValue(), field.getValue()));
                     }.bind(this)
                 }
+            }, {
+                xtype: 'checkbox',
+                name: 'stopPropagation',
+                fieldLabel: t('coreshop_stop_propagation'),
+                checked: this.data.stopPropagation
+            }, {
+                xtype: 'tabpanel',
+                activeTab: 0,
+                defaults: {
+                    autoHeight: true,
+                    bodyStyle: 'padding:10px;'
+                },
+                width: '100%',
+                items: langTabs
             }]
         });
 
@@ -112,19 +143,21 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
     },
 
     getSaveData: function () {
-        if (this.settingsForm.getEl()) {
-            saveData = this.settingsForm.getForm().getFieldValues();
-            saveData['conditions'] = this.conditions.getConditionsData();
-            saveData['actions'] = this.actions.getActionsData();
+        var saveData;
 
-            if (this.data.id) {
-                saveData['id'] = this.data.id;
-            }
-
-            return saveData;
+        if (!this.settingsForm.getForm()) {
+            return {};
         }
 
-        return {};
+        saveData = this.settingsForm.getForm().getFieldValues();
+        saveData['conditions'] = this.conditions.getConditionsData();
+        saveData['actions'] = this.actions.getActionsData();
+
+        if (this.data.id) {
+            saveData['id'] = this.data.id;
+        }
+
+        return coreshop.helpers.convertDotNotationToObject(saveData);
     },
 
     getId: function () {

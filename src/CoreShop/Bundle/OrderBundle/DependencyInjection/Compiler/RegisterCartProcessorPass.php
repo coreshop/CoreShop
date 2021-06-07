@@ -12,16 +12,20 @@
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Order\Processor\CompositeCartProcessor;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class RegisterCartProcessorPass extends PrioritizedCompositeServicePass
 {
+    public const CART_PROCESSOR_TAG = 'coreshop.cart_processor';
+
     public function __construct()
     {
         parent::__construct(
-            'coreshop.cart_processor',
-            'coreshop.cart_processor.composite',
-            'coreshop.cart_processor',
+            CartProcessorInterface::class,
+            CompositeCartProcessor::class,
+            self::CART_PROCESSOR_TAG,
             'addProcessor'
         );
     }

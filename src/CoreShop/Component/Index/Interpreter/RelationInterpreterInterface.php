@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Interpreter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
@@ -23,12 +25,12 @@ interface RelationInterpreterInterface extends InterpreterInterface
      * @param IndexColumnInterface $config
      * @param array                $interpreterConfig
      *
-     * @return array|RelationalValueInterface[]
+     * @return array<int, array<string, int|string>>|RelationalValueInterface[]
      */
     public function interpretRelational(
         $value,
         IndexableInterface $indexable,
         IndexColumnInterface $config,
-        $interpreterConfig = []
+        array $interpreterConfig = []
     );
 }

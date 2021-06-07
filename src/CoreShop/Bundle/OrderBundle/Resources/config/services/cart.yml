@@ -7,18 +7,52 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.cart:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\CartType
+    CoreShop\Bundle\OrderBundle\Form\Type\CartType:
         arguments:
-            - '%coreshop.model.cart.class%'
+            - '%coreshop.model.order.class%'
             - '%coreshop.form.type.cart.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.cart_item:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\CartItemType
+    CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType:
         arguments:
-            - '%coreshop.model.cart_item.class%'
-            - '%coreshop.form.type.cart_item.validation_groups%'
+            - '%coreshop.model.order.class%'
+            - '%coreshop.form.type.cart.validation_groups%'
         tags:
             - { name: form.type }
+
+    coreshop.form.data_mapper.cart_item_quantity.property_mapper:
+        class: Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper
+        arguments:
+            - '@property_accessor'
+
+    CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper:
+        arguments:
+            - '@coreshop.cart_item.quantity_modifier'
+            - '@coreshop.form.data_mapper.cart_item_quantity.property_mapper'
+
+    CoreShop\Bundle\OrderBundle\Form\Type\CartItemType:
+        arguments:
+            - '%coreshop.model.order_item.class%'
+            - '%coreshop.form.type.cart_item.validation_groups%'
+            - '@CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\CartCreationCartItemType:
+        arguments:
+            - '%coreshop.model.order_item.class%'
+            - '%coreshop.form.type.cart_item.validation_groups%'
+            - '@CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper'
+        tags:
+            - { name: form.type }
+
+
+    CoreShop\Bundle\OrderBundle\Form\Type\QuantityType:
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\EventListener\Grid\CartFilterListener:
+        tags:
+            - { name: kernel.event_listener, event: pimcore.admin.object.list.beforeListLoad, method: checkObjectList }
+

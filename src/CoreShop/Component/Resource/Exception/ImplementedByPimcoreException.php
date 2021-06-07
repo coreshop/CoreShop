@@ -10,12 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Exception;
 
 class ImplementedByPimcoreException extends \InvalidArgumentException
 {
     public function __construct($class, $property)
     {
-        parent::__construct(sprintf('%s of "%s" needs to be implemented by Pimcore.', $class, $property));
+        parent::__construct(sprintf(
+            '%s of "%s" needs to be implemented by Pimcore.',
+            $class,
+            $property)
+        );
     }
 }

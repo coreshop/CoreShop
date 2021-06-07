@@ -10,18 +10,17 @@
                     {% set dropdown = category.hasChildCategories %}
 
                     <li class="nav-item{% if dropdown %} dropdown {% endif %}">
-                        <!-- TODO: URL -->
                         <a href="{{ coreshop_path(category, 'coreshop_category_list') }}" class="nav-link{% if dropdown %} dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10{%  endif %}">
-                            {{ category.getName() }}
+                            {{ category.name }}
                         </a>
 
                         {% if dropdown  %}
                             <ul class="dropdown-menu" role="menu">
-                                {% for childCategory in category.getChildCategories() %}
+                                {% for childCategory in category.childCategories %}
                                     <li class="dropdown-item">
                                         <!-- TODO: URL -->
                                         <a tabindex="-1" href="#">
-                                            {{ childCategory.getName() }}
+                                            {{ childCategory.name }}
                                         </a>
                                     </li>
                                 {% endfor %}

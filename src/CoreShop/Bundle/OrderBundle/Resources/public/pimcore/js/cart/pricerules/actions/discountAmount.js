@@ -22,7 +22,7 @@ coreshop.cart.pricerules.actions.discountAmount = Class.create(coreshop.rules.ac
         var applyOnValue = 'total';
 
         if (this.data) {
-            amountValue = this.data.amount / 100;
+            amountValue = this.data.amount / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
             currency = this.data.currency;
             grossValue = this.data.gross;
             applyOnValue = this.data.applyOn;
@@ -32,7 +32,7 @@ coreshop.cart.pricerules.actions.discountAmount = Class.create(coreshop.rules.ac
             fieldLabel: t('coreshop_action_discount_amount_amount'),
             name: 'amount',
             value: amountValue,
-            decimalPrecision: 2
+            decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         });
 
         var applyOn = new Ext.form.ComboBox({

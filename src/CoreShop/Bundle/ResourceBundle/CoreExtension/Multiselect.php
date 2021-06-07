@@ -10,23 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
 use Pimcore\Model;
 
 abstract class Multiselect extends Model\DataObject\ClassDefinition\Data\Multiselect
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
@@ -36,18 +32,17 @@ abstract class Multiselect extends Model\DataObject\ClassDefinition\Data\Multise
      * @param mixed $object
      * @param array $params
      *
-     * @return string
+     * @return mixed
      */
     public function preGetData($object, $params = [])
     {
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
+        if (!$object instanceof Model\AbstractModel) {
+            return null;
         }
 
-        if (is_null($data)) {
+        $data = $object->getObjectVar($this->getName());
+
+        if (null === $data) {
             $data = [];
         }
 

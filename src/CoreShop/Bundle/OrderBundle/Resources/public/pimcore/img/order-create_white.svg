@@ -1,0 +1,45 @@
+﻿<!--
+  ~ CoreShop.
+  ~
+  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
+  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+  ~ files that are distributed with this source code.
+  ~
+  ~ @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+  ~ @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+  ~
+  -->
+
+<svg x="0" y="0" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+    <g fill="none" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+       stroke-dasharray="" stroke-dashoffset="0" font-family="sans-serif" font-weight="normal" font-size="12"
+       text-anchor="start" mix-blend-mode="normal">
+        <g>
+            <g>
+                <path d="M0,48l0,-48l48,0l0,48z" fill="none"/>
+                <g>
+                    <path d="M41,38c0,5 -4,5 -4,5l-27,0l0,-38l31,0c0,0 0,28 0,33z" fill="white"/>
+                    <g fill="lightgray">
+                        <rect x="14" y="12" transform="scale(1,1)" width="3" height="3"/>
+                        <rect x="20" y="12" transform="scale(1,1)" width="17" height="3"/>
+                        <rect x="14" y="18" transform="scale(1,1)" width="3" height="3"/>
+                        <rect x="20" y="18" transform="scale(1,1)" width="17" height="3"/>
+                        <rect x="14" y="24" transform="scale(1,1)" width="3" height="3"/>
+                        <rect x="20" y="24" transform="scale(1,1)" width="17" height="3"/>
+                    </g>
+                    <path d="M33,38c0,-0.713 0,-3.793 0,-5l-16,0l-6,0l-4,0c0,1.207 0,4.287 0,5c0,2.762 1.238,5 4,5l26,0c-2.762,0 -4,-2.238 -4,-5z"
+                          fill="gray"/>
+                </g>
+                <g>
+                    <g id="IOS_copy">
+                        <path d="M48,38c0,5.5 -4.5,10 -10,10c-5.5,0 -10,-4.5 -10,-10c0,-5.5 4.5,-10 10,-10c5.5,0 10,4.5 10,10"
+                              fill="black"/>
+                        <path d="M44,36l-4,0l0,-4l-4,0l0,4l-4,0l0,4l4,0l0,4l4,0l0,-4l4,0z" fill="#ffffff"/>
+                    </g>
+                    <path d="M27.16571,38c0,-5.98361 4.85067,-10.83429 10.83429,-10.83429c5.98361,0 10.83429,4.85067 10.83429,10.83429c0,5.98361 -4.85067,10.83429 -10.83429,10.83429c-5.98361,0 -10.83429,-4.85067 -10.83429,-10.83429z"
+                          fill="#ff0000" opacity="0"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

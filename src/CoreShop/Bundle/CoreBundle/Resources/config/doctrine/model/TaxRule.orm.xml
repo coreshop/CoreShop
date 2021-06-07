@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <mapped-superclass name="CoreShop\Component\Core\Model\TaxRule" table="coreshop_tax_rule">
+        <many-to-one field="country" target-entity="CoreShop\Component\Address\Model\CountryInterface">
+            <join-column name="countryId" referenced-column-name="id" nullable="true"/>
+        </many-to-one>
+
+        <many-to-one field="state" target-entity="CoreShop\Component\Address\Model\StateInterface">
+            <join-column name="stateId" referenced-column-name="id" nullable="true"/>
+        </many-to-one>
+    </mapped-superclass>
+</doctrine-mapping>

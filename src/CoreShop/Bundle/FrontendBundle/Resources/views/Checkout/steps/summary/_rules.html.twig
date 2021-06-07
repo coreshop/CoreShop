@@ -1,14 +1,14 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
 
 {% if cart.hasPriceRules %}
-    {% for priceRule in cart.getPriceRuleItems %}
+    {% for priceRule in cart.priceRuleItems %}
         <tr>
             <td colspan="2" class="text-left">
-                {{ priceRule.cartPriceRule.getName }}
+                {{ priceRule.cartPriceRule.name }}
             </td>
             <td class="text-center"></td>
             <td class="text-right" colspan="2">
-                -{{ currency.convertAndFormat(priceRule.getDiscount(true)) }}
+                {{ currency.convertAndFormat(priceRule.discount(true)) }}
             </td>
         </tr>
     {% endfor %}

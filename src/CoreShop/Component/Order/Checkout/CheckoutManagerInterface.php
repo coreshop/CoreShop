@@ -10,9 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface CheckoutManagerInterface
@@ -21,85 +23,85 @@ interface CheckoutManagerInterface
      * @param CheckoutStepInterface $step
      * @param int                   $priority
      */
-    public function addCheckoutStep(CheckoutStepInterface $step, $priority);
+    public function addCheckoutStep(CheckoutStepInterface $step, int $priority): void;
 
     /**
      * @return string[]
      */
-    public function getSteps();
+    public function getSteps(): array;
 
     /**
      * @param string $identifier
      *
      * @return CheckoutStepInterface|null
      */
-    public function getStep($identifier);
+    public function getStep(string $identifier): ?CheckoutStepInterface;
 
     /**
      * @param string $identifier
      *
      * @return CheckoutStepInterface|null
      */
-    public function getNextStep($identifier);
+    public function getNextStep(string $identifier): ?CheckoutStepInterface;
 
     /**
      * @param string $identifier
      *
      * @return bool
      */
-    public function hasNextStep($identifier);
+    public function hasNextStep(string $identifier): bool;
 
     /**
      * @param string $identifier
      *
      * @return CheckoutStepInterface|null
      */
-    public function getPreviousStep($identifier);
+    public function getPreviousStep(string $identifier): ?CheckoutStepInterface;
 
     /**
      * @param string $identifier
      *
      * @return bool
      */
-    public function hasPreviousStep($identifier);
+    public function hasPreviousStep(string $identifier): bool;
 
     /**
      * @param string $identifier
      *
      * @return CheckoutStepInterface[]
      */
-    public function getPreviousSteps($identifier);
+    public function getPreviousSteps(string $identifier): array;
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
+     * @param OrderInterface         $cart
      *
-     * @return mixed
+     * @return bool
      */
-    public function validateStep(CheckoutStepInterface $step, CartInterface $cart);
+    public function validateStep(CheckoutStepInterface $step, OrderInterface $cart): bool;
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
+     * @param OrderInterface         $cart
      * @param Request               $request
      *
-     * @return mixed
+     * @return array
      */
-    public function prepareStep(CheckoutStepInterface $step, CartInterface $cart, Request $request);
+    public function prepareStep(CheckoutStepInterface $step, OrderInterface $cart, Request $request): array;
 
     /**
      * @param string $identifier
      *
      * @return int
      */
-    public function getCurrentStepIndex($identifier);
+    public function getCurrentStepIndex(string $identifier): int;
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
+     * @param OrderInterface         $cart
      * @param Request               $request
      *
-     * @return mixed
+     * @return bool
      */
-    public function commitStep(CheckoutStepInterface $step, CartInterface $cart, Request $request);
+    public function commitStep(CheckoutStepInterface $step, OrderInterface $cart, Request $request): bool;
 }

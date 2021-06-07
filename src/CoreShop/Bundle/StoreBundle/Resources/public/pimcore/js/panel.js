@@ -21,11 +21,11 @@ coreshop.store.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_store',
     type: 'coreshop_stores',
 
-    url: {
-        add: '/admin/coreshop/stores/add',
-        delete: '/admin/coreshop/stores/delete',
-        get: '/admin/coreshop/stores/get',
-        list: '/admin/coreshop/stores/list'
+    routing: {
+        add: 'coreshop_store_add',
+        delete: 'coreshop_store_delete',
+        get: 'coreshop_store_get',
+        list: 'coreshop_store_list'
     },
 
     getItemClass: function() {

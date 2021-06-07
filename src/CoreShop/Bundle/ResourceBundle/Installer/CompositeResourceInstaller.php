@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
@@ -17,23 +19,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CompositeResourceInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
     protected $serviceRegistry;
 
-    /**
-     * @param PrioritizedServiceRegistryInterface $serviceRegistry
-     */
     public function __construct(PrioritizedServiceRegistryInterface $serviceRegistry)
     {
         $this->serviceRegistry = $serviceRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         foreach ($this->serviceRegistry->all() as $installer) {
             if ($installer instanceof ResourceInstallerInterface) {

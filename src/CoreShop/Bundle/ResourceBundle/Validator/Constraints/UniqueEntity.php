@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -24,10 +26,7 @@ final class UniqueEntity extends Constraint
 
     public $allowSameEntity = false;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'coreshop.unique_entity';
     }
@@ -35,15 +34,12 @@ final class UniqueEntity extends Constraint
     /**
      * @return array
      */
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return ['fields', 'values'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

@@ -10,17 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Model;
 
 interface CarrierAwareInterface
 {
-    /**
-     * @return CarrierInterface
-     */
-    public function getCarrier();
+    public function getCarrier(): ?CarrierInterface;
 
-    /**
-     * @param CarrierInterface $carrier
-     */
-    public function setCarrier($carrier);
+    public function setCarrier(?CarrierInterface $carrier);
 }

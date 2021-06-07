@@ -12,37 +12,37 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class RegisterPimcoreRepositoriesPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->has('pimcore.dao.object_manager')) {
             return;
         }
 
-        $registry = $container->get('coreshop.resource_registry');
+        $registry = $container->get(RegistryInterface::class);
 
         foreach ($container->findTaggedServiceIds('coreshop.pimcore.repository') as $id => $attributes) {
-            if (!isset($attributes[0]['alias'])) {
-                throw new \InvalidArgumentException('Tagged Repository `' . $id . '` needs to have `type` and `priority` attributes.');
+            foreach ($attributes as $tag) {
+                if (!isset($tag['alias'])) {
+                    throw new \InvalidArgumentException('Tagged Repository `'.$id.'` needs to have `type` and `priority` attributes.');
+                }
+
+                $metadata = $registry->get($tag['alias']);
+
+                $container->findDefinition('pimcore.dao.object_manager')->addMethodCall(
+                    'registerRepository',
+                    [
+                        $metadata->getClass('model'),
+                        new Reference($id),
+                    ]
+                );
             }
-
-            $metadata = $registry->get($attributes[0]['alias']);
-
-            $container->findDefinition('pimcore.dao.object_manager')->addMethodCall(
-                'registerRepository',
-                [
-                    $metadata->getClass('model'),
-                    new Reference($id),
-                ]
-            );
         }
     }
 }

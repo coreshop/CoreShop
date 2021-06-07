@@ -4,36 +4,37 @@
     <button type="button" class="btn btn-block btn-lg dropdown-toggle" data-toggle="dropdown">
         <i class="fa fa-shopping-cart"></i>
         <span id="cart-overview-total">
-            <span class="cart-badge">{% if cart.getItems() %} {{ cart.getItems()|length }} {% else %} 0 {% endif %}</span> {{ 'coreshop.ui.items'|trans }} -
-            <span class="cart-total"> {{ currency.convertAndFormat(cart.getTotal) }}</span></span>
+            <span class="cart-badge">{% if cart.items %} {{ cart.items|length }} {% else %} 0 {% endif %}</span> {{ 'coreshop.ui.items'|trans }} -
+            <span class="cart-total"  {{ coreshop_test_html_attribute('cart-total') }}> {{ currency.convertAndFormat(cart.total) }}</span>
+        </span>
     </button>
     <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenuButton">
         <li>
-            {% if cart.hasItems() %}
+            {% if cart.hasItems %}
             <table class="table hcart cart-items">
-                {% for item in cart.getItems() %}
+                {% for item in cart.items %}
                     <tr>
                         <td class="text-center">
-                            {% if item.getProduct() %}
-                            <a href="{{ coreshop_path(item.getProduct(), 'coreshop_product_detail') }}">
-                                {% if item.getProduct() and item.getProduct().getImage() %}
-                                    {{ item.product.image.thumbnail("coreshop_productCartPreview").html({'class': 'img-thumbnail img-fluid', 'title': item.getProduct().getName(), 'alt': item.getProduct().getName()})|raw }}
+                            {% if item.product %}
+                            <a href="{{ coreshop_path(item.product, 'coreshop_product_detail') }}">
+                                {% if item.product and item.product.image is pimcore_asset_image %}
+                                    {{ item.product.image|pimcore_image_thumbnail_html("coreshop_productCartPreview", {'class': 'img-thumbnail img-fluid', 'title': item.product.name, 'alt': item.product.name}) }}
                                 {% endif %}
                             </a>
                             {% endif %}
                         </td>
                         <td class="text-left">
-                            {% if item.getProduct() %}
-                            <a href="{{ coreshop_path(item.getProduct(), 'coreshop_product_detail') }}">
-                                {{ item.getProduct().getName() }}
+                            {% if item.product %}
+                            <a href="{{ coreshop_path(item.product, 'coreshop_product_detail') }}">
+                                {{ item.product.name }}
                             </a>
                             {% endif %}
                         </td>
-                        <td class="text-right">x {{ item.getQuantity() }}</td>
-                        <td class="text-right">{{ currency.convertAndFormat(item.getTotal) }}</td>
+                        <td class="text-right">x {{ item.quantity }}</td>
+                        <td class="text-right">{{ currency.convertAndFormat(item.total) }}</td>
                         <td class="text-center">
                             {% if not item.isGiftItem %}
-                                <a href="{{ coreshop_path(cart, 'coreshop_cart_remove', {cartItem: item.getId}) }}" class="removeFromCart" data-id="{{ item.getId() }}" data-refresh="true">
+                                <a href="{{ coreshop_path(cart, 'coreshop_cart_remove', {cartItem: item.id}) }}" class="removeFromCart" data-id="{{ item.id }}" data-refresh="true">
                                     <i class="fa fa-times"></i>
                                 </a>
                             {% endif %}
@@ -52,7 +53,7 @@
                 </tr>
                 <tr>
                     <td class="text-right"><strong>{{ 'coreshop.ui.total'|trans }}</strong></td>
-                    <td class="text-left cart-total">{{ currency.convertAndFormat(cart.getTotal) }}</td>
+                    <td class="text-left cart-total">{{ currency.convertAndFormat(cart.total) }}</td>
                 </tr>
                 </tbody>
             </table>

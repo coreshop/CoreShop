@@ -10,19 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
+use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class ShippingRuleConditionPass extends RegisterRegistryTypePass
 {
+    public const SHIPPING_RULE_CONDITION_TAG = 'coreshop.shipping_rule.condition';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.shipping_rule.conditions',
             'coreshop.form_registry.shipping_rule.conditions',
             'coreshop.shipping_rule.conditions',
-            'coreshop.shipping_rule.condition'
+            self::SHIPPING_RULE_CONDITION_TAG
         );
     }
 }

@@ -10,36 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
-final class ExtractorRegistryServicePass implements CompilerPassInterface
+final class ExtractorRegistryServicePass extends RegisterSimpleRegistryTypePass
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public const EXTRACTOR_TAG = 'coreshop.seo.extractor';
+
+    public function __construct()
     {
-        if (!$container->has('coreshop.registry.seo.extractor')) {
-            return;
-        }
-
-        $registry = $container->getDefinition('coreshop.registry.seo.extractor');
-
-        $map = [];
-        foreach ($container->findTaggedServiceIds('coreshop.seo.extractor') as $id => $attributes) {
-            if (!isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `type` attribute.');
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-
-            $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
-        }
-
-        $container->setParameter('coreshop.seo.extractors', $map);
+        parent::__construct(
+            'coreshop.registry.seo.extractor',
+            'coreshop.seo.extractors',
+            self::EXTRACTOR_TAG
+        );
     }
+
 }

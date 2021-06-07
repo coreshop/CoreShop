@@ -12,16 +12,20 @@
 
 namespace CoreShop\Bundle\CurrencyBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Currency\Context\CompositeCurrencyContext;
+use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeCurrencyContextPass extends PrioritizedCompositeServicePass
 {
+    public const CURRENCY_CONTEXT_SERVICE_TAG = 'coreshop.context.currency';
+
     public function __construct()
     {
         parent::__construct(
-            'coreshop.context.currency',
-            'coreshop.context.currency.composite',
-            'coreshop.context.currency',
+            CurrencyContextInterface::class,
+            CompositeCurrencyContext::class,
+            self::CURRENCY_CONTEXT_SERVICE_TAG,
             'addContext'
         );
     }

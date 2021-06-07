@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\History;
 
 use Pimcore\Model\DataObject\Concrete;
@@ -21,5 +23,5 @@ interface StateHistoryLoggerInterface
      * @param Concrete $object
      * @param Event    $event
      */
-    public function log(Concrete $object, Event $event);
+    public function log(Concrete $object, Event $event): void;
 }

@@ -10,37 +10,29 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Component\Index\Listing\ListingInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pimcore\Db;
 
 class Dao
 {
-    /**
-     * @var \Pimcore\Db\Connection
-     */
-    private $database;
-
-    /**
-     * @var MysqlWorker\Listing
-     */
-    private $model;
-
-    /**
-     * @var int
-     */
-    private $lastRecordCount;
+    private Connection $database;
+    private MysqlWorker\Listing $model;
+    private int $lastRecordCount = 0;
 
     /**
      * @param MysqlWorker\Listing $model
      */
-    public function __construct(MysqlWorker\Listing $model)
+    public function __construct(MysqlWorker\Listing $model, Connection $connection)
     {
         $this->model = $model;
-        $this->database = Db::get();
+        $this->database = $connection;
     }
 
     /**
@@ -71,10 +63,12 @@ class Dao
         } else {
             $queryBuilder->select('DISTINCT q.o_id');
         }
-        $result = $this->database->executeQuery($queryBuilder->getSQL());
-        $this->lastRecordCount = $result->rowCount();
 
-        return $result->fetchAll();
+        $resultSet = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+
+        $this->lastRecordCount = count($resultSet);
+
+        return $resultSet;
     }
 
     /**
@@ -99,24 +93,21 @@ class Dao
                 $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(*) AS count');
             }
 
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAll();
-
-            return $result;
-        } else {
-            $queryBuilder->select($this->quoteIdentifier($fieldName));
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $queryResult = $stmt->fetchAll();
-            $result = [];
-
-            foreach ($queryResult as $row) {
-                if ($row[$fieldName]) {
-                    $result[] = $row[$fieldName];
-                }
-            }
-
-            return $result;
+            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
+
+        $queryBuilder->select($this->quoteIdentifier($fieldName));
+        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+
+        $result = [];
+
+        foreach ($queryResult as $row) {
+            if ($row[$fieldName]) {
+                $result[] = $row[$fieldName];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -130,6 +121,21 @@ class Dao
      */
     public function loadGroupByRelationValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
     {
+        return $this->loadGroupByRelationValuesAndType($queryBuilder, $fieldName, null, $countValues);
+    }
+
+    /**
+     * Load Grouo by Relation values and type.
+     *
+     * @param QueryBuilder $queryBuilder
+     * @param string       $fieldName
+     * @param string       $type
+     * @param bool         $countValues
+     *
+     * @return array
+     */
+    public function loadGroupByRelationValuesAndType(QueryBuilder $queryBuilder, $fieldName, $type, $countValues = false)
+    {
         $queryBuilder->from($this->model->getRelationTablename(), 'q');
 
         if ($countValues) {
@@ -138,44 +144,53 @@ class Dao
             $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
             $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
 
-            if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+            if ($this->model->getVariantMode() === ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                 $queryBuilder->select($this->quoteIdentifier('dest') . ' AS ' . $this->quoteIdentifier('value') . ', count(DISTINCT src_virtualObjectId) AS ' . $this->quoteIdentifier('count'));
                 $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
+
+                if (null !== $type) {
+                    $queryBuilder->where('type = ' . $this->quote($type));
+                }
             } else {
                 $queryBuilder->select($this->quoteIdentifier('dest') . ' AS ' . $this->quoteIdentifier('value') . ', count(*) AS ' . $this->quoteIdentifier('count'));
                 $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
-            }
 
-            $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
-            $queryBuilder->groupBy('dest');
-
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAll();
-
-            return $result;
-        } else {
-            $queryBuilder->select($this->quoteIdentifier('dest'));
-            $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
-
-            $subQueryBuilder = new QueryBuilder($this->database);
-            $subQueryBuilder->select('o_id');
-            $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
-            $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
-            $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
-            $queryBuilder->groupBy('dest');
-
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $queryResult = $stmt->fetchAll();
-
-            $result = [];
-            foreach ($queryResult as $row) {
-                if ($row['dest']) {
-                    $result[] = $row['dest'];
+                if (null !== $type) {
+                    $queryBuilder->where('type = '.$this->quote($type));
                 }
             }
 
-            return $result;
+            $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
+            $queryBuilder->groupBy('dest');
+
+            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
+
+        $queryBuilder->select($this->quoteIdentifier('dest'));
+        $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
+
+        if (null !== $type) {
+            $queryBuilder->where('type = ' . $this->quote($type));
+        }
+
+        $subQueryBuilder = new QueryBuilder($this->database);
+        $subQueryBuilder->select('o_id');
+        $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
+        $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
+        $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
+        $queryBuilder->groupBy('dest');
+
+        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+
+        $result = [];
+
+        foreach ($queryResult as $row) {
+            if ($row['dest']) {
+                $result[] = $row['dest'];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -195,7 +210,7 @@ class Dao
         }
         $stmt = $this->database->executeQuery($queryBuilder->getSQL());
 
-        return $stmt->fetchColumn();
+        return (int)$stmt->fetchColumn();
     }
 
     /**
@@ -311,7 +326,7 @@ class Dao
      *
      * @return int
      */
-    public function getLastRecordCount()
+    public function getLastRecordCount(): int
     {
         return $this->lastRecordCount;
     }

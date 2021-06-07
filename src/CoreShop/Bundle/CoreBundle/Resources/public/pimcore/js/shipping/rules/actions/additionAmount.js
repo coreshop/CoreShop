@@ -19,7 +19,7 @@ coreshop.shippingrule.actions.additionAmount = Class.create(coreshop.rules.actio
         var currency = null;
 
         if (this.data) {
-            amountValue = this.data.amount / 100;
+            amountValue = this.data.amount / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
             currency = this.data.currency;
         }
 
@@ -27,7 +27,7 @@ coreshop.shippingrule.actions.additionAmount = Class.create(coreshop.rules.actio
             fieldLabel: t('coreshop_action_discountAmount_amount'),
             name: 'amount',
             value: amountValue,
-            decimalPrecision: 2
+            decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         });
 
         this.form = new Ext.form.Panel({

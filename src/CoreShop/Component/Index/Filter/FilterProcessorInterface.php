@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Filter;
 
 use CoreShop\Component\Index\Listing\ListingInterface;
@@ -18,21 +20,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 interface FilterProcessorInterface
 {
-    /**
-     * @param FilterInterface  $filter
-     * @param ListingInterface $list
-     * @param ParameterBag     $parameterBag
-     *
-     * @return mixed
-     */
-    public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag);
+    public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag): array;
 
-    /**
-     * @param FilterInterface  $filter
-     * @param ListingInterface $list
-     * @param array            $currentFilter
-     *
-     * @return mixed
-     */
-    public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, $currentFilter);
+    public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, array $currentFilter): array;
 }

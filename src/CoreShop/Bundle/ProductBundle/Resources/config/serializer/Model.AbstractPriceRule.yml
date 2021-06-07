@@ -1,0 +1,37 @@
+CoreShop\Component\Product\Model\AbstractPriceRule:
+    exclusion_policy: ALL
+    xml_root_name: price_rule
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed, Version]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed, Version]
+        active:
+            expose: true
+            type: boolean
+            groups: [List, Detailed, Version]
+        stopPropagation:
+            expose: true
+            type: boolean
+            groups: [List, Detailed, Version]
+        priority:
+            expose: true
+            type: integer
+            groups: [Detailed, Version]
+        translations:
+            expose: true
+            type: ArrayCollection
+            groups: [Detailed]
+        conditions:
+            expose: true
+            type: ArrayCollection<CoreShop\Component\Rule\Model\Condition>
+            groups: [Detailed, Version]
+        actions:
+            expose: true
+            type: ArrayCollection<CoreShop\Component\Rule\Model\Action>
+            groups: [Detailed, Version]

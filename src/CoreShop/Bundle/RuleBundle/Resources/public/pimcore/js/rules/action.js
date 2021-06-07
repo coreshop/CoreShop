@@ -12,9 +12,11 @@
 
 pimcore.registerNS('coreshop.rules.action');
 coreshop.rules.action = Class.create({
+    dirty: false,
 
     initialize: function (actions) {
         this.actions = actions;
+        this.dirty = false;
     },
 
     getLayout: function () {
@@ -25,13 +27,13 @@ coreshop.rules.action = Class.create({
         // show only defined actions
         Ext.each(this.actions, function (action) {
 
-            if (action == 'abstract')
+            if (action === 'abstract')
                 return;
 
             addMenu.push({
                 iconCls: 'coreshop_rule_icon_action_' + action,
                 text: t('coreshop_action_' + action),
-                handler: _this.addAction.bind(_this, action, null)
+                handler: _this.addAction.bind(_this, action, null, false)
             });
         });
 
@@ -51,18 +53,26 @@ coreshop.rules.action = Class.create({
         return this.actionsContainer;
     },
 
+    setDirty: function(dirty) {
+        this.dirty = dirty;
+    },
+
     destroy: function () {
         if (this.actionsContainer) {
             this.actionsContainer.destroy();
         }
     },
 
-    addAction: function (type, data) {
+    addAction: function (type, data, dirty) {
         var actionClass = this.getActionClassItem(type);
         var item = new actionClass(this, type, data);
 
         this.actionsContainer.add(item.getLayout());
         this.actionsContainer.updateLayout();
+
+        if (dirty) {
+            this.setDirty(true);
+        }
     },
 
     getActionClassItem: function (type) {
@@ -134,6 +144,10 @@ coreshop.rules.action = Class.create({
     },
 
     isDirty: function () {
+        if (this.dirty) {
+            return true;
+        }
+
         if (this.actionsContainer.items) {
             var actions = this.actionsContainer.items.getRange();
             for (var i = 0; i < actions.length; i++) {

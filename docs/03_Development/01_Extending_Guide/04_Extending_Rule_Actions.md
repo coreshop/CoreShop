@@ -1,6 +1,6 @@
 # Custom Price-Rule/Shipping-Rule/Notification-Rule Actions
 
-Adding Price-, Shipping- or Notification-Rule Actions is the same for all of these types. They're only difference is the
+Adding Price-, Shipping- or Notification-Rule Actions is the same for all of these types. Their only difference is the
 tag you use and Interface you need to implement for them.
 
 
@@ -24,11 +24,8 @@ namespace AppBundle\CoreShop;
 
 final class CustomAction implements \CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface
 {
-    public function getDiscount($subject, $price, array $configuration) {
-        //If your action calculates a discount, put your calculation here
-    }
-
-    public function getPrice($subject, array $configuration) {
+    public function getPrice($subject, array $context, array $configuration): int 
+    {
         //If your action gives the product a new Price, put your calculation here
 
         return $configuration['some_value'];
@@ -51,7 +48,7 @@ final class CustomActionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('some_value', TextType::class)
@@ -96,10 +93,11 @@ coreshop.product.pricerule.actions.custom = Class.create(coreshop.rules.actions.
 });
 
 ```
-Don't forget to run the following command afterwards to deploy it if needed:
+
+Don't forget to run the following command afterwards to deploy it if needed. If you're using the latest symfony structure, omit the `web`.
 ```
-bin/console assets:install
-``` 
+bin/console assets:install web
+```
 
 
 

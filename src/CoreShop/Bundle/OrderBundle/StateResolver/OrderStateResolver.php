@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
@@ -23,30 +25,16 @@ use Webmozart\Assert\Assert;
 
 final class OrderStateResolver implements StateResolverInterface
 {
-    /**
-     * @var StateMachineManager
-     */
-    private $stateMachineManager;
+    private StateMachineManager $stateMachineManager;
+    private bool $includeInvoiceStateToComplete;
 
-    /**
-     * @var bool
-     */
-    private $includeInvoiceStateToComplete;
-
-    /**
-     * @param StateMachineManager $stateMachineManager
-     * @param bool                $includeInvoiceStateToComplete
-     */
-    public function __construct(StateMachineManager $stateMachineManager, $includeInvoiceStateToComplete)
+    public function __construct(StateMachineManager $stateMachineManager, bool $includeInvoiceStateToComplete)
     {
         $this->stateMachineManager = $stateMachineManager;
         $this->includeInvoiceStateToComplete = $includeInvoiceStateToComplete;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolve(OrderInterface $order)
+    public function resolve(OrderInterface $order): void
     {
         $stateMachine = $this->stateMachineManager->get($order, 'coreshop_order');
         if ($this->canOrderBeComplete($order) && $stateMachine->can($order, OrderTransitions::TRANSITION_COMPLETE)) {
@@ -54,18 +42,8 @@ final class OrderStateResolver implements StateResolverInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return bool
-     */
-    private function canOrderBeComplete(OrderInterface $order)
+    private function canOrderBeComplete(OrderInterface $order): bool
     {
-        /**
-         * @var $order \CoreShop\Component\Core\Model\OrderInterface
-         */
-        Assert::isInstanceOf($order, \CoreShop\Component\Core\Model\OrderInterface::class);
-
         $coreStates = OrderPaymentStates::STATE_PAID === $order->getPaymentState() &&
             OrderShipmentStates::STATE_SHIPPED === $order->getShippingState();
 

@@ -10,17 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler;
 
 final class NotificationRuleConditionPass extends AbstractNotificationRulePass
 {
+    public const NOTIFICATION_CONDITION_TAG = 'coreshop.notification_rule.condition';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.notification_rule.conditions',
             'coreshop.form_registry.notification_rule.conditions',
             'coreshop.notification_rule.conditions',
-            'coreshop.notification_rule.condition',
+            self::NOTIFICATION_CONDITION_TAG,
             'conditions'
         );
     }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Condition\Mysql;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
@@ -21,10 +23,7 @@ use Webmozart\Assert\Assert;
 
 class InRenderer extends AbstractMysqlDynamicRenderer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null)
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
          * @var $condition InCondition
@@ -35,7 +34,7 @@ class InRenderer extends AbstractMysqlDynamicRenderer
 
         if (is_array($condition->getValues())) {
             foreach ($condition->getValues() as $c => $value) {
-                $inValues[] = $this->quote($value);
+                $inValues[] = $this->quote((string)$value);
             }
         }
 
@@ -57,10 +56,7 @@ class InRenderer extends AbstractMysqlDynamicRenderer
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(WorkerInterface $worker, ConditionInterface $condition)
+    public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
     {
         return $worker instanceof MysqlWorker && $condition instanceof InCondition;
     }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Rule\Repository;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -20,19 +22,19 @@ interface RuleRepositoryInterface extends RepositoryInterface
     /**
      * @return RuleInterface[]
      */
-    public function findActive();
+    public function findActive(): array;
 
     /**
      * @param string $conditionType
      *
      * @return RuleInterface[]
      */
-    public function findWithConditionOfType($conditionType);
+    public function findWithConditionOfType($conditionType): array;
 
     /**
      * @param string $actionType
      *
      * @return RuleInterface[]
      */
-    public function findWithActionOfType($actionType);
+    public function findWithActionOfType($actionType): array;
 }

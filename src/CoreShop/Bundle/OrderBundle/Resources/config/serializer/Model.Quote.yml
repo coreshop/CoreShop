@@ -1,0 +1,3 @@
+CoreShop\Component\Order\Model\Quote:
+    exclusion_policy: ALL
+    xml_root_name: order

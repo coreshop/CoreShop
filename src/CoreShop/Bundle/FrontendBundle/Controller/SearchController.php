@@ -10,11 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\Form\Type\SearchType;
+use CoreShop\Component\Store\Context\StoreContextInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Zend\Paginator\Paginator;
 
 class SearchController extends FrontendController
 {
@@ -22,7 +25,7 @@ class SearchController extends FrontendController
     {
         $form = $this->createSearchForm();
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/_widget.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Search/_widget.html'), [
             'form' => $form->createView(),
         ]);
     }
@@ -32,7 +35,7 @@ class SearchController extends FrontendController
         $form = $this->createSearchForm();
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             $text = $formData['text'];
             $page = $request->get('page', 1);
@@ -49,17 +52,19 @@ class SearchController extends FrontendController
                 '%' . $text . '%',
                 '%' . $text . '%',
                 '%' . $text . '%',
-                '%' . $this->container->get('coreshop.context.store')->getStore()->getId() . '%',
+                '%' . $this->container->get(StoreContextInterface::class)->getStore()->getId() . '%',
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();
             $list->setCondition('active = 1 AND (' . implode(' OR ', $query) . ') AND stores LIKE ?', $queryParams);
+            
+            $paginator = $this->getPaginator()->paginate(
+                $list,
+                $page,
+                $itemsPerPage
+            );
 
-            $paginator = new Paginator($list);
-            $paginator->setCurrentPageNumber($page);
-            $paginator->setItemCountPerPage($itemsPerPage);
-
-            return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/search.html'), [
+            return $this->render($this->templateConfigurator->findTemplate('Search/search.html'), [
                 'paginator' => $paginator,
                 'searchText' => $text,
             ]);
@@ -70,9 +75,17 @@ class SearchController extends FrontendController
 
     protected function createSearchForm()
     {
-        return $form = $this->get('form.factory')->createNamed('search', SearchType::class, null, [
+        return $this->get('form.factory')->createNamed('coreshop', SearchType::class, null, [
             'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
             'method' => 'GET',
         ]);
+    }
+
+    /**
+     * @return PaginatorInterface
+     */
+    protected function getPaginator(): PaginatorInterface
+    {
+        return $this->get(PaginatorInterface::class);
     }
 }

@@ -1,7 +1,7 @@
 default:
     suites:
         domain_product:
-            contexts_services:
+            contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
 
@@ -21,6 +21,9 @@ default:
                 - coreshop.behat.context.transform.store
                 - coreshop.behat.context.transform.tax_rate
                 - coreshop.behat.context.transform.tax_rule_group
+                - coreshop.behat.context.transform.product_unit
+                - coreshop.behat.context.transform.cart
+                - coreshop.behat.context.transform.product_quantity_price_rule
 
                 - coreshop.behat.context.setup.product
                 - coreshop.behat.context.setup.product_price_rule
@@ -34,6 +37,10 @@ default:
                 - coreshop.behat.context.setup.zone
                 - coreshop.behat.context.setup.tax_rate
                 - coreshop.behat.context.setup.tax_rule_group
+                - coreshop.behat.context.setup.product_unit
+                - coreshop.behat.context.setup.pimcore_class
+                - coreshop.behat.context.setup.cart
+                - coreshop.behat.context.setup.product_quantity_price_rule
 
                 - coreshop.behat.context.domain.product
                 - coreshop.behat.context.domain.product_price_rule
@@ -42,5 +49,8 @@ default:
                 - coreshop.behat.context.domain.currency
                 - coreshop.behat.context.domain.category
                 - coreshop.behat.context.domain.link_generator
+                - coreshop.behat.context.domain.product_unit
+                - coreshop.behat.context.domain.cart
+                - coreshop.behat.context.domain.product_quantity_price_rule
             filters:
-                tags: "@product"
+                tags: "@domain && @product"

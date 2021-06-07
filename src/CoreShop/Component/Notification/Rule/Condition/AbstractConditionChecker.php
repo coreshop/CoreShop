@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Notification\Rule\Condition;
 
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
@@ -18,10 +20,7 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 abstract class AbstractConditionChecker implements NotificationConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
         if ($subject instanceof NotificationRuleInterface) {
             throw new \InvalidArgumentException('Notification Rule Condition $subject needs to be an array with values subject and params');

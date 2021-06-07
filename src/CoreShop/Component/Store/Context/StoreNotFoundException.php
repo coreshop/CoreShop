@@ -10,13 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Context;
 
 class StoreNotFoundException extends \RuntimeException
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(\Exception $previousException = null)
     {
         parent::__construct('Store could not be found!', 0, $previousException);

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
 use CoreShop\Bundle\CoreBundle\Customer\CustomerAlreadyExistsException;
@@ -22,60 +24,39 @@ use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    /**
-     * @var CustomerContextInterface
-     */
-    private $customerContext;
+    private CustomerContextInterface $customerContext;
+    private FormFactoryInterface $formFactory;
+    private RegistrationServiceInterface $registrationService;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
-     * @var RegistrationServiceInterface
-     */
-    private $registrationService;
-
-    /**
-     * @param CustomerContextInterface     $customerContext
-     * @param FormFactoryInterface         $formFactory
-     * @param RegistrationServiceInterface $registrationService
-     */
-    public function __construct(CustomerContextInterface $customerContext, FormFactoryInterface $formFactory, RegistrationServiceInterface $registrationService)
+    public function __construct(
+        CustomerContextInterface $customerContext,
+        FormFactoryInterface $formFactory,
+        RegistrationServiceInterface $registrationService
+    )
     {
         $this->customerContext = $customerContext;
         $this->formFactory = $formFactory;
         $this->registrationService = $registrationService;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'customer';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function doAutoForward(CartInterface $cart)
+    public function doAutoForward(OrderInterface $cart): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate(CartInterface $cart)
+    public function validate(OrderInterface $cart): bool
     {
         if (!$cart->hasItems()) {
             return false;
@@ -92,10 +73,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function commitStep(CartInterface $cart, Request $request)
+    public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request);
 
@@ -127,27 +105,17 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareStep(CartInterface $cart, Request $request)
+    public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return [
             'guestForm' => $this->createForm($request)->createView(),
         ];
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return FormInterface
-     */
-    private function createForm(Request $request)
+    private function createForm(Request $request): FormInterface
     {
-        $view = $this->formFactory->createNamed('guest', GuestRegistrationType::class);
+        $view = $this->formFactory->createNamed('coreshop_guest', GuestRegistrationType::class);
 
-        $handledView = $view->handleRequest($request);
-
-        return $handledView;
+        return $view->handleRequest($request);
     }
 }

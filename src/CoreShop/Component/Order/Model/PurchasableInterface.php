@@ -10,32 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
+use CoreShop\Component\Currency\Model\Money;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
-interface PurchasableInterface extends StorageListProductInterface
+interface PurchasableInterface
 {
     /**
      * @return int
      */
     public function getId();
 
-    /**
-     * @param string|null $language
-     *
-     * @return string
-     */
-    public function getName($language = null);
+    public function getName($language = null): ?string;
 
-    /**
-     * @return int
-     */
-    public function getWholesalePrice();
+    public function getWholesaleBuyingPrice(): ?Money;
 
-    /**
-     * @return TaxRuleGroupInterface
-     */
-    public function getTaxRule();
+    public function getTaxRule(): ?TaxRuleGroupInterface;
 }

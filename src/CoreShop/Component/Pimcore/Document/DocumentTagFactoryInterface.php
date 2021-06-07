@@ -10,9 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Document;
 
-use Pimcore\Model\Document\Tag\TagInterface;
+use Pimcore\Model\Document\Editable\EditableInterface;
 
 interface DocumentTagFactoryInterface
 {
@@ -20,7 +22,7 @@ interface DocumentTagFactoryInterface
      * @param string $type
      * @param array  $params
      *
-     * @return TagInterface
+     * @return EditableInterface
      */
-    public function create($type, $params);
+    public function create(string $type, array $params): EditableInterface;
 }

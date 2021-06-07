@@ -10,22 +10,26 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver;
 
+use CoreShop\Bundle\ResourceBundle\Controller\EventDispatcherInterface;
+use CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactoryInterface;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
+use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\TranslatableFactoryInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 abstract class AbstractDriver implements DriverInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ContainerBuilder $container, MetadataInterface $metadata)
+    public function load(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $this->setClassesParameters($container, $metadata);
 
@@ -41,11 +45,7 @@ abstract class AbstractDriver implements DriverInterface
         }
     }
 
-    /**
-     * @param ContainerBuilder  $container
-     * @param MetadataInterface $metadata
-     */
-    protected function setClassesParameters(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function setClassesParameters(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         if ($metadata->hasClass('model')) {
             $container->setParameter(sprintf('%s.model.%s.class', $metadata->getApplicationName(), $metadata->getName()), $metadata->getClass('model'));
@@ -61,11 +61,7 @@ abstract class AbstractDriver implements DriverInterface
         }
     }
 
-    /**
-     * @param ContainerBuilder  $container
-     * @param MetadataInterface $metadata
-     */
-    protected function addController(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addController(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $definition = new Definition($metadata->getClass('admin_controller'));
         $definition
@@ -75,21 +71,17 @@ abstract class AbstractDriver implements DriverInterface
                 new Reference($metadata->getServiceId('repository')),
                 new Reference($metadata->getServiceId('factory')),
                 new Reference($metadata->getServiceId('manager')),
-                new Reference('coreshop.resource_controller.view_handler'),
-                new Reference('coreshop.resource_controller.event_dispatcher'),
-                new Reference('coreshop.resource_controller.form_factory'),
-                new Reference('coreshop.resource.helper.form_error_serializer'),
+                new Reference(ViewHandlerInterface::class),
+                new Reference(EventDispatcherInterface::class),
+                new Reference(ResourceFormFactoryInterface::class),
+                new Reference(ErrorSerializer::class),
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')]);
 
         $container->setDefinition($metadata->getServiceId('admin_controller'), $definition);
     }
 
-    /**
-     * @param ContainerBuilder  $container
-     * @param MetadataInterface $metadata
-     */
-    protected function addFactory(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addFactory(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $factoryClass = $metadata->getClass('factory');
         $modelClass = $metadata->getClass('model');
@@ -108,32 +100,29 @@ abstract class AbstractDriver implements DriverInterface
         $definition->setArguments($definitionArgs);
 
         $container->setDefinition($metadata->getServiceId('factory'), $definition);
+
+        if (method_exists($container, 'registerAliasForArgument')) {
+            foreach (class_implements($factoryClass) as $typehintClass) {
+                $container->registerAliasForArgument(
+                    $metadata->getServiceId('factory'),
+                    $typehintClass,
+                    $metadata->getHumanizedName() . ' factory'
+                );
+            }
+        }
     }
 
-    /**
-     * @param MetadataInterface $metadata
-     *
-     * @return Definition
-     */
-    protected function getMetadataDefinition(MetadataInterface $metadata)
+    protected function getMetadataDefinition(MetadataInterface $metadata): Definition
     {
         $definition = new Definition(Metadata::class);
         $definition
-            ->setFactory([new Reference('coreshop.resource_registry'), 'get'])
+            ->setFactory([new Reference(RegistryInterface::class), 'get'])
             ->setArguments([$metadata->getAlias()]);
 
         return $definition;
     }
 
-    /**
-     * @param ContainerBuilder  $container
-     * @param MetadataInterface $metadata
-     */
-    abstract protected function addManager(ContainerBuilder $container, MetadataInterface $metadata);
+    abstract protected function addManager(ContainerBuilder $container, MetadataInterface $metadata): void;
 
-    /**
-     * @param ContainerBuilder  $container
-     * @param MetadataInterface $metadata
-     */
-    abstract protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata);
+    abstract protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata): void;
 }

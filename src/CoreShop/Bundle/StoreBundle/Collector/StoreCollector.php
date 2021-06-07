@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\StoreBundle\Collector;
 
 use CoreShop\Component\Store\Context\StoreContextInterface;
@@ -21,16 +23,8 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class StoreCollector extends DataCollector
 {
-    /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
+    private StoreContextInterface $storeContext;
 
-    /**
-     * @param StoreRepositoryInterface $storeRepository
-     * @param StoreContextInterface    $storeContext
-     * @param bool                     $storeChangeSupport
-     */
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         StoreContextInterface $storeContext,
@@ -45,10 +39,7 @@ final class StoreCollector extends DataCollector
         ];
     }
 
-    /**
-     * @return StoreInterface
-     */
-    public function getStore()
+    public function getStore(): ?StoreInterface
     {
         return $this->data['store'];
     }
@@ -56,7 +47,7 @@ final class StoreCollector extends DataCollector
     /**
      * @return StoreInterface[]
      */
-    public function getStores()
+    public function getStores(): array
     {
         return $this->data['stores'];
     }
@@ -64,15 +55,12 @@ final class StoreCollector extends DataCollector
     /**
      * @return bool
      */
-    public function isStoreChangeSupported()
+    public function isStoreChangeSupported(): bool
     {
         return $this->data['store_change_support'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         try {
             $this->data['store'] = $this->storeContext->getStore();
@@ -81,18 +69,12 @@ final class StoreCollector extends DataCollector
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop.store_collector';
     }

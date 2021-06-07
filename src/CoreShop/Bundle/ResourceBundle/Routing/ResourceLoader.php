@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Routing;
 
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
@@ -22,29 +24,15 @@ use Symfony\Component\Yaml\Yaml;
 
 final class ResourceLoader implements LoaderInterface
 {
-    /**
-     * @var RegistryInterface
-     */
-    private $modelRegistry;
+    private RegistryInterface $modelRegistry;
+    private RouteFactoryInterface $routeFactory;
 
-    /**
-     * @var RouteFactoryInterface
-     */
-    private $routeFactory;
-
-    /**
-     * @param RegistryInterface     $modelRegistry
-     * @param RouteFactoryInterface $routeFactory
-     */
     public function __construct(RegistryInterface $modelRegistry, RouteFactoryInterface $routeFactory)
     {
         $this->modelRegistry = $modelRegistry;
         $this->routeFactory = $routeFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($resource, $type = null)
     {
         $processor = new Processor();
@@ -79,6 +67,9 @@ final class ResourceLoader implements LoaderInterface
                 'path' => $route,
                 'action' => $route,
                 'methods' => $methods,
+                'options' => [
+                    'expose' => $configuration['expose']
+                ]
             ];
         }
 
@@ -97,63 +88,38 @@ final class ResourceLoader implements LoaderInterface
         $rootPath .= '/' . $metadata->getPluralName() . '/';
 
         foreach ($routesToGenerate as $route) {
-            $indexRoute = $this->createRoute($metadata, $configuration, $rootPath . $route['path'], $route['action'], $route['methods']);
+            $indexRoute = $this->createRoute($metadata, $configuration, $rootPath . $route['path'], $route['action'], $route['methods'], $route['options'] ?? []);
             $routes->add($this->getRouteName($metadata, $configuration, $route['action']), $indexRoute);
         }
 
         return $routes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($resource, $type = null)
+    public function supports($resource, $type = null): bool
     {
         return 'coreshop.resources' === $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResolver()
     {
         // Intentionally left blank.
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setResolver(LoaderResolverInterface $resolver)
     {
         // Intentionally left blank.
     }
 
-    /**
-     * @param MetadataInterface $metadata
-     * @param array             $configuration
-     * @param string            $path
-     * @param string            $actionName
-     * @param array             $methods
-     *
-     * @return Route
-     */
-    private function createRoute(MetadataInterface $metadata, array $configuration, $path, $actionName, array $methods)
+    private function createRoute(MetadataInterface $metadata, array $configuration, $path, $actionName, array $methods, array $options): Route
     {
         $defaults = [
             '_controller' => $metadata->getServiceId('admin_controller') . sprintf(':%sAction', $actionName),
         ];
 
-        return $this->routeFactory->createRoute($path, $defaults, [], [], '', [], $methods);
+        return $this->routeFactory->createRoute($path, $defaults, [], $options, '', [], $methods);
     }
 
-    /**
-     * @param MetadataInterface $metadata
-     * @param array             $configuration
-     * @param string            $actionName
-     *
-     * @return string
-     */
-    private function getRouteName(MetadataInterface $metadata, array $configuration, $actionName)
+    private function getRouteName(MetadataInterface $metadata, array $configuration, $actionName): string
     {
         $sectionPrefix = isset($configuration['section']) ? $configuration['section'] . '_' : '';
 

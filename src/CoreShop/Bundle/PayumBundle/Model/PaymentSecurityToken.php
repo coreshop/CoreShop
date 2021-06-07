@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -53,16 +55,13 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getId()
     {
         return $this->hash;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDetails($details)
     {
         $this->details = $details;
@@ -78,65 +77,41 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
         return $this->details;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHash()
     {
         return $this->hash;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setHash($hash)
     {
         $this->hash = $hash;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargetUrl()
     {
         return $this->targetUrl;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTargetUrl($targetUrl)
     {
         $this->targetUrl = $targetUrl;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAfterUrl()
     {
         return $this->afterUrl;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setAfterUrl($afterUrl)
     {
         $this->afterUrl = $afterUrl;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGatewayName()
     {
         return $this->gatewayName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setGatewayName($gatewayName)
     {
         $this->gatewayName = $gatewayName;

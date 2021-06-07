@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Calculator;
 
+use CoreShop\Component\Order\Exception\NoPurchasablePriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface PurchasablePriceCalculatorInterface
@@ -21,7 +24,9 @@ interface PurchasablePriceCalculatorInterface
      * @param array                $context
      * @param bool                 $includingDiscounts
      *
+     * @throws NoPurchasablePriceFoundException
+     *
      * @return int
      */
-    public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false);
+    public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int;
 }

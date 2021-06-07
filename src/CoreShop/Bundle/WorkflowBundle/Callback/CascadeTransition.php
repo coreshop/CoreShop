@@ -10,38 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\Callback;
 
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class CascadeTransition
 {
-    /**
-     * @var StateMachineManager
-     */
-    protected $stateMachineManager;
+    protected StateMachineManagerInterface $stateMachineManager;
 
-    /**
-     * @param StateMachineManager $stateMachineManager
-     */
-    public function __construct(StateMachineManager $stateMachineManager)
+    public function __construct(StateMachineManagerInterface $stateMachineManager)
     {
         $this->stateMachineManager = $stateMachineManager;
     }
 
-    /**
-     * @param Event $event
-     */
-
-    /**
-     * @param \Traversable|array $objects
-     * @param Event              $event        Event
-     * @param string|null        $transition
-     * @param string|null        $workflowName
-     * @param bool               $soft
-     */
-    public function apply($objects, Event $event, $transition = null, $workflowName = null, $soft = true)
+    public function apply($objects, Event $event, $transition = null, $workflowName = null, $soft = true): void
     {
         if (!is_array($objects) && !$objects instanceof \Traversable) {
             $objects = [$objects];

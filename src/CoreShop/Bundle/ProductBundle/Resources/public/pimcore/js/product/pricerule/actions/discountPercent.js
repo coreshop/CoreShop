@@ -30,7 +30,7 @@ coreshop.product.pricerule.actions.discountPercent = Class.create(coreshop.rules
             value: percentValue,
             minValue: 0,
             maxValue: 100,
-            decimalPrecision: 0
+            decimalPrecision: 2
         });
         this.form = new Ext.form.Panel({
             items: [

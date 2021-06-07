@@ -16,8 +16,8 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_filters',
 
-    url: {
-        save: '/admin/coreshop/filters/save'
+    routing: {
+        save: 'coreshop_filter_save'
     },
 
     indexFieldsStore: null,
@@ -42,8 +42,8 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
     },
 
     getItems: function () {
-        this.preConditions = new coreshop.filter.condition(this, this.parentPanel.conditions, 'preConditions', 'pre_conditions');
-        this.conditions = new coreshop.filter.condition(this, this.parentPanel.conditions, 'conditions');
+        this.preConditions = new coreshop.filter.condition(this, this.parentPanel.pre_conditions, 'preConditions', 'pre_conditions');
+        this.conditions = new coreshop.filter.condition(this, this.parentPanel.user_conditions, 'conditions');
         //this.similarities = new coreshop.filter.similarity(this, this.parentPanel.similarities);
 
         var items = [
@@ -56,13 +56,13 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
         // add saved conditions
         if (this.data.preConditions) {
             Ext.each(this.data.preConditions, function (condition, index) {
-                this.preConditions.addCondition(condition.type, condition, index);
+                this.preConditions.addCondition(condition.type, condition, index, false);
             }.bind(this));
         }
 
         if (this.data.conditions) {
             Ext.each(this.data.conditions, function (condition, index) {
-                this.conditions.addCondition(condition.type, condition, index);
+                this.conditions.addCondition(condition.type, condition, index, false);
             }.bind(this));
         }
 
@@ -85,7 +85,7 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
     getFieldsForIndex: function (forceReload) {
         if (!this.indexFieldsStore) {
             var proxy = new Ext.data.HttpProxy({
-                url: '/admin/coreshop/filters/get-fields-for-index'
+                url: Routing.generate('coreshop_filter_getFieldsForIndex')
             });
 
             var reader = new Ext.data.JsonReader({}, [

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -20,23 +22,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class IndexChoiceType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $indexRepository;
+    private RepositoryInterface $indexRepository;
 
-    /**
-     * @param RepositoryInterface $indexRepository
-     */
     public function __construct(RepositoryInterface $indexRepository)
     {
         $this->indexRepository = $indexRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -49,18 +42,12 @@ final class IndexChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_choice';
     }

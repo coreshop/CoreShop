@@ -1,7 +1,7 @@
 default:
     suites:
         domain_category:
-            contexts_services:
+            contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
 
@@ -20,4 +20,4 @@ default:
                 - coreshop.behat.context.domain.category
                 - coreshop.behat.context.domain.link_generator
             filters:
-                tags: "@category"
+                tags: "@domain && @category"

@@ -35,6 +35,7 @@ coreshop.notification.rule.actions.storeMail = Class.create(coreshop.notificatio
                     type: 'document',
                     subtype: 'email'
                 }, {
+                    classes: [],
                     documentsAllowed: true,
                     documentTypes: [{
                         documentTypes: 'email'
@@ -77,7 +78,7 @@ coreshop.notification.rule.actions.storeMail = Class.create(coreshop.notificatio
             checked: this.data ? this.data.doNotSendToDesignatedRecipient : false
         });
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             items: [
                 {
                     xtype: 'tabpanel',

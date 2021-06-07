@@ -10,11 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Doctrine\ORM;
 
-use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Component\Product\Repository\ProductPriceRuleRepositoryInterface;
 
-class ProductPriceRuleRepository extends RuleRepository implements ProductPriceRuleRepositoryInterface
+class ProductPriceRuleRepository extends PriceRuleRepository implements ProductPriceRuleRepositoryInterface
 {
 }

@@ -15,8 +15,8 @@ coreshop.taxrulegroup.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_tax_rule_groups',
 
-    url: {
-        save: '/admin/coreshop/tax_rule_groups/save'
+    routing: {
+        save: 'coreshop_tax_rule_group_save'
     },
 
     getItems: function () {

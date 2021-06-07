@@ -15,375 +15,39 @@ coreshop.core.resource = Class.create(coreshop.resource, {
     initialize: function () {
         coreshop.broker.addListener('pimcore.ready', this.pimcoreReady, this);
         coreshop.broker.addListener('pimcore.postOpenObject', this.postOpenObject, this);
+        coreshop.broker.fireEvent('resource.register', 'coreshop.core', this);
+    },
+
+    openResource: function (item) {
+        if (item === 'about') {
+            coreshop.helpers.showAbout();
+        } else if (item === 'settings') {
+            this.openSettings();
+        } else if (item === 'customer_to_company_assign_to_new') {
+            this.openAssignCustomerToNewCompany();
+        } else if (item === 'customer_to_company_assign_to_existing') {
+            this.openAssignCustomerToExistingCompany();
+        }
     },
 
     pimcoreReady: function (params, broker) {
-        Ext.get('pimcore_status').insertHtml('beforeEnd', '<div id="coreshop_status" class="loading" data-menu-tooltip="' + t('coreshop_loading') + '"></div>');
-
         Ext.Ajax.request({
-            url: '/admin/coreshop/settings/get-settings',
+            url: Routing.generate('coreshop_admin_settings_get_settings'),
             success: function (response) {
-                resp = Ext.decode(response.responseText);
-
-                this.settings = resp;
+                this.settings = Ext.decode(response.responseText);
                 coreshop.settings = this.settings;
-
                 this.initializeCoreShop();
             }.bind(this)
         });
     },
 
     initializeCoreShop: function () {
-        var self = this;
-        var coreShopMenuItems = [];
-        var user = pimcore.globalmanager.get('user');
-
-        var toolbar = pimcore.globalmanager.get('layout_toolbar');
-
-        if (user.isAllowed('coreshop_permission_order_detail')) {
-            coreShopMenuItems.push({
-                text: t('coreshop_order_by_number'),
-                iconCls: 'coreshop_icon_order',
-                handler: coreshop.order.helper.openSaleByNumberDialog.bind(this, 'order')
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_quote_detail')) {
-            coreShopMenuItems.push({
-                text: t('coreshop_quote_by_number'),
-                iconCls: 'coreshop_icon_quote',
-                handler: coreshop.order.helper.openSaleByNumberDialog.bind(this, 'quote')
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_settings')) {
-            coreShopMenuItems.push({
-                text: t('coreshop_settings'),
-                iconCls: 'coreshop_icon_settings',
-                handler: this.openSettings
-            });
-        }
-
-        var priceRulesMenu = [];
-
-        if (user.isAllowed('coreshop_permission_cart_price_rule')) {
-            priceRulesMenu.push({
-                text: t('coreshop_cart_pricerules'),
-                iconCls: 'coreshop_icon_price_rule',
-                handler: this.openPriceRules
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_product_price_rule')) {
-            priceRulesMenu.push({
-                text: t('coreshop_product_pricerules'),
-                iconCls: 'coreshop_icon_price_rule',
-                handler: this.openProductPriceRules
-            });
-        }
-
-        if (priceRulesMenu.length > 0) {
-            coreShopMenuItems.push({
-                text: t('coreshop_pricerules'),
-                iconCls: 'coreshop_icon_price_rule',
-                hideOnClick: false,
-                menu: {
-                    cls: 'pimcore_navigation_flyout',
-                    shadow: false,
-                    items: priceRulesMenu
-                }
-            });
-        }
-
-        var localizationMenu = [];
-
-        if (user.isAllowed('coreshop_permission_country')) {
-            localizationMenu.push({
-                text: t('coreshop_countries'),
-                iconCls: 'coreshop_icon_country',
-                handler: this.openCountryList
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_state')) {
-            localizationMenu.push({
-                text: t('coreshop_states'),
-                iconCls: 'coreshop_icon_state',
-                handler: this.openStateList
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_currency')) {
-            localizationMenu.push({
-                text: t('coreshop_currencies'),
-                iconCls: 'coreshop_icon_currency',
-                handler: this.openCurrencyList
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_exchange_rate')) {
-            localizationMenu.push({
-                text: t('coreshop_exchange_rates'),
-                iconCls: 'coreshop_icon_exchange_rate',
-                handler: this.openExchangeRates
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_zone')) {
-            localizationMenu.push({
-                text: t('coreshop_zones'),
-                iconCls: 'coreshop_icon_zone',
-                handler: this.openZoneList
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_tax_item')) {
-            localizationMenu.push({
-                text: t('coreshop_taxes'),
-                iconCls: 'coreshop_icon_taxes',
-                handler: this.openTaxes
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_tax_rule_group')) {
-            localizationMenu.push({
-                text: t('coreshop_taxrulegroups'),
-                iconCls: 'coreshop_icon_tax_rule_groups',
-                handler: this.openTaxRuleGroups
-            });
-        }
-
-        if (localizationMenu.length > 0) {
-            coreShopMenuItems.push({
-                text: t('coreshop_localization'),
-                iconCls: 'coreshop_icon_localization',
-                hideOnClick: false,
-                menu: {
-                    cls: 'pimcore_navigation_flyout',
-                    shadow: false,
-                    items: localizationMenu
-                }
-            });
-        }
-
-        var ordersMenu = [];
-
-        if (user.isAllowed('coreshop_permission_order_list')) {
-            ordersMenu.push({
-                text: t('coreshop_orders'),
-                iconCls: 'coreshop_icon_orders',
-                handler: this.openOrders
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_order_create')) {
-            ordersMenu.push({
-                text: t('coreshop_order_create'),
-                iconCls: 'coreshop_icon_order_create',
-                handler: this.openCreateOrder
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_quote_list')) {
-            ordersMenu.push({
-                text: t('coreshop_quotes'),
-                iconCls: 'coreshop_icon_quotes',
-                handler: this.openQuotes
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_quote_create')) {
-            ordersMenu.push({
-                text: t('coreshop_quote_create'),
-                iconCls: 'coreshop_icon_quote_create',
-                handler: this.openCreateQuote
-            });
-        }
-
-        if (ordersMenu.length > 0) {
-            coreShopMenuItems.push({
-                text: t('coreshop_order'),
-                iconCls: 'coreshop_icon_order',
-                hideOnClick: false,
-                menu: {
-                    cls: 'pimcore_navigation_flyout',
-                    shadow: false,
-                    items: ordersMenu
-                }
-            });
-        }
-
-        var carriersMenu = [];
-
-        if (user.isAllowed('coreshop_permission_carrier')) {
-            carriersMenu.push({
-                text: t('coreshop_carriers'),
-                iconCls: 'coreshop_icon_carriers',
-                handler: this.openCarriersList
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_shipping_rule')) {
-            carriersMenu.push({
-                text: t('coreshop_carriers_shipping_rules'),
-                iconCls: 'coreshop_icon_carrier_shipping_rule',
-                handler: this.openCarriersShippingRules
-            });
-        }
-
-        if (carriersMenu.length > 0) {
-            coreShopMenuItems.push({
-                text: t('coreshop_shipping'),
-                iconCls: 'coreshop_icon_shipping',
-                hideOnClick: false,
-                menu: {
-                    shadow: false,
-                    cls: 'pimcore_navigation_flyout',
-                    items: carriersMenu
-                }
-            });
-        }
-
-        var productsMenu = [];
-
-        if (user.isAllowed('coreshop_permission_index')) {
-            productsMenu.push({
-                text: t('coreshop_indexes'),
-                iconCls: 'coreshop_icon_indexes',
-                handler: this.openIndexes
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_filter')) {
-            productsMenu.push({
-                text: t('coreshop_filters'),
-                iconCls: 'coreshop_icon_filters',
-                handler: this.openProductFilters
-            });
-        }
-
-        if (productsMenu.length > 0) {
-            coreShopMenuItems.push({
-                text: t('coreshop_product'),
-                iconCls: 'coreshop_icon_product',
-                hideOnClick: false,
-                menu: {
-                    cls: 'pimcore_navigation_flyout',
-                    shadow: false,
-                    items: productsMenu
-                }
-            });
-        }
-
-        /*var messagingMenu = [];
-
-         if (user.isAllowed('coreshop_permission_messaging_thread')) {
-         messagingMenu.push({
-         text: t('coreshop_messaging_thread'),
-         iconCls: 'coreshop_icon_messaging_thread',
-         handler: this.openMessagingThread
-         });
-         }
-
-         if (user.isAllowed('coreshop_permission_messaging_contact')) {
-         messagingMenu.push({
-         text: t('coreshop_messaging_contact'),
-         iconCls: 'coreshop_icon_messaging_contact',
-         handler: this.openMessagingContact
-         });
-         }
-
-         if (user.isAllowed('coreshop_permission_messaging_thread_state')) {
-         messagingMenu.push({
-         text: t('coreshop_messaging_threadstate'),
-         iconCls: 'coreshop_icon_messaging_thread_state',
-         handler: this.openMessagingThreadState
-         });
-         }
-
-         if (messagingMenu.length > 0) {
-         coreShopMenuItems.push({
-         text: t('coreshop_messaging'),
-         iconCls: 'coreshop_icon_messaging',
-         hideOnClick: false,
-         menu: {
-         cls: 'pimcore_navigation_flyout',
-         shadow: false,
-         items: messagingMenu
-         }
-         });
-         }*/
-
-        if (user.isAllowed('coreshop_permission_notification')) {
-            coreShopMenuItems.push({
-                text: t('coreshop_notification_rules'),
-                iconCls: 'coreshop_icon_notification_rule',
-                handler: this.openNotificationRules
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_payment_provider')) {
-            coreShopMenuItems.push({
-                text: t('coreshop_payment_providers'),
-                iconCls: 'coreshop_icon_payment_provider',
-                handler: this.openPaymentProviders
-            });
-        }
-
-        if (user.isAllowed('coreshop_permission_store')) {
-            coreShopMenuItems.push({
-                text: t('coreshop_stores'),
-                iconCls: 'coreshop_icon_store',
-                handler: this.openStores
-            });
-        }
-
-        coreShopMenuItems.push({
-            text: 'ABOUT CoreShop &reg;',
-            iconCls: 'coreshop_icon_logo',
-            handler: function () {
-                coreshop.helpers.showAbout();
-            }
-        });
-
-        if (coreShopMenuItems.length > 0) {
-            this._menu = new Ext.menu.Menu({
-                items: coreShopMenuItems,
-                shadow: false,
-                cls: 'pimcore_navigation_flyout'
-            });
-
-            Ext.get('pimcore_navigation').down('ul').insertHtml('beforeEnd', '<li id="pimcore_menu_coreshop" data-menu-tooltip="' + t('coreshop') + '" class="pimcore_menu_item pimcore_menu_needs_children">' +
-                '<svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 87">\n' +
-                '    <defs>\n' +
-                '        <style>.cls-1{fill:#cd1017;fill-rule:evenodd;}</style>\n' +
-                '    </defs>\n' +
-                '    <title>coreshopWon rgb</title>\n' +
-                '    <path class="cls-1"\n' +
-                '          d="M48.57,50.58,38,56.69,14.31,43V29.82L38,16.15l31.87,18.4V25.1L38,6.7,6.13,25.1V47.73L38,66.13,56.75,55.3V45.86l-8.18-4.72v9.44ZM27.43,36.42,38,30.31,61.69,44V57.18L38,70.85,6.13,52.45V61.9L38,80.3,69.87,61.9V39.27L38,20.87,19.25,31.7v9.44l8.18,4.72V36.42Z"/>\n' +
-                '</svg>\n' +
-                '</li>');
-            Ext.get('pimcore_menu_coreshop').on('mousedown', function (e, el) {
-                toolbar.showSubMenu.call(this._menu, e, el);
-            }.bind(this));
-
-            coreshop.broker.fireEvent('coreShop.menu.initialized', this, this._menu);
-        }
-
-        Ext.get('coreshop_status').set(
-            {
-                'data-menu-tooltip': t('coreshop_loaded').format(coreshop.settings.bundle.version),
-                class: ''
-            }
-        );
-
-        pimcore.helpers.initMenuTooltips();
+        new coreshop.menu.coreshop.main();
 
         //Add Report Definition
         pimcore.report.broker.addGroup('coreshop', 'coreshop_reports', 'coreshop_icon_report');
-        //pimcore.report.broker.addGroup('coreshop_monitoring', 'coreshop_monitoring', 'coreshop_icon_monitoring');
 
-        Ext.each(coreshop.settings.reports, function(report) {
+        Ext.each(coreshop.settings.reports, function (report) {
             if (coreshop.report.reports.hasOwnProperty(report)) {
                 report = coreshop.report.reports[report];
 
@@ -397,87 +61,28 @@ coreshop.core.resource = Class.create(coreshop.resource, {
         });
     },
 
-    addPluginMenu: function (menu) {
-        if (!this._pluginsMenu) {
-            this._pluginsMenu = this._menu.add({
-                text: t('coreshop_plugins'),
-                iconCls: 'coreshop_icon_plugins',
-                hideOnClick: false,
-                menu: {
-                    shadow: false,
-                    cls: 'pimcore_navigation_flyout',
-                    items: []
-                }
-            });
-        }
+    postOpenObject: function (tab) {
 
-        this._pluginsMenu.menu.add(menu);
-    },
+        switch (tab.data.general.o_className) {
+            case coreshop.class_map.coreshop.order:
+                this._enrichOrderObject(tab);
+                break;
 
-    postOpenObject: function (tab, type) {
-         if (tab.data.general.o_className === coreshop.class_map.coreshop.order) {
-            var orderMoreButtons = [];
+            case coreshop.class_map.coreshop.order_invoice:
+                this._enrichInvoiceObject(tab);
+                break;
 
-            orderMoreButtons.push(
-                {
-                    text: t('coreshop_add_payment'),
-                    scale: 'medium',
-                    iconCls: 'coreshop_icon_currency',
-                    handler: function () {
-                        coreshop.order.order.createPayment.showWindow(tab.id, tab.data.data, function () {
-                            tab.reload(tab.data.currentLayoutId);
-                        });
-                    }.bind(this, tab)
-                }
-            );
+            case coreshop.class_map.coreshop.order_shipment:
+                this._enrichShipmentObject(tab);
+                break;
 
-            orderMoreButtons.push({
-                text: t('open'),
-                scale: 'medium',
-                iconCls: 'coreshop_icon_order',
-                handler: function () {
-                    coreshop.order.helper.openOrder(tab.id);
-                }.bind(this, tab)
-            });
+            case coreshop.class_map.coreshop.product:
+                this._enrichProductObject(tab);
+                break;
 
-            if (orderMoreButtons.length > 0) {
-                tab.toolbar.insert(tab.toolbar.items.length,
-                    '-'
-                );
-
-                tab.toolbar.insert(tab.toolbar.items.length,
-                    {
-                        text: t('coreshop_more'),
-                        scale: 'medium',
-                        iconCls: 'coreshop_icon_logo',
-                        menu: orderMoreButtons
-                    }
-                );
-            }
-        } else if (tab.data.general.o_className === coreshop.class_map.coreshop.order_invoice) {
-            var resetChangesFunction = tab.resetChanges;
-
-            var renderTab = new coreshop.invoice.render(tab);
-
-            tab.tabbar.add(renderTab.getLayout());
-
-            tab.resetChanges = function () {
-                resetChangesFunction.call(tab);
-
-                renderTab.reload();
-            };
-        } else if (tab.data.general.o_className === coreshop.class_map.coreshop.order_shipment) {
-            var resetChangesFunction = tab.resetChanges;
-
-            var renderTab = new coreshop.shipment.render(tab);
-
-            tab.tabbar.add(renderTab.getLayout());
-
-            tab.resetChanges = function () {
-                resetChangesFunction.call(tab);
-
-                renderTab.reload();
-            };
+            case coreshop.class_map.coreshop.category:
+                this._enrichCategoryObject(tab);
+                break;
         }
 
         pimcore.layout.refresh();
@@ -486,121 +91,122 @@ coreshop.core.resource = Class.create(coreshop.resource, {
     openSettings: function () {
         try {
             pimcore.globalmanager.get('coreshop_settings').activate();
-        }
-        catch (e) {
-            //console.log(e);
+        } catch (e) {
             pimcore.globalmanager.add('coreshop_settings', new coreshop.core.settings());
         }
     },
 
-    openCurrencyList: function () {
-        coreshop.global.resource.open('coreshop.currency', 'currency');
+    openAssignCustomerToNewCompany: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_customer_to_new_company_assignment').activate();
+        } catch (e) {
+            pimcore.globalmanager.add('coreshop_customer_to_new_company_assignment', new coreshop.core.customer.customerToCompanyTransformer());
+        }
     },
 
-    openExchangeRates: function () {
-        coreshop.global.resource.open('coreshop.currency', 'exchange_rate');
+    openAssignCustomerToExistingCompany: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_customer_to_existing_company_assignment').activate();
+        } catch (e) {
+            pimcore.globalmanager.add('coreshop_customer_to_existing_company_assignment', new coreshop.core.customer.customerToCompanyAssigner());
+        }
     },
 
-    openZoneList: function () {
-        coreshop.global.resource.open('coreshop.address', 'zone');
+    _enrichOrderObject: function (tab) {
+        var orderMoreButtons = [];
+
+        orderMoreButtons.push({
+            text: t('coreshop_add_payment'),
+            scale: 'medium',
+            iconCls: 'coreshop_icon_currency',
+            handler: function () {
+                coreshop.order.order.createPayment.showWindow(tab.id, tab.data.data, function () {
+                    tab.reload(tab.data.currentLayoutId);
+                });
+            }.bind(this, tab)
+        });
+
+        orderMoreButtons.push({
+            text: t('open'),
+            scale: 'medium',
+            iconCls: 'coreshop_icon_order',
+            handler: function () {
+                coreshop.order.helper.openOrder(tab.id);
+            }.bind(this, tab)
+        });
+
+        tab.toolbar.insert(tab.toolbar.items.length, '-');
+
+        tab.toolbar.insert(tab.toolbar.items.length, {
+            text: t('coreshop_more'),
+            scale: 'medium',
+            iconCls: 'coreshop_icon_logo',
+            menu: orderMoreButtons
+        });
+
     },
 
-    openCountryList: function () {
-        coreshop.global.resource.open('coreshop.address', 'country');
+    _enrichInvoiceObject: function (tab) {
+        var resetChangesFunction = tab.resetChanges,
+            renderTab = new coreshop.invoice.render(tab);
+
+        tab.tabbar.add(renderTab.getLayout());
+
+        tab.resetChanges = function () {
+            resetChangesFunction.call(tab);
+
+            renderTab.reload();
+        };
     },
 
-    openStateList: function () {
-        coreshop.global.resource.open('coreshop.address', 'state');
+    _enrichShipmentObject: function (tab) {
+        var resetChangesFunction = tab.resetChanges,
+            renderTab = new coreshop.shipment.render(tab);
+
+        tab.tabbar.add(renderTab.getLayout());
+
+        tab.resetChanges = function () {
+            resetChangesFunction.call(tab);
+
+            renderTab.reload();
+        };
     },
 
-    openCarriersList: function () {
-        coreshop.global.resource.open('coreshop.shipping', 'carrier');
+    _enrichCategoryObject: function (tab) {
+        tab.tabbar.insert(1, new coreshop.core.object.store_preview(tab).getLayout());
     },
 
-    openCarriersShippingRules: function () {
-        coreshop.global.resource.open('coreshop.shipping', 'shipping_rules');
-    },
+    _enrichProductObject: function (tab) {
+        var productMoreButtons = [];
 
-    openTaxes: function () {
-        coreshop.global.resource.open('coreshop.taxation', 'tax_item');
-    },
+        tab.tabbar.insert(1, new coreshop.core.object.store_preview(tab).getLayout());
 
-    openTaxRuleGroups: function () {
-        coreshop.global.resource.open('coreshop.taxation', 'tax_rule_group');
-    },
+        if (tab.data.general.o_type === 'object') {
+            productMoreButtons.push({
+                text: t('coreshop_solidify_variant_unit_definition_data'),
+                scale: 'medium',
+                iconCls: 'coreshop_icon_product_unit',
+                handler: function () {
+                    new coreshop.product.workflow.variantUnitDefinitionSolidifier(tab.data, tab.tab);
+                }.bind(this, tab)
+            });
+        }
 
-    openOrders: function () {
-        coreshop.global.resource.open('coreshop.order', 'orders');
-    },
+        if (productMoreButtons.length === 0) {
+            return;
+        }
 
-    openCreateOrder: function () {
-        coreshop.global.resource.open('coreshop.order', 'create_order');
-    },
+        tab.toolbar.insert(tab.toolbar.items.length, '-');
 
-    openQuotes: function () {
-        coreshop.global.resource.open('coreshop.order', 'quotes');
-    },
-
-    openCreateQuote: function () {
-        coreshop.global.resource.open('coreshop.order', 'create_quote');
-    },
-
-    openPriceRules: function () {
-        coreshop.global.resource.open('coreshop.order', 'cart_price_rule');
-    },
-
-    openIndexes: function () {
-        coreshop.global.resource.open('coreshop.index', 'index');
-    },
-
-    openProductFilters: function () {
-        coreshop.global.resource.open('coreshop.index', 'filter');
-    },
-
-    /*openMessagingContact: function () {
-     try {
-     pimcore.globalmanager.get('coreshop_messaging_contacts_panel').activate();
-     }
-     catch (e) {
-     pimcore.globalmanager.add('coreshop_messaging_contacts_panel', new pimcore.plugin.coreshop.messaging.contact.panel());
-     }
-     },
-
-     openMessagingThreadState: function () {
-     try {
-     pimcore.globalmanager.get('coreshop_messaging_thread_state_panel').activate();
-     }
-     catch (e) {
-     pimcore.globalmanager.add('coreshop_messaging_thread_state_panel', new pimcore.plugin.coreshop.messaging.threadstate.panel());
-     }
-     },
-
-     openMessagingThread: function () {
-     try {
-     pimcore.globalmanager.get('coreshop_messaging_thread_panel').activate();
-     }
-     catch (e) {
-     pimcore.globalmanager.add('coreshop_messaging_thread_panel', new pimcore.plugin.coreshop.messaging.thread.panel());
-     }
-     },*/
-
-    openProductPriceRules: function () {
-        coreshop.global.resource.open('coreshop.product', 'product_price_rule');
-    },
-
-    openStores: function () {
-        coreshop.global.resource.open('coreshop.store', 'store');
-    },
-
-    openNotificationRules: function () {
-        coreshop.global.resource.open('coreshop.notification', 'notification_rule');
-    },
-
-    openPaymentProviders: function () {
-        coreshop.global.resource.open('coreshop.payment', 'payment_provider');
+        tab.toolbar.insert(tab.toolbar.items.length, {
+            text: t('coreshop_more'),
+            scale: 'medium',
+            iconCls: 'coreshop_icon_logo',
+            menu: productMoreButtons
+        });
     }
 });
 
-coreshop.broker.addListener('pimcore.ready', function() {
+coreshop.broker.addListener('pimcore.ready', function () {
     new coreshop.core.resource();
 });

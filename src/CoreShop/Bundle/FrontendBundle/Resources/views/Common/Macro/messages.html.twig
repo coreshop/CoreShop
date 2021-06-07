@@ -1,5 +1,5 @@
 {% macro default(message, type, translate = true) %}
-    <div class="alert alert-{{ type|default('') }}" role="alert">
+    <div class="coreshop-flash-message alert alert-{{ type|default('') }}" role="alert" {{ coreshop_test_html_attribute('flash-message', type) }}>
         {{ translate is not null and translate == false ? message : message|trans }}
     </div>
 {% endmacro %}

@@ -95,7 +95,8 @@ coreshop.report.reports.sales = Class.create(coreshop.report.abstractStore, {
                     grid: true,
                     minimum: 0,
                     renderer: function(drawing, value, item) {
-                        return Ext.util.Format.number((value/100));
+                        var factor = pimcore.globalmanager.get('coreshop.currency.decimal_factor');
+                        return Ext.util.Format.number((value / factor));
                     }
                 }, {
                     type: 'category',

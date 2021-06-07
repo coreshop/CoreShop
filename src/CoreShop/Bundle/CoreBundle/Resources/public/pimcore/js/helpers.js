@@ -28,26 +28,6 @@ coreshop.helpers.createOrder = function () {
     );
 };
 
-coreshop.util.format.currency = function (currency, v) {
-    v = (Math.round(((v / 100) - 0) * 100)) / 100;
-    v = (v == Math.floor(v)) ? v + '.00' : ((v * 10 == Math.floor(v * 10)) ? v + '0' : v);
-    v = String(v);
-    var ps = v.split('.'),
-        whole = ps[0],
-        sub = ps[1] ? '.' + ps[1] : '.00',
-        r = /(\d+)(\d{3})/;
-    while (r.test(whole)) {
-        whole = whole.replace(r, '$1' + ',' + '$2');
-    }
-
-    v = whole + sub;
-    if (v.charAt(0) == '-') {
-        return '-' + currency + v.substr(1);
-    }
-
-    return currency + ' ' + v;
-};
-
 coreshop.helpers.showAbout = function () {
 
     var html = '<div class="pimcore_about_window">';

@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
 use JMS\Serializer\Context;
+use JMS\Serializer\JsonDeserializationVisitor;
 use JMS\Serializer\JsonSerializationVisitor;
 use Pimcore\Model\Site;
 
@@ -25,5 +28,24 @@ class PimcoreSiteHandler
         }
 
         return null;
+    }
+
+    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
+    {
+        if (is_array($relation)) {
+            $result = [];
+
+            foreach ($relation as $rel) {
+                $obj = Site::getById($rel);
+
+                if ($obj) {
+                    $result[] = $obj;
+                }
+            }
+
+            return $result;
+        }
+
+        return Site::getById($relation);
     }
 }

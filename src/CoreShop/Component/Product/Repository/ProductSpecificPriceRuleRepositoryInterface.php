@@ -10,18 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Repository;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
-use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
-interface ProductSpecificPriceRuleRepositoryInterface extends RuleRepositoryInterface
+interface ProductSpecificPriceRuleRepositoryInterface extends PriceRuleRepositoryInterface
 {
     /**
      * @param ProductInterface $product
      *
      * @return ProductSpecificPriceRuleInterface[]
      */
-    public function findForProduct(ProductInterface $product);
+    public function findForProduct(ProductInterface $product): array;
 }

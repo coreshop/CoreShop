@@ -1,0 +1,21 @@
+CoreShop\Component\Product\Model\ProductUnitDefinitions:
+    exclusion_policy: ALL
+    xml_root_name: product_unit_definitions
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed, Version]
+        product:
+            expose: true
+            type: integer
+            groups: [List, Detailed]
+        defaultUnitDefinition:
+            expose: true
+            type: CoreShop\Component\Product\Model\ProductUnitDefinition
+            groups: [List, Detailed, Version]
+        unitDefinitions:
+            expose: true
+            type: ArrayCollection<CoreShop\Component\Product\Model\ProductUnitDefinition>
+            groups: [List, Detailed, Version]

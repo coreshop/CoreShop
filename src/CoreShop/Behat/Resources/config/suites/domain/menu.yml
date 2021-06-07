@@ -1,0 +1,13 @@
+default:
+    suites:
+        domain_tracking:
+            contexts:
+                - coreshop.behat.context.hook.pimcore_setup
+                - coreshop.behat.context.hook.coreshop_setup
+
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.domain.menu
+            filters:
+                tags: "@domain && @menu"

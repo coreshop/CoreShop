@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
@@ -24,9 +26,18 @@ use Symfony\Component\Validator\Constraints\Valid;
 class CustomerRegistrationType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @var string[]
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected array $validationGroups = [];
+    protected string $loginIdentifier;
+
+    public function __construct(array $validationGroups, string $loginIdentifier)
+    {
+        $this->validationGroups = $validationGroups;
+        $this->loginIdentifier = $loginIdentifier;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('customer', CustomerType::class, [
@@ -35,8 +46,9 @@ class CustomerRegistrationType extends AbstractType
                     'class' => 'cs-customer',
                 ],
                 'allow_password_field' => true,
+                'allow_username' => $this->loginIdentifier === 'username',
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']]),
+                    new Valid(['groups' => $this->validationGroups]),
                 ],
             ])
             ->add('address', AddressType::class, [
@@ -45,22 +57,19 @@ class CustomerRegistrationType extends AbstractType
                     'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']]),
+                    new Valid(['groups' => $this->validationGroups]),
                 ],
             ])
             ->add('termsAccepted', CheckboxType::class, array(
                 'label' => 'coreshop.form.customer.terms',
                 'mapped' => false,
-                'validation_groups' => ['coreshop'],
-                'constraints' => new IsTrue(['groups' => ['coreshop']]),
+                'validation_groups' => $this->validationGroups,
+                'constraints' => new IsTrue(['groups' => $this->validationGroups]),
             ))
             ->add('submit', SubmitType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_customer_registration';
     }

@@ -10,180 +10,93 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use Pimcore\Model\Asset\Image;
 
 interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
 {
-    /**
-     * @return string
-     */
-    public function getSku();
+    public function getSku(): ?string;
 
-    /**
-     * @param string $sku
-     */
-    public function setSku($sku);
+    public function setSku(?string $sku);
 
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getName($language = null);
+    public function getName($language = null): ?string;
 
-    /**
-     * @param string $name
-     * @param string $language
-     */
-    public function setName($name, $language = null);
+    public function setName(?string $name, $language = null);
 
-    /**
-     * @return int
-     */
-    public function getWholesalePrice();
+    public function getItemQuantityFactor(): ?int;
 
-    /**
-     * @param int $wholesalePrice
-     */
-    public function setWholesalePrice($wholesalePrice);
+    public function setItemQuantityFactor(?int $itemQuantityFactor);
 
     /**
      * @return CategoryInterface[]
      */
-    public function getCategories();
+    public function getCategories(): ?array;
 
     /**
      * @param CategoryInterface[] $categories
      */
-    public function setCategories($categories);
+    public function setCategories(array $categories);
 
-    /**
-     * @return mixed
-     */
-    public function getImage();
+    public function getImage(): ?Image;
 
-    /**
-     * @return mixed
-     */
-    public function getImages();
+    public function getImages(): array;
 
-    /**
-     * @param mixed $images
-     */
-    public function setImages($images);
+    public function setImages(array $images);
 
-    /**
-     * @return ManufacturerInterface
-     */
-    public function getManufacturer();
+    public function getManufacturer(): ?ManufacturerInterface;
 
-    /**
-     * @param ManufacturerInterface $manufacturer
-     */
-    public function setManufacturer($manufacturer);
+    public function setManufacturer(?ManufacturerInterface $manufacturer);
 
-    /**
-     * @return string
-     */
-    public function getEan();
+    public function getEan(): ?string;
 
-    /**
-     * @param string $ean
-     */
-    public function setEan($ean);
+    public function setEan(?string $ean);
 
-    /**
-     * @return ProductInterface
-     */
-    public function getVariantMaster();
+    public function getShortDescription($language = null): ?string;
 
-    /**
-     * Get all Variants Differences.
-     *
-     * @param string $language
-     * @param string $type
-     * @param string $field
-     *
-     * @return array|bool
-     */
-    public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants');
+    public function setShortDescription(?string $shortDescription, $language = null);
 
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getShortDescription($language = null);
+    public function getDescription($language = null): ?string;
 
-    /**
-     * @param string      $shortDescription
-     * @param string|null $language
-     */
-    public function setShortDescription($shortDescription, $language = null);
+    public function setDescription(?string $description, $language = null);
 
-    /**
-     * @param string|null $language
-     *
-     * @return string
-     */
-    public function getDescription($language = null);
+    public function getWeight(): ?float;
 
-    /**
-     * @param string      $description
-     * @param string|null $language
-     */
-    public function setDescription($description, $language = null);
+    public function setWeight(?float $weight);
 
-    /**
-     * @return float
-     */
-    public function getWeight();
+    public function getWidth(): ?float;
 
-    /**
-     * @param float $weight
-     */
-    public function setWeight($weight);
+    public function setWidth(?float $width);
 
-    /**
-     * @return float
-     */
-    public function getWidth();
+    public function getHeight(): ?float;
 
-    /**
-     * @param float $width
-     */
-    public function setWidth($width);
+    public function setHeight(?float $height);
 
-    /**
-     * @return float
-     */
-    public function getHeight();
+    public function getDepth(): ?float;
 
-    /**
-     * @param float $height
-     */
-    public function setHeight($height);
-
-    /**
-     * @return float
-     */
-    public function getDepth();
-
-    /**
-     * @param float $depth
-     */
-    public function setDepth($depth);
+    public function setDepth(?float $depth);
 
     /**
      * @return PriceRuleInterface[]
      */
-    public function getSpecificPriceRules();
+    public function getSpecificPriceRules(): array;
 
     /**
      * @param PriceRuleInterface[] $specificPriceRules
      */
-    public function setSpecificPriceRules($specificPriceRules);
+    public function setSpecificPriceRules(array $specificPriceRules);
+
+    public function getUnitDefinitions(): ?ProductUnitDefinitionsInterface;
+
+    public function setUnitDefinitions(ProductUnitDefinitionsInterface $productUnitDefinitions);
+
+    public function hasUnitDefinitions(): bool;
+
+    public function hasDefaultUnitDefinition(): bool;
+
+    public function hasAdditionalUnitDefinitions(): bool;
 }

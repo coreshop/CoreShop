@@ -1,10 +1,12 @@
 {
+    "id": "cs_order_shipment",
     "description": null,
     "parentClass": "CoreShop\\Component\\Order\\Model\\OrderShipment",
     "useTraits": null,
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
@@ -39,10 +41,10 @@
                         "fieldtype": "panel",
                         "labelWidth": 100,
                         "layout": null,
-                        "name": "Invoice",
+                        "name": "invoice",
                         "type": null,
                         "region": null,
-                        "title": "Invoice",
+                        "title": "coreshop.order_shipment.shipment",
                         "width": null,
                         "height": null,
                         "collapsible": false,
@@ -52,24 +54,13 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "coreShopRelations",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopOrder"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.order",
                                 "name": "order",
-                                "title": "Order",
+                                "title": "coreshop.order_shipment.order",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -87,7 +78,7 @@
                                 "defaultValue": null,
                                 "useCurrentDate": false,
                                 "name": "shipmentDate",
-                                "title": "Shipment Date",
+                                "title": "coreshop.order_shipment.date",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -107,7 +98,7 @@
                                 "columnLength": 190,
                                 "regex": "",
                                 "name": "shipmentNumber",
-                                "title": "Shipment Number",
+                                "title": "coreshop.order_shipment.number",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -128,7 +119,7 @@
                                 "regex": "",
                                 "unique": false,
                                 "name": "state",
-                                "title": "State",
+                                "title": "coreshop.order_shipment.state",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -172,7 +163,7 @@
                         "name": "Items",
                         "type": null,
                         "region": null,
-                        "title": "Items",
+                        "title": "coreshop.order_shipment.items",
                         "width": null,
                         "height": null,
                         "collapsible": false,
@@ -182,26 +173,13 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "coreShopRelations",
                                 "width": "",
-                                "height": "",
-                                "maxItems": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopOrderShipmentItem"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.order_shipment_items",
                                 "name": "items",
-                                "title": "Items",
+                                "title": "coreshop.order_shipment.items",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -226,6 +204,8 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,

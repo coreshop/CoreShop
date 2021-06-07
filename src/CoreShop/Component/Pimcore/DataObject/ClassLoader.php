@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 class ClassLoader
@@ -19,7 +21,7 @@ class ClassLoader
      *
      * @param string $className
      */
-    public static function forceLoadDataObjectClass($className)
+    public static function forceLoadDataObjectClass(string $className): void
     {
         $className = static::normalizeClassName($className);
 
@@ -34,7 +36,7 @@ class ClassLoader
      *
      * @param string $fieldCollection
      */
-    public static function forceLoadFieldCollection($fieldCollection)
+    public static function forceLoadFieldCollection(string $fieldCollection): void
     {
         $className = static::normalizeClassName($fieldCollection);
 
@@ -49,7 +51,7 @@ class ClassLoader
      *
      * @param string $brickName
      */
-    public static function forceLoadBrick($brickName)
+    public static function forceLoadBrick(string $brickName): void
     {
         $className = static::normalizeClassName($brickName);
 
@@ -65,7 +67,7 @@ class ClassLoader
      * @param string $fileName
      * @param string $className
      */
-    protected static function loadClass($fileName, $className)
+    protected static function loadClass(string $fileName, string $className): void
     {
         if (file_exists($fileName) && !class_exists($className)) {
             require_once $fileName;
@@ -79,7 +81,7 @@ class ClassLoader
      *
      * @return string
      */
-    protected static function normalizeClassName($className)
+    protected static function normalizeClassName(string $className): string
     {
         $classNameExploded = explode('\\', $className);
 

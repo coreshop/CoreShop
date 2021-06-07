@@ -10,63 +10,50 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Generator;
 
+use CoreShop\Component\Order\Exception\FailedCodeGenerationException;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherGeneratorInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Webmozart\Assert\Assert;
 
 class CartPriceRuleVoucherCodeGenerator
 {
     const FORMAT_ALPHANUMERIC = 'alphanumeric';
-
     const FORMAT_ALPHABETIC = 'alphabetic';
-
     const FORMAT_NUMERIC = 'numeric';
 
-    /**
-     * @var FactoryInterface
-     */
-    private $voucherCodeFactory;
+    private FactoryInterface $voucherCodeFactory;
+    private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
+    private CodeGeneratorCheckerInterface $checker;
+    private CodeGeneratorLetterResolver $letterResolver;
 
-    /**
-     * @param FactoryInterface $voucherCodeFactory
-     */
-    public function __construct(FactoryInterface $voucherCodeFactory)
+    public function __construct(
+        FactoryInterface $voucherCodeFactory,
+        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+        CodeGeneratorCheckerInterface $checker,
+        CodeGeneratorLetterResolver $letterResolver
+    )
     {
         $this->voucherCodeFactory = $voucherCodeFactory;
+        $this->voucherCodeRepository = $voucherCodeRepository;
+        $this->checker = $checker;
+        $this->letterResolver = $letterResolver;
     }
 
-    /**
-     * Generates Voucher Codes.
-     *
-     * @param CartPriceRuleVoucherGeneratorInterface $generator
-     *
-     * @return CartPriceRuleVoucherCodeInterface[]
-     */
-    public function generateCodes(CartPriceRuleVoucherGeneratorInterface $generator)
+    public function generateCodes(CartPriceRuleVoucherGeneratorInterface $generator): array
     {
+        $this->assert($generator);
+
         $generatedVouchers = [];
-
-        switch ($generator->getFormat()) {
-            case self::FORMAT_ALPHABETIC:
-                $lettersToUse = implode('', range(chr(65), chr(90)));
-
-                break;
-            case self::FORMAT_NUMERIC:
-                $lettersToUse = implode('', range(chr(48), chr(57)));
-
-                break;
-
-            case self::FORMAT_ALPHANUMERIC:
-            default:
-                $lettersToUse = implode('', range(chr(65), chr(90))) . implode('', range(chr(48), chr(57)));
-
-                break;
-        }
+        $lettersToUse = $this->letterResolver->findLetters($generator);
 
         for ($i = 0; $i < $generator->getAmount(); $i++) {
-            $code = sprintf('%s%s%s', $generator->getPrefix(), self::generateCode($lettersToUse, $generator->getLength()), $generator->getSuffix());
+            $code = $this->generateCode($lettersToUse, $generator->getLength(), $generator->getPrefix(), $generator->getSuffix(), $generatedVouchers);
 
             if ($generator->getHyphensOn() > 0) {
                 $code = implode('-', str_split($code, $generator->getHyphensOn()));
@@ -82,33 +69,50 @@ class CartPriceRuleVoucherCodeGenerator
             $codeObject->setUses(0);
             $codeObject->setCartPriceRule($generator->getCartPriceRule());
 
-            $generatedVouchers[] = $codeObject;
+            $generatedVouchers[$code] = $codeObject;
         }
 
         return $generatedVouchers;
     }
 
-    /**
-     * Generates a code.
-     *
-     * @param int $letters
-     * @param int $length
-     *
-     * @return string
-     */
-    protected static function generateCode($letters, $length)
+    protected function generateCode(string $letters, int $length, ?string $prefix, ?string $suffix, array $generatedCoupons): string
     {
-        srand((float) microtime() * 1000000);
-        $i = 0;
-        $code = '';
+         Assert::nullOrRange($length, 1, 40, 'Invalid %d code length should be between %d and %d');
 
-        while ($i < $length) {
-            $num = rand() % 33;
-            $tmp = substr($letters, $num, 1);
-            $code = $code . $tmp;
-            $i++;
-        }
+        do {
+            $code = '';
+            $max = strlen($letters);
+
+            if (null !== $prefix) {
+                $code = $prefix;
+            }
+
+            for ($i=0; $i < $length; $i++) {
+                $code .= $letters[random_int(0, $max - 1)];
+            }
+
+            if (null !== $suffix) {
+                $code .= $suffix;
+            }
+
+        } while ($this->isUsedCode($code, $generatedCoupons));
 
         return $code;
+    }
+
+    private function isUsedCode(string $code, array $generatedCoupons): bool
+    {
+        if (isset($generatedCoupons[$code])) {
+            return true;
+        }
+
+        return null !== $this->voucherCodeRepository->findOneBy(['code' => $code]);
+    }
+
+    private function assert(CartPriceRuleVoucherGeneratorInterface $generator): void
+    {
+        if (!$this->checker->isGenerationPossible($generator)) {
+            throw new FailedCodeGenerationException($generator);
+        }
     }
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\MoneyBundle\Formatter;
 
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
@@ -17,14 +19,19 @@ use Webmozart\Assert\Assert;
 
 final class MoneyFormatter implements MoneyFormatterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function format($amount, $currency, $locale = 'en')
+    private int $decimalFactor;
+
+    public function __construct(int $decimalFactor)
+    {
+        $this->decimalFactor = $decimalFactor;
+    }
+
+    public function format(int $amount, string $currency, string $locale = 'en', int $fraction = 2, int $factor = null): string
     {
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+        $formatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, $fraction);
 
-        $result = $formatter->formatCurrency(abs($amount / 100), $currency);
+        $result = $formatter->formatCurrency(abs($amount / ($factor ?? $this->decimalFactor)), $currency);
         Assert::notSame(
             false,
             $result,

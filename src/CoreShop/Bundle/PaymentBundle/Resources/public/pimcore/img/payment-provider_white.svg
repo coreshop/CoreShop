@@ -1,0 +1,22 @@
+﻿<!--
+  ~ CoreShop.
+  ~
+  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
+  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+  ~ files that are distributed with this source code.
+  ~
+  ~ @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+  ~ @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+  ~
+  -->
+
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+<rect x="6" y="13" style="fill:white;" width="36" height="24"/>
+<rect x="8" y="15" style="fill:white;" width="32" height="19"/>
+<rect x="21" y="37" style="fill:white;" width="6" height="3"/>
+<path style="fill:white;" d="M33,40c-2,0-16,0-18,0s-2,2-2,2v1h22v-1C35,42,35,40,33,40z"/>
+<path style="fill:black;" d="M37,26c0,0.552-0.448,1-1,1H12c-0.552,0-1-0.448-1-1v-4c0-0.552,0.448-1,1-1h24c0.552,0,1,0.448,1,1&#10;&#9;V26z"/>
+<path style="fill:black;" d="M31,5c2.208,0,4,1.791,4,4v15H13V9c0-2.209,1.79-4,4-4H31z"/>
+<rect x="18" y="5" style="fill:white;" width="4" height="19"/>
+<rect x="24" y="7" style="fill:white;" width="4" height="17"/>
+</svg>

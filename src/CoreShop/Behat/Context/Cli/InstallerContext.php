@@ -10,12 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Cli;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand;
+use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -23,24 +27,9 @@ use Webmozart\Assert\Assert;
 
 final class InstallerContext implements Context
 {
-    /**
-     * @var KernelInterface
-     */
     private $kernel;
-
-    /**
-     * @var Application
-     */
     private $application;
-
-    /**
-     * @var CommandTester
-     */
     private $tester;
-
-    /**
-     * @var InstallCommand
-     */
     private $command;
 
     /**
@@ -58,12 +47,16 @@ final class InstallerContext implements Context
     {
         $installCommand = new InstallFixturesCommand(
             $this->kernel,
-            $this->kernel->getContainer()->get('coreshop.installer.checker.command_directory')
+            $this->kernel->getContainer()->get(CommandDirectoryChecker::class)
         );
 
         $this->application = new Application($this->kernel);
         $this->application->add($installCommand);
-        $this->command = $this->application->find('coreshop:install:fixtures');
+        $command = $this->application->find('coreshop:install:fixtures');
+
+        Assert::isInstanceOf($command, InstallFixturesCommand::class);
+
+        $this->command = $command;
         $this->tester = new CommandTester($this->command);
     }
 
@@ -74,12 +67,16 @@ final class InstallerContext implements Context
     {
         $installCommand = new InstallDemoCommand(
             $this->kernel,
-            $this->kernel->getContainer()->get('coreshop.installer.checker.command_directory')
+            $this->kernel->getContainer()->get(CommandDirectoryChecker::class)
         );
 
         $this->application = new Application($this->kernel);
         $this->application->add($installCommand);
-        $this->command = $this->application->find('coreshop:install:demo');
+        $command = $this->application->find('coreshop:install:demo');
+
+        Assert::isInstanceOf($command, InstallDemoCommand::class);
+
+        $this->command = $command;
         $this->tester = new CommandTester($this->command);
     }
 

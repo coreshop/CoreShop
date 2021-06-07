@@ -10,32 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Calculator;
 
+use CoreShop\Component\Order\Exception\NoPurchasableDiscountPriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
 
 final class PurchasablePriceCalculator implements PurchasablePriceCalculatorInterface
 {
-    /**
-     * @var PurchasableRetailPriceCalculatorInterface
-     */
-    private $purchasableRetailPriceCalculator;
+    private PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator;
+    private PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator;
+    private PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator;
 
-    /**
-     * @var PurchasableDiscountPriceCalculatorInterface
-     */
-    private $purchasableDiscountPriceCalculator;
-
-    /**
-     * @var PurchasableDiscountCalculatorInterface
-     */
-    private $purchasableDiscountCalculator;
-
-    /**
-     * @param PurchasableRetailPriceCalculatorInterface   $purchasableRetailPriceCalculator
-     * @param PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator
-     * @param PurchasableDiscountCalculatorInterface      $purchasableDiscountCalculator
-     */
     public function __construct(
         PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator,
         PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator,
@@ -46,17 +34,23 @@ final class PurchasablePriceCalculator implements PurchasablePriceCalculatorInte
         $this->purchasableDiscountCalculator = $purchasableDiscountCalculator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false)
+    public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int
     {
-        $retailPrice = $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable, $context);
-        $discountPrice = $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable, $context);
-        $price = $retailPrice;
+        $price = 0;
 
-        if ($discountPrice > 0 && $discountPrice < $retailPrice) {
-            $price = $discountPrice;
+        try {
+            $retailPrice = $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable, $context);
+            $price = $retailPrice;
+        } catch (NoRetailPriceFoundException $ex) {
+        }
+
+        try {
+            $discountPrice = $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable, $context);
+
+            if ($discountPrice > 0 && $discountPrice < $price) {
+                $price = $discountPrice;
+            }
+        } catch (NoPurchasableDiscountPriceFoundException $ex) {
         }
 
         if ($includingDiscounts) {

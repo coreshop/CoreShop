@@ -10,13 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Context;
 
 class CustomerNotFoundException extends \RuntimeException
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(\Exception $previousException = null)
     {
         parent::__construct('Customer could not be found!', 0, $previousException);

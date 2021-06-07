@@ -10,44 +10,90 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Controller\OrderController as BaseOrderController;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Order\Model\SaleInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface as CoreOrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface as CoreOrderItemInterface;
 
 class OrderController extends BaseOrderController
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepareSale(SaleInterface $sale)
+    protected function prepareSale(OrderInterface $sale): array
     {
         $order = parent::prepareSale($sale);
 
-        if ($sale instanceof OrderInterface) {
+        if ($sale instanceof CoreOrderInterface) {
             $order['carrier'] = $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getId() : null;
+            $order['shipping'] = $sale->getShipping();
         }
 
         return $order;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDetails(SaleInterface $sale)
+    protected function getDetails(OrderInterface $sale): array
     {
-        $order = parent::getDetails($sale);
+        $json = parent::getDetails($sale);
 
-        if ($sale instanceof OrderInterface) {
-            $order['shippingPayment'] = [
+        if ($sale instanceof CoreOrderInterface) {
+            $json['shippingPayment'] = [
                 'carrier' => $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null,
                 'weight' => $sale->getWeight(),
                 'cost' => $sale->getShipping(),
             ];
+
+            if ($sale->getCarrier()) {
+                $json['carrierInfo'] = [
+                    'name' => $sale->getCarrier()->getTitle(),
+                ];
+            }
         }
 
-        return $order;
+        return $json;
+    }
+
+    protected function getSummary(OrderInterface $order): array
+    {
+        $summary = parent::getSummary($order);
+
+        if ($order instanceof CoreOrderInterface && $order->getShipping() > 0) {
+            $summary[] = [
+                'key' => 'shipping',
+                'value' => $order->getShipping(),
+                'convertedValue' => $order->getConvertedShipping(),
+            ];
+
+            $summary[] = [
+                'key' => 'shipping_tax',
+                'value' => $order->getShippingTax(),
+                'convertedValue' => $order->getConvertedShippingTax(),
+            ];
+        }
+
+        return $summary;
+    }
+
+    protected function prepareSaleItem(OrderItemInterface $item): array
+    {
+        $itemData = parent::prepareSaleItem($item);
+
+        /**
+         * @var CoreOrderItemInterface $item
+         */
+        if (!$item instanceof CoreOrderItemInterface) {
+            return $itemData;
+        }
+
+        if (!is_string($item->getUnitIdentifier())) {
+            return $itemData;
+        }
+
+        $itemData['unit'] = $item->hasUnitDefinition() ? $item->getUnitDefinition()->getUnit()->getFullLabel() : $item->getUnitIdentifier();
+
+        return $itemData;
     }
 }

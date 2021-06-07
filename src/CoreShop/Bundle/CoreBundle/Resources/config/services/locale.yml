@@ -2,8 +2,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.context.locale.pimcore_admin:
-        class: CoreShop\Component\Core\Locale\Context\PimcoreAdminLocaleContext
+    CoreShop\Component\Core\Locale\Context\PimcoreAdminLocaleContext:
         arguments:
             - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
             - '@pimcore_admin.security.token_storage_user_resolver'

@@ -10,10 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Repository;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 interface RepositoryInterface extends ObjectRepository
 {
@@ -23,10 +25,10 @@ interface RepositoryInterface extends ObjectRepository
     /**
      * @param ResourceInterface $resource
      */
-    public function add(ResourceInterface $resource);
+    public function add(ResourceInterface $resource): void;
 
     /**
      * @param ResourceInterface $resource
      */
-    public function remove(ResourceInterface $resource);
+    public function remove(ResourceInterface $resource): void;
 }

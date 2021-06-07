@@ -10,13 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Payment\Model;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
+use Pimcore\Model\Asset;
 
-interface PaymentProviderInterface extends ToggleableInterface, TranslatableInterface, TimestampableInterface
+interface PaymentProviderInterface extends
+    ResourceInterface,
+    ToggleableInterface,
+    TranslatableInterface,
+    TimestampableInterface
 {
     /**
      * @return mixed
@@ -24,12 +32,12 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
     public function getIdentifier();
 
     /**
-     * @param null $identifier
+     * @param string $identifier
      */
     public function setIdentifier($identifier);
 
     /**
-     * @param null $language
+     * @param string|null $language
      *
      * @return string
      */
@@ -37,12 +45,12 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
 
     /**
      * @param string $title
-     * @param null   $language
+     * @param string|null $language
      */
     public function setTitle($title, $language = null);
 
     /**
-     * @param null $language
+     * @param string|null $language
      *
      * @return string
      */
@@ -50,12 +58,12 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
 
     /**
      * @param string $description
-     * @param null   $language
+     * @param string|null $language
      */
     public function setDescription($description, $language = null);
 
     /**
-     * @param null $language
+     * @param string|null $language
      *
      * @return string
      */
@@ -63,7 +71,7 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
 
     /**
      * @param string $instructions
-     * @param null   $language
+     * @param string|null $language
      */
     public function setInstructions($instructions, $language = null);
 
@@ -76,4 +84,14 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
      * @param int $position
      */
     public function setPosition($position);
+
+    /**
+     * @return Asset|null
+     */
+    public function getLogo();
+
+    /**
+     * @param Asset $logo
+     */
+    public function setLogo($logo);
 }

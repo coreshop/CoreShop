@@ -10,20 +10,40 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Db;
+
+use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 final class Db extends \Pimcore\Db
 {
+    /**
+     * @return Connection
+     */
+    public static function getDoctrineConnection(): Connection
+    {
+        /**
+         * @var Connection $connection
+         */
+        $connection = self::getConnection();
+
+        Assert::isInstanceOf($connection, Connection::class);
+
+        return $connection;
+    }
+
     /**
      * @param string $table
      *
      * @return array
      */
-    public static function getColumns($table)
+    public static function getColumns($table): array
     {
-        $db = static::get();
+        $db = self::getDoctrineConnection();
 
-        $data = $db->fetchAll('SHOW COLUMNS FROM ' . $table);
+        $data = $db->fetchAllAssociative('SHOW COLUMNS FROM ' . $table);
         $columns = [];
 
         foreach ($data as $d) {
@@ -40,11 +60,11 @@ final class Db extends \Pimcore\Db
      *
      * @return bool
      */
-    public static function tableExists($table)
+    public static function tableExists($table): bool
     {
-        $db = static::get();
+        $db = self::getDoctrineConnection();
 
-        $result = $db->fetchAll("SHOW TABLES LIKE '$table'");
+        $result = $db->fetchAllAssociative("SHOW TABLES LIKE '$table'");
 
         return count($result) > 0;
     }

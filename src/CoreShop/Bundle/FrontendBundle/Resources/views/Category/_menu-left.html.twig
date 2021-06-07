@@ -2,18 +2,18 @@
 {% if categories %}
 <div class="list-group categories">
     {% for category in categories %}
-        {% set active = activeCategory is defined and activeCategory and activeCategory.getId == category.getId %}
+        {% set active = activeCategory is defined and activeCategory and activeCategory.id == category.id %}
         <a href="{{ coreshop_path(category, 'coreshop_category_list') }}" class="{% if active %} active {% endif %} list-group-item">
             <i class="fa fa-chevron-right"></i>
-            {{ category.getName }}
+            {{ category.name }}
         </a>
         {% if active and activeSubCategories|length > 0 %}
             <div class="list-group categories">
                 {% for subCategory in activeSubCategories %}
-                    {% set active = activeCategory is defined and activeCategory and activeCategory.getId == subCategory.getId %}
+                    {% set active = activeCategory is defined and activeCategory and activeCategory.id == subCategory.id %}
                     <a href="{{ coreshop_path(subCategory, 'coreshop_category_list') }}" class="{% if active %} active {% endif %} list-group-item">
                         <i class="fa fa-chevron-right"></i>
-                        {{ subCategory.getName }}
+                        {{ subCategory.name }}
                     </a>
                 {% endfor %}
             </div>

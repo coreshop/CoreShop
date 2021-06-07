@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
@@ -19,10 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class CartTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('cartRuleCoupon', TextType::class, [
             'mapped' => false,
@@ -31,11 +30,9 @@ final class CartTypeExtension extends AbstractTypeExtension
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType()
+
+    public static function getExtendedTypes(): iterable
     {
-        return CartType::class;
+        return [CartType::class];
     }
 }

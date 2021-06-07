@@ -14,30 +14,29 @@ namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Model\DataObject;
+use Pimcore\Model\Element\Service;
+use Pimcore\Model\Factory;
 use Pimcore\Tool;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class DynamicDropdownController extends AdminController
 {
-    private $separator = ' - ';
+    private string $separator = ' - ';
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     *
-     * @throws \Exception
-     */
-    public function optionsAction(Request $request)
+    public function optionsAction(Request $request): JsonResponse
     {
         $folderName = $request->get('folderName');
-        $parentFolderPath = preg_replace('@[^a-zA-Z0-9/\-_\s]@', '', $folderName);
+        $parts = array_map(static function ($part) {
+            return Service::getValidKey($part, 'object');
+        }, preg_split('/\//', $folderName, 0, PREG_SPLIT_NO_EMPTY));
+        $parentFolderPath = sprintf('/%s', implode('/', $parts));
         $sort = $request->get('sortBy');
         $options = [];
 
         if ($parentFolderPath) {
             // remove trailing slash
-            if ($parentFolderPath != '/') {
+            if ($parentFolderPath !== '/') {
                 $parentFolderPath = rtrim($parentFolderPath, '/ ');
             }
 
@@ -45,24 +44,9 @@ final class DynamicDropdownController extends AdminController
             $parentFolderPath = str_replace('//', '/', $parentFolderPath);
 
             $folder = DataObject\Folder::getByPath($parentFolderPath);
-
-            if ($folder) {
-                $options = $this->walkPath($request, $folder);
-            } else {
-                $message = sprintf('The folder submitted could not be found: "%s"', $folderName);
-                \Pimcore\Logger::crit($message);
-
-                return $this->json(
-                    [
-                        'success' => false,
-                        'message' => $message,
-                        'options' => $options,
-                    ]
-                );
-            }
+            $options = $folder instanceof DataObject\AbstractObject ? $this->walkPath($request, $folder) : [];
         } else {
             $message = sprintf('The folder submitted for parentId is not valid: "%s"', $folderName);
-            \Pimcore\Logger::warning($message);
 
             return $this->json(
                 [
@@ -73,13 +57,13 @@ final class DynamicDropdownController extends AdminController
             );
         }
 
-        if (!is_null($options)) {
+        if (null !== $options) {
             usort(
                 $options,
                 function ($a, $b) use ($sort) {
-                    $field = 'id';
+                    $field = 'value';
 
-                    if ($sort == 'byValue') {
+                    if (strtolower($sort) === 'byvalue') {
                         $field = 'key';
                     }
 
@@ -100,19 +84,17 @@ final class DynamicDropdownController extends AdminController
         );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function methodsAction(Request $request)
+    public function methodsAction(Request $request, Factory $modelFactory): JsonResponse
     {
         $availableMethods = [];
 
         $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', $request->get('className'));
 
         if (!empty($className)) {
-            $class = new \ReflectionClass('\\Pimcore\\Model\\DataObject\\' . ucfirst($className));
+            $fqcn = '\\Pimcore\\Model\\DataObject\\' . ucfirst($className);
+            $instance = $modelFactory->build($fqcn);
+
+            $class = new \ReflectionClass(get_class($instance));
             $methods = $class->getMethods();
 
             $classMethods = array_map(function (\ReflectionMethod $method) {
@@ -120,7 +102,7 @@ final class DynamicDropdownController extends AdminController
             }, $methods);
 
             foreach ($classMethods as $methodName) {
-                if (substr($methodName, 0, 3) === 'get') {
+                if (strpos($methodName, 'get') === 0) {
                     $availableMethods[] = ['value' => $methodName, 'key' => $methodName];
                 }
             }
@@ -129,22 +111,12 @@ final class DynamicDropdownController extends AdminController
         return $this->json($availableMethods);
     }
 
-    /**
-     * @param Request                   $request
-     * @param DataObject\AbstractObject $folder
-     * @param array                     $options
-     * @param string                    $path
-     *
-     * @return array
-     *
-     * @throws \Exception
-     */
-    private function walkPath(Request $request, DataObject\AbstractObject $folder, $options = [], $path = '')
+    private function walkPath(Request $request, DataObject\AbstractObject $folder, array $options = [], string $path = ''): array
     {
         $currentLang = $request->get('current_language');
         $source = $request->get('methodName');
         $className = ucfirst($request->get('className'));
-        $objectName = 'Pimcore\\Model\\DataObject\\' . $className;
+        $objectName = '\\Pimcore\\Model\\DataObject\\' . $className;
 
         $usesI18n = false;
         $children = $folder->getChildren();
@@ -166,64 +138,37 @@ final class DynamicDropdownController extends AdminController
             }
         }
 
+        /**
+         * @var DataObject\Concrete $child
+         */
         foreach ($children as $child) {
-            /** @var DataObject\Concrete $child */
-            $class = get_class($child);
-            switch ($class) {
-                case DataObject\Folder::class:
-                    /**
-                     * @var DataObject\Folder $child
-                     */
-                    $key = $child->getProperty('Taglabel') != '' ? $child->getProperty('Taglabel') : $child->getKey();
-                    if ($request->get('recursive') == 'true') {
-                        $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
-                    }
+            if ($child instanceof DataObject\Folder) {
+                /**
+                 * @var DataObject\Folder $child
+                 */
+                $key = $child->getProperty('Taglabel') != '' ? $child->getProperty('Taglabel') : $child->getKey();
+                if ($request->get('recursive') === 'true') {
+                    $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
+                }
+            }
+            else if ($child instanceof $objectName) {
+                $key = $usesI18n ? $child->$source($currentLang) : $child->$source();
+                $options[] = [
+                    'value' => $child->getId(),
+                    'key' => ltrim($path . $this->separator . $key, $this->separator),
+                    'published' => $child instanceof DataObject\Concrete ? $child->getPublished() : false,
+                ];
 
-                    break;
-                case $objectName:
-                    $key = $usesI18n ? $child->$source($currentLang) : $child->$source();
-                    $options[] = [
-                        'value' => $child->getId(),
-                        'key' => ltrim($path . $this->separator . $key, $this->separator),
-                        'published' => $child->getPublished(),
-                    ];
-
-                    if ($request->get('recursive') == 'true') {
-                        $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
-                    }
-
-                    break;
+                if ($request->get('recursive') === 'true') {
+                    $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
+                }
             }
         }
 
         return $options;
     }
 
-    /**
-     * @param string $class
-     *
-     * @return array
-     */
-    private function getThisClassMethods($class)
-    {
-        $classMethods = get_class_methods($class);
-
-        if ($parentClass = get_parent_class($class)) {
-            $parentClassMethods = get_class_methods($parentClass);
-
-            return array_diff($classMethods, $parentClassMethods);
-        }
-
-        return $classMethods;
-    }
-
-    /**
-     * @param DataObject\Concrete $object
-     * @param string              $method
-     *
-     * @return bool
-     */
-    private function isUsingI18n(DataObject\Concrete $object, $method)
+    private function isUsingI18n(DataObject\Concrete $object, string $method): bool
     {
         $classDefinition = $object->getClass();
         $definitionFile = $classDefinition->getDefinitionFile();
@@ -249,7 +194,7 @@ final class DynamicDropdownController extends AdminController
         if ($tree instanceof DataObject\ClassDefinition\Layout || $tree instanceof DataObject\ClassDefinition\Data\Localizedfields) { // Did I forget something?
             $children = $tree->getChildren();
             foreach ($children as $child) {
-                $definition['get' . ucfirst($child->name)] = $tree->fieldtype == 'localizedfields';
+                $definition['get' . ucfirst($child->name)] = $tree->fieldtype === 'localizedfields';
                 $definition = $this->parseTree($child, $definition);
             }
         }

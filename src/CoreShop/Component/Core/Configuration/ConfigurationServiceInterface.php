@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Configuration;
 
 use CoreShop\Component\Configuration\Service\ConfigurationServiceInterface as BaseConfigurationServiceInterface;
@@ -23,24 +25,20 @@ interface ConfigurationServiceInterface extends BaseConfigurationServiceInterfac
      * @param StoreInterface|null $store
      * @param bool                $returnObject
      *
-     * @return ConfigurationInterface|string
+     * @return ConfigurationInterface|mixed|null
      */
-    public function getForStore($key, StoreInterface $store = null, $returnObject = false);
+    public function getForStore(string $key, StoreInterface $store = null, bool $returnObject = false);
 
     /**
      * @param string              $key
      * @param mixed               $data
      * @param StoreInterface|null $store
-     *
-     * @return ConfigurationInterface
      */
-    public function setForStore($key, $data, StoreInterface $store = null);
+    public function setForStore(string $key, $data, StoreInterface $store = null): ConfigurationInterface;
 
     /**
      * @param string              $key
      * @param StoreInterface|null $store
-     *
-     * @return ConfigurationInterface
      */
-    public function removeForStore($key, StoreInterface $store = null);
+    public function removeForStore(string $key, StoreInterface $store = null): void;
 }

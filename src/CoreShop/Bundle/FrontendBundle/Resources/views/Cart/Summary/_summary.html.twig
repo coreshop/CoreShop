@@ -1,11 +1,11 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% set shipping = cart.getShipping(false) %}
-{% set shippingIt = cart.getShipping(true) %}
-{% set discount = cart.getDiscount(false) %}
-{% set discountIt = cart.getDiscount(true) %}
-{% set taxes = cart.getTaxes %}
+{% set shipping = cart.shipping(false) %}
+{% set shippingIt = cart.shipping(true) %}
+{% set discount = cart.discount(false) %}
+{% set discountIt = cart.discount(true) %}
+{% set taxes = cart.taxes %}
 {% set rowspan = 10 + taxes|length %}
 
 {% if shipping == 0 %}
@@ -18,14 +18,14 @@
 
 <tr>
     <td colspan="3" rowspan="{{ rowspan }}">
-        {{ form_row(form.cartRuleCoupon) }}
-        <button type="submit" class="btn btn-secondary">{{ 'coreshop.ui.voucher.apply_code'|trans }}</button>
+        {{ form_row(form.cartRuleCoupon, coreshop_test_form_attribute('voucher-code')) }}
+        <button type="submit" class="btn btn-secondary" {{ coreshop_test_html_attribute('apply-voucher-button') }}>{{ 'coreshop.ui.voucher.apply_code'|trans }}</button>
     </td>
     <td class="text-right">
         <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
     </td>
     <td colspan="2" class="text-right cart-sub-total">
-        {{ currency.convertAndFormat(cart.getSubtotal(true)) }}
+        {{ currency.convertAndFormat(cart.subtotal(true)) }}
     </td>
 </tr>
 <tr>
@@ -33,13 +33,13 @@
         <strong>{{ 'coreshop.ui.subtotal_excl'|trans }}:</strong>
     </td>
     <td colspan="2" class="text-right cart-discount">
-        {{ currency.convertAndFormat(cart.getSubtotal(false)) }}
+        {{ currency.convertAndFormat(cart.subtotal(false)) }}
     </td>
 </tr>
 {% if discount != 0 %}
     <tr>
         <td class="text-right">
-            <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
+            <strong>{{ discount > 0 ? 'coreshop.ui.surcharge_incl'|trans : 'coreshop.ui.discount_incl'|trans }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-discount">
             {{ currency.convertAndFormat(discountIt) }}
@@ -47,7 +47,7 @@
     </tr>
     <tr>
         <td class="text-right">
-            <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
+            <strong>{{ discount > 0 ? 'coreshop.ui.surcharge_excl'|trans : 'coreshop.ui.discount_excl'|trans }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-discount">
             {{ currency.convertAndFormat(discount) }}
@@ -75,7 +75,7 @@
 {% for taxItem in taxes %}
     <tr>
         <td class="text-right cart-tax-detail">
-            <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
+            <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.name) }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-tax-detail">
             {{ currency.convertAndFormat(taxItem.amount) }}
@@ -87,7 +87,7 @@
         <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
     </td>
     <td colspan="2" class="text-right cart-tax">
-        {{ currency.convertAndFormat(cart.getTotalTax) }}
+        {{ currency.convertAndFormat(cart.totalTax) }}
     </td>
 </tr>
 <tr>
@@ -95,13 +95,14 @@
         <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
     </td>
     <td colspan="2" class="text-right cart-total-price">
-        {{ currency.convertAndFormat(cart.getTotal) }}
+        {{ currency.convertAndFormat(cart.total) }}
     </td>
 </tr>
-{% if cart.getComment is not empty %}
+
+{% if cart.comment is not empty %}
     <tr>
         <td colspan="5">
-           <strong>{{ 'coreshop.ui.comment'|trans }}</strong>: {{ cart.getComment|nl2br }}
+           <strong>{{ 'coreshop.ui.comment'|trans }}</strong>: {{ cart.comment|nl2br }}
         </td>
     </tr>
 {% endif %}

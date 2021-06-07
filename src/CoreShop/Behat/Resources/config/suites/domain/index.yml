@@ -1,7 +1,7 @@
 default:
     suites:
         domain_index:
-            contexts_services:
+            contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
 
@@ -21,4 +21,4 @@ default:
 
                 - coreshop.behat.context.domain.index
             filters:
-                tags: "@index"
+                tags: "@domain && @index"

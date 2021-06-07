@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension;
 
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
@@ -25,7 +27,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
      * @param array            $resources
      * @param ContainerBuilder $container
      */
-    protected function registerResources($applicationName, $driver, array $resources, ContainerBuilder $container)
+    protected function registerResources($applicationName, $driver, array $resources, ContainerBuilder $container): void
     {
         $container->setParameter(sprintf('%s.driver.%s', $this->getAlias(), $driver), true);
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), $driver);
@@ -62,7 +64,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
      * @param array            $models
      * @param ContainerBuilder $container
      */
-    protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container)
+    protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container): void
     {
         $container->setParameter(sprintf('%s.driver.%s', $this->getAlias(), 'pimcore'), true);
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), 'pimcore');
@@ -89,7 +91,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
      * @param array            $stack
      * @param ContainerBuilder $container
      */
-    public function registerStack($applicationName, $stack, ContainerBuilder $container)
+    public function registerStack(string $applicationName, array $stack, ContainerBuilder $container): void
     {
         $appParameterName = sprintf('%s.stack', $applicationName);
         $globalParameterName = 'coreshop.all.stack';
@@ -111,10 +113,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container)
+    protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container): void
     {
         parent::registerPimcoreResources($applicationName, $bundleResources, $container);
 
@@ -141,13 +140,14 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
             $applicationParameter = sprintf('%s.permissions', $applicationName);
             $resourcePermissions = [];
             $globalParameter = 'coreshop.all.permissions';
+            $globalPermissions = [];
 
             if ($container->hasParameter($applicationParameter)) {
                 $applicationPermissions = $container->getParameter($applicationParameter);
             }
 
             if ($container->hasParameter($globalParameter)) {
-                $resourcePermissions = $container->getParameter($globalParameter);
+                $globalPermissions = $container->getParameter($globalParameter);
             }
 
             $permissions = [];
@@ -159,8 +159,33 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
                 $resourcePermissions[] = $identifier;
             }
 
-            $container->setParameter($globalParameter, array_merge($applicationPermissions, $permissions));
+            $globalApplicationPermissions = array_key_exists($applicationName, $globalPermissions) ? $globalPermissions[$applicationName] : [];
+            $globalApplicationPermissions = array_merge($globalApplicationPermissions, $resourcePermissions);
+            $globalPermissions[$applicationName] = $globalApplicationPermissions;
+
+            $container->setParameter($globalParameter, $globalPermissions);
             $container->setParameter($applicationParameter, array_merge($applicationPermissions, $permissions));
+        }
+    }
+
+    /**
+     * @param string           $applicationName
+     * @param array            $bundles
+     * @param ContainerBuilder $container
+     */
+    public function registerDependantBundles($applicationName, $bundles, ContainerBuilder $container): void
+    {
+        $appParameterName = sprintf('%s.dependant.bundles', $applicationName);
+        $globalParameterName = 'coreshop.all.dependant.bundles';
+
+        foreach ([$appParameterName, $globalParameterName] as $parameterName) {
+            $bundleConfig = $container->hasParameter($parameterName) ? $container->getParameter($parameterName) : [];
+
+            foreach ($bundles as $bundleName) {
+                $bundleConfig[] = $bundleName;
+            }
+
+            $container->setParameter($parameterName, $bundleConfig);
         }
     }
 }

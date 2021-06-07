@@ -10,12 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -23,71 +26,32 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CartsReport implements ReportInterface, PortletInterface
 {
-    /**
-     * @var int
-     */
-    private $totalRecords = 0;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private PimcoreRepositoryInterface $orderRepository;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var Connection
-     */
-    private $db;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $cartRepository;
-
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param PimcoreRepositoryInterface $orderRepository,
-     * @param PimcoreRepositoryInterface $cartRepository
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
-        PimcoreRepositoryInterface $orderRepository,
-        PimcoreRepositoryInterface $cartRepository
+        PimcoreRepositoryInterface $orderRepository
     ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->orderRepository = $orderRepository;
-        $this->cartRepository = $cartRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPortletData(ParameterBag $parameterBag)
+    public function getPortletData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
     }
 
-    /**
-     * @param ParameterBag $parameterBag
-     *
-     * @return array
-     */
-    protected function getData(ParameterBag $parameterBag)
+    protected function getData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -100,9 +64,8 @@ class CartsReport implements ReportInterface, PortletInterface
         $toTimestamp = $to->getTimestamp();
 
         $orderClassId = $this->orderRepository->getClassId();
-        $cartClassId = $this->cartRepository->getClassId();
 
-        if (is_null($storeId)) {
+        if ($storeId === null) {
             return [];
         }
 
@@ -124,21 +87,21 @@ class CartsReport implements ReportInterface, PortletInterface
                     COUNT(*) as orderCount,
                     DATE(FROM_UNIXTIME(orderDate)) as orderDateTimestamp
                   FROM object_query_$orderClassId AS orders
-                  WHERE store = $storeId AND orderDate > $fromTimestamp AND orderDate < $toTimestamp
+                  WHERE store = $storeId AND orderDate > $fromTimestamp AND orderDate < $toTimestamp and orders.saleState === '".OrderSaleStates::STATE_ORDER."'
                   GROUP BY DATE(FROM_UNIXTIME(orderDate))
                 ) as ordersQuery
                 $join OUTER JOIN (
                   SELECT
                     COUNT(*) as cartCount,
                     DATE(FROM_UNIXTIME(o_creationDate)) as cartDateTimestamp
-                  FROM object_$cartClassId AS carts
-                  WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
+                  FROM object_$orderClassId AS carts
+                  WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp and carts-saleState === '".OrderSaleStates::STATE_CART."'
                   GROUP BY DATE(FROM_UNIXTIME(o_creationDate))
                 ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp
             ";
         }
 
-        $data = $this->db->fetchAll(implode(PHP_EOL . 'UNION ALL' . PHP_EOL, $queries) . '  ORDER BY timestamp ASC');
+        $data = $this->db->fetchAllAssociative(implode(PHP_EOL . 'UNION ALL' . PHP_EOL, $queries) . '  ORDER BY timestamp ASC');
 
         foreach ($data as &$day) {
             $date = Carbon::createFromTimestamp(strtotime($day['timestamp']));
@@ -149,10 +112,7 @@ class CartsReport implements ReportInterface, PortletInterface
         return array_values($data);
     }
 
-    /**
-     * @return int
-     */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

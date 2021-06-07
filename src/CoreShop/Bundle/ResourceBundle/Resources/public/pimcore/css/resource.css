@@ -9,3 +9,11 @@
 .coreshop_icon_settings {
     background:url(../img/services.svg) center center no-repeat !important;
 }
+
+.coreshop_nav_icon_settings {
+    background:url(../img/services.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_settings {
+    background:url(../img/services_white.svg) center center no-repeat !important;
+}

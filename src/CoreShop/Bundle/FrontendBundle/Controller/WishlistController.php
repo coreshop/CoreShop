@@ -10,10 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\Model\StorageListItem;
+use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,9 +31,9 @@ class WishlistController extends FrontendController
      */
     public function addItemAction(Request $request)
     {
-        $product = $this->get('coreshop.repository.product')->find($request->get('product'));
+        $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof PurchasableInterface) {
             $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
 
             return $this->redirect($redirect);
@@ -41,7 +45,14 @@ class WishlistController extends FrontendController
             $quantity = 1;
         }
 
-        $this->getWishlistModifier()->addItem($this->getWishlist(), $product, $quantity);
+        /**
+         * @var StorageListItem $wishlistItem
+         */
+        $wishlistItem = $this->get('coreshop.factory.wishlist_item')->createNew();
+        $wishlistItem->setProduct($product);
+        $wishlistItem->setQuantity($quantity);
+
+        $this->getWishlistModifier()->addToList($this->getWishlist(), $wishlistItem);
 
         $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
 
@@ -57,15 +68,21 @@ class WishlistController extends FrontendController
      */
     public function removeItemAction(Request $request)
     {
-        $product = $this->get('coreshop.repository.product')->find($request->get('product'));
+        $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof PurchasableInterface) {
             return $this->redirectToRoute('coreshop_index');
         }
 
         $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
 
-        $this->getWishlistModifier()->updateItemQuantity($this->getWishlist(), $product, 0);
+        foreach ($this->getWishlist()->getItems() as $item) {
+            if ($item->getProduct() instanceof $product && $item->getProduct()->getId() === $product->getId()) {
+                $this->getWishlistModifier()->removeFromList($this->getWishlist(), $item);
+
+                break;
+            }
+        }
 
         return $this->redirectToRoute('coreshop_wishlist_summary');
     }
@@ -77,7 +94,7 @@ class WishlistController extends FrontendController
      */
     public function summaryAction(Request $request)
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Wishlist/summary.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Wishlist/summary.html'), [
             'wishlist' => $this->getWishlist(),
         ]);
     }

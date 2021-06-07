@@ -10,18 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterOrderRendererTypesPass extends RegisterSimpleRegistryTypePass
 {
+    public const INDEX_ORDER_RENDERER_TAG = 'coreshop.index.order.renderer';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.index.order.renderers',
             'coreshop.index.order.renderers',
-            'coreshop.index.order.renderer'
+            self::INDEX_ORDER_RENDERER_TAG
         );
     }
 }

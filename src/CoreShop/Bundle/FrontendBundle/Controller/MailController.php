@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Core\Model\OrderInterface;
+use Pimcore\Http\Request\Resolver\EditmodeResolver;
 use Symfony\Component\HttpFoundation\Request;
 
 class MailController extends FrontendController
@@ -24,7 +27,7 @@ class MailController extends FrontendController
      */
     public function mailAction(Request $request)
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Mail/mail.html'));
+        return $this->render($this->templateConfigurator->findTemplate('Mail/mail.html'));
     }
 
     /**
@@ -37,10 +40,10 @@ class MailController extends FrontendController
         $order = $request->get('object');
         $viewParameters = [];
 
-        if (!$this->editmode && $order instanceof OrderInterface) {
+        if (!$this->get(EditmodeResolver::class)->isEditmode($request) && $order instanceof OrderInterface) {
             $viewParameters['order'] = $order;
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Mail/order-confirmation.html'), $viewParameters);
+        return $this->render($this->templateConfigurator->findTemplate('Mail/order-confirmation.html'), $viewParameters);
     }
 }

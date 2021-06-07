@@ -10,36 +10,27 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistry;
 use Psr\Container\ContainerInterface;
 use Webmozart\Assert\Assert;
 
 final class DefaultCheckoutManagerFactory implements CheckoutManagerFactoryInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $steps;
+    private ContainerInterface $steps;
+    private array $priorityMap;
 
-    /**
-     * @var array
-     */
-    private $priorityMap;
-
-    /**
-     * @param ContainerInterface $steps
-     * @param array              $priorityMap
-     */
     public function __construct(ContainerInterface $steps, array $priorityMap)
     {
         $this->steps = $steps;
         $this->priorityMap = $priorityMap;
     }
 
-    public function createCheckoutManager(CartInterface $cart)
+    public function createCheckoutManager(OrderInterface $cart): CheckoutManagerInterface
     {
         $serviceRegistry = new PrioritizedServiceRegistry(CheckoutStepInterface::class, 'checkout-manager-steps');
 

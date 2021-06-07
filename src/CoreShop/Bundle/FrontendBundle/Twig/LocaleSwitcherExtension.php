@@ -10,29 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Twig;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use Pimcore\Model\Document;
 use Pimcore\Model\Site;
 use Pimcore\Tool;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-final class LocaleSwitcherExtension extends \Twig_Extension
+final class LocaleSwitcherExtension extends AbstractExtension
 {
-    /**
-     * @var Document\Service
-     */
-    private $documentService;
+    private Document\Service $documentService;
+    private ShopperContextInterface $shopperContext;
 
-    /**
-     * @var ShopperContextInterface
-     */
-    private $shopperContext;
-
-    /**
-     * @param Document\Service        $documentService
-     * @param ShopperContextInterface $shopperContext
-     */
     public function __construct(
         Document\Service $documentService,
         ShopperContextInterface $shopperContext
@@ -41,13 +34,10 @@ final class LocaleSwitcherExtension extends \Twig_Extension
         $this->shopperContext = $shopperContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [
-            new \Twig_Function('coreshop_locale_switcher', [$this, 'getLocalizedLinks']),
+            new TwigFunction('coreshop_locale_switcher', [$this, 'getLocalizedLinks']),
         ];
     }
 
@@ -67,7 +57,10 @@ final class LocaleSwitcherExtension extends \Twig_Extension
         if ($store->getSiteId()) {
             try {
                 $site = Site::getById($store->getSiteId());
-                $basePath = $site->getRootDocument()->getRealFullPath() . '/';
+
+                if ($site instanceof Site) {
+                    $basePath = $site->getRootDocument()->getRealFullPath() . '/';
+                }
             } catch (\Exception $ex) {
                 $basePath = '/';
             }

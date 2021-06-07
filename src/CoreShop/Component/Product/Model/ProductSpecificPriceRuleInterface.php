@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Model;
 
 interface ProductSpecificPriceRuleInterface extends PriceRuleInterface
@@ -23,16 +25,6 @@ interface ProductSpecificPriceRuleInterface extends PriceRuleInterface
      * @param bool $inherit
      */
     public function setInherit($inherit);
-
-    /**
-     * @return int
-     */
-    public function getPriority();
-
-    /**
-     * @param int $priority
-     */
-    public function setPriority($priority);
 
     /**
      * @return int

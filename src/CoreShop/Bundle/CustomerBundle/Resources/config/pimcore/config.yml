@@ -1,2 +1,9 @@
 imports:
-    - { resource: "admin.yml" }
+    - { resource: admin.yml }
+
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-customer:
+                namespace_prefix: "CoreShop\\Component\\Customer"
+                path: "@CoreShopCustomerBundle/Resources/config/serializer"

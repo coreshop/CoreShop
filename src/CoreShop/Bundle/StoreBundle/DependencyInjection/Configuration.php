@@ -10,10 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\StoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\StoreBundle\Controller\StoreController;
+use CoreShop\Bundle\StoreBundle\Doctrine\ORM\StoreRepository;
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreType;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Store\Model\Store;
@@ -24,18 +27,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_store');
+        $treeBuilder = new TreeBuilder('core_shop_store');
+        $rootNode = $treeBuilder->getRootNode();
 
-        $rootNode
-            ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end();
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
 
@@ -64,7 +60,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(StoreInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(StoreController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(StoreRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(StoreType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
@@ -24,26 +26,23 @@ class Carrier extends Select
      */
     public $fieldtype = 'coreShopCarrier';
 
-    /**
-     * Type for the generated phpdoc.
-     *
-     * @var string
-     */
-    public $phpdocType = CarrierInterface::class;
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.carrier');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
+    protected function getModel(): string
     {
         return \Pimcore::getContainer()->getParameter('coreshop.model.carrier.class');
+    }
+
+    protected function getInterface(): string
+    {
+        return '\\' . CarrierInterface::class;
+    }
+
+    protected function getNullable(): bool
+    {
+        return true;
     }
 }

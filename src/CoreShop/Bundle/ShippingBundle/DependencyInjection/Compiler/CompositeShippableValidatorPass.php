@@ -12,16 +12,20 @@
 
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
+use CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator;
+use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CompositeShippableValidatorPass extends PrioritizedCompositeServicePass
 {
+    public const SHIPABLE_VALIDATOR_TAG = 'coreshop.shipping.carrier.validator';
+
     public function __construct()
     {
         parent::__construct(
-            'coreshop.shipping.carrier.validator',
-            'coreshop.shipping.carrier.validator.composite',
-            'coreshop.shipping.carrier.validator',
+            ShippableCarrierValidatorInterface::class,
+            CompositeShippableCarrierValidator::class,
+            self::SHIPABLE_VALIDATOR_TAG,
             'addValidator'
         );
     }

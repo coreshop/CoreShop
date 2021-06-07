@@ -15,8 +15,8 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_country',
 
-    url: {
-        save: '/admin/coreshop/countries/save'
+    routing: {
+        save: 'coreshop_country_save'
     },
 
     getItems: function () {
@@ -79,7 +79,9 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
                 fieldLabel: t('coreshop_country_addressFormat'),
                 xtype: 'textarea',
                 name: 'addressFormat',
-                value: data.addressFormat
+                value: data.addressFormat,
+                width: 500,
+                height: 400
             },
             {
                 xtype: 'tagfield',

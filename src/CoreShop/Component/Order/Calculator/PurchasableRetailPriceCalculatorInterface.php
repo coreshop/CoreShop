@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Calculator;
 
+use CoreShop\Component\Order\Exception\NoPurchasableRetailPriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface PurchasableRetailPriceCalculatorInterface
@@ -20,7 +23,9 @@ interface PurchasableRetailPriceCalculatorInterface
      * @param PurchasableInterface $purchasable
      * @param array                $context
      *
+     * @throws NoPurchasableRetailPriceFoundException
+     *
      * @return int
      */
-    public function getRetailPrice(PurchasableInterface $purchasable, array $context);
+    public function getRetailPrice(PurchasableInterface $purchasable, array $context): int;
 }

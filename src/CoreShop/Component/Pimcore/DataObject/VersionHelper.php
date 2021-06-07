@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Version;
 
 class VersionHelper
@@ -25,7 +28,7 @@ class VersionHelper
      *
      * @return mixed
      */
-    public static function useVersioning(\Closure $function, $enabled = true)
+    public static function useVersioning(\Closure $function, bool $enabled = true)
     {
         $backup = Version::$disabled;
 
@@ -44,5 +47,18 @@ class VersionHelper
         }
 
         return $result;
+    }
+
+    public static function getLatestVersion(Concrete $object): Concrete
+    {
+        $latestVersion = $object->getLatestVersion();
+        if ($latestVersion) {
+            $latestObj = $latestVersion->loadData();
+            if ($latestObj instanceof Concrete) {
+                $object = $latestObj;
+            }
+        }
+
+        return $object;
     }
 }

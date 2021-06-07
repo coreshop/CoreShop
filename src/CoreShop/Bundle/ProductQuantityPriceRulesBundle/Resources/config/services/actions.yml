@@ -1,0 +1,16 @@
+services:
+    coreshop.registry.product_quantity_price_rules.actions:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\ProductQuantityPriceRules\Rule\Action\ProductQuantityPriceRuleActionInterface
+            - product-quantity-price-rules-actions
+        tags:
+            - { name: coreshop.registry, type_hint: productQuantityPriceRuleActions }
+
+    CoreShop\Component\ProductQuantityPriceRules\Rule\Action\PercentageDecreaseAction:
+        tags:
+            - { name: coreshop.product_quantity_price_rules.action, type: percentage_decrease }
+
+    CoreShop\Component\ProductQuantityPriceRules\Rule\Action\PercentageIncreaseAction:
+        tags:
+            - { name: coreshop.product_quantity_price_rules.action, type: percentage_increase }

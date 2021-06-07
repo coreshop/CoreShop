@@ -1,0 +1,15 @@
+CoreShop\Component\Core\Model\OrderShipment:
+    exclusion_policy: ALL
+    xml_root_name: order_shipment
+    virtual_properties:
+        carrierName:
+            serialized_name: carrierName
+            exp: 'object.getCarrier() != null ? object.getCarrier().getIdentifier() : null'
+            type: string
+            groups: [Detailed]
+        weight:
+            serialized_name: weight
+            exp: object.getWeight()
+            type: double
+            groups: [Detailed]
+

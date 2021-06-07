@@ -1,0 +1,24 @@
+{% form_theme form '@CoreShopFrontend/Form/theme.html.twig' %}
+
+{{ form_start(form, {'action': path('coreshop_cart_add', {'product': product.id})}) }}
+    {{ form_errors(form) }}
+
+    <div class="input-group">
+        {% set relation_id = random() %}
+        {{ form_row(form.cartItem.quantity, coreshop_test_form_attribute('quantity')|coreshop_merge_recursive({label: false, attr: {class: 'form-control cart-item-quantity cs-unit-input', 'data-cs-unit-identifier': relation_id }})) }}
+
+        {% if form.cartItem.unitDefinition is defined %}
+            {{ form_row(form.cartItem.unitDefinition, coreshop_test_form_attribute('unit')|coreshop_merge_recursive({label: false, attr: {class: 'form-control ml-1 cs-unit-selector', 'data-cs-unit-identifier': relation_id}})) }}
+        {% endif %}
+
+        <div class="input-group-append {{ form.cartItem.unitDefinition is defined ? 'ml-2' : '' }}">
+            <button type="submit" class="btn btn-cart" rel="nofollow" {{ coreshop_test_html_attribute('add-to-cart') }}>
+                {{ 'coreshop.ui.add_to_cart'|trans }}
+                <i class="fa fa-shopping-cart"></i>
+            </button>
+        </div>
+    </div>
+
+    {{ form_row(form._token) }}
+{{ form_end(form, {'render_rest': false}) }}
+

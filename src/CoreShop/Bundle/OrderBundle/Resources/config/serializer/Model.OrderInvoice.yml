@@ -1,0 +1,44 @@
+CoreShop\Component\Order\Model\OrderInvoice:
+    exclusion_policy: ALL
+    xml_root_name: order_invoice
+    virtual_properties:
+        o_id:
+            serialized_name: o_id
+            exp: object.getId()
+            type: integer
+            groups: [Detailed]
+        documentType:
+            serialized_name: documentType
+            exp: object.getDocumentType()
+            type: string
+            groups: [Detailed]
+        totalTax:
+            serialized_name: totalTax
+            exp: object.getTotalTax()
+            type: integer
+            groups: [Detailed]
+        invoiceDate:
+            serialized_name: invoiceDate
+            exp: object.getInvoiceDate()
+            type: integer
+            groups: [Detailed]
+        invoiceNumber:
+            serialized_name: invoiceNumber
+            exp: object.getInvoiceNumber()
+            type: string
+            groups: [Detailed]
+        totalNet:
+            serialized_name: totalNet
+            exp: object.getTotal(false)
+            type: integer
+            groups: [Detailed]
+        totalGross:
+            serialized_name: totalGross
+            exp: object.getTotal(true)
+            type: integer
+            groups: [Detailed]
+        items:
+            serialized_name: items
+            exp: object.getItems
+            type: array
+            groups: [Detailed]

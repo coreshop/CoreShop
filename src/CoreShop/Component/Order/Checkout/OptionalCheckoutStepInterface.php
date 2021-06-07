@@ -10,18 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface OptionalCheckoutStepInterface
 {
     /**
      * Determines if this step is required and will therefore be listed.
      *
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      *
      * @return bool
      */
-    public function isRequired(CartInterface $cart);
+    public function isRequired(OrderInterface $cart): bool;
 }

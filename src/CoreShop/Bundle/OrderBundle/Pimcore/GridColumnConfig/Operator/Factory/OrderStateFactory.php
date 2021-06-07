@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory;
 
 use CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\OrderState;
@@ -19,26 +21,14 @@ use Pimcore\DataObject\GridColumnConfig\Operator\OperatorInterface;
 
 class OrderStateFactory implements OperatorFactoryInterface
 {
-    /**
-     * @var WorkflowStateInfoManagerInterface
-     */
-    private $workflowManager;
+    private WorkflowStateInfoManagerInterface $workflowManager;
 
-    /**
-     * @param WorkflowStateInfoManagerInterface $workflowManager
-     */
     public function __construct(WorkflowStateInfoManagerInterface $workflowManager)
     {
         $this->workflowManager = $workflowManager;
     }
 
-    /**
-     * @param \stdClass $configElement
-     * @param null      $context
-     *
-     * @return OperatorInterface
-     */
-    public function build(\stdClass $configElement, $context = null): OperatorInterface
+    public function build(\stdClass $configElement, array $context = [])
     {
         return new OrderState($this->workflowManager, $configElement, $context);
     }

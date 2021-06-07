@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Model;
 
 trait ToggleableTrait
@@ -22,7 +24,7 @@ trait ToggleableTrait
     /**
      * @return bool
      */
-    public function getActive()
+    public function getActive(): ?bool
     {
         return $this->active;
     }
@@ -30,7 +32,7 @@ trait ToggleableTrait
     /**
      * @param bool $enabled
      */
-    public function setActive($enabled)
+    public function setActive(?bool $enabled)
     {
         $this->active = (bool) $enabled;
     }

@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\Multihref;
 use CoreShop\Component\Pimcore\DataObject\EditmodeHelper;
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
 use Pimcore\Bundle\AdminBundle\Security\User\User as UserProxy;
@@ -22,7 +21,7 @@ use Pimcore\Model\Element;
 use Pimcore\Model\User;
 use Pimcore\Tool;
 
-final class EmbeddedClass extends Multihref
+final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRelation
 {
     /**
      * Static type of this element.
@@ -46,9 +45,16 @@ final class EmbeddedClass extends Multihref
      */
     public $embeddedClassLayout;
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getObjectsAllowed()
+    {
+        return true;
+    }
+
+    public function getClasses()
+    {
+        return [['classes' => $this->getEmbeddedClassName()]];
+    }
+
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         if (!is_array($data)) {
@@ -95,9 +101,6 @@ final class EmbeddedClass extends Multihref
         return $returnData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (!is_array($data)) {
@@ -197,38 +200,18 @@ final class EmbeddedClass extends Multihref
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preGetData($object, $params = [])
     {
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
-        }
+        $data = $object->getObjectVar($this->getName());
 
         if (!is_array($data)) {
             $data = $this->load($object, ['force' => true]);
-
-            //TODO: Remove once CoreShop requires min Pimcore 5.5
-            if (method_exists($object, 'setObjectVar')) {
-                $object->setObjectVar($this->getName(), $data);
-            } else {
-                $setter = 'set' . ucfirst($this->getName());
-                if (method_exists($object, $setter)) {
-                    $object->$setter($data);
-                }
-            }
+            $object->setObjectVar($this->getName(), $data);
         }
 
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save($object, $params = [])
     {
         if (!$object instanceof DataObject\Concrete) {
@@ -261,10 +244,7 @@ final class EmbeddedClass extends Multihref
         parent::save($object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function checkValidity($data, $omitMandatoryCheck = false)
+    public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
     {
         if (!$omitMandatoryCheck and $this->getMandatory() and empty($data)) {
             throw new Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
@@ -287,9 +267,6 @@ final class EmbeddedClass extends Multihref
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         if (!is_array($data) || count($data) === 0) {
@@ -446,25 +423,6 @@ final class EmbeddedClass extends Multihref
         return null;
     }
 
-    /**
-     * @return int
-     */
-    public function getMaxItems()
-    {
-        return $this->maxItems;
-    }
-
-    /**
-     * @param int $maxItems
-     */
-    public function setMaxItems($maxItems)
-    {
-        $this->maxItems = $maxItems;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getLazyLoading()
     {
         return false;

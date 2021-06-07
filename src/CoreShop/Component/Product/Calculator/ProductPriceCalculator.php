@@ -10,32 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Calculator;
 
+use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
+use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
 use CoreShop\Component\Product\Model\ProductInterface;
 
 final class ProductPriceCalculator implements ProductPriceCalculatorInterface
 {
-    /**
-     * @var ProductRetailPriceCalculatorInterface
-     */
-    private $retailPriceCalculator;
+    private ProductRetailPriceCalculatorInterface $retailPriceCalculator;
+    private ProductDiscountPriceCalculatorInterface $discountPriceCalculator;
+    private ProductDiscountCalculatorInterface $discountCalculator;
 
-    /**
-     * @var ProductDiscountPriceCalculatorInterface
-     */
-    private $discountPriceCalculator;
-
-    /**
-     * @var ProductDiscountCalculatorInterface
-     */
-    private $discountCalculator;
-
-    /**
-     * @param ProductRetailPriceCalculatorInterface   $retailPriceCalculator
-     * @param ProductDiscountPriceCalculatorInterface $discountPriceCalculator
-     * @param ProductDiscountCalculatorInterface      $discountCalculator
-     */
     public function __construct(
         ProductRetailPriceCalculatorInterface $retailPriceCalculator,
         ProductDiscountPriceCalculatorInterface $discountPriceCalculator,
@@ -46,16 +34,14 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
         $this->discountCalculator = $discountCalculator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice(ProductInterface $product, array $context, $includingDiscounts = false)
+    public function getPrice(ProductInterface $product, array $context, bool $includingDiscounts = false): int
     {
         $retailPrice = $this->getRetailPrice($product, $context);
-        $discountPrice = $this->getDiscountPrice($product, $context);
         $price = $retailPrice;
 
-        if ($discountPrice > 0 && $discountPrice < $retailPrice) {
+        $discountPrice = $this->getDiscountPrice($product, $context);
+
+        if ($discountPrice > 0 && $discountPrice < $price) {
             $price = $discountPrice;
         }
 
@@ -66,26 +52,27 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
-        return $this->retailPriceCalculator->getRetailPrice($subject, $context);
+        try {
+            return $this->retailPriceCalculator->getRetailPrice($subject, $context);
+        } catch (NoRetailPriceFoundException $ex) {
+        }
+
+        return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscountPrice(ProductInterface $subject, array $context)
+    public function getDiscountPrice(ProductInterface $subject, array $context): int
     {
-        return $this->discountPriceCalculator->getDiscountPrice($subject, $context);
+        try {
+            return $this->discountPriceCalculator->getDiscountPrice($subject, $context);
+        } catch (NoDiscountPriceFoundException $ex) {
+        }
+
+        return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscount(ProductInterface $subject, array $context, $price)
+    public function getDiscount(ProductInterface $subject, array $context, int $price): int
     {
         return $this->discountCalculator->getDiscount($subject, $context, $price);
     }

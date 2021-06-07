@@ -10,19 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\DependencyInjection;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackerPass;
+use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackingExtractorPass;
+use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
+use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class CoreShopTrackingExtension extends AbstractModelExtension
+final class CoreShopTrackingExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
 
@@ -30,6 +33,14 @@ final class CoreShopTrackingExtension extends AbstractModelExtension
         $loader->load('services.yml');
 
         $this->configureTrackers($config, $container);
+
+        $container
+            ->registerForAutoconfiguration(TrackerInterface::class)
+            ->addTag(TrackerPass::TRACKER_TAG);
+
+        $container
+            ->registerForAutoconfiguration(TrackingExtractorInterface::class)
+            ->addTag(TrackingExtractorPass::TRACKING_EXTRACTOR_TAG);
     }
 
     /**
@@ -38,17 +49,21 @@ final class CoreShopTrackingExtension extends AbstractModelExtension
      */
     protected function configureTrackers(array $config, ContainerBuilder $container)
     {
-        foreach ($container->findTaggedServiceIds('coreshop.tracking.tracker') as $id => $attributes) {
-            if (!isset($attributes[0]['type'])) {
-                continue;
-            }
+        foreach ($container->findTaggedServiceIds(TrackerPass::TRACKER_TAG) as $id => $attributes) {
+            foreach ($attributes as $tag) {
+                if (!isset($tag['type'])) {
+                    continue;
+                }
 
-            $type = $attributes[0]['type'];
+                $type = $tag['type'];
 
-            if (!array_key_exists($type, $config['trackers'])) {
-                $container->getDefinition($id)->addMethodCall('setEnabled', [false]);
-            } else {
-                $container->getDefinition($id)->addMethodCall('setEnabled', [$config['trackers'][$type]['enabled']]);
+                if (!array_key_exists($type, $config['trackers'])) {
+                    $container->getDefinition($id)
+                        ->addMethodCall('setEnabled', [false]);
+                } else {
+                    $container->getDefinition($id)
+                        ->addMethodCall('setEnabled', [$config['trackers'][$type]['enabled']]);
+                }
             }
         }
     }

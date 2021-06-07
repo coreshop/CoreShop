@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
@@ -22,25 +24,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractConfigurableIndexColumnElementType extends AbstractResourceType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $formTypeRegistry;
+    private FormTypeRegistryInterface $formTypeRegistry;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
+    public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups);
 
         $this->formTypeRegistry = $formTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
@@ -48,6 +41,10 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $objectType = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $objectType) {
+                    return;
+                }
+
+                if (!$this->formTypeRegistry->has($objectType, 'default')) {
                     return;
                 }
 
@@ -68,14 +65,15 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
                     return;
                 }
 
+                if (!$this->formTypeRegistry->has($data['objectType'], 'default')) {
+                    return;
+                }
+
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['objectType'], 'default'));
             });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -88,7 +86,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
      * @param FormInterface $form
      * @param string        $configurationType
      */
-    protected function addConfigurationFields(FormInterface $form, $configurationType)
+    protected function addConfigurationFields(FormInterface $form, string $configurationType): void
     {
         $form->add('configuration', $configurationType, [
             'label' => false,
@@ -101,7 +99,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
      *
      * @return string|null
      */
-    protected function getRegistryIdentifier(FormInterface $form, $data = null)
+    protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
         if (null !== $data && null !== $data->getObjectType()) {
             return $data->getObjectType();

@@ -19,7 +19,7 @@ coreshop.notification.rule.conditions.payment = Class.create(coreshop.rules.cond
         var paymentProvidersStore = new Ext.data.Store({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/payment_providers/list',
+                url: Routing.generate('coreshop_payment_provider_list'),
                 reader: {
                     type: 'json',
                     rootProperty: 'data'

@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Payment\Model\Payment as BasePayment;
+use Webmozart\Assert\Assert;
 
 class Payment extends BasePayment implements PaymentInterface
 {
@@ -21,19 +24,15 @@ class Payment extends BasePayment implements PaymentInterface
      */
     protected $order;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOrder()
     {
         return $this->order;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOrder(\CoreShop\Component\Order\Model\OrderInterface $order)
     {
+        Assert::isInstanceOf($order, OrderInterface::class);
+
         $this->order = $order;
         $this->orderId = $order->getId();
     }

@@ -1,0 +1,16 @@
+imports:
+    - { resource: admin.yml }
+
+pimcore:
+    objects:
+        class_definitions:
+            data:
+                map:
+                    coreShopProductQuantityPriceRules: CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension\ProductQuantityPriceRules
+
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-product-quantity-price-rules:
+                namespace_prefix: "CoreShop\\Component\\ProductQuantityPriceRules"
+                path: "@CoreShopProductQuantityPriceRulesBundle/Resources/config/serializer"

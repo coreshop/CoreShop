@@ -2,17 +2,22 @@ services:
     _defaults:
         public: true
 
-    coreshop.command.create_object_class:
-        class: CoreShop\Bundle\ResourceBundle\Command\CreateObjectClassCommand
+    CoreShop\Bundle\ResourceBundle\Command\InstallResourcesCommand:
         arguments:
-            - '@kernel'
-            - '%coreshop.all.pimcore_classes%'
+            - '@CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface'
         tags:
-            - { name: console.command, command: 'coreshop:generate:class' }
+            - { name: console.command, command: coreshop:resources:install }
 
-    coreshop.command.resource.installer:
-        class: CoreShop\Bundle\ResourceBundle\Command\InstallResourcesCommand
+    CoreShop\Bundle\ResourceBundle\Command\CreateDatabaseTablesCommand:
         arguments:
-            - '@coreshop.resource.installer'
+            - '%coreshop.resources%'
+            - '@doctrine.orm.entity_manager'
         tags:
-            - { name: console.command, command: 'coreshop:resources:install' }
+            - { name: console.command, command: coreshop:resources:create-tables }
+
+    CoreShop\Bundle\ResourceBundle\Command\DropDatabaseTablesCommand:
+        arguments:
+            - '%coreshop.resources%'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: console.command, command: coreshop:resources:drop-tables }

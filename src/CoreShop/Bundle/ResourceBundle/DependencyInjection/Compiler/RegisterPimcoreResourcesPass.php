@@ -10,22 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 final class RegisterPimcoreResourcesPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         try {
             $resources = $container->getParameter('coreshop.all.pimcore_classes');
-            $registry = $container->findDefinition('coreshop.resource_registry');
+            $registry = $container->findDefinition(RegistryInterface::class);
         } catch (InvalidArgumentException $exception) {
             return;
         }

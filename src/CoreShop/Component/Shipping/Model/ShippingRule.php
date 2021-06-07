@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Model;
 
 use CoreShop\Component\Rule\Model\RuleTrait;
@@ -23,9 +25,6 @@ class ShippingRule implements ShippingRuleInterface
      */
     protected $id;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;

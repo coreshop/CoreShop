@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TaxationBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
@@ -18,30 +20,7 @@ use CoreShop\Component\Taxation\Repository\TaxRuleRepositoryInterface;
 
 class TaxRuleRepository extends EntityRepository implements TaxRuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function createListQueryBuilder()
-    {
-        return $this->createQueryBuilder('o');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getByGroupId($taxRuleGroupId)
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.taxRuleGroup = :taxRuleGroupId')
-            ->setParameter('taxRuleGroupId', $taxRuleGroupId)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByGroup(TaxRuleGroupInterface $group)
+    public function findByGroup(TaxRuleGroupInterface $group): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.taxRuleGroup = :taxRuleGroup')

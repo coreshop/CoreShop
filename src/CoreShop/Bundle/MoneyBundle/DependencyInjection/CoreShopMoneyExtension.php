@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\MoneyBundle\DependencyInjection;
 
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
@@ -19,15 +21,26 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopMoneyExtension extends AbstractPimcoreExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
 
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+
+        if (!$container->hasParameter('coreshop.currency.decimal_factor')) {
+            $container->setParameter('coreshop.currency.decimal_factor', 100);
+        }
+
+        if (!$container->hasParameter('coreshop.currency.decimal_precision')) {
+            $container->setParameter('coreshop.currency.decimal_precision', 2);
+        }
+
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
 
         $loader->load('services.yml');
     }

@@ -1,19 +1,23 @@
 imports:
-    - { resource: "services/extractor.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/extractor.yml }
 
 services:
     _defaults:
         public: true
 
     coreshop.registry.seo.extractor:
-        class: CoreShop\Component\Registry\ServiceRegistry
+        class: CoreShop\Component\Registry\PrioritizedServiceRegistry
         arguments:
             - 'CoreShop\Component\SEO\Extractor\ExtractorInterface'
             - 'seo metadata extractor'
+        tags:
+            - { name: coreshop.registry, type_hint: seoExtractors }
 
-    coreshop.seo.presentation:
-        class: CoreShop\Component\SEO\SEOPresentation
+    CoreShop\Component\SEO\SEOPresentationInterface: '@CoreShop\Component\SEO\SEOPresentation'
+    CoreShop\Component\SEO\SEOPresentation:
         arguments:
-            - '@Pimcore\Templating\Helper\HeadMeta'
-            - '@Pimcore\Templating\Helper\HeadTitle'
-            - '@coreshop.registry.seo.extractor'
+        - '@Pimcore\Twig\Extension\Templating\HeadMeta'
+        - '@Pimcore\Twig\Extension\Templating\HeadTitle'
+        - '@coreshop.registry.seo.extractor'
+

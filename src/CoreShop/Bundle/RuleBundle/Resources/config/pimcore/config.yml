@@ -1,2 +1,9 @@
 imports:
-    - { resource: "admin.yml" }
+    - { resource: admin.yml }
+
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-rule:
+                namespace_prefix: "CoreShop\\Component\\Rule"
+                path: "@CoreShopRuleBundle/Resources/config/serializer"

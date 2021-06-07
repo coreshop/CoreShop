@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\InventoryBundle\Validator\Constraints;
 
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
@@ -22,29 +24,16 @@ use Webmozart\Assert\Assert;
 
 final class InStockValidator extends ConstraintValidator
 {
-    /**
-     * @var AvailabilityCheckerInterface
-     */
-    private $availabilityChecker;
+    private AvailabilityCheckerInterface $availabilityChecker;
+    private PropertyAccessor $accessor;
 
-    /**
-     * @var PropertyAccessor
-     */
-    private $accessor;
-
-    /**
-     * @param AvailabilityCheckerInterface $availabilityChecker
-     */
     public function __construct(AvailabilityCheckerInterface $availabilityChecker)
     {
         $this->availabilityChecker = $availabilityChecker;
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         /** @var InStock $constraint */
         Assert::isInstanceOf($constraint, InStock::class);

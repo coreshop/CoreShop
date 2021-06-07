@@ -18,23 +18,33 @@
     }
   ],
   "require": {
-    "doctrine/common": "^2.6",
-    "pimcore/pimcore": "^5.4.0",
-    "webmozart/assert": "^1.2"
+    "coreshop/pimcore": "^3.0",
+    "doctrine/common": "^3.1",
+    "doctrine/orm": "^2.5",
+    "webmozart/assert": "^1.2",
+    "pimcore/pimcore": "^10.0.0"
   },
-  "config": {
-    "bin-dir": "bin"
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-doctrine": "^0.12",
+    "phpstan/phpstan-webmozart-assert": "^0.12"
   },
   "autoload": {
     "psr-4": {
       "CoreShop\\Component\\Resource\\": ""
     }
   },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.0-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

@@ -15,8 +15,8 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_price_rule',
 
-    url: {
-        save: '/admin/coreshop/cart_price_rules/save'
+    routing: {
+        save: 'coreshop_cart_price_rule_save'
     },
 
     getPanel: function () {
@@ -49,7 +49,25 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
     },
 
     getSettings: function () {
-        var data = this.data;
+        var data = this.data,
+            langTabs = [];
+
+        Ext.each(pimcore.settings.websiteLanguages, function (lang) {
+            var tab = {
+                title: pimcore.available_languages[lang],
+                iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
+                layout: 'form',
+                items: [{
+                    xtype: 'textfield',
+                    name: 'translations.' + lang + '.label',
+                    fieldLabel: t('coreshop_price_rule_label'),
+                    width: 400,
+                    value: data.translations && data.translations[lang] ? data.translations[lang].label : ''
+                }]
+            };
+
+            langTabs.push(tab);
+        });
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
             iconCls: 'coreshop_icon_settings',
@@ -90,6 +108,15 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         }
                     }.bind(this)
                 }
+            }, {
+                xtype: 'tabpanel',
+                activeTab: 0,
+                defaults: {
+                    autoHeight: true,
+                    bodyStyle: 'padding:10px;'
+                },
+                width: '100%',
+                items: langTabs
             }]
         });
 
@@ -123,8 +150,8 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         totalProperty: 'total'
                     },
                     api: {
-                        read: '/admin/coreshop/cart_price_rules/get-voucher-codes',
-                        destroy: '/admin/coreshop/cart_price_rules/delete-voucher-code'
+                        read: Routing.generate('coreshop_cart_price_rule_getVoucherCodes'),
+                        destroy: Routing.generate('coreshop_cart_price_rule_deleteVoucherCode')
                     },
                     extraParams: {
                         cartPriceRule: this.data.id
@@ -183,7 +210,6 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                             handler: function (grid, rowIndex) {
                                 var record = grid.getStore().getAt(rowIndex);
                                 grid.getStore().removeAt(rowIndex);
-                                console.log(record);
                             }.bind(this)
                         }]
                     }
@@ -230,7 +256,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_vouchers_export'),
                             handler: function () {
-                                pimcore.helpers.download('/admin/coreshop/cart_price_rules/export-voucher-codes?cartPriceRule=' + this.data.id);
+                                pimcore.helpers.download(Routing.generate('coreshop_cart_price_rule_exportVoucherCodes', {cartPriceRule: this.data.id}));
                             }.bind(this)
                         }
                     ]
@@ -272,7 +298,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         params['cartPriceRule'] = this.data.id;
 
                         Ext.Ajax.request({
-                            url: '/admin/coreshop/cart_price_rules/create-voucher-code',
+                            url: Routing.generate('coreshop_cart_price_rule_createVoucherCode'),
                             method: 'post',
                             jsonData: params,
                             success: function (response) {
@@ -359,7 +385,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         params['cartPriceRule'] = this.data.id;
 
                         Ext.Ajax.request({
-                            url: '/admin/coreshop/cart_price_rules/generate-voucher-codes',
+                            url: Routing.generate('coreshop_cart_price_rule_generateVoucherCodes'),
                             method: 'post',
                             jsonData: params,
                             success: function (response) {
@@ -370,7 +396,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                                     this.getVoucherCodes().down('grid').getStore().load();
                                 } else {
                                     btn.setDisabled(false);
-                                    pimcore.helpers.showNotification(t('error'), 'error', 'error');
+                                    Ext.Msg.alert(t('error'), res.message);
                                 }
                             }.bind(this),
                             failure: function(response) {

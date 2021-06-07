@@ -10,58 +10,37 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Condition;
 
 class IsCondition implements ConditionInterface
 {
-    /**
-     * @var string
-     */
-    private $fieldName;
+    private string $fieldName;
+    private string $value;
 
-    /**
-     * @var string
-     */
-    private $value;
-
-    /**
-     * @param string $fieldName
-     * @param string $value
-     */
-    public function __construct($fieldName, $value)
+    public function __construct(string $fieldName, string $value)
     {
         $this->fieldName = $fieldName;
         $this->value = $value;
     }
 
-    /**
-     * @return string
-     */
-    public function getFieldName()
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
 
-    /**
-     * @param string $fieldName
-     */
-    public function setFieldName($fieldName)
+    public function setFieldName(string $fieldName): void
     {
         $this->fieldName = $fieldName;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @param string $value
-     */
-    public function setValue($value)
+    public function setValue(string $value): void
     {
         $this->value = $value;
     }

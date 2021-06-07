@@ -77,7 +77,7 @@ coreshop.filter.abstract = Class.create({
 
             this.valueStore = new Ext.data.ArrayStore({
                 proxy: new Ext.data.HttpProxy({
-                    url: '/admin/coreshop/filters/get-values-for-filter-field'
+                    url: Routing.generate('coreshop_filter_getValuesForFilterField')
                 }),
                 reader: new Ext.data.JsonReader({}, [
                     {name: 'value'},

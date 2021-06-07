@@ -11,10 +11,12 @@
  */
 
 pimcore.registerNS('coreshop.rules.condition');
-
 coreshop.rules.condition = Class.create({
+    dirty: false,
+
     initialize: function (conditions) {
         this.conditions = conditions;
+        this.dirty = false;
     },
 
     getLayout: function () {
@@ -31,7 +33,7 @@ coreshop.rules.condition = Class.create({
             addMenu.push({
                 iconCls: _this.getConditionStyleClass(condition),
                 text: t('coreshop_condition_' + condition),
-                handler: _this.addCondition.bind(_this, condition, null)
+                handler: _this.addCondition.bind(_this, condition, null, true)
             });
 
         });
@@ -50,6 +52,10 @@ coreshop.rules.condition = Class.create({
         });
 
         return this.conditionsContainer;
+    },
+
+    setDirty: function(dirty) {
+        this.dirty = dirty;
     },
 
     destroy: function () {
@@ -78,7 +84,7 @@ coreshop.rules.condition = Class.create({
         return coreshop.rules.conditions.abstract;
     },
 
-    addCondition: function (type, data) {
+    addCondition: function (type, data, dirty) {
         // create condition
         var conditionClass = this.getConditionClassItem(type);
         var item = new conditionClass(this, type, data);
@@ -88,6 +94,10 @@ coreshop.rules.condition = Class.create({
 
         this.conditionsContainer.add(item.getLayout());
         this.conditionsContainer.updateLayout();
+
+        if (dirty) {
+            this.setDirty(true);
+        }
     },
 
     getConditionsData: function () {
@@ -126,7 +136,7 @@ coreshop.rules.condition = Class.create({
             }
 
             if (conditionClass.data.id) {
-                action['id'] = conditionClass.data.id;
+                condition['id'] = conditionClass.data.id;
             }
 
             condition['configuration'] = configuration;
@@ -143,6 +153,10 @@ coreshop.rules.condition = Class.create({
     },
 
     isDirty: function () {
+        if (this.dirty) {
+            return true;
+        }
+
         if (this.conditionsContainer.items) {
             var conditions = this.conditionsContainer.items.getRange();
             for (var i = 0; i < conditions.length; i++) {

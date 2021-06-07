@@ -1,0 +1,33 @@
+CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule:
+    exclusion_policy: ALL
+    xml_root_name: coreshop_product_quantity_price_rule
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed, Version]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed, Version]
+        calculationBehaviour:
+            expose: true
+            type: string
+            groups: [List, Detailed, Version]
+        active:
+            expose: true
+            type: boolean
+            groups: [Detailed, Version]
+        priority:
+            expose: true
+            type: integer
+            groups: [Detailed, Version]
+        conditions:
+            expose: true
+            type: ArrayCollection<CoreShop\Component\Rule\Model\Condition>
+            groups: [Detailed, Version]
+        ranges:
+            expose: true
+            type: ArrayCollection<CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange>
+            groups: [Detailed, Version]

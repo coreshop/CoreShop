@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -21,18 +23,12 @@ final class CartPriceRule extends Constraint
      */
     public $message = 'Voucher "%rule%" is not valid anymore.';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'coreshop_cart_rule_valid';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

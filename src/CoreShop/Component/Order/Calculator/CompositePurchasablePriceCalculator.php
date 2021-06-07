@@ -10,42 +10,40 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Calculator;
 
+use CoreShop\Component\Order\Exception\NoPurchasablePriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositePurchasablePriceCalculator implements PurchasablePriceCalculatorInterface
 {
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
-    protected $calculators;
+    protected PrioritizedServiceRegistryInterface $calculators;
 
-    /**
-     * @param PrioritizedServiceRegistryInterface $calculators
-     */
     public function __construct(PrioritizedServiceRegistryInterface $calculators)
     {
         $this->calculators = $calculators;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false)
+    public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int
     {
-        $price = false;
+        $price = null;
 
         /**
          * @var PurchasablePriceCalculatorInterface $calculator
          */
         foreach ($this->calculators->all() as $calculator) {
-            $actionPrice = $calculator->getPrice($purchasable, $context, $includingDiscounts);
-
-            if (false !== $actionPrice && null !== $actionPrice) {
+            try {
+                $actionPrice = $calculator->getPrice($purchasable, $context, $includingDiscounts);
                 $price = $actionPrice;
+            } catch (NoPurchasablePriceFoundException $ex) {
             }
+        }
+
+        if (null === $price) {
+            throw new NoPurchasablePriceFoundException(__CLASS__);
         }
 
         return $price;

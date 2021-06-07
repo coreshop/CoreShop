@@ -30,18 +30,18 @@
                 <tbody>
                 {% for order in orders %}
                 <tr>
-                    <td>{{ order.getOrderNumber }}</td>
+                    <td>{{ order.orderNumber }}</td>
                     <td>
-                        {{ order.getOrderDate|date("d.m.Y") }}
+                        {{ order.orderDate|date("d.m.Y") }}
                     </td>
                     <td>
-                        {{ currency.format(order.getTotal, order.getCurrency.getIsoCode) }}
+                        {{ currency.format(order.convertedTotal, order.currency.isoCode) }}
                     </td>
                     <td>
                         <span class="badge badge-info">{{ order|coreshop_order_state.calculatedState }}</span>
                     </td>
                     <td>
-                        <a class="btn btn-secondary" href="{{ coreshop_path(order, 'coreshop_customer_order_detail', {order: order.getId}) }}">
+                        <a class="btn btn-secondary" href="{{ coreshop_path(order, 'coreshop_customer_order_detail', {order: order.id}) }}">
                             {{ 'coreshop.ui.show_detail'|trans }}
                         </a>
                     </td>

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Filter;
 
 use CoreShop\Component\Index\Condition\MatchCondition;
@@ -21,10 +23,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class SelectFilterConditionProcessor implements FilterConditionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = $condition->getConfiguration()['field'];
 
@@ -33,26 +32,25 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
         return [
             'type' => 'select',
             'label' => $condition->getLabel(),
-            'currentValue' => $currentFilter[$field],
+            'currentValue' => $currentFilter[$field] ?? null,
             'values' => array_values($rawValues),
             'fieldName' => $field,
             'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = $condition->getConfiguration()['field'];
         $value = $parameterBag->get($field);
 
-        if (empty($value)) {
+        if (empty($value) && isset($condition->getConfiguration()['preSelect'])) {
             $value = $condition->getConfiguration()['preSelect'];
         }
 
-        $value = trim($value);
+        if (is_string($value)) {
+            $value = trim($value);
+        }
 
         if (!empty($value)) {
             $currentFilter[$field] = $value;
@@ -63,7 +61,7 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
                 $fieldName = 'PRECONDITION_' . $fieldName;
             }
 
-            $list->addCondition(new MatchCondition($field, $value), $fieldName);
+            $list->addCondition(new MatchCondition($field, (string)$value), $fieldName);
         }
 
         return $currentFilter;

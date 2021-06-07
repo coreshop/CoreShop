@@ -10,37 +10,26 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use Doctrine\DBAL\Connection;
+use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject;
+use Pimcore\Model\DataObject\Listing;
 
 class StackRepository extends PimcoreRepository
 {
-    /**
-     * @var array
-     */
-    private $classNames = [];
+    private array $classNames = [];
+    private array $fqnStackClasses = [];
+    private string $interface;
 
-    /**
-     * @var array
-     */
-    private $fqnStackClasses = [];
-
-    /**
-     * @var string
-     */
-    private $interface;
-
-    /**
-     * @param MetadataInterface $metadata
-     * @param string            $interface
-     * @param array             $stackClasses
-     */
-    public function __construct(MetadataInterface $metadata, $interface, array $stackClasses)
+    public function __construct(MetadataInterface $metadata, Connection $connection, string $interface, array $stackClasses)
     {
-        parent::__construct($metadata);
+        parent::__construct($metadata, $connection);
 
         $this->interface = $interface;
         $this->fqnStackClasses = $stackClasses;
@@ -48,14 +37,11 @@ class StackRepository extends PimcoreRepository
         foreach ($stackClasses as $class) {
             $namespaces = explode('\\', $class);
 
-            $this->classNames[] = '"' . end($namespaces) . '"';
+            $this->classNames[] = '"'.end($namespaces).'"';
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getClassIds()
+    public function getClassIds(): array
     {
         $ids = [];
 
@@ -66,33 +52,28 @@ class StackRepository extends PimcoreRepository
         return $ids;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findAll()
+    public function findAll(): array
     {
         $list = $this->getList();
 
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getList()
     {
-        $list = DataObject::getList();
+        $list = new DataObject\Listing();
         $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->classNames)));
 
         return $list;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function forceFind($id, $force = true)
+    public function forceFind($id, bool $force = true)
     {
         $instance = DataObject::getById($id, $force);
+
+        if (null === $instance) {
+            return null;
+        }
 
         if (!in_array($this->interface, class_implements($instance), true)) {
             return null;
@@ -101,9 +82,6 @@ class StackRepository extends PimcoreRepository
         return $instance;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $criteria[] = [
@@ -113,9 +91,6 @@ class StackRepository extends PimcoreRepository
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneBy(array $criteria)
     {
         $instance = parent::findOneBy($criteria);

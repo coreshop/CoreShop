@@ -2,12 +2,36 @@
     background: url(../img/countries.svg) center center no-repeat !important;
 }
 
+.coreshop_nav_icon_country {
+    background: url(../img/countries.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_country {
+    background: url(../img/countries_white.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_zone, .coreshop_rule_icon_condition_zones {
     background: url(../img/zones.svg) center center no-repeat !important;
 }
 
+.coreshop_nav_icon_zone {
+    background: url(../img/zones.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_zone {
+    background: url(../img/zones_white.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_state, .pimcore_icon_coreShopState {
     background: url(../img/state.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_state {
+    background: url(../img/state.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_state {
+    background: url(../img/state_white.svg) center center no-repeat !important;
 }
 
 .coreshop_icon_address {

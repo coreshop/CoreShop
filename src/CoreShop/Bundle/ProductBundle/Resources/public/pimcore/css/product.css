@@ -1,5 +1,13 @@
-.coreshop_icon_price_rule, .coreshop_icon_product_specific_price_rules {
+.coreshop_icon_price_rule, .coreshop_icon_product_specific_price_rules, .pimcore_icon_coreShopProductSpecificPriceRules {
     background: url(../img/price-rules.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_price_rule {
+    background: url(../img/price-rules.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_price_rule {
+    background: url(../img/price-rules_white.svg) center center no-repeat !important;
 }
 
 .coreshop_rule_icon_condition_products {
@@ -8,6 +16,14 @@
 
 .coreshop_icon_product {
     background: url(../img/product.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_product {
+    background: url(../img/product.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_product {
+    background: url(../img/product_white.svg) center center no-repeat !important;
 }
 
 .coreshop_icon_product_blue {
@@ -57,3 +73,22 @@
     background: url(../img/currencies.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_product_units {
+    background: url(../img/product-units.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_product_units, .pimcore_icon_coreShopProductUnitDefinitions, .pimcore_icon_coreShopProductUnitDefinition, .pimcore_icon_coreShopProductUnit {
+    background: url(../img/product-units.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_product_units {
+    background: url(../img/product-units_white.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_product_unit {
+    background: url(../img/product-unit.svg) center center no-repeat !important;
+}
+.pimcore_droptarget_unit_definition_input  {
+    background: url(../img/product-unit.svg) right 5px center/20px no-repeat transparent !important;
+    cursor: default;
+}

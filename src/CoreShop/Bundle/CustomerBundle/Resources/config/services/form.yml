@@ -6,8 +6,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.customer:
-        class: CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType
+    CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType:
         arguments:
             - '%coreshop.model.customer.class%'
             - '%coreshop.form.type.customer.validation_groups%'
@@ -15,17 +14,26 @@ services:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.change_password:
-        class: CoreShop\Bundle\CustomerBundle\Form\Type\ChangePasswordType
+    CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType:
+        arguments:
+            - '%coreshop.customer.security.login_identifier%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.request_reset_password:
-        class: CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType
+    CoreShop\Bundle\CustomerBundle\Form\Type\ChangePasswordType:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.reset_password:
-        class: CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType
+    CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType:
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType:
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\CustomerBundle\Form\Type\CustomerSelectionType:
+        arguments:
+            - '@coreshop.repository.customer'
         tags:
             - { name: form.type }

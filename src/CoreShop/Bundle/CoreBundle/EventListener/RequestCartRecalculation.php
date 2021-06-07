@@ -10,42 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class RequestCartRecalculation
 {
-    /**
-     * @var CartManagerInterface
-     */
-    private $cartManager;
+    private CartManagerInterface $cartManager;
+    private ShopperContextInterface $shopperContext;
+    private ConfigurationServiceInterface $configurationService;
+    private RequestHelper $pimcoreRequestHelper;
 
-    /**
-     * @var ShopperContextInterface
-     */
-    private $shopperContext;
-
-    /**
-     * @var ConfigurationServiceInterface
-     */
-    private $configurationService;
-
-    /**
-     * @var RequestHelper
-     */
-    private $pimcoreRequestHelper;
-
-    /**
-     * @param CartManagerInterface          $cartManager
-     * @param ShopperContextInterface       $shopperContext
-     * @param ConfigurationServiceInterface $configurationService
-     * @param RequestHelper                 $pimcoreRequestHelper
-     */
     public function __construct(
         CartManagerInterface $cartManager,
         ShopperContextInterface $shopperContext,
@@ -58,12 +39,7 @@ final class RequestCartRecalculation
         $this->pimcoreRequestHelper = $pimcoreRequestHelper;
     }
 
-    /**
-     * Force Cart to be recalculated.
-     *
-     * @param GetResponseEvent $event
-     */
-    public function checkPriceRuleState(GetResponseEvent $event)
+    public function checkPriceRuleState(RequestEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -84,7 +60,12 @@ final class RequestCartRecalculation
         $cart = $this->shopperContext->getCart();
 
         if ($cart->getId()) {
-            if ($this->configurationService->get('SYSTEM.PRICE_RULE.UPDATE') > $cart->getModificationDate()) {
+            /**
+             * @var int|null $updateTime
+             */
+            $updateTime = $this->configurationService->get('SYSTEM.PRICE_RULE.UPDATE');
+
+            if (null !== $updateTime && $updateTime > $cart->getModificationDate()) {
                 $this->cartManager->persistCart($cart);
             }
         }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\NotificationBundle\Form\Type;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
@@ -19,10 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class NotificationRuleType extends RuleType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextareaType::class)
@@ -32,10 +31,7 @@ final class NotificationRuleType extends RuleType
             ->add('actions', NotificationRuleActionCollectionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_notification_rule';
     }

@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\CoreBundle\Menu\MainMenuBuilder:
+        tags:
+            - { name: 'coreshop.menu', type: main, menu: main }

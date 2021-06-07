@@ -1,0 +1,59 @@
+services:
+    coreshop.product_quantity_price_rules.rule.condition.customers:
+        class: CoreShop\Component\Core\Product\Rule\Condition\CustomersConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
+
+    coreshop.product_quantity_price_rules.rule.condition.customer_groups:
+        class: CoreShop\Component\Core\Product\Rule\Condition\CustomerGroupsConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
+
+    coreshop.product_quantity_price_rules.rule.condition.countries:
+        class: CoreShop\Component\Core\Product\Rule\Condition\CountriesConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
+
+    coreshop.product_quantity_price_rules.rule.condition.zones:
+        class: CoreShop\Component\Core\Product\Rule\Condition\ZonesConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
+
+    coreshop.product_quantity_price_rules.rule.condition.stores:
+        class: CoreShop\Component\Core\Product\Rule\Condition\StoresConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: stores, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType }
+
+    coreshop.product_quantity_price_rules.rule.condition.currencies:
+        class: CoreShop\Component\Core\Product\Rule\Condition\CurrenciesConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
+
+    coreshop.product_quantity_price_rules.condition.timespan:
+        class: CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: timespan, form-type: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
+
+    CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\AmountDecreaseAction:
+        arguments:
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
+        tags:
+            - { name: coreshop.product_quantity_price_rules.action, type: amount_decrease }
+
+    CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\AmountIncreaseAction:
+        arguments:
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
+        tags:
+            - { name: coreshop.product_quantity_price_rules.action, type: amount_increase }
+
+    CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\FixedAction:
+        arguments:
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
+        tags:
+            - { name: coreshop.product_quantity_price_rules.action, type: fixed }
+
+    CoreShop\Component\Core\ProductQuantityPriceRules\Calculator\UnitVolumeCalculator:
+        decorates: CoreShop\Component\ProductQuantityPriceRules\Calculator\VolumeCalculator
+        arguments:
+            - '@CoreShop\Component\Core\ProductQuantityPriceRules\Calculator\UnitVolumeCalculator.inner'
+            - '@coreshop.registry.product_quantity_price_rules.actions'

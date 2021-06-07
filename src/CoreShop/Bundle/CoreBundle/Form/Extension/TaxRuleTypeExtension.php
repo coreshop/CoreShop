@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\CountryChoiceType;
@@ -20,10 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class TaxRuleTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('country', CountryChoiceType::class, [
@@ -36,11 +35,8 @@ final class TaxRuleTypeExtension extends AbstractTypeExtension
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType()
+    public static function getExtendedTypes(): iterable
     {
-        return TaxRuleType::class;
+        return [TaxRuleType::class];
     }
 }

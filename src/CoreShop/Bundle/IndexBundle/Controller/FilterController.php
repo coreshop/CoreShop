@@ -10,32 +10,33 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Component\Index\Factory\ListingFactoryInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FilterController extends ResourceController
 {
-    /**
-     * Get Index Configurations.
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getConfigAction()
+
+    public function getConfigAction(): Response
     {
         return $this->viewHandler->handle(
             [
                 'success' => true,
-                'conditions' => array_keys($this->getConditionTypes()),
+                'pre_conditions' => array_keys($this->getPreConditionTypes()),
+                'user_conditions' => array_keys($this->getUserConditionTypes()),
             ]
         );
     }
 
-    public function getFieldsForIndexAction(Request $request)
+    public function getFieldsForIndexAction(Request $request): Response
     {
         $index = $this->get('coreshop.repository.index')->find($request->get('index'));
 
@@ -55,7 +56,7 @@ class FilterController extends ResourceController
         return $this->viewHandler->handle(false);
     }
 
-    public function getValuesForFilterFieldAction(Request $request)
+    public function getValuesForFilterFieldAction(Request $request): Response
     {
         $index = $this->get('coreshop.repository.index')->find($request->get('index'));
 
@@ -64,7 +65,7 @@ class FilterController extends ResourceController
              * @var WorkerInterface $worker
              */
             $worker = $this->get('coreshop.registry.index.worker')->get($index->getWorker());
-            $list = $this->get('coreshop.factory.index.list')->createList($index);
+            $list = $this->get(ListingFactoryInterface::class)->createList($index);
             $filterGroupHelper = $worker->getFilterGroupHelper();
             $field = $request->get('field');
             $column = null;
@@ -89,8 +90,16 @@ class FilterController extends ResourceController
     /**
      * @return array
      */
-    protected function getConditionTypes()
+    protected function getPreConditionTypes(): array
     {
-        return $this->getParameter('coreshop.filter.condition_types');
+        return $this->container->getParameter('coreshop.filter.pre_condition_types');
+    }
+
+    /**
+     * @return array
+     */
+    protected function getUserConditionTypes(): array
+    {
+        return $this->container->getParameter('coreshop.filter.user_condition_types');
     }
 }

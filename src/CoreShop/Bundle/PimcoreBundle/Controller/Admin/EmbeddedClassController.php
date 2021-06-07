@@ -10,16 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class EmbeddedClassController extends AdminController
 {
-    public function getCustomLayoutsAction(Request $request)
+    public function getCustomLayoutsAction(Request $request): Response
     {
         $className = $request->get('className');
         $list = new DataObject\ClassDefinition\CustomLayout\Listing();
@@ -45,7 +48,7 @@ final class EmbeddedClassController extends AdminController
         return $this->adminJson(['success' => true, 'data' => $result]);
     }
 
-    public function getClassLayoutAction(Request $request)
+    public function getClassLayoutAction(Request $request): Response
     {
         $className = $request->get('className');
         $currentLayoutId = $request->get('layoutId', null) ?: null;
@@ -56,12 +59,12 @@ final class EmbeddedClassController extends AdminController
             throw new NotFoundHttpException();
         }
 
-        $fqcn = 'Pimcore\\Model\\DataObject\\' . $className;
+        $fqcn = 'Pimcore\\Model\\DataObject\\' . ucfirst($class->getName());
         $tempInstance = new $fqcn();
 
         $validLayouts = DataObject\Service::getValidLayouts($tempInstance);
 
-        if (is_null($currentLayoutId)) {
+        if (null === $currentLayoutId) {
             foreach ($validLayouts as $checkDefaultLayout) {
                 if ($checkDefaultLayout->getDefault()) {
                     $currentLayoutId = $checkDefaultLayout->getId();
@@ -69,14 +72,17 @@ final class EmbeddedClassController extends AdminController
             }
         }
 
-        if (!is_null($currentLayoutId)) {
+        if (null !== $currentLayoutId) {
             $customLayout = DataObject\ClassDefinition\CustomLayout::getById($currentLayoutId);
             $layout = $customLayout->getLayoutDefinitions();
         } else {
             $layout = $tempInstance->getClass()->getLayoutDefinitions();
         }
 
-        $general = [];
+        $general = [
+            'icon' => '',
+            'iconCls' => '',
+        ];
 
         if ($tempInstance->getElementAdminStyle()->getElementIcon()) {
             $general['icon'] = $tempInstance->getElementAdminStyle()->getElementIcon();

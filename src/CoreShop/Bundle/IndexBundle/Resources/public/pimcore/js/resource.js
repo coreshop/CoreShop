@@ -13,11 +13,15 @@
 pimcore.registerNS('coreshop.index.resource');
 coreshop.index.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.global.addStore('coreshop_indexes', 'coreshop/indices');
-        coreshop.global.addStore('coreshop_filters', 'coreshop/filters');
-        coreshop.global.addStoreWithUrl('coreshop_index_types', '/admin/coreshop/indices/get-types');
+        coreshop.global.addStoreWithRoute('coreshop_indexes', 'coreshop_index_list');
+        coreshop.global.addStoreWithRoute('coreshop_filters', 'coreshop_filter_list');
+        coreshop.global.addStoreWithUrl('coreshop_index_types', Routing.generate('coreshop_index_getTypes'));
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.index', this);
+
+        if (coreshop.menu.coreshop.index) {
+            new coreshop.menu.coreshop.index();
+        }
     },
 
     openResource: function(item) {

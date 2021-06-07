@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition;
 
 use Symfony\Component\Form\AbstractType;
@@ -19,10 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 abstract class AbstractNestedConfigurationType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('operator', ChoiceType::class, [

@@ -2,7 +2,10 @@ services:
     _defaults:
         public: true
 
-    coreshop.order.payment_provider:
-        class: CoreShop\Component\Order\Payment\OrderPaymentProvider
+    CoreShop\Component\Order\Payment\OrderPaymentProviderInterface: '@CoreShop\Component\Order\Payment\OrderPaymentProvider'
+    CoreShop\Component\Order\Payment\OrderPaymentProvider:
         arguments:
             - '@coreshop.factory.payment'
+            - '%coreshop.currency.decimal_factor%'
+            - '%coreshop.currency.decimal_precision%'
+            - '@translator'

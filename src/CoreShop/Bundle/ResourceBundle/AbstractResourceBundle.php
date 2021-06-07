@@ -10,8 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle;
 
+use Composer\InstalledVersions;
+use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Exception\UnknownDriverException;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PackageVersions\Versions;
@@ -24,16 +28,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 abstract class AbstractResourceBundle extends Bundle implements ResourceBundleInterface, DependentBundleInterface
 {
-    /**
-     * Configure format of mapping files.
-     *
-     * @var string
-     */
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_YAML;
+    protected string $mappingFormat = ResourceBundleInterface::MAPPING_XML;
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container)
     {
         if (null !== $this->getModelNamespace()) {
@@ -73,81 +69,68 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         $collection->addBundle(new CoreShopResourceBundle(), 3800);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersion()
     {
         if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
-            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion().' ('.$this->getComposerVersion().')';
         }
 
         return $this->getComposerVersion();
     }
 
-    /**
-     * @return string
-     */
     public function getComposerVersion()
     {
-        $version = '';
+        if ($this instanceof ComposerPackageBundleInterface) {
+            $bundleName = $this->getPackageName();
 
-        if ($this instanceof ComposerPackageBundleInterface && isset(Versions::VERSIONS[$this->getPackageName()])) {
-            $version = Versions::getVersion($this->getPackageName());
-        } elseif (isset(Versions::VERSIONS['coreshop/core-shop'])) {
-            $version = Versions::getVersion('coreshop/core-shop');
+            if (class_exists(InstalledVersions::class)) {
+                if (InstalledVersions::isInstalled('coreshop/core-shop')) {
+                    return InstalledVersions::getVersion('coreshop/core-shop');
+                }
+
+                if (InstalledVersions::isInstalled($bundleName)) {
+                    return InstalledVersions::getVersion($bundleName);
+                }
+            }
+
+            if (class_exists(Versions::class)) {
+                if (isset(Versions::VERSIONS[$bundleName])) {
+                    return Versions::getVersion($bundleName);
+                }
+
+                if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
+                    return Versions::getVersion('coreshop/core-shop');
+                }
+            }
         }
 
-        return $version;
+        if (class_exists(Version::class)) {
+            return Version::getVersion();
+        }
+
+        return '';
     }
 
-    /**
-     * Return the prefix of the bundle.
-     *
-     * @return string
-     */
     protected function getBundlePrefix()
     {
         return Container::underscore(substr(strrchr(get_class($this), '\\'), 1, -6));
     }
 
-    /**
-     * Return the directory where are stored the doctrine mapping.
-     *
-     * @return string
-     */
     protected function getDoctrineMappingDirectory()
     {
         return 'model';
     }
 
-    /**
-     * Return the entity namespace.
-     *
-     * @return string|null
-     */
     protected function getModelNamespace()
     {
         return null;
     }
 
-    /**
-     * Return mapping compiler pass class depending on driver.
-     *
-     * @param string $driverType
-     *
-     * @return array
-     *
-     * @throws UnknownDriverException
-     */
     protected function getMappingCompilerPassInfo($driverType)
     {
         switch ($driverType) {
@@ -164,11 +147,6 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         return [$mappingsPassClassname, $compilerPassMethod];
     }
 
-    /**
-     * Return the absolute path where are stored the doctrine mapping.
-     *
-     * @return string
-     */
     protected function getConfigFilesPath()
     {
         return sprintf(
@@ -178,9 +156,6 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         );
     }
 
-    /**
-     * @return string
-     */
     protected function getObjectManagerParameter()
     {
         return sprintf('%s.object_manager', $this->getBundlePrefix());

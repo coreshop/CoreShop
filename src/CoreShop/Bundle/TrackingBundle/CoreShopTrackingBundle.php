@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle;
 
 use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackerPass;
@@ -22,7 +24,7 @@ final class CoreShopTrackingBundle extends Bundle
     /**
      * @param ContainerBuilder $container
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new TrackerPass());
         $container->addCompilerPass(new TrackingExtractorPass());

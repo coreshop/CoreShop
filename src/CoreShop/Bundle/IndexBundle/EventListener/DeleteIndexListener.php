@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\EventListener;
 
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
@@ -20,23 +22,14 @@ use Webmozart\Assert\Assert;
 
 final class DeleteIndexListener
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $workerServiceRegistry;
+    private ServiceRegistryInterface $workerServiceRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $workerServiceRegistry
-     */
     public function __construct(ServiceRegistryInterface $workerServiceRegistry)
     {
         $this->workerServiceRegistry = $workerServiceRegistry;
     }
 
-    /**
-     * @param ResourceControllerEvent $event
-     */
-    public function onIndexDeletePre(ResourceControllerEvent $event)
+    public function onIndexDeletePre(ResourceControllerEvent $event): void
     {
         $resource = $event->getSubject();
 
@@ -50,7 +43,7 @@ final class DeleteIndexListener
         }
 
         /**
-         * @var WorkerInterface
+         * @var WorkerInterface $worker
          */
         $worker = $this->workerServiceRegistry->get($worker);
         $worker->deleteIndexStructures($resource);

@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Resource\Model\TranslatableTrait;
 use CoreShop\Component\Rule\Model\RuleTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +22,11 @@ use Doctrine\Common\Collections\Collection;
 class CartPriceRule implements CartPriceRuleInterface
 {
     use RuleTrait {
-        __construct as private initializeRuleTrait;
+        initializeRuleCollections as private initializeRules;
+    }
+    use TranslatableTrait {
+        initializeTranslationCollection as private initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
     }
 
     /**
@@ -49,30 +56,22 @@ class CartPriceRule implements CartPriceRuleInterface
 
     public function __construct()
     {
-        $this->initializeRuleTrait();
+        $this->initializeRules();
+        $this->initializeTranslationsCollection();
 
         $this->voucherCodes = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return $this->description;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDescription($description)
     {
         $this->description = $description;
@@ -80,17 +79,11 @@ class CartPriceRule implements CartPriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIsVoucherRule()
     {
         return $this->isVoucherRule;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIsVoucherRule($isVoucherRule)
     {
         $this->isVoucherRule = $isVoucherRule;
@@ -98,25 +91,16 @@ class CartPriceRule implements CartPriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVoucherCodes()
     {
         return $this->voucherCodes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasVoucherCodes()
     {
         return !$this->voucherCodes->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode)
     {
         if (!$this->hasVoucherCode($cartPriceRuleVoucherCode)) {
@@ -125,9 +109,6 @@ class CartPriceRule implements CartPriceRuleInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode)
     {
         if ($this->hasVoucherCode($cartPriceRuleVoucherCode)) {
@@ -136,11 +117,37 @@ class CartPriceRule implements CartPriceRuleInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode)
     {
         return $this->voucherCodes->contains($cartPriceRuleVoucherCode);
+    }
+
+    public function getLabel($language = null)
+    {
+        return $this->getTranslation($language)->getLabel();
+    }
+
+    public function setLabel($label, $language = null)
+    {
+        $this->getTranslation($language)->setLabel($label);
+    }
+
+    /**
+     * @param null $locale
+     * @param bool $useFallbackTranslation
+     *
+     * @return CartPriceRuleTranslationInterface
+     */
+    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    {
+        /** @var CartPriceRuleTranslationInterface $translation */
+        $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
+
+        return $translation;
+    }
+
+    protected function createTranslation()
+    {
+        return new CartPriceRuleTranslation();
     }
 }

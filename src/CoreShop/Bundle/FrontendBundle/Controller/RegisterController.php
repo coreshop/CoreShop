@@ -10,17 +10,24 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Customer\CustomerAlreadyExistsException;
+use CoreShop\Bundle\CoreBundle\Customer\RegistrationServiceInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType;
 use CoreShop\Bundle\CustomerBundle\Event\RequestPasswordChangeEvent;
 use CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RegisterController extends FrontendController
@@ -28,7 +35,7 @@ class RegisterController extends FrontendController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function registerAction(Request $request)
     {
@@ -38,14 +45,14 @@ class RegisterController extends FrontendController
             return $this->redirectToRoute('coreshop_customer_profile');
         }
 
-        $form = $this->get('form.factory')->createNamed('', CustomerRegistrationType::class);
+        $form = $this->get('form.factory')->createNamed('coreshop', CustomerRegistrationType::class);
 
         $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_customer_profile'));
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
 
-            if ($handledForm->isValid()) {
+            if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                 $formData = $handledForm->getData();
 
                 $customer = $formData['customer'];
@@ -54,17 +61,17 @@ class RegisterController extends FrontendController
                 if (!$customer instanceof \CoreShop\Component\Core\Model\CustomerInterface ||
                     !$address instanceof AddressInterface
                 ) {
-                    return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
+                    return $this->render($this->templateConfigurator->findTemplate('Register/register.html'), [
                         'form' => $form->createView(),
                     ]);
                 }
 
-                $registrationService = $this->get('coreshop.customer.registration_service');
+                $registrationService = $this->get(RegistrationServiceInterface::class);
 
                 try {
                     $registrationService->registerCustomer($customer, $address, $formData, false);
                 } catch (CustomerAlreadyExistsException $e) {
-                    return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
+                    return $this->render($this->templateConfigurator->findTemplate('Register/register.html'), [
                         'form' => $form->createView(),
                     ]);
                 }
@@ -73,7 +80,7 @@ class RegisterController extends FrontendController
             }
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Register/register.html'), [
             'form' => $form->createView(),
         ]);
     }
@@ -81,31 +88,32 @@ class RegisterController extends FrontendController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function passwordResetRequestAction(Request $request)
     {
-        $form = $this->get('form.factory')->createNamed('', RequestResetPasswordType::class);
+        $resetIdentifier = $this->container->getParameter('coreshop.customer.security.login_identifier');
+        $form = $this->get('form.factory')->createNamed('coreshop', RequestResetPasswordType::class, null, ['reset_identifier' => $resetIdentifier]);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
 
-            if ($handledForm->isValid()) {
-                $passwordReset = $handledForm->getData();
+            if ($handledForm->isSubmitted() && $handledForm->isValid()) {
+                $passwordResetData = $handledForm->getData();
 
-                $customer = $this->get('coreshop.repository.customer')->findCustomerByEmail($passwordReset['email']);
+                $customer = $this->getCustomerRepository()->findUniqueByLoginIdentifier($resetIdentifier, $passwordResetData[$resetIdentifier], false);
 
                 if (!$customer instanceof CustomerInterface) {
                     return $this->redirectToRoute('coreshop_index');
                 }
 
-                $customer->setPasswordResetHash(hash('md5', $customer->getId() . $customer->getEmail() . mt_rand() . time()));
+                $customer->setPasswordResetHash($this->generateResetPasswordHash($customer));
                 $customer->save();
 
                 $resetLink = $this->generateCoreShopUrl(null, 'coreshop_customer_password_reset', ['token' => $customer->getPasswordResetHash()], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $dispatcher = $this->container->get('event_dispatcher');
-                $dispatcher->dispatch('coreshop.customer.request_password_reset', new RequestPasswordChangeEvent($customer, $resetLink));
+                $dispatcher->dispatch(new RequestPasswordChangeEvent($customer, $resetLink), 'coreshop.customer.request_password_reset');
 
                 $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.password_reset_request_success'));
 
@@ -113,39 +121,45 @@ class RegisterController extends FrontendController
             }
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/password-reset-request.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Register/password-reset-request.html'), [
             'form' => $form->createView(),
         ]);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     */
     public function passwordResetAction(Request $request)
     {
         $resetToken = $request->get('token');
 
         if ($resetToken) {
-            $customer = $this->get('coreshop.repository.customer')->findByResetToken($resetToken);
+            $customer = $this->getCustomerRepository()->findByResetToken($resetToken);
 
-            $form = $this->get('form.factory')->createNamed('', ResetPasswordType::class);
+            $form = $this->get('form.factory')->createNamed('coreshop', ResetPasswordType::class);
 
             if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
                 $handledForm = $form->handleRequest($request);
 
-                if ($handledForm->isValid()) {
+                if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                     $resetPassword = $handledForm->getData();
 
+                    $customer->setPasswordResetHash(null);
                     $customer->setPassword($resetPassword['password']);
                     $customer->save();
 
                     $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.password_reset_success'));
 
                     $dispatcher = $this->container->get('event_dispatcher');
-                    $dispatcher->dispatch('coreshop.customer.password_reset', new GenericEvent($customer));
+                    $dispatcher->dispatch(new GenericEvent($customer), 'coreshop.customer.password_reset');
 
                     return $this->redirectToRoute('coreshop_login');
                 }
             }
 
-            return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/password-reset.html'), [
+            return $this->render($this->templateConfigurator->findTemplate('Register/password-reset.html'), [
                 'form' => $form->createView(),
             ]);
         }
@@ -154,15 +168,37 @@ class RegisterController extends FrontendController
     }
 
     /**
+     * @return CustomerRepositoryInterface
+     */
+    protected function getCustomerRepository()
+    {
+        return $this->get('coreshop.repository.customer');
+    }
+
+    /**
      * @return bool|CustomerInterface|null
      */
     protected function getCustomer()
     {
         try {
-            return $this->get('coreshop.context.customer')->getCustomer();
+            return $this->get(CustomerContextInterface::class)->getCustomer();
         } catch (\Exception $ex) {
         }
 
         return null;
+    }
+
+    /**
+     * @param CustomerInterface $customer
+     *
+     * @return string
+     */
+    protected function generateResetPasswordHash(CustomerInterface $customer)
+    {
+        $resetIdentifier = $this->container->getParameter('coreshop.customer.security.login_identifier');
+
+        $userKey = $resetIdentifier === 'email' ? $customer->getEmail() : $customer->getUsername();
+
+        return hash('md5', $customer->getId() . $userKey . mt_rand() . time());
     }
 }

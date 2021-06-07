@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FixtureBundle\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
@@ -39,57 +41,36 @@ class DataFixture extends AbstractResource implements DataFixtureInterface
      */
     protected $loadedAt;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getClassName()
     {
         return $this->className;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setClassName($className)
     {
         $this->className = $className;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLoadedAt()
     {
         return $this->loadedAt;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLoadedAt($loadedAt)
     {
         $this->loadedAt = $loadedAt;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setVersion($version)
     {
         $this->version = $version;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersion()
     {
         return $this->version;

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\NotificationBundle\Form\Type;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionCollectionType;
@@ -17,17 +19,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NotificationRuleConditionCollectionType extends RuleConditionCollectionType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
         $resolver->setDefault('entry_type', NotificationRuleConditionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_notification_rule_condition_collection';
     }

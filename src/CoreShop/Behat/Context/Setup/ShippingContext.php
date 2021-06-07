@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -42,7 +44,6 @@ use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -50,7 +51,7 @@ use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 
 final class ShippingContext implements Context
@@ -58,69 +59,22 @@ final class ShippingContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FormFactoryInterface
-     */
     private $formFactory;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $conditionFormTypeRegistry;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $actionFormTypeRegistry;
-
-    /**
-     * @var CarrierRepositoryInterface
-     */
     private $carrierRepository;
-
-    /**
-     * @var FactoryInterface
-     */
     private $carrierFactory;
-
-    /**
-     * @var FactoryInterface
-     */
     private $shippingRuleFactory;
-
-    /**
-     * @var FactoryInterface
-     */
     private $shippingRuleGroupFactory;
 
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param ObjectManager              $objectManager
-     * @param FormFactoryInterface       $formFactory
-     * @param FormTypeRegistryInterface  $conditionFormTypeRegistry
-     * @param FormTypeRegistryInterface  $actionFormTypeRegistry
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param FactoryInterface           $carrierFactory
-     * @param FactoryInterface           $shippingRuleFactory
-     * @param FactoryInterface           $shippingRuleGroupFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FormFactoryInterface $formFactory,
         FormTypeRegistryInterface $conditionFormTypeRegistry,
         FormTypeRegistryInterface $actionFormTypeRegistry,
-        CarrierRepositoryInterface $carrierRepository,
         FactoryInterface $carrierFactory,
         FactoryInterface $shippingRuleFactory,
         FactoryInterface $shippingRuleGroupFactory
@@ -130,7 +84,6 @@ final class ShippingContext implements Context
         $this->formFactory = $formFactory;
         $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
         $this->actionFormTypeRegistry = $actionFormTypeRegistry;
-        $this->carrierRepository = $carrierRepository;
         $this->carrierFactory = $carrierFactory;
         $this->shippingRuleFactory = $shippingRuleFactory;
         $this->shippingRuleGroupFactory = $shippingRuleGroupFactory;
@@ -143,6 +96,62 @@ final class ShippingContext implements Context
     public function theSiteHasACarrier($name)
     {
         $this->createCarrier($name);
+    }
+
+    /**
+     * @Given /^the site has a carrier "([^"]+)" and ships for (\d+) in (currency "[^"]+")$/
+     */
+    public function theSiteHasACarrierAndShipsForX($name, int $price, CurrencyInterface $currency)
+    {
+        $carrier = $this->createCarrier($name);
+
+        /**
+         * @var ShippingRuleInterface $rule
+         */
+        $rule = $this->shippingRuleFactory->createNew();
+        $rule->setName($name);
+        $rule->setActive(true);
+
+        $this->assertActionForm(PriceActionConfigurationType::class, 'price');
+
+        $this->addAction($rule, $this->createActionWithForm('price', [
+            'price' => $price,
+            'currency' => $currency->getId(),
+        ]));
+
+        $shippingRuleGroup = $this->shippingRuleGroupFactory->createNew();
+        $shippingRuleGroup->setShippingRule($rule);
+        $shippingRuleGroup->setPriority(1);
+
+        $carrier->addShippingRule($shippingRuleGroup);
+
+        $this->objectManager->persist($carrier);
+        $this->objectManager->persist($shippingRuleGroup);
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
+
+        $this->sharedStorage->set('shipping-rule', $rule);
+    }
+
+    /**
+     * @Given /^the (carrier "[^"]+") is disabled for (store "[^"]+")$/
+     * @Given /^the (carrier) is disabled for  (store "[^"]+")$/
+     */
+    public function theCarrierIsDisabledForStore(CarrierInterface $carrier, StoreInterface $store)
+    {
+        $carrier->removeStore($store);
+
+        $this->saveCarrier($carrier);
+    }
+    /**
+     * @Given /^the (carrier "[^"]+") is enabled for (store "[^"]+")$/
+     * @Given /^the (carrier) is enabled for  (store "[^"]+")$/
+     */
+    public function theCarrierIsEnabledForStore(CarrierInterface $carrier, StoreInterface $store)
+    {
+        $carrier->addStore($store);
+
+        $this->saveCarrier($carrier);
     }
 
     /**
@@ -226,6 +235,22 @@ final class ShippingContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('amount', [
             'minAmount' => $minAmount,
             'maxAmount' => $maxAmount,
+            'gross' => true,
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition amount from "([^"]+)" to "([^"]+)" which is net$/
+     * @Given /^the (shipping rule) has a condition amount from "([^"]+)" to "([^"]+)" which is net$/
+     */
+    public function theShippingRuleHasAAmountConditionWhichIsNet(ShippingRuleInterface $rule, $minAmount, $maxAmount)
+    {
+        $this->assertConditionForm(AmountConfigurationType::class, 'amount');
+
+        $this->addCondition($rule, $this->createConditionWithForm('amount', [
+            'minAmount' => $minAmount,
+            'maxAmount' => $maxAmount,
+            'gross' => false,
         ]));
     }
 
@@ -535,6 +560,14 @@ final class ShippingContext implements Context
     }
 
     /**
+     * @Given /^the (carrier) uses the tax calculation strategy "([^"]+)"$/
+     */
+    public function theCarrierUsedTheTaxCalculationStrategy(CarrierInterface $carrier, string $strategyKey)
+    {
+        $carrier->setTaxCalculationStrategy($strategyKey);
+    }
+
+    /**
      * @param string $name
      */
     private function createCarrier($name)
@@ -545,12 +578,15 @@ final class ShippingContext implements Context
         $carrier = $this->carrierFactory->createNew();
         $carrier->setIdentifier($name);
         $carrier->setTitle($name, 'en');
+        $carrier->setTaxCalculationStrategy('taxRule');
 
         if ($this->sharedStorage->has('store')) {
             $carrier->addStore($this->sharedStorage->get('store'));
         }
 
         $this->saveCarrier($carrier);
+
+        return $carrier;
     }
 
     /**
@@ -588,41 +624,26 @@ final class ShippingContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormRegistry()
     {
         return $this->conditionFormTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormClass()
     {
         return ShippingRuleConditionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getActionFormRegistry()
     {
         return $this->actionFormTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getActionFormClass()
     {
         return ShippingRuleActionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getFormFactory()
     {
         return $this->formFactory;

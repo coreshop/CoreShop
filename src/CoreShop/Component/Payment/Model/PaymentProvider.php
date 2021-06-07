@@ -10,12 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Payment\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
+use Pimcore\Model\Asset;
 
 class PaymentProvider extends AbstractResource implements PaymentProviderInterface
 {
@@ -41,6 +44,11 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
      */
     protected $position = 1;
 
+    /**
+     * @var Asset|null
+     */
+    protected $logo;
+
     public function __construct()
     {
         $this->initializeTranslationsCollection();
@@ -54,92 +62,69 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return $this->getIdentifier();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier()
     {
         return $this->identifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTitle($language = null)
     {
         return $this->getTranslation($language)->getTitle();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTitle($title, $language = null)
     {
         $this->getTranslation($language)->setTitle($title);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription($language = null)
     {
         return $this->getTranslation($language)->getDescription();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDescription($description, $language = null)
     {
         $this->getTranslation($language)->setDescription($description);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInstructions($language = null)
     {
         return $this->getTranslation($language)->getInstructions();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setInstructions($instructions, $language = null)
     {
         $this->getTranslation($language)->setInstructions($instructions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPosition()
     {
         return $this->position;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPosition($position)
     {
         $this->position = $position;
+    }
+
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
     }
 
     /**
@@ -156,11 +141,9 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return $translation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createTranslation()
     {
         return new PaymentProviderTranslation();
     }
+
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Interpreter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
@@ -18,10 +20,7 @@ use Pimcore\Model\DataObject\AbstractObject;
 
 class ObjectInterpreter implements RelationInterpreterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         $result = [];
 
@@ -44,10 +43,7 @@ class ObjectInterpreter implements RelationInterpreterInterface
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         $result = [];
 

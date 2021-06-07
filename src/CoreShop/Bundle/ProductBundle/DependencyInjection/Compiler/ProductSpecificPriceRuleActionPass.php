@@ -10,19 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
+use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class ProductSpecificPriceRuleActionPass extends RegisterRegistryTypePass
 {
+    public const PRODUCT_SPECIFIC_PRICE_RULE_ACTION_TAG = 'coreshop.product_specific_price_rule.action';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.product_specific_price_rule.actions',
             'coreshop.form_registry.product_specific_price_rule.actions',
             'coreshop.product_specific_price_rule.actions',
-            'coreshop.product_specific_price_rule.action'
+            self::PRODUCT_SPECIFIC_PRICE_RULE_ACTION_TAG
         );
     }
 }

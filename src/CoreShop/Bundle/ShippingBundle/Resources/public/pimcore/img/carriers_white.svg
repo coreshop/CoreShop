@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ CoreShop.
+  ~
+  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
+  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+  ~ files that are distributed with this source code.
+  ~
+  ~ @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+  ~ @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+  ~
+  -->
+
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Ð¡Ð»Ð¾Ð¹_1" x="0px" y="0px"   viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+<path fill="white" d="M29,38H7c-1.105,0-2-0.895-2-2V15c0-1.105,0.895-2,2-2h20c1.105,0,2,0.895,2,2V38z"/>
+<path fill="white" d="M43,38H29V18h10.559c0.86,0,1.625,0.551,1.897,1.368L45,30v6C45,37.105,44.105,38,43,38"/>
+<g>
+	<path fill="black" d="M41,37.5c0,2.484-2.015,4.5-4.5,4.5S32,39.984,32,37.5s2.015-4.5,4.5-4.5S41,35.016,41,37.5"/>
+	<path fill="black" d="M19,37.5c0,2.484-2.015,4.5-4.5,4.5S10,39.984,10,37.5s2.015-4.5,4.5-4.5S19,35.016,19,37.5"/>
+</g>
+<g>
+	<path fill="white" d="M38,37.5c0,0.829-0.671,1.5-1.5,1.5S35,38.329,35,37.5s0.671-1.5,1.5-1.5S38,36.671,38,37.5"/>
+	<path fill="white" d="M16,37.5c0,0.829-0.671,1.5-1.5,1.5S13,38.329,13,37.5s0.671-1.5,1.5-1.5S16,36.671,16,37.5"/>
+</g>
+<path fill="black" d="M40,28h-7c-0.552,0-1-0.448-1-1v-6c0-0.552,0.448-1,1-1h5.279c0.431,0,0.813,0.275,0.949,0.684l1.721,5.162  C40.982,25.948,41,26.055,41,26.162V27C41,27.552,40.552,28,40,28"/>
+<path fill="black" d="M22,15.5c0,5.247-4.253,9.5-9.5,9.5S3,20.747,3,15.5S7.253,6,12.5,6S22,10.253,22,15.5"/>
+<path fill="white" d="M12.5,8.5c-3.866,0-7,3.133-7,7s3.134,7,7,7s7-3.133,7-7S16.366,8.5,12.5,8.5z M12.5,16  c-0.275,0-0.5-0.224-0.5-0.5s0.225-0.5,0.5-0.5s0.5,0.224,0.5,0.5S12.775,16,12.5,16z"/>
+<g>
+	<rect x="12" y="10" width="1" height="4.563"/>
+	<rect x="13.541" y="15.411" transform="matrix(-0.7074 0.7068 -0.7068 -0.7074 36.8141 19.5013)" width="1.659" height="3.92"/>
+	<path d="M12.5,14c-0.829,0-1.5,0.672-1.5,1.5c0,0.83,0.671,1.5,1.5,1.5s1.5-0.67,1.5-1.5C14,14.672,13.329,14,12.5,14z M12.5,16   c-0.275,0-0.5-0.224-0.5-0.5s0.225-0.5,0.5-0.5s0.5,0.224,0.5,0.5S12.775,16,12.5,16z"/>
+</g>
+</svg>

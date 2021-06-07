@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 interface AdjustableInterface
@@ -37,7 +39,7 @@ interface AdjustableInterface
      *
      * @return int
      */
-    public function getAdjustmentsTotal(?string $type = null, $withTax = true);
+    public function getAdjustmentsTotal(?string $type = null, bool $withTax = true): int;
 
     /**
      * @param string|null $type

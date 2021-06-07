@@ -10,11 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Repository;
 
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 interface CartItemRepositoryInterface extends PimcoreRepositoryInterface
 {
-    public function findCartItemsByProductId($productId);
+    /**
+     * @param int $productId
+     * @return OrderItemInterface[]
+     */
+    public function findCartItemsByProductId(int $productId): array;
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
@@ -18,23 +20,14 @@ use Pimcore\Event\Model\DataObjectEvent;
 
 final class ProductUpdateEventListener
 {
-    /**
-     * @var ConfigurationServiceInterface
-     */
-    private $configurationService;
+    private ConfigurationServiceInterface $configurationService;
 
-    /**
-     * @param ConfigurationServiceInterface $configurationService
-     */
     public function __construct(ConfigurationServiceInterface $configurationService)
     {
         $this->configurationService = $configurationService;
     }
 
-    /**
-     * @param DataObjectEvent $event
-     */
-    public function storeConfigurationThatProductChanged(DataObjectEvent $event)
+    public function storeConfigurationThatProductChanged(DataObjectEvent $event): void
     {
         $object = $event->getObject();
 

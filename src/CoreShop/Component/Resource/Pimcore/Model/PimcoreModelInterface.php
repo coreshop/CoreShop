@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Pimcore\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -36,6 +38,11 @@ interface PimcoreModelInterface extends ResourceInterface, ElementInterface
      * @return bool
      */
     public function getPublished();
+
+    /**
+     * @return bool
+     */
+    public function isPublished();
 
     /**
      * @param ElementInterface $parent

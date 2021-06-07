@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Configuration;
 
 use CoreShop\Component\Configuration\Model\ConfigurationInterface;
@@ -23,22 +25,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ConfigurationService extends BaseConfigurationService implements ConfigurationServiceInterface
 {
-    /**
-     * @var StoreContextInterface
-     */
-    protected $storeContext;
+    protected ConfigurationRepositoryInterface $myConfigurationRepository;
+    protected StoreContextInterface $storeContext;
 
-    /**
-     * @var ConfigurationRepositoryInterface
-     */
-    protected $configurationRepository;
-
-    /**
-     * @param EntityManagerInterface           $entityManager
-     * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param FactoryInterface                 $configurationFactory
-     * @param StoreContextInterface            $storeContext
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
         ConfigurationRepositoryInterface $configurationRepository,
@@ -47,22 +36,20 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     ) {
         parent::__construct($entityManager, $configurationRepository, $configurationFactory);
 
+        $this->myConfigurationRepository = $configurationRepository;
         $this->storeContext = $storeContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getForStore($key, StoreInterface $store = null, $returnObject = false)
+    public function getForStore(string $key, StoreInterface $store = null, $returnObject = false)
     {
         if (null === $store) {
             $store = $this->getStore();
         }
 
-        $config = $this->configurationRepository->findForKeyAndStore($key, $store);
+        $config = $this->myConfigurationRepository->findForKeyAndStore($key, $store);
 
-        if (is_null($config)) {
-            $config = $this->configurationRepository->findBy(['key' => $key, 'store' => null]);
+        if (null === $config) {
+            $config = $this->myConfigurationRepository->findBy(['key' => $key, 'store' => null]);
 
             if (is_array($config) && count($config) > 0) {
                 $config = $config[0];
@@ -76,10 +63,7 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setForStore($key, $data, StoreInterface $store = null)
+    public function setForStore(string $key, $data, StoreInterface $store = null): \CoreShop\Component\Core\Model\ConfigurationInterface
     {
         if (null === $store) {
             $store = $this->getStore();
@@ -97,12 +81,11 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         $config->setStore($store);
         $this->entityManager->persist($config);
         $this->entityManager->flush();
+
+        return $config;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removeForStore($key, StoreInterface $store = null)
+    public function removeForStore(string $key, StoreInterface $store = null): void
     {
         if (null === $store) {
             $store = $this->getStore();

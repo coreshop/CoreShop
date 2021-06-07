@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
@@ -46,72 +49,105 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
     protected $cartPriceRule;
 
     /**
-     * {@inheritdoc}
+     * @var bool
      */
+    protected $isCreditCode = false;
+
+    /**
+     * @var int
+     */
+    protected $creditAvailable = 0;
+
+    /**
+     * @var CurrencyInterface|null
+     */
+    protected $creditCurrency;
+
+    /**
+     * @var int
+     */
+    protected $creditUsed = 0;
+
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCode()
     {
         return $this->code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCode($code)
     {
         $this->code = $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsed()
     {
         return $this->used;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUsed($used)
     {
         $this->used = $used;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUses()
     {
         return $this->uses;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUses($uses)
     {
         $this->uses = $uses;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function isCreditCode()
+    {
+        return $this->isCreditCode;
+    }
+
+    public function setIsCreditCode($isCreditCode)
+    {
+        $this->isCreditCode = $isCreditCode;
+    }
+
+    public function getCreditAvailable()
+    {
+        return $this->creditAvailable;
+    }
+
+    public function setCreditAvailable($creditAvailable)
+    {
+        $this->creditAvailable = $creditAvailable;
+    }
+
+    public function getCreditCurrency()
+    {
+        return $this->creditCurrency;
+    }
+
+    public function setCreditCurrency(?CurrencyInterface $creditCurrency)
+    {
+        $this->creditCurrency = $creditCurrency;
+    }
+
+    public function getCreditUsed()
+    {
+        return $this->creditUsed;
+    }
+
+    public function setCreditUsed($creditUsed)
+    {
+        $this->creditUsed = $creditUsed;
+    }
+
     public function getCartPriceRule()
     {
         return $this->cartPriceRule;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCartPriceRule($cartPriceRule = null)
     {
         $this->cartPriceRule = $cartPriceRule;

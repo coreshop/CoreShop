@@ -1,7 +1,7 @@
 default:
     suites:
         domain_taxation:
-            contexts_services:
+            contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
 
@@ -24,4 +24,4 @@ default:
                 - coreshop.behat.context.domain.tax_rate
                 - coreshop.behat.context.domain.tax_rule_group
             filters:
-                tags: "@taxation"
+                tags: "@domain && @taxation"

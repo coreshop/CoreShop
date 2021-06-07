@@ -10,18 +10,41 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
+use CoreShop\Component\Resource\Model\AbstractObject;
 use Pimcore\Cache;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\DataObject\Objectbrick;
+use Pimcore\Model\User;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDaoContext implements Context
 {
+    private $kernel;
+    private $orderRepository;
+
+    public function __construct(KernelInterface $kernel, OrderRepositoryInterface $orderRepository)
+    {
+        $this->kernel = $kernel;
+        $this->orderRepository = $orderRepository;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function setKernel()
+    {
+        \Pimcore::setKernel($this->kernel);
+    }
+
     /**
      * @BeforeScenario
      */
@@ -29,6 +52,19 @@ final class PimcoreDaoContext implements Context
     {
         Cache::clearAll();
         Cache\Runtime::clear();
+
+        /**
+         * Delete Orders first, otherwise the CustomerDeletionListener would trigger.
+         *
+         * @var Listing $list
+         */
+        $list = $this->orderRepository->getList();
+        $list->setUnpublished(true);
+        $list->load();
+
+        foreach ($list->getObjects() as $obj) {
+            $obj->delete();
+        }
 
         /**
          * @var Listing $list
@@ -106,6 +142,26 @@ final class PimcoreDaoContext implements Context
 
             $class->delete();
         }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearBehatAdminUser()
+    {
+        $user = User::getByName('behat-admin');
+
+        if ($user) {
+            $user->delete();
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function disableGlobalInheritance()
+    {
+        AbstractObject::setGetInheritedValues(false);
     }
 
     /**

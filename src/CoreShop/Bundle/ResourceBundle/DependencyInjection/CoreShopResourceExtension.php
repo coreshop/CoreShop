@@ -10,10 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
+use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,10 +27,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopResourceExtension extends AbstractModelExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
@@ -53,18 +54,24 @@ final class CoreShopResourceExtension extends AbstractModelExtension
 
         $bundles = $container->getParameter('kernel.bundles');
 
-        if (!array_key_exists('FOSRestBundle', $bundles)) {
-            $bodyListener = new Definition(BodyListener::class);
-            $bodyListener->addTag('kernel.event_listener', [
-                'event' => 'kernel.request',
-                'method' => 'onKernelRequest',
-                'priority' => 10,
-            ]);
-
-            $container->setDefinition('coreshop.body_listener', $bodyListener);
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
         }
 
         $this->loadPersistence($config['drivers'], $config['resources'], $loader);
+
+        $bodyListener = new Definition(BodyListener::class);
+        $bodyListener->addTag('kernel.event_listener', [
+            'event' => 'kernel.request',
+            'method' => 'onKernelRequest',
+            'priority' => 10,
+        ]);
+
+        $container->setDefinition('coreshop.body_listener', $bodyListener);
+
+        $container
+            ->registerForAutoconfiguration(ResourceInstallerInterface::class)
+            ->addTag(RegisterInstallersPass::INSTALLER_TAG);
     }
 
     private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader)

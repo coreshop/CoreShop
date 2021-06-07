@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Rule\Condition;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -17,23 +19,14 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class NestedConditionChecker implements ConditionCheckerInterface
 {
-    /**
-     * @var RuleConditionsValidationProcessorInterface
-     */
-    protected $ruleConditionsValidationProcessor;
+    protected RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor;
 
-    /**
-     * @param RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor
-     */
     public function __construct(RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
     {
         $this->ruleConditionsValidationProcessor = $ruleConditionsValidationProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
         $valid = true;
         $operator = $configuration['operator'];
@@ -42,26 +35,26 @@ class NestedConditionChecker implements ConditionCheckerInterface
             $valid = $this->ruleConditionsValidationProcessor->isValid($subject, $rule, [$condition], $params);
 
             if ('and' === $operator) {
-                $valid = $valid & $valid;
+                $valid &= $valid;
 
                 if (!$valid) {
                     return false;
                 }
             } else {
                 if ('or' === $operator) {
-                    $valid = $valid | $valid;
+                    $valid |= $valid;
 
                     if ($valid) {
-                        return $valid;
+                        return (bool)$valid;
                     }
                 }
             }
         }
 
         if ('not' === $operator) {
-            return !$valid;
+            return (bool)!$valid;
         }
 
-        return $valid;
+        return (bool)$valid;
     }
 }

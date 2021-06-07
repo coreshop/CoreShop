@@ -1,7 +1,7 @@
 default:
     suites:
         domain_seo:
-            contexts_services:
+            contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
 
@@ -17,4 +17,4 @@ default:
 
                 - coreshop.behat.context.domain.seo
             filters:
-                tags: "@seo"
+                tags: "@domain && @seo"

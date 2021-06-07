@@ -10,16 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
+
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterGridActionPass extends RegisterSimpleRegistryTypePass
 {
+    public const GRID_ACTION_TAG = 'coreshop.grid.action';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.grid.action',
             'coreshop.grid.actions',
-            'coreshop.grid.action'
+            self::GRID_ACTION_TAG
         );
     }
 }

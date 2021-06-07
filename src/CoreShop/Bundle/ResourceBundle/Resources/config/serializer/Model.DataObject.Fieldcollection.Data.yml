@@ -1,0 +1,2 @@
+Pimcore\Model\DataObject\Fieldcollection\Data:
+    exclude: true

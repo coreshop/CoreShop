@@ -1,16 +1,10 @@
 services:
-    _defaults:
-        public: true
+    CoreShop\Bundle\ResourceBundle\Routing\RouteFactoryInterface: '@CoreShop\Bundle\ResourceBundle\Routing\RouteFactory'
+    CoreShop\Bundle\ResourceBundle\Routing\RouteFactory: ~
 
-    coreshop.routing.route.factory:
-        class: CoreShop\Bundle\ResourceBundle\Routing\RouteFactory
-        public: false
-
-    coreshop.routing.loader.resource:
-        class: CoreShop\Bundle\ResourceBundle\Routing\ResourceLoader
-        public: false
+    CoreShop\Bundle\ResourceBundle\Routing\ResourceLoader:
         arguments:
-            - '@coreshop.resource_registry'
-            - '@coreshop.routing.route.factory'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+            - '@CoreShop\Bundle\ResourceBundle\Routing\RouteFactoryInterface'
         tags:
             - { name: routing.loader }

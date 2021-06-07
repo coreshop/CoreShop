@@ -1,60 +1,64 @@
+parameters:
+    coreshop.form.type.customer_registration_type.validation_groups: [coreshop]
+    coreshop.form.type.guest_registration_type.validation_groups: [coreshop_customer]
+    coreshop.form.type.product_price_rule.condition.quantity.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.action.addition_amount.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.action.discount_amount.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.action.price.validation_groups: [coreshop]
+
 services:
     _defaults:
         public: true
 
-    coreshop.form.extension.type.store:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\StoreTypeExtension
-        tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\StoreBundle\Form\Type\StoreType }
-
-    coreshop.form.extension.type.tax_rule:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\TaxRuleTypeExtension
-        tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleType }
-
-    coreshop.form.extension.type.carrier:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\CarrierTypeExtension
-        tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType }
-
-    coreshop.form.extension.type.country:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\CountryTypeExtension
-        tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\AddressBundle\Form\Type\CountryType }
-
-    coreshop.form.extension.type.customer:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\CustomerTypeExtension
-        tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType }
-
-    coreshop.form.extension.type.payment_provider:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\PaymentProviderTypeExtension
-        tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType }
-
-    coreshop.form.extension.type.order_shipment_creation:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\OrderShipmentCreationTypeExtension
-        tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType }
-
-    coreshop.form.type.address_choice:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType
+    CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType:
         arguments:
             - '@coreshop.repository.customer'
+            - '@CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.customer_registration:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType
+    CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType:
+        arguments:
+            - '%coreshop.form.type.customer_registration_type.validation_groups%'
+            - '%coreshop.customer.security.login_identifier%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.guest_registration:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType
+    CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType:
+        arguments:
+            - '%coreshop.form.type.customer_registration_type.validation_groups%'
+            - '%coreshop.form.type.guest_registration_type.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.extension.type.cart:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\CartTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\QuantityConfigurationType:
+        arguments:
+            - '%coreshop.form.type.product_price_rule.condition.quantity.validation_groups%'
         tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartType }
+            - { name: form.type }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\AdditionAmountActionConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.action.addition_amount.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.action.discount_amount.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\CoreBundle\Form\Extension\AddressTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\AddressBundle\Form\Type\AddressType }
+
+    CoreShop\Bundle\CoreBundle\Form\Extension\CartCreationTypeExtension:
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.action.price.validation_groups%'
+        tags:
+            - { name: form.type }

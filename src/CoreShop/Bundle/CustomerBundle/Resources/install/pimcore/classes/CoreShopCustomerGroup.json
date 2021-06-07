@@ -1,10 +1,12 @@
 {
+    "id": "cs_customer_group",
     "description": null,
     "parentClass": "CoreShop\\Component\\Customer\\Model\\CustomerGroup",
     "useTraits": null,
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
@@ -43,7 +45,7 @@
                         "columnLength": 190,
                         "regex": "",
                         "name": "name",
-                        "title": "Name",
+                        "title": "coreshop.customer_group.name",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,
@@ -66,7 +68,7 @@
                         "optionsProviderClass": "CoreShop\\Bundle\\CustomerBundle\\CoreExtension\\Provider\\RoleOptionsProvider",
                         "optionsProviderData": "",
                         "name": "roles",
-                        "title": "roles",
+                        "title": "coreshop.customer_group.roles",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,
@@ -89,6 +91,8 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,

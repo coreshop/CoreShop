@@ -1,0 +1,14 @@
+CoreShop\Component\Customer\Model\CustomerGroup:
+    exclusion_policy: ALL
+    xml_root_name: customer_group
+    virtual_properties:
+        name:
+            serialized_name: name
+            exp: object.getName()
+            type: string
+            groups: [Detailed]
+        roles:
+            serialized_name: roles
+            exp: object.getRoles()
+            type: array
+            groups: [Detailed]

@@ -10,36 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
-final class RegisterInstallersPass implements CompilerPassInterface
+final class RegisterInstallersPass extends RegisterSimpleRegistryTypePass
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public const INSTALLER_TAG = 'coreshop.resource.installer';
+
+    public function __construct()
     {
-        if (!$container->has('coreshop.registry.resource.installers')) {
-            return;
-        }
-
-        $registry = $container->getDefinition('coreshop.registry.resource.installers');
-        $map = [];
-
-        foreach ($container->findTaggedServiceIds('coreshop.resource.installer') as $id => $attributes) {
-            if (!isset($attributes[0]['type'], $attributes[0]['priority'])) {
-                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `type` and `priority` attributes.');
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-
-            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'], new Reference($id)]);
-        }
-
-        $container->setParameter('coreshop.resource.installers', $map);
+        parent::__construct(
+            'coreshop.registry.resource.installers',
+            'coreshop.resource.installers',
+            self::INSTALLER_TAG
+        );
     }
 }

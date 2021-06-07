@@ -52,7 +52,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class StoreTypeExtension extends AbstractTypeExtension
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // Adding new fields works just like in the parent form type.
         $builder->add('contactHours', TextType::class, [
@@ -60,9 +60,9 @@ final class StoreTypeExtension extends AbstractTypeExtension
         ]);
     }
 
-    public function getExtendedType()
+    public static function getExtendedTypes(): array
     {
-        return StoreType::class;
+        return [StoreType::class];
     }
 }
 ```

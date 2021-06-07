@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Model;
 
 use CoreShop\Component\Locale\Model\LocaleAwareInterface;
@@ -18,98 +20,61 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, UserInterface, EquatableInterface, LocaleAwareInterface
+interface CustomerInterface extends
+    ResourceInterface,
+    PimcoreModelInterface,
+    UserInterface,
+    EquatableInterface,
+    LocaleAwareInterface
 {
     const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
     const CORESHOP_ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
-    /**
-     * @return string
-     */
-    public function getSalutation();
+    public function getSalutation(): ?string;
 
-    /**
-     * @param string $salutation
-     */
-    public function setSalutation($salutation);
+    public function setSalutation(?string $salutation);
 
-    /**
-     * @return string
-     */
-    public function getFirstname();
+    public function getFirstname(): ?string;
 
-    /**
-     * @param string $firstname
-     */
-    public function setFirstname($firstname);
+    public function setFirstname(?string $firstname);
 
-    /**
-     * @return string
-     */
-    public function getLastname();
+    public function getLastname(): ?string;
 
-    /**
-     * @param string $lastname
-     */
-    public function setLastname($lastname);
+    public function setLastname(?string $lastname);
 
-    /**
-     * @return string
-     */
-    public function getGender();
+    public function getCompany(): ?CompanyInterface;
 
-    /**
-     * @param string $gender
-     */
-    public function setGender($gender);
+    public function setCompany(?CompanyInterface $company);
 
-    /**
-     * @return string
-     */
-    public function getEmail();
+    public function getGender(): ?string;
 
-    /**
-     * @param string $email
-     */
-    public function setEmail($email);
+    public function setGender(?string $gender);
 
-    /**
-     * @return string
-     */
-    public function getPassword();
+    public function getEmail(): ?string;
 
-    /**
-     * @param string $password
-     */
-    public function setPassword($password);
+    public function setEmail(?string $email);
 
-    /**
-     * @return string
-     */
-    public function getPasswordResetHash();
+    public function setUsername(?string $username);
 
-    /**
-     * @param string $passwordResetHash
-     */
-    public function setPasswordResetHash($passwordResetHash);
+    public function getPassword(): ?string;
 
-    /**
-     * @return bool
-     */
-    public function getIsGuest();
+    public function setPassword(?string $password);
 
-    /**
-     * @param bool $guest
-     */
-    public function setIsGuest($guest);
+    public function getPasswordResetHash(): ?string;
+
+    public function setPasswordResetHash(?string $passwordResetHash);
+
+    public function getIsGuest(): ?bool;
+
+    public function setIsGuest(?bool $guest);
 
     /**
      * @return CustomerGroupInterface[]
      */
-    public function getCustomerGroups();
+    public function getCustomerGroups(): ?array;
 
     /**
      * @param CustomerGroupInterface[] $customerGroups
      */
-    public function setCustomerGroups($customerGroups);
+    public function setCustomerGroups(?array $customerGroups);
 }

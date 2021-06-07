@@ -1,0 +1,13 @@
+coreshop:
+    form:
+        customer:
+            username:
+                unique: 'Il nome utente è già in uso.'
+            email:
+                unique: "L'email è già in uso."
+                must_match: 'Gli indirizzi email devono corrispondere.'
+            password:
+                must_match: 'Le password devono corrispondere.'
+        guest:
+            email_is_customer: 'Sei già registrato con questa email. Effettua il login o utilizza la funzione "reimposta password".'
+            username_is_customer: 'Sei già registrato con questo nome utente. Effettua il login o utilizza la funzione "reimposta password".'

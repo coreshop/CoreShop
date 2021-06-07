@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\Exception;
 
 use Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter as BaseReplyToSymfonyResponseConverter;
@@ -17,9 +19,6 @@ use Payum\Core\Reply\ReplyInterface;
 
 class ReplyToSymfonyResponseConverter extends BaseReplyToSymfonyResponseConverter
 {
-    /**
-     * {@inheritdoc}
-     */
     public function convert(ReplyInterface $reply)
     {
         if ($reply instanceof ReplyException) {

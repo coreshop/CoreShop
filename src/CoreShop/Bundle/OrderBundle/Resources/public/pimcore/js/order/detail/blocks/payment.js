@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.detail.blocks.payment');
-coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.sale.detail.abstractBlock, {
+pimcore.registerNS('coreshop.order.order.detail.blocks.payment');
+coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.order.detail.abstractBlock, {
     initBlock: function () {
         var me = this;
 
@@ -83,7 +83,7 @@ coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.sale.de
                             text: t('coreshop_amount'),
                             flex: 1,
                             renderer: function (value) {
-                                return coreshop.util.format.currency(me.sale.currency.symbol, value);
+                                return coreshop.util.format.currency_precision(me.sale.currency.isoCode, value, 2, 100);
                             }
                         },
                         {
@@ -107,7 +107,7 @@ coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.sale.de
                                 defaultBindProperty: null,
                                 handler: function (widgetColumn) {
                                     var record = widgetColumn.getWidgetRecord();
-                                    var url = '/admin/coreshop/order-payment/update-payment-state',
+                                    var url = Routing.generate('coreshop_admin_order_payment_update_state'),
                                         transitions = record.get('transitions'),
                                         id = record.get('id');
                                     if (transitions.length !== 0) {
@@ -148,7 +148,7 @@ coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.sale.de
 
         if (me.paymentInfoAlert) {
             if (me.sale.totalPayed < me.sale.total || me.sale.totalPayed > me.sale.total) {
-                me.paymentInfoAlert.update(t('coreshop_order_payment_paid_warning').format(coreshop.util.format.currency(me.sale.currency.symbol, me.sale.totalPayed), coreshop.util.format.currency(me.sale.currency.symbol, me.sale.totalGross)));
+                me.paymentInfoAlert.update(t('coreshop_order_payment_paid_warning').format(coreshop.util.format.currency(me.sale.currency.isoCode, me.sale.totalPayed), coreshop.util.format.currency(me.sale.currency.isoCode, me.sale.totalGross)));
                 me.paymentInfoAlert.show();
             } else {
                 me.paymentInfoAlert.update('');

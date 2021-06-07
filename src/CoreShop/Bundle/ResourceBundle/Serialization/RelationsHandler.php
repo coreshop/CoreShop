@@ -10,23 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use JMS\Serializer\Context;
 use JMS\Serializer\JsonDeserializationVisitor;
 use JMS\Serializer\JsonSerializationVisitor;
 
 class RelationsHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    private EntityManagerInterface $manager;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
@@ -38,21 +35,35 @@ class RelationsHandler
             $relation = iterator_to_array($relation);
         }
 
-        if (is_array($relation)) {
-            return array_map([$this, 'getSingleEntityRelation'], $relation);
+        $manager = $this->manager;
+
+        if ($context->hasAttribute('em') && $context->getAttribute('em') instanceof EntityManagerInterface) {
+            $manager = $context->getAttribute('em');
         }
 
-        return $this->getSingleEntityRelation($relation);
+        if (is_array($relation)) {
+            return array_map(function ($rel) use ($manager) {
+                return $this->getSingleEntityRelation($rel, $manager);
+            }, $relation);
+        }
+
+        return $this->getSingleEntityRelation($relation, $manager);
     }
 
     public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
     {
         $className = isset($type['params'][0]['name']) ? $type['params'][0]['name'] : null;
 
-        $metadata = $this->manager->getClassMetadata($className);
+        $manager = $this->manager;
+
+        if ($context->hasAttribute('em') && $context->getAttribute('em') instanceof EntityManagerInterface) {
+            $manager = $context->getAttribute('em');
+        }
+
+        $metadata = $manager->getClassMetadata($className);
 
         if (!is_array($relation)) {
-            return $this->manager->getReference($metadata->getName(), $relation);
+            return $this->findById($relation, $metadata, $manager);
         }
 
         $single = false;
@@ -64,25 +75,20 @@ class RelationsHandler
         }
 
         if ($single) {
-            return $this->manager->getReference($className, $relation);
+            return $this->findById($relation, $metadata, $manager);
         }
 
         $objects = [];
         foreach ($relation as $idSet) {
-            $objects[] = $this->manager->getReference($className, $idSet);
+            $objects[] = $this->findById($idSet, $metadata, $manager);
         }
 
         return $objects;
     }
 
-    /**
-     * @param mixed $relation
-     *
-     * @return array|mixed
-     */
-    protected function getSingleEntityRelation($relation)
+    protected function getSingleEntityRelation($relation, EntityManagerInterface $entityManager)
     {
-        $metadata = $this->manager->getClassMetadata(get_class($relation));
+        $metadata = $entityManager->getClassMetadata(get_class($relation));
 
         $ids = $metadata->getIdentifierValues($relation);
         if (!$metadata->isIdentifierComposite) {
@@ -90,5 +96,10 @@ class RelationsHandler
         }
 
         return $ids;
+    }
+
+    protected function findById($id, ClassMetadata $metadata, EntityManagerInterface $manager)
+    {
+        return $manager->find($metadata->getName(), $id);
     }
 }

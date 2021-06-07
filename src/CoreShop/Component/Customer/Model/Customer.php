@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
@@ -17,176 +19,21 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Pimcore\Model\DataObject\ClassDefinition\Data\Password;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class Customer extends AbstractPimcoreModel implements CustomerInterface
+abstract class Customer extends AbstractPimcoreModel implements CustomerInterface
 {
-    /**
-     * @var array
-     */
-    private $roles = [];
+    private array $roles = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSalutation()
+    public function setUsername(?string $username)
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        $this->setEmail($username);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setSalutation($salutation)
+    public function getUsername()
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        //This is just a fallback, if you want to use username for login, this method is overwritten by Pimcore's implementation
+        return $this->getEmail();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFirstname()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFirstname($firstname)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLastname()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLastname($lastname)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getGender()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setGender($gender)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEmail()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setEmail($email)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPassword()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPassword($password)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPasswordResetHash()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPasswordResetHash($passwordResetHash)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocaleCode()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocaleCode($locale)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIsGuest()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setIsGuest($guest)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCustomerGroups()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCustomerGroups($customerGroups)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSalt()
     {
         // user has no salt as we use password_hash
@@ -207,15 +54,12 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
         $field->getDataForResource($this->getPassword(), $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRoles()
     {
         $roles = $this->roles;
 
-        /** @var CustomerGroupInterface $group */
         if (is_array($this->getCustomerGroups())) {
+            /** @var CustomerGroupInterface $group */
             foreach ($this->getCustomerGroups() as $group) {
                 $groupRoles = $group->getRoles();
                 $roles = array_merge($roles, is_array($groupRoles) ? $groupRoles : []);
@@ -228,17 +72,6 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
         return array_unique($roles);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getUsername()
-    {
-        return $this->getEmail();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isEqualTo(UserInterface $user)
     {
         return $user instanceof self && $user->getId() === $this->getId();

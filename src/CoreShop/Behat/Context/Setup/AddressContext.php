@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -22,26 +24,10 @@ use Pimcore\Model\DataObject\Folder;
 
 final class AddressContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var FactoryInterface
-     */
     private $addressFactory;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $addressRepository;
 
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param FactoryInterface           $addressFactory
-     * @param PimcoreRepositoryInterface $addressRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $addressFactory,

@@ -13,10 +13,10 @@
 pimcore.registerNS('coreshop.order.resource');
 coreshop.order.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.global.addStore('coreshop_cart_price_rules', 'coreshop/cart_price_rules');
+        coreshop.global.addStoreWithRoute('coreshop_cart_price_rules', 'coreshop_cart_price_rule_list');
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/order/get-states',
+            url: Routing.generate('coreshop_admin_order_get_states'),
             success: function (response) {
                 var res = Ext.decode(response.responseText);
 
@@ -36,7 +36,7 @@ coreshop.order.resource = Class.create(coreshop.resource, {
                             data: states
                         }));
                     });
-                    
+
                     Ext.Object.each(res.transitions, function(identifier, transitions) {
                         pimcore.globalmanager.add('coreshop_transitions' + identifier.replace('coreshop', ''), new Ext.data.Store({
                             restful: false,
@@ -64,12 +64,20 @@ coreshop.order.resource = Class.create(coreshop.resource, {
             this.openOrders();
         } else if (item === 'quotes') {
             this.openQuotes();
-        }else if (item === 'create_order') {
+        } else if (item === 'create_order') {
             this.openCreateOrder();
         } else if (item === 'create_quote') {
             this.openCreateQuote();
+        } else if (item === 'carts') {
+            this.openCarts();
+        } else if (item === 'create_cart') {
+            this.openCreateCart();
         } else if (item === 'cart_price_rule') {
             this.openCartPriceRules();
+        } else if (item === 'open_order_by_number') {
+            coreshop.order.helper.openSaleByNumberDialog('order');
+        } else if (item === 'coreshop_quote_by_number') {
+            coreshop.order.helper.openSaleByNumberDialog('quote');
         }
     },
 
@@ -97,6 +105,19 @@ coreshop.order.resource = Class.create(coreshop.resource, {
 
     openCreateQuote: function () {
         new coreshop.order.quote.create.panel();
+    },
+
+    openCarts: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_cart').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_cart', new coreshop.order.cart.list());
+        }
+    },
+
+    openCreateCart: function () {
+        new coreshop.order.cart.create.panel();
     },
 
     openCartPriceRules: function () {

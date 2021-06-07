@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Form\Registry;
 
 interface FormTypeRegistryInterface
@@ -19,15 +21,15 @@ interface FormTypeRegistryInterface
      * @param string $typeIdentifier
      * @param string $formType
      */
-    public function add($identifier, $typeIdentifier, $formType);
+    public function add(string $identifier, string $typeIdentifier, string $formType): void;
 
     /**
      * @param string $identifier
      * @param string $typeIdentifier
      *
-     * @return string
+     * @return string|null
      */
-    public function get($identifier, $typeIdentifier);
+    public function get(string $identifier, string $typeIdentifier): ?string;
 
     /**
      * @param string $identifier
@@ -35,5 +37,5 @@ interface FormTypeRegistryInterface
      *
      * @return bool
      */
-    public function has($identifier, $typeIdentifier);
+    public function has(string $identifier, string $typeIdentifier): bool;
 }

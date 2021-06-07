@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -23,32 +25,11 @@ use Webmozart\Assert\Assert;
 
 final class CurrencyContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
     private $currencyRepository;
-
-    /**
-     * @var CurrencyContextInterface
-     */
     private $currencyContext;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
     private $moneyFormatter;
 
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyContextInterface    $currencyContext
-     * @param MoneyFormatterInterface     $moneyFormatter
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CurrencyRepositoryInterface $currencyRepository,
