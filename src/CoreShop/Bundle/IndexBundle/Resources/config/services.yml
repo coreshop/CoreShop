@@ -243,7 +243,7 @@ services:
         tags:
             - { name: coreshop.filter.condition_type, type: select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType }
 
-    CoreShop\Component\Index\Filter\SelectFilterConditionFromMulitselectProcessor:
+    CoreShop\Component\Index\Filter\SelectFilterConditionFromMultiselectProcessor:
         tags:
             - { name: coreshop.filter.condition_type, type: select_from_multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType }
 
