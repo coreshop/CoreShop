@@ -17,6 +17,7 @@ use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackingExtracto
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -52,11 +53,9 @@ final class CoreShopTrackingExtension extends Extension
     {
         foreach ($container->findTaggedServiceIds(TrackerPass::TRACKER_TAG) as $id => $attributes) {
             foreach ($attributes as $tag) {
-                if (!isset($tag['type'])) {
-                    continue;
-                }
+                $definition = $container->findDefinition($id);
 
-                $type = $tag['type'];
+                $type = $tag['type'] ?? Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
 
                 if (!array_key_exists($type, $config['trackers'])) {
                     $container->getDefinition($id)
