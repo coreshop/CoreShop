@@ -87,24 +87,13 @@ class Condition implements ConditionInterface
     {
         return $this->configuration;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $configuration)
-    {
-        $this->configuration = $configuration;
-
-        return $this;
-    }
-
-
-    public function __clone()
-    {
-        if ($this->id === null) {
-            return;
-        }
-
-        $this->id = null;
-    }
+    
+//    public function __clone()
+//    {
+//        if ($this->id === null) {
+//            return;
+//        }
+//
+//        $this->id = null;
+//    }
 }

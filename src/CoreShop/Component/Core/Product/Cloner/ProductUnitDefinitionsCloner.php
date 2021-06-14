@@ -27,6 +27,19 @@ class ProductUnitDefinitionsCloner implements ProductClonerInterface
 
         $unitDefinitions = clone $referenceProduct->getUnitDefinitions();
 
+        //Hack to get rid of the ID
+        $reflectionClass = new \ReflectionClass($unitDefinitions);
+        $property = $reflectionClass->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($unitDefinitions, null);
+
+        foreach ($unitDefinitions->getUnitDefinitions() as $unitDefinition) {
+            $reflectionClass = new \ReflectionClass($unitDefinition);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($unitDefinition, null);
+        }
+
         $product->setUnitDefinitions($unitDefinitions);
     }
 }

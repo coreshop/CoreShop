@@ -141,13 +141,13 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     {
         return sprintf('%s, (Conversion Rate: %s)', $this->getUnitName(), $this->getConversionRate());
     }
-
-    public function __clone()
-    {
-        if ($this->id === null) {
-            return;
-        }
-
-        $this->id = null;
-    }
+//
+//    public function __clone()
+//    {
+//        if ($this->id === null) {
+//            return;
+//        }
+//
+//        $this->id = null;
+//    }
 }
