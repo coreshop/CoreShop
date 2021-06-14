@@ -370,6 +370,7 @@
                             },
                             {
                                 "fieldtype": "coreShopRelations",
+                                "height": "400",
                                 "width": "",
                                 "relationType": true,
                                 "pathFormatterClass": "",
@@ -427,6 +428,7 @@
                         "childs": [
                             {
                                 "fieldtype": "coreShopRelations",
+                                "height": "400",
                                 "width": "",
                                 "relationType": true,
                                 "pathFormatterClass": "",
