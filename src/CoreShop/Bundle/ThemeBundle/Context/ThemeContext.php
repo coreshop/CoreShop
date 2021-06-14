@@ -16,23 +16,44 @@ namespace CoreShop\Bundle\ThemeBundle\Context;
 
 use CoreShop\Bundle\ThemeBundle\Service\ThemeNotResolvedException;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
+use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Sylius\Bundle\ThemeBundle\Context\ThemeContextInterface;
 use Sylius\Bundle\ThemeBundle\Model\ThemeInterface;
 use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class ThemeContext implements ThemeContextInterface
 {
     private ThemeResolverInterface $resolver;
     private ThemeRepositoryInterface $themeRepository;
+    private PimcoreContextResolver $pimcoreContext;
+    private RequestStack $requestStack;
 
-    public function __construct(ThemeResolverInterface $resolver, ThemeRepositoryInterface $themeRepository)
+    public function __construct(
+        ThemeResolverInterface $resolver,
+        ThemeRepositoryInterface $themeRepository,
+        PimcoreContextResolver $pimcoreContext,
+        RequestStack $requestStack,
+    )
     {
         $this->resolver = $resolver;
         $this->themeRepository = $themeRepository;
+        $this->pimcoreContext = $pimcoreContext;
+        $this->requestStack = $requestStack;
     }
 
     public function getTheme(): ?ThemeInterface
     {
+        $request = $this->requestStack->getMasterRequest();
+
+        if (!$request) {
+            return null;
+        }
+
+        if ($this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
+            return null;
+        }
+
         try {
             return $this->themeRepository->findOneByName($this->resolver->resolveTheme());
         } catch (ThemeNotResolvedException $exception) {
