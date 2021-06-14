@@ -17,22 +17,32 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 interface ConditionInterface extends ResourceInterface
 {
     /**
-     * @param string $type
-     */
-    public function setType($type);
-
-    /**
-     * @param array $configuration
-     */
-    public function setConfiguration(array $configuration);
-
-    /**
      * @return string
      */
     public function getType();
 
     /**
+     * @param string $type
+     */
+    public function setType($type);
+
+    /**
+     * @return int
+     */
+    public function getSort();
+
+    /**
+    * @param int $sort
+     */
+    public function setSort($sort);
+
+    /**
      * @return array
      */
     public function getConfiguration();
+
+    /**
+     * @param array $configuration
+     */
+    public function setConfiguration(array $configuration);
 }

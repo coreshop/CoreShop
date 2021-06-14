@@ -26,6 +26,8 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
         // remove dirty flag!
         this.settings.getForm().setValues(this.settings.getForm().getValues());
         this.ranges.postSaveObject(object, refreshedRuleData, task, fieldName);
+
+        this.conditions.reload(refreshedRuleData.conditions);
     },
 
     onClipboardUpdated: function () {

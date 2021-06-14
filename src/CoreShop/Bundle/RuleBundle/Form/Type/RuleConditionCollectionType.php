@@ -12,7 +12,9 @@
 
 namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
+use CoreShop\Bundle\RuleBundle\Form\DataMapper\ConditionsFormMapper;
 use CoreShop\Bundle\RuleBundle\Form\Type\Core\AbstractConfigurationCollectionType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleConditionCollectionType extends AbstractConfigurationCollectionType
@@ -20,6 +22,11 @@ class RuleConditionCollectionType extends AbstractConfigurationCollectionType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->setDataMapper(new ConditionsFormMapper($builder->getDataMapper()));
     }
 
     /**
