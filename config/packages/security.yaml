@@ -8,6 +8,10 @@ security:
         pimcore_admin:
             id: Pimcore\Bundle\AdminBundle\Security\User\UserProvider
 
+    password_hashers:
+        coreshop_customer:
+            id: coreshop.security.customer.password_hasher
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/

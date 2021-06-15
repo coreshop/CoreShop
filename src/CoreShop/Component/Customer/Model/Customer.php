@@ -23,6 +23,11 @@ abstract class Customer extends AbstractPimcoreModel implements CustomerInterfac
 {
     private array $roles = [];
 
+    public function getPasswordHasherName(): ?string
+    {
+        return 'coreshop_customer';
+    }
+
     public function setUsername(?string $username)
     {
         $this->setEmail($username);

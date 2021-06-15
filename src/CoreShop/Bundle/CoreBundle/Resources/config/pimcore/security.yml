@@ -1,15 +1,14 @@
 parameters:
     coreshop.security.frontend_regex: "^/(?!admin)[^/]++"
 
-pimcore:
-    security:
-        encoder_factories:
-            '%coreshop.model.customer.class%': coreshop.security.customer.password_encoder_factory
-
 security:
     providers:
         coreshop_customer:
             id: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
+
+    password_hashers:
+        coreshop_customer:
+            id: coreshop.security.customer.password_hasher
 
     firewalls:
         coreshop_frontend:

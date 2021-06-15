@@ -17,7 +17,9 @@ namespace CoreShop\Component\Customer\Model;
 use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface CustomerInterface extends
@@ -25,7 +27,9 @@ interface CustomerInterface extends
     PimcoreModelInterface,
     UserInterface,
     EquatableInterface,
-    LocaleAwareInterface
+    LocaleAwareInterface,
+    PasswordAuthenticatedUserInterface,
+    PasswordHasherAwareInterface
 {
     const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
     const CORESHOP_ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';

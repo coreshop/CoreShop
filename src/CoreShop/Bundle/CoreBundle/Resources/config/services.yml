@@ -52,6 +52,12 @@ services:
             - Pimcore\Security\Encoder\PasswordFieldEncoder
             - ['password']
 
+    coreshop.security.customer.password_hasher:
+        class: CoreShop\Bundle\PimcoreBundle\Security\PasswordFieldHasher
+        arguments:
+            - '%coreshop.model.customer.pimcore_class_name%'
+            - 'password'
+
     CoreShop\Component\Core\Configuration\ConfigurationServiceInterface: '@CoreShop\Component\Core\Configuration\ConfigurationService'
     CoreShop\Component\Core\Configuration\ConfigurationService:
         decorates: CoreShop\Component\Configuration\Service\ConfigurationService
