@@ -58,6 +58,8 @@ interface CustomerInterface extends
 
     public function setEmail(?string $email);
 
+    public function getUsername();
+
     public function setUsername(?string $username);
 
     public function getPassword(): ?string;

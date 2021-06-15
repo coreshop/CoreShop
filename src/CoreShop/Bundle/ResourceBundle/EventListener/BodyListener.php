@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -36,7 +36,7 @@ class BodyListener
                     $data = @json_decode($content, true);
 
                     if (is_array($data)) {
-                        $request->request = new ParameterBag($data);
+                        $request->request = new InputBag($data);
                     } else {
                         throw new BadRequestHttpException('Invalid '.$format.' message received');
                     }
