@@ -22,11 +22,15 @@ class RuleConditionCollectionType extends AbstractConfigurationCollectionType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
+
+        $resolver->setDefault('nested', false);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->setDataMapper(new ConditionsFormMapper($builder->getDataMapper()));
+        if (!$options['nested']) {
+            $builder->setDataMapper(new ConditionsFormMapper($builder->getDataMapper()));
+        }
     }
 
     /**
