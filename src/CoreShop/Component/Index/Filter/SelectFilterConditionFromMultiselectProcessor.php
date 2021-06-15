@@ -22,7 +22,7 @@ use CoreShop\Component\Index\Model\FilterInterface;
 use Pimcore\Model\DataObject\QuantityValue\Unit;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class SelectFilterConditionFromMulitselectProcessor implements FilterConditionProcessorInterface
+class SelectFilterConditionFromMultiselectProcessor implements FilterConditionProcessorInterface
 {
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
