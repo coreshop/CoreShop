@@ -173,11 +173,17 @@ final class DynamicDropdownController extends AdminController
         $classDefinition = $object->getClass();
         $definitionFile = $classDefinition->getDefinitionFile();
 
-        if (!is_file($definitionFile)) {
-            return false;
+        if ($classDefinition instanceof \Pimcore\Model\DataObject\ClassDefinition) {
+            $tree = $classDefinition->getLayoutDefinitions();
+        } else {
+            $definitionFile = $classDefinition->getDefinitionFile();
+
+            if (!is_file($definitionFile)) {
+                return false;
+            }
+            $tree = include $definitionFile;
         }
 
-        $tree = include $definitionFile;
         $definition = $this->parseTree($tree, []);
 
         return $definition[$method];
