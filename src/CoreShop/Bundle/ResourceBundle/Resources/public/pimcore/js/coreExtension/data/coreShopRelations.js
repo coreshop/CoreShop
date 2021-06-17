@@ -67,6 +67,22 @@ pimcore.object.classes.data.coreShopRelations = Class.create(coreshop.object.cla
                         value: this.datax.width
                     },
                     {
+                        xtype: "displayfield",
+                        hideLabel: true,
+                        value: t('width_explanation')
+                    },
+                    {
+                        xtype: "textfield",
+                        fieldLabel: t("height"),
+                        name: "height",
+                        value: this.datax.height
+                    },
+                    {
+                        xtype: "displayfield",
+                        hideLabel: true,
+                        value: t('height_explanation')
+                    },
+                    {
                         xtype: 'textfield',
                         width: 600,
                         fieldLabel: t("path_formatter_service"),
