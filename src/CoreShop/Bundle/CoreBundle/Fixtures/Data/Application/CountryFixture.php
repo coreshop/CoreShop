@@ -77,6 +77,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 '{{ phoneNumber }}',
             ],
             'region' => '',
+            'region_short' => ''
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
         $defaultSalutations = ['mrs', 'mr'];

@@ -56,6 +56,21 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
     {
         $newQuantityPriceRule = clone $quantityPriceRule;
 
+         //Hack to get rid of the ID
+        $reflectionClass = new \ReflectionClass($newQuantityPriceRule);
+        $property = $reflectionClass->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($newQuantityPriceRule, null);
+
+        foreach ([$newQuantityPriceRule->getConditions(), $newQuantityPriceRule->getActive()] as $batch) {
+            foreach ($batch as $entry) {
+                $reflectionClass = new \ReflectionClass($entry);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($entry, null);
+            }
+        }
+
         $newQuantityPriceRule->setProduct($product->getId());
 
         $ranges = $newQuantityPriceRule->getRanges();
