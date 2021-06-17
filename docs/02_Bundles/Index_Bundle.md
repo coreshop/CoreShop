@@ -45,6 +45,7 @@ $filter = $this->get('coreshop.repository.filter')->find(1); //Get Filter by ID 
 $filteredList = $this->get('coreshop.factory.filter.list')->createList($filter, $request->request);
 $filteredList->setVariantMode(ListingInterface::VARIANT_MODE_HIDE);
 $filteredList->setCategory($category);
+$this->get('coreshop.filter.processor')->processConditions($filter, $filteredList, $request->query);
 $filteredList->load();
 ```
 

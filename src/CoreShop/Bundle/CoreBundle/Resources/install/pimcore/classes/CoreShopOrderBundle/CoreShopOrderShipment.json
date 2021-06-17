@@ -218,6 +218,7 @@
                         "childs": [
                             {
                                 "fieldtype": "coreShopRelations",
+                                "height": "400",
                                 "width": "",
                                 "relationType": true,
                                 "pathFormatterClass": "",

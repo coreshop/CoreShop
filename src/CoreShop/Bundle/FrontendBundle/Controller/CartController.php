@@ -182,7 +182,7 @@ class CartController extends FrontendController
 
         $addToCart = $this->createAddToCart($this->getCart(), $cartItem);
 
-        $form = $this->get('form.factory')->createNamed('coreshop', AddToCartType::class, $addToCart);
+        $form = $this->get('form.factory')->createNamed('coreshop-' . $product->getId(), AddToCartType::class, $addToCart);
 
         if ($request->isMethod('POST')) {
             $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getCart(), 'coreshop_cart_summary'));
