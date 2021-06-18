@@ -2,3 +2,8 @@ services:
     coreshop.pimcore_controller.dynamic_dropdown:
         alias: 'CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController'
         public: true
+
+    CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController:
+        autowire: true
+        tags:
+            - { name: controller.service_arguments }

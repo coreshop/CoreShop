@@ -11,14 +11,7 @@ parameters:
 
 services:
     _defaults:
-        autowire: true
-        autoconfigure: true
         public: true
-
-    CoreShop\Bundle\PimcoreBundle\Controller\Admin\:
-        resource: '../../Controller/Admin'
-        public: true
-        tags: [ 'controller.service_arguments' ]
 
     CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface: '@CoreShop\Component\Pimcore\DataObject\ClassInstaller'
     CoreShop\Component\Pimcore\DataObject\ClassInstaller: ~
