@@ -49,7 +49,7 @@ final class CoreShopStoreExtension extends AbstractModelExtension
         if ($config['debug'] ?? $container->getParameter('kernel.debug')) {
             $loader->load('services/debug.yml');
 
-            $container->getDefinition(StoreCollector::class)->replaceArgument(2, true);
+            $container->getDefinition(StoreCollector::class)->replaceArgument(3, true);
         }
 
         $container

@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -25,14 +26,17 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 final class CurrencyCollector extends DataCollector
 {
     private CurrencyContextInterface $currencyContext;
+    private PimcoreContextResolver $pimcoreContext;
 
     public function __construct(
         CurrencyRepositoryInterface $currencyRepository,
         CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext,
+        PimcoreContextResolver $pimcoreContext,
         $currencyChangeSupport = false
     ) {
         $this->currencyContext = $currencyContext;
+        $this->pimcoreContext = $pimcoreContext;
 
         try {
             $this->data = [
@@ -62,6 +66,12 @@ final class CurrencyCollector extends DataCollector
 
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
+        if ($this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
+            $this->data['admin'] = true;
+
+            return;
+        }
+
         try {
             $this->data['currency'] = $this->currencyContext->getCurrency();
         } catch (\Exception $exception) {
