@@ -52,7 +52,7 @@ class SearchController extends FrontendController
                 '%' . $text . '%',
                 '%' . $text . '%',
                 '%' . $text . '%',
-                '%' . $this->container->get(StoreContextInterface::class)->getStore()->getId() . '%',
+                '%,' . $this->container->get(StoreContextInterface::class)->getStore()->getId() . ',%',
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();
