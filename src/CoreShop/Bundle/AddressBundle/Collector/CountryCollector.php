@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\AddressBundle\Collector;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
+use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -23,12 +24,15 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 final class CountryCollector extends DataCollector
 {
     private CountryContextInterface $countryContext;
+    private PimcoreContextResolver $pimcoreContext;
 
     public function __construct(
         CountryContextInterface $countryContext,
+        PimcoreContextResolver $pimcoreContext,
         $countryChangeSupport = false
     ) {
         $this->countryContext = $countryContext;
+        $this->pimcoreContext = $pimcoreContext;
 
         $this->data = [
             'country' => null,
@@ -48,6 +52,12 @@ final class CountryCollector extends DataCollector
 
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
+        if ($this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
+            $this->data['admin'] = true;
+
+            return;
+        }
+
         try {
             $this->data['country'] = $this->countryContext->getCountry();
             $this->data['country_name'] = $this->countryContext->getCountry() ? $this->countryContext->getCountry()->getName() : null;
