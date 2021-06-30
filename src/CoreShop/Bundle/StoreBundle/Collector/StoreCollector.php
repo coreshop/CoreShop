@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\StoreBundle\Collector;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -24,13 +25,16 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 final class StoreCollector extends DataCollector
 {
     private StoreContextInterface $storeContext;
+    private PimcoreContextResolver $pimcoreContext;
 
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         StoreContextInterface $storeContext,
+        PimcoreContextResolver $pimcoreContext,
         $storeChangeSupport = false
     ) {
         $this->storeContext = $storeContext;
+        $this->pimcoreContext = $pimcoreContext;
 
         $this->data = [
             'store' => null,
@@ -62,6 +66,12 @@ final class StoreCollector extends DataCollector
 
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
+        if ($this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
+            $this->data['admin'] = true;
+
+            return;
+        }
+
         try {
             $this->data['store'] = $this->storeContext->getStore();
         } catch (\Exception $exception) {
