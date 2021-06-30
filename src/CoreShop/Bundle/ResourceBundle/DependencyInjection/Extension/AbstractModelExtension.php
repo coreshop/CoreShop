@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension;
 
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\DriverProvider;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -72,7 +73,34 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
         foreach ($models as $modelName => $modelConfig) {
             $alias = $applicationName . '.' . $modelName;
             $modelConfig = array_merge(['driver' => 'pimcore', 'alias' => $this->getAlias()], $modelConfig);
-            $modelConfig['pimcore_class'] = str_replace('Pimcore\Model\DataObject\\', '', $modelConfig['classes']['model']);
+
+            switch ($modelConfig['classes']['type']) {
+                case CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION:
+                    $modelConfig['pimcore_class'] = str_replace(
+                        'Pimcore\Model\DataObject\Fieldcollection\Data\\',
+                        '',
+                        $modelConfig['classes']['model']
+                    );
+                    break;
+
+                case CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK:
+                    $modelConfig['pimcore_class'] = str_replace(
+                        'Pimcore\Model\DataObject\Objectbrick\Data\\',
+                        '',
+                        $modelConfig['classes']['model']
+                    );
+                    break;
+
+                case CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT:
+                default:
+                    $modelConfig['pimcore_class'] = str_replace(
+                        'Pimcore\Model\DataObject\\',
+                        '',
+                        $modelConfig['classes']['model']
+                    );
+                    break;
+
+            }
 
             foreach (['coreshop.all.pimcore_classes', sprintf('%s.pimcore_classes', $applicationName)] as $parameter) {
                 $models = $container->hasParameter($parameter) ? $container->getParameter($parameter) : [];

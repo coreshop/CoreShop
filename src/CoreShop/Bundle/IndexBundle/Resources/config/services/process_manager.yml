@@ -2,7 +2,7 @@ services:
     CoreShop\Bundle\IndexBundle\ProcessManager\IndexListener:
         arguments:
             - '@process_manager.factory.process'
-            - '@process_manager.logger'
+            - '@ProcessManagerBundle\Logger\ProcessLogger'
         tags:
             - { name: kernel.event_listener, event: coreshop.index.classes, method: onClasssesEvent }
             - { name: kernel.event_listener, event: coreshop.index.start, method: onStartEvent }
