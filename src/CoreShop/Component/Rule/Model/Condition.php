@@ -29,6 +29,11 @@ class Condition implements ConditionInterface
     protected $type;
 
     /**
+     * @var int
+     */
+    protected $sort;
+
+    /**
      * @var array
      */
     protected $configuration;
@@ -44,6 +49,14 @@ class Condition implements ConditionInterface
     /**
      * {@inheritdoc}
      */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setType($type)
     {
         $this->type = $type;
@@ -54,19 +67,17 @@ class Condition implements ConditionInterface
     /**
      * {@inheritdoc}
      */
-    public function setConfiguration(array $configuration)
+    public function getSort()
     {
-        $this->configuration = $configuration;
-
-        return $this;
+        return $this->sort;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function setSort($sort)
     {
-        return $this->type;
+        $this->sort = $sort;
     }
 
     /**
@@ -75,6 +86,16 @@ class Condition implements ConditionInterface
     public function getConfiguration()
     {
         return $this->configuration;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConfiguration(array $configuration)
+    {
+        $this->configuration = $configuration;
+
+        return $this;
     }
 
 //    public function __clone()

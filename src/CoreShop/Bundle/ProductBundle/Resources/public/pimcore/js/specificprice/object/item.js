@@ -19,6 +19,8 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
     postSaveObject: function (object, refreshedRuleData, task, fieldName) {
         // remove dirty flag!
         //this.settingsForm.getForm().setValues(this.settingsForm.getForm().getValues());
+        this.conditions.reload(refreshedRuleData.conditions);
+        this.actions.reload(refreshedRuleData.actions);
     },
 
     getPanel: function () {

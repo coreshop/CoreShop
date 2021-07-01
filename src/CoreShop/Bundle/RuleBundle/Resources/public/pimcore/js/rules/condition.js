@@ -19,6 +19,14 @@ coreshop.rules.condition = Class.create({
         this.dirty = false;
     },
 
+    reload: function (conditions) {
+        this.conditionsContainer.removeAll();
+
+        Ext.each(conditions, function(condition) {
+            this.addCondition(condition.type, condition, false);
+        }.bind(this));
+    },
+
     getLayout: function () {
         // init
         var _this = this;
@@ -135,12 +143,13 @@ coreshop.rules.condition = Class.create({
                 }
             }
 
-            if (conditionClass.data.id) {
-                condition['id'] = conditionClass.data.id;
+            if (conditionClass.id) {
+                condition['id'] = conditionClass.id;
             }
 
             condition['configuration'] = configuration;
             condition['type'] = conditions[i].xparent.type;
+            condition['sort'] = (i + 1);
 
             if (Ext.isFunction(this.prepareCondition)) {
                 condition = this.prepareCondition(condition);

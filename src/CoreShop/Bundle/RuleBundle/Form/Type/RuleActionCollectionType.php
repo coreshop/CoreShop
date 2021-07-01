@@ -12,7 +12,9 @@
 
 namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
+use CoreShop\Bundle\RuleBundle\Form\DataMapper\ActionsFormMapper;
 use CoreShop\Bundle\RuleBundle\Form\Type\Core\AbstractConfigurationCollectionType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleActionCollectionType extends AbstractConfigurationCollectionType
@@ -20,6 +22,11 @@ class RuleActionCollectionType extends AbstractConfigurationCollectionType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->setDataMapper(new ActionsFormMapper($builder->getDataMapper()));
     }
 
     /**
