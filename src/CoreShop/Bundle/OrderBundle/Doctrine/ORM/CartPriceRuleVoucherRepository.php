@@ -13,13 +13,22 @@
 namespace CoreShop\Bundle\OrderBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class CartPriceRuleVoucherRepository extends EntityRepository implements CartPriceRuleVoucherRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    public function findAllPaginator(CartPriceRuleInterface $cartPriceRule, int $offset, int $limit)
+    {
+        return new Paginator($this->createQueryBuilder('o')
+            ->where('o.cartPriceRule = :cartPriceRule')
+            ->setParameter('cartPriceRule', $cartPriceRule)
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+        );
+    }
+
     public function findByCode($code)
     {
         return $this->createQueryBuilder('o')

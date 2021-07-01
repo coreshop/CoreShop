@@ -12,10 +12,21 @@
 
 namespace CoreShop\Component\Order\Repository;
 
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 interface CartPriceRuleVoucherRepositoryInterface extends RepositoryInterface
 {
+    /**
+     * @param CartPriceRuleInterface $cartPriceRule
+     * @param int $offset
+     * @param int $limit
+     *
+     * @return Paginator
+     */
+    public function findAllPaginator(CartPriceRuleInterface $cartPriceRule, int $offset, int $limit);
+
     /**
      * @param string $code
      *

@@ -165,6 +165,8 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 ]
             });
 
+            var pagingBar = pimcore.helpers.grid.buildDefaultPagingToolbar(store);
+
             var grid = new Ext.grid.Panel({
                 store: store,
                 plugins: {
@@ -216,7 +218,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 ],
                 region: 'center',
                 flex: 1,
-                bbar: pimcore.helpers.grid.buildDefaultPagingToolbar(store)
+                bbar: pagingBar
             });
 
             grid.on('beforerender', function () {
@@ -256,7 +258,12 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_vouchers_export'),
                             handler: function () {
-                                pimcore.helpers.download('/admin/coreshop/cart_price_rules/export-voucher-codes?cartPriceRule=' + this.data.id);
+                                var page = store.currentPage;
+                                var size = store.getPageSize();
+                                var start = (page - 1) * size;
+                                var queryString = 'start=' + start + '&limit=' + size + '&cartPriceRule=' + this.data.id;
+
+                                pimcore.helpers.download('/admin/coreshop/cart_price_rules/export-voucher-codes?' + queryString);
                             }.bind(this)
                         }
                     ]
