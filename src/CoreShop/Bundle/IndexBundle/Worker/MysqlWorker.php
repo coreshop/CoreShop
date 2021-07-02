@@ -619,7 +619,7 @@ QUERY;
     /**
      * get table name.
      *
-     * @param IndexInterface $index
+     * @param string $name
      *
      * @return string
      */
