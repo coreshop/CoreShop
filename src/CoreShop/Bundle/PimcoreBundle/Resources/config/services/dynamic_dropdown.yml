@@ -4,6 +4,8 @@ services:
         public: true
 
     CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController:
-        autowire: true
         tags:
             - { name: controller.service_arguments }
+        calls:
+            - method: setContainer
+              arguments: ['@service_container']
