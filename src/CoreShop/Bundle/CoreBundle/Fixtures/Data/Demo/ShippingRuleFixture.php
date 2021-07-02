@@ -62,13 +62,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                                 'minAmount' => 0,
                                 'maxAmount' => 15000,
                             ],
-                        ],
-                        [
-                            'type' => 'zones',
-                            'config' => [
-                                'zones' => [4],
-                            ],
-                        ],
+                        ]
                     ],
                     'actions' => [
                         [
@@ -89,13 +83,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                                 'minAmount' => 15000,
                                 'maxAmount' => 200000,
                             ],
-                        ],
-                        [
-                            'type' => 'zones',
-                            'config' => [
-                                'zones' => [4],
-                            ],
-                        ],
+                        ]
                     ],
                     'actions' => [
                         [
@@ -116,13 +104,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                                 'minAmount' => 200000,
                                 'maxAmount' => 300000,
                             ],
-                        ],
-                        [
-                            'type' => 'zones',
-                            'config' => [
-                                'zones' => [4],
-                            ],
-                        ],
+                        ]
                     ],
                     'actions' => [
                         [
