@@ -12,47 +12,44 @@
 
 namespace CoreShop\Bundle\IndexBundle\EventListener;
 
-use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use Webmozart\Assert\Assert;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Symfony\Component\Intl\Exception\InvalidArgumentException;
 
-final class DeleteIndexListener
+final class UpdateIndexListener
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $workerServiceRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $workerServiceRegistry
-     */
     public function __construct(ServiceRegistryInterface $workerServiceRegistry)
     {
         $this->workerServiceRegistry = $workerServiceRegistry;
     }
 
-    /**
-     * @param ResourceControllerEvent $event
-     */
-    public function onIndexDeletePre(ResourceControllerEvent $event)
+    public function onPreUpdate(IndexInterface $index, PreUpdateEventArgs $event)
     {
-        $resource = $event->getSubject();
-
-        Assert::isInstanceOf($resource, IndexInterface::class);
-
-        $workerType = $resource->getWorker();
-
-        // do not throw an exception since the worker field could be empty!
-        if (!$this->workerServiceRegistry->has($workerType)) {
+        if (!$event->hasChangedField('name')) {
             return;
+        }
+
+        $newName = $event->getNewValue('name');
+        $oldName = $event->getOldValue('name');
+
+        $workerType = $index->getWorker();
+
+        if (!$this->workerServiceRegistry->has($workerType)) {
+            throw new InvalidArgumentException(sprintf('%s Worker not found', $workerType));
         }
 
         /**
          * @var WorkerInterface $worker
          */
         $worker = $this->workerServiceRegistry->get($workerType);
-        $worker->deleteIndexStructures($resource);
+
+        //BC Safe, remove in CoreShop 3.0 and add renamedIndexStructures to interface of Workers
+        if (method_exists($worker, 'renameIndexStructures')) {
+            $worker->renameIndexStructures($index, $oldName, $newName);
+        }
     }
 }
