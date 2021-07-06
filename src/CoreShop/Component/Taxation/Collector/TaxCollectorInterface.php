@@ -20,22 +20,14 @@ use CoreShop\Component\Taxation\Model\TaxItemInterface;
 interface TaxCollectorInterface
 {
     /**
-     * @param TaxCalculatorInterface $taxCalculator
-     * @param int                    $price
-     * @param array                  $usedTaxes
-     *
      * @return TaxItemInterface[]
      */
-    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array;
+    public function collectTaxes(TaxCalculatorInterface $taxCalculator, int $price, array $usedTaxes = []): array;
 
     /**
-     * @param TaxCalculatorInterface $taxCalculator
-     * @param int                    $price
-     * @param array                  $usedTaxes
-     *
      * @return TaxItemInterface[]
      */
-    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array;
+    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, int $price, array $usedTaxes = []): array;
 
     /**
      * Merges to Tax arrays from TaxCollector into one.

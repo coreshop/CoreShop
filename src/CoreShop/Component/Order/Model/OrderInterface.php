@@ -97,6 +97,9 @@ interface OrderInterface extends
 
     public function getDiscount(bool $withTax = true): int;
 
+    /**
+     * @return OrderItemInterface[]
+     */
     public function getItems(): ?array;
 
     /**

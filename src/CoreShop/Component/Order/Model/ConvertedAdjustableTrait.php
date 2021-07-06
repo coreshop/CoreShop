@@ -157,6 +157,14 @@ trait ConvertedAdjustableTrait
                 }
             }
         }
+
+        if (method_exists($this, 'getUnits')) {
+            foreach ($this->getUnits() as $item) {
+                if ($item instanceof ConvertedAdjustableInterface) {
+                    $item->removeConvertedAdjustmentsRecursively($type);
+                }
+            }
+        }
     }
 
     public function getConvertedAdjustmentsTotal(?string $type = null, bool $withTax = true): int

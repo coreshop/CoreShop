@@ -48,8 +48,8 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     {
         $items = $this->getItems();
 
-        for ($i = 0, $c = count($items); $i < $c; $i++) {
-            $arrayItem = $items[$i];
+        foreach ($items as $i => $iValue) {
+            $arrayItem = $iValue;
 
             if ($arrayItem->getId() === $item->getId()) {
                 unset($items[$i]);
@@ -65,8 +65,8 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     {
         $items = $this->getItems();
 
-        for ($i = 0, $c = count($items); $i < $c; $i++) {
-            $arrayItem = $items[$i];
+        foreach ($items as $iValue) {
+            $arrayItem = $iValue;
 
             if ($arrayItem->getId() === $item->getId()) {
                 return true;

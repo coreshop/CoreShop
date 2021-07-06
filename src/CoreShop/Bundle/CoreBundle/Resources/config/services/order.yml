@@ -95,6 +95,8 @@ services:
 
     CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier:
         decorates: coreshop.cart_item.quantity_modifier
+        arguments:
+            - '@coreshop.factory.order_item_unit'
 
     CoreShop\Component\Core\Cart\CartContextResolver:
         decorates: 'CoreShop\Component\Order\Cart\CartContextResolver'

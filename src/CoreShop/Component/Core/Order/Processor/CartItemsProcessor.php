@@ -28,10 +28,10 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 
 final class CartItemsProcessor implements CartProcessorInterface
 {
-    private $cartContextResolver;
-    private $productPriceCalculator;
-    private $quantityReferenceDetector;
-    private $cartItemProcessor;
+    private PurchasableCalculatorInterface $productPriceCalculator;
+    private QuantityReferenceDetectorInterface $quantityReferenceDetector;
+    private CartItemProcessorInterface $cartItemProcessor;
+    private CartContextResolverInterface $cartContextResolver;
 
     public function __construct(
         PurchasableCalculatorInterface $productPriceCalculator,

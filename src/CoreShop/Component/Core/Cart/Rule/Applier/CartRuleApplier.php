@@ -16,6 +16,7 @@ namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
+use CoreShop\Component\Order\Distributor\IntegerDistributorInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
@@ -23,23 +24,27 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 class CartRuleApplier implements CartRuleApplierInterface
 {
-    private $distributor;
-    private $taxCalculatorFactory;
-    private $taxCollector;
-    private $defaultAddressProvider;
-    private $adjustmentFactory;
+    private ProportionalIntegerDistributor $distributor;
+    private IntegerDistributorInterface $integerDistributor;
+    private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
+    private TaxCollectorInterface $taxCollector;
+    private AddressProviderInterface $defaultAddressProvider;
+    private AdjustmentFactoryInterface $adjustmentFactory;
 
     public function __construct(
         ProportionalIntegerDistributor $distributor,
+        IntegerDistributorInterface $integerDistributor,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
         TaxCollectorInterface $taxCollector,
         AddressProviderInterface $defaultAddressProvider,
         AdjustmentFactoryInterface $adjustmentFactory
     ) {
         $this->distributor = $distributor;
+        $this->integerDistributor = $integerDistributor;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxCollector = $taxCollector;
         $this->defaultAddressProvider = $defaultAddressProvider;
@@ -76,6 +81,7 @@ class CartRuleApplier implements CartRuleApplierInterface
 
         foreach ($cart->getItems() as $item) {
             $applicableAmount = $distributedAmount[$i++];
+
             $itemDiscountGross = 0;
             $itemDiscountNet = 0;
             $discountFloat = 0;
@@ -151,10 +157,54 @@ class CartRuleApplier implements CartRuleApplierInterface
                 continue;
             }
 
-             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
+            $splitPromotionAmountNet = $this->integerDistributor->distribute($amountNet, (int)$item->getQuantity());
+            $splitPromotionAmountGross = $this->integerDistributor->distribute($amountGross, (int)$item->getQuantity());
+
+            $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
                 $item->getProduct(),
                 $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
             );
+
+            $i = 0;
+            foreach ($item->getUnits() as $unit) {
+                $promotionAmountNet = $splitPromotionAmountNet[$i];
+                $promotionAmountGross = $splitPromotionAmountGross[$i];
+
+                $i++;
+
+                if (0 === $promotionAmountNet) {
+                    continue;
+                }
+
+                $unit->addAdjustment($this->adjustmentFactory->createWithData(
+                    AdjustmentInterface::CART_PRICE_RULE,
+                    $cartPriceRuleItem->getCartPriceRule()->getName(),
+                    $positive ? $promotionAmountGross : (-1 * $promotionAmountGross),
+                    $positive ? $promotionAmountNet : (-1 * $promotionAmountNet)
+                ));
+
+                if ($taxCalculator instanceof TaxCalculatorInterface) {
+                    $taxItems = $unit->getTaxes() ?? new Fieldcollection();
+
+                    if ($withTax) {
+                        $taxItems->setItems(
+                            $this->taxCollector->collectTaxesFromGross(
+                                $taxCalculator,
+                                ($positive ? $promotionAmountGross : -1 * $promotionAmountGross),
+                                $taxItems->getItems()
+                            )
+                        );
+                    } else {
+                        $taxItems->setItems(
+                            $this->taxCollector->collectTaxes(
+                                $taxCalculator,
+                                ($positive ? $promotionAmountNet : -1 * $promotionAmountNet),
+                                $taxItems->getItems()
+                            )
+                        );
+                    }
+                }
+            }
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
                 $taxItems = $item->getTaxes();
