@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -24,49 +26,30 @@ use Webmozart\Assert\Assert;
 
 class PriceActionProcessor implements CarrierPriceActionProcessorInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
     protected $moneyConverter;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
     protected $currencyRepository;
 
-    /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyConverterInterface  $moneyConverter
-     */
     public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {
         $this->currencyRepository = $currencyRepository;
         $this->moneyConverter = $moneyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration, array $context): int
     {
+        Assert::keyExists($context, 'currency');
+        Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
+
+        /**
+         * @var CurrencyInterface $contextCurrency
+         */
+        $contextCurrency = $context['currency'];
         $price = $configuration['price'];
 
-        if ($shippable instanceof CurrencyAwareInterface) {
-            $currency = $this->currencyRepository->find($configuration['currency']);
+        $currency = $this->currencyRepository->find($configuration['currency']);
 
-            Assert::isInstanceOf($currency, CurrencyInterface::class);
+        Assert::isInstanceOf($currency, CurrencyInterface::class);
 
-            return $this->moneyConverter->convert($price, $currency->getIsoCode(), $shippable->getCurrency()->getIsoCode());
-        }
-
-        return $price;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
-    {
-        return 0;
+        return $this->moneyConverter->convert($price, $currency->getIsoCode(), $contextCurrency->getIsoCode());
     }
 }

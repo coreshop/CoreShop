@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,7 +20,7 @@ use Doctrine\Common\Collections\Collection;
 trait StoresAwareTrait
 {
     /**
-     * @var Collection|StoreInterface[]
+     * @var Collection|ArrayCollection<StoreInterface>
      */
     protected $stores;
 
@@ -27,25 +29,16 @@ trait StoresAwareTrait
         $this->stores = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStores()
     {
         return $this->stores;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasStores()
     {
         return !$this->stores->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addStore(StoreInterface $store)
     {
         if (!$this->hasStore($store)) {
@@ -53,9 +46,6 @@ trait StoresAwareTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeStore(StoreInterface $store)
     {
         if ($this->hasStore($store)) {
@@ -63,9 +53,6 @@ trait StoresAwareTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasStore(StoreInterface $store)
     {
         return $this->stores->contains($store);

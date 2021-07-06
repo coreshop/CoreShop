@@ -10,24 +10,24 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
+use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_resource');
+        $treeBuilder = new TreeBuilder('core_shop_resource');
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->addResourcesSection($rootNode);
         $this->addTranslationsSection($rootNode);
@@ -94,7 +94,7 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('translation')
                     ->canBeDisabled()
                     ->children()
-                        ->scalarNode('locale_provider')->defaultValue('coreshop.translation_locale_provider.pimcore')->cannotBeEmpty()->end()
+                        ->scalarNode('locale_provider')->defaultValue(TranslationLocaleProviderInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end();
     }

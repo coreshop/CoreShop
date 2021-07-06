@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Condition\Mysql;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
@@ -20,10 +22,7 @@ use Webmozart\Assert\Assert;
 
 class CompareRenderer extends AbstractMysqlDynamicRenderer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null)
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
          * @var $condition CompareCondition
@@ -36,10 +35,7 @@ class CompareRenderer extends AbstractMysqlDynamicRenderer
         return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' ' . $operator . ' ' . $this->quote($value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(WorkerInterface $worker, ConditionInterface $condition)
+    public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
     {
         return $worker instanceof MysqlWorker && $condition instanceof CompareCondition;
     }

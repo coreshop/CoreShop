@@ -13,14 +13,12 @@
 namespace CoreShop\Bundle\UserBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Component\User\Model\UserInterface;
 use CoreShop\Component\User\Repository\UserRepositoryInterface;
 
 class UserRepository extends PimcoreRepository implements UserRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findByResetToken($resetToken)
+    public function findByResetToken(string $resetToken): ?UserInterface
     {
         $list = $this->getList();
         $list->setCondition('passwordResetHash = ?', [$resetToken]);
@@ -33,26 +31,26 @@ class UserRepository extends PimcoreRepository implements UserRepositoryInterfac
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findByNewsletterToken($newsletterToken)
+    public function findUniqueByLoginIdentifier(string $identifier, string $value): ?UserInterface
     {
         $list = $this->getList();
-        $list->setCondition('newsletterToken = ?', [$newsletterToken]);
-        $objects = $list->load();
 
-        if (count($objects) === 1) {
-            return $objects[0];
+        $conditions = [sprintf('%s = ?', $identifier)];
+        $conditionsValues = [$value];
+
+        $list->setCondition(implode(' AND ', $conditions), $conditionsValues);
+        $list->load();
+
+        $users = $list->getObjects();
+
+        if (count($users) > 0 && $users[0] instanceof UserInterface) {
+            return $users[0];
         }
 
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findByEmail($email)
+    public function findByEmail(string $email): ?UserInterface
     {
         $list = $this->getList();
 
@@ -65,6 +63,22 @@ class UserRepository extends PimcoreRepository implements UserRepositoryInterfac
             return $users[0];
         }
 
-        return false;
+        return null;
+    }
+
+    public function findByUsername(string $username): ?UserInterface
+    {
+        $list = $this->getList();
+
+        $list->setCondition('username = ?', [$username]);
+        $list->load();
+
+        $users = $list->getObjects();
+
+        if (count($users) > 0) {
+            return $users[0];
+        }
+
+        return null;
     }
 }

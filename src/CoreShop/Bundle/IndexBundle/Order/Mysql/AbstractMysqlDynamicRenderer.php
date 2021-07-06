@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Order\Mysql;
 
 use CoreShop\Component\Index\Order\DynamicOrderRendererInterface;
@@ -17,32 +19,19 @@ use Doctrine\DBAL\Connection;
 
 abstract class AbstractMysqlDynamicRenderer implements DynamicOrderRendererInterface
 {
-    /**
-     * @var Connection
-     */
-    protected $connection;
+    protected Connection $connection;
 
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
 
-    /**
-     * @param string $identifier
-     *
-     * @return string
-     */
-    protected function quoteIdentifier($identifier)
+    protected function quoteIdentifier(string $identifier): string
     {
         return $this->connection->quoteIdentifier($identifier);
     }
 
-    /**
-     * @param string|null $prefix
-     *
-     * @return string
-     */
-    protected function renderPrefix($prefix = null)
+    protected function renderPrefix(?string $prefix): string
     {
         if (null === $prefix) {
             return '';
@@ -51,13 +40,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicOrderRendererInter
         return $prefix . '.';
     }
 
-    /**
-     * @param string      $fieldName
-     * @param string|null $prefix
-     *
-     * @return string
-     */
-    protected function quoteFieldName($fieldName, $prefix = null)
+    protected function quoteFieldName(string $fieldName, ?string $prefix = null): string
     {
         return $this->renderPrefix($prefix) . $this->quoteIdentifier($fieldName);
     }

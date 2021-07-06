@@ -68,6 +68,7 @@ services:
     coreshop.behat.context.transform.customer:
         class: CoreShop\Behat\Context\Transform\CustomerContext
         arguments:
+            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.customer'
         tags:
             - { name: fob.context_service }
@@ -122,8 +123,8 @@ services:
         class: CoreShop\Behat\Context\Transform\CartContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.repository.cart'
-            - '@coreshop.context.cart'
+            - '@coreshop.repository.order'
+            - '@CoreShop\Component\Order\Context\CartContextInterface'
         tags:
             - { name: fob.context_service }
 
@@ -131,7 +132,6 @@ services:
         class: CoreShop\Behat\Context\Transform\AddressContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.repository.address'
         tags:
             - { name: fob.context_service }
 
@@ -162,7 +162,6 @@ services:
         class: CoreShop\Behat\Context\Transform\FilterContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.repository.filter'
         tags:
             - { name: fob.context_service }
 

@@ -1,6 +1,12 @@
 parameters:
-    coreshop.form.type.customer_registration.validation_groups: [coreshop]
+
     coreshop.form.type.customer_guest.validation_groups: [coreshop]
+    coreshop.form.type.customer_registration_type.validation_groups: [coreshop]
+    coreshop.form.type.guest_registration_type.validation_groups: [coreshop_customer]
+    coreshop.form.type.product_price_rule.condition.quantity.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.action.addition_amount.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.action.discount_amount.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.action.price.validation_groups: [coreshop]
 
 services:
     _defaults:
@@ -49,13 +55,15 @@ services:
     CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType:
         arguments:
             - '@coreshop.repository.customer'
+            - '@CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface'
         tags:
             - { name: form.type }
 
     CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType:
         arguments:
             - '%coreshop.model.customer.class%'
-            - '%coreshop.form.type.customer_registration.validation_groups%'
+            - '%coreshop.form.type.customer_registration_type.validation_groups%'
+            - '%coreshop.customer.security.login_identifier%'
             - '@CoreShop\Bundle\CoreBundle\Form\DataMapper\CustomerDataMapper'
             - '@coreshop.repository.customer'
         tags:
@@ -64,6 +72,8 @@ services:
     CoreShop\Bundle\CoreBundle\Form\Type\UserRegistrationType:
         arguments:
             - '%coreshop.model.user.class%'
+            - '%coreshop.form.type.customer_registration_type.validation_groups%'
+            - '%coreshop.customer.security.login_identifier%'
         tags:
             - { name: form.type }
 
@@ -77,24 +87,34 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\CoreBundle\Form\Extension\CartTypeExtension:
+    CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\QuantityConfigurationType:
+        arguments:
+            - '%coreshop.form.type.product_price_rule.condition.quantity.validation_groups%'
         tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartType }
+            - { name: form.type }
 
-    CoreShop\Bundle\CoreBundle\Form\Extension\CartItemTypeExtension:
+    CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\AdditionAmountActionConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.action.addition_amount.validation_groups%'
         tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartItemType }
+            - { name: form.type }
 
-    CoreShop\Bundle\CoreBundle\Form\Extension\AddToCartTypeExtension:
+    CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.action.discount_amount.validation_groups%'
         tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType }
+            - { name: form.type }
+
+    CoreShop\Bundle\CoreBundle\Form\Extension\AddressTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\AddressBundle\Form\Type\AddressType }
 
     CoreShop\Bundle\CoreBundle\Form\Extension\CartCreationTypeExtension:
         tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType }
+            - { name: form.type }
 
-    CoreShop\Bundle\CoreBundle\Form\Extension\CartCreationCartItemTypeExtension:
+    CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType:
         arguments:
-            - '@coreshop.repository.stack.product'
+            - '%coreshop.form.type.shipping_rule.action.price.validation_groups%'
         tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartCreationCartItemType }
+            - { name: form.type }

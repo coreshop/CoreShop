@@ -1,3 +1,6 @@
 # CoreShop Locale Bundle
 
-TBD
+## Installation
+```bash
+$ composer require coreshop/locale-bundle:^3.0
+```

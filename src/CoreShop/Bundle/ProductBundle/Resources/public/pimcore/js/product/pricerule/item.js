@@ -15,8 +15,8 @@ coreshop.product.pricerule.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_price_rule',
 
-    url: {
-        save: '/admin/coreshop/product_price_rules/save'
+    routing: {
+        save: 'coreshop_product_price_rule_save'
     },
 
     getSettings: function () {

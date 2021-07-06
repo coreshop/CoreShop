@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FixtureBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
@@ -17,9 +19,6 @@ use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 
 class CoreShopFixtureBundle extends AbstractResourceBundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -27,9 +26,6 @@ class CoreShopFixtureBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Bundle\FixtureBundle\Model';

@@ -19,7 +19,7 @@ coreshop.order.order.createPayment = {
         var paymentProvidersStore = new Ext.data.Store({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/payment_providers/list',
+                url: Routing.generate('coreshop_payment_provider_list'),
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
@@ -58,7 +58,7 @@ coreshop.order.order.createPayment = {
                                 window.setLoading(t('loading'));
 
                                 Ext.Ajax.request({
-                                    url: '/admin/coreshop/order-payment/add-payment',
+                                    url: Routing.generate('coreshop_admin_order_payment_add'),
                                     method: 'post',
                                     params: formValues,
                                     callback: function (request, success, response) {
@@ -123,7 +123,7 @@ coreshop.order.order.createPayment = {
                         xtype: 'numberfield',
                         name: 'amount',
                         fieldLabel: t('coreshop_amount'),
-                        decimalPrecision: 4,
+                        decimalPrecision: 2,
                         afterLabelTextTpl: [
                             '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
                         ],

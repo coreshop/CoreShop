@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Context\RequestBased;
 
 use CoreShop\Component\Store\Context\StoreContextInterface;
@@ -20,30 +22,16 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class StoreContext implements StoreContextInterface
 {
-    /**
-     * @var RequestResolverInterface
-     */
-    private $requestResolver;
+    private RequestResolverInterface $requestResolver;
+    private RequestStack $requestStack;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @param RequestResolverInterface $requestResolver
-     * @param RequestStack             $requestStack
-     */
     public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
     {
         $this->requestResolver = $requestResolver;
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStore()
+    public function getStore(): StoreInterface
     {
         try {
             return $this->getStoreForRequest($this->getMasterRequest());
@@ -57,7 +45,7 @@ final class StoreContext implements StoreContextInterface
      *
      * @return StoreInterface
      */
-    private function getStoreForRequest(Request $request)
+    private function getStoreForRequest(Request $request): StoreInterface
     {
         $store = $this->requestResolver->findStore($request);
 
@@ -69,7 +57,7 @@ final class StoreContext implements StoreContextInterface
     /**
      * @return Request
      */
-    private function getMasterRequest()
+    private function getMasterRequest(): Request
     {
         $masterRequest = $this->requestStack->getMasterRequest();
         if (null === $masterRequest) {
@@ -82,7 +70,7 @@ final class StoreContext implements StoreContextInterface
     /**
      * @param StoreInterface|null $store
      */
-    private function assertStoreWasFound(StoreInterface $store = null)
+    private function assertStoreWasFound(StoreInterface $store = null): void
     {
         if (null === $store) {
             throw new \UnexpectedValueException('Store was not found for given request');

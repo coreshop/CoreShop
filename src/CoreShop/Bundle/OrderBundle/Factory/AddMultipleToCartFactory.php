@@ -10,29 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Factory;
 
 use CoreShop\Bundle\OrderBundle\DTO\AddMultipleToCartInterface;
 
 class AddMultipleToCartFactory implements AddMultipleToCartFactoryInterface
 {
-    /**
-     * @var string
-     */
-    protected $addMultipleToCartClass;
+    protected string $addMultipleToCartClass;
 
-    /**
-     * @param string $addMultipleToCartClass
-     */
-    public function __construct($addMultipleToCartClass)
+    public function __construct(string $addMultipleToCartClass)
     {
         $this->addMultipleToCartClass = $addMultipleToCartClass;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createWithMultipleAddToCarts(array $addToCarts)
+    public function createWithMultipleAddToCarts(array $addToCarts): AddMultipleToCartInterface
     {
         $class = new $this->addMultipleToCartClass($addToCarts);
 

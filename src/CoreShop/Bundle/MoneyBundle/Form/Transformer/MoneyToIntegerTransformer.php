@@ -10,28 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\MoneyBundle\Form\Transformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
 class MoneyToIntegerTransformer implements DataTransformerInterface
 {
-    /**
-     * @var int
-     */
-    private $decimalFactor;
+    private int $decimalFactor;
 
-    /**
-     * @param int $decimalFactor
-     */
     public function __construct(int $decimalFactor)
     {
         $this->decimalFactor = $decimalFactor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($value)
     {
         if (null === $value) {
@@ -41,9 +34,6 @@ class MoneyToIntegerTransformer implements DataTransformerInterface
         return $value / $this->decimalFactor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($value)
     {
         if (null === $value) {

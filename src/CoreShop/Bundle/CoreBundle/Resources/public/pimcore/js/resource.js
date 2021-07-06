@@ -23,12 +23,16 @@ coreshop.core.resource = Class.create(coreshop.resource, {
             coreshop.helpers.showAbout();
         } else if (item === 'settings') {
             this.openSettings();
+        } else if (item === 'customer_to_company_assign_to_new') {
+            this.openAssignCustomerToNewCompany();
+        } else if (item === 'customer_to_company_assign_to_existing') {
+            this.openAssignCustomerToExistingCompany();
         }
     },
 
     pimcoreReady: function (params, broker) {
         Ext.Ajax.request({
-            url: '/admin/coreshop/settings/get-settings',
+            url: Routing.generate('coreshop_admin_settings_get_settings'),
             success: function (response) {
                 this.settings = Ext.decode(response.responseText);
                 coreshop.settings = this.settings;
@@ -75,6 +79,10 @@ coreshop.core.resource = Class.create(coreshop.resource, {
             case coreshop.class_map.coreshop.product:
                 this._enrichProductObject(tab);
                 break;
+
+            case coreshop.class_map.coreshop.category:
+                this._enrichCategoryObject(tab);
+                break;
         }
 
         pimcore.layout.refresh();
@@ -85,6 +93,22 @@ coreshop.core.resource = Class.create(coreshop.resource, {
             pimcore.globalmanager.get('coreshop_settings').activate();
         } catch (e) {
             pimcore.globalmanager.add('coreshop_settings', new coreshop.core.settings());
+        }
+    },
+
+    openAssignCustomerToNewCompany: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_customer_to_new_company_assignment').activate();
+        } catch (e) {
+            pimcore.globalmanager.add('coreshop_customer_to_new_company_assignment', new coreshop.core.customer.customerToCompanyTransformer());
+        }
+    },
+
+    openAssignCustomerToExistingCompany: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_customer_to_existing_company_assignment').activate();
+        } catch (e) {
+            pimcore.globalmanager.add('coreshop_customer_to_existing_company_assignment', new coreshop.core.customer.customerToCompanyAssigner());
         }
     },
 
@@ -146,6 +170,10 @@ coreshop.core.resource = Class.create(coreshop.resource, {
 
             renderTab.reload();
         };
+    },
+
+    _enrichCategoryObject: function (tab) {
+        tab.tabbar.insert(1, new coreshop.core.object.store_preview(tab).getLayout());
     },
 
     _enrichProductObject: function (tab) {

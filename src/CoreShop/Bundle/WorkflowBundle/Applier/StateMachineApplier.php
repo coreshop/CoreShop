@@ -10,32 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\Applier;
 
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 
 final class StateMachineApplier implements StateMachineApplierInterface
 {
-    /**
-     * @var StateMachineManagerInterface
-     */
-    private $stateMachineManager;
+    private StateMachineManagerInterface $stateMachineManager;
 
-    /**
-     * @param StateMachineManagerInterface $stateMachineManager
-     */
     public function __construct(StateMachineManagerInterface $stateMachineManager)
     {
         $this->stateMachineManager = $stateMachineManager;
     }
 
-    /**
-     * @param mixed $subject
-     * @param null  $workflowName
-     * @param null  $transition
-     * @param bool  $soft
-     */
-    public function apply($subject, $workflowName = null, $transition = null, $soft = true)
+    public function apply($subject, ?string $workflowName = null, ?string $transition = null, bool $soft = true): void
     {
         $workflow = $this->stateMachineManager->get($subject, $workflowName);
         if ($soft === true) {

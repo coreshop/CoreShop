@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -18,10 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditCartItemsCollectionType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('entry_type', CartCreationCartItemType::class);
         $resolver->setDefault('entry_options', [
@@ -29,10 +28,7 @@ class EditCartItemsCollectionType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return CollectionType::class;
     }

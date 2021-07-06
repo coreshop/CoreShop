@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CustomerBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
@@ -18,9 +20,6 @@ use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 
 class CustomerRepository extends PimcoreRepository implements CustomerRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByEmail($email)
     {
         $list = $this->getList();
@@ -37,26 +36,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findByResetToken($resetToken)
-    {
-        $list = $this->getList();
-        $list->setCondition('passwordResetHash = ?', [$resetToken]);
-        $objects = $list->load();
-
-        if (count($objects) === 1 && $objects[0] instanceof CustomerInterface) {
-            return $objects[0];
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByNewsletterToken($newsletterToken)
+    public function findByNewsletterToken(string $newsletterToken): ?CustomerInterface
     {
         $list = $this->getList();
         $list->setCondition('newsletterToken = ?', [$newsletterToken]);
@@ -69,15 +49,13 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findUniqueByEmail($email, $isGuest)
+    public function findUniqueByLoginIdentifier(string $identifier, string $value, bool $isGuest): ?CustomerInterface
     {
         $list = $this->getList();
 
-        $conditions = ['email = ?'];
-        $conditionsValues = [$email];
+        $conditions = [sprintf('%s = ?', $identifier)];
+        $conditionsValues = [$value];
+        $conditionsValues[] = $isGuest ? 1 : 0;
 
         if (!$isGuest) {
             $conditions[] = 'user__id IS NOT NULL';
@@ -97,19 +75,28 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findGuestByEmail($email)
+    public function findUniqueByEmail(string $email, bool $isGuest): ?CustomerInterface
+    {
+        return $this->findUniqueByLoginIdentifier('email', $email, $isGuest);
+    }
+
+    public function findUniqueByUsername(string $username, bool $isGuest): ?CustomerInterface
+    {
+        return $this->findUniqueByLoginIdentifier('username', $username, $isGuest);
+    }
+
+    public function findGuestByEmail(string $email): ?CustomerInterface
     {
         return $this->findUniqueByEmail($email, true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findCustomerByEmail($email)
+    public function findCustomerByEmail(string $email): ?CustomerInterface
     {
         return $this->findUniqueByEmail($email, false);
+    }
+
+    public function findCustomerByUsername(string $username): ?CustomerInterface
+    {
+        return $this->findUniqueByUsername($username, false);
     }
 }

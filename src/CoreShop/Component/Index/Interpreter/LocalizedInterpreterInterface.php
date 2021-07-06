@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Interpreter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
@@ -27,10 +29,10 @@ interface LocalizedInterpreterInterface extends InterpreterInterface
      * @return mixed
      */
     public function interpretForLanguage(
-        $language,
+        string $language,
         $value,
         IndexableInterface $indexable,
         IndexColumnInterface $config,
-        $interpreterConfig = []
+        array $interpreterConfig = []
     );
 }

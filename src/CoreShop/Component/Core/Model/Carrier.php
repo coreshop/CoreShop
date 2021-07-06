@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Shipping\Model\Carrier as BaseCarrier;
@@ -33,17 +35,11 @@ class Carrier extends BaseCarrier implements CarrierInterface
         $this->storesAwareConstructor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxRule()
     {
         return $this->taxRule;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTaxRule(TaxRuleGroupInterface $taxRule)
     {
         $this->taxRule = $taxRule;

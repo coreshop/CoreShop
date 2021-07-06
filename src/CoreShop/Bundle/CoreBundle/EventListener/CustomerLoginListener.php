@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface;
@@ -17,23 +19,14 @@ use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 
 final class CustomerLoginListener
 {
-    /**
-     * @var CustomerLoginServiceInterface
-     */
-    private $customerLoginService;
+    private CustomerLoginServiceInterface $customerLoginService;
 
-    /**
-     * @param CustomerLoginServiceInterface $customerLoginService
-     */
     public function __construct(CustomerLoginServiceInterface $customerLoginService)
     {
         $this->customerLoginService = $customerLoginService;
     }
 
-    /**
-     * @param CustomerRegistrationEvent $customerRegistrationEvent
-     */
-    public function onCustomerRegister(CustomerRegistrationEvent $customerRegistrationEvent)
+    public function onCustomerRegister(CustomerRegistrationEvent $customerRegistrationEvent): void
     {
         if (null !== $customerRegistrationEvent->getCustomer()->getUser()) {
             $this->customerLoginService->loginCustomer($customerRegistrationEvent->getCustomer()->getUser());

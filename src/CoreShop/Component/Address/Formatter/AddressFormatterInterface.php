@@ -10,17 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Formatter;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 
 interface AddressFormatterInterface
 {
-    /**
-     * @param AddressInterface $address
-     * @param bool             $asHtml
-     *
-     * @return mixed
-     */
-    public function formatAddress(AddressInterface $address, $asHtml = true);
+    public function formatAddress(AddressInterface $address, bool $asHtml = true): string;
 }

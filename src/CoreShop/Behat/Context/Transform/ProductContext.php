@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
@@ -21,20 +23,9 @@ use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
     private $productRepository;
 
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param ProductRepositoryInterface $productRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ProductRepositoryInterface $productRepository
@@ -64,7 +55,8 @@ final class ProductContext implements Context
             sprintf('%d products has been found with name "%s".', count($list->getObjects()), $productName)
         );
 
-        $product = \reset($list->getObjects());
+        $objects = $list->getObjects();
+        $product = \reset($objects);
 
         //This is to not run into cache issues
         return $this->productRepository->forceFind($product->getId());

@@ -10,45 +10,30 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Event;
 
 use CoreShop\Component\Core\Model\UserInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class RequestNewsletterConfirmationEvent extends Event
 {
-    /**
-     * @var UserInterface
-     */
-    private $user;
+    private UserInterface $user;
+    private string $confirmLink;
 
-    /**
-     * @var string
-     */
-    private $confirmLink;
-
-    /**
-     * @param UserInterface     $user
-     * @param string            $confirmLink
-     */
     public function __construct(UserInterface $user, $confirmLink)
     {
         $this->user = $user;
         $this->confirmLink = $confirmLink;
     }
 
-    /**
-     * @return UserInterface
-     */
-    public function getUser()
+    public function getUser(): UserInterface
     {
         return $this->user;
     }
 
-    /**
-     * @return string
-     */
-    public function getConfirmLink()
+    public function getConfirmLink(): string
     {
         return $this->confirmLink;
     }

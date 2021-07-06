@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Form\DataMapper;
 
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
@@ -20,20 +22,9 @@ use Symfony\Component\Form\DataMapperInterface;
  */
 class CartItemQuantityDataMapper implements DataMapperInterface
 {
-    /**
-     * @var StorageListItemQuantityModifierInterface
-     */
-    private $cartItemQuantityModifier;
+    private StorageListItemQuantityModifierInterface $cartItemQuantityModifier;
+    private DataMapperInterface $propertyPathDataMapper;
 
-    /**
-     * @var DataMapperInterface
-     */
-    private $propertyPathDataMapper;
-
-    /**
-     * @param StorageListItemQuantityModifierInterface $cartItemQuantityModifier
-     * @param DataMapperInterface                      $propertyPathDataMapper
-     */
     public function __construct(
         StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
         DataMapperInterface $propertyPathDataMapper
@@ -42,17 +33,11 @@ class CartItemQuantityDataMapper implements DataMapperInterface
         $this->propertyPathDataMapper = $propertyPathDataMapper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mapDataToForms($data, $forms): void
     {
         $this->propertyPathDataMapper->mapDataToForms($data, $forms);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mapFormsToData($forms, &$data): void
     {
         $formsOtherThanQuantity = [];

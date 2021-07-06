@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -85,6 +87,16 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
      * @param Asset $logo
      */
     public function setLogo($logo);
+
+    /**
+     * @return string|null
+     */
+    public function getTaxCalculationStrategy();
+
+    /**
+     * @param string $taxCalculationStrategy
+     */
+    public function setTaxCalculationStrategy($taxCalculationStrategy);
 
     /**
      * @return Collection|ShippingRuleGroupInterface[]

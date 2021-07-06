@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CurrencyBundle\DependencyInjection;
 
 use CoreShop\Bundle\CurrencyBundle\Controller\CurrencyController;
@@ -30,17 +32,13 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_currency');
+        $treeBuilder = new TreeBuilder('core_shop_currency');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->integerNode('money_decimal_factor')->defaultValue(100)->end()
                 ->integerNode('money_decimal_precision')->defaultValue(2)->end()
             ->end();

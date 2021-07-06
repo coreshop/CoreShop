@@ -10,24 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Inventory\Checker;
 
 use CoreShop\Component\Inventory\Model\StockableInterface;
 
 final class AvailabilityChecker implements AvailabilityCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isStockAvailable(StockableInterface $stockable)
+    public function isStockAvailable(StockableInterface $stockable): bool
     {
         return $this->isStockSufficient($stockable, 1);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isStockSufficient(StockableInterface $stockable, $quantity)
+    public function isStockSufficient(StockableInterface $stockable, float $quantity): bool
     {
         return !$stockable->getIsTracked() || $quantity <= ($stockable->getOnHand() - $stockable->getOnHold());
     }

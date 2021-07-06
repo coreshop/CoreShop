@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Product\Calculator;
 
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
@@ -23,10 +25,7 @@ use Webmozart\Assert\Assert;
 
 final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPriceCalculatorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         /**
          * @var $subject \CoreShop\Component\Core\Model\ProductInterface
@@ -42,7 +41,7 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
         $contextUnitDefinition = $context['unitDefinition'];
         $contextStore = $context['store'];
 
-        $storeValues = $subject->getStoreValues($contextStore);
+        $storeValues = $subject->getStoreValuesForStore($contextStore);
         if (!$storeValues instanceof ProductStoreValuesInterface) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }

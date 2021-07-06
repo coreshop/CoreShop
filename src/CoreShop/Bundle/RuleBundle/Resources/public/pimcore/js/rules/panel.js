@@ -35,7 +35,7 @@ coreshop.rules.panel = Class.create(coreshop.resource.panel, {
         var me = this;
 
         Ext.Ajax.request({
-            url: this.url.config,
+            url: this.routing.config ? Routing.generate(this.routing.config) : this.url.config,
             method: 'GET',
             success: function (result) {
                 var config = Ext.decode(result.responseText);

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Product;
 
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
@@ -22,24 +24,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProductStoreValuesSelectionType extends AbstractType
 {
-    /**
-     * @var ProductStoreValuesRepositoryInterface
-     */
-    protected $productStoreValuesRepository;
+    private ProductStoreValuesRepositoryInterface $productStoreValuesRepository;
 
-    /**
-     * @param ProductStoreValuesRepositoryInterface $productStoreValuesRepository
-     */
     public function __construct(ProductStoreValuesRepositoryInterface $productStoreValuesRepository)
     {
         $this->productStoreValuesRepository = $productStoreValuesRepository;
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new CallbackTransformer(
             function ($value) {
@@ -55,10 +47,7 @@ final class ProductStoreValuesSelectionType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -66,18 +55,12 @@ final class ProductStoreValuesSelectionType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return NumberType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_store_values_selection';
     }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Currency\Formatter;
 
 interface MoneyFormatterInterface
@@ -18,10 +20,12 @@ interface MoneyFormatterInterface
      * @param int    $amount
      * @param string $currencyCode
      * @param string $locale
+     * @param int    $fraction
+     * @param int    $factor
      *
      * @return string
      *
      * @throws \InvalidArgumentException
      */
-    public function format($amount, $currencyCode, $locale = 'en');
+    public function format(int $amount, string $currencyCode, string $locale = 'en', int $fraction = 2, int $factor = null): string;
 }

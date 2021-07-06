@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Repository;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
@@ -17,59 +19,17 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
 {
-    /**
-     * Find customer by reset token.
-     *
-     * @param string $resetToken
-     *
-     * @return CustomerInterface|null
-     */
-    public function findByResetToken($resetToken);
+    public function findByNewsletterToken(string $newsletterToken): ?CustomerInterface;
 
-    /**
-     * Find customer by newsletter token.
-     *
-     * @param string $newsletterToken
-     *
-     * @return CustomerInterface|null
-     */
-    public function findByNewsletterToken($newsletterToken);
+    public function findUniqueByLoginIdentifier(string $identifier, string $value, bool $isGuest): ?CustomerInterface;
 
-    /**
-     * Find Customer by email.
-     *
-     * @param string $email
-     * @param bool   $isGuest
-     *
-     * @return CustomerInterface|null
-     */
-    public function findUniqueByEmail($email, $isGuest);
+    public function findUniqueByEmail(string $email, bool $isGuest): ?CustomerInterface;
 
-    /**
-     * Find Guest Customer by Email.
-     *
-     * @param string $email
-     *
-     * @return CustomerInterface|null
-     */
-    public function findGuestByEmail($email);
+    public function findUniqueByUsername(string $username, bool $isGuest): ?CustomerInterface;
 
-    /**
-     * Find Customer by Email.
-     *
-     *
-     * @param string $email
-     *
-     * @return CustomerInterface|null
-     */
-    public function findCustomerByEmail($email);
+    public function findGuestByEmail(string $email): ?CustomerInterface;
 
-    /**
-     * Find Customer by Email.
-     *
-     * @param string $email
-     *
-     * @return CustomerInterface|null
-     */
-    public function findOneByEmail($email);
+    public function findCustomerByEmail(string $email): ?CustomerInterface;
+
+    public function findCustomerByUsername(string $username): ?CustomerInterface;
 }

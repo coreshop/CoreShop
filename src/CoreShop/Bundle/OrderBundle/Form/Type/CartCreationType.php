@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
@@ -17,6 +19,7 @@ use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerSelectionType;
 use CoreShop\Bundle\LocaleBundle\Form\Type\LocaleChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
+use CoreShop\Component\Order\OrderSaleStates;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -25,10 +28,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CartCreationType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('customer', CustomerSelectionType::class)
@@ -44,16 +44,14 @@ final class CartCreationType extends AbstractResourceType
             });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
             'csrf_protection' => false,
             'customer' => null,
+            'sales_state' => OrderSaleStates::STATE_CART
         ]);
     }
 }

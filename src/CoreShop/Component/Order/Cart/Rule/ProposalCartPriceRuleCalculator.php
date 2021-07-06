@@ -13,9 +13,9 @@
 namespace CoreShop\Component\Order\Cart\Rule;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -24,39 +24,25 @@ use Webmozart\Assert\Assert;
 
 class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculatorInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $cartPriceRuleItemFactory;
+    private FactoryInterface $cartPriceRuleItemFactory;
+    private ServiceRegistryInterface $actionServiceRegistry;
 
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $actionServiceRegistry;
-
-    /**
-     * @param FactoryInterface         $cartPriceRuleItemFactory
-     * @param ServiceRegistryInterface $actionServiceRegistry
-     */
     public function __construct(FactoryInterface $cartPriceRuleItemFactory, ServiceRegistryInterface $actionServiceRegistry)
     {
         $this->cartPriceRuleItemFactory = $cartPriceRuleItemFactory;
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function calculatePriceRule(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
+    public function calculatePriceRule(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): ?ProposalCartPriceRuleItemInterface
     {
         $priceRuleItem = $cart->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
         $existingPriceRule = null !== $priceRuleItem;
         $result = false;
 
-        /**
-         * @var ProposalCartPriceRuleItemInterface
-         */
         if ($priceRuleItem === null) {
+            /**
+             * @var ProposalCartPriceRuleItemInterface $priceRuleItem
+             */
             $priceRuleItem = $this->cartPriceRuleItemFactory->createNew();
         }
 
@@ -86,7 +72,7 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
                 $cart->removePriceRule($priceRuleItem);
             }
 
-            return false;
+            return null;
         }
 
         if (!$existingPriceRule) {

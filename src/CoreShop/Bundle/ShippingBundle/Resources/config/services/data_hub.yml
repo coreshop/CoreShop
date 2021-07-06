@@ -6,7 +6,7 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.carrier.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopCarrier }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopCarrier }
 
     coreshop.datahub.graphql.querytypegenerator.resource.carrier.list:
         class: CoreShop\Component\Resource\DataHub\QueryType\ResourceList
@@ -15,4 +15,4 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.carrier.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopCarrierMultiselect }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopCarrierMultiselect }

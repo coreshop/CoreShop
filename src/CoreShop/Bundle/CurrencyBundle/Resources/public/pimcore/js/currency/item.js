@@ -15,8 +15,8 @@ coreshop.currency.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_currency',
 
-    url: {
-        save: '/admin/coreshop/currencies/save'
+    routing: {
+        save: 'coreshop_currency_save'
     },
 
     getItems: function () {

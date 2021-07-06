@@ -21,18 +21,18 @@ coreshop.country.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_country',
     type: 'coreshop_countries',
 
-    url: {
-        add: '/admin/coreshop/countries/add',
-        delete: '/admin/coreshop/countries/delete',
-        get: '/admin/coreshop/countries/get',
-        list: '/admin/coreshop/countries/list'
+    routing: {
+        add: 'coreshop_country_add',
+        delete: 'coreshop_country_delete',
+        get: 'coreshop_country_get',
+        list: 'coreshop_country_list'
     },
 
     initialize: function ($super) {
         this.store = new Ext.data.Store({
             restful: false,
             proxy: new Ext.data.HttpProxy({
-                url: this.url.list
+                url: Routing.generate(this.routing.list)
             }),
             reader: new Ext.data.JsonReader({
                 rootProperty: 'data'

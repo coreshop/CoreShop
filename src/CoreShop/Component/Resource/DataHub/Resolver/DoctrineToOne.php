@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\DataHub\Resolver;
 
 use CoreShop\Component\Resource\DataHub\DoctrineProvider;
@@ -17,20 +19,9 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DoctrineToOne
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $graphName;
-
-    /**
-     * @var DoctrineProvider
-     */
-    private $typeProvider;
+    private string $name;
+    private string $graphName;
+    private DoctrineProvider $typeProvider;
 
     public function __construct(
         DoctrineProvider $provider,
@@ -47,7 +38,7 @@ class DoctrineToOne
      *
      * @return array
      */
-    public function getDefinition()
+    public function getDefinition(): array
     {
         $outputType = $this->typeProvider->getType($this->graphName);
 

@@ -10,167 +10,44 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
-interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterface, BaseAdjustableInterface
+use Carbon\Carbon;
+
+interface OrderInvoiceInterface extends
+    OrderDocumentInterface,
+    AdjustableInterface,
+    ConvertedAdjustableInterface
 {
-    /**
-     * @return \DateTime
-     */
-    public function getInvoiceDate();
+    public function getInvoiceDate(): ?Carbon;
 
-    /**
-     * @param \DateTime $invoiceDate
-     */
-    public function setInvoiceDate($invoiceDate);
+    public function setInvoiceDate(?Carbon $invoiceDate);
 
-    /**
-     * @return string
-     */
-    public function getInvoiceNumber();
+    public function getInvoiceNumber(): ?string;
 
-    /**
-     * @param string $invoiceNumber
-     */
-    public function setInvoiceNumber($invoiceNumber);
+    public function setInvoiceNumber(?string $invoiceNumber);
 
-    /**
-     * @return mixed
-     */
-    public function getPriceRuleItems();
+    public function getTotal(bool $withTax = true): int;
 
-    /**
-     * @param mixed $priceRules
-     */
-    public function setPriceRuleItems($priceRules);
+    public function setTotal(int $total, bool $withTax = true);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getDiscount($withTax = true);
+    public function getTotalTax(): int;
 
-    /**
-     * @return int
-     */
-    public function getDiscountTax();
+    public function getSubtotalTax(): int;
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getShipping($withTax = true);
+    public function getSubtotal(bool $withTax = true): int;
 
-    /**
-     * @return int
-     */
-    public function getShippingTaxRate();
+    public function setSubtotal(int $subtotal, bool $withTax = true);
 
-    /**
-     * @param int $shippingTaxRate
-     */
-    public function setShippingTaxRate($shippingTaxRate);
+    public function getConvertedTotal(bool $withTax = true);
 
-    /**
-     * @return int
-     */
-    public function getShippingTax();
+    public function setConvertedTotal(int $convertedTotal, bool $withTax = true);
 
-    /**
-     * @return int
-     */
-    public function getTotalTax();
+    public function getConvertedSubtotalTax(): int;
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getTotal($withTax = true);
+    public function getConvertedSubtotal(bool $withTax = true): int;
 
-    /**
-     * @param bool $withTax
-     * @param int  $total
-     */
-    public function setTotal($total, $withTax = true);
-
-    /**
-     * @return int
-     */
-    public function getSubtotalTax();
-
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getSubtotal($withTax = true);
-
-    /**
-     * @param int  $subtotal
-     * @param bool $withTax
-     */
-    public function setSubtotal($subtotal, $withTax = true);
-
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getBaseDiscount($withTax = true);
-
-    /**
-     * @return int
-     */
-    public function getBaseDiscountTax();
-
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getBaseShipping($withTax = true);
-
-    /**
-     * @return int
-     */
-    public function getBaseShippingTax();
-
-    /**
-     * @return int
-     */
-    public function getBaseTotalTax();
-
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getBaseTotal($withTax = true);
-
-    /**
-     * @param int  $baseTotal
-     * @param bool $withTax
-     */
-    public function setBaseTotal($baseTotal, $withTax = true);
-
-    /**
-     * @return int
-     */
-    public function getBaseSubtotalTax();
-
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getBaseSubtotal($withTax = true);
-
-    /**
-     * @param int  $baseSubtotal
-     * @param bool $withTax
-     */
-    public function setBaseSubtotal($baseSubtotal, $withTax = true);
+    public function setConvertedSubtotal(int $convertedSubtotal, bool $withTax = true);
 }

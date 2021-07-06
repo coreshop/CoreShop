@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesType;
@@ -111,25 +113,36 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $this->minValue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueryColumnType()
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getColumnType()
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return null;
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return null;
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return null;
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return null;
+    }
+
     public function getGetterCode($class)
     {
         $key = $this->getName();
@@ -139,17 +152,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '*'."\n";
         $code .= '* @param \CoreShop\Component\Store\Model\StoreInterface $store'."\n";
         $code .= '*'."\n";
-        $code .= '* @return null|'.$this->getPhpdocType().'|\CoreShop\Component\Core\Model\ProductStoreValuesInterface'."\n";
+        $code .= '* @return null|\CoreShop\Component\Core\Model\ProductStoreValuesInterface'."\n";
         $code .= '*/'."\n";
-        $code .= 'public function get'.ucfirst($key).' (\CoreShop\Component\Store\Model\StoreInterface $store = null) {'."\n";
+        $code .= 'public function get'.ucfirst($key).'ForStore (\CoreShop\Component\Store\Model\StoreInterface $store): ?\CoreShop\Component\Core\Model\ProductStoreValuesInterface {'."\n";
         $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
-        $code .= "\t".'if (is_null($store)) {'."\n";
-        $code .= "\t\t".'return $this->'.$key.";\n";
-        $code .= "\t".'}'."\n";
         $code .= "\t".'$data = $this->'.$key.";\n\n";
         $code .= "\t".'if (\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("'.$key.'")->isEmpty($data)) {'."\n";
         $code .= "\t\t".'try {'."\n";
-        $code .= "\t\t\t".'return $this->getValueFromParent("'.$key.'", $store);'."\n";
+        $code .= "\t\t\t".'return $this->getValueFromParent("'.$key.'ForStore", $store);'."\n";
         $code .= "\t\t".'} catch (InheritanceParentNotFoundException $e) {'."\n";
         $code .= "\t\t\t".'// no data from parent available, continue ... '."\n";
         $code .= "\t\t".'}'."\n";
@@ -166,6 +176,18 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= "}\n\n";
 
         $code .= '/**'."\n";
+        $code .= '* Get All '.str_replace(['/**', '*/', '//'], '', $this->getName()).' - '.str_replace(['/**', '*/', '//'],
+                '', $this->getTitle())."\n";
+        $code .= '* @return \CoreShop\Component\Core\Model\ProductStoreValuesInterface[]'."\n";
+        $code .= '*/'."\n";
+        $code .= 'public function get'.ucfirst($key).' (): array  {'."\n";
+        $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
+        $code .= "\t".$this->getPreGetValueHookCode($key);
+        $code .= "\t".'$data = $this->getClass()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n\n";
+        $code .= "\treturn " . '$data' . ";\n";
+        $code .= "}\n\n";
+
+        $code .= '/**'."\n";
         $code .= '* Get '.str_replace(['/**', '*/', '//'], '', $this->getName()).' - '.str_replace(['/**', '*/', '//'],
                 '', $this->getTitle())."\n";
         $code .= '*'."\n";
@@ -175,7 +197,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '* @return mixed'."\n";
         $code .= '*/'."\n";
         $code .= 'public function get'.ucfirst($key).'OfType (string $type, \CoreShop\Component\Store\Model\StoreInterface $store) {'."\n";
-        $code .= "\t".'$storeValue = $this->get'.ucfirst($key).'($store);'."\n";
+        $code .= "\t".'$storeValue = $this->get'.ucfirst($key).'ForStore($store);'."\n";
         $code .= "\t".'if ($storeValue instanceof \CoreShop\Component\Core\Model\ProductStoreValuesInterface) {'."\n";
         $code .= "\t\t".'$getter = sprintf(\'get%s\', ucfirst($type));'."\n";
         $code .= "\t\t".'if (method_exists($storeValue, $getter)) {'."\n";
@@ -196,18 +218,27 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '* Set '.str_replace(['/**', '*/', '//'], '', $key).' - '.str_replace(['/**', '*/', '//'], '',
                 $this->getTitle())."\n";
         $code .= '*'."\n";
-        $code .= '* @param array|\CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValues'."\n";
-        $code .= '* @param null|\CoreShop\Component\Store\Model\StoreInterface $store'."\n";
+        $code .= '* @param \CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValues'."\n";
+        $code .= '* @param \CoreShop\Component\Store\Model\StoreInterface $store'."\n";
         $code .= '*'."\n";
         $code .= '* @return static'."\n";
         $code .= '*/'."\n";
-        $code .= 'public function set'.ucfirst($key).' ($storeValues, \CoreShop\Component\Store\Model\StoreInterface $store = null) {'."\n";
-        $code .= "\t"."\n";
-        $code .= "\t".'if (is_array($'.$key.')) {'."\n";
-        $code .= "\t\t".'$this->'.$key.' = $'.$key.';'."\n";
-        $code .= "\t".'} else if (!is_null($store)) {'."\n";
-        $code .= "\t\t".'$this->'.$key.'[$store->getId()] = $'.$key.';'."\n";
-        $code .= "\t".'}'."\n\n";
+        $code .= 'public function set'.ucfirst($key).'ForStore(\CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValues, \CoreShop\Component\Store\Model\StoreInterface $store): self {'."\n";
+        $code .= "\t".'$this->'.$key.'[$store->getId()] = $'.$key.';'."\n";
+        $code .= "\t".'$this->'.$key.' = '.'$this->getClass()->getFieldDefinition("'.$key.'")->preSetData($this, $this->'.$key.');'."\n";
+        $code .= "\t".'return $this;'."\n";
+        $code .= "}\n\n";
+
+        $code .= '/**'."\n";
+        $code .= '* Set All '.str_replace(['/**', '*/', '//'], '', $key).' - '.str_replace(['/**', '*/', '//'], '',
+                $this->getTitle())."\n";
+        $code .= '*'."\n";
+        $code .= '* @param \CoreShop\Component\Core\Model\ProductStoreValuesInterface[] $storeValues'."\n";
+        $code .= '*'."\n";
+        $code .= '* @return static'."\n";
+        $code .= '*/'."\n";
+        $code .= 'public function set'.ucfirst($key).' (array $storeValues): self {'."\n";
+        $code .= "\t".'$this->'.$key.' = $'.$key.';'."\n";
         $code .= "\t".'$this->'.$key.' = '.'$this->getClass()->getFieldDefinition("'.$key.'")->preSetData($this, $this->'.$key.');'."\n";
         $code .= "\t".'return $this;'."\n";
         $code .= "}\n\n";
@@ -222,9 +253,9 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '*'."\n";
         $code .= '* @return static'."\n";
         $code .= '*/'."\n";
-        $code .= 'public function set'.ucfirst($key).'OfType (string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store) {'."\n";
+        $code .= 'public function set'.ucfirst($key).'OfType (string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store): self {'."\n";
         $code .= "\t".'$storeValue = \CoreShop\Component\Pimcore\DataObject\InheritanceHelper::useInheritedValues(function() use ($store) {'."\n";
-        $code .= "\t\t".'return $this->getStoreValues($store);'."\n";
+        $code .= "\t\t".'return $this->getStoreValuesForStore($store);'."\n";
         $code .= "\t".'}, false);'."\n";
         $code .= "\t"."\n";
         $code .= "\t".'if (!$storeValue instanceof \CoreShop\Component\Core\Model\ProductStoreValuesInterface) {'."\n";
@@ -237,7 +268,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= "\t\t".'$storeValue->$setter($value);'."\n";
         $code .= "\t".'}'."\n";
         $code .= "\t"."\n";
-        $code .= "\t".'$this->set'.ucfirst($key).'($storeValue, $store);'."\n";
+        $code .= "\t".'$this->set'.ucfirst($key).'ForStore($storeValue, $store);'."\n";
         $code .= "\t"."\n";
         $code .= "\t".'return $this;'."\n";
         $code .= "}\n\n";
@@ -245,17 +276,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preGetData($object, $params = [])
     {
         /**
@@ -276,14 +301,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         if (!is_array($data)) {
             $data = [];
         }
+//
+//        foreach ($data as &$storeEntry) {
+//            if ($storeEntry instanceof ProductStoreValuesInterface) {
+//                $storeEntry->setProduct($object);
+//            }
+//        }
 
-        foreach ($data as &$storeEntry) {
-            if ($storeEntry instanceof ProductStoreValuesInterface) {
-                $storeEntry->setProduct($object);
-            }
-        }
-
-        unset($storeEntry);
+//        unset($storeEntry);
 
         foreach ($data as $storeValue) {
             $returnData[$storeValue->getStore()->getId()] = $storeValue;
@@ -292,9 +317,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $returnData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preSetData($object, $data, $params = [])
     {
         if ($object instanceof Model\DataObject\LazyLoadedFieldsInterface) {
@@ -304,9 +326,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($object, $params = [])
     {
         if (isset($params['force']) && $params['force']) {
@@ -316,9 +335,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save($object, $params = [])
     {
         if (!$object instanceof ProductInterface) {
@@ -351,22 +367,26 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $entityMerger->merge($productStoreValue);
 
             if ($productStoreValue->getProduct() && $productStoreValue->getProduct()->getId() !== $object->getId()) {
-                $this->getEntityManager()->getUnitOfWork()->computeChangeSet(
-                    $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName()),
-                    $productStoreValue
-                );
-                $changeSet = $this->getEntityManager()->getUnitOfWork()->getEntityChangeSet($productStoreValue);
-                $this->getEntityManager()->getUnitOfWork()->clearEntityChangeSet(spl_object_hash($productStoreValue));
+                if ($productStoreValue->getId()) {
+                    $this->getEntityManager()->getUnitOfWork()->computeChangeSet(
+                        $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName()),
+                        $productStoreValue
+                    );
+                    $changeSet = $this->getEntityManager()->getUnitOfWork()->getEntityChangeSet($productStoreValue);
 
-                //This means that we inherited store values and also changed something, thus we break the inheritance and
-                //give the product its own record
-                if (count($changeSet) > 0) {
-                    $productStoreValue = clone $productStoreValue;
+                    //This means that we inherited store values and also changed something, thus we break the inheritance and
+                    //give the product its own record
+                    if (count($changeSet) > 0) {
+                        $productStoreValue = clone $productStoreValue;
+                        $productStoreValue->setProduct($object);
+                    }
+                }
+                else {
                     $productStoreValue->setProduct($object);
                 }
             }
 
-            if (!$productStoreValue->getProduct()) {
+            if (null === $productStoreValue->getProduct()) {
                 $productStoreValue->setProduct($object);
             }
 
@@ -379,8 +399,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $allStoreValues[] = $productStoreValue;
         }
 
-        unset($productStoreValue);
-
         foreach ($availableStoreValues as $availableStoreValuesEntity) {
             if (!in_array($availableStoreValuesEntity->getId(), $validStoreValues, true)) {
                 $this->getEntityManager()->remove($availableStoreValuesEntity);
@@ -392,11 +410,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $this->getEntityManager()->persist($storeEntity);
             $this->getEntityManager()->flush($storeEntity);
         }
+
+        //We have to set that here, values could change during persist due to copy or variant inheritance break
+        $object->setObjectVar($this->getName(), $allStoreValues);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalVersion($object, $data)
     {
         if (!is_array($data)) {
@@ -419,9 +437,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $storeData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalVersion($object, $data)
     {
         if (!is_array($data)) {
@@ -442,7 +457,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             }
 
             $context = DeserializationContext::create();
-            $context->setSerializeNull(false);
             $context->setGroups(['Version']);
             $context->setAttribute('em', $tempEntityManager);
 
@@ -461,9 +475,16 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $entities;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
+    }
+
     public function delete($object, $params = [])
     {
         if (!$object instanceof ProductInterface) {
@@ -478,9 +499,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         $storeData = [];
@@ -494,6 +512,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             return $storeData;
         }
 
+        $class = Model\DataObject\ClassDefinition::getById($object->getClassId());
+
+        if (!$class instanceof Model\DataObject\ClassDefinition) {
+            return $storeData;
+        }
+
+        $inheritable = $class->getAllowInherit() && $object->getParent() instanceof $object;
+
         foreach ($data as $storeValuesEntity) {
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
@@ -504,6 +530,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 'name' => $storeValuesEntity->getStore()->getName(),
                 'currencySymbol' => $storeValuesEntity->getStore()->getCurrency()->getSymbol(),
                 'values' => $values,
+                'inherited' => false,
+                'inheritable' => $inheritable
             ];
         }
 
@@ -520,17 +548,18 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 'name' => $store->getName(),
                 'currencySymbol' => $store->getCurrency()->getSymbol(),
                 'values' => ['price' => 0],
+                'inheritable' => $inheritable
             ];
         }
 
         return $storeData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
+        /**
+         * @var ProductInterface $object
+         */
         $errors = [];
         $storeValues = [];
 
@@ -553,6 +582,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
             if ($storeValuesId !== null) {
                 $storeValuesEntity = $productStoreValuesRepository->find($storeValuesId);
+            }
+
+            if ($storeValuesEntity instanceof ProductStoreValuesInterface && $storeValuesEntity->getProduct() && $storeValuesEntity->getProduct()->getId() !== $object->getId()) {
+                $storeValuesEntity = clone $storeValuesEntity;
+                $storeValuesEntity->setProduct($object);
             }
 
             $form = $this->getFormFactory()->createNamed('', ProductStoreValuesType::class, $storeValuesEntity);
@@ -581,9 +615,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $storeValues;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionPreview($data, $object = null, $params = [])
     {
         if (!is_array($data)) {
@@ -598,9 +629,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return join(', ', $preview);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForCsvExport($object, $params = [])
     {
         $data = $this->getDataFromObjectParam($object, $params);
@@ -612,9 +640,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return json_encode($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
         if (!$object) {
@@ -670,25 +695,16 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $newObject;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         return is_null($data) || (is_array($data) && count($data) === 0);
@@ -708,11 +724,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         Model\DataObject\Concrete $object,
         array $serialized
     ) {
-        if (!$object instanceof ProductInterface || !$object->getUnitDefinitions()) {
+        $unitDefinitions = $object->getObjectVar('unitDefinitions');
+
+        if (!$object instanceof ProductInterface || !$unitDefinitions) {
             return $serialized;
         }
 
-        $unitDefinitions = $object->getUnitDefinitions();
         $isUnitDefinitionsSerialized = !$unitDefinitions instanceof ProductUnitDefinitionsInterface;
 
         $toRemove = [];
@@ -787,7 +804,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
         while (count($array)) {
             $value = reset($array);
-            $key = key($array);
+            $key = (string)key($array);
             unset($array[$key]);
 
             if (strpos($key, '.') !== false) {

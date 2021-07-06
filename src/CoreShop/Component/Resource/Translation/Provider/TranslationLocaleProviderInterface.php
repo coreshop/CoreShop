@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Translation\Provider;
 
 interface TranslationLocaleProviderInterface
@@ -17,10 +19,10 @@ interface TranslationLocaleProviderInterface
     /**
      * @return string[]
      */
-    public function getDefinedLocalesCodes();
+    public function getDefinedLocalesCodes(): array;
 
     /**
      * @return string
      */
-    public function getDefaultLocaleCode();
+    public function getDefaultLocaleCode(): string;
 }

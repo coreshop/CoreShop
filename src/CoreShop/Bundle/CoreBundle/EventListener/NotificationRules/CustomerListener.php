@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Bundle\CoreBundle\Event\RequestNewsletterConfirmationEvent;
@@ -24,10 +26,7 @@ use Webmozart\Assert\Assert;
 
 final class CustomerListener extends AbstractNotificationRuleListener
 {
-    /**
-     * @param RequestPasswordChangeEvent $event
-     */
-    public function applyPasswordRequestResetRule(RequestPasswordChangeEvent $event)
+    public function applyPasswordRequestResetRule(RequestPasswordChangeEvent $event): void
     {
         Assert::isInstanceOf($event->getUser(), UserInterface::class);
 
@@ -48,10 +47,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $this->rulesProcessor->applyRules('user', $user, $params);
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function applyRegisterCustomerRule(GenericEvent $event)
+    public function applyRegisterCustomerRule(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
@@ -75,10 +71,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $this->rulesProcessor->applyRules('user', $customer, $params);
     }
 
-    /**
-     * @param RequestNewsletterConfirmationEvent $event
-     */
-    public function applyNewsletterConfirmRequestRule(RequestNewsletterConfirmationEvent $event)
+    public function applyNewsletterConfirmRequestRule(RequestNewsletterConfirmationEvent $event): void
     {
         Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
 
@@ -123,10 +116,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $this->rulesProcessor->applyRules('user', $customer->getUser(), $params);
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function applyNewsletterConfirmed(GenericEvent $event)
+    public function applyNewsletterConfirmed(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
@@ -150,12 +140,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $this->rulesProcessor->applyRules('user', $customer, $params);
     }
 
-    /**
-     * @param UserInterface $user
-     *
-     * @return array
-     */
-    private function prepareUserParameters(UserInterface $user)
+    private function prepareUserParameters(UserInterface $user): array
     {
         return [
             '_locale' => $this->shopperContext->getLocaleCode(),

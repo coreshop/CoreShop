@@ -10,12 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Cart\CartItemResolver;
@@ -25,55 +27,29 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-class AddToCartMinimumQuantityValidator extends ConstraintValidator
+final class AddToCartMinimumQuantityValidator extends ConstraintValidator
 {
-    /**
-     * @var QuantityValidatorService
-     */
-    private $quantityValidatorService;
+    private QuantityValidatorService $quantityValidatorService;
+    private StorageListItemResolverInterface $cartItemResolver;
 
-    /**
-     * @var StorageListItemResolverInterface
-     */
-    protected $cartItemResolver;
-
-    /**
-     * @param QuantityValidatorService         $quantityValidatorService
-     * @param StorageListItemResolverInterface $cartItemResolver
-     */
     public function __construct(
         QuantityValidatorService $quantityValidatorService,
-        StorageListItemResolverInterface $cartItemResolver = null
+        StorageListItemResolverInterface $cartItemResolver
     )
     {
         $this->quantityValidatorService = $quantityValidatorService;
-
-        if (null === $cartItemResolver) {
-            @trigger_error(
-                'Not passing a StorageListItemResolverInterface as second argument is deprecated since 2.1.1 and will be removed with 3.0.0',
-                E_USER_DEPRECATED
-            );
-
-            $this->cartItemResolver = new CartItemResolver();
-        }
-        else {
-            $this->cartItemResolver = $cartItemResolver;
-        }
+        $this->cartItemResolver = $cartItemResolver;
     }
 
-    /**
-     * @param mixed      $addToCartDto
-     * @param Constraint $constraint
-     */
-    public function validate($addToCartDto, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
-        Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
+        Assert::isInstanceOf($value, AddToCartInterface::class);
         Assert::isInstanceOf($constraint, AddToCartMinimumQuantity::class);
 
         /**
          * @var PurchasableInterface $purchasable
          */
-        $purchasable = $addToCartDto->getCartItem()->getProduct();
+        $purchasable = $value->getCartItem()->getProduct();
 
         if (!$purchasable instanceof StockableInterface) {
             return;
@@ -84,14 +60,25 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
         }
 
         /**
-         * @var CartItemInterface $cartItem
-         * @var CartInterface     $cart
+         * @var OrderInterface $cart
          */
-        $cartItem = $addToCartDto->getCartItem();
-        $cart = $addToCartDto->getCart();
+        $cart = $value->getCart();
+
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = $value->getCartItem();
 
         $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
         $minLimit = $purchasable->getMinimumQuantityToOrder();
+
+        if (null === $minLimit) {
+            return;
+        }
+
+        if ($minLimit <= 0) {
+            return;
+        }
 
         if ($this->quantityValidatorService->isLowerThenMinLimit($minLimit, $quantity)) {
             $this->context->addViolation(
@@ -104,19 +91,13 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
-     *
-     * @return int
-     */
-    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): float
     {
         $product = $cartItem->getProduct();
         $quantity = 0;
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             if (!$product && $this->cartItemResolver->equals($item, $cartItem)) {

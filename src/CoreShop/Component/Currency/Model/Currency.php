@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Currency\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
@@ -60,9 +62,6 @@ class Currency extends AbstractResource implements CurrencyInterface
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId($id)
     {
         $this->id = $id;
@@ -70,33 +69,21 @@ class Currency extends AbstractResource implements CurrencyInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIsoCode()
     {
         return $this->isoCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIsoCode($isoCode)
     {
         $this->isoCode = $isoCode;
@@ -110,25 +97,16 @@ class Currency extends AbstractResource implements CurrencyInterface
         return $this->numericIsoCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setNumericIsoCode($numericIsoCode)
     {
         $this->numericIsoCode = $numericIsoCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSymbol()
     {
         return $this->symbol;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setSymbol($symbol)
     {
         $this->symbol = $symbol;

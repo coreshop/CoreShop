@@ -10,34 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Tracking\Extractor;
 
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class OrderExtractor implements TrackingExtractorInterface
 {
-    /**
-     * @var TrackingExtractorInterface
-     */
     private $extractor;
-
-    /**
-     * @var int
-     */
     protected $decimalFactor;
-
-    /**
-     * @var int
-     */
     protected $decimalPrecision;
 
-    /**
-     * @param TrackingExtractorInterface $extractor
-     * @param int                        $decimalFactor
-     * @param int                        $decimalPrecision
-     */
     public function __construct(TrackingExtractorInterface $extractor, int $decimalFactor, int $decimalPrecision)
     {
         $this->extractor = $extractor;
@@ -45,21 +31,15 @@ class OrderExtractor implements TrackingExtractorInterface
         $this->decimalPrecision = $decimalPrecision;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($object)
+    public function supports($object): bool
     {
-        return $object instanceof ProposalInterface;
+        return $object instanceof OrderInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, $data = []): array
     {
         /**
-         * @var ProposalInterface $object
+         * @var OrderInterface $object
          */
         $items = [];
 

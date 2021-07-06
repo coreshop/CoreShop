@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Resolver;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -20,20 +22,9 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CarriersResolver implements CarriersResolverInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $carrierRepository;
+    private RepositoryInterface $carrierRepository;
+    private ShippableCarrierValidatorInterface $shippableCarrierValidator;
 
-    /**
-     * @var ShippableCarrierValidatorInterface
-     */
-    private $shippableCarrierValidator;
-
-    /**
-     * @param RepositoryInterface                $carrierRepository
-     * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
-     */
     public function __construct(
         RepositoryInterface $carrierRepository,
         ShippableCarrierValidatorInterface $shippableCarrierValidator
@@ -42,10 +33,7 @@ final class CarriersResolver implements CarriersResolverInterface
         $this->shippableCarrierValidator = $shippableCarrierValidator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address)
+    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address): array
     {
         /**
          * @var CarrierInterface[] $carriers

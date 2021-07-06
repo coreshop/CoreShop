@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Inventory\Operator;
 
 use CoreShop\Component\Core\Model\OrderInterface;
@@ -19,26 +21,26 @@ interface OrderInventoryOperatorInterface
     /**
      * @param OrderInterface $order
      */
-    public function hold(OrderInterface $order);
+    public function hold(OrderInterface $order): void;
 
     /**
      * @param OrderInterface $order
      *
      * @throws \InvalidArgumentException
      */
-    public function sell(OrderInterface $order);
+    public function sell(OrderInterface $order): void;
 
     /**
      * @param OrderInterface $order
      *
      * @throws \InvalidArgumentException
      */
-    public function release(OrderInterface $order);
+    public function release(OrderInterface $order): void;
 
     /**
      * @param OrderInterface $order
      *
      * @throws \InvalidArgumentException
      */
-    public function giveBack(OrderInterface $order);
+    public function giveBack(OrderInterface $order): void;
 }

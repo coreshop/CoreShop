@@ -10,21 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\SEO\Model;
 
 interface SEOAwareInterface
 {
-    /**
-     * @param string|null $language
-     *
-     * @return string
-     */
-    public function getMetaTitle($language = null);
+    public function getMetaTitle(?string $language = null): ?string;
 
-    /**
-     * @param string|null $language
-     *
-     * @return string
-     */
-    public function getMetaDescription($language = null);
+    public function getMetaDescription(?string $language = null): ?string;
 }

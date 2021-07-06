@@ -2,14 +2,11 @@ services:
     _defaults:
         public: true
 
-    coreshop.factory.payum_get_status: '@CoreShop\Bundle\PayumBundle\Factory\GetStatusFactoryInterface'
     CoreShop\Bundle\PayumBundle\Factory\GetStatusFactoryInterface: '@CoreShop\Bundle\PayumBundle\Factory\GetStatusFactory'
     CoreShop\Bundle\PayumBundle\Factory\GetStatusFactory: ~
 
-    coreshop.factory.payum_resolve_next_route: '@CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactoryInterface'
     CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactoryInterface: '@CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactory'
     CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactory: ~
 
-    coreshop.factory.payum_confirm_order: '@CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactoryInterface'
     CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactoryInterface: '@CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactory'
     CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactory: ~

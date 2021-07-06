@@ -38,4 +38,4 @@ default:
 
                 - coreshop.behat.context.domain.tracking
             filters:
-                tags: "@tracking"
+                tags: "@domain && @tracking"

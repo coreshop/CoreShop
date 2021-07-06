@@ -10,47 +10,38 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Payment\Resolver;
 
 use CoreShop\Bundle\CoreBundle\Event\PaymentProviderSupportsEvent;
 use CoreShop\Component\Core\Events;
 use CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterface
 {
-    /**
-     * @var PaymentProviderResolverInterface
-     */
-    private $inner;
+    private PaymentProviderResolverInterface $inner;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param PaymentProviderResolverInterface $inner
-     * @param EventDispatcherInterface         $eventDispatcher
-     */
-    public function __construct(PaymentProviderResolverInterface $inner, EventDispatcherInterface $eventDispatcher)
+    public function __construct(
+        PaymentProviderResolverInterface $inner,
+        EventDispatcherInterface $eventDispatcher
+    )
     {
         $this->inner = $inner;
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolvePaymentProviders(ResourceInterface $subject = null)
+    public function resolvePaymentProviders(ResourceInterface $subject = null): array
     {
         $allowedPaymentProviders = [];
 
         foreach ($this->inner->resolvePaymentProviders($subject) as $paymentProvider) {
             $event = new PaymentProviderSupportsEvent($paymentProvider, $subject);
 
-            $this->eventDispatcher->dispatch(Events::SUPPORTS_PAYMENT_PROVIDER, $event);
+            $this->eventDispatcher->dispatch($event, Events::SUPPORTS_PAYMENT_PROVIDER);
 
             if ($event->isSupported()) {
                 $allowedPaymentProviders[] = $paymentProvider;

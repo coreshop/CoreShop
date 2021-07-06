@@ -10,154 +10,86 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
-class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentItemInterface
+abstract class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentItemInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDocument()
+    public function getDocument(): OrderDocumentInterface
     {
         $parent = $this->getParent();
 
         do {
-            if (is_subclass_of($parent, OrderShipmentInterface::class)) {
+            if ($parent instanceof OrderDocumentInterface) {
                 return $parent;
             }
+
             $parent = $parent->getParent();
-        } while ($parent != null);
+        } while ($parent !== null);
 
         throw new \InvalidArgumentException('Order Shipment could not be found!');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrderItem()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOrderItem($orderItem)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getQuantity()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setQuantity($quantity)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotal($withTax = true)
+    public function getTotal(bool $withTax = true): int
     {
         return $withTax ? $this->getTotalGross() : $this->getTotalNet();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotal($total, $withTax = true)
+    public function setTotal(int $total, bool $withTax = true)
     {
-        return $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
+        $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalNet()
+    public function getConvertedTotal(bool $withTax = true): int
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        return $withTax ? $this->getConvertedTotalGross() : $this->getConvertedTotalNet();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotalNet($totalNet)
+    public function setConvertedTotal(int $convertedTotal, bool $withTax = true)
+    {
+        $withTax ? $this->setConvertedTotalGross($convertedTotal) : $this->setConvertedTotalNet($convertedTotal);
+    }
+
+    public function getTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalGross()
+    public function setTotalNet(int $totalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotalGross($totalGross)
+    public function getTotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseTotal($withTax = true)
-    {
-        return $withTax ? $this->getBaseTotalGross() : $this->getBaseTotalNet();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBaseTotal($baseTotal, $withTax = true)
-    {
-        return $withTax ? $this->setBaseTotalGross($baseTotal) : $this->setBAseTotalNet($baseTotal);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseTotalNet()
+    public function setTotalGross(int $totalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setBaseTotalNet($baseTotalNet)
+    public function getConvertedTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseTotalGross()
+    public function setConvertedTotalNet(int $convertedTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setBaseTotalGross($baseTotalGross)
+    public function getConvertedTotalGross(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setConvertedTotalGross(int $convertedTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

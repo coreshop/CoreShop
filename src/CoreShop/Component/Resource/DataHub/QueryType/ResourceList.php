@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\DataHub\QueryType;
 
 use GraphQL\Type\Definition\ResolveInfo;
@@ -18,9 +20,6 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class ResourceList extends Resource
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
         return Type::listOf($this->doctrineProvider->getGraphQlType($this->className));

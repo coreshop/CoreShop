@@ -5,21 +5,22 @@
 **CoreShop - Pimcore eCommerce**
 
 [![Join the chat at https://gitter.im/coreshop/coreshop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/coreshop/coreshop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.com/coreshop/CoreShop.svg?branch=master)](https://travis-ci.com/coreshop/CoreShop)
+![Behat UI Tests](https://github.com/coreshop/CoreShop/workflows/PHP%20Stan/badge.svg)
+![Behat UI Tests](https://github.com/coreshop/CoreShop/workflows/Behat%20UI/badge.svg)
+![Behat UI Tests](https://github.com/coreshop/CoreShop/workflows/Behat/badge.svg)
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 [![Latest Pre-Release](https://img.shields.io/packagist/vpre/coreshop/core-shop.svg)](https://www.packagist.org/packages/coreshop/core-shop)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/coreshop/coreshop.svg)](https://www.scrutinizer-ci.com/g/coreshop/CoreShop/)
-[![Donate](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://www.coreshop.org/bitcoin)
 
 [CoreShop](https://www.coreshop.org) is a eCommerce Platform for [Pimcore](http://www.pimcore.org).
 
 ![CoreShop Interface](docs/img/screenshot5.png)
 
 # Requirements
-* Pimcore 5.8 or 6.0
+* Pimcore 6.6
 
 # Installation
- - Install with composer ```composer require coreshop/core-shop:^2.1```
+ - Install with composer ```composer require coreshop/core-shop:^3.0```
  - Run enable Bundle command
     ```php bin/console pimcore:bundle:enable CoreShopCoreBundle```
  - Run Install Command

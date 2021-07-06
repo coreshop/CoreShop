@@ -10,36 +10,25 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FixtureBundle\Fixture;
 
 use CoreShop\Bundle\FixtureBundle\Repository\DataFixtureRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class UpdateDataFixturesFixture extends AbstractFixture
 {
-    /**
-     * @var FactoryInterface
-     */
-    protected $fixtureFactory;
+    protected FactoryInterface $fixtureFactory;
+    protected DataFixtureRepositoryInterface $fixtureRepository;
+    protected array $dataFixturesClassNames;
 
-    /**
-     * @var DataFixtureRepositoryInterface
-     */
-    protected $fixtureRepository;
-
-    /**
-     * @var array
-     *            key - class name
-     *            value - current loaded version
-     */
-    protected $dataFixturesClassNames;
-
-    /**
-     * @param FactoryInterface $fixtureFactory
-     */
-    public function __construct(FactoryInterface $fixtureFactory, DataFixtureRepositoryInterface $fixtureRepository)
+    public function __construct(
+        FactoryInterface $fixtureFactory,
+        DataFixtureRepositoryInterface $fixtureRepository
+    )
     {
         $this->fixtureFactory = $fixtureFactory;
         $this->fixtureRepository = $fixtureRepository;
@@ -55,9 +44,6 @@ class UpdateDataFixturesFixture extends AbstractFixture
         $this->dataFixturesClassNames = $classNames;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(ObjectManager $manager)
     {
         if (!empty($this->dataFixturesClassNames)) {

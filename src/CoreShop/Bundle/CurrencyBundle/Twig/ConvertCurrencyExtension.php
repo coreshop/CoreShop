@@ -10,34 +10,36 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CurrencyBundle\Twig;
 
-use CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelperInterface;
+use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class ConvertCurrencyExtension extends AbstractExtension
 {
-    /**
-     * @var ConvertCurrencyHelperInterface
-     */
-    private $helper;
+    private CurrencyConverterInterface $currencyConverter;
 
-    /**
-     * @param ConvertCurrencyHelperInterface $helper
-     */
-    public function __construct(ConvertCurrencyHelperInterface $helper)
+    public function __construct(CurrencyConverterInterface $currencyConverter)
     {
-        $this->helper = $helper;
+        $this->currencyConverter = $currencyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new TwigFilter('coreshop_convert_currency', [$this->helper, 'convertAmount']),
+            new TwigFilter('coreshop_convert_currency', [$this, 'convertAmount']),
         ];
+    }
+
+    public function convertAmount(?int $amount, string $sourceCurrencyCode, string $targetCurrencyCode): int
+    {
+        if (null === $amount) {
+            return 0;
+        }
+
+        return $this->currencyConverter->convert($amount, $sourceCurrencyCode, $targetCurrencyCode);
     }
 }

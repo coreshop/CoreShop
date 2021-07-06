@@ -10,16 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CheckoutManagerFactoryInterface
 {
     /**
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      *
      * @return CheckoutManagerInterface
      */
-    public function createCheckoutManager(CartInterface $cart);
+    public function createCheckoutManager(OrderInterface $cart): CheckoutManagerInterface;
 }

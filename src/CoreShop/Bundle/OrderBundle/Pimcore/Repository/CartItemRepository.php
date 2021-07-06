@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
@@ -17,10 +19,7 @@ use CoreShop\Component\Order\Repository\CartItemRepositoryInterface;
 
 class CartItemRepository extends PimcoreRepository implements CartItemRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findCartItemsByProductId($productId)
+    public function findCartItemsByProductId(int $productId): array
     {
         $list = $this->getList();
         $list->setCondition('product__id = ?', [$productId]);

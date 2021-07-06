@@ -10,15 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\StorageList;
 
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 class StorageListItemQuantityModifier implements StorageListItemQuantityModifierInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function modify(StorageListItemInterface $item, float $targetQuantity): void
     {
         $currentQuantity = $item->getQuantity();

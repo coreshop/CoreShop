@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
 interface ThemeHelperInterface
@@ -17,10 +19,6 @@ interface ThemeHelperInterface
     /**
      * @param string   $themeName
      * @param \Closure $function
-     *
-     * @return mixed
      */
-    public function useTheme($themeName, \Closure $function);
+    public function useTheme(string $themeName, \Closure $function);
 }
-
-class_alias(ThemeHelperInterface::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface');

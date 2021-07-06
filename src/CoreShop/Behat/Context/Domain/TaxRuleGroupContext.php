@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -25,44 +27,13 @@ use Webmozart\Assert\Assert;
 
 final class TaxRuleGroupContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var FactoryInterface
-     */
     private $addressFactory;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $taxRuleGroupRepository;
-
-    /**
-     * @var TaxRuleRepositoryInterface
-     */
     private $taxRuleRepository;
-
-    /**
-     * @var TaxCalculatorFactoryInterface
-     */
     private $taxCalculatorFactory;
-
-    /**
-     * @var CountryContextInterface
-     */
     private $countryContext;
 
-    /**
-     * @param SharedStorageInterface        $sharedStorage
-     * @param FactoryInterface              $addressFactory
-     * @param RepositoryInterface           $taxRuleGroupRepository
-     * @param TaxRuleRepositoryInterface    $taxRuleRepository
-     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param CountryContextInterface       $countryContext
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $addressFactory,
@@ -110,7 +81,7 @@ final class TaxRuleGroupContext implements Context
      * @Then /^the (tax rule group "[^"]+") should add "([^"]+)" to the price "([^"]+)"$/
      * @Then /^the (tax rule group) should add "([^"]+)" to the price "([^"]+)"$/
      */
-    public function taxRuleShouldTaxThePrice(TaxRuleGroupInterface $taxRuleGroup, $tax, $price)
+    public function taxRuleShouldTaxThePrice(TaxRuleGroupInterface $taxRuleGroup, $tax, int $price)
     {
         $address = $this->addressFactory->createNew();
         $address->setCountry($this->countryContext->getCountry());

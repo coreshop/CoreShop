@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Repository;
 
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -24,7 +26,7 @@ interface ProductStoreValuesRepositoryInterface extends RepositoryInterface
      *
      * @return ProductStoreValuesInterface[]
      */
-    public function findForProduct(ProductInterface $product);
+    public function findForProduct(ProductInterface $product): array;
 
     /**
      * @param ProductInterface $product
@@ -32,5 +34,5 @@ interface ProductStoreValuesRepositoryInterface extends RepositoryInterface
      *
      * @return ProductStoreValuesInterface[]
      */
-    public function findForProductAndStore(ProductInterface $product, StoreInterface $store);
+    public function findForProductAndStore(ProductInterface $product, StoreInterface $store): array;
 }

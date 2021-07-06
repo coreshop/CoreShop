@@ -38,41 +38,41 @@ core_shop_workflow:
                 after:
                     request_payment:
                         on: ['create']
-                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        do: ['@CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition', 'apply']
                         args: ['object', 'event', '"request_payment"', '"coreshop_order_payment"']
                     increment_voucher_usages:
                         on: ['create']
-                        do: ['@coreshop.voucher.modifier', 'increment']
+                        do: ['@CoreShop\Component\Order\Modifier\VoucherModifierInterface', 'increment']
                         args: ['object']
                     cancel_payment:
                         on: ['cancel']
-                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        do: ['@CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition', 'apply']
                         args: ["service('coreshop.repository.payment').findForPayable(object)", 'event', '"cancel"', '"coreshop_payment"']
                     cancel_shipment:
                         on: ['cancel']
-                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        do: ['@CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition', 'apply']
                         args: ["service('coreshop.repository.order_shipment').getDocuments(object)", 'event', '"cancel"', '"coreshop_shipment"']
                     cancel_invoice:
                         on: ['cancel']
-                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        do: ['@CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition', 'apply']
                         args: ["service('coreshop.repository.order_invoice').getDocuments(object)", 'event', '"cancel"', '"coreshop_invoice"']
                     cancel_order_payment:
                         on: ['cancel']
-                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        do: ['@CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition', 'apply']
                         args: ['object', 'event', '"cancel"', '"coreshop_order_payment"']
                     cancel_order_shipment:
                         on: ['cancel']
-                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        do: ['@CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition', 'apply']
                         args: ['object', 'event', '"cancel"', '"coreshop_order_shipment"']
                     cancel_order_invoice:
                         on: ['cancel']
-                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        do: ['@CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition', 'apply']
                         args: ['object', 'event', '"cancel"', '"coreshop_order_invoice"']
                     decrement_voucher_usages:
                         on: ['cancel']
-                        do: ['@coreshop.voucher.modifier', 'decrement']
+                        do: ['@CoreShop\Component\Order\Modifier\VoucherModifierInterface', 'decrement']
                         args: ['object']
                     add_to_history:
                           on: ['create', 'confirm', 'cancel', 'complete']
-                          do: ['@coreshop.workflow.state_history_logger', 'log']
+                          do: ['@CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface', 'log']
                           args: ['object', 'event']

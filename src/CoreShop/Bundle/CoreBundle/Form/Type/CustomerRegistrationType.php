@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
@@ -29,38 +31,25 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 class CustomerRegistrationType extends AbstractResourceType
 {
-    /**
-     * @var DataMapperInterface
-     */
-    private $dataMapper;
+    private DataMapperInterface $dataMapper;
+    private CustomerRepositoryInterface $customerRepository;
+    private string $loginIdentifier;
 
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    private $customerRepository;
-
-    /**
-     * @param string                      $dataClass
-     * @param array                       $validationGroups
-     * @param DataMapperInterface         $dataMapper
-     * @param CustomerRepositoryInterface $customerRepository
-     */
     public function __construct(
-        $dataClass,
+        string $dataClass,
         array $validationGroups,
+        string $loginIdentifier,
         DataMapperInterface $dataMapper,
         CustomerRepositoryInterface $customerRepository
     ) {
         parent::__construct($dataClass, $validationGroups);
 
         $this->dataMapper = $dataMapper;
+        $this->loginIdentifier = $loginIdentifier;
         $this->customerRepository = $customerRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventSubscriber(new CustomerRegistrationFormSubscriber($this->customerRepository));
 
@@ -68,7 +57,8 @@ class CustomerRegistrationType extends AbstractResourceType
         $builder
             ->add('user', UserRegistrationType::class, [
                 'label' => false,
-                'constraints' => [new Valid(['groups' => ['coreshop']])],
+                'constraints' => [new Valid(['groups' => $this->validationGroups])],
+                'allow_username' => $this->loginIdentifier === 'username',
             ])
             ->add('gender', ChoiceType::class, [
                 'label' => 'coreshop.form.customer.gender',
@@ -99,23 +89,20 @@ class CustomerRegistrationType extends AbstractResourceType
                     'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']]),
+                    new Valid(['groups' => $this->validationGroups]),
                 ],
                 'mapped' => false,
             ])
             ->add('termsAccepted', CheckboxType::class, [
                 'label' => 'coreshop.form.customer.terms',
                 'mapped' => false,
-                'validation_groups' => ['coreshop'],
-                'constraints' => new IsTrue(['groups' => ['coreshop']]),
+                'validation_groups' => $this->validationGroups,
+                'constraints' => new IsTrue(['groups' => $this->validationGroups]),
             ])
             ->add('submit', SubmitType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_customer_registration';
     }

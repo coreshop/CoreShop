@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,27 +22,13 @@ use JMS\Serializer\JsonSerializationVisitor;
 
 class RelationsHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    private EntityManagerInterface $manager;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
     }
 
-    /**
-     * @param JsonSerializationVisitor $visitor
-     * @param array|\Traversable       $relation
-     * @param array                    $type
-     * @param Context                  $context
-     *
-     * @return array
-     */
     public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
     {
         if ($relation instanceof \Traversable) {
@@ -62,14 +50,6 @@ class RelationsHandler
         return $this->getSingleEntityRelation($relation, $manager);
     }
 
-    /**
-     * @param JsonDeserializationVisitor $visitor
-     * @param array                      $relation
-     * @param array                      $type
-     * @param Context                    $context
-     *
-     * @return array|object
-     */
     public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
     {
         $className = isset($type['params'][0]['name']) ? $type['params'][0]['name'] : null;
@@ -106,12 +86,6 @@ class RelationsHandler
         return $objects;
     }
 
-    /**
-     * @param mixed                  $relation
-     * @param EntityManagerInterface $entityManager
-     *
-     * @return array
-     */
     protected function getSingleEntityRelation($relation, EntityManagerInterface $entityManager)
     {
         $metadata = $entityManager->getClassMetadata(get_class($relation));
@@ -124,13 +98,6 @@ class RelationsHandler
         return $ids;
     }
 
-    /**
-     * @param mixed                  $id
-     * @param ClassMetadata          $metadata
-     * @param EntityManagerInterface $manager
-     *
-     * @return object|null
-     */
     protected function findById($id, ClassMetadata $metadata, EntityManagerInterface $manager)
     {
         return $manager->find($metadata->getName(), $id);

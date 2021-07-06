@@ -12347,10 +12347,6 @@ hr {
     font-size: 22px;
 }
 
-.product-info .product-details h2, .product-info .product-details h3 {
-    text-transform: uppercase;
-}
-
 .product-info .product-details .manufacturer {
     color: #808080;
     text-transform: uppercase;

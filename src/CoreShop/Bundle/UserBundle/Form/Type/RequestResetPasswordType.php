@@ -18,10 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class RequestResetPasswordType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', EmailType::class, [
@@ -29,10 +26,7 @@ class RequestResetPasswordType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_request_reset_password';
     }

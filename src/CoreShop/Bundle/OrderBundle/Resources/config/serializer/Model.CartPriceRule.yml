@@ -33,5 +33,5 @@ CoreShop\Component\Order\Model\CartPriceRule:
             groups: [Detailed]
         translations:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]

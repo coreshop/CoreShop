@@ -10,39 +10,30 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\Loader;
 
 use CoreShop\Component\Pimcore\Document\DocumentTagFactoryInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Loader\ImplementationLoader\LoaderInterface;
+use Pimcore\Model\Document\Editable\EditableInterface;
 
 class DependencyInjectionImplementationLoader implements LoaderInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $factories;
+    private ServiceRegistryInterface $factories;
 
-    /**
-     * @param ServiceRegistryInterface $factories
-     */
     public function __construct(ServiceRegistryInterface $factories)
     {
         $this->factories = $factories;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(string $name): bool
     {
         return $this->factories->has($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(string $name, array $params = [])
+    public function build(string $name, array $params = []): EditableInterface
     {
         /**
          * @var DocumentTagFactoryInterface $factory

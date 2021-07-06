@@ -10,11 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
@@ -23,30 +26,31 @@ use Symfony\Component\Validator\Constraints\Type;
 final class SurchargePercentConfigurationType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @var string[]
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected array $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('percent', IntegerType::class, [
+            ->add('percent', NumberType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
-                    new Range(['min' => 0, 'max' => 100, 'groups' => ['coreshop']]),
-                ],
-            ])
-            ->add('applyOn', ChoiceType::class, [
-                'choices' => [
-                    'total' => 'total',
-                    'subtotal' => 'subtotal',
+                    new NotBlank(['groups' => $this->validationGroups]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new Range(['min' => 0, 'max' => 100, 'groups' => $this->validationGroups]),
                 ],
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule_action_surcharge_percent';
     }

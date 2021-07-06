@@ -10,80 +10,48 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Condition;
 
 class RangeCondition implements ConditionInterface
 {
-    /**
-     * @var string
-     */
-    private $fieldName;
+    private string $fieldName;
+    private string $from;
+    private string $to;
 
-    /**
-     * @var string
-     */
-    private $from;
-
-    /**
-     * @var string
-     */
-    private $to;
-
-    /**
-     * @param string $fieldName
-     * @param string $from
-     * @param string $to
-     */
-    public function __construct($fieldName, string $from, string $to)
+    public function __construct(string $fieldName, string $from, string $to)
     {
         $this->fieldName = $fieldName;
         $this->from = $from;
         $this->to = $to;
     }
 
-    /**
-     * @return string
-     */
-    public function getFieldName()
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
 
-    /**
-     * @param string $fieldName
-     */
-    public function setFieldName($fieldName)
+    public function setFieldName(string $fieldName): void
     {
         $this->fieldName = $fieldName;
     }
 
-    /**
-     * @return string
-     */
     public function getFrom(): string
     {
         return $this->from;
     }
 
-    /**
-     * @param string $from
-     */
     public function setFrom(string $from): void
     {
         $this->from = $from;
     }
 
-    /**
-     * @return string
-     */
     public function getTo(): string
     {
         return $this->to;
     }
 
-    /**
-     * @param string $to
-     */
     public function setTo(string $to): void
     {
         $this->to = $to;

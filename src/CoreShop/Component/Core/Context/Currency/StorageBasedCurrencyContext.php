@@ -10,40 +10,29 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Context\Currency;
 
 use CoreShop\Component\Core\Currency\CurrencyStorageInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
 final class StorageBasedCurrencyContext implements CurrencyContextInterface
 {
-    /**
-     * @var StoreContextInterface
-     */
     private $storeContext;
-
-    /**
-     * @var CurrencyStorageInterface
-     */
     private $currencyStorage;
 
-    /**
-     * @param StoreContextInterface    $storeContext
-     * @param CurrencyStorageInterface $currencyStorage
-     */
     public function __construct(StoreContextInterface $storeContext, CurrencyStorageInterface $currencyStorage)
     {
         $this->storeContext = $storeContext;
         $this->currencyStorage = $currencyStorage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrency()
+    public function getCurrency(): CurrencyInterface
     {
         /** @var StoreInterface $store */
         $store = $this->storeContext->getStore();

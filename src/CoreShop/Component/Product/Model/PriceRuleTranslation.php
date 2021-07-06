@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractTranslation;
@@ -29,25 +31,16 @@ class PriceRuleTranslation extends AbstractTranslation implements PriceRuleTrans
      */
     protected $label;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel()
     {
         return $this->label;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLabel($label)
     {
         $this->label = $label;

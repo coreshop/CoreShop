@@ -10,14 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
 
 abstract class AbstractSluggableLinkGenerator implements LinkGeneratorInterface
 {
-    protected function slugify($string)
+    protected function slugify($string): string
     {
+        if ($string === null) {
+            return '';
+        }
+
         return strtolower(
             trim(
                 preg_replace('~[^0-9a-z]+~i', '-', html_entity_decode(

@@ -10,15 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ConfigurationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Configuration\Service\ConfigurationServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ConfigurationController extends ResourceController
 {
-    public function saveAllAction(Request $request)
+    public function saveAllAction(Request $request): Response
     {
         $values = $request->get('values');
         $values = array_htmlspecialchars($values);
@@ -30,11 +33,8 @@ class ConfigurationController extends ResourceController
         return $this->viewHandler->handle(['success' => true]);
     }
 
-    /**
-     * @return ConfigurationServiceInterface
-     */
-    private function getConfigurationService()
+    private function getConfigurationService(): ConfigurationServiceInterface
     {
-        return $this->get('coreshop.configuration.service');
+        return $this->get(ConfigurationServiceInterface::class);
     }
 }

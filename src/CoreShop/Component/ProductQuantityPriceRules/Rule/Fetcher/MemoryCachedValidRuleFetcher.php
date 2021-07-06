@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher;
 
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
@@ -18,35 +20,17 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
 {
-    /**
-     * @var ValidRulesFetcherInterface
-     */
-    private $validRuleFetcher;
+    private ValidRulesFetcherInterface $validRuleFetcher;
+    private RequestStack $requestStack;
+    private array $checkedProducts = [];
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var array
-     */
-    private $checkedProducts = [];
-
-    /**
-     * @param ValidRulesFetcherInterface $validRuleFetcher
-     * @param RequestStack               $requestStack
-     */
     public function __construct(ValidRulesFetcherInterface $validRuleFetcher, RequestStack $requestStack)
     {
         $this->validRuleFetcher = $validRuleFetcher;
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context)
+    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context): array
     {
         if ($this->requestStack->getMasterRequest() instanceof Request) {
             if (isset($this->checkedProducts[$product->getId()])) {

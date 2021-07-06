@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
@@ -21,33 +23,40 @@ use Symfony\Component\Validator\Constraints\Type;
 final class FilterConditionRangeType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @var string[]
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected array $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('field', TextType::class)
             ->add('preSelectMin', NumberType::class, [
                 'constraints' => [
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ])
             ->add('preSelectMax', NumberType::class, [
                 'constraints' => [
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ])
             ->add('stepCount', NumberType::class, [
                 'constraints' => [
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_filter_condition_type_range';
     }

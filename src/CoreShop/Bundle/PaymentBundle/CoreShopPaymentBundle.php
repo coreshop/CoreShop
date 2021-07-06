@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PaymentBundle;
 
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
@@ -20,9 +22,6 @@ use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 
 final class CoreShopPaymentBundle extends AbstractResourceBundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -30,9 +29,6 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         parent::registerDependentBundles($collection);
@@ -41,9 +37,6 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopWorkflowBundle(), 1550);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Payment\Model';

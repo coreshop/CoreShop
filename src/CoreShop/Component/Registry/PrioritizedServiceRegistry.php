@@ -10,51 +10,28 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Registry;
 
 final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInterface
 {
-    /**
-     * @var PriorityMap
-     */
-    private $priortyMap;
+    private PriorityMap $priortyMap;
+    private string $interface;
+    private string $context;
 
-    /**
-     * Interface which is required by all services.
-     *
-     * @var string
-     */
-    private $interface;
-
-    /**
-     * Human readable context for these services, e.g. "grid field".
-     *
-     * @var string
-     */
-    private $context;
-
-    /**
-     * @param string $interface
-     * @param string $context
-     */
-    public function __construct($interface, $context = 'service')
+    public function __construct(string $interface, string $context = 'service')
     {
         $this->interface = $interface;
         $this->context = $context;
         $this->priortyMap = new PriorityMap();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function all()
     {
         return $this->priortyMap->toArray();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function register($identifier, $priority, $service)
     {
         if ($this->has($identifier)) {
@@ -74,9 +51,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         $this->priortyMap->set($identifier, $service, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unregister($identifier)
     {
         if (!$this->has($identifier)) {
@@ -86,17 +60,11 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         $this->priortyMap->remove($identifier);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has($identifier)
     {
         return $this->priortyMap->has($identifier);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($identifier)
     {
         if (!$this->has($identifier)) {
@@ -106,9 +74,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return $this->priortyMap->get($identifier);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNextTo($identifier)
     {
         $keys = $this->priortyMap->getKeys();
@@ -129,9 +94,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasNextTo($identifier)
     {
         $keys = $this->priortyMap->getKeys();
@@ -143,6 +105,10 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
 
                 break;
             }
+        }
+
+        if (!isset($keys[$nextIndex])) {
+            return false;
         }
 
         return $this->has($keys[$nextIndex]);
@@ -169,9 +135,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return $prevIndex >= 0 ? $prevIndex : -1;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPreviousTo($identifier)
     {
         $keys = $this->priortyMap->getKeys();
@@ -184,9 +147,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasPreviousTo($identifier)
     {
         $prevIndex = $this->getPreviousIndex($identifier);
@@ -194,9 +154,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return $prevIndex >= 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAllPreviousTo($identifier)
     {
         $keys = $this->priortyMap->getKeys();
@@ -215,9 +172,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIndex($identifier)
     {
         $keys = $this->priortyMap->getKeys();

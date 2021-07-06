@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Model;
 
 trait AddressesAwareTrait
@@ -19,9 +21,6 @@ trait AddressesAwareTrait
      */
     protected $addresses;
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAddress(AddressInterface $address)
     {
         $addresses = $this->getAddresses();
@@ -39,9 +38,6 @@ trait AddressesAwareTrait
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addAddress(AddressInterface $address)
     {
         $addresses = $this->getAddresses();
@@ -56,18 +52,23 @@ trait AddressesAwareTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAddresses()
+    public function removeAddress(AddressInterface $address)
+    {
+        if (!$this->hasAddress($address)) {
+            return;
+        }
+
+        $this->setAddresses(array_filter($this->getAddresses(), function (AddressInterface $storedAddress) use ($address) {
+            return $storedAddress->getId() !== $address->getId();
+        }));
+    }
+
+    public function getAddresses(): ?array
     {
         return $this->addresses;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setAddresses($addresses)
+    public function setAddresses(?array $addresses)
     {
         $this->addresses = $addresses;
     }

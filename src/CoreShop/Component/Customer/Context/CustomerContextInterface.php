@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Context;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
@@ -19,5 +21,5 @@ interface CustomerContextInterface
     /**
      * @return CustomerInterface
      */
-    public function getCustomer();
+    public function getCustomer(): CustomerInterface;
 }

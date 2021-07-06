@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler;
 
 use CoreShop\Bundle\PayumBundle\Exception\ReplyToSymfonyResponseConverter;
@@ -18,9 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class PayumReplyToSymfonyPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         $definitionId = 'payum.converter.reply_to_http_response';

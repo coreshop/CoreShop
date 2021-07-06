@@ -10,39 +10,25 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Event\RequestNewsletterConfirmationEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 final class CustomerNewsletterConfirmListener
 {
-    /**
-     * @var LinkGeneratorInterface
-     */
-    private $linkGenerator;
+    private LinkGeneratorInterface $linkGenerator;
+    private RequestStack $requestStack;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param LinkGeneratorInterface   $linkGenerator
-     * @param RequestStack             $requestStack
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         LinkGeneratorInterface $linkGenerator,
         RequestStack $requestStack,
@@ -53,10 +39,7 @@ final class CustomerNewsletterConfirmListener
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function checkCustomerNewsletterConfirmation(GenericEvent $event)
+    public function checkCustomerNewsletterConfirmation(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
@@ -79,8 +62,13 @@ final class CustomerNewsletterConfirmListener
 
         $confirmEvent = new RequestNewsletterConfirmationEvent(
             $user,
-            $this->linkGenerator->generate($event->getSubject(), 'coreshop_customer_confirm_newsletter', ['_locale' => $this->requestStack->getMasterRequest()->getLocale()], UrlGeneratorInterface::ABSOLUTE_URL)
+            $this->linkGenerator->generate(
+                $event->getSubject(),
+                'coreshop_customer_confirm_newsletter',
+                ['_locale' => $this->requestStack->getMasterRequest()->getLocale()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
         );
-        $this->eventDispatcher->dispatch('coreshop.customer.request_newsletter_confirm', $confirmEvent);
+        $this->eventDispatcher->dispatch($confirmEvent, 'coreshop.customer.request_newsletter_confirm');
     }
 }

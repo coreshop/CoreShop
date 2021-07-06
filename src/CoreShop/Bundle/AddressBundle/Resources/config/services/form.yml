@@ -19,7 +19,7 @@ services:
 
     CoreShop\Bundle\AddressBundle\Form\Type\SalutationChoiceType:
         arguments:
-            - '@coreshop.context.country'
+            - '@CoreShop\Component\Address\Context\CountryContextInterface'
         tags:
             -  { name: form.type }
 

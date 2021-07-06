@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
@@ -25,5 +27,5 @@ interface ProductDiscountPriceCalculatorInterface
      *
      * @return int
      */
-    public function getDiscountPrice(ProductInterface $subject, array $context);
+    public function getDiscountPrice(ProductInterface $subject, array $context): int;
 }

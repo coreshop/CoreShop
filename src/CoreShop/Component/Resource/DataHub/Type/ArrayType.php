@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\DataHub\Type;
 
 use GraphQL\Type\Definition\ScalarType;
@@ -18,25 +20,16 @@ class ArrayType extends ScalarType
 {
     public $name = 'array';
 
-    /**
-     * {@inheritdoc}
-     */
     public function serialize($value)
     {
         return $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function parseValue($value)
     {
         return $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function parseLiteral($valueNode, ?array $variables = null)
     {
         return $valueNode->value;

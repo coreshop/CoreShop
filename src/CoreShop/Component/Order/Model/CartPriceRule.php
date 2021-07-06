@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Model\TranslatableTrait;
@@ -60,25 +62,16 @@ class CartPriceRule implements CartPriceRuleInterface
         $this->voucherCodes = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return $this->description;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDescription($description)
     {
         $this->description = $description;
@@ -86,17 +79,11 @@ class CartPriceRule implements CartPriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIsVoucherRule()
     {
         return $this->isVoucherRule;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIsVoucherRule($isVoucherRule)
     {
         $this->isVoucherRule = $isVoucherRule;
@@ -104,25 +91,16 @@ class CartPriceRule implements CartPriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVoucherCodes()
     {
         return $this->voucherCodes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasVoucherCodes()
     {
         return !$this->voucherCodes->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode)
     {
         if (!$this->hasVoucherCode($cartPriceRuleVoucherCode)) {
@@ -131,9 +109,6 @@ class CartPriceRule implements CartPriceRuleInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode)
     {
         if ($this->hasVoucherCode($cartPriceRuleVoucherCode)) {
@@ -142,25 +117,16 @@ class CartPriceRule implements CartPriceRuleInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode)
     {
         return $this->voucherCodes->contains($cartPriceRuleVoucherCode);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel($language = null)
     {
         return $this->getTranslation($language)->getLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLabel($label, $language = null)
     {
         $this->getTranslation($language)->setLabel($label);
@@ -180,9 +146,6 @@ class CartPriceRule implements CartPriceRuleInterface
         return $translation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createTranslation()
     {
         return new CartPriceRuleTranslation();

@@ -17,21 +17,11 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 interface UserRepositoryInterface extends PimcoreRepositoryInterface
 {
-    /**
-     * Find user by reset token.
-     *
-     * @param string $resetToken
-     *
-     * @return UserInterface|null
-     */
-    public function findByResetToken($resetToken);
+    public function findByResetToken(string $resetToken): ?UserInterface;
 
-    /**
-     * Find User by email.
-     *
-     * @param string $email
-     *
-     * @return UserInterface|null
-     */
-    public function findByEmail($email);
+    public function findUniqueByLoginIdentifier(string $identifier, string $value): ?UserInterface;
+
+    public function findByEmail(string $email): ?UserInterface;
+
+    public function findByUsername(string $username): ?UserInterface;
 }

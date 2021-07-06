@@ -10,35 +10,30 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Locale\Context;
 
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeLocaleContext implements LocaleContextInterface
 {
     /**
      * @var PriorityQueue|LocaleContextInterface[]
      */
-    private $localeContexts;
+    private PriorityQueue $localeContexts;
 
     public function __construct()
     {
         $this->localeContexts = new PriorityQueue();
     }
 
-    /**
-     * @param LocaleContextInterface $localeContext
-     * @param int                    $priority
-     */
-    public function addContext(LocaleContextInterface $localeContext, $priority = 0)
+    public function addContext(LocaleContextInterface $localeContext, int $priority = 0): void
     {
         $this->localeContexts->insert($localeContext, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
         $lastException = null;
 

@@ -10,13 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Bundle\CoreBundle\Faker\Commerce;
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -24,31 +27,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CategoryFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return '2.0';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         if (!count($this->container->get('coreshop.repository.category')->findAll())) {
             $categoriesCount = 5;
@@ -61,7 +52,7 @@ class CategoryFixture extends AbstractFixture implements ContainerAwareInterface
                  */
                 $category = $this->container->get('coreshop.factory.category')->createNew();
                 $category->setName($faker->department);
-                $category->setParent($this->container->get('coreshop.object_service')->createFolderByPath('/demo/categories'));
+                $category->setParent($this->container->get(ObjectServiceInterface::class)->createFolderByPath('/demo/categories'));
                 $category->setStores([$this->container->get('coreshop.repository.store')->findStandard()->getId()]);
                 $category->setPublished(true);
                 $category->setKey($category->getName());

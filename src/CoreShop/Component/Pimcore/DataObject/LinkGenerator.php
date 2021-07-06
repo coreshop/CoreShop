@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
@@ -17,9 +19,6 @@ use Pimcore\Model\DataObject\Concrete;
 
 class LinkGenerator implements LinkGeneratorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function generate(Concrete $object, array $params = []): string
     {
         if ($linkGenerator = $object->getClass()->getLinkGenerator()) {
@@ -32,9 +31,6 @@ class LinkGenerator implements LinkGeneratorInterface
         throw new \InvalidArgumentException(sprintf('Object %s with class %s has no Link Generator configured', $object->getId(), $object->getClassName()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasGenerator(Concrete $object): bool
     {
         return $object->getClass()->getLinkGenerator() instanceof LinkGeneratorInterface;

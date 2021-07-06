@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -20,20 +22,9 @@ use Webmozart\Assert\Assert;
 
 final class LinkGeneratorContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var LinkGeneratorInterface
-     */
     private $linkGenerator;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param LinkGeneratorInterface $linkGenerator
-     */
     public function __construct(SharedStorageInterface $sharedStorage, LinkGeneratorInterface $linkGenerator)
     {
         $this->sharedStorage = $sharedStorage;
@@ -46,7 +37,7 @@ final class LinkGeneratorContext implements Context
     public function theGeneratedUrlForObjectShouldBe(Concrete $object, $url)
     {
         $generatedUrl = $this->linkGenerator->generate($object, null, ['_locale' => 'en']);
-        $url = str_replace('%id', $object->getId(), $url);
+        $url = str_replace('%id', (string)$object->getId(), $url);
 
         Assert::eq(
             $generatedUrl,
@@ -65,7 +56,7 @@ final class LinkGeneratorContext implements Context
     public function theGeneratedUrlForObjectWithRouteShouldBe(Concrete $object, $routeName, $url)
     {
         $generatedUrl = $this->linkGenerator->generate($object, $routeName, ['_locale' => 'en']);
-        $url = str_replace('%id', $object->getId(), $url);
+        $url = str_replace('%id', (string)$object->getId(), $url);
 
         Assert::eq(
             $generatedUrl,

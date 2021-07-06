@@ -18,11 +18,11 @@ coreshop.product.unit.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_product_units',
     type: 'coreshop_product_units',
 
-    url : {
-        add: '/admin/coreshop/product_units/add',
-        delete: '/admin/coreshop/product_units/delete',
-        get: '/admin/coreshop/product_units/get',
-        list: '/admin/coreshop/product_units/list'
+    routing : {
+        add: 'coreshop_product_unit_add',
+        delete: 'coreshop_product_unit_delete',
+        get: 'coreshop_product_unit_get',
+        list: 'coreshop_product_unit_list'
     },
 
     getItemClass: function () {

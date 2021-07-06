@@ -22,28 +22,23 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('coreshop_user');
+        $treeBuilder = new TreeBuilder('coreshop_user');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
             ->end();
 
+        $this->addStack($rootNode);
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
     private function addModelsSection(ArrayNodeDefinition $node)
     {
         $node
@@ -74,10 +69,19 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addStack(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('stack')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('user')->defaultValue(UserInterface::class)->cannotBeEmpty()->end()
+                ->end()
+            ->end()
+        ->end();
+    }
+
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')

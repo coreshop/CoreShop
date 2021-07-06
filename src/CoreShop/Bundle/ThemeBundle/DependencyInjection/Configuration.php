@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ThemeBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -17,21 +19,20 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_theme');
+        $treeBuilder = new TreeBuilder('core_shop_theme');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
                 ->arrayNode('default_resolvers')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('pimcore_site')->defaultFalse()->end()
                         ->booleanNode('pimcore_document_property')->defaultFalse()->end()
                     ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

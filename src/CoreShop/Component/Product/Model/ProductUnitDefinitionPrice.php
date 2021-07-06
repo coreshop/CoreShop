@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
@@ -24,56 +26,38 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
     /**
      * @var int
      */
-    protected $price;
+    protected $price = 0;
 
     /**
      * @var ProductUnitDefinitionInterface
      */
     protected $unitDefinition;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId(int $id)
     {
         $this->id = $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice()
     {
         return (int) $this->price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPrice(int $price)
     {
         $this->price = $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUnitDefinition()
     {
         return $this->unitDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition)
     {
         $this->unitDefinition = $unitDefinition;

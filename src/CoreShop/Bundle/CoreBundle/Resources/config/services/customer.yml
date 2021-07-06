@@ -5,12 +5,6 @@ services:
     _defaults:
         public: true
 
-    coreshop.customer.registration_service: '@CoreShop\Bundle\CoreBundle\Customer\RegistrationServiceInterface'
-    CoreShop\Bundle\CoreBundle\Customer\RegistrationServiceInterface: '@CoreShop\Bundle\CoreBundle\Customer\RegistrationService'
-    CoreShop\Bundle\CoreBundle\Customer\RegistrationService:
-        arguments:
-            - '@CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface'
-
     coreshop.customer.manager: '@CoreShop\Bundle\CoreBundle\Customer\CustomerManager'
     CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface: '@CoreShop\Bundle\CoreBundle\Customer\CustomerManager'
     CoreShop\Bundle\CoreBundle\Customer\CustomerManager:
@@ -21,8 +15,8 @@ services:
             - '%coreshop.folder.guest%'
             - '%coreshop.folder.user%'
             - '%coreshop.folder.address%'
+            - '%coreshop.customer.security.login_identifier%'
 
-    coreshop.customer.login_service: '@CoreShop\Bundle\CoreBundle\Customer\CustomerLoginService'
     CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface: '@CoreShop\Bundle\CoreBundle\Customer\CustomerLoginService'
     CoreShop\Bundle\CoreBundle\Customer\CustomerLoginService:
         arguments:
@@ -30,7 +24,7 @@ services:
 
     CoreShop\Bundle\CoreBundle\EventListener\CustomerNewsletterConfirmListener:
         arguments:
-            - '@coreshop.link_generator'
+            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
             - '@request_stack'
             - '@event_dispatcher'
         tags:
@@ -39,6 +33,39 @@ services:
 
     CoreShop\Bundle\CoreBundle\EventListener\CustomerLoginListener:
         arguments:
-            - '@coreshop.customer.login_service'
+            - '@CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface'
         tags:
             - { name: kernel.event_listener, event: coreshop.customer.register, method: onCustomerRegister }
+
+    CoreShop\Bundle\CoreBundle\EventListener\CustomerCompanyRelationListener:
+        arguments:
+            - '@coreshop.repository.customer'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: onCompanyDelete }
+
+    CoreShop\Component\Core\Customer\Address\AddressAccessOptionsProvider: ~
+
+    CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface: '@CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocator'
+    CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocator:
+        public: false
+
+    CoreShop\Component\Core\Customer\CustomerTransformHelperInterface: '@CoreShop\Component\Core\Customer\CustomerTransformHelper'
+    CoreShop\Component\Core\Customer\CustomerTransformHelper:
+        public: false
+        arguments:
+            - '@coreshop.factory.company'
+            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+            - '%coreshop.folder.company%'
+            - '%coreshop.folder.address%'
+
+    CoreShop\Component\Core\Customer\Address\AddressAssignmentManagerInterface: '@CoreShop\Component\Core\Customer\Address\AddressAssignmentManager'
+    CoreShop\Component\Core\Customer\Address\AddressAssignmentManager:
+        arguments:
+            - '@CoreShop\Component\Core\Customer\CustomerTransformHelperInterface'
+
+    CoreShop\Bundle\CoreBundle\Twig\AddressAllocatorExtension:
+        public: false
+        arguments:
+            - '@CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface'
+        tags:
+            - { name: twig.extension }

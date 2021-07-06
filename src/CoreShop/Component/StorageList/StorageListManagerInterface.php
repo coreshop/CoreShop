@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\StorageList;
 
 use CoreShop\Component\StorageList\Model\StorageListInterface;
@@ -19,17 +21,15 @@ interface StorageListManagerInterface
     /**
      * @return StorageListInterface
      */
-    public function getStorageList();
+    public function getStorageList(): StorageListInterface;
 
     /**
      * @return bool
      */
-    public function hasStorageList();
+    public function hasStorageList(): bool;
 
     /**
      * @param StorageListInterface $storageList
-     *
-     * @return bool
      */
-    public function persist(StorageListInterface $storageList);
+    public function persist(StorageListInterface $storageList): void;
 }

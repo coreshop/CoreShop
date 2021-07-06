@@ -10,13 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Exception;
 
 class NoRuleFoundException extends \RuntimeException
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($message = null, \Exception $previousException = null)
     {
         parent::__construct($message ?: 'No matching Quantity Price Rule found.', 0, $previousException);

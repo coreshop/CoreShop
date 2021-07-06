@@ -10,29 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Model;
 
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface CustomerGroupInterface extends PimcoreModelInterface
 {
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): ?string;
 
-    /**
-     * @param string $name
-     */
-    public function setName($name);
+    public function setName(?string $name);
 
-    /**
-     * @return array
-     */
-    public function getRoles();
+    public function getRoles(): ?array;
 
-    /**
-     * @param array $roles
-     */
-    public function setRoles($roles);
+    public function setRoles(?array $roles);
 }

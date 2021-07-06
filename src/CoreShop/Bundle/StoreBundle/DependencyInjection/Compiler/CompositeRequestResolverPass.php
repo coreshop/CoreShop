@@ -12,7 +12,9 @@
 
 namespace CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
+use CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver;
+use CoreShop\Component\Store\Context\RequestBased\RequestResolverInterface;
 
 final class CompositeRequestResolverPass extends PrioritizedCompositeServicePass
 {
@@ -21,8 +23,8 @@ final class CompositeRequestResolverPass extends PrioritizedCompositeServicePass
     public function __construct()
     {
         parent::__construct(
-            'coreshop.context.store.request_based.resolver',
-            'coreshop.context.store.request_based.resolver.composite',
+            RequestResolverInterface::class,
+            CompositeRequestResolver::class,
             self::STORE_REQUEST_RESOLVER_TAG,
             'addResolver'
         );

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\MenuBundle\Builder;
 
 use Knp\Menu\FactoryInterface;
@@ -22,5 +24,5 @@ interface MenuBuilderInterface
      * @param FactoryInterface $factory
      * @param string           $type
      */
-    public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type);
+    public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type): void;
 }

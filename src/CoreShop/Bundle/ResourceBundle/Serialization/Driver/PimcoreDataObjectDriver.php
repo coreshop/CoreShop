@@ -10,30 +10,35 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Serialization\Driver;
 
+use Metadata\ClassMetadata;
 use Metadata\Driver\DriverInterface;
 
 class PimcoreDataObjectDriver implements DriverInterface
 {
-    /**
-     * @var DriverInterface
-     */
     protected $decorated;
 
-    /**
-     * @param DriverInterface $decorated
-     */
     public function __construct(DriverInterface $decorated)
     {
         $this->decorated = $decorated;
     }
 
-    public function loadMetadataForClass(\ReflectionClass $class)
+    /**
+     * @param \ReflectionClass $class
+     * @return \Metadata\ClassMetadata|null
+     */
+    public function loadMetadataForClass(\ReflectionClass $class): ?ClassMetadata
     {
-        //We don't want Pimcore entities to be serialized directly
+//        //We don't want Pimcore entities to be serialized directly
         if ($class->getNamespaceName() === 'Pimcore\\Model\\DataObject') {
-            return null;
+            return $classMetadata = new \JMS\Serializer\Metadata\ClassMetadata($name = $class->name);
+        }
+
+        if ($class->getName() === 'Pimcore\\Model\\DataObject\\Fieldcollection') {
+            return $classMetadata = new \JMS\Serializer\Metadata\ClassMetadata($name = $class->name);
         }
 
         return $this->decorated->loadMetadataForClass($class);

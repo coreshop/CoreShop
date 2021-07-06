@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Maintenance;
 
 use CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessorInterface;
@@ -18,20 +20,9 @@ use Pimcore\Maintenance\TaskInterface;
 
 final class RuleAvailabilityTask implements TaskInterface
 {
-    /**
-     * @var ConfigurationServiceInterface
-     */
-    private $configurationService;
+    private ConfigurationServiceInterface $configurationService;
+    private RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor;
 
-    /**
-     * @var RuleAvailabilityProcessorInterface
-     */
-    private $ruleAvailabilityProcessor;
-
-    /**
-     * @param ConfigurationServiceInterface      $configurationService
-     * @param RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor
-     */
     public function __construct(
         ConfigurationServiceInterface $configurationService,
         RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor
@@ -40,7 +31,7 @@ final class RuleAvailabilityTask implements TaskInterface
         $this->ruleAvailabilityProcessor = $ruleAvailabilityProcessor;
     }
 
-    public function execute()
+    public function execute(): void
     {
         $lastMaintenance = $this->configurationService->get('system.rule.availability_check.last_run');
 

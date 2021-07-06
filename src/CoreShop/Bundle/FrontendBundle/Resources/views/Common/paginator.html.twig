@@ -1,8 +1,8 @@
 {% import _self as generator %}
-{% set pages = paginator.getPages() %}
+{% set pages = paginator.getPaginationData %}
 
 {% macro generate_seo_pagination_url(page) %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if page == 1 %}
             {% set pageUrl = pimcore_url({ page: null }) %}
         {% else %}
@@ -11,7 +11,7 @@
 
         {{ pageUrl }}
         {#{{ optimizedUrl }}#}
-    {% endspaceless %}
+    {% endapply %}
 {% endmacro %}
 
 {% if pages.pageCount > 1 %}

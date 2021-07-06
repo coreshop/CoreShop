@@ -16,10 +16,5 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 
 interface CustomerManagerInterface
 {
-    /**
-     * @param CustomerInterface $customer
-     *
-     * @return CustomerInterface
-     */
-    public function persistCustomer(CustomerInterface $customer);
+    public function persistCustomer(CustomerInterface $customer): void;
 }

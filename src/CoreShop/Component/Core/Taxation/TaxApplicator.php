@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Taxation;
 
 use CoreShop\Component\Core\Model\StoreInterface;
@@ -18,11 +20,12 @@ use Webmozart\Assert\Assert;
 
 final class TaxApplicator implements TaxApplicatorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function applyTax($price, array $context, TaxCalculatorInterface $taxCalculator, $withTax = true)
-    {
+    public function applyTax(
+        int $price,
+        array $context,
+        TaxCalculatorInterface $taxCalculator,
+        bool $withTax = true
+    ): int {
         Assert::keyExists($context, 'store');
         Assert::isInstanceOf($context['store'], StoreInterface::class);
 

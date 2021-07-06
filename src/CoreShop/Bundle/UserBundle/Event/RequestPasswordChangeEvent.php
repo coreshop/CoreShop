@@ -17,38 +17,21 @@ use Symfony\Component\EventDispatcher\Event;
 
 final class RequestPasswordChangeEvent extends Event
 {
-    /**
-     * @var UserInterface
-     */
-    private $user;
+    private UserInterface $user;
+    private string $resetLink;
 
-    /**
-     * @var string
-     */
-    private $resetLink;
-
-    /**
-     * @param UserInterface $user
-     * @param string        $resetLink
-     */
-    public function __construct(UserInterface $user, $resetLink)
+    public function __construct(UserInterface $user, string $resetLink)
     {
         $this->user = $user;
         $this->resetLink = $resetLink;
     }
 
-    /**
-     * @return UserInterface
-     */
-    public function getUser()
+    public function getUser(): UserInterface
     {
         return $this->user;
     }
 
-    /**
-     * @return string
-     */
-    public function getResetLink()
+    public function getResetLink(): string
     {
         return $this->resetLink;
     }

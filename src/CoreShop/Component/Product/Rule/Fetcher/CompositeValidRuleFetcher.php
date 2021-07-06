@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Rule\Fetcher;
 
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -17,23 +19,14 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 final class CompositeValidRuleFetcher implements ValidRulesFetcherInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $validRuleFetchers;
+    private ServiceRegistryInterface $validRuleFetchers;
 
-    /**
-     * @param ServiceRegistryInterface $validRuleFetchers
-     */
     public function __construct(ServiceRegistryInterface $validRuleFetchers)
     {
         $this->validRuleFetchers = $validRuleFetchers;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getValidRules(ProductInterface $product, array $context)
+    public function getValidRules(ProductInterface $product, array $context): array
     {
         $rules = [];
 

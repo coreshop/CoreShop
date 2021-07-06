@@ -61,7 +61,7 @@ coreshop.order.order.editInvoice = {
                         fieldLabel: t('coreshop_total_without_tax'),
                         disabled: true,
                         value: invoice.get('totalNet') / pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
-                        renderer: coreshop.util.format.currency.bind(this, currency.symbol)
+                        renderer: coreshop.util.format.currency.bind(this, currency.isoCode)
                     },
                     {
                         xtype: 'textfield',
@@ -69,7 +69,7 @@ coreshop.order.order.editInvoice = {
                         fieldLabel: t('coreshop_total'),
                         disabled: true,
                         value: invoice.get('totalGross') / pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
-                        renderer: coreshop.util.format.currency.bind(this, currency.symbol)
+                        renderer: coreshop.util.format.currency.bind(this, currency.isoCode)
                     },
                     {
                         xtype: 'button',

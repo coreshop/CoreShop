@@ -10,39 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface TaxItemInterface extends ResourceInterface
 {
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): ?string;
 
-    /**
-     * @param string $name
-     */
-    public function setName($name);
+    public function setName(?string $name);
 
-    /**
-     * @return int
-     */
-    public function getRate();
+    public function getRate(): ?float;
 
-    /**
-     * @param int $rate
-     */
-    public function setRate($rate);
+    public function setRate(?float $rate);
 
-    /**
-     * @return int
-     */
-    public function getAmount();
+    public function getAmount(): int;
 
-    /**
-     * @param int $amount
-     */
-    public function setAmount($amount);
+    public function setAmount(int $amount);
 }

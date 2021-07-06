@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Extension;
 
 use CoreShop\Component\Index\Condition\ConditionInterface;
@@ -24,13 +26,11 @@ interface MysqlIndexQueryExtensionInterface extends IndexExtensionInterface
      *
      * @return ConditionInterface[]
      */
-    public function preConditionQuery(IndexInterface $index);
+    public function preConditionQuery(IndexInterface $index): array;
 
     /**
      * @param IndexInterface $index
      * @param QueryBuilder   $queryBuilder
-     *
-     * @return array
      */
-    public function addJoins(IndexInterface $index, QueryBuilder $queryBuilder);
+    public function addJoins(IndexInterface $index, QueryBuilder $queryBuilder): void;
 }

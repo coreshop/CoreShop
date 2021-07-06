@@ -2,4 +2,4 @@
 set -e
 
 echo "BEHAT TESTS"
-vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist
+vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default

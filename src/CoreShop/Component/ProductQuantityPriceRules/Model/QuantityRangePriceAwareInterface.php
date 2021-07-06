@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -19,10 +21,10 @@ interface QuantityRangePriceAwareInterface extends ResourceInterface
     /**
      * @return ProductQuantityPriceRuleInterface[]
      */
-    public function getQuantityPriceRules();
+    public function getQuantityPriceRules(): array;
 
     /**
      * @param array $quantityPriceRules
      */
-    public function setQuantityPriceRules($quantityPriceRules);
+    public function setQuantityPriceRules(array $quantityPriceRules);
 }

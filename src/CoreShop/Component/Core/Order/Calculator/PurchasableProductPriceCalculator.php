@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Order\Calculator;
 
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -21,23 +23,14 @@ use CoreShop\Component\Product\Exception\NoPriceFoundException;
 
 final class PurchasableProductPriceCalculator implements PurchasablePriceCalculatorInterface
 {
-    /**
-     * @var ProductPriceCalculatorInterface
-     */
     private $productPriceCalculator;
 
-    /**
-     * @param ProductPriceCalculatorInterface $productPriceCalculator
-     */
     public function __construct(ProductPriceCalculatorInterface $productPriceCalculator)
     {
         $this->productPriceCalculator = $productPriceCalculator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false)
+    public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int
     {
         if ($purchasable instanceof ProductInterface) {
             try {

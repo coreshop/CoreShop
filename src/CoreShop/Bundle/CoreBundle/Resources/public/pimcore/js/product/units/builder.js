@@ -72,7 +72,7 @@ coreshop.product.unit.builder = Class.create(coreshop.product.unit.builder, {
         }
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/product/validation/unit-definitions-deletion',
+            url: Routing.generate('coreshop_admin_purchasable_validate_unit_definitions'),
             async: false,
             params: {
                 id: this.objectId,
@@ -140,7 +140,7 @@ coreshop.product.unit.builder = Class.create(coreshop.product.unit.builder, {
         removeButton.disable();
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/product/validation/unit-definitions-deletion',
+            url: Routing.generate('coreshop_admin_purchasable_validate_unit_definitions'),
             params: {
                 id: this.objectId,
                 unitDefinitionId: unitDefinitionId

@@ -1,2 +1,5 @@
 Pimcore\Model\AbstractModel:
     exclude: true
+    properties:
+        dao:
+            exclude: true

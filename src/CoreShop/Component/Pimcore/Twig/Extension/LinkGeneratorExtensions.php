@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
 use CoreShop\Component\Pimcore\Templating\Helper\LinkGeneratorHelperInterface;
@@ -18,23 +20,14 @@ use Twig\TwigFunction;
 
 final class LinkGeneratorExtensions extends AbstractExtension
 {
-    /**
-     * @var LinkGeneratorHelperInterface
-     */
-    private $helper;
+    private LinkGeneratorHelperInterface $helper;
 
-    /**
-     * @param LinkGeneratorHelperInterface $helper
-     */
     public function __construct(LinkGeneratorHelperInterface $helper)
     {
         $this->helper = $helper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('coreshop_url', [$this->helper, 'getUrl']),

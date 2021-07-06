@@ -27,13 +27,13 @@ coreshop.rules.action = Class.create({
         // show only defined actions
         Ext.each(this.actions, function (action) {
 
-            if (action == 'abstract')
+            if (action === 'abstract')
                 return;
 
             addMenu.push({
                 iconCls: 'coreshop_rule_icon_action_' + action,
                 text: t('coreshop_action_' + action),
-                handler: _this.addAction.bind(_this, action, null)
+                handler: _this.addAction.bind(_this, action, null, false)
             });
         });
 
@@ -63,14 +63,16 @@ coreshop.rules.action = Class.create({
         }
     },
 
-    addAction: function (type, data) {
+    addAction: function (type, data, dirty) {
         var actionClass = this.getActionClassItem(type);
         var item = new actionClass(this, type, data);
 
         this.actionsContainer.add(item.getLayout());
         this.actionsContainer.updateLayout();
 
-        this.setDirty(true);
+        if (dirty) {
+            this.setDirty(true);
+        }
     },
 
     getActionClassItem: function (type) {

@@ -22,12 +22,12 @@ coreshop.cart.pricerules.panel = Class.create(coreshop.rules.panel, {
     iconCls: 'coreshop_icon_price_rule',
     type: 'coreshop_cart_pricerules',
 
-    url: {
-        add: '/admin/coreshop/cart_price_rules/add',
-        delete: '/admin/coreshop/cart_price_rules/delete',
-        get: '/admin/coreshop/cart_price_rules/get',
-        list: '/admin/coreshop/cart_price_rules/list',
-        config: '/admin/coreshop/cart_price_rules/get-config'
+    routing: {
+        add: 'coreshop_cart_price_rule_add',
+        delete: 'coreshop_cart_price_rule_delete',
+        get: 'coreshop_cart_price_rule_get',
+        list: 'coreshop_cart_price_rule_list',
+        config: 'coreshop_cart_price_rule_getConfig'
     },
 
     getItemClass: function () {

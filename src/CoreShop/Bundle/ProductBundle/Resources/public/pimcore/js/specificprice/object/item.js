@@ -143,7 +143,6 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
     },
 
     getSaveData: function () {
-
         var saveData;
 
         if (!this.settingsForm.getForm()) {
@@ -158,8 +157,7 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
             saveData['id'] = this.data.id;
         }
 
-        return saveData;
-
+        return coreshop.helpers.convertDotNotationToObject(saveData);
     },
 
     getId: function () {

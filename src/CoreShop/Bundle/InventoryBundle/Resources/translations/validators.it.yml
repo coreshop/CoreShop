@@ -1,0 +1,5 @@
+coreshop:
+    cart_item:
+        not_sufficient_stock: '%stockable% non dispone di scorte sufficienti.'
+        quantity_below_min_limit: 'Devi ordinare almeno %limit% unità di %stockable%.'
+        quantity_above_max_limit: 'È possibile ordinare un massimo di %limit% unità di %stockable%.'

@@ -10,35 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Factory;
 
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
 
 class PimcoreRepositoryFactory implements RepositoryFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $repositoryClassName;
+    private string $repositoryClassName;
+    private MetadataInterface $metadata;
+    private Connection $connection;
 
-    /**
-     * @var MetadataInterface
-     */
-    private $metadata;
-
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    /**
-     * @param string            $repositoryClassName
-     * @param MetadataInterface $metadata
-     * @param Connection        $connection
-     */
     public function __construct(string $repositoryClassName, MetadataInterface $metadata, Connection $connection)
     {
         $this->repositoryClassName = $repositoryClassName;

@@ -10,32 +10,26 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Context\Currency;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 
 final class CountryAwareCurrencyContext implements CurrencyContextInterface
 {
-    /**
-     * @var CountryContextInterface
-     */
     private $countryContext;
 
-    /**
-     * @param CountryContextInterface $countryContext
-     */
     public function __construct(CountryContextInterface $countryContext)
     {
         $this->countryContext = $countryContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrency()
+    public function getCurrency(): CurrencyInterface
     {
         /** @var CountryInterface $country */
         $country = $this->countryContext->getCountry();

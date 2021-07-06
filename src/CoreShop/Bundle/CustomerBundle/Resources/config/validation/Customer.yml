@@ -8,4 +8,3 @@ CoreShop\Component\Customer\Model\Customer:
             - NotBlank: { groups: [coreshop] }
         email:
             - NotBlank: { groups: [coreshop] }
-            - Email: { groups: [coreshop] }

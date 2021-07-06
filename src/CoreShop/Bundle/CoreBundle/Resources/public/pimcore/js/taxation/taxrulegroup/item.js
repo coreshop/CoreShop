@@ -35,7 +35,7 @@ coreshop.taxrulegroup.item = Class.create(coreshop.taxrulegroup.item, {
         var statesStore = new Ext.data.Store({
             restful: false,
             proxy: new Ext.data.HttpProxy({
-                url: '/admin/coreshop/states/list'
+                url: Routing.generate('coreshop_state_list')
             }),
             reader: new Ext.data.JsonReader({}, [
                 {name: 'id'},
@@ -63,7 +63,7 @@ coreshop.taxrulegroup.item = Class.create(coreshop.taxrulegroup.item, {
         var countryStore = new Ext.data.Store({
             restful: false,
             proxy: new Ext.data.HttpProxy({
-                url: '/admin/coreshop/countries/list'
+                url: Routing.generate('coreshop_country_list')
             }),
             autoLoad: true,
             reader: new Ext.data.JsonReader({}, [

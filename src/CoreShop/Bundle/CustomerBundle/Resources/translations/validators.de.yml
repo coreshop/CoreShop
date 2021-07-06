@@ -1,6 +1,8 @@
 coreshop:
     form:
         customer:
+            username:
+                unique: 'Dieser Benutzername wird bereits verwendet.'
             email:
                 unique: 'Diese E-Mail-Adresse wird bereits verwendet.'
                 must_match: 'E-Mail-Adressen müssen übereinstimmen.'
@@ -8,3 +10,4 @@ coreshop:
                 must_match: 'Passwörter müssen übereinstimmen.'
         guest:
             email_is_customer: 'Diese E-Mail-Adresse wird bereits verwendet. Bitte melden Sie sich an oder benutzen Sie die "Passwort zurücksetzen" Funktion.'
+            username_is_customer: 'Dieser Benutzername wird bereits verwendet. Bitte melden Sie sich an oder benutzen Sie die "Passwort zurücksetzen" Funktion.'

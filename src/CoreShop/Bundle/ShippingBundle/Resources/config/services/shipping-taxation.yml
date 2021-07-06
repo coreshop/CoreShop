@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.registry.shipping.tax_calculation_strategies:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyInterface
+            - shipping-tax-calculation-strategies
+        tags:
+            - { name: coreshop.registry, type_hint: shippingTaxCalculationStrategies }
+
+    coreshop.form_registry.shipping.tax_calculation_strategies:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry

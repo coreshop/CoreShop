@@ -6,7 +6,7 @@
     background: url(../img/orders.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_order, body.pimcore_version_6 .coreshop_nav_icon_orders {
+body.pimcore_version_10 .coreshop_nav_icon_order, body.pimcore_version_10 .coreshop_nav_icon_orders {
     background: url(../img/orders_white.svg) center center no-repeat !important;
 }
 
@@ -18,7 +18,7 @@ body.pimcore_version_6 .coreshop_nav_icon_order, body.pimcore_version_6 .coresho
     background: url(../img/quotes.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_quote, body.pimcore_version_6 .coreshop_nav_icon_quotes {
+body.pimcore_version_10 .coreshop_nav_icon_quote, body.pimcore_version_10 .coreshop_nav_icon_quotes {
     background: url(../img/quotes_white.svg) center center no-repeat !important;
 }
 
@@ -46,7 +46,7 @@ body.pimcore_version_6 .coreshop_nav_icon_quote, body.pimcore_version_6 .coresho
     background: url(../img/order-create.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_order_create {
+body.pimcore_version_10 .coreshop_nav_icon_order_create {
     background: url(../img/order-create_white.svg) center center no-repeat !important;
 }
 
@@ -58,7 +58,7 @@ body.pimcore_version_6 .coreshop_nav_icon_order_create {
     background: url(../img/quote-create.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_quote_create {
+body.pimcore_version_10 .coreshop_nav_icon_quote_create {
     background: url(../img/quote-create_white.svg) center center no-repeat !important;
 }
 
@@ -94,7 +94,7 @@ body.pimcore_version_6 .coreshop_nav_icon_quote_create {
     background: url(../img/cart.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_carts {
+body.pimcore_version_10 .coreshop_nav_icon_carts {
     background: url(../img/cart_white.svg) center center no-repeat !important;
 }
 
@@ -102,7 +102,7 @@ body.pimcore_version_6 .coreshop_nav_icon_carts {
     background: url(../img/cart-create.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_cart_create {
+body.pimcore_version_10 .coreshop_nav_icon_cart_create {
     background: url(../img/cart-create_white.svg) center center no-repeat !important;
 }
 
@@ -279,7 +279,7 @@ body:not(.pimcore_version_6) .coreshop-detail-grid .x-column-header {
     border-right-color: white;
     font-size: 13px;
 }
-body.pimcore_version_6 .coreshop-detail-grid .x-column-header {
+body.pimcore_version_10 .coreshop-detail-grid .x-column-header {
     font-size: 13px;
     border-right-color: white;
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\RuleBundle\Processor;
 
 use CoreShop\Bundle\RuleBundle\Event\RuleAvailabilityCheckEvent;
@@ -18,30 +20,14 @@ use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
+    private EntityManagerInterface $entityManager;
+    private ServiceRegistryInterface $ruleRegistry;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $ruleRegistry;
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param EntityManagerInterface   $entityManager
-     * @param ServiceRegistryInterface $ruleRegistry
-     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         EntityManagerInterface $entityManager,
@@ -52,10 +38,7 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
         $this->ruleRegistry = $ruleRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process()
+    public function process(): void
     {
         /** @var RuleAvailabilityAssessorInterface $ruleAssessor */
         foreach ($this->ruleRegistry->all() as $ruleAssessor) {
@@ -68,16 +51,12 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
         $this->entityManager->flush();
     }
 
-    /**
-     * @param RuleInterface $rule
-     * @param bool          $ruleIsAvailable
-     */
-    private function processRule(RuleInterface $rule, bool $ruleIsAvailable)
+    private function processRule(RuleInterface $rule, bool $ruleIsAvailable): void
     {
         /** @var RuleAvailabilityCheckEvent $event */
         $event = $this->eventDispatcher->dispatch(
-            'coreshop.rule.availability_check',
-            new RuleAvailabilityCheckEvent($rule, get_class($rule), $ruleIsAvailable)
+            new RuleAvailabilityCheckEvent($rule, get_class($rule), $ruleIsAvailable),
+            'coreshop.rule.availability_check'
         );
 
         if ($event->isAvailable() === false) {

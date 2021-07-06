@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
@@ -25,27 +27,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CustomerType extends AbstractResourceType
 {
-    /**
-     * @var string[]
-     */
     protected $guestValidationGroups = [];
 
-    /**
-     * @param string   $dataClass             FQCN
-     * @param string[] $validationGroups
-     * @param string[] $guestValidationGroups
-     */
-    public function __construct($dataClass, array $validationGroups = [], array $guestValidationGroups = [])
+    public function __construct(string $dataClass, array $validationGroups = [], array $guestValidationGroups = [])
     {
         parent::__construct($dataClass, $validationGroups);
 
         $this->guestValidationGroups = $guestValidationGroups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('gender', ChoiceType::class, [
@@ -60,12 +51,6 @@ class CustomerType extends AbstractResourceType
             ])
             ->add('lastname', TextType::class, [
                 'label' => 'coreshop.form.customer.lastname',
-            ])
-            ->add('email', RepeatedType::class, [
-                'type' => EmailType::class,
-                'invalid_message' => 'coreshop.form.customer.email.must_match',
-                'first_options' => ['label' => 'coreshop.form.customer.email'],
-                'second_options' => ['label' => 'coreshop.form.customer.email_repeat'],
             ]);
 
         $builder
@@ -75,20 +60,14 @@ class CustomerType extends AbstractResourceType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
         $resolver->setDefault('customer', false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_customer';
     }

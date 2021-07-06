@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Worker;
 
 use Symfony\Component\Form\AbstractType;
@@ -18,10 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class MysqlWorkerType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('indexes', CollectionType::class, [
@@ -38,10 +37,7 @@ final class MysqlWorkerType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_worker_mysql';
     }

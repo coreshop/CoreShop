@@ -10,34 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject;
 
 interface ClassInstallerInterface
 {
-    /**
-     * @param string $jsonFile
-     * @param string $brickName
-     *
-     * @return mixed|DataObject\Objectbrick\Definition
-     */
-    public function createBrick($jsonFile, $brickName);
+    public function createBrick(string $jsonFile, string $brickName): DataObject\Objectbrick\Definition;
 
-    /**
-     * @param string $jsonFile
-     * @param string $className
-     * @param bool   $updateClass
-     *
-     * @return DataObject\ClassDefinition
-     */
-    public function createClass($jsonFile, $className, $updateClass = false);
+    public function createClass(string $jsonFile, string $className, bool $updateClass = false): DataObject\ClassDefinition;
 
-    /**
-     * @param string $jsonFile
-     * @param string $name
-     *
-     * @return mixed|null|DataObject\Fieldcollection\Definition
-     */
-    public function createFieldCollection($jsonFile, $name);
+    public function createFieldCollection(string $jsonFile, string $name): DataObject\Fieldcollection\Definition;
 }

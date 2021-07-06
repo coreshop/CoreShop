@@ -10,12 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
@@ -24,23 +26,9 @@ use Doctrine\ORM\Utility\IdentifierFlattener;
 
 class EntityMerger
 {
-    /**
-     * The EntityManager that "owns" this UnitOfWork instance.
-     *
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
+    private IdentifierFlattener $identifierFlattener;
 
-    /**
-     * The IdentifierFlattener used for manipulating identifiers
-     *
-     * @var IdentifierFlattener
-     */
-    private $identifierFlattener;
-
-    /**
-     * @param EntityManagerInterface $em
-     */
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
@@ -117,7 +105,7 @@ class EntityMerger
      * @param mixed $managedCopy
      * @param array $visited
      */
-    private function checkAssociations($entity, $managedCopy, array &$visited)
+    private function checkAssociations($entity, $managedCopy, array &$visited): void
     {
         $class = $this->em->getClassMetadata(get_class($entity));
 
@@ -135,6 +123,17 @@ class EntityMerger
 
             if ($assoc['type'] === ClassMetadata::MANY_TO_MANY) {
                 $newCollection = $origData;
+
+                //Reset new Data, for some reason the line above resets newData
+                $newData = $class->reflFields[$assoc['fieldName']]->getValue($entity);
+
+                if (!$newCollection instanceof PersistentCollection) {
+                    $newCollection = new PersistentCollection(
+                        $this->em,
+                        $class,
+                        $newCollection
+                    );
+                }
 
                 $this->mergeCollection($origData, $newData, $assoc, static function ($foundEntry) use ($newCollection) {
                     $newCollection->removeElement($foundEntry);
@@ -185,7 +184,7 @@ class EntityMerger
      * @param \Closure   $notFound
      * @param array      $visited
      */
-    private function mergeCollection(Collection $from, Collection $to, array $assoc, \Closure $notFound, array &$visited)
+    private function mergeCollection(Collection $from, Collection $to, array $assoc, \Closure $notFound, array &$visited): void
     {
         $assocClass = $this->em->getClassMetadata($assoc['targetEntity']);
 
@@ -242,7 +241,7 @@ class EntityMerger
      *
      * @return array
      */
-    private function getData($entity)
+    private function getData($entity): array
     {
         $actualData = [];
         $class = $this->em->getClassMetadata(get_class($entity));

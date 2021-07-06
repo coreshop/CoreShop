@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer\Configuration;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -17,40 +19,37 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class DocumentConfiguration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('documents');
+        $treeBuilder = new TreeBuilder('documents');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-            ->arrayNode('documents')
-            ->arrayPrototype()
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('key')->cannotBeEmpty()->end()
-            ->scalarNode('type')->cannotBeEmpty()->end()
-            ->scalarNode('path')->cannotBeEmpty()->end()
-            ->scalarNode('module')->end()
-            ->scalarNode('controller')->end()
-            ->scalarNode('action')->end()
-            ->arrayNode('content')
-            ->useAttributeAsKey('language')
-            ->arrayPrototype()
-            ->arrayPrototype()
-            ->children()
-            ->scalarNode('type')->isRequired()->end()
-            ->scalarNode('value')->isRequired()->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
+                ->arrayNode('documents')
+                    ->arrayPrototype()
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('key')->cannotBeEmpty()->end()
+                            ->scalarNode('type')->cannotBeEmpty()->end()
+                            ->scalarNode('path')->end()
+                            ->scalarNode('module')->end()
+                            ->scalarNode('controller')->end()
+                            ->scalarNode('action')->end()
+                            ->arrayNode('content')
+                                ->useAttributeAsKey('language')
+                                ->arrayPrototype()
+                                    ->arrayPrototype()
+                                        ->children()
+                                            ->scalarNode('type')->isRequired()->end()
+                                            ->scalarNode('value')->isRequired()->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

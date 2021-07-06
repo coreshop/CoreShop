@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer\Configuration;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -17,29 +19,26 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class TranslationConfiguration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('translations');
+        $treeBuilder = new TreeBuilder('translations');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-            ->arrayNode('translations')
-            ->useAttributeAsKey('key')
-            ->arrayPrototype()
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('key')->cannotBeEmpty()->end()
-            ->arrayNode('languages')
-            ->useAttributeAsKey('language')
-            ->prototype('scalar')->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
+                ->arrayNode('translations')
+                    ->useAttributeAsKey('key')
+                    ->arrayPrototype()
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('key')->cannotBeEmpty()->end()
+                            ->arrayNode('languages')
+                                ->useAttributeAsKey('language')
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

@@ -4,15 +4,16 @@ services:
 
     CoreShop\Bundle\CoreBundle\EventListener\CartBlamerListener:
         arguments:
-            - '@coreshop.cart_processor'
-            - '@coreshop.context.cart'
-            - '@coreshop.cart.manager'
+            - '@CoreShop\Component\Order\Processor\CartProcessorInterface'
+            - '@CoreShop\Component\Order\Context\CartContextInterface'
+            - '@CoreShop\Component\Order\Manager\CartManagerInterface'
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
             - { name: kernel.event_listener, event: coreshop.customer.register, method: onRegisterEvent }
 
     CoreShop\Bundle\CoreBundle\EventListener\PriceRuleUpdateEventListener:
-        arguments: ['@coreshop.configuration.service']
+        arguments:
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
         tags:
             - { name: kernel.event_listener, event: coreshop.cart_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
             - { name: kernel.event_listener, event: coreshop.cart_price_rule.post_delete, method: storeConfigurationThatPriceRulesChanged }
@@ -21,26 +22,26 @@ services:
 
     CoreShop\Bundle\CoreBundle\EventListener\Order\OrderDocumentWkhtmlPrintOptionsListener:
         arguments:
-            - '@coreshop.configuration.service'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
         tags:
             - { name: kernel.event_listener, event: coreshop.order.shipment.wkhtml.options, method: resolveOptions }
             - { name: kernel.event_listener, event: coreshop.order.invoice.wkhtml.options, method: resolveOptions }
 
     CoreShop\Bundle\CoreBundle\EventListener\Order\OrderMailNoteEventListener:
         arguments:
-            - '@coreshop.object_note_service'
+            - '@CoreShop\Component\Pimcore\DataObject\NoteServiceInterface'
         tags:
             - { name: kernel.event_listener, event: coreshop.mail.post_send, method: onOrderMailSent }
 
     CoreShop\Bundle\CoreBundle\EventListener\ProductUpdateEventListener:
         arguments:
-            - '@coreshop.configuration.service'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: storeConfigurationThatProductChanged }
 
     CoreShop\Bundle\CoreBundle\EventListener\ProductAvailabilityEventListener:
         arguments:
-            - '@coreshop.repository.cart_item'
+            - '@coreshop.repository.order_item'
             - '@Pimcore\Model\Factory'
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: preUpdateListener }
@@ -49,18 +50,18 @@ services:
 
     CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation:
         arguments:
-           - '@coreshop.cart.manager'
-           - '@coreshop.context.shopper'
-           - '@coreshop.configuration.service'
-           - '@pimcore.http.request_helper'
+           - '@CoreShop\Component\Order\Manager\CartManagerInterface'
+           - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+           - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
+           - '@Pimcore\Http\RequestHelper'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: checkPriceRuleState, priority: 0 }
 
     CoreShop\Bundle\CoreBundle\EventListener\RequestCartAvailability:
         arguments:
-           - '@coreshop.cart.manager'
-           - '@coreshop.context.shopper'
-           - '@pimcore.http.request_helper'
+           - '@CoreShop\Component\Order\Manager\CartManagerInterface'
+           - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+           - '@Pimcore\Http\RequestHelper'
            - '@session'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability, priority: 7 }
@@ -72,8 +73,27 @@ services:
             - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: checkCustomerOrdersBeforeDeletion }
             - { name: kernel.event_listener, event: pimcore.dataobject.deleteInfo, method: checkCustomerDeletionAllowed }
 
+    CoreShop\Bundle\CoreBundle\EventListener\CustomerSecurityValidationListener:
+        arguments:
+            - '@Pimcore\Http\RequestHelper'
+            - '@coreshop.repository.customer'
+            - '%coreshop.model.customer.class%'
+            - '%coreshop.customer.security.login_identifier%'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: checkCustomerSecurityDataBeforeUpdate }
+
     CoreShop\Bundle\CoreBundle\EventListener\QuantityRangeUnitValidationListener:
         arguments:
             - '@coreshop.repository.product_unit_definition'
         tags:
             - { name: kernel.event_listener, event: coreshop.product_quantity_price_rules.data_validation, method: validate }
+
+    CoreShop\Bundle\CoreBundle\EventListener\ProductStoreValuesAdminGetListener:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\CoreBundle\EventListener\AdminJavascriptListener:
+        arguments:
+            - '@router'
+        tags:
+            - { name: kernel.event_subscriber }

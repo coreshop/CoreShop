@@ -19,13 +19,13 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_indexes',
     type: 'coreshop_indexes',
 
-    url: {
-        add: '/admin/coreshop/indices/add',
-        delete: '/admin/coreshop/indices/delete',
-        get: '/admin/coreshop/indices/get',
-        list: '/admin/coreshop/indices/list',
-        config: '/admin/coreshop/indices/get-config',
-        types: '/admin/coreshop/indices/get-types'
+    routing: {
+        add: 'coreshop_index_add',
+        delete: 'coreshop_index_delete',
+        get: 'coreshop_index_get',
+        list: 'coreshop_index_list',
+        config: 'coreshop_index_getConfig',
+        types: 'coreshop_index_getTypes'
     },
 
     typesStore: null,
@@ -74,7 +74,7 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
         pimcore.globalmanager.add('coreshop_index_field_types', this.fieldTypeStore);
 
         Ext.Ajax.request({
-            url: this.url.config,
+            url: Routing.generate(this.routing.config),
             method: 'get',
             success: function (response) {
                 try {

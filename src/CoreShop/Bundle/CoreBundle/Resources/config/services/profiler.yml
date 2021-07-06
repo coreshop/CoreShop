@@ -5,8 +5,9 @@ services:
     CoreShop\Bundle\CoreBundle\Collector\CurrencyCollector:
         arguments:
             - '@coreshop.repository.currency'
-            - '@coreshop.context.currency'
-            - '@coreshop.context.store'
+            - '@CoreShop\Component\Currency\Context\CurrencyContextInterface'
+            - '@CoreShop\Component\Store\Context\StoreContextInterface'
+            - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
             - false
         tags:
-            - { name: data_collector, template: 'CoreShopCoreBundle:Collector:currency.html.twig', id: coreshop.currency_collector}
+            - { name: data_collector, template: '@CoreShopCore/Collector/currency.html.twig', id: coreshop.currency_collector}

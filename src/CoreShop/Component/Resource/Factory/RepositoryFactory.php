@@ -10,27 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Factory;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class RepositoryFactory implements RepositoryFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $className;
+    private string $className;
+    private string $repositoryClassName;
 
-    /**
-     * @var string
-     */
-    private $repositoryClassName;
-
-    /**
-     * @param string $className
-     * @param string $repositoryClassName
-     */
     public function __construct(string $className, string $repositoryClassName)
     {
         $this->className = $className;

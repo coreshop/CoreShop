@@ -10,51 +10,51 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Model\Index;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class TestIndex extends AbstractPimcoreModel implements IndexableInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getIndexable()
+    public function getIndexable(IndexInterface $index): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIndexableEnabled()
+    public function getIndexableEnabled(IndexInterface $index): bool
     {
-        return $this->getEnabled();
+        $enabled = $this->getEnabled();
+
+        if (!is_bool($enabled)) {
+            return false;
+        }
+
+        return $enabled;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEnabled()
     {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName($language)
     {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIndexableName($language)
+    public function getIndexableName(IndexInterface $index, string $language): string
     {
-        return $this->getName($language);
+        $name = $this->getName($language);
+
+        if (!is_string($name)) {
+            return '';
+        }
+
+        return $name;
     }
 }

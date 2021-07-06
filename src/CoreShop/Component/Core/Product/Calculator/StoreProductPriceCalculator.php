@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Product\Calculator;
 
 use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface;
@@ -20,10 +22,7 @@ use Webmozart\Assert\Assert;
 
 final class StoreProductPriceCalculator implements ProductRetailPriceCalculatorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         /**
          * @var $subject \CoreShop\Component\Core\Model\ProductInterface
@@ -32,7 +31,7 @@ final class StoreProductPriceCalculator implements ProductRetailPriceCalculatorI
         Assert::keyExists($context, 'store');
         Assert::isInstanceOf($context['store'], StoreInterface::class);
 
-        $storeValues = $subject->getStoreValues($context['store']);
+        $storeValues = $subject->getStoreValuesForStore($context['store']);
 
         if (null === $storeValues) {
             throw new NoRetailPriceFoundException(__CLASS__);

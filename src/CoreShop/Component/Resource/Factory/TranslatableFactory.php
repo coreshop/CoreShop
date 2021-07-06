@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Factory;
 
 use CoreShop\Component\Resource\Exception\UnexpectedTypeException;
@@ -18,31 +20,15 @@ use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderIn
 
 final class TranslatableFactory implements TranslatableFactoryInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
+    private FactoryInterface $factory;
+    private TranslationLocaleProviderInterface $localeProvider;
 
-    /**
-     * @var TranslationLocaleProviderInterface
-     */
-    private $localeProvider;
-
-    /**
-     * @param FactoryInterface                   $factory
-     * @param TranslationLocaleProviderInterface $localeProvider
-     */
     public function __construct(FactoryInterface $factory, TranslationLocaleProviderInterface $localeProvider)
     {
         $this->factory = $factory;
         $this->localeProvider = $localeProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws UnexpectedTypeException
-     */
     public function createNew()
     {
         $resource = $this->factory->createNew();

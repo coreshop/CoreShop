@@ -10,36 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\SEO;
 
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 use CoreShop\Component\SEO\Extractor\ExtractorInterface;
 use CoreShop\Component\SEO\Model\SEOMetadata;
-use Pimcore\Templating\Helper\HeadMeta;
-use Pimcore\Templating\Helper\HeadTitle;
+use Pimcore\Twig\Extension\Templating\HeadMeta;
+use Pimcore\Twig\Extension\Templating\HeadTitle;
 
 class SEOPresentation implements SEOPresentationInterface
 {
-    /**
-     * @var HeadMeta
-     */
-    protected $headMeta;
+    protected HeadMeta $headMeta;
+    protected HeadTitle $headTitle;
+    protected PrioritizedServiceRegistryInterface $extractorRegistry;
 
-    /**
-     * @var HeadTitle
-     */
-    protected $headTitle;
-
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
-    protected $extractorRegistry;
-
-    /**
-     * @param HeadMeta                            $headMeta
-     * @param HeadTitle                           $headTitle
-     * @param PrioritizedServiceRegistryInterface $extractorRegistry
-     */
     public function __construct(
         HeadMeta $headMeta,
         HeadTitle $headTitle,
@@ -50,10 +36,7 @@ class SEOPresentation implements SEOPresentationInterface
         $this->extractorRegistry = $extractorRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function updateSeoMetadata($object)
+    public function updateSeoMetadata($object): void
     {
         $seoMetadata = $this->extractSeoMetaData($object);
 
@@ -84,12 +67,7 @@ class SEOPresentation implements SEOPresentationInterface
         }
     }
 
-    /**
-     * @param mixed $object
-     *
-     * @return SEOMetadata
-     */
-    protected function extractSeoMetaData($object)
+    protected function extractSeoMetaData($object): SEOMetadata
     {
         $seoMetadata = new SEOMetadata();
 

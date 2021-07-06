@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
@@ -22,33 +24,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProductUnitChoiceType extends AbstractType
 {
-    /**
-     * @var ProductUnitRepositoryInterface
-     */
-    protected $productUnitRepository;
+    protected ProductUnitRepositoryInterface $productUnitRepository;
 
-    /**
-     * @param ProductUnitRepositoryInterface $productUnitRepository
-     */
     public function __construct(ProductUnitRepositoryInterface $productUnitRepository)
     {
         $this->productUnitRepository = $productUnitRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['multiple']) {
             $builder->addModelTransformer(new CollectionToArrayTransformer());
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -61,18 +51,12 @@ final class ProductUnitChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_unit_choice';
     }

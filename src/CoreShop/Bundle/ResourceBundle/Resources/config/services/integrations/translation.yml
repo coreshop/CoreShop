@@ -2,29 +2,24 @@ services:
     _defaults:
         public: true
 
-    coreshop.translation_locale_provider.pimcore: '@CoreShop\Component\Resource\Translation\Provider\PimcoreTranslationLocaleProvider'
     CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface: '@CoreShop\Component\Resource\Translation\Provider\PimcoreTranslationLocaleProvider'
     CoreShop\Component\Resource\Translation\Provider\PimcoreTranslationLocaleProvider: ~
 
     CoreShop\Bundle\ResourceBundle\EventListener\ORMTranslatableListener:
         arguments:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
-            - '@service_container'
+            - '@CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface'
         tags:
             - { name: doctrine.event_subscriber, connection: default, priority: 99 }
-
-    coreshop.translatable_entity_locale_assigner:
-        alias: 'CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface'
-        public: true
 
     CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface: '@CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner'
     CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner:
         arguments:
-            - '@coreshop.translation_locale_provider.pimcore'
+            - '@CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface'
 
     CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType:
         arguments:
-            - '@coreshop.translation_locale_provider.pimcore'
+            - '@CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface'
         tags:
             - { name: form.type }
 

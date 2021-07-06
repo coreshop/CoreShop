@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Order;
 
 use CoreShop\Component\Index\Worker\WorkerInterface;
@@ -17,14 +19,13 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 final class OrderRenderer implements OrderRendererInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $registry;
+    private ServiceRegistryInterface $registry;
 
-    /**
-     * {@inheritdoc}
-     */
+    public function __construct(ServiceRegistryInterface $registry)
+    {
+        $this->registry = $registry;
+    }
+
     public function render(WorkerInterface $worker, OrderInterface $condition, string $prefix = null)
     {
         /**
@@ -39,13 +40,5 @@ final class OrderRenderer implements OrderRendererInterface
         throw new \InvalidArgumentException(
             sprintf('No Renderer found for order with type %s', get_class($condition))
         );
-    }
-
-    /**
-     * @param ServiceRegistryInterface $registry
-     */
-    public function __construct(ServiceRegistryInterface $registry)
-    {
-        $this->registry = $registry;
     }
 }

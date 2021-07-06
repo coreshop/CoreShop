@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\MoneyBundle\DataHub\QueryType;
 
 use GraphQL\Type\Definition\Type;
@@ -18,9 +20,6 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class Money extends Input
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->enrichConfig(
@@ -35,9 +34,6 @@ class Money extends Input
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
         return Type::int();

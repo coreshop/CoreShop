@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 use JMS\Serializer\SerializationContext;
@@ -18,23 +20,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class ViewHandler implements ViewHandlerInterface
 {
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
+    private SerializerInterface $serializer;
 
-    /**
-     * @param SerializerInterface $serializer
-     */
     public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle($data, $options = [])
+    public function handle($data, array $options = []): JsonResponse
     {
         $context = SerializationContext::create();
         $context->setSerializeNull(true);

@@ -2,9 +2,8 @@ documents:
   -
     key: 'shop'
     type: 'page'
-    module: 'CoreShopFrontendBundle'
-    controller: '@coreshop.frontend.controller.index'
-    action: 'index'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\IndexController:indexAction'
+    path: ''
 
   -
     key: 'email'
@@ -14,9 +13,7 @@ documents:
   -
     key: 'user-registered'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController::mailAction'
     path: 'shop/email'
     content:
       de:
@@ -24,7 +21,7 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>
-              Hallo %Text(firstname); %Text(lastname);,<br/>
+              Hallo {{ firstname }} {{ lastname }},<br/>
               vielen Dank für die Registrierung in unserem Shop.
             </p>
         head:
@@ -38,7 +35,7 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>
-              Hi %Text(firstname); %Text(lastname);,<br/>
+              Hi {{ firstname }} {{ lastname }},<br/>
               thanks for registering to our shop.
             </p>
         head:
@@ -47,13 +44,25 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Registrierung erfolgreich abgeschlossen'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao {{ firstname }} {{ lastname }},<br/>
+              grazie per esserti registrato al nostro negozio.
+            </p>
+        head:
+          type: 'input'
+          value: 'Registrazione completata'
+        subject:
+          type: 'objectProperty'
+          value: 'Registrazione completata'
 
   -
     key: 'user-reset-password'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:mailAction'
     path: 'shop/email'
     content:
       de:
@@ -61,9 +70,9 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>
-              Hallo %Text(firstname); %Text(lastname);<br/>
+              Hallo {{ firstname }} {{ lastname }}<br/>
               <br/>
-              bitte klicken Sie auf folgenden Link, um Ihr Passwort zurückzusetzen: %Text(resetLink);
+              bitte klicken Sie auf folgenden Link, um Ihr Passwort zurückzusetzen: {{ resetLink }}
             </p>
         head:
           type: 'input'
@@ -76,9 +85,9 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>
-              Hi %Text(firstname); %Text(lastname);<br/>
+              Hi {{ firstname }} {{ lastname }}<br/>
               <br/>
-              please click on the link to reset your password: %Text(resetLink);
+              please click on the link to reset your password: {{ resetLink }}
             </p>
         head:
           type: 'input'
@@ -86,13 +95,26 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Reset Password'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao {{ firstname }} {{ lastname }}<br/>
+              <br/>
+              clicca sul link per reimpostare la password: {{ resetLink }}
+            </p>
+        head:
+          type: 'input'
+          value: 'Resetta la password'
+        subject:
+          type: 'objectProperty'
+          value: 'Resetta la password'
 
   -
     key: 'user-newsletter-confirm'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:mailAction'
     path: 'shop/email'
     content:
       de:
@@ -100,9 +122,9 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>
-              Hallo %Text(firstname); %Text(lastname);<br/>
+              Hallo {{ firstname }} {{ lastname }}<br/>
               <br/>
-              bitte klicken Sie auf folgenden Link, um Ihre Newsletter Anmeldung zu bestätigen: %Text(confirmLink);
+              bitte klicken Sie auf folgenden Link, um Ihre Newsletter Anmeldung zu bestätigen: {{ confirmLink }}
             </p>
         head:
           type: 'input'
@@ -115,9 +137,9 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>
-              Hi %Text(firstname); %Text(lastname);<br/>
+              Hi {{ firstname }} {{ lastname }}<br/>
               <br/>
-              please click on the link to confirm your newsletter subscription: %Text(confirmLink);
+              please click on the link to confirm your newsletter subscription: {{ confirmLink }}
             </p>
         head:
           type: 'input'
@@ -125,13 +147,26 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Confirm Newsletter'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao {{ firstname }} {{ lastname }}<br/>
+              <br/>
+              clicca sul link per confermare l'iscrizione alla newsletter: {{ confirmLink }}
+            </p>
+        head:
+          type: 'input'
+          value: 'Conferma newsletter'
+        subject:
+          type: 'objectProperty'
+          value: 'Conferma newsletter'
 
   -
     key: 'user-newsletter-confirmed'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:mailAction'
     path: 'shop/email'
     content:
       de:
@@ -139,7 +174,7 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>
-              Hallo %Text(firstname); %Text(lastname);<br/>
+              Hallo {{ firstname }} {{ lastname }}<br/>
               <br/>
               Ihre Newsletter Anmeldung ist nun bestätigt.
             </p>
@@ -154,7 +189,7 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>
-              Hi %Text(firstname); %Text(lastname);<br/>
+              Hi {{ firstname }} {{ lastname }}<br/>
               <br/>
               your newsletter subscription is now confirmed.
             </p>
@@ -164,13 +199,26 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Newsletter subscription confirmed'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao {{ firstname }} {{ lastname }}<br/>
+              <br/>
+              la tua iscrizione alla newsletter è stata confermata.
+            </p>
+        head:
+          type: 'input'
+          value: 'Iscrizione alla newsletter confermata'
+        subject:
+          type: 'objectProperty'
+          value: 'Iscrizione alla newsletter confermata'
 
   -
     key: 'order-confirmation'
     type: 'email'
-    action: 'order-confirmation'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:orderConfirmationAction'
     path: 'shop/email'
     content:
       de:
@@ -178,36 +226,48 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>
-              Hallo %Text(firstname); %Text(lastname);,<br/>
-              Ihre Bestellung mit der Nummer %Text(orderNumber); ist bei uns eingangen.
+              Hallo {{ firstname }} {{ lastname }},<br/>
+              Ihre Bestellung mit der Nummer {{ orderNumber }} ist bei uns eingangen.
             </p>
         head:
           type: 'input'
-          value: 'Bestellbestätigung %Text(orderNumber);'
+          value: 'Bestellbestätigung {{ orderNumber }}'
         subject:
           type: 'objectProperty'
-          value: 'Bestellbestätigung %Text(orderNumber);'
+          value: 'Bestellbestätigung {{ orderNumber }}'
       en:
         text:
           type: 'wysiwyg'
           value: >
             <p>
-              Hi %Text(firstname); %Text(lastname);,<br/>
-              your order with the reference %Text(orderNumber); has been received by us.
+              Hi {{ firstname }} {{ lastname }},<br/>
+              your order with the reference {{ orderNumber }} has been received by us.
             </p>
         head:
           type: 'input'
-          value: 'Order Confirmation %Text(orderNumber);'
+          value: 'Order Confirmation {{ orderNumber }}'
         subject:
           type: 'objectProperty'
-          value: 'Order Confirmation %Text(orderNumber);'
+          value: 'Order Confirmation {{ orderNumber }}'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao {{ firstname }} {{ lastname }},<br/>
+              il tuo ordine con riferimento {{ orderNumber }} è stato ricevuto.
+            </p>
+        head:
+          type: 'input'
+          value: 'Conferma ordine {{ orderNumber }}'
+        subject:
+          type: 'objectProperty'
+          value: 'Conferma ordine {{ orderNumber }}'
 
   -
     key: 'order-shipped'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:mailAction'
     path: 'shop/email'
     content:
       de:
@@ -215,35 +275,47 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>
-              Hallo %Text(firstname); %Text(lastname);,<br/>
-              Ihre Bestellung Nr. %Text(orderNumber); wurde soeben versendet.
+              Hallo {{ firstname }} {{ lastname }},<br/>
+              Ihre Bestellung Nr. {{ orderNumber }} wurde soeben versendet.
             </p>
         head:
           type: 'input'
-          value: 'Ihre Bestellung wurde versandt %Text(orderNumber);'
+          value: 'Ihre Bestellung wurde versandt {{ orderNumber }}'
         subject:
           type: 'objectProperty'
-          value: 'Ihre Bestellung wurde versandt %Text(orderNumber);'
+          value: 'Ihre Bestellung wurde versandt {{ orderNumber }}'
       en:
         text:
           type: 'wysiwyg'
           value: >
             <p>
-              Hi %Text(firstname); %Text(lastname);,<br/>
-              your order %Text(orderNumber); has been shipped.
+              Hi {{ firstname }} {{ lastname }},<br/>
+              your order {{ orderNumber }} has been shipped.
             </p>
         head:
           type: 'input'
-          value: 'Your order has been shipped %Text(orderNumber);'
+          value: 'Your order has been shipped {{ orderNumber }}'
         subject:
           type: 'objectProperty'
-          value: 'Your order has been shipped %Text(orderNumber);'
+          value: 'Your order has been shipped {{ orderNumber }}'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao {{ firstname }} {{ lastname }},<br/>
+              il tuo ordine {{ orderNumber }} è stato spedito.
+            </p>
+        head:
+          type: 'input'
+          value: 'Il tuo ordine è stato spedito {{ orderNumber }}'
+        subject:
+          type: 'objectProperty'
+          value: 'Il tuo ordine è stato spedito {{ orderNumber }}'
   -
     key: 'user-order-comment'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\MailController:mailAction'
     path: 'shop/email'
     content:
       de:
@@ -251,22 +323,34 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>Hinweise zu Ihrer Bestellung:</p>
-            <p>%DataObject(comment,{"method" : "getDescription"});</p>
+            <p>{{ comment.description }}</p>
         head:
           type: 'input'
-          value: 'Hinweise zu Ihrer Bestellung %Text(orderNumber);'
+          value: 'Hinweise zu Ihrer Bestellung {{ orderNumber }}'
         subject:
           type: 'objectProperty'
-          value: 'Hinweise zu Ihrer Bestellung %Text(orderNumber);'
+          value: 'Hinweise zu Ihrer Bestellung {{ orderNumber }}'
       en:
         text:
           type: 'wysiwyg'
           value: >
             <p>Notes on your order:</p>
-            <p>%DataObject(comment,{"method" : "getDescription"});</p>
+            <p>{{ comment.description }}</p>
         head:
           type: 'input'
-          value: 'Notes on your order %Text(orderNumber);'
+          value: 'Notes on your order {{ orderNumber }}'
         subject:
           type: 'objectProperty'
-          value: 'Notes on your order %Text(orderNumber);'
+          value: 'Notes on your order {{ orderNumber }}'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>Note sul tuo ordine:</p>
+            <p>{{ comment.description }}</p>
+        head:
+          type: 'input'
+          value: 'Note sul suo ordine {{ orderNumber }}'
+        subject:
+          type: 'objectProperty'
+          value: 'Note sul suo ordine {{ orderNumber }}'

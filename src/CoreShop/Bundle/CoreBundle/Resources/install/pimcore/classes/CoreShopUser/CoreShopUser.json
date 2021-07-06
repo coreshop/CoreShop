@@ -1,4 +1,5 @@
 {
+    "id": "cs_user",
     "description": null,
     "parentClass": "CoreShop\\Component\\Core\\Model\\User",
     "listingParentClass": null,
@@ -7,6 +8,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
@@ -173,7 +175,7 @@
     },
     "icon": null,
     "previewUrl": null,
-    "group": null,
+    "group": "CoreShop",
     "linkGeneratorReference": null,
     "propertyVisibility": {
         "grid": {

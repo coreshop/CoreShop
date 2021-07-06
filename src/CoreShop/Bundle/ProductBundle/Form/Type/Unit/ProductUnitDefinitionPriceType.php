@@ -10,34 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
+use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionPriceInterface;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 final class ProductUnitDefinitionPriceType extends AbstractResourceType
 {
-    /**
-     * @var int
-     */
-    protected $decimalFactor;
+    protected int $decimalFactor;
+    protected int $decimalPrecision;
 
-    /**
-     * @var int
-     */
-    protected $decimalPrecision;
-
-    /**
-     * @param string $dataClass
-     * @param array  $validationGroups
-     * @param int    $decimalFactor
-     * @param int    $decimalPrecision
-     */
-    public function __construct($dataClass, array $validationGroups, int $decimalFactor, int $decimalPrecision)
+    public function __construct(string $dataClass, array $validationGroups, int $decimalFactor, int $decimalPrecision)
     {
         parent::__construct($dataClass, $validationGroups);
 
@@ -45,43 +31,14 @@ final class ProductUnitDefinitionPriceType extends AbstractResourceType
         $this->decimalPrecision = $decimalPrecision;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
-
         $builder
-            ->add('price', IntegerType::class)
+            ->add('price', MoneyType::class)
             ->add('unitDefinition', ProductUnitDefinitionSelectionType::class);
     }
 
-    /**
-     * @param FormEvent $event
-     */
-    public function onPreSubmit(FormEvent $event)
-    {
-        /** @var ProductUnitDefinitionPriceInterface $data */
-        $data = $event->getData();
-
-        if (!isset($data['price'])) {
-            return;
-        }
-
-        if (!is_numeric($data['price'])) {
-            $data['price'] = 0;
-        } else {
-            $data['price'] = (int) round((round($data['price'], $this->decimalPrecision) * $this->decimalFactor), 0);
-        }
-
-        $event->setData($data);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_unit_definition_price';
     }

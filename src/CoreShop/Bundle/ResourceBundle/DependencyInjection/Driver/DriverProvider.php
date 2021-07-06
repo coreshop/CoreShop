@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -25,14 +27,7 @@ final class DriverProvider
      */
     private static $drivers = [];
 
-    /**
-     * @param MetadataInterface $metadata
-     *
-     * @return DriverInterface
-     *
-     * @throws UnknownDriverException
-     */
-    public static function get(MetadataInterface $metadata)
+    public static function get(MetadataInterface $metadata): DriverInterface
     {
         $type = $metadata->getDriver();
 

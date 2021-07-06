@@ -1,14 +1,20 @@
 {
+    "id": "cs_order",
     "description": null,
     "parentClass": "CoreShop\\Component\\Core\\Model\\Order",
+    "listingParentClass": null,
     "useTraits": null,
+    "listingUseTraits": null,
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
+    "cacheRawRelationData": false,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
         "layout": null,
+        "border": false,
         "name": "pimcore_root",
         "type": null,
         "region": null,
@@ -16,13 +22,15 @@
         "width": null,
         "height": null,
         "collapsible": false,
-        "collapsed": null,
+        "collapsed": false,
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
         "childs": [
             {
                 "fieldtype": "tabpanel",
+                "border": false,
+                "tabPosition": "top",
                 "name": "Layout",
                 "type": null,
                 "region": null,
@@ -30,7 +38,7 @@
                 "width": null,
                 "height": null,
                 "collapsible": false,
-                "collapsed": null,
+                "collapsed": false,
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
@@ -39,10 +47,11 @@
                         "fieldtype": "panel",
                         "labelWidth": 100,
                         "layout": null,
-                        "name": "Order",
+                        "border": false,
+                        "name": "order",
                         "type": null,
                         "region": null,
-                        "title": "Order",
+                        "title": "coreshop.order.order",
                         "width": null,
                         "height": null,
                         "collapsible": false,
@@ -54,10 +63,15 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
                                 "columnLength": 190,
+                                "phpdocType": "string",
                                 "regex": "",
+                                "unique": null,
+                                "showCharCount": null,
                                 "name": "orderNumber",
-                                "title": "Order Number",
+                                "title": "coreshop.order.number",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -74,11 +88,40 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
                                 "columnLength": 190,
+                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
+                                "showCharCount": false,
+                                "name": "saleState",
+                                "title": "coreshop.order.sale_state",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "input",
+                                "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "phpdocType": "string",
+                                "regex": "",
+                                "unique": false,
+                                "showCharCount": null,
                                 "name": "token",
-                                "title": "Token",
+                                "title": "coreshop.order.token",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -95,8 +138,11 @@
                             {
                                 "fieldtype": "checkbox",
                                 "defaultValue": 0,
+                                "queryColumnType": "tinyint(1)",
+                                "columnType": "tinyint(1)",
+                                "phpdocType": "boolean",
                                 "name": "backendCreated",
-                                "title": "Backend Created",
+                                "title": "coreshop.order.backend_created",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -112,10 +158,13 @@
                             },
                             {
                                 "fieldtype": "datetime",
+                                "queryColumnType": "bigint(20)",
+                                "columnType": "bigint(20)",
+                                "phpdocType": "\\Carbon\\Carbon",
                                 "defaultValue": null,
                                 "useCurrentDate": false,
                                 "name": "orderDate",
-                                "title": "Order Date",
+                                "title": "coreshop.order.date",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -318,6 +367,14 @@
                                         "value": "as_IN"
                                     },
                                     {
+                                        "key": "Asturian",
+                                        "value": "ast"
+                                    },
+                                    {
+                                        "key": "Asturian (Spain)",
+                                        "value": "ast_ES"
+                                    },
+                                    {
                                         "key": "Asu",
                                         "value": "asa"
                                     },
@@ -327,11 +384,11 @@
                                     },
                                     {
                                         "key": "Azerbaijani",
-                                        "value": "az_Cyrl"
+                                        "value": "az"
                                     },
                                     {
                                         "key": "Azerbaijani",
-                                        "value": "az"
+                                        "value": "az_Cyrl"
                                     },
                                     {
                                         "key": "Azerbaijani",
@@ -423,10 +480,6 @@
                                     },
                                     {
                                         "key": "Bosnian",
-                                        "value": "bs_Latn"
-                                    },
-                                    {
-                                        "key": "Bosnian",
                                         "value": "bs"
                                     },
                                     {
@@ -434,12 +487,16 @@
                                         "value": "bs_Cyrl"
                                     },
                                     {
-                                        "key": "Bosnian (Bosnia & Herzegovina)",
-                                        "value": "bs_Latn_BA"
+                                        "key": "Bosnian",
+                                        "value": "bs_Latn"
                                     },
                                     {
                                         "key": "Bosnian (Bosnia & Herzegovina)",
                                         "value": "bs_Cyrl_BA"
+                                    },
+                                    {
+                                        "key": "Bosnian (Bosnia & Herzegovina)",
+                                        "value": "bs_Latn_BA"
                                     },
                                     {
                                         "key": "Breton",
@@ -464,6 +521,14 @@
                                     {
                                         "key": "Burmese (Myanmar (Burma))",
                                         "value": "my_MM"
+                                    },
+                                    {
+                                        "key": "Cantonese",
+                                        "value": "yue"
+                                    },
+                                    {
+                                        "key": "Cantonese (Hong Kong SAR China)",
+                                        "value": "yue_HK"
                                     },
                                     {
                                         "key": "Catalan",
@@ -519,15 +584,15 @@
                                     },
                                     {
                                         "key": "Chinese",
+                                        "value": "zh_Hant"
+                                    },
+                                    {
+                                        "key": "Chinese",
                                         "value": "zh_Hans"
                                     },
                                     {
                                         "key": "Chinese",
                                         "value": "zh"
-                                    },
-                                    {
-                                        "key": "Chinese",
-                                        "value": "zh_Hant"
                                     },
                                     {
                                         "key": "Chinese (China)",
@@ -2167,15 +2232,15 @@
                                     },
                                     {
                                         "key": "Punjabi",
-                                        "value": "pa"
-                                    },
-                                    {
-                                        "key": "Punjabi",
                                         "value": "pa_Guru"
                                     },
                                     {
                                         "key": "Punjabi",
                                         "value": "pa_Arab"
+                                    },
+                                    {
+                                        "key": "Punjabi",
+                                        "value": "pa"
                                     },
                                     {
                                         "key": "Punjabi (India)",
@@ -2323,7 +2388,7 @@
                                     },
                                     {
                                         "key": "Serbian",
-                                        "value": "sr_Cyrl"
+                                        "value": "sr"
                                     },
                                     {
                                         "key": "Serbian",
@@ -2331,7 +2396,7 @@
                                     },
                                     {
                                         "key": "Serbian",
-                                        "value": "sr"
+                                        "value": "sr_Cyrl"
                                     },
                                     {
                                         "key": "Serbian (Bosnia & Herzegovina)",
@@ -2343,27 +2408,27 @@
                                     },
                                     {
                                         "key": "Serbian (Kosovo)",
-                                        "value": "sr_Cyrl_XK"
-                                    },
-                                    {
-                                        "key": "Serbian (Kosovo)",
                                         "value": "sr_Latn_XK"
                                     },
                                     {
-                                        "key": "Serbian (Montenegro)",
-                                        "value": "sr_Cyrl_ME"
+                                        "key": "Serbian (Kosovo)",
+                                        "value": "sr_Cyrl_XK"
                                     },
                                     {
                                         "key": "Serbian (Montenegro)",
                                         "value": "sr_Latn_ME"
                                     },
                                     {
-                                        "key": "Serbian (Serbia)",
-                                        "value": "sr_Cyrl_RS"
+                                        "key": "Serbian (Montenegro)",
+                                        "value": "sr_Cyrl_ME"
                                     },
                                     {
                                         "key": "Serbian (Serbia)",
                                         "value": "sr_Latn_RS"
+                                    },
+                                    {
+                                        "key": "Serbian (Serbia)",
+                                        "value": "sr_Cyrl_RS"
                                     },
                                     {
                                         "key": "Shambala",
@@ -2611,10 +2676,6 @@
                                     },
                                     {
                                         "key": "Tachelhit",
-                                        "value": "shi_Tfng"
-                                    },
-                                    {
-                                        "key": "Tachelhit",
                                         "value": "shi"
                                     },
                                     {
@@ -2622,12 +2683,16 @@
                                         "value": "shi_Latn"
                                     },
                                     {
-                                        "key": "Tachelhit (Morocco)",
-                                        "value": "shi_Tfng_MA"
+                                        "key": "Tachelhit",
+                                        "value": "shi_Tfng"
                                     },
                                     {
                                         "key": "Tachelhit (Morocco)",
                                         "value": "shi_Latn_MA"
+                                    },
+                                    {
+                                        "key": "Tachelhit (Morocco)",
+                                        "value": "shi_Tfng_MA"
                                     },
                                     {
                                         "key": "Taita",
@@ -2775,7 +2840,7 @@
                                     },
                                     {
                                         "key": "Uzbek",
-                                        "value": "uz_Cyrl"
+                                        "value": "uz_Latn"
                                     },
                                     {
                                         "key": "Uzbek",
@@ -2787,7 +2852,7 @@
                                     },
                                     {
                                         "key": "Uzbek",
-                                        "value": "uz_Latn"
+                                        "value": "uz_Cyrl"
                                     },
                                     {
                                         "key": "Uzbek (Afghanistan)",
@@ -2795,15 +2860,15 @@
                                     },
                                     {
                                         "key": "Uzbek (Uzbekistan)",
-                                        "value": "uz_Latn_UZ"
-                                    },
-                                    {
-                                        "key": "Uzbek (Uzbekistan)",
                                         "value": "uz_Cyrl_UZ"
                                     },
                                     {
+                                        "key": "Uzbek (Uzbekistan)",
+                                        "value": "uz_Latn_UZ"
+                                    },
+                                    {
                                         "key": "Vai",
-                                        "value": "vai_Vaii"
+                                        "value": "vai_Latn"
                                     },
                                     {
                                         "key": "Vai",
@@ -2811,15 +2876,15 @@
                                     },
                                     {
                                         "key": "Vai",
-                                        "value": "vai_Latn"
-                                    },
-                                    {
-                                        "key": "Vai (Liberia)",
-                                        "value": "vai_Latn_LR"
+                                        "value": "vai_Vaii"
                                     },
                                     {
                                         "key": "Vai (Liberia)",
                                         "value": "vai_Vaii_LR"
+                                    },
+                                    {
+                                        "key": "Vai (Liberia)",
+                                        "value": "vai_Latn_LR"
                                     },
                                     {
                                         "key": "Vietnamese",
@@ -2910,8 +2975,13 @@
                                 "defaultValue": null,
                                 "optionsProviderClass": null,
                                 "optionsProviderData": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "phpdocType": "string",
+                                "dynamicOptions": false,
                                 "name": "localeCode",
-                                "title": "Locale",
+                                "title": "coreshop.order.locale",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -2927,14 +2997,19 @@
                             },
                             {
                                 "fieldtype": "coreShopCarrier",
+                                "phpdocType": "CoreShop\\Component\\Shipping\\Model\\CarrierInterface",
                                 "allowEmpty": false,
                                 "options": null,
                                 "width": "",
                                 "defaultValue": null,
                                 "optionsProviderClass": null,
                                 "optionsProviderData": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "dynamicOptions": false,
                                 "name": "carrier",
-                                "title": "Carrier",
+                                "title": "coreshop.order.carrier",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -2956,8 +3031,13 @@
                                 "defaultValue": null,
                                 "optionsProviderClass": null,
                                 "optionsProviderData": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "phpdocType": "string",
+                                "dynamicOptions": false,
                                 "name": "store",
-                                "title": "Store",
+                                "title": "coreshop.order.store",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -2973,14 +3053,19 @@
                             },
                             {
                                 "fieldtype": "coreShopPaymentProvider",
+                                "phpdocType": "CoreShop\\Component\\Payment\\Model\\PaymentProvider",
                                 "allowEmpty": false,
                                 "options": null,
                                 "width": "",
                                 "defaultValue": null,
                                 "optionsProviderClass": null,
                                 "optionsProviderData": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "dynamicOptions": false,
                                 "name": "paymentProvider",
-                                "title": "Payment Provider",
+                                "title": "coreshop.order.payment_provider",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -2995,30 +3080,35 @@
                                 "visibleSearch": false
                             },
                             {
-                              "fieldtype": "coreShopSerializedData",
-                              "allowedTypes": [],
-                              "maxItems": 1,
-                              "name": "paymentSettings",
-                              "title": "Payment Settings",
-                              "tooltip": "",
-                              "mandatory": false,
-                              "noteditable": true,
-                              "index": false,
-                              "locked": null,
-                              "style": "",
-                              "permissions": null,
-                              "datatype": "data",
-                              "relationType": false,
-                              "invisible": false,
-                              "visibleGridView": false,
-                              "visibleSearch": false
+                                "fieldtype": "coreShopSerializedData",
+                                "phpdocType": null,
+                                "name": "paymentSettings",
+                                "title": "coreshop.order.payment_settings",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             },
                             {
                                 "fieldtype": "textarea",
                                 "width": 350,
                                 "height": "",
+                                "maxLength": null,
+                                "showCharCount": null,
+                                "excludeFromSearchIndex": false,
+                                "queryColumnType": "longtext",
+                                "columnType": "longtext",
+                                "phpdocType": "string",
                                 "name": "comment",
-                                "title": "Comment",
+                                "title": "coreshop.order.comment",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -3034,10 +3124,12 @@
                             },
                             {
                                 "fieldtype": "objectbricks",
+                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Objectbrick",
                                 "allowedTypes": [],
                                 "maxItems": "",
+                                "border": false,
                                 "name": "additionalData",
-                                "title": "Additional Data",
+                                "title": "coreshop.order.additional_data",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -3052,16 +3144,18 @@
                                 "visibleSearch": false
                             }
                         ],
-                        "locked": false
+                        "locked": false,
+                        "icon": null
                     },
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
                         "layout": null,
-                        "name": "Status",
+                        "border": false,
+                        "name": "status",
                         "type": null,
                         "region": null,
-                        "title": "Status",
+                        "title": "coreshop.order.status",
                         "width": null,
                         "height": null,
                         "collapsible": false,
@@ -3073,11 +3167,15 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
                                 "columnLength": 190,
+                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
+                                "showCharCount": null,
                                 "name": "orderState",
-                                "title": "Order State",
+                                "title": "coreshop.order.order_state",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -3094,11 +3192,15 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
                                 "columnLength": 190,
+                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
+                                "showCharCount": null,
                                 "name": "paymentState",
-                                "title": "Payment State",
+                                "title": "coreshop.order.payment_state",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -3115,11 +3217,15 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
                                 "columnLength": 190,
+                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
+                                "showCharCount": null,
                                 "name": "shippingState",
-                                "title": "Shipping State",
+                                "title": "coreshop.order.shipping_state",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -3136,11 +3242,15 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
                                 "columnLength": 190,
+                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
+                                "showCharCount": null,
                                 "name": "invoiceState",
-                                "title": "Invoice State",
+                                "title": "coreshop.order.invoice_state",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -3155,14 +3265,17 @@
                                 "visibleSearch": false
                             }
                         ],
-                        "locked": false
+                        "locked": false,
+                        "icon": null
                     },
                     {
                         "fieldtype": "tabpanel",
-                        "name": "Numbers",
+                        "border": false,
+                        "tabPosition": "top",
+                        "name": "numbers",
                         "type": null,
                         "region": null,
-                        "title": "Numbers",
+                        "title": "coreshop.order.numbers",
                         "width": null,
                         "height": null,
                         "collapsible": false,
@@ -3175,10 +3288,11 @@
                                 "fieldtype": "panel",
                                 "labelWidth": 100,
                                 "layout": null,
-                                "name": "Numbers (converted)",
+                                "border": false,
+                                "name": "numbers_store",
                                 "type": null,
                                 "region": null,
-                                "title": "Numbers (Converted)",
+                                "title": "coreshop.order.numbers_store",
                                 "width": null,
                                 "height": null,
                                 "collapsible": false,
@@ -3195,8 +3309,13 @@
                                         "defaultValue": null,
                                         "optionsProviderClass": null,
                                         "optionsProviderData": null,
-                                        "name": "currency",
-                                        "title": "Currency",
+                                        "queryColumnType": "varchar",
+                                        "columnType": "varchar",
+                                        "columnLength": 190,
+                                        "phpdocType": "string",
+                                        "dynamicOptions": false,
+                                        "name": "baseCurrency",
+                                        "title": "coreshop.order.base_currency",
                                         "tooltip": "",
                                         "mandatory": false,
                                         "noteditable": true,
@@ -3213,112 +3332,10 @@
                                     {
                                         "fieldtype": "fieldset",
                                         "labelWidth": 100,
-                                        "name": "Totals",
+                                        "name": "totals",
                                         "type": null,
                                         "region": null,
-                                        "title": "",
-                                        "width": null,
-                                        "height": null,
-                                        "collapsible": false,
-                                        "collapsed": false,
-                                        "bodyStyle": "",
-                                        "datatype": "layout",
-                                        "permissions": null,
-                                        "childs": [
-                                            {
-                                                "fieldtype": "coreShopMoney",
-                                                "width": "",
-                                                "defaultValue": null,
-                                                "minValue": null,
-                                                "maxValue": null,
-                                                "name": "totalNet",
-                                                "title": "totalNet",
-                                                "tooltip": "",
-                                                "mandatory": false,
-                                                "noteditable": true,
-                                                "index": false,
-                                                "locked": false,
-                                                "style": "",
-                                                "permissions": null,
-                                                "datatype": "data",
-                                                "relationType": false,
-                                                "invisible": false,
-                                                "visibleGridView": false,
-                                                "visibleSearch": false
-                                            },
-                                            {
-                                                "fieldtype": "coreShopMoney",
-                                                "width": "",
-                                                "defaultValue": null,
-                                                "minValue": null,
-                                                "maxValue": null,
-                                                "name": "totalGross",
-                                                "title": "Total Gross",
-                                                "tooltip": "",
-                                                "mandatory": false,
-                                                "noteditable": true,
-                                                "index": false,
-                                                "locked": false,
-                                                "style": "",
-                                                "permissions": null,
-                                                "datatype": "data",
-                                                "relationType": false,
-                                                "invisible": false,
-                                                "visibleGridView": false,
-                                                "visibleSearch": false
-                                            },
-                                            {
-                                                "fieldtype": "coreShopMoney",
-                                                "width": "",
-                                                "defaultValue": null,
-                                                "minValue": null,
-                                                "maxValue": null,
-                                                "name": "subtotalNet",
-                                                "title": "Subtotal Net",
-                                                "tooltip": "",
-                                                "mandatory": false,
-                                                "noteditable": true,
-                                                "index": false,
-                                                "locked": false,
-                                                "style": "",
-                                                "permissions": null,
-                                                "datatype": "data",
-                                                "relationType": false,
-                                                "invisible": false,
-                                                "visibleGridView": false,
-                                                "visibleSearch": false
-                                            },
-                                            {
-                                                "fieldtype": "coreShopMoney",
-                                                "width": "",
-                                                "defaultValue": null,
-                                                "minValue": null,
-                                                "maxValue": null,
-                                                "name": "subtotalGross",
-                                                "title": "subtotal Gross",
-                                                "tooltip": "",
-                                                "mandatory": false,
-                                                "noteditable": true,
-                                                "index": false,
-                                                "locked": false,
-                                                "style": "",
-                                                "permissions": null,
-                                                "datatype": "data",
-                                                "relationType": false,
-                                                "invisible": false,
-                                                "visibleGridView": false,
-                                                "visibleSearch": false
-                                            }
-                                        ],
-                                        "locked": false
-                                    },
-                                    {
-                                        "fieldtype": "fieldset",
-                                        "labelWidth": 100,
-                                        "name": "Shipping",
-                                        "type": null,
-                                        "region": null,
-                                        "title": "Shipping",
+                                        "title": "coreshop.order.totals",
                                         "width": null,
                                         "height": null,
                                         "collapsible": false,
@@ -3331,13 +3348,182 @@
                                                 "fieldtype": "numeric",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "queryColumnType": "bigint(20)",
+                                                "columnType": "bigint(20)",
+                                                "phpdocType": "int",
+                                                "integer": true,
+                                                "unsigned": false,
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "unique": false,
+                                                "decimalSize": null,
                                                 "decimalPrecision": null,
+                                                "name": "paymentTotal",
+                                                "title": "coreshop.order.payment_total",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "numeric",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "queryColumnType": "bigint(20)",
+                                                "columnType": "bigint(20)",
+                                                "phpdocType": "int",
+                                                "integer": true,
+                                                "unsigned": false,
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "unique": false,
+                                                "decimalSize": null,
+                                                "decimalPrecision": null,
+                                                "name": "paymentTotal",
+                                                "title": "coreshop.order.payment_total",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "phpdocType": "int",
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "totalNet",
+                                                "title": "coreshop.order.total_net",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "phpdocType": "int",
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "totalGross",
+                                                "title": "coreshop.order.total_gross",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "phpdocType": "int",
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "subtotalNet",
+                                                "title": "coreshop.order.subtotal_net",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "phpdocType": "int",
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "subtotalGross",
+                                                "title": "coreshop.order.subtotal_gross",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            }
+                                        ],
+                                        "locked": false
+                                    },
+                                    {
+                                        "fieldtype": "fieldset",
+                                        "labelWidth": 100,
+                                        "name": "shipping",
+                                        "type": null,
+                                        "region": null,
+                                        "title": "coreshop.order.shipping",
+                                        "width": null,
+                                        "height": null,
+                                        "collapsible": false,
+                                        "collapsed": false,
+                                        "bodyStyle": "",
+                                        "datatype": "layout",
+                                        "permissions": null,
+                                        "childs": [
+                                            {
+                                                "fieldtype": "numeric",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "queryColumnType": "double",
+                                                "columnType": "double",
+                                                "phpdocType": "float",
                                                 "integer": false,
                                                 "unsigned": false,
                                                 "minValue": null,
                                                 "maxValue": null,
+                                                "unique": null,
+                                                "decimalSize": null,
+                                                "decimalPrecision": null,
                                                 "name": "shippingTaxRate",
-                                                "title": "Shipping Tax Rate",
+                                                "title": "coreshop.order.shipping_tax_rate",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": true,
@@ -3358,10 +3544,11 @@
                                         "fieldtype": "panel",
                                         "labelWidth": 100,
                                         "layout": null,
-                                        "name": "Taxes",
+                                        "border": false,
+                                        "name": "taxes",
                                         "type": null,
                                         "region": null,
-                                        "title": "Taxes",
+                                        "title": "coreshop.order.taxes",
                                         "width": null,
                                         "height": null,
                                         "collapsible": false,
@@ -3372,6 +3559,7 @@
                                         "childs": [
                                             {
                                                 "fieldtype": "fieldcollections",
+                                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
                                                 "allowedTypes": [
                                                     "CoreShopTaxItem"
                                                 ],
@@ -3381,8 +3569,9 @@
                                                 "disallowReorder": false,
                                                 "collapsed": false,
                                                 "collapsible": false,
+                                                "border": false,
                                                 "name": "taxes",
-                                                "title": "Taxes",
+                                                "title": "coreshop.order.taxes",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": false,
@@ -3397,16 +3586,18 @@
                                                 "visibleSearch": false
                                             }
                                         ],
-                                        "locked": false
+                                        "locked": false,
+                                        "icon": null
                                     },
                                     {
                                         "fieldtype": "panel",
                                         "labelWidth": 100,
                                         "layout": null,
-                                        "name": "Adjustments",
+                                        "border": false,
+                                        "name": "adjustments",
                                         "type": null,
                                         "region": null,
-                                        "title": "Adjustments",
+                                        "title": "coreshop.order.adjustments",
                                         "width": null,
                                         "height": null,
                                         "collapsible": false,
@@ -3419,10 +3610,11 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
                                                 "name": "pimcoreAdjustmentTotalNet",
-                                                "title": "Adjustments Total Net",
+                                                "title": "coreshop.order.adjustments_total_net",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": true,
@@ -3440,10 +3632,11 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
                                                 "name": "pimcoreAdjustmentTotalGross",
-                                                "title": "Adjustments Total Gross",
+                                                "title": "coreshop.order.adjustments_total_gross",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": true,
@@ -3459,6 +3652,7 @@
                                             },
                                             {
                                                 "fieldtype": "fieldcollections",
+                                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
                                                 "allowedTypes": [
                                                     "CoreShopAdjustment"
                                                 ],
@@ -3468,8 +3662,9 @@
                                                 "disallowReorder": false,
                                                 "collapsed": false,
                                                 "collapsible": false,
+                                                "border": false,
                                                 "name": "adjustmentItems",
-                                                "title": "Adjustments",
+                                                "title": "coreshop.order.adjustments",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": true,
@@ -3484,19 +3679,22 @@
                                                 "visibleSearch": false
                                             }
                                         ],
-                                        "locked": false
+                                        "locked": false,
+                                        "icon": null
                                     }
                                 ],
-                                "locked": false
+                                "locked": false,
+                                "icon": null
                             },
                             {
                                 "fieldtype": "panel",
                                 "labelWidth": 100,
                                 "layout": null,
-                                "name": "Numbers (Base)",
+                                "border": false,
+                                "name": "numbers_converted",
                                 "type": null,
                                 "region": null,
-                                "title": "NumbersNumbers (Base)",
+                                "title": "coreshop.order.numbers_converted",
                                 "width": null,
                                 "height": null,
                                 "collapsible": false,
@@ -3513,8 +3711,13 @@
                                         "defaultValue": null,
                                         "optionsProviderClass": null,
                                         "optionsProviderData": null,
-                                        "name": "baseCurrency",
-                                        "title": "Base Currency",
+                                        "queryColumnType": "varchar",
+                                        "columnType": "varchar",
+                                        "columnLength": 190,
+                                        "phpdocType": "string",
+                                        "dynamicOptions": false,
+                                        "name": "currency",
+                                        "title": "coreshop.order.currency",
                                         "tooltip": "",
                                         "mandatory": false,
                                         "noteditable": true,
@@ -3531,10 +3734,10 @@
                                     {
                                         "fieldtype": "fieldset",
                                         "labelWidth": 100,
-                                        "name": "Totals",
+                                        "name": "totals",
                                         "type": null,
                                         "region": null,
-                                        "title": "",
+                                        "title": "coreshop.order.converted_totals",
                                         "width": null,
                                         "height": null,
                                         "collapsible": false,
@@ -3544,13 +3747,50 @@
                                         "permissions": null,
                                         "childs": [
                                             {
-                                                "fieldtype": "coreShopMoney",
+                                                "fieldtype": "numeric",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "queryColumnType": "bigint(20)",
+                                                "columnType": "bigint(20)",
+                                                "phpdocType": "int",
+                                                "integer": true,
+                                                "unsigned": false,
                                                 "minValue": null,
                                                 "maxValue": null,
-                                                "name": "baseTotalNet",
-                                                "title": "Base Total Net",
+                                                "unique": false,
+                                                "decimalSize": null,
+                                                "decimalPrecision": null,
+                                                "name": "convertedPaymentTotal",
+                                                "title": "coreshop.order.converted_payment_total",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "numeric",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "queryColumnType": "bigint(20)",
+                                                "columnType": "bigint(20)",
+                                                "phpdocType": "int",
+                                                "integer": true,
+                                                "unsigned": false,
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "unique": false,
+                                                "decimalSize": null,
+                                                "decimalPrecision": null,
+                                                "name": "convertedPaymentTotal",
+                                                "title": "coreshop.order.converted_payment_total",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": true,
@@ -3568,10 +3808,11 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
-                                                "name": "baseTotalGross",
-                                                "title": "Base Total Gross",
+                                                "name": "convertedTotalNet",
+                                                "title": "coreshop.order.converted_total_net",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": true,
@@ -3589,10 +3830,11 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
-                                                "name": "baseSubtotalNet",
-                                                "title": "Base Subtotal Net",
+                                                "name": "convertedTotalGross",
+                                                "title": "coreshop.order.converted_total_gross",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": true,
@@ -3610,10 +3852,33 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
-                                                "name": "baseSubtotalGross",
-                                                "title": "Base Subtotal Gross",
+                                                "name": "convertedSubtotalNet",
+                                                "title": "coreshop.order.converted_subtotal_net",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "phpdocType": "int",
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "convertedSubtotalGross",
+                                                "title": "coreshop.order.converted_subtotal_gross",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": true,
@@ -3634,10 +3899,11 @@
                                         "fieldtype": "panel",
                                         "labelWidth": 100,
                                         "layout": null,
-                                        "name": "Taxes (Base)",
+                                        "border": false,
+                                        "name": "taxes_converted",
                                         "type": null,
                                         "region": null,
-                                        "title": "Taxes",
+                                        "title": "coreshop.order.converted_taxes",
                                         "width": null,
                                         "height": null,
                                         "collapsible": false,
@@ -3648,6 +3914,7 @@
                                         "childs": [
                                             {
                                                 "fieldtype": "fieldcollections",
+                                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
                                                 "allowedTypes": [
                                                     "CoreShopTaxItem"
                                                 ],
@@ -3657,8 +3924,9 @@
                                                 "disallowReorder": false,
                                                 "collapsed": false,
                                                 "collapsible": false,
-                                                "name": "baseTaxes",
-                                                "title": "Taxes",
+                                                "border": false,
+                                                "name": "convertedTaxes",
+                                                "title": "coreshop.order.converted_taxes",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": false,
@@ -3673,16 +3941,18 @@
                                                 "visibleSearch": false
                                             }
                                         ],
-                                        "locked": false
+                                        "locked": false,
+                                        "icon": null
                                     },
                                     {
                                         "fieldtype": "panel",
                                         "labelWidth": 100,
                                         "layout": null,
-                                        "name": "Adjustments (Base)",
+                                        "border": false,
+                                        "name": "adjustments_converted",
                                         "type": null,
                                         "region": null,
-                                        "title": "Adjustments (Base)",
+                                        "title": "coreshop.order.converted_adjustments",
                                         "width": null,
                                         "height": null,
                                         "collapsible": false,
@@ -3692,87 +3962,94 @@
                                         "permissions": null,
                                         "childs": [
                                             {
-                                                  "fieldtype": "coreShopMoney",
-                                                  "width": "",
-                                                  "defaultValue": null,
-                                                  "minValue": null,
-                                                  "maxValue": null,
-                                                  "name": "basePimcoreAdjustmentTotalNet",
-                                                  "title": "Adjustments Total Net",
-                                                  "tooltip": "",
-                                                  "mandatory": false,
-                                                  "noteditable": true,
-                                                  "index": false,
-                                                  "locked": false,
-                                                  "style": "",
-                                                  "permissions": null,
-                                                  "datatype": "data",
-                                                  "relationType": false,
-                                                  "invisible": false,
-                                                  "visibleGridView": false,
-                                                  "visibleSearch": false
-                                                },
-                                                {
-                                                  "fieldtype": "coreShopMoney",
-                                                  "width": "",
-                                                  "defaultValue": null,
-                                                  "minValue": null,
-                                                  "maxValue": null,
-                                                  "name": "basePimcoreAdjustmentTotalGross",
-                                                  "title": "Adjustments Total Gross",
-                                                  "tooltip": "",
-                                                  "mandatory": false,
-                                                  "noteditable": true,
-                                                  "index": false,
-                                                  "locked": false,
-                                                  "style": "",
-                                                  "permissions": null,
-                                                  "datatype": "data",
-                                                  "relationType": false,
-                                                  "invisible": false,
-                                                  "visibleGridView": false,
-                                                  "visibleSearch": false
-                                                },
-                                                {
-                                                  "fieldtype": "fieldcollections",
-                                                  "allowedTypes": [
-                                                      "CoreShopAdjustment"
-                                                  ],
-                                                  "lazyLoading": true,
-                                                  "maxItems": "",
-                                                  "disallowAddRemove": false,
-                                                  "disallowReorder": false,
-                                                  "collapsed": false,
-                                                  "collapsible": false,
-                                                  "name": "baseAdjustmentItems",
-                                                  "title": "Adjustments",
-                                                  "tooltip": "",
-                                                  "mandatory": false,
-                                                  "noteditable": true,
-                                                  "index": false,
-                                                  "locked": false,
-                                                  "style": "",
-                                                  "permissions": null,
-                                                  "datatype": "data",
-                                                  "relationType": false,
-                                                  "invisible": false,
-                                                  "visibleGridView": false,
-                                                  "visibleSearch": false
-                                                }
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "phpdocType": "int",
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "convertedPimcoreAdjustmentTotalNet",
+                                                "title": "coreshop.order.converted_adjustments_total_net",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "phpdocType": "int",
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "convertedPimcoreAdjustmentTotalGross",
+                                                "title": "coreshop.order.converted_adjustments_total_gross",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "fieldcollections",
+                                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
+                                                "allowedTypes": [
+                                                    "CoreShopAdjustment"
+                                                ],
+                                                "lazyLoading": true,
+                                                "maxItems": "",
+                                                "disallowAddRemove": false,
+                                                "disallowReorder": false,
+                                                "collapsed": false,
+                                                "collapsible": false,
+                                                "border": false,
+                                                "name": "convertedAdjustmentItems",
+                                                "title": "coreshop.order.converted_adjustments",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            }
                                         ],
-                                        "locked": false
+                                        "locked": false,
+                                        "icon": null
                                     }
                                 ],
-                                "locked": false
+                                "locked": false,
+                                "icon": null
                             },
                             {
                                 "fieldtype": "panel",
                                 "labelWidth": 100,
                                 "layout": null,
-                                "name": "Other",
+                                "border": false,
+                                "name": "other",
                                 "type": null,
                                 "region": null,
-                                "title": "Other",
+                                "title": "coreshop.order.other",
                                 "width": null,
                                 "height": null,
                                 "collapsible": false,
@@ -3787,7 +4064,7 @@
                                         "name": "weight",
                                         "type": null,
                                         "region": null,
-                                        "title": "Weight",
+                                        "title": "coreshop.order.weight",
                                         "width": null,
                                         "height": null,
                                         "collapsible": false,
@@ -3800,13 +4077,18 @@
                                                 "fieldtype": "numeric",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "queryColumnType": "double",
+                                                "columnType": "double",
+                                                "phpdocType": "float",
                                                 "integer": false,
                                                 "unsigned": false,
                                                 "minValue": null,
                                                 "maxValue": null,
+                                                "unique": null,
+                                                "decimalSize": null,
                                                 "decimalPrecision": null,
                                                 "name": "weight",
-                                                "title": "Weight",
+                                                "title": "coreshop.order.weight",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": false,
@@ -3826,10 +4108,10 @@
                                     {
                                         "fieldtype": "fieldset",
                                         "labelWidth": 100,
-                                        "name": "Price Rules",
+                                        "name": "price_rules",
                                         "type": null,
                                         "region": null,
-                                        "title": "Price Rules",
+                                        "title": "coreshop.order.price_rules",
                                         "width": null,
                                         "height": null,
                                         "collapsible": false,
@@ -3840,6 +4122,7 @@
                                         "childs": [
                                             {
                                                 "fieldtype": "fieldcollections",
+                                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
                                                 "allowedTypes": [
                                                     "CoreShopProposalCartPriceRuleItem"
                                                 ],
@@ -3849,8 +4132,9 @@
                                                 "disallowReorder": false,
                                                 "collapsed": false,
                                                 "collapsible": false,
+                                                "border": false,
                                                 "name": "priceRuleItems",
-                                                "title": "Price Rule Items",
+                                                "title": "coreshop.order.price_rules",
                                                 "tooltip": "",
                                                 "mandatory": false,
                                                 "noteditable": true,
@@ -3868,7 +4152,8 @@
                                         "locked": false
                                     }
                                 ],
-                                "locked": false
+                                "locked": false,
+                                "icon": null
                             }
                         ],
                         "locked": false
@@ -3877,10 +4162,11 @@
                         "fieldtype": "panel",
                         "labelWidth": 100,
                         "layout": null,
-                        "name": "Items",
+                        "border": false,
+                        "name": "items",
                         "type": null,
                         "region": null,
-                        "title": "Items",
+                        "title": "coreshop.order.items",
                         "width": null,
                         "height": null,
                         "collapsible": false,
@@ -3890,26 +4176,14 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "coreShopRelations",
+                                "height": "400",
                                 "width": "",
-                                "height": "",
-                                "maxItems": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": false,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopOrderItem"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.order_item",
                                 "name": "items",
-                                "title": "Items",
+                                "title": "coreshop.order.items",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -3921,18 +4195,41 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "checkbox",
+                                "defaultValue": 0,
+                                "queryColumnType": "tinyint(1)",
+                                "columnType": "tinyint(1)",
+                                "phpdocType": "boolean",
+                                "name": "needsRecalculation",
+                                "title": "coreshop.order.needs_recalculation",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": true,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             }
                         ],
-                        "locked": false
+                        "locked": false,
+                        "icon": null
                     },
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
                         "layout": null,
-                        "name": "Customer",
+                        "border": false,
+                        "name": "customer",
                         "type": null,
                         "region": null,
-                        "title": "Customer",
+                        "title": "coreshop.order.customer",
                         "width": null,
                         "height": null,
                         "collapsible": false,
@@ -3942,24 +4239,13 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": false,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopCustomer"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.customer",
                                 "name": "customer",
-                                "title": "Customer",
+                                "title": "coreshop.order.customer",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -3973,24 +4259,13 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": false,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopAddress"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.address",
                                 "name": "shippingAddress",
-                                "title": "Shipping Address",
+                                "title": "coreshop.order.shipping_address",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -4004,24 +4279,13 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": false,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopAddress"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.address",
                                 "name": "invoiceAddress",
-                                "title": "Invoice Address",
+                                "title": "coreshop.order.invoice_address",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
@@ -4035,20 +4299,25 @@
                                 "visibleSearch": false
                             }
                         ],
-                        "locked": false
+                        "locked": false,
+                        "icon": null
                     }
                 ],
                 "locked": false
             }
         ],
-        "locked": false
+        "locked": false,
+        "icon": null
     },
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,
+            "key": false,
             "path": true,
             "published": true,
             "modificationDate": true,
@@ -4056,6 +4325,7 @@
         },
         "search": {
             "id": true,
+            "key": false,
             "path": true,
             "published": true,
             "modificationDate": true,

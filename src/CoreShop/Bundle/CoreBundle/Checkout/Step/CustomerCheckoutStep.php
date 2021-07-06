@@ -10,48 +10,27 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
-use CoreShop\Bundle\CoreBundle\Customer\CustomerAlreadyExistsException;
 use CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface;
-use CoreShop\Bundle\CoreBundle\Customer\RegistrationServiceInterface;
-use CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType;
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Customer\Context\CustomerContextInterface;
-use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 
 class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
+    private CustomerManagerInterface $customerManager;
+    private LocaleContextInterface $localeContext;
 
-    /**
-     * @var CustomerManagerInterface
-     */
-    private $customerManager;
-
-    /**
-     * @var LocaleContextInterface
-     */
-    private $localeContext;
-
-    /**
-     * @param FormFactoryInterface $formFactory
-     * @param CustomerManagerInterface $customerManager
-     * @param LocaleContextInterface $localeContext
-     */
     public function __construct(
         FormFactoryInterface $formFactory,
         CustomerManagerInterface $customerManager,
@@ -62,18 +41,12 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
         $this->localeContext = $localeContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'customer';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function doAutoForward(CartInterface $cart)
+    public function doAutoForward(OrderInterface $cart): bool
     {
         $customer = $cart->getCustomer();
 
@@ -85,10 +58,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
         return $customer->getUser();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate(CartInterface $cart)
+    public function validate(OrderInterface $cart): bool
     {
         if (!$cart->hasItems()) {
             return false;
@@ -97,10 +67,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
         return $cart->getCustomer() instanceof CustomerInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function commitStep(CartInterface $cart, Request $request)
+    public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $cart);
 
@@ -120,22 +87,14 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareStep(CartInterface $cart, Request $request)
+    public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return [
             'guestForm' => $this->createForm($request)->createView(),
         ];
     }
 
-    /**
-     * @param Request       $request
-     * @param CartInterface $cart
-     * @return FormInterface
-     */
-    private function createForm(Request $request, CartInterface $cart)
+    private function createForm(Request $request, OrderInterface $cart)
     {
         $form = $this->formFactory->createNamed('guest', GuestRegistrationType::class, $cart->getCustomer());
 

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\DataHub\Type;
 
 use GraphQL\Type\Definition\ScalarType;
@@ -18,25 +20,16 @@ class SerializedDataType extends ScalarType
 {
     public $name = 'coreShopSerializedData';
 
-    /**
-     * {@inheritdoc}
-     */
     public function serialize($value)
     {
         return $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function parseValue($value)
     {
         return $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function parseLiteral($valueNode, ?array $variables = null)
     {
         return $valueNode->value;

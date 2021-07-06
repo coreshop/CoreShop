@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Pimcore\GridColumnConfig\Operator;
 
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -20,27 +22,10 @@ use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
 
 class StorePrice extends AbstractOperator
 {
-    /**
-     * @var int
-     */
-    private $storeId;
+    private int $storeId;
+    private StoreRepositoryInterface $storeRepository;
+    private MoneyFormatterInterface $moneyFormatter;
 
-    /**
-     * @var StoreRepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
-
-    /**
-     * @param StoreRepositoryInterface $storeRepository
-     * @param MoneyFormatterInterface  $moneyFormatter
-     * @param \stdClass                $config
-     * @param null                     $context
-     */
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         MoneyFormatterInterface $moneyFormatter,
@@ -73,7 +58,7 @@ class StorePrice extends AbstractOperator
             return $result;
         }
 
-        $price = $element->getStorePrice($store);
+        $price = $element->getStoreValuesOfType('price', $store);
 
         $result->value = $this->moneyFormatter->format($price, $store->getCurrency()->getIsoCode());
 

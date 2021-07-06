@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 class ProductUnitDefinitionPrice extends \CoreShop\Component\Product\Model\ProductUnitDefinitionPrice implements ProductUnitDefinitionPriceInterface
@@ -19,17 +21,11 @@ class ProductUnitDefinitionPrice extends \CoreShop\Component\Product\Model\Produ
      */
     protected $productStoreValues;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProductStoreValues()
     {
         return $this->productStoreValues;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setProductStoreValues(ProductStoreValuesInterface $productStoreValues)
     {
         $this->productStoreValues = $productStoreValues;

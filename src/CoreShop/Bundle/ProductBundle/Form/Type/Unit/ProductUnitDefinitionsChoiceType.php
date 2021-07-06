@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -21,10 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProductUnitDefinitionsChoiceType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -43,7 +42,7 @@ final class ProductUnitDefinitionsChoiceType extends AbstractType
             'entry_type' => ProductUnitDefinitionType::class,
             'choice_value' => 'id',
             'choice_label' => function (ProductUnitDefinitionInterface $definition) {
-                return $definition->getUnit()->getName();
+                return $definition->getUnit()->getFullLabel();
             },
             'choice_attr' => function (ProductUnitDefinitionInterface $definition) {
                 return ['data-cs-unit-precision' => $definition->getPrecision()];
@@ -52,18 +51,12 @@ final class ProductUnitDefinitionsChoiceType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_unit_definitions_choice';
     }

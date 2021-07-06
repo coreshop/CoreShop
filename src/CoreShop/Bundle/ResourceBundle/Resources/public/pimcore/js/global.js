@@ -18,6 +18,10 @@ coreshop.global = {
         return this.addStoreWithUrl(name, '/admin/' + url + '/list', fields, sorters);
     },
 
+    addStoreWithRoute: function (name, route, fields, sorters) {
+        return this.addStoreWithUrl(name, Routing.generate(route), fields, sorters);
+    },
+
     addStoreWithUrl: function(name, url, fields, sorters) {
         if (!fields) {
             fields = [

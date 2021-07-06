@@ -16,7 +16,7 @@ use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Pimcore\Model\DataObject\ClassDefinition\Data\Password;
 
-class User extends AbstractPimcoreModel implements UserInterface
+abstract class User extends AbstractPimcoreModel implements UserInterface
 {
     /**
      * The salt to use for hashing.
@@ -37,57 +37,6 @@ class User extends AbstractPimcoreModel implements UserInterface
      */
     protected $plainPassword;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEmail()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setEmail($email)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPassword()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPassword($password)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPasswordResetHash()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPasswordResetHash($passwordResetHash)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setPlainPassword($password)
     {
         $this->plainPassword = $password;
@@ -95,17 +44,11 @@ class User extends AbstractPimcoreModel implements UserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPlainPassword()
     {
         return $this->plainPassword;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setSalt($salt)
     {
         $this->salt = $salt;
@@ -113,9 +56,6 @@ class User extends AbstractPimcoreModel implements UserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSalt()
     {
         // user has no salt as we use password_hash

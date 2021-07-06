@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\RuleBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
@@ -17,10 +19,7 @@ use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 class RuleRepository extends EntityRepository implements RuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findActive()
+    public function findActive(): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.active = 1')
@@ -28,10 +27,7 @@ class RuleRepository extends EntityRepository implements RuleRepositoryInterface
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findWithConditionOfType($conditionType)
+    public function findWithConditionOfType($conditionType): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.conditions', 'condition')
@@ -41,10 +37,7 @@ class RuleRepository extends EntityRepository implements RuleRepositoryInterface
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findWithActionOfType($actionType)
+    public function findWithActionOfType($actionType): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.actions', 'action')

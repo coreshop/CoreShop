@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Transformer;
 
 interface ItemKeyTransformerInterface
@@ -17,7 +19,7 @@ interface ItemKeyTransformerInterface
     /**
      * @param string $string
      *
-     * @return mixed
+     * @return string
      */
-    public function transform($string);
+    public function transform(string $string): string;
 }

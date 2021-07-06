@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
@@ -17,57 +19,36 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 trait AdjustableTrait
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function setPimcoreAdjustmentTotalNet($adjustmentTotalNet)
+    public function setPimcoreAdjustmentTotalNet(int $adjustmentTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPimcoreAdjustmentTotalNet()
+    public function getPimcoreAdjustmentTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setPimcoreAdjustmentTotalGross($adjustmentTotalGross)
+    public function setPimcoreAdjustmentTotalGross(int $adjustmentTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPimcoreAdjustmentTotalGross()
+    public function getPimcoreAdjustmentTotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAdjustmentItems()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setAdjustmentItems($adjustmentItems)
+    public function setAdjustmentItems(?Fieldcollection $adjustmentItems)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAdjustments()
     {
         return $this->getAdjustmentItems() instanceof Fieldcollection && $this->getAdjustmentItems()->getCount() > 0;
@@ -102,9 +83,6 @@ trait AdjustableTrait
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAdjustment(AdjustmentInterface $adjustment)
     {
         $items = $this->getAdjustmentItems();
@@ -122,9 +100,6 @@ trait AdjustableTrait
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addAdjustment(AdjustmentInterface $adjustment)
     {
         if (!$this->hasAdjustment($adjustment)) {
@@ -142,9 +117,6 @@ trait AdjustableTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeAdjustment(AdjustmentInterface $adjustment)
     {
         $items = $this->getAdjustmentItems();
@@ -167,9 +139,6 @@ trait AdjustableTrait
         $this->addToAdjustmentsTotal($adjustment);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeAdjustments(string $type = null)
     {
         foreach ($this->getAdjustments($type) as $adjustment) {
@@ -177,9 +146,6 @@ trait AdjustableTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeAdjustmentsRecursively(string $type = null)
     {
         $this->removeAdjustments($type);
@@ -193,10 +159,7 @@ trait AdjustableTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAdjustmentsTotal(?string $type = null, $withTax = true)
+    public function getAdjustmentsTotal(?string $type = null, bool $withTax = true): int
     {
         if (null === $type) {
             if ($withTax) {
@@ -216,9 +179,6 @@ trait AdjustableTrait
         return $total;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function recalculateAdjustmentsTotal()
     {
         $adjustmentsTotalGross = 0;
@@ -259,8 +219,5 @@ trait AdjustableTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    abstract protected function recalculateAfterAdjustmentChange();
+    abstract protected function recalculateAfterAdjustmentChange(): void;
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -84,4 +86,14 @@ interface IndexInterface extends ResourceInterface, TimestampableInterface
      * @param array $configuration
      */
     public function setConfiguration($configuration);
+
+    /**
+     * @return bool
+     */
+    public function getIndexLastVersion();
+
+    /**
+     * @param bool $indexLastVersion
+     */
+    public function setIndexLastVersion($indexLastVersion);
 }

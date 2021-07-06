@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Repository;
 
 use CoreShop\Component\Address\Model\CountryInterface;
@@ -21,7 +23,7 @@ interface CountryRepositoryInterface extends RepositoryInterface
     /**
      * @return QueryBuilder
      */
-    public function createListQueryBuilder();
+    public function createListQueryBuilder(): QueryBuilder;
 
     /**
      * @param string $name
@@ -29,12 +31,12 @@ interface CountryRepositoryInterface extends RepositoryInterface
      *
      * @return CountryInterface[]
      */
-    public function findByName($name, $locale);
+    public function findByName(string $name, string $locale): array;
 
     /**
      * @param string $code
      *
      * @return CountryInterface
      */
-    public function findByCode($code);
+    public function findByCode($code): ?CountryInterface;
 }

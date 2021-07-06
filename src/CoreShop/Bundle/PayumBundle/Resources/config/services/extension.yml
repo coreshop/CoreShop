@@ -4,12 +4,12 @@ services:
 
     CoreShop\Bundle\PayumBundle\Extension\UpdatePaymentStateExtension:
         arguments:
-            - '@coreshop.state_machine_manager'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
         tags:
             - { name: payum.extension, all: true, prepend: true }
 
     CoreShop\Bundle\PayumBundle\Extension\UpdateOrderStateExtension:
         arguments:
-            - '@coreshop.state_machine_manager'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
         tags:
             - { name: payum.extension, all: true, prepend: true }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
@@ -45,73 +47,46 @@ class ShippingRuleGroup implements ShippingRuleGroupInterface
      */
     private $shippingRule;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCarrier()
     {
         return $this->carrier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCarrier(CarrierInterface $carrier = null)
     {
         $this->carrier = $carrier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         return $this->priority;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPriority($priority)
     {
         $this->priority = $priority;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStopPropagation()
     {
         return $this->stopPropagation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setStopPropagation($stopPropagation)
     {
         $this->stopPropagation = $stopPropagation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getShippingRule()
     {
         return $this->shippingRule;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setShippingRule(ShippingRuleInterface $shippingRule)
     {
         $this->shippingRule = $shippingRule;

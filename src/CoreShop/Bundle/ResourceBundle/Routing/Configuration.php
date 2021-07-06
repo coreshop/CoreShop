@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Routing;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -17,17 +19,15 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('routing');
+        $treeBuilder = new TreeBuilder('routing');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
                 ->scalarNode('alias')->cannotBeEmpty()->end()
+                ->booleanNode('expose')->defaultTrue()->end()
                 ->scalarNode('path')->cannotBeEmpty()->end()
                 ->scalarNode('identifier')->defaultValue('id')->end()
                 ->arrayNode('only')
@@ -35,10 +35,16 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('no_default_routes')->defaultFalse()->end()
                 ->arrayNode('additional_routes')
-                    ->prototype('array')
+                    ->arrayPrototype()
                         ->children()
                             ->scalarNode('path')->end()
                             ->scalarNode('action')->end()
+                            ->arrayNode('options')
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->booleanNode('expose')->defaultTrue()->end()
+                                ->end()
+                            ->end()
                             ->arrayNode('methods')
                                 ->prototype('scalar')->end()
                             ->end()

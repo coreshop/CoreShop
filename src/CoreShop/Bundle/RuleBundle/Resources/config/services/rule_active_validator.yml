@@ -1,6 +1,4 @@
 services:
-
-    coreshop.rule_availability_processor: '@CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessor'
     CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessorInterface: '@CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessor'
     CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessor:
         arguments:

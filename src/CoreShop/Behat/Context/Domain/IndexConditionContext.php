@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -21,19 +23,9 @@ use Webmozart\Assert\Assert;
 
 final class IndexConditionContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $workerRegistry;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     */
     public function __construct(SharedStorageInterface $sharedStorage, ServiceRegistryInterface $workerRegistry)
     {
         $this->sharedStorage = $sharedStorage;

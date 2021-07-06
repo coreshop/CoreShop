@@ -15,10 +15,18 @@ CoreShop\Component\Product\Model\AbstractPriceRule:
             expose: true
             type: boolean
             groups: [List, Detailed, Version]
+        stopPropagation:
+            expose: true
+            type: boolean
+            groups: [List, Detailed, Version]
         priority:
             expose: true
             type: integer
             groups: [Detailed, Version]
+        translations:
+            expose: true
+            type: ArrayCollection
+            groups: [Detailed]
         conditions:
             expose: true
             type: ArrayCollection<CoreShop\Component\Rule\Model\Condition>

@@ -10,17 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ConfigurationBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Configuration\Model\ConfigurationInterface;
 use CoreShop\Component\Configuration\Repository\ConfigurationRepositoryInterface;
 
 class ConfigurationRepository extends EntityRepository implements ConfigurationRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findByKey($key)
+    public function findByKey(string $key): ?ConfigurationInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.key = :key')

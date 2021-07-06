@@ -10,45 +10,33 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Tracking\Extractor;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class OrderItemExtractor implements TrackingExtractorInterface
 {
-    /**
-     * @var int
-     */
     protected $decimalFactor;
 
-    /**
-     * @param int $decimalFactor
-     */
     public function __construct(int $decimalFactor)
     {
         $this->decimalFactor = $decimalFactor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($object)
+    public function supports($object): bool
     {
-        return $object instanceof ProposalItemInterface;
+        return $object instanceof OrderItemInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, $data = []): array
     {
         /**
-         * @var ProposalItemInterface $object
+         * @var OrderItemInterface $object
          */
         $product = $object->getProduct();
         $categories = [];
@@ -59,9 +47,7 @@ class OrderItemExtractor implements TrackingExtractorInterface
 
         $proposal = null;
 
-        if ($object instanceof CartItemInterface) {
-            $proposal = $object->getCart();
-        } elseif ($object instanceof OrderItemInterface) {
+        if ($object instanceof OrderItemInterface) {
             $proposal = $object->getOrder();
         }
 

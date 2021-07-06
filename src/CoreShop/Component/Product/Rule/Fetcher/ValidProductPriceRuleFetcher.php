@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Rule\Fetcher;
 
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -18,30 +20,19 @@ use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
 final class ValidProductPriceRuleFetcher implements ValidRulesFetcherInterface
 {
-    /**
-     * @var ProductPriceRuleRepositoryInterface
-     */
-    private $productPriceRuleRepository;
+    private ProductPriceRuleRepositoryInterface $productPriceRuleRepository;
+    private RuleValidationProcessorInterface $ruleValidationProcessor;
 
-    /**
-     * @var RuleValidationProcessorInterface
-     */
-    private $ruleValidationProcessor;
-
-    /**
-     * @param ProductPriceRuleRepositoryInterface $productPriceRuleRepository
-     * @param RuleValidationProcessorInterface    $ruleValidationProcessor
-     */
-    public function __construct(ProductPriceRuleRepositoryInterface $productPriceRuleRepository, RuleValidationProcessorInterface $ruleValidationProcessor)
+    public function __construct(
+        ProductPriceRuleRepositoryInterface $productPriceRuleRepository,
+        RuleValidationProcessorInterface $ruleValidationProcessor
+    )
     {
         $this->productPriceRuleRepository = $productPriceRuleRepository;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getValidRules(ProductInterface $product, array $context)
+    public function getValidRules(ProductInterface $product, array $context): array
     {
         $validRules = [];
         $rules = $this->productPriceRuleRepository->findActive();

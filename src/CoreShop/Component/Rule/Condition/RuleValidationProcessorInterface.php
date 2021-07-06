@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Rule\Condition;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -17,12 +19,5 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface RuleValidationProcessorInterface
 {
-    /**
-     * @param ResourceInterface $subject
-     * @param RuleInterface     $rule
-     * @param array             $params
-     *
-     * @return bool
-     */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = []);
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $params = []): bool;
 }

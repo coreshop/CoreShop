@@ -10,55 +10,36 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException;
+use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 {
-    /**
-     * @var array
-     */
-    protected $jsonDefinition;
+    protected array $jsonDefinition;
+    protected array $fieldDefinitions;
 
-    /**
-     * @var array
-     */
-    protected $fieldDefinitions;
+    abstract public function save(): bool;
 
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function save();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProperty($property)
+    public function getProperty(string $property): array
     {
         return $this->jsonDefinition[$property];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setProperty($property, $value)
+    public function setProperty(string $property, $value): void
     {
         $this->jsonDefinition[$property] = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasField($fieldName)
+    public function hasField(string $fieldName): bool
     {
         return array_key_exists($fieldName, $this->fieldDefinitions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFieldDefinition($fieldName)
+    public function getFieldDefinition(string $fieldName): ?Data
     {
         if (!$this->hasField($fieldName)) {
             throw new \InvalidArgumentException(sprintf('Field with Name %s not found', $fieldName));
@@ -67,18 +48,12 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         return $this->fieldDefinitions[$fieldName];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function insertField($jsonFieldDefinition)
+    public function insertField(array $jsonFieldDefinition): void
     {
         $this->jsonDefinition['layoutDefinitions']['childs'][0]['childs'][] = $jsonFieldDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function insertFieldBefore($fieldName, $jsonFieldDefinition)
+    public function insertFieldBefore(string $fieldName, array $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
@@ -96,10 +71,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function insertFieldAfter($fieldName, $jsonFieldDefinition)
+    public function insertFieldAfter(string $fieldName, array $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
@@ -113,10 +85,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function replaceField($fieldName, $jsonFieldDefinition)
+    public function replaceField(string $fieldName, array $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
@@ -126,10 +95,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function replaceFieldProperties($fieldName, array $keyValues)
+    public function replaceFieldProperties(string $fieldName, array $keyValues): void
     {
         $this->findField(
             $fieldName,
@@ -141,10 +107,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removeField($fieldName)
+    public function removeField(string $fieldName): void
     {
         $this->findField(
             $fieldName,
@@ -154,13 +117,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * @param string   $fieldName
-     * @param \Closure $callback
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    protected function findField(string $fieldName, \Closure $callback)
+    protected function findField(string $fieldName, \Closure $callback): void
     {
         $found = false;
 
@@ -171,10 +128,10 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                     $found = true;
 
                     break;
-                } else {
-                    if (array_key_exists('childs', $child)) {
-                        $child = $traverseFunction($child);
-                    }
+                }
+
+                if (array_key_exists('childs', $child)) {
+                    $child = $traverseFunction($child);
                 }
             }
 

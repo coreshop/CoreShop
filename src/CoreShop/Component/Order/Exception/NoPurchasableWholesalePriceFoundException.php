@@ -10,13 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Exception;
 
 class NoPurchasableWholesalePriceFoundException extends \Exception
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($calculatorClass, \Exception $previousException = null)
     {
         parent::__construct(sprintf('Price Calculator "%s" was not able to match a valid wholesale price.', $calculatorClass), 0, $previousException);

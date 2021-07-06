@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\DataHub\Resolver;
 
 use GraphQL\Type\Definition\Type;
@@ -17,30 +19,16 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DoctrineField
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
+    private Type $type;
 
-    /**
-     * @var Type
-     */
-    private $type;
-
-    /**
-     * @param string $name
-     * @param Type   $type
-     */
     public function __construct(string $name, Type $type)
     {
         $this->name = $name;
         $this->type = $type;
     }
 
-    /**
-     * @return array
-     */
-    public function getDefinition()
+    public function getDefinition(): array
     {
         /**
          * Value will be the parent object when it's passed in.

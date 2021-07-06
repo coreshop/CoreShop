@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -20,35 +22,12 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
 {
-    /**
-     * @var array
-     */
-    private $installedClasses = [];
+    private KernelInterface $kernel;
+    private ClassInstallerInterface $classInstaller;
+    private array $installedClasses = [];
+    private array $installedCollections = [];
+    private array $installedBricks = [];
 
-    /**
-     * @var array
-     */
-    private $installedCollections = [];
-
-    /**
-     * @var array
-     */
-    private $installedBricks = [];
-
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var ClassInstallerInterface
-     */
-    private $classInstaller;
-
-    /**
-     * @param KernelInterface         $kernel
-     * @param ClassInstallerInterface $classInstaller
-     */
     public function __construct(
         KernelInterface $kernel,
         ClassInstallerInterface $classInstaller
@@ -57,10 +36,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
         $this->classInstaller = $classInstaller;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore_classes', $applicationName) : 'coreshop.all.pimcore_classes';
 
@@ -112,7 +88,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
             $progress->start(count($pimcoreClasses));
 
             foreach ($fieldCollections as $identifier => $fc) {
-                $progress->setMessage(sprintf('<error>Install Fieldcollection %s (%s)</error>', $fc['model'], $fc['file']));
+                $progress->setMessage(sprintf('Install Fieldcollection %s (%s)', $fc['model'], $fc['file']));
 
                 $this->installedCollections[$identifier] = $this->classInstaller->createFieldCollection($fc['file'], $fc['model']);
 
@@ -120,7 +96,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
             }
 
             foreach ($classes as $identifier => $class) {
-                $progress->setMessage(sprintf('<error>Install Class %s (%s)</error>', $class['model'], $class['file']));
+                $progress->setMessage(sprintf('Install Class %s (%s)', $class['model'], $class['file']));
 
                 $this->installedClasses[$identifier] = $this->classInstaller->createClass($class['file'], $class['model']);
 
@@ -128,7 +104,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
             }
 
             foreach ($bricks as $identifier => $brick) {
-                $progress->setMessage(sprintf('<error>Install Brick %s (%s)</error>', $brick['model'], $brick['file']));
+                $progress->setMessage(sprintf('Install Brick %s (%s)', $brick['model'], $brick['file']));
 
                 $this->installedBricks[$identifier] = $this->classInstaller->createBrick($brick['file'], $brick['model']);
 
@@ -136,29 +112,23 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>Classes have been installed successfully</info>');
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getInstalledClasses()
+    public function getInstalledClasses(): array
     {
         return $this->installedClasses;
     }
 
-    /**
-     * @return array
-     */
-    public function getInstalledCollections()
+    public function getInstalledCollections(): array
     {
         return $this->installedCollections;
     }
 
-    /**
-     * @return array
-     */
-    public function getInstalledBricks()
+    public function getInstalledBricks(): array
     {
         return $this->installedBricks;
     }

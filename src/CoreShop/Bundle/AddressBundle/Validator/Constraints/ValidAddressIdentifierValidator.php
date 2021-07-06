@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\AddressBundle\Validator\Constraints;
 
 use CoreShop\Component\Address\Model\AddressIdentifierInterface;
@@ -20,23 +22,14 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 final class ValidAddressIdentifierValidator extends ConstraintValidator
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $addressIdentifierRepository;
+    private RepositoryInterface $addressIdentifierRepository;
 
-    /**
-     * @param RepositoryInterface $addressIdentifierRepository
-     */
     public function __construct(RepositoryInterface $addressIdentifierRepository)
     {
         $this->addressIdentifierRepository = $addressIdentifierRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof ValidAddressIdentifier) {
             throw new UnexpectedTypeException($constraint, ValidAddressIdentifier::class);

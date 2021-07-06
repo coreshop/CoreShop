@@ -1,342 +1,275 @@
 routes:
   coreshop_index:
-    pattern: "/(\\w+)\\/shop(\\/?)$/"
-    reverse: "/%_locale/shop"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.index"
-    action: index
+    pattern: '/(\w+)\/shop(\/?)$/'
+    reverse: '/%_locale/shop'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\IndexController:indexAction'
     variables: _locale
     priority: 1
 
   coreshop_category_list:
-    pattern: "/(\\w+)\\/shop\\/(.*?)\\~c([0-9]+)$/"
-    reverse: "/%_locale/shop/%name~c%category"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.category"
-    action: index
+    pattern: '/(\w+)\/shop\/(.*?)\~c([0-9]+)$/'
+    reverse: '/%_locale/shop/%name~c%category'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CategoryController:indexAction'
     variables: _locale,name,category
     priority: 2
 
   coreshop_product_detail:
-    pattern: "/(\\w+)\\/shop\\/(.*?)\\~p([0-9]+)$/"
-    reverse: "/%_locale/shop/%name~p%product"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.product"
-    action: detail
+    pattern: '/(\w+)\/shop\/(.*?)\~p([0-9]+)$/'
+    reverse: '/%_locale/shop/%name~p%product'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\ProductController:detailAction'
     variables: _locale,name,product
     priority: 2
 
   coreshop_cart_summary:
-    pattern: "/(\\w+)\\/shop\\/cart$/"
-    reverse: "/%_locale/shop/cart"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.cart"
-    action: summary
+    pattern: '/(\w+)\/shop\/cart$/'
+    reverse: '/%_locale/shop/cart'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CartController:summaryAction'
     variables: _locale
     priority: 2
 
   coreshop_cart_add:
-    pattern: "/(\\w+)\\/shop\\/cart\\/add\\/([0-9]+)$/"
-    reverse: "/%_locale/shop/cart/add/%product"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.cart"
-    action: addItem
+    methods:
+      - POST
+    pattern: '/(\w+)\/shop\/cart\/add\/([0-9]+)$/'
+    reverse: '/%_locale/shop/cart/add/%product'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CartController:addItemAction'
+    variables: _locale,product
+    priority: 3
+
+  coreshop_partial_cart_add:
+    pattern: '/(\w+)\/_partial\/cart\/add\/([0-9]+)$/'
+    reverse: '/%_locale/_partial/cart/add/%product'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CartController:addItemAction'
     variables: _locale,product
     priority: 3
 
   coreshop_cart_remove:
-    pattern: "/(\\w+)\\/shop\\/cart\\/remove\\/([0-9]+)$/"
-    reverse: "/%_locale/shop/cart/remove/%cartItem"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.cart"
-    action: removeItem
+    pattern: '/(\w+)\/shop\/cart\/remove\/([0-9]+)$/'
+    reverse: '/%_locale/shop/cart/remove/%cartItem'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CartController:removeItemAction'
     variables: _locale,cartItem
     priority: 3
 
   coreshop_cart_remove_price_rule:
-    pattern: "/(\\w+)\\/shop\\/cart\\/remove-price-rule$/"
-    reverse: "/%_locale/shop/cart/remove-price-rule"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.cart"
-    action: removePriceRule
+    pattern: '/(\w+)\/shop\/cart\/remove-price-rule$/'
+    reverse: '/%_locale/shop/cart/remove-price-rule'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CartController:removePriceRuleAction'
     variables: _locale
     priority: 3
 
   coreshop_cart_check_shipment:
-    pattern: "/(\\w+)\\/shop\\/cart\\/shipment-calculation$/"
-    reverse: "/%_locale/shop/cart/shipment-calculation"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.cart"
-    action: shipmentCalculation
+    pattern: '/(\w+)\/shop\/cart\/shipment-calculation$/'
+    reverse: '/%_locale/shop/cart/shipment-calculation'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CartController:shipmentCalculationAction'
     variables: _locale
     priority: 3
 
   coreshop_login:
-    pattern: "/(\\w+)\\/shop\\/login$/"
-    reverse: "/%_locale/shop/login"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.security"
-    action: login
+    pattern: '/(\w+)\/shop\/login$/'
+    reverse: '/%_locale/shop/login'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\SecurityController:loginAction'
     variables: _locale
     priority: 2
 
   coreshop_login_check:
-    pattern: "/(\\w+)\\/shop\\/login-check$/"
-    reverse: "/%_locale/shop/login-check"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.security"
-    action: check
+    pattern: '/(\w+)\/shop\/login-check$/'
+    reverse: '/%_locale/shop/login-check'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\SecurityController:checkAction'
     variables: _locale
     priority: 3
 
   coreshop_logout:
-    pattern: "/(\\w+)\\/shop\\/logout$/"
-    reverse: "/%_locale/shop/logout"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.security"
-    action: logout
+    pattern: '/(\w+)\/shop\/logout$/'
+    reverse: '/%_locale/shop/logout'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\SecurityController:logoutAction'
     variables: _locale
     priority: 2
 
   coreshop_cart_create_qoute:
-    pattern: "/(\\w+)\\/shop\\/cart\\/quote$/"
-    reverse: "/%_locale/shop/cart/quote"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.cart"
-    action: createQuote
+    pattern: '/(\w+)\/shop\/cart\/quote$/'
+    reverse: '/%_locale/shop/cart/quote'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CartController:createQuoteAction'
     variables: _locale
     priority: 3
 
   coreshop_quote_detail:
-    pattern: "/(\\w+)\\/shop\\/quote\\~q([0-9]+)$/"
-    reverse: "/%_locale/shop/quote~q%quote"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.quote"
-    action: show
+    pattern: '/(\w+)\/shop\/quote\~q([0-9]+)$/'
+    reverse: '/%_locale/shop/quote~q%quote'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\QuoteController:showAction'
     variables: _locale,quote
     priority: 2
 
   coreshop_checkout:
-    pattern: "/(\\w+)\\/shop\\/checkout\\/(.*)$/"
-    reverse: "/%_locale/shop/checkout/%stepIdentifier"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.checkout"
-    action: process
+    pattern: '/(\w+)\/shop\/checkout\/(.*)$/'
+    reverse: '/%_locale/shop/checkout/%stepIdentifier'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CheckoutController:processAction'
     variables: _locale,stepIdentifier
     priority: 2
 
   coreshop_order_revise:
-    pattern: "/(\\w+)\\/shop\\/order\\/revise\\/(.*)$/"
-    reverse: "/%_locale/shop/order/revise/%token"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.order"
-    action: revise
+    pattern: '/(\w+)\/shop\/order\/revise\/(.*)$/'
+    reverse: '/%_locale/shop/order/revise/%token'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\OrderController:reviseAction'
     variables: _locale,token
     priority: 2
 
   coreshop_order_revise_pay:
-    pattern: "/(\\w+)\\/shop\\/order\\/revise\\/(.*)\\/pay$/"
-    reverse: "/%_locale/shop/order/revise/%token/pay"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.payment"
-    action: prepareCapture
+    pattern: '/(\w+)\/shop\/order\/revise\/(.*)\/pay$/'
+    reverse: '/%_locale/shop/order/revise/%token/pay'
+    controller: 'CoreShop\Bundle\PayumBundle\Controller\PaymentController::prepareCaptureAction'
     variables: _locale,token
     priority: 3
 
   coreshop_checkout_do:
-    pattern: "/(\\w+)\\/shop\\/checkout-do$/"
-    reverse: "/%_locale/shop/checkout-do"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.checkout"
-    action: doCheckout
+    pattern: '/(\w+)\/shop\/checkout-do$/'
+    reverse: '/%_locale/shop/checkout-do'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CheckoutController:doCheckoutAction'
     variables: _locale
     priority: 2
 
   coreshop_checkout_confirmation:
-    pattern: "/(\\w+)\\/shop\\/checkout-thank-you$/"
-    reverse: "/%_locale/shop/checkout-thank-you"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.checkout"
-    action: thankYou
+    pattern: '/(\w+)\/shop\/checkout-thank-you$/'
+    reverse: '/%_locale/shop/checkout-thank-you'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CheckoutController:thankYouAction'
     variables: _locale
     priority: 2
 
   coreshop_payment:
-    pattern: "/(\\w+)\\/shop\\/pay\\/([0-9]+)$/"
-    reverse: "/%_locale/shop/pay/%order"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.payment"
-    action: prepareCapture
+    pattern: '/(\w+)\/shop\/pay\/([0-9]+)$/'
+    reverse: '/%_locale/shop/pay/%order'
+    controller: 'CoreShop\Bundle\PayumBundle\Controller\PaymentController::prepareCaptureAction'
     variables: _locale,order
     priority: 2
 
   coreshop_checkout_error:
-    pattern: "/(\\w+)\\/shop\\/checkout-error$/"
-    reverse: "/%_locale/shop/checkout-error"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.checkout"
-    action: error
+    pattern: '/(\w+)\/shop\/checkout-error$/'
+    reverse: '/%_locale/shop/checkout-error'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CheckoutController:errorAction'
     variables: _locale
     priority: 2
 
   coreshop_switch_currency:
-    pattern: "/(\\w+)\\/shop\\/switch-currency\\/(.*)$/"
-    reverse: "/%_locale/shop/switch-currency/%currencyCode"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.currency"
-    action: switch
+    pattern: '/(\w+)\/shop\/switch-currency\/(.*)$/'
+    reverse: '/%_locale/shop/switch-currency/%currencyCode'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CurrencyController:switchAction'
     variables: _locale,currencyCode
     priority: 2
 
   coreshop_register:
-    pattern: "/(\\w+)\\/shop\\/register$/"
-    reverse: "/%_locale/shop/register"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.register"
-    action: register
+    pattern: '/(\w+)\/shop\/register$/'
+    reverse: '/%_locale/shop/register'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\RegisterController:registerAction'
     variables: _locale
     priority: 2
 
   coreshop_customer_profile:
-    pattern: "/(\\w+)\\/shop\\/customer\\/profile$/"
-    reverse: "/%_locale/shop/customer/profile"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.customer"
-    action: profile
+    pattern: '/(\w+)\/shop\/customer\/profile$/'
+    reverse: '/%_locale/shop/customer/profile'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CustomerController:profileAction'
     variables: _locale
     priority: 2
 
   coreshop_customer_orders:
-    pattern: "/(\\w+)\\/shop\\/customer\\/orders$/"
-    reverse: "/%_locale/shop/customer/orders"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.customer"
-    action: orders
+    pattern: '/(\w+)\/shop\/customer\/orders$/'
+    reverse: '/%_locale/shop/customer/orders'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CustomerController:ordersAction'
     variables: _locale
     priority: 2
 
   coreshop_customer_order_detail:
-    pattern: "/(\\w+)\\/shop\\/customer\\/order\\/([0-9]+)$/"
-    reverse: "/%_locale/shop/customer/order/%order"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.customer"
-    action: orderDetail
+    pattern: '/(\w+)\/shop\/customer\/order\/([0-9]+)$/'
+    reverse: '/%_locale/shop/customer/order/%order'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CustomerController:orderDetailAction'
     variables: _locale,order
     priority: 2
 
   coreshop_customer_addresses:
-    pattern: "/(\\w+)\\/shop\\/customer\\/addresses$/"
-    reverse: "/%_locale/shop/customer/addresses"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.customer"
-    action: addresses
+    pattern: '/(\w+)\/shop\/customer\/addresses$/'
+    reverse: '/%_locale/shop/customer/addresses'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CustomerController:addressesAction'
     variables: _locale
     priority: 2
 
   coreshop_customer_address_edit:
-    pattern: "/(\\w+)\\/shop\\/customer\\/address\\/(.*?)\\~a([0-9]+)$/"
-    reverse: "/%_locale/shop/customer/address/%name~a%address"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.customer"
-    action: address
+    pattern: '/(\w+)\/shop\/customer\/address\/(.*?)\~a([0-9]+)$/'
+    reverse: '/%_locale/shop/customer/address/%name~a%address'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CustomerController:addressAction'
     variables: _locale,name,address
     priority: 2
 
   coreshop_customer_address_new:
-    pattern: "/(\\w+)\\/shop\\/customer\\/address\\/new$/"
-    reverse: "/%_locale/shop/customer/address/new"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.customer"
-    action: address
+    pattern: '/(\w+)\/shop\/customer\/address\/new$/'
+    reverse: '/%_locale/shop/customer/address/new'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CustomerController:addressAction'
     variables: _locale
     priority: 3
 
   coreshop_customer_address_delete:
-    pattern: "/(\\w+)\\/shop\\/customer\\/addresses\\/delete\\/([0-9]+)$/"
-    reverse: "/%_locale/shop/customer/addresses/delete/%address"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.customer"
-    action: addressDelete
+    pattern: '/(\w+)\/shop\/customer\/addresses\/delete\/([0-9]+)$/'
+    reverse: '/%_locale/shop/customer/addresses/delete/%address'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CustomerController:addressDeleteAction'
     variables: _locale,address
     priority: 4
 
   coreshop_customer_settings:
-    pattern: "/(\\w+)\\/shop\\/customer\\/settings$/"
-    reverse: "/%_locale/shop/customer/settings"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.customer"
-    action: settings
+    pattern: '/(\w+)\/shop\/customer\/settings$/'
+    reverse: '/%_locale/shop/customer/settings'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CustomerController:settingsAction'
     variables: _locale
     priority: 2
 
   coreshop_customer_change_password:
-    pattern: "/(\\w+)\\/shop\\/customer\\/change-password$/"
-    reverse: "/%_locale/shop/customer/change-password"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.customer"
-    action: changePassword
+    pattern: '/(\w+)\/shop\/customer\/change-password$/'
+    reverse: '/%_locale/shop/customer/change-password'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CustomerController:changePasswordAction'
     variables: _locale
     priority: 2
 
   coreshop_customer_password_reset_request:
-    pattern: "/(\\w+)\\/shop\\/password-reset-request$/"
-    reverse: "/%_locale/shop/password-reset-request"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.register"
-    action: passwordResetRequest
+    pattern: '/(\w+)\/shop\/password-reset-request$/'
+    reverse: '/%_locale/shop/password-reset-request'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\RegisterController:passwordResetRequestAction'
     variables: _locale
     priority: 6
 
   coreshop_customer_password_reset:
-    pattern: "/(\\w+)\\/shop\\/password-reset$/"
-    reverse: "/%_locale/shop/password-reset"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.register"
-    action: passwordReset
+    pattern: '/(\w+)\/shop\/password-reset$/'
+    reverse: '/%_locale/shop/password-reset'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\RegisterController:passwordResetAction'
     variables: _locale
     priority: 5
 
   coreshop_customer_confirm_newsletter:
-    pattern: "/(\\w+)\\/shop\\/customer\\/confirm-newsletter$/"
-    reverse: "/%_locale/shop/customer/confirm-newsletter"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.customer"
-    action: confirmNewsletter
+    pattern: '/(\w+)\/shop\/customer\/confirm-newsletter$/'
+    reverse: '/%_locale/shop/customer/confirm-newsletter'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CustomerController:confirmNewsletterAction'
     variables: _locale
     priority: 2
 
   coreshop_search:
-    pattern: "/(\\w+)\\/shop\\/search$/"
-    reverse: "/%_locale/shop/search"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.search"
-    action: search
+    pattern: '/(\w+)\/shop\/search$/'
+    reverse: '/%_locale/shop/search'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\SearchController:searchAction'
     variables: _locale
     priority: 2
 
   coreshop_wishlist_summary:
-    pattern: "/(\\w+)\\/shop\\/wishlist$/"
-    reverse: "/%_locale/shop/wishlist"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.wishlist"
-    action: summary
+    pattern: '/(\w+)\/shop\/wishlist$/'
+    reverse: '/%_locale/shop/wishlist'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\WishlistController:summaryAction'
     variables: _locale
     priority: 2
 
   coreshop_wishlist_add:
-    pattern: "/(\\w+)\\/shop\\/wishlist\\/add\\/([0-9]+)$/"
-    reverse: "/%_locale/shop/wishlist/add/%product"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.wishlist"
-    action: addItem
+    pattern: '/(\w+)\/shop\/wishlist\/add\/([0-9]+)$/'
+    reverse: '/%_locale/shop/wishlist/add/%product'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\WishlistController:addItemAction'
     variables: _locale,product
     priority: 3
 
   coreshop_wishlist_remove:
-    pattern: "/(\\w+)\\/shop\\/wishlist\\/remove\\/([0-9]+)$/"
-    reverse: "/%_locale/shop/wishlist/remove/%product"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.wishlist"
-    action: removeItem
+    pattern: '/(\w+)\/shop\/wishlist\/remove\/([0-9]+)$/'
+    reverse: '/%_locale/shop/wishlist/remove/%product'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\WishlistController:removeItemAction'
     variables: _locale,product
     priority: 3

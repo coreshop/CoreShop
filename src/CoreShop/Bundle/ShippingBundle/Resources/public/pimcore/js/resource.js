@@ -13,13 +13,13 @@
 pimcore.registerNS('coreshop.shipping.resource');
 coreshop.shipping.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.global.addStore('coreshop_carriers', 'coreshop/carriers', [
+        coreshop.global.addStoreWithRoute('coreshop_carriers', 'coreshop_carrier_list', [
             [
                 {name: 'id'},
                 {name: 'identifier'}
             ]
         ]);
-        coreshop.global.addStore('coreshop_carrier_shipping_rules', 'coreshop/shipping_rules');
+        coreshop.global.addStoreWithRoute('coreshop_carrier_shipping_rules', 'coreshop_shipping_rule_list');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.shipping', this);
     },

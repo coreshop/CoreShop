@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\Action;
 
 use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
@@ -21,31 +23,18 @@ use Payum\Core\Action\ActionInterface;
 
 final class ConfirmOrderAction implements ActionInterface
 {
-    /**
-     * @var StateMachineApplier
-     */
-    private $stateMachineApplier;
+    private StateMachineApplier $stateMachineApplier;
 
-    /**
-     * @param StateMachineApplier $stateMachineApplier
-     */
     public function __construct(StateMachineApplier $stateMachineApplier)
     {
         $this->stateMachineApplier = $stateMachineApplier;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param ConfirmOrder $request
-     */
     public function execute($request)
     {
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();
         $order = $payment->getOrder();
-
-        \Pimcore\Logger::log('ConfirmOrderAction: ' . $payment->getState());
 
         if ($order instanceof OrderInterface) {
             if ($payment->getState() === PaymentInterface::STATE_COMPLETED ||
@@ -60,9 +49,6 @@ final class ConfirmOrderAction implements ActionInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
         return

@@ -23,11 +23,15 @@ CoreShop\Component\Shipping\Model\Carrier:
             expose: true
             type: pimcoreAsset
             groups: [Detailed]
+        taxCalculationStrategy:
+            expose: true
+            type: string
+            groups: [Detailed]
         shippingRules:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]
         translations:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]

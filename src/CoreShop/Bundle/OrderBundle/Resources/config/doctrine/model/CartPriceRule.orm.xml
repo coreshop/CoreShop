@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Order\Model\CartPriceRule"
+                       table="coreshop_cart_price_rule">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="name" column="name"/>
+        <field name="description" column="description" nullable="true"/>
+        <field name="isVoucherRule" column="isVoucherRule" type="boolean"/>
+        <field name="active" column="active" type="boolean"/>
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+        <one-to-many field="voucherCodes" target-entity="CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface" mapped-by="cartPriceRule">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <many-to-many field="conditions" target-entity="CoreShop\Component\Rule\Model\ConditionInterface">
+            <join-table name="coreshop_cart_price_rule_conditions">
+                <join-columns>
+                    <join-column name="price_rule_id" referenced-column-name="id" on-delete="CASCADE"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="condition_id" referenced-column-name="id" on-delete="CASCADE"/>
+                </inverse-join-columns>
+            </join-table>
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </many-to-many>
+
+        <many-to-many field="actions" target-entity="CoreShop\Component\Rule\Model\ActionInterface">
+            <join-table name="coreshop_cart_price_rule_action">
+                <join-columns>
+                    <join-column name="price_rule_id" referenced-column-name="id" on-delete="CASCADE"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="action_id" referenced-column-name="id" on-delete="CASCADE"/>
+                </inverse-join-columns>
+            </join-table>
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </many-to-many>
+    </mapped-superclass>
+</doctrine-mapping>

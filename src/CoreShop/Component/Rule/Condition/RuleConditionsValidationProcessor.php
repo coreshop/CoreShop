@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Rule\Condition;
 
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -19,37 +21,21 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class RuleConditionsValidationProcessor implements RuleConditionsValidationProcessorInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $ruleRegistry;
+    private ServiceRegistryInterface $ruleRegistry;
+    private string $type;
 
-    /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @param ServiceRegistryInterface $ruleRegistry
-     */
-    public function __construct(ServiceRegistryInterface $ruleRegistry, $type)
+    public function __construct(ServiceRegistryInterface $ruleRegistry, string $type)
     {
         $this->ruleRegistry = $ruleRegistry;
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, $params = [])
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, array $params = []): bool
     {
         if (!count($conditions)) {
             return true;
@@ -68,10 +54,7 @@ class RuleConditionsValidationProcessor implements RuleConditionsValidationProce
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isConditionValid(ResourceInterface $subject, RuleInterface $rule, ConditionInterface $condition, $params = [])
+    public function isConditionValid(ResourceInterface $subject, RuleInterface $rule, ConditionInterface $condition, array $params = []): bool
     {
         /** @var ConditionCheckerInterface $checker */
         $checker = $this->ruleRegistry->get($condition->getType());

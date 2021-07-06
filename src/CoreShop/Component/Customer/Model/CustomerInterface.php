@@ -20,63 +20,27 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, LocaleAwareInterface
 {
-    /**
-     * @return string
-     */
-    public function getSalutation();
+    public function getSalutation(): ?string;
 
-    /**
-     * @param string $salutation
-     */
-    public function setSalutation($salutation);
+    public function setSalutation(?string $salutation);
 
-    /**
-     * @return string
-     */
-    public function getFirstname();
+    public function getFirstname(): ?string;
 
-    /**
-     * @param string $firstname
-     */
-    public function setFirstname($firstname);
+    public function setFirstname(?string $firstname);
 
-    /**
-     * @return string
-     */
-    public function getLastname();
+    public function getLastname(): ?string;
 
-    /**
-     * @param string $lastname
-     */
-    public function setLastname($lastname);
+    public function setLastname(?string $lastname);
 
-    /**
-     * @return string
-     */
-    public function getGender();
+    public function getGender(): ?string;
 
-    /**
-     * @param string $gender
-     */
-    public function setGender($gender);
+    public function setGender(?string $gender);
 
-    /**
-     * @return string
-     */
-    public function getEmail();
+    public function getEmail(): ?string;
 
-    /**
-     * @param string $email
-     */
-    public function setEmail($email);
+    public function setEmail(?string $email);
 
-    /**
-     * @return CustomerGroupInterface[]
-     */
-    public function getCustomerGroups();
+    public function getCustomerGroups(): ?array;
 
-    /**
-     * @param CustomerGroupInterface[] $customerGroups
-     */
-    public function setCustomerGroups($customerGroups);
+    public function setCustomerGroups(?array $customerGroups);
 }

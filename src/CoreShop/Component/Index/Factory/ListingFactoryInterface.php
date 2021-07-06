@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Factory;
 
 use CoreShop\Component\Index\Listing\ListingInterface;
@@ -17,10 +19,5 @@ use CoreShop\Component\Index\Model\IndexInterface;
 
 interface ListingFactoryInterface
 {
-    /**
-     * @param IndexInterface $index
-     *
-     * @return ListingInterface
-     */
-    public function createList(IndexInterface $index);
+    public function createList(IndexInterface $index): ListingInterface;
 }

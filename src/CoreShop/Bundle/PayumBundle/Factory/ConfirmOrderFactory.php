@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\Factory;
 
 use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
@@ -17,9 +19,6 @@ use CoreShop\Bundle\PayumBundle\Request\ConfirmOrderInterface;
 
 final class ConfirmOrderFactory implements ConfirmOrderFactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createNewWithModel($model): ConfirmOrderInterface
     {
         return new ConfirmOrder($model);

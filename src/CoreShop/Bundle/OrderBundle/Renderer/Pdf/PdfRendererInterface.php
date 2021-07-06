@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Renderer\Pdf;
 
 interface PdfRendererInterface
@@ -22,5 +24,5 @@ interface PdfRendererInterface
      *
      * @return string
      */
-    public function fromString($string, $header = '', $footer = '', $config = []);
+    public function fromString(string $string, string $header = '', string $footer = '', array $config = []): string;
 }

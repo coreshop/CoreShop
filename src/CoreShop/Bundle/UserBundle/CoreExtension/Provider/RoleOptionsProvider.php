@@ -18,20 +18,8 @@ use Psr\Container\ContainerInterface;
 
 class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var array
-     */
-    protected $originalRoles;
-
-    /**
-     * @var array
-     */
-    protected $invalidRoles = [
+    protected array $originalRoles;
+    protected array $invalidRoles = [
         'ROLE_PIMCORE_ADMIN',
     ];
 

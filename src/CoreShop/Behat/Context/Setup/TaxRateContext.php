@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -17,52 +19,28 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 final class TaxRateContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $taxRateFactory;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $taxRateRepository;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager          $objectManager
-     * @param FactoryInterface       $taxRateFactory
-     * @param RepositoryInterface    $taxRateRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
-        FactoryInterface $taxRateFactory,
-        RepositoryInterface $taxRateRepository
+        FactoryInterface $taxRateFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->taxRateFactory = $taxRateFactory;
-        $this->taxRateRepository = $taxRateRepository;
     }
 
     /**
      * @Given /^the site has a tax rate "([^"]+)" with "([^"]+)%" rate$/
      */
-    public function theSiteHasATaxRate($name, $rate)
+    public function theSiteHasATaxRate($name, float $rate)
     {
         $this->createTaxRate($name, $rate);
     }
@@ -79,8 +57,9 @@ final class TaxRateContext implements Context
 
     /**
      * @param string $name
+     * @param float  $rate
      */
-    private function createTaxRate($name, $rate)
+    private function createTaxRate(string $name, float $rate)
     {
         /**
          * @var TaxRateInterface $taxRate

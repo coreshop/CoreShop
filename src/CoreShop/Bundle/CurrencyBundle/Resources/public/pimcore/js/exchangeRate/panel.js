@@ -22,11 +22,11 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
     type: 'coreshop_exchange_rate',
 
     url: {
-        add: '/admin/coreshop/exchange_rates/add',
-        save: '/admin/coreshop/exchange_rates/save',
-        delete: '/admin/coreshop/exchange_rates/delete',
-        get: '/admin/coreshop/exchange_rates/get',
-        list: '/admin/coreshop/exchange_rates/list'
+        add: 'coreshop_exchange_rate_add',
+        save: 'coreshop_exchange_rate_save',
+        delete: 'coreshop_currency_delete',
+        get: 'coreshop_exchange_rate_get',
+        list: 'coreshop_exchange_rate_list'
     },
 
     getItems: function () {
@@ -106,7 +106,7 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
 
                             if (!rec.phantom) {
                                 Ext.Ajax.request({
-                                    url: this.url.delete,
+                                    url: Routing.generate(this.routing.delete),
                                     jsonData: rec.data,
                                     method: 'delete',
                                     success: function (response) {
@@ -137,7 +137,7 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
 
         this.grid.on('edit', function (editor, e) {
             Ext.Ajax.request({
-                url: this.url.save,
+                url: Routing.generate(this.routing.save),
                 jsonData: e.record.data,
                 method: 'post',
                 success: function (response) {

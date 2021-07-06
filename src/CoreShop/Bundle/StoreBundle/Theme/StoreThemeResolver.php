@@ -10,84 +10,31 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\StoreBundle\Theme;
 
-use CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeNotResolvedException;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
-use CoreShop\Component\Store\Model\StoreInterface;
 
-final class StoreThemeResolver implements \CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface
+final class StoreThemeResolver implements ThemeResolverInterface
 {
-    /**
-     * @var ActiveThemeInterface
-     */
-    private $activeTheme;
+    private StoreContextInterface $storeContext;
 
-    /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
-
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @param ActiveThemeInterface  $activeTheme
-     * @param StoreContextInterface $storeContext
-     * @param RepositoryInterface   $storeRepository
-     */
-    public function __construct(
-        ActiveThemeInterface $activeTheme,
-        StoreContextInterface $storeContext,
-        RepositoryInterface $storeRepository
-    ) {
-        $this->activeTheme = $activeTheme;
+    public function __construct(StoreContextInterface $storeContext)
+    {
         $this->storeContext = $storeContext;
-        $this->storeRepository = $storeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveTheme(/*ActiveThemeInterface $activeTheme*/)
+    public function resolveTheme(): string
     {
-        if (\func_num_args() === 0) {
-            trigger_error(
-                'Calling CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface::resolveTheme without the CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface Service is deprecated since 2.1 and will be removed in 3.0.',
-                E_USER_DEPRECATED
-            );
-            $activeTheme = $this->activeTheme;
-        } else {
-            $activeTheme = func_get_arg(0);
-        }
-
-        $themes = [];
-
-        /**
-         * @var StoreInterface $store
-         */
-        foreach ($this->storeRepository->findAll() as $store) {
-            $storeTheme = $store->getTemplate();
-
-            if ($storeTheme) {
-                $themes[] = $storeTheme;
-            }
-        }
-
-        $activeTheme->addThemes($themes);
-
         try {
             $store = $this->storeContext->getStore();
 
             if ($theme = $store->getTemplate()) {
-                $activeTheme->setActiveTheme($theme);
-
-                return;
+                return $theme;
             }
         } catch (StoreNotFoundException $exception) {
             throw new ThemeNotResolvedException($exception);

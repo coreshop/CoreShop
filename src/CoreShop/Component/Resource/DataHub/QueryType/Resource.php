@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\DataHub\QueryType;
 
 use CoreShop\Component\Resource\DataHub\DoctrineProvider;
@@ -19,15 +21,8 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class Resource extends Input
 {
-    /**
-     * @var DoctrineProvider
-     */
-    protected $doctrineProvider;
-
-    /**
-     * @var string
-     */
-    protected $className;
+    protected DoctrineProvider $doctrineProvider;
+    protected string $className;
 
     public function __construct(Service $graphQlService, DoctrineProvider $doctrineProvider, string $className)
     {
@@ -37,9 +32,6 @@ class Resource extends Input
         $this->className = $className;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->enrichConfig(
@@ -55,9 +47,6 @@ class Resource extends Input
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->doctrineProvider->getGraphQlType($this->className);

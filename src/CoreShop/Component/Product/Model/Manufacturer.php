@@ -10,26 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
-class Manufacturer extends AbstractPimcoreModel implements ManufacturerInterface
+abstract class Manufacturer extends AbstractPimcoreModel implements ManufacturerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setName($name)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
+    
 }

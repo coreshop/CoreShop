@@ -10,27 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Locale\Context;
 
 final class FixedLocaleContext implements LocaleContextInterface
 {
-    /**
-     * @var string
-     */
-    private $locale = null;
+    private ?string $locale = null;
 
-    /**
-     * @param string $locale
-     */
-    public function setLocale($locale)
+    public function setLocale(string $locale): void
     {
         $this->locale = $locale;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
         if ($this->locale) {
             return $this->locale;

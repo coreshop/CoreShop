@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.detail.blocks.shipment');
-coreshop.order.order.detail.blocks.shipment = Class.create(coreshop.order.sale.detail.abstractBlock, {
+pimcore.registerNS('coreshop.order.order.detail.blocks.shipment');
+coreshop.order.order.detail.blocks.shipment = Class.create(coreshop.order.order.detail.abstractBlock, {
     initBlock: function () {
         var me = this;
 
@@ -79,7 +79,7 @@ coreshop.order.order.detail.blocks.shipment = Class.create(coreshop.order.sale.d
                                 defaultBindProperty: null,
                                 handler: function (widgetColumn) {
                                     var record = widgetColumn.getWidgetRecord();
-                                    var url = '/admin/coreshop/order-shipment/update-shipment-state',
+                                    var url = Routing.generate('coreshop_admin_order_shipment_update_state'),
                                         transitions = record.get('transitions'),
                                         id = record.get('o_id');
                                     if (transitions.length !== 0) {

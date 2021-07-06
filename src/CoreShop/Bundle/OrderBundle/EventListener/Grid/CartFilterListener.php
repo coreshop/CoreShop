@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\EventListener\Grid;
 
 use Pimcore\Model\DataObject;
@@ -17,10 +19,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class CartFilterListener
 {
-    /**
-     * @param GenericEvent $event
-     */
-    public function checkObjectList(GenericEvent $event)
+    public function checkObjectList(GenericEvent $event): void
     {
         $list = $event->getArgument('list');
         $context = $event->getArgument('context');

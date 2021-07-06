@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Customer;
 
 use CoreShop\Component\Core\Model\UserInterface;
@@ -18,20 +20,14 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class CustomerLoginService implements CustomerLoginServiceInterface
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $securityTokenStorage;
+    private TokenStorageInterface $securityTokenStorage;
 
     public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->securityTokenStorage = $tokenStorage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function loginCustomer(UserInterface $user)
+    public function loginCustomer(UserInterface $user): void
     {
         $token = new UsernamePasswordToken($user, null, 'coreshop_frontend', $user->getRoles());
         $this->securityTokenStorage->setToken($token);

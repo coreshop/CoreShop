@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Repository;
 
 use CoreShop\Component\Address\Model\AddressIdentifierInterface;
@@ -22,5 +24,5 @@ interface AddressIdentifierRepositoryInterface extends RepositoryInterface
      *
      * @return AddressIdentifierInterface
      */
-    public function findByName($name);
+    public function findByName($name): ?AddressIdentifierInterface;
 }

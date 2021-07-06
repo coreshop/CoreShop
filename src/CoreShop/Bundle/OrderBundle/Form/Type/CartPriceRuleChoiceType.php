@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -20,23 +22,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CartPriceRuleChoiceType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $cartPriceRuleRepository;
+    private RepositoryInterface $cartPriceRuleRepository;
 
-    /**
-     * @param RepositoryInterface $cartPriceRuleRepository
-     */
     public function __construct(RepositoryInterface $cartPriceRuleRepository)
     {
         $this->cartPriceRuleRepository = $cartPriceRuleRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -50,18 +43,12 @@ final class CartPriceRuleChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule_choice';
     }

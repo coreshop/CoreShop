@@ -13,7 +13,7 @@
 pimcore.registerNS('coreshop.payment.resource');
 coreshop.payment.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.global.addStore('coreshop_payment_provider', 'coreshop/payment_providers');
+        coreshop.global.addStoreWithRoute('coreshop_payment_provider', 'coreshop_payment_provider_list');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.payment', this);
     },

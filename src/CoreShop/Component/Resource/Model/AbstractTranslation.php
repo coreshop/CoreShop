@@ -10,33 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Model;
 
 class AbstractTranslation implements TranslationInterface
 {
     use SetValuesTrait;
 
-    /**
-     * @var string
-     */
-    protected $locale;
+    protected string $locale;
+    protected ?TranslatableInterface $translatable = null;
 
-    /**
-     * @var TranslatableInterface
-     */
-    protected $translatable;
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTranslatable()
     {
         return $this->translatable;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTranslatable(TranslatableInterface $translatable = null)
     {
         if ($translatable === $this->translatable) {
@@ -55,17 +44,11 @@ class AbstractTranslation implements TranslationInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLocale()
     {
         return $this->locale;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLocale($locale)
     {
         $this->locale = $locale;

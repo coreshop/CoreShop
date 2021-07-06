@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -17,12 +19,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 abstract class AbstractPimcoreExtension extends Extension
 {
-    /**
-     * @param string           $applicationName
-     * @param array            $bundleResources
-     * @param ContainerBuilder $container
-     */
-    protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container)
+    protected function registerPimcoreResources(string $applicationName, array $bundleResources, ContainerBuilder $container): void
     {
         $resourceTypes = ['js', 'css', 'editmode_js', 'editmode_css'];
 

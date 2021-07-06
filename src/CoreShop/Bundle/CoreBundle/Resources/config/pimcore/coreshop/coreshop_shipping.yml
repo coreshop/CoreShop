@@ -4,3 +4,4 @@ core_shop_shipping:
             classes:
                 model: CoreShop\Component\Core\Model\Carrier
                 repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\CarrierRepository
+    default_resolver: CoreShop\Component\Core\Shipping\Resolver\CheapestDefaultCarrierResolver

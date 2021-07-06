@@ -10,32 +10,28 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Migration;
 
-use Pimcore\Model\Translation\Website;
+use Pimcore\Model\Translation;
 
 class SharedTranslation
 {
-    /**
-     * Add a new Shared Translation.
-     *
-     * @param string $key
-     * @param string $language
-     * @param string $value
-     */
-    public static function add($key, $language, $value)
+    public static function add(string $key, string $language, string $value)
     {
-        $key = Website::getByKey($key, true);
-        $key->addTranslation($language, $value);
-        $key->save();
+        $translationKey = Translation::getByKey($key, Translation::DOMAIN_DEFAULT, true);
+
+        if ($translationKey) {
+            $translationKey->addTranslation($language, $value);
+            $translationKey->save();
+        }
     }
 
-    /**
-     * Cleanup Translations.
-     */
-    public static function cleanup()
+    public static function cleanup(): void
     {
-        $list = new Website\Listing();
+        $list = new Translation\Listing();
+        $list->setDomain(Translation::DOMAIN_DEFAULT);
 
         if (method_exists($list, 'cleanup')) {
             $list->cleanup();

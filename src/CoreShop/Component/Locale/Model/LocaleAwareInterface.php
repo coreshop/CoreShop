@@ -10,17 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Locale\Model;
 
 interface LocaleAwareInterface
 {
-    /**
-     * @return string
-     */
-    public function getLocaleCode();
+    public function getLocaleCode(): ?string;
 
-    /**
-     * @param string $localeCode
-     */
-    public function setLocaleCode($localeCode);
+    public function setLocaleCode(?string $localeCode);
 }

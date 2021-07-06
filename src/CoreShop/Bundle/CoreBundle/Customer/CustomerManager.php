@@ -23,51 +23,22 @@ use Webmozart\Assert\Assert;
 
 class CustomerManager implements CustomerManagerInterface
 {
-    /**
-     * @var ObjectServiceInterface
-     */
-    private $objectService;
+    private ObjectServiceInterface $objectService;
+    private EventDispatcherInterface $eventDispatcher;
+    private string $customerFolder;
+    private string $guestFolder;
+    private string $userFolder;
+    private string $addressFolder;
+    private string $loginIdentifier;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var string
-     */
-    private $customerFolder;
-
-    /**
-     * @var string
-     */
-    private $guestFolder;
-
-    /**
-     * @var string
-     */
-    private $userFolder;
-
-    /**
-     * @var string
-     */
-    private $addressFolder;
-
-    /**
-     * @param ObjectServiceInterface   $objectService
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $customerFolder
-     * @param string                   $guestFolder
-     * @param string                   $userFolder
-     * @param string                   $addressFolder
-     */
     public function __construct(
         ObjectServiceInterface $objectService,
         EventDispatcherInterface $eventDispatcher,
         string $customerFolder,
         string $guestFolder,
         string $userFolder,
-        string $addressFolder
+        string $addressFolder,
+        string $loginIdentifier,
     ) {
         $this->objectService = $objectService;
         $this->eventDispatcher = $eventDispatcher;
@@ -75,12 +46,10 @@ class CustomerManager implements CustomerManagerInterface
         $this->guestFolder = $guestFolder;
         $this->userFolder = $userFolder;
         $this->addressFolder = $addressFolder;
+        $this->loginIdentifier = $loginIdentifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function persistCustomer(CustomerInterface $customer)
+    public function persistCustomer(CustomerInterface $customer): void
     {
         /**
          * @var Concrete $customer

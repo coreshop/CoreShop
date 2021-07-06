@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Validator\Constraints;
 
 use CoreShop\Component\Resource\Model\ToggleableInterface;
@@ -19,10 +21,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class ActiveValidator extends ConstraintValidator
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Active) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Active');

@@ -10,19 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Model;
 
 interface ToggleableInterface
 {
-    /**
-     * @return bool
-     */
-    public function getActive();
+    public function getActive(): ?bool;
 
-    /**
-     * @param bool $active
-     */
-    public function setActive($active);
+    public function setActive(?bool $active);
 
     public function activate();
 

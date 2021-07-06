@@ -10,16 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreResourceSelectionType;
 
 final class ProductSelectionType extends PimcoreResourceSelectionType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product';
     }

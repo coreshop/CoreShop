@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Condition\Mysql;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
@@ -22,15 +24,8 @@ use Webmozart\Assert\Assert;
 
 class ConcatRenderer extends AbstractMysqlDynamicRenderer
 {
-    /**
-     * @var ConditionRendererInterface
-     */
-    private $renderer;
+    private ConditionRendererInterface $renderer;
 
-    /**
-     * @param Connection                 $connection
-     * @param ConditionRendererInterface $renderer
-     */
     public function __construct(Connection $connection, ConditionRendererInterface $renderer)
     {
         parent::__construct($connection);
@@ -38,10 +33,7 @@ class ConcatRenderer extends AbstractMysqlDynamicRenderer
         $this->renderer = $renderer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null)
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
          * @var $condition ConcatCondition
@@ -66,10 +58,7 @@ class ConcatRenderer extends AbstractMysqlDynamicRenderer
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(WorkerInterface $worker, ConditionInterface $condition)
+    public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
     {
         return $worker instanceof MysqlWorker && $condition instanceof ConcatCondition;
     }

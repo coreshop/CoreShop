@@ -118,7 +118,7 @@ services:
         class: CoreShop\Component\Core\Cart\Rule\Action\GiftProductActionProcessor
         arguments:
             - '@coreshop.repository.product'
-            - '@coreshop.factory.cart_item'
+            - '@coreshop.factory.order_item'
             - '@coreshop.factory.adjustment'
         tags:
             - { name: coreshop.cart_price_rule.action, type: giftProduct, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType }
@@ -126,16 +126,25 @@ services:
     coreshop.cart_price_rule.action.discount_amount:
         class: CoreShop\Component\Core\Cart\Rule\Action\DiscountAmountActionProcessor
         arguments:
-            - '@coreshop.currency_converter'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
             - '@coreshop.repository.currency'
             - '@coreshop.cart_price_rule.cart_rule_applier'
         tags:
             - { name: coreshop.cart_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
 
+    coreshop.cart_price_rule.action.voucher_credit:
+        class: CoreShop\Component\Core\Cart\Rule\Action\VoucherCreditActionProcessor
+        arguments:
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
+            - '@coreshop.cart_price_rule.cart_rule_applier'
+            - '@coreshop.repository.cart_price_rule_voucher_code'
+        tags:
+            - { name: coreshop.cart_price_rule.action, type: voucherCredit }
+
     coreshop.cart_price_rule.action.surcharge_amount:
         class: CoreShop\Component\Core\Cart\Rule\Action\SurchargeAmountActionProcessor
         arguments:
-            - '@coreshop.currency_converter'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
             - '@coreshop.repository.currency'
             - '@coreshop.cart_price_rule.cart_rule_applier'
         tags:
@@ -158,33 +167,24 @@ services:
     coreshop.cart_price_rule.cart_rule_applier:
         class: CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplier
         arguments:
-            - '@coreshop.proportional_integer_distributor'
-            - '@coreshop.product.tax_factory'
-            - '@coreshop.collector.taxes'
-            - '@coreshop.provider.store_based_default_address_provider'
+            - '@CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface'
+            - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
+            - '@CoreShop\Component\Taxation\Collector\TaxCollectorInterface'
+            - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
             - '@coreshop.factory.adjustment'
 
     # Rules Availability Check
     coreshop.maintenance.rule_availability_task:
         class: CoreShop\Bundle\CoreBundle\Maintenance\RuleAvailabilityTask
         arguments:
-            - '@coreshop.configuration.service'
-            - '@coreshop.rule_availability_processor'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
+            - '@CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessorInterface'
         tags:
             - { name: pimcore.maintenance.task, type: coreshop_rule_availability }
-
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper'
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper:
-        lazy: true
-        arguments:
-            - '@coreshop.product.rules.fetcher'
-            - '@coreshop.context.shopper'
-        tags:
-            - { name: templating.helper, alias: coreshop_product_price_rules }
 
     CoreShop\Bundle\CoreBundle\Twig\ValidPriceRulesExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper'
+            - '@coreshop.product.rules.fetcher'
         tags:
             - { name: twig.extension }

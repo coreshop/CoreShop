@@ -10,9 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
-use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\AddressType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
@@ -31,30 +33,12 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 class GuestRegistrationType extends AbstractResourceType
 {
-    /**
-     * @var DataMapperInterface
-     */
-    private $dataMapper;
+    private DataMapperInterface $dataMapper;
+    private CustomerRepositoryInterface $customerRepository;
+    private FactoryInterface $customerFactory;
 
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    private $customerRepository;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $customerFactory;
-
-    /**
-     * @param string                      $dataClass
-     * @param array                       $validationGroups
-     * @param DataMapperInterface         $dataMapper
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param FactoryInterface            $customerFactory
-     */
     public function __construct(
-        $dataClass,
+        string $dataClass,
         array $validationGroups,
         DataMapperInterface $dataMapper,
         CustomerRepositoryInterface $customerRepository,
@@ -67,10 +51,7 @@ class GuestRegistrationType extends AbstractResourceType
         $this->customerFactory = $customerFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->setDataMapper($this->dataMapper);
 
@@ -100,7 +81,7 @@ class GuestRegistrationType extends AbstractResourceType
                     'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']]),
+                    new Valid(['groups' => $this->validationGroups]),
                 ],
             ])
             ->add('termsAccepted', CheckboxType::class, [
@@ -140,10 +121,7 @@ class GuestRegistrationType extends AbstractResourceType
             ->setDataLocked(false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_guest_registration';
     }
