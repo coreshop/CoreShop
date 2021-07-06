@@ -28,6 +28,7 @@ use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
+use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -38,6 +39,7 @@ final class CartContext implements Context
     private $sharedStorage;
     private $cartContext;
     private $cartModifier;
+    private $cartQuantityModifier;
     private $cartManager;
     private $addToCartFactory;
     private $factory;
@@ -47,6 +49,7 @@ final class CartContext implements Context
         SharedStorageInterface $sharedStorage,
         CartContextInterface $cartContext,
         StorageListModifierInterface $cartModifier,
+        StorageListItemQuantityModifierInterface $cartQuantityModifier,
         CartManagerInterface $cartManager,
         AddToCartFactoryInterface $addToCartFactory,
         OrderItemFactoryInterface $factory,
@@ -55,6 +58,7 @@ final class CartContext implements Context
         $this->sharedStorage = $sharedStorage;
         $this->cartContext = $cartContext;
         $this->cartModifier = $cartModifier;
+        $this->cartQuantityModifier = $cartQuantityModifier;
         $this->cartManager = $cartManager;
         $this->addToCartFactory = $addToCartFactory;
         $this->factory = $factory;
@@ -63,13 +67,15 @@ final class CartContext implements Context
 
     /**
      * @Given /^I add the (product "[^"]+") to my cart$/
+     * @Given /^I add the (product "[^"]+") x (\d+) to my cart$/
      * @Given /^I add another (product "[^"]+") to my cart$/
      */
-    public function addProductToCart(ProductInterface $product)
+    public function addProductToCart(ProductInterface $product, int $quantity = 1)
     {
         $cart = $this->cartContext->getCart();
 
-        $cartItem = $this->factory->createWithPurchasable($product);
+        $cartItem = $this->factory->createWithPurchasable($product, 0);
+        $this->cartQuantityModifier->modify($cartItem, $quantity);
 
         $this->cartModifier->addToList($cart, $cartItem);
 

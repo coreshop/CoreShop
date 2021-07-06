@@ -95,6 +95,11 @@ interface OrderItemInterface extends
      */
     public function getUnits(): ?array;
 
+    /**
+     * @var OrderItemUnitInterface[] $units
+     */
+    public function setUnits(?array $units);
+
     public function hasUnit(OrderItemUnitInterface $itemUnit): bool;
 
     public function addUnit(OrderItemUnitInterface $itemUnit): void;
