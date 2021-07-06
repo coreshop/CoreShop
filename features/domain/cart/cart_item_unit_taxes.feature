@@ -13,8 +13,8 @@ Feature: Create a new cart item units where store uses net values
 
   Scenario: Create a new cart and add a product and calculate item unit taxes
     Given I add the product "Shoes" x 15 to my cart
-#    Then the cart item unit at position 1 for product "Shoes" should have a total of 27422 excluding tax
+    Then the cart item unit at position 1 for product "Shoes" should have a total of 27422 excluding tax
     Then the cart item unit at position 1 for product "Shoes" should have a total of 32907 including tax
-#    Then the cart item unit at position 7 for product "Shoes" should have a total of 27422 excluding tax
+    Then the cart item unit at position 7 for product "Shoes" should have a total of 27422 excluding tax
     Then the cart item unit at position 7 for product "Shoes" should have a total of 32906 including tax
 

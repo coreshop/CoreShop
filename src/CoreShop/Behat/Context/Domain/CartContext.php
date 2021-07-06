@@ -877,7 +877,6 @@ final class CartContext implements Context
         );
     }
 
-
     /**
      * @Then /^the cart item unit at position (\d+) for (product) should have a total of (\d+) including tax$/
      * @Then /^the cart item unit at position (\d+) for (product "[^"]+") should have a total of (\d+) including tax$/
@@ -900,6 +899,32 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItemUnit->getTotal(true),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item unit at position (\d+) for (product) should have a total of (\d+) excluding tax$/
+     * @Then /^the cart item unit at position (\d+) for (product "[^"]+") should have a total of (\d+) excluding tax$/
+     */
+    public function theCartItemUnitAtPositionForProductShouldHaveATotalOfExcludingTax(int $unitPosition, ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::minCount($cartItem->getUnits(), $unitPosition);
+
+        /**
+         * @var OrderItemUnitInterface $cartItemUnit
+         */
+        $cartItemUnit = $cartItem->getUnits()[$unitPosition];
+
+        Assert::eq(
+            $cartItemUnit->getTotal(false),
             $price
         );
     }
