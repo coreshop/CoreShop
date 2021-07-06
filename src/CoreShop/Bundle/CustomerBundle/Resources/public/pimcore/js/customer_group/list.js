@@ -10,31 +10,27 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.cart.list');
-coreshop.order.cart.list = Class.create(coreshop.order.order.list, {
-    type: 'cart',
+pimcore.registerNS('coreshop.customer_group.list');
+coreshop.customer_group.list = Class.create(coreshop.resource.list, {
+    type: 'customer_group',
 
-    enhanceGridLayout: function($super, grid) {
-        $super(grid);
-
-        grid.getStore().getProxy().setExtraParam('coreshop_cart', 1);
-        grid.getStore().getProxy().abort();
-
-        grid.getStore().load();
+    url: {
+        folder: '/admin/coreshop/customer_groups/folder-configuration'
     },
 
     setupContextMenuPlugin: function () {
         this.contextMenuPlugin = new coreshop.pimcore.plugin.grid(
-            'coreshop_cart',
+            'coreshop_customer_group',
             function (id) {
                 this.open(id);
             }.bind(this),
-            [coreshop.class_map.coreshop.order],
+            [coreshop.class_map.coreshop.customer_group],
             this.getGridPaginator()
         );
     },
 
     open: function (id, callback) {
-        coreshop.order.helper.openCart(id, callback);
+        pimcore.helpers.openObject(id, 'object');
+        //coreshop.order.helper.openOrder(id, callback);
     }
 });
