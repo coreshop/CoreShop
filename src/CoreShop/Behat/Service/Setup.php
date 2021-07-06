@@ -19,8 +19,8 @@ use Doctrine\DBAL\DriverManager;
 
 class Setup
 {
-    private static $pimcoreSetupDone = false;
-    private static $coreShopSetupDone = false;
+    private static bool $pimcoreSetupDone = false;
+    private static bool $coreShopSetupDone = false;
 
     public static function setupPimcore()
     {

@@ -25,10 +25,10 @@ use Webmozart\Assert\Assert;
 
 final class FrontendSecurityContext implements Context
 {
-    private $sharedStorage;
-    private $securityService;
-    private $customerRepository;
-    private $customerFactory;
+    private SharedStorageInterface $sharedStorage;
+    private SecurityServiceInterface $securityService;
+    private CustomerRepositoryInterface $customerRepository;
+    private FactoryInterface $customerFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

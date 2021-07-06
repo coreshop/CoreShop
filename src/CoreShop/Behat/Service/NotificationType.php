@@ -18,10 +18,10 @@ namespace CoreShop\Behat\Service;
 final class NotificationType
 {
     /** @var string */
-    private $value;
+    private string $value;
 
     /** @var array */
-    private static $types = [];
+    private static array $types = [];
 
     private function __construct(string $value)
     {

@@ -20,8 +20,8 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 
 final class UserContext implements Context
 {
-    private $sharedStorage;
-    private $homePage;
+    private SharedStorageInterface $sharedStorage;
+    private HomePageInterface $homePage;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

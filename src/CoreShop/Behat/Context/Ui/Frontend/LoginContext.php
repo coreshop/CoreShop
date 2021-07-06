@@ -23,10 +23,10 @@ use Webmozart\Assert\Assert;
 
 final class LoginContext implements Context
 {
-    private $homePage;
-    private $loginPage;
-    private $requestPasswordResetPage;
-    private $currentPageResolver;
+    private HomePageInterface $homePage;
+    private LoginPageInterface $loginPage;
+    private RequestPasswordResetPageInterface $requestPasswordResetPage;
+    private CurrentPageResolverInterface $currentPageResolver;
 
     public function __construct(
         HomePageInterface $homePage,

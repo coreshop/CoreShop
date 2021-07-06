@@ -74,7 +74,6 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@CoreShop\Behat\Service\StoreContextSetterInterface'
-            - '@coreshop.repository.store'
         tags:
             - { name: fob.context_service }
 
@@ -90,7 +89,6 @@ services:
         class: CoreShop\Behat\Context\Ui\Frontend\CheckoutContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
             - '@CoreShop\Behat\Page\Frontend\Checkout\CustomerPageInterface'
             - '@CoreShop\Behat\Page\Frontend\Checkout\AddressPageInterface'
             - '@CoreShop\Behat\Page\Frontend\Checkout\ShippingPageInterface'

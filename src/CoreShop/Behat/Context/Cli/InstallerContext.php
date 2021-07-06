@@ -21,20 +21,18 @@ use CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand;
 use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Webmozart\Assert\Assert;
 
 final class InstallerContext implements Context
 {
-    private $kernel;
-    private $application;
-    private $tester;
-    private $command;
+    private KernelInterface $kernel;
+    private ?Application $application = null;
+    private ?CommandTester $tester = null;
+    private ?Command $command = null;
 
-    /**
-     * @param KernelInterface $kernel
-     */
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;

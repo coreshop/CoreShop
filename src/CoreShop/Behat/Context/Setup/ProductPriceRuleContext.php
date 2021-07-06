@@ -53,12 +53,12 @@ final class ProductPriceRuleContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    private $sharedStorage;
-    private $objectManager;
-    private $formFactory;
-    private $conditionFormTypeRegistry;
-    private $actionFormTypeRegistry;
-    private $productPriceRuleFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FormFactoryInterface $formFactory;
+    private FormTypeRegistryInterface $conditionFormTypeRegistry;
+    private FormTypeRegistryInterface $actionFormTypeRegistry;
+    private FactoryInterface $productPriceRuleFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

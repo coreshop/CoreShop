@@ -210,7 +210,6 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@CoreShop\Component\Store\Context\StoreContextInterface'
             - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface'
-            - '@CoreShop\Component\Order\Committer\OrderCommitterInterface'
         tags:
             - { name: fob.context_service }
 
@@ -288,10 +287,6 @@ services:
         class: CoreShop\Behat\Context\Setup\CartPriceRuleVoucherCodeContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@doctrine.orm.entity_manager'
-            - '@coreshop.repository.cart_price_rule_voucher_code'
-            - '@coreshop.factory.cart_price_rule_voucher_code'
-            - '@coreshop.generator.cart_price_rule_voucher_codes'
             - '@CoreShop\Component\Order\Generator\CodeGeneratorCheckerInterface'
         tags:
             - { name: fob.context_service }

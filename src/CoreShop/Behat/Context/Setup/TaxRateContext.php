@@ -23,9 +23,9 @@ use Doctrine\Persistence\ObjectManager;
 
 final class TaxRateContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $taxRateFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $taxRateFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

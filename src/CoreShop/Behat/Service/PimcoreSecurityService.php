@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
 
 final class PimcoreSecurityService implements PimcoreSecurityServiceInterface
 {
-    private $cookieSetter;
+    private CookieSetterInterface $cookieSetter;
 
     public function __construct(
         CookieSetterInterface $cookieSetter

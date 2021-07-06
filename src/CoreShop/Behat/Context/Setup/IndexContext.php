@@ -30,12 +30,12 @@ use Pimcore\Model\DataObject\ClassDefinition;
 
 final class IndexContext implements Context
 {
-    private $sharedStorage;
-    private $classStorage;
-    private $objectManager;
-    private $indexFactory;
-    private $workerServiceRegistry;
-    private $indexColumnFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ClassStorageInterface $classStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $indexFactory;
+    private ServiceRegistryInterface $workerServiceRegistry;
+    private FactoryInterface $indexColumnFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

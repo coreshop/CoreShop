@@ -38,7 +38,6 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
-use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
@@ -50,13 +49,12 @@ final class ProductSpecificPriceRuleContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    private $sharedStorage;
-    private $objectManager;
-    private $formFactory;
-    private $conditionFormTypeRegistry;
-    private $actionFormTypeRegistry;
-    private $productSpecificPriceRuleFactory;
-    private $productSpecificPriceRuleRepository;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FormFactoryInterface $formFactory;
+    private FormTypeRegistryInterface $conditionFormTypeRegistry;
+    private FormTypeRegistryInterface $actionFormTypeRegistry;
+    private FactoryInterface $productSpecificPriceRuleFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

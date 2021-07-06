@@ -22,18 +22,15 @@ use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 
 final class StoreContext implements Context
 {
-    private $sharedStorage;
-    private $storeContextSetter;
-    private $storeRepository;
+    private SharedStorageInterface $sharedStorage;
+    private StoreContextSetterInterface $storeContextSetter;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        StoreContextSetterInterface $storeContextSetter,
-        StoreRepositoryInterface $storeRepository
+        StoreContextSetterInterface $storeContextSetter
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->storeContextSetter = $storeContextSetter;
-        $this->storeRepository = $storeRepository;
     }
 
     /**

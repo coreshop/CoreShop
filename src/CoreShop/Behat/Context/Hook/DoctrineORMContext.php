@@ -20,7 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class DoctrineORMContext implements Context
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {

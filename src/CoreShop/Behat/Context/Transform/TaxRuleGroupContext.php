@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class TaxRuleGroupContext implements Context
 {
-    private $sharedStorage;
-    private $taxRuleGroupRepository;
+    private SharedStorageInterface $sharedStorage;
+    private RepositoryInterface $taxRuleGroupRepository;
 
     public function __construct(SharedStorageInterface $sharedStorage, RepositoryInterface $taxRuleGroupRepository)
     {
