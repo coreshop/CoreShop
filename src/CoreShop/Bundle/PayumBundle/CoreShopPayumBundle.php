@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle;
 
 use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
@@ -24,9 +26,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPayumBundle extends AbstractResourceBundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -34,10 +33,7 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -45,9 +41,6 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
         $container->addCompilerPass(new PayumReplyToSymfonyPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         parent::registerDependentBundles($collection);
@@ -57,9 +50,6 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
         $collection->addBundle(new PayumBundle(), 1300);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Bundle\PayumBundle\Model';

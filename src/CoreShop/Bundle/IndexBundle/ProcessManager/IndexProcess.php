@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\ProcessManager;
 
 use ProcessManagerBundle\Model\ExecutableInterface;
@@ -17,9 +19,6 @@ use ProcessManagerBundle\Process\Pimcore;
 
 final class IndexProcess extends Pimcore
 {
-    /**
-     * {@inheritdoc}
-     */
     public function run(ExecutableInterface $executable, array $params = null)
     {
         $settings = $executable->getSettings();

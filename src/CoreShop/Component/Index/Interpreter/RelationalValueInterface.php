@@ -10,17 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Interpreter;
 
 interface RelationalValueInterface
 {
-    /**
-     * @return int
-     */
-    public function getDestinationId();
+    public function getDestinationId(): int;
 
-    /**
-     * @return string
-     */
-    public function getType();
+    public function getType(): string;
+
+    public function getParams(): array;
 }

@@ -45,25 +45,16 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
      */
     public $embeddedClassLayout;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getObjectsAllowed()
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getClasses()
     {
         return [['classes' => $this->getEmbeddedClassName()]];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         if (!is_array($data)) {
@@ -110,9 +101,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         return $returnData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (!is_array($data)) {
@@ -212,9 +200,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preGetData($object, $params = [])
     {
         $data = $object->getObjectVar($this->getName());
@@ -227,9 +212,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save($object, $params = [])
     {
         if (!$object instanceof DataObject\Concrete) {
@@ -262,10 +244,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         parent::save($object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function checkValidity($data, $omitMandatoryCheck = false)
+    public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
     {
         if (!$omitMandatoryCheck and $this->getMandatory() and empty($data)) {
             throw new Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
@@ -288,9 +267,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         if (!is_array($data) || count($data) === 0) {
@@ -447,25 +423,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         return null;
     }
 
-    /**
-     * @return int
-     */
-    public function getMaxItems()
-    {
-        return $this->maxItems;
-    }
-
-    /**
-     * @param int $maxItems
-     */
-    public function setMaxItems($maxItems)
-    {
-        $this->maxItems = $maxItems;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getLazyLoading()
     {
         return false;

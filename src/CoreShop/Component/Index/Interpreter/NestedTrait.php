@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Interpreter;
 
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -17,19 +19,9 @@ use Webmozart\Assert\Assert;
 
 trait NestedTrait
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    protected $interpreterRegistry;
+    protected ServiceRegistryInterface $interpreterRegistry;
 
-    /**
-     * @param mixed    $value
-     * @param array    $interpreterConfig
-     * @param callable $callback
-     *
-     * @return mixed
-     */
-    protected function loop($value, $interpreterConfig, callable $callback)
+    protected function loop($value, array $interpreterConfig, callable $callback)
     {
         foreach ($interpreterConfig['interpreters'] as $interpreter) {
             $interpreterObject = $this->interpreterRegistry->get($interpreter['type']);
@@ -40,10 +32,7 @@ trait NestedTrait
         return $value;
     }
 
-    /**
-     * @param array $interpreterConfig
-     */
-    protected function assert($interpreterConfig)
+    protected function assert(array $interpreterConfig)
     {
         Assert::keyExists($interpreterConfig, 'interpreters');
         Assert::isArray($interpreterConfig['interpreters'], 'Interpreter Config needs to be array');

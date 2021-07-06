@@ -10,42 +10,32 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ProductUnitFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return '2.0';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $factory = $this->container->get('coreshop.factory.product_unit');
 

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Currency\Model;
 
 trait CurrencyAwareTrait
@@ -19,18 +21,12 @@ trait CurrencyAwareTrait
      */
     protected $currency;
 
-    /**
-     * @return CurrencyInterface
-     */
-    public function getCurrency()
+    public function getCurrency(): ?CurrencyInterface
     {
         return $this->currency;
     }
 
-    /**
-     * @param CurrencyInterface $currency
-     */
-    public function setCurrency($currency)
+    public function setCurrency(?CurrencyInterface $currency)
     {
         $this->currency = $currency;
     }

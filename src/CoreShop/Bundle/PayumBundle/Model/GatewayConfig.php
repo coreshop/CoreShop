@@ -10,13 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use Payum\Core\Model\GatewayConfig as BaseGatewayConfig;
+use Payum\Core\Model\GatewayConfigInterface;
 
-class GatewayConfig extends BaseGatewayConfig implements ResourceInterface
+class GatewayConfig extends BaseGatewayConfig implements ResourceInterface, GatewayConfigInterface
 {
     use SetValuesTrait;
 

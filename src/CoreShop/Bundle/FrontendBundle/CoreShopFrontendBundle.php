@@ -12,32 +12,25 @@
 
 namespace CoreShop\Bundle\FrontendBundle;
 
+use Composer\InstalledVersions;
+use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
 use CoreShop\Bundle\FrontendBundle\DependencyInjection\CompilerPass\RegisterFrontendControllerPass;
 use EmailizrBundle\EmailizrBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
-    use PackageVersionTrait;
-
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         $collection->addBundle(new CoreShopCoreBundle(), 1600);
         $collection->addBundle(new EmailizrBundle(), 1000);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -45,17 +38,11 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
         $container->addCompilerPass(new RegisterFrontendControllerPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNiceName()
     {
         return 'CoreShop - Frontend';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return 'CoreShop - Frontend Bundle';
@@ -64,12 +51,34 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
     /**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getVersion()
     {
-        if (isset(Versions::VERSIONS['coreshop/frontend-bundle'])) {
-            return 'coreshop/frontend-bundle';
+        $bundleName = 'coreshop/frontend-bundle';
+
+        if (class_exists(InstalledVersions::class)) {
+            if (InstalledVersions::isInstalled('coreshop/core-shop')) {
+                return InstalledVersions::getVersion('coreshop/core-shop');
+            }
+
+            if (InstalledVersions::isInstalled($bundleName)) {
+                return InstalledVersions::getVersion($bundleName);
+            }
         }
 
-        return 'coreshop/core-shop';
+        if (class_exists(Versions::class)) {
+            if (isset(Versions::VERSIONS[$bundleName])) {
+                return Versions::getVersion($bundleName);
+            }
+
+            if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
+                return Versions::getVersion('coreshop/core-shop');
+            }
+        }
+
+        if (class_exists(Version::class)) {
+            return Version::getVersion();
+        }
+
+        return '';
     }
 }

@@ -10,30 +10,40 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\Order as BaseOrder;
-use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
 
-class Order extends BaseOrder implements OrderInterface
+abstract class Order extends BaseOrder implements OrderInterface
 {
-    use SaleTrait;
     use CarrierAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentSettings()
+    public function getShipping(bool $withTax = true): int
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        return $withTax ? $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, true) : $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentSettings($paymentSettings)
+    public function getShippingTax(): int
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        return $this->getShipping(true) - $this->getShipping(false);
+    }
+
+    public function hasShippableItems(): ?bool
+    {
+        $shippable = false;
+        /** @var OrderItemInterface $item */
+        foreach ($this->getItems() as $item) {
+            if ($item->getDigitalProduct() !== true) {
+                $shippable = true;
+
+                break;
+            }
+        }
+
+        return $shippable;
     }
 }

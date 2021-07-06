@@ -14,6 +14,12 @@ services:
         tags:
             - { name: form.type }
 
+    CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType:
+        arguments:
+            - '%coreshop.customer.security.login_identifier%'
+        tags:
+            - { name: form.type }
+
     CoreShop\Bundle\CustomerBundle\Form\Type\ChangePasswordType:
         tags:
             - { name: form.type }

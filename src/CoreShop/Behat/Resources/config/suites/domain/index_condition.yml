@@ -15,4 +15,4 @@ default:
 
                 - coreshop.behat.context.domain.index_condition
             filters:
-                tags: "@index_condition"
+                tags: "@domain && @index_condition"

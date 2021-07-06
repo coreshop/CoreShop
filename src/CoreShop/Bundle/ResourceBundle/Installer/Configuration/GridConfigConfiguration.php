@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer\Configuration;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -17,13 +19,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class GridConfigConfiguration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('grid_config');
+        $treeBuilder = new TreeBuilder('grids');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

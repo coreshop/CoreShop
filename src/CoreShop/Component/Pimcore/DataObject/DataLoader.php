@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Bundle\MoneyBundle\CoreExtension\Money;
@@ -17,10 +19,7 @@ use Pimcore\Model\DataObject;
 
 class DataLoader implements DataLoaderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataForObject(DataObject\Concrete $data, $loadedObjects = [])
+    public function getDataForObject(DataObject\Concrete $data, array $loadedObjects = []): array
     {
         if (!$data instanceof DataObject\AbstractObject) {
             return [];
@@ -61,10 +60,10 @@ class DataLoader implements DataLoaderInterface
                     }
                 }
             } elseif ($def instanceof DataObject\ClassDefinition\Data) {
-                if ($def instanceof Money) {
+                if (class_exists(Money::class) && $def instanceof Money) {
                     $value = $fieldData;
                 } else {
-                    $value = $def->getDataForEditmode($fieldData, $data, false);
+                    $value = $def->getDataForEditmode($fieldData, $data);
                 }
 
                 $objectData[$key] = $value;

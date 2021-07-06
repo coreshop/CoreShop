@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\Action\Offline;
 
 use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
@@ -21,24 +23,13 @@ use Payum\Core\Action\ActionInterface;
 
 final class ConfirmOrderAction implements ActionInterface
 {
-    /**
-     * @var StateMachineApplier
-     */
-    private $stateMachineApplier;
+    private StateMachineApplier $stateMachineApplier;
 
-    /**
-     * @param StateMachineApplier $stateMachineApplier
-     */
     public function __construct(StateMachineApplier $stateMachineApplier)
     {
         $this->stateMachineApplier = $stateMachineApplier;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param ConfirmOrder $request
-     */
     public function execute($request)
     {
         $payment = $request->getFirstModel();
@@ -54,9 +45,6 @@ final class ConfirmOrderAction implements ActionInterface
         //Shouldn't actually happen -> maybe cancel?
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
         return

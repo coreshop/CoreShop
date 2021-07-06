@@ -15,12 +15,10 @@ coreshop.portlet.abstract = Class.create(pimcore.layout.portlets.abstract, {
     download: function () {
         var me = this;
 
-        var url = '/admin/coreshop/portlet/export?portlet=' + me.portletType;
         var filterParams = me.getFilterParams();
+        filterParams['portlet'] = me.portletType;
 
-        url += '&' + Ext.urlEncode(filterParams);
-
-        pimcore.helpers.download(url);
+        pimcore.helpers.download(Routing.generate('coreshop_admin_report_portlet', filterParams));
     },
 
     getFilterParams: function() {

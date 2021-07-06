@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\History;
 
 use Pimcore\Model\DataObject;
@@ -18,9 +20,14 @@ interface HistoryLoggerInterface
 {
     /**
      * @param DataObject\Concrete $object
-     * @param null                $message
-     * @param null                $description
+     * @param string|null         $message
+     * @param string|null         $description
      * @param bool                $translate
      */
-    public function log(DataObject\Concrete $object, $message = null, $description = null, $translate = false);
+    public function log(
+        DataObject\Concrete $object,
+        ?string $message = null,
+        ?string $description = null,
+        bool $translate = false
+    ): void;
 }

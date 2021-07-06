@@ -11,23 +11,8 @@
  */
 
 pimcore.registerNS('coreshop.order.quote.list');
-coreshop.order.quote.list = Class.create(coreshop.order.sale.list, {
+coreshop.order.quote.list = Class.create(coreshop.order.order.list, {
     type: 'quote',
-
-    url: {
-        folder: '/admin/coreshop/quote/get-folder-configuration'
-    },
-
-    setupContextMenuPlugin: function () {
-        this.contextMenuPlugin = new coreshop.pimcore.plugin.grid(
-            'coreshop_quote',
-            function (id) {
-                this.open(id);
-            }.bind(this),
-            [coreshop.class_map.coreshop.quote],
-            this.getGridPaginator()
-        );
-    },
 
     open: function (id, callback) {
         coreshop.order.helper.openQuote(id, callback);

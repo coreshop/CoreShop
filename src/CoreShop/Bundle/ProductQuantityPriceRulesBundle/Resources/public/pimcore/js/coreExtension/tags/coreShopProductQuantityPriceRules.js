@@ -79,7 +79,7 @@ pimcore.object.tags.coreShopProductQuantityPriceRules = Class.create(pimcore.obj
     reloadPriceRuleData: function (object, task, fieldName) {
         this.component.setLoading(true);
         Ext.Ajax.request({
-            url: '/admin/object/get',
+            url: Routing.generate('pimcore_admin_dataobject_dataobject_get'),
             params: {id: object.id},
             ignoreErrors: true,
             success: function (response) {

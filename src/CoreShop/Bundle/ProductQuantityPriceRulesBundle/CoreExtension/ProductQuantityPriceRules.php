@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRuleValidationEvent;
@@ -27,11 +29,12 @@ use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
-use function League\Uri\merge_query;
 
-class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface, Data\CustomVersionMarshalInterface
+class ProductQuantityPriceRules extends Data implements
+    Data\CustomResourcePersistingInterface,
+    Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -46,6 +49,26 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      * @var int
      */
     public $height;
+
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return 'array';
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return 'array';
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return 'array';
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return 'array';
+    }
 
     /**
      * @param mixed $object
@@ -74,9 +97,6 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preSetData($object, $data, $params = [])
     {
         $this->markAsLoaded($object);
@@ -84,33 +104,21 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalVersion($object, $data)
     {
         if (!is_array($data)) {
@@ -130,9 +138,6 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         return $serialized;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalVersion($object, $data)
     {
         if (!is_array($data)) {
@@ -148,7 +153,6 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             }
 
             $context = DeserializationContext::create();
-            $context->setSerializeNull(false);
             $context->setGroups(['Version']);
             $context->setAttribute('em', $tempEntityManager);
 
@@ -158,6 +162,16 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         }
 
         return $entities;
+    }
+
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
     }
 
     /**
@@ -222,7 +236,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         $specificPriceRuleRepository = $this->getProductQuantityPriceRuleRepositoryFactory()->createNewRepository($tempEntityManager);
 
         $event = new ProductQuantityPriceRuleValidationEvent($object, $data);
-        $this->getEventDispatcher()->dispatch(Events::RULES_DATA_FROM_EDITMODE_VALIDATION, $event);
+        $this->getEventDispatcher()->dispatch($event, Events::RULES_DATA_FROM_EDITMODE_VALIDATION);
 
         foreach ($event->getData() as $rule) {
 
@@ -308,9 +322,6 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($object, $params = [])
     {
         if (isset($params['force']) && $params['force']) {
@@ -320,9 +331,6 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($object, $params = [])
     {
         if ($object instanceof QuantityRangePriceAwareInterface) {
@@ -429,6 +437,10 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         return $storedRule;
     }
 
+    public function getForCsvExport($object, $params = [])
+    {
+        return '';
+    }
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface

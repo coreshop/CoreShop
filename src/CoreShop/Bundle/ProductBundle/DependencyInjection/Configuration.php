@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection;
 
 use CoreShop\Bundle\ProductBundle\Controller\ProductPriceRuleController;
@@ -58,18 +60,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_product');
-
-        $rootNode
-            ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end();
+        $treeBuilder = new TreeBuilder('core_shop_product');
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
@@ -89,6 +83,7 @@ final class Configuration implements ConfigurationInterface
                 ->children()
                     ->scalarNode('product')->defaultValue(ProductInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('category')->defaultValue(CategoryInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('manufacturer')->defaultValue(ManufacturerInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
         ->end();
@@ -266,6 +261,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopProduct')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProductInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ProductRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopProductBundle/Resources/install/pimcore/classes/CoreShopProduct.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()

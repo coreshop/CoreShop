@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\EventListener;
 
 use CoreShop\Component\Product\Model\CategoryInterface;
@@ -18,7 +20,7 @@ use Pimcore\Event\Model\ElementEventInterface;
 
 final class CategoryPersistEventListener
 {
-    public function onPreUpdate(ElementEventInterface $event)
+    public function onPreUpdate(ElementEventInterface $event): void
     {
         if ($event instanceof DataObjectEvent) {
             $object = $event->getObject();

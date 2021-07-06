@@ -20,9 +20,10 @@ coreshop.order.helper.openSale = function (id, type, callback) {
         pimcore.globalmanager.add(cacheIdentifier, true);
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/'+type+'/detail',
+            url: Routing.generate('coreshop_admin_order_get_order'),
             params: {
-                id: id
+                id: id,
+                saleType: type
             },
             success: function (response) {
                 var res = Ext.decode(response.responseText);
@@ -65,7 +66,7 @@ coreshop.order.helper.openSaleByNumberDialog = function(type, keyCode, e) {
 
 coreshop.order.helper.openSaleByNumber = function (type, number) {
     Ext.Ajax.request({
-        url: '/admin/coreshop/'+type+'/find',
+        url: Routing.generate('coreshop_admin_'+type+'_find'),
         params: {
             number: number
         },

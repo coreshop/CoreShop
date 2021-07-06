@@ -10,17 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Model;
 
 interface StoreAwareInterface
 {
-    /**
-     * @return StoreInterface
-     */
-    public function getStore();
+    public function getStore(): ?StoreInterface;
 
-    /**
-     * @param StoreInterface $store
-     */
-    public function setStore($store);
+    public function setStore(?StoreInterface $store);
 }

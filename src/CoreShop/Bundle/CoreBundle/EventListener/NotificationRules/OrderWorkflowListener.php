@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
@@ -18,10 +20,7 @@ use Symfony\Component\Workflow\Event\Event;
 
 final class OrderWorkflowListener extends AbstractNotificationRuleListener
 {
-    /**
-     * @param Event $event
-     */
-    public function applyOrderWorkflowRule(Event $event)
+    public function applyOrderWorkflowRule(Event $event): void
     {
         $order = $event->getSubject();
 

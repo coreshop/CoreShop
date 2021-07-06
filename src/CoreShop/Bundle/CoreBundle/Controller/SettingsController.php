@@ -10,38 +10,27 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 class SettingsController extends AdminController
 {
-    /**
-     * @param FilterControllerEvent $event
-     *
-     * @throws \Exception
-     */
-    public function onKernelController(FilterControllerEvent $event)
+    public function getSettingsAction(Request $request): Response
     {
-        $user = $this->getUser();
+        $this->checkPermission('coreshop_permission_settings');
 
-        // permission check
-        if (!$user instanceof User || !$user->isAllowed('coreshop_permission_settings')) {
-            throw new \Exception(sprintf('this function requires "%s" permission!', 'coreshop_permission_settings'));
-        }
-    }
-
-    public function getSettingsAction(Request $request)
-    {
         $settings = [
             'bundle' => [
                 'version' => Version::getVersion(),
             ],
-            'reports' => array_values($this->getParameter('coreshop.reports')),
+            'reports' => array_values($this->container->getParameter('coreshop.reports')),
         ];
 
         return $this->viewHandler->handle($settings);

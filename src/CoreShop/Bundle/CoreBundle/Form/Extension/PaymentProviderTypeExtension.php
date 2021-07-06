@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType;
@@ -23,10 +25,7 @@ use Symfony\Component\Form\FormEvents;
 
 final class PaymentProviderTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('stores', StoreChoiceType::class, [
@@ -48,18 +47,8 @@ final class PaymentProviderTypeExtension extends AbstractTypeExtension
             });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType()
-    {
-        return PaymentProviderType::class;
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [PaymentProviderType::class];
     }

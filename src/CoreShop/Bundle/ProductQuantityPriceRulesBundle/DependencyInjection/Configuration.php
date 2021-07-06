@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -26,17 +28,13 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleI
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_product_quantity_price_rules');
+        $treeBuilder = new TreeBuilder('core_shop_product_quantity_price_rules');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->arrayNode('action_constraints')
                     ->prototype('array')
                     ->children()

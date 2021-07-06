@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\ProcessManager;
 
 use Carbon\Carbon;
@@ -21,25 +23,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class IndexListener
 {
-    /**
-     * @var ProcessInterface
-     */
-    private $process;
+    private ProcessInterface $process;
+    private ProcessFactoryInterface $processFactory;
+    private ProcessLogger $processLogger;
 
-    /**
-     * @var ProcessFactoryInterface
-     */
-    private $processFactory;
-
-    /**
-     * @var ProcessLogger
-     */
-    private $processLogger;
-
-    /**
-     * @param FactoryInterface $processFactory
-     * @param ProcessLogger    $processLogger
-     */
     public function __construct(FactoryInterface $processFactory, ProcessLogger $processLogger)
     {
         $this->processFactory = $processFactory;

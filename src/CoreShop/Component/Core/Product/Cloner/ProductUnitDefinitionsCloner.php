@@ -10,22 +10,34 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Product\Cloner;
 
 use CoreShop\Component\Core\Model\ProductInterface;
 
 class ProductUnitDefinitionsCloner implements ProductClonerInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false)
+    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void
     {
-        if ($product->hasUnitDefinitions() === true && $resetExistingData === false) {
+        if ($resetExistingData === false && $product->hasUnitDefinitions() === true) {
             return;
         }
 
         $unitDefinitions = clone $referenceProduct->getUnitDefinitions();
+
+        //Hack to get rid of the ID
+        $reflectionClass = new \ReflectionClass($unitDefinitions);
+        $property = $reflectionClass->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($unitDefinitions, null);
+
+        foreach ($unitDefinitions->getUnitDefinitions() as $unitDefinition) {
+            $reflectionClass = new \ReflectionClass($unitDefinition);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($unitDefinition, null);
+        }
 
         $product->setUnitDefinitions($unitDefinitions);
     }

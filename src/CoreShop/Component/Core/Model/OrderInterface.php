@@ -10,12 +10,34 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\OrderInterface as BaseOrderInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
-interface OrderInterface extends BaseOrderInterface, SaleInterface, CarrierAwareInterface, PaymentSettingsAwareInterface
+interface OrderInterface extends
+    BaseOrderInterface,
+    CarrierAwareInterface,
+    PaymentSettingsAwareInterface,
+    ShippableInterface
 {
+    public function hasShippableItems(): ?bool;
+
+    public function getWeight(): ?float;
+
+    public function getShipping(bool $withTax = true): int;
+
+    public function getShippingTax(): int;
+
+    public function getShippingTaxRate(): ?float;
+
+    public function setShippingTaxRate(?float $shippingTaxRate);
+
+    public function getNeedsRecalculation(): ?bool;
+
+    public function setNeedsRecalculation(?bool $needsRecalculation);
 }

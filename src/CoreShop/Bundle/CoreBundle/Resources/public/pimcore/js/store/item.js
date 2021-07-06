@@ -19,24 +19,31 @@ coreshop.store.item = Class.create(coreshop.store.item, {
         panel.down('fieldset').add(
             [
                 {
-                    xtype: 'combo',
+                    xtype: 'coreshop.country',
                     fieldLabel: t('coreshop_base_country'),
-                    typeAhead: true,
+                    name: 'baseCountry',
                     value: this.data.baseCountry,
-                    mode: 'local',
-                    listWidth: 100,
+                    name: 'baseCountry',
                     store: {
-                        type: 'coreshop_countries_active'
-                    },
-                    displayField: 'name',
-                    valueField: 'id',
-                    forceSelection: true,
-                    triggerAction: 'all',
-                    name: 'baseCountry'
+                        proxy: {
+                            type: 'ajax',
+                            url: Routing.generate('coreshop_country_listActive'),
+                            reader: {
+                                type: 'json',
+                            }
+                        },
+                        fields: [
+                            {name: 'id'},
+                            {name: 'name'}
+                        ],
+                        autoLoad: true,
+                        remoteSort: false,
+                        remoteFilter: false
+                    }
                 },
                 {
                     xtype: 'checkbox',
-                    fieldLabel: t('coreshop_base_use_gross_prices'),
+                    fieldLabel: t('coreshop_use_gross_prices'),
                     value: this.data.useGrossPrice,
                     name: 'useGrossPrice'
                 },

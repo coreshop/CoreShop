@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\StoreBundle;
 
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
@@ -23,9 +25,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopStoreBundle extends AbstractResourceBundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -33,10 +32,7 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -44,9 +40,6 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
         $container->addCompilerPass(new CompositeRequestResolverPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         parent::registerDependentBundles($collection);
@@ -55,9 +48,6 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopThemeBundle(), 2800);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Store\Model';

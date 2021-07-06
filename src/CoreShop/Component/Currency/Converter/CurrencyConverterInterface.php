@@ -10,16 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Currency\Converter;
 
 interface CurrencyConverterInterface
 {
-    /**
-     * @param int    $value
-     * @param string $fromCurrencyCode
-     * @param string $toCurrencyCode
-     *
-     * @return int
-     */
-    public function convert($value, $fromCurrencyCode, $toCurrencyCode);
+    public function convert(int $value, string $fromCurrencyCode, string $toCurrencyCode): int;
 }

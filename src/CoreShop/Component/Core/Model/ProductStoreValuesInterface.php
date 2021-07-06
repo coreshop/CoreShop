@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -50,7 +52,7 @@ interface ProductStoreValuesInterface extends ResourceInterface, StoreAwareInter
     public function removeProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice);
 
     /**
-     * @return Collection<ProductUnitDefinitionPriceInterface>
+     * @return Collection<ProductUnitDefinitionPriceInterface>|ProductUnitDefinitionPriceInterface[]
      */
     public function getProductUnitDefinitionPrices();
 }

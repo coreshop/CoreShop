@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
@@ -62,9 +64,6 @@ class Store extends AbstractResource implements StoreInterface
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId($id)
     {
         $this->id = $id;

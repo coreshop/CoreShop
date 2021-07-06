@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\History;
 
 use Pimcore\Model\DataObject;
@@ -17,23 +19,14 @@ use Pimcore\Model\Element\Note;
 
 class HistoryRepository implements HistoryRepositoryInterface
 {
-    /**
-     * @var string
-     */
-    private $noteIdentifier;
+    private string $noteIdentifier;
 
-    /**
-     * @param string $noteIdentifier
-     */
     public function __construct(string $noteIdentifier)
     {
         $this->noteIdentifier = $noteIdentifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getHistory(DataObject\Concrete $object)
+    public function getHistory(DataObject\Concrete $object): array
     {
         $noteList = new Note\Listing();
         $noteList->addConditionParam('type = ?', $this->noteIdentifier);

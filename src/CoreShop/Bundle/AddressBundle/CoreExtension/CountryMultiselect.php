@@ -10,16 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
 
 class CountryMultiselect extends Multiselect
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
     public $fieldtype = 'coreShopCountryMultiselect';
 }

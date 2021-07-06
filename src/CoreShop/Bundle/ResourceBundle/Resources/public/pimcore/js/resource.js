@@ -16,12 +16,13 @@ coreshop.resources = Class.create({
 
     initialize: function () {
         Ext.Ajax.request({
-            url: '/admin/coreshop/resource/config',
+            url: Routing.generate('coreshop_resource_class_map'),
             success: function (response) {
                 var resp = Ext.decode(response.responseText);
 
                 coreshop.class_map = resp.classMap;
                 coreshop.stack = resp.stack;
+                coreshop.full_stack = resp.full_stack;
 
                 coreshop.broker.fireEvent("afterClassMap", coreshop.class_map);
             }.bind(this)

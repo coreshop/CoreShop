@@ -2,7 +2,7 @@
 
 ## Installation
 ```bash
-$ composer require coreshop/index-bundle:^2.0
+$ composer require coreshop/index-bundle:^3.0
 ```
 
 ### Adding required bundles to kernel
@@ -45,13 +45,14 @@ $filter = $this->get('coreshop.repository.filter')->find(1); //Get Filter by ID 
 $filteredList = $this->get('coreshop.factory.filter.list')->createList($filter, $request->request);
 $filteredList->setVariantMode(ListingInterface::VARIANT_MODE_HIDE);
 $filteredList->setCategory($category);
+$this->get('coreshop.filter.processor')->processConditions($filter, $filteredList, $request->query);
 $filteredList->load();
 ```
 
 ## Pimcore UI
 
  - Index Configuration
- - Fitler Configuration
+ - Filter Configuration
 
 How to use?
 

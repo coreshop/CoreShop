@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
@@ -22,9 +24,26 @@ use Symfony\Component\Validator\Constraints\Valid;
 class GuestRegistrationType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @var string[]
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected array $validationGroups = [];
+
+    /**
+     * @var string[]
+     */
+    protected array $validationGroupsGuest = [];
+
+    /**
+     * @param string[] $validationGroups
+     * @param string[] $validationGroupsGuest
+     */
+    public function __construct(array $validationGroups, array $validationGroupsGuest)
+    {
+        $this->validationGroups = $validationGroups;
+        $this->validationGroupsGuest = $validationGroupsGuest;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('customer', CustomerType::class, [
@@ -34,7 +53,7 @@ class GuestRegistrationType extends AbstractType
                 ],
                 'guest' => true,
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop_customer_guest']]),
+                    new Valid(['groups' => $this->validationGroupsGuest]),
                 ],
             ])
             ->add('address', AddressType::class, [
@@ -43,17 +62,14 @@ class GuestRegistrationType extends AbstractType
                     'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']]),
+                    new Valid(['groups' => $this->validationGroups]),
                 ],
             ])
 
             ->add('submit', SubmitType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_guest_registration';
     }

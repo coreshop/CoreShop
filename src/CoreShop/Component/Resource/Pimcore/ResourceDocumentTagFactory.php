@@ -10,32 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Pimcore;
 
 use CoreShop\Component\Pimcore\Document\DocumentTagFactoryInterface;
+use Pimcore\Model\Document\Editable\EditableInterface;
 
 class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $class;
+    private string $class;
+    private string $repositoryName;
+    private string $nameProperty;
 
-    /**
-     * @var string
-     */
-    private $repositoryName;
-
-    /**
-     * @var string
-     */
-    private $nameProperty;
-
-    /**
-     * @param string $class
-     * @param string $repositoryName
-     * @param string $nameProperty
-     */
     public function __construct(string $class, string $repositoryName, string $nameProperty)
     {
         $this->class = $class;
@@ -43,18 +30,14 @@ class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
         $this->nameProperty = $nameProperty;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function create($type, $params)
+    public function create(string $type, array $params): EditableInterface
     {
         array_unshift($params, $type);
         array_unshift($params, $this->nameProperty);
         array_unshift($params, $this->repositoryName);
 
         $className = $this->class;
-        $instance = new $className(...$params);
 
-        return $instance;
+        return new $className(...$params);
     }
 }

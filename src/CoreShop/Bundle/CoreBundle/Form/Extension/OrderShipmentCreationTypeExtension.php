@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType;
@@ -19,26 +21,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class OrderShipmentCreationTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('carrier', CarrierChoiceType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType()
-    {
-        return OrderShipmentCreationType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [OrderShipmentCreationType::class];
     }

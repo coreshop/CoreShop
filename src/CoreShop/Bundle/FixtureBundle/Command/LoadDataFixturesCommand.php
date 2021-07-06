@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FixtureBundle\Command;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutorInterface;
@@ -31,20 +33,9 @@ class LoadDataFixturesCommand extends Command
     const MAIN_FIXTURES_PATH = 'Fixtures/Data/Application';
     const DEMO_FIXTURES_PATH = 'Fixtures/Data/Demo';
 
-    /**
-     * @var DataFixturesLoader
-     */
-    protected $fixtureLoader;
+    protected DataFixturesLoader $fixtureLoader;
+    protected DataFixturesExecutorInterface $fixtureExecutor;
 
-    /**
-     * @var DataFixturesExecutorInterface
-     */
-    protected $fixtureExecutor;
-
-    /**
-     * @param DataFixturesLoader            $fixtureLoader
-     * @param DataFixturesExecutorInterface $fixtureExecutor
-     */
     public function __construct(DataFixturesLoader $fixtureLoader, DataFixturesExecutorInterface $fixtureExecutor)
     {
         $this->fixtureLoader = $fixtureLoader;
@@ -53,10 +44,7 @@ class LoadDataFixturesCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName(static::COMMAND_NAME)
             ->setDescription('Load data fixtures.')
@@ -87,9 +75,6 @@ class LoadDataFixturesCommand extends Command
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fixtures = null;

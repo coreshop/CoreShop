@@ -10,18 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Calculator;
 
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface PurchasableDiscountCalculatorInterface
 {
-    /**
-     * @param PurchasableInterface $purchasable
-     * @param array                $context
-     * @param int                  $basePrice
-     *
-     * @return int
-     */
-    public function getDiscount(PurchasableInterface $purchasable, array $context, $basePrice);
+    public function getDiscount(PurchasableInterface $purchasable, array $context, int $convertedPrice): int;
 }

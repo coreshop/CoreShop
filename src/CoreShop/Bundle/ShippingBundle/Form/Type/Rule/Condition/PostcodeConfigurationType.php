@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
 
 use Symfony\Component\Form\AbstractType;
@@ -20,9 +22,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 final class PostcodeConfigurationType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @var string[]
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected array $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('postcodes', TextType::class, [
@@ -30,10 +42,7 @@ final class PostcodeConfigurationType extends AbstractType
             ->add('exclusion', CheckboxType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_rule_condition_postcode';
     }

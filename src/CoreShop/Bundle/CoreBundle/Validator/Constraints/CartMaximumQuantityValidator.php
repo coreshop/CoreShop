@@ -10,11 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService;
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use Symfony\Component\Validator\Constraint;
@@ -23,30 +25,20 @@ use Webmozart\Assert\Assert;
 
 final class CartMaximumQuantityValidator extends ConstraintValidator
 {
-    /**
-     * @var QuantityValidatorService
-     */
-    private $quantityValidatorService;
+    private QuantityValidatorService $quantityValidatorService;
 
-    /**
-     * @param QuantityValidatorService $quantityValidatorService
-     */
     public function __construct(QuantityValidatorService $quantityValidatorService)
     {
         $this->quantityValidatorService = $quantityValidatorService;
     }
 
-    /**
-     * @param mixed $cart
-     * @param Constraint $constraint
-     */
-    public function validate($cart, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
         /**
-         * @var CartInterface $cart
+         * @var OrderInterface               $value
          * @var CartMinimumQuantityValidator $constraint
          */
-        Assert::isInstanceOf($cart, CartInterface::class);
+        Assert::isInstanceOf($value, OrderInterface::class);
         Assert::isInstanceOf($constraint, CartMaximumQuantity::class);
 
         $higherThenMaximum = false;
@@ -55,9 +47,9 @@ final class CartMaximumQuantityValidator extends ConstraintValidator
         $maxLimit = null;
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
-        foreach ($cart->getItems() as $cartItem) {
+        foreach ($value->getItems() as $cartItem) {
             $product = $cartItem->getProduct();
 
             if (!$product instanceof StockableInterface) {
@@ -76,10 +68,14 @@ final class CartMaximumQuantityValidator extends ConstraintValidator
                 continue;
             }
 
+            if ($product->getMaximumQuantityToOrder() <= 0) {
+                continue;
+            }
+
             $maxLimit = (int)$product->getMaximumQuantityToOrder();
             $higherThenMaximum = $this->quantityValidatorService->isHigherThenMaxLimit(
                 $maxLimit,
-                $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
+                $this->getExistingCartItemQuantityFromCart($value, $cartItem)
             );
 
             $productsChecked[] = $product->getId();
@@ -102,19 +98,13 @@ final class CartMaximumQuantityValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param CartInterface $cart
-     * @param CartItemInterface $cartItem
-     *
-     * @return int
-     */
-    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): int
     {
         $product = $cartItem->getProduct();
         $quantity = $cartItem->getDefaultUnitQuantity();
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             if ($item->getId() === $cartItem->getId()) {

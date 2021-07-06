@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Notification\Rule\Action\Order;
 
 use CoreShop\Component\Core\Model\StoreInterface;
@@ -19,23 +21,14 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class StoreOrderMailActionProcessor implements NotificationRuleProcessorInterface
 {
-    /**
-     * @var OrderMailActionProcessor
-     */
     protected $orderMailActionProcessor;
 
-    /**
-     * @param OrderMailActionProcessor $orderMailActionProcessor
-     */
     public function __construct(OrderMailActionProcessor $orderMailActionProcessor)
     {
         $this->orderMailActionProcessor = $orderMailActionProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function apply($subject, NotificationRuleInterface $rule, array $configuration, $params = [])
+    public function apply($subject, NotificationRuleInterface $rule, array $configuration, array $params = []): void
     {
         $store = null;
         $mails = $configuration['mails'];

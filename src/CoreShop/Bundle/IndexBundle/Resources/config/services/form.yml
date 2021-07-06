@@ -7,6 +7,19 @@ parameters:
     coreshop.form.type.filter.validation_groups: [coreshop]
     coreshop.form.type.filter.pre_condition.validation_groups: [coreshop]
     coreshop.form.type.filter.user_condition.validation_groups: [coreshop]
+    coreshop.form.type.index.getter.brick.validation_groups: [coreshop]
+    coreshop.form.type.index.getter.classification.validation_groups: [coreshop]
+    coreshop.form.type.index.getter.field_collection.validation_groups: [coreshop]
+    coreshop.form.type.index.interpreter.expression.validation_groups: [coreshop]
+    coreshop.form.type.index.interpreter.nested.validation_groups: [coreshop]
+    coreshop.form.type.index.interpreter.object_property.validation_groups: [coreshop]
+    coreshop.form.type.index.interpreter.iterator.validation_groups: [coreshop]
+    coreshop.form.type.filter.condition.category.validation_groups: [coreshop]
+    coreshop.form.type.filter.condition.multiselect.validation_groups: [coreshop]
+    coreshop.form.type.filter.condition.range.validation_groups: [coreshop]
+    coreshop.form.type.filter.condition.select.validation_groups: [coreshop]
+    coreshop.form.type.filter.condition.pre_nested.validation_groups: [coreshop]
+    coreshop.form.type.filter.condition.user_nested.validation_groups: [coreshop]
 
 services:
     _defaults:
@@ -70,10 +83,6 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType:
-        tags:
-            - { name: form.type }
-
     # Filter Forms
     CoreShop\Bundle\IndexBundle\Form\Type\FilterType:
         arguments:
@@ -126,17 +135,85 @@ services:
 
     CoreShop\Bundle\IndexBundle\Form\Type\IndexChoiceType:
         arguments:
-          - '@coreshop.repository.index'
+            - '@coreshop.repository.index'
         tags:
-          -  { name: form.type }
+            -  { name: form.type }
 
     # Condition Config Types
-    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterPreConditionNestedType:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterPreConditionNestedType
+    CoreShop\Bundle\IndexBundle\Form\Type\Getter\BrickGetterFormType:
+        arguments:
+            - '%coreshop.form.type.index.getter.brick.validation_groups%'
         tags:
-          - { name: form.type }
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Getter\ClassificationStoreGetterFormType:
+        arguments:
+            - '%coreshop.form.type.index.getter.classification.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Getter\FieldCollectionGetterFormType:
+        arguments:
+            - '%coreshop.form.type.index.getter.field_collection.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\ExpressionInterpreterFormType:
+        arguments:
+            - '%coreshop.form.type.index.interpreter.expression.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\ObjectPropertyInterpreterFormType:
+        arguments:
+            - '%coreshop.form.type.index.interpreter.object_property.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\IteratorInterpreterType:
+        arguments:
+            - '%coreshop.form.type.index.interpreter.iterator.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType:
+        arguments:
+            - '%coreshop.form.type.index.interpreter.nested.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionCategorySelectType:
+        arguments:
+            - '%coreshop.form.type.filter.condition.category.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType:
+        arguments:
+            - '%coreshop.form.type.filter.condition.multiselect.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionRangeType:
+        arguments:
+            - '%coreshop.form.type.filter.condition.range.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType:
+        arguments:
+            - '%coreshop.form.type.filter.condition.select.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterPreConditionNestedType:
+        arguments:
+            - '%coreshop.form.type.filter.condition.pre_nested.validation_groups%'
+        tags:
+            - { name: form.type }
 
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterUserConditionNestedType:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterUserConditionNestedType
+        arguments:
+            - '%coreshop.form.type.filter.condition.user_nested.validation_groups%'
         tags:
-          - { name: form.type }
+            - { name: form.type }

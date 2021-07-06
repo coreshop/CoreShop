@@ -15,8 +15,8 @@ coreshop.state.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_state',
 
-    url: {
-        save: '/admin/coreshop/states/save'
+    routing: {
+        save: 'coreshop_state_save'
     },
 
     getItems: function () {

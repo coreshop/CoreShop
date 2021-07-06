@@ -6,7 +6,7 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.product_specific_price_rule.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopProductSpecificPriceRules }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopProductSpecificPriceRules }
 
     coreshop.datahub.graphql.querytypegenerator.resource.product_unit:
         class: CoreShop\Component\Resource\DataHub\QueryType\Resource
@@ -15,7 +15,7 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.product_unit.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopProductUnit }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopProductUnit }
 
     coreshop.datahub.graphql.querytypegenerator.resource.product_unit_definition:
         class: CoreShop\Component\Resource\DataHub\QueryType\Resource
@@ -24,7 +24,7 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.product_unit_definition.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopProductUnitDefinition }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopProductUnitDefinition }
 
     coreshop.datahub.graphql.querytypegenerator.resource.product_unit_definitions:
         class: CoreShop\Component\Resource\DataHub\QueryType\Resource
@@ -33,4 +33,4 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.product_unit_definitions.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopProductUnitDefinitions }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopProductUnitDefinitions }

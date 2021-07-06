@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
@@ -19,10 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class CartCreationTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('shippingAddress', AddressChoiceType::class, [
             'customer' => $options['customer'],
@@ -33,18 +32,7 @@ final class CartCreationTypeExtension extends AbstractTypeExtension
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType()
-    {
-        return CartCreationType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [CartCreationType::class];
     }

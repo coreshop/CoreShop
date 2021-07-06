@@ -10,14 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 final class PimcoreSharedTranslationsInstaller extends AbstractTranslationInstaller
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getIdentifier($applicationName = null)
+    protected function getIdentifier(string $applicationName = null): string
     {
         return $applicationName ? sprintf('%s.pimcore.admin.install.translations', $applicationName) : 'coreshop.all.pimcore.admin.install.translations';
     }

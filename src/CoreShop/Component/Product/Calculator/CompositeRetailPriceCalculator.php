@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
@@ -18,23 +20,14 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositeRetailPriceCalculator implements ProductRetailPriceCalculatorInterface
 {
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
-    protected $retailPriceCalculator;
+    protected PrioritizedServiceRegistryInterface $retailPriceCalculator;
 
-    /**
-     * @param PrioritizedServiceRegistryInterface $retailPriceCalculator
-     */
-    public function __construct($retailPriceCalculator)
+    public function __construct(PrioritizedServiceRegistryInterface $retailPriceCalculator)
     {
         $this->retailPriceCalculator = $retailPriceCalculator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         $price = null;
 

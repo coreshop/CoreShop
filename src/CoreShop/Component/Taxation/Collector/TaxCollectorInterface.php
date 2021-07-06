@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Taxation\Collector;
 
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
@@ -24,7 +26,7 @@ interface TaxCollectorInterface
      *
      * @return TaxItemInterface[]
      */
-    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []);
+    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array;
 
     /**
      * @param TaxCalculatorInterface $taxCalculator
@@ -33,7 +35,7 @@ interface TaxCollectorInterface
      *
      * @return TaxItemInterface[]
      */
-    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []);
+    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array;
 
     /**
      * Merges to Tax arrays from TaxCollector into one.
@@ -43,5 +45,5 @@ interface TaxCollectorInterface
      *
      * @return TaxItemInterface[]
      */
-    public function mergeTaxes(array $taxes1, array $taxes2);
+    public function mergeTaxes(array $taxes1, array $taxes2): array;
 }

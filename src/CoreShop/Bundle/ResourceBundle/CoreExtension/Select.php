@@ -17,8 +17,13 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-abstract class Select extends Data\Select implements Data\CustomVersionMarshalInterface
+abstract class Select extends Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    Data\CustomRecyclingMarshalInterface
 {
+    use Model\DataObject\Traits\SimpleComparisonTrait;
+
     /**
      * @var bool
      */
@@ -32,11 +37,50 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     /**
      * @return string
      */
-    abstract protected function getModel();
+    abstract protected function getModel(): string;
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
+    abstract protected function getInterface(): string;
+
+    /**
+     * @return bool
+     */
+    abstract protected function getNullable(): bool;
+
+    /**
+     * @return string|null
+     */
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return ($this->getNullable() ? '?' : '') . $this->getInterface();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return ($this->getNullable() ? '?' : '') . $this->getInterface();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhpdocInputType(): ?string
+    {
+        return ($this->getNullable() ? 'null|' : '') . $this->getInterface();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhpdocReturnType(): ?string
+    {
+        return ($this->getNullable() ? 'null|' : '') . $this->getInterface();
+    }
+
     public function marshalVersion($object, $data)
     {
         if ($data instanceof ResourceInterface) {
@@ -46,9 +90,6 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalVersion($object, $data)
     {
         if (null === $data) {
@@ -58,41 +99,36 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
         return $this->getRepository()->find($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
+    }
+
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * @return string | array
-     */
     public function getQueryColumnType()
     {
         return 'int(11)';
     }
 
-    /**
-     * @return string | array
-     */
     public function getColumnType()
     {
         return 'int(11)';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
@@ -104,9 +140,6 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preGetData($object, $params = [])
     {
         if (!$object instanceof Model\AbstractModel) {
@@ -133,11 +166,14 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return int|null
+     * @param string $data
+     * @param null   $object
+     * @param array  $params
+     * @return int|string|null
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
-        if (method_exists($data, 'getId') && is_a($data, $this->getModel())) {
+        if ($data !== null && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 
@@ -145,7 +181,10 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return object|null
+     * @param string $data
+     * @param null   $object
+     * @param array  $params
+     * @return ResourceInterface|object|null
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
@@ -157,44 +196,35 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
+     * @param string $data
+     * @param null   $object
+     * @param array  $params
      * @return int|null
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
-        if (method_exists($data, 'getId') && is_a($data, $this->getModel())) {
+        if ($data !== null && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 
         return null;
     }
 
-    /**
-     * @return int|null
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         return $this->getDataForResource($data, $object, $params);
     }
 
-    /**
-     * @return object|null
-     */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         return !$data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForSearchIndex($object, $params = [])
     {
         if ($object instanceof ResourceInterface) {
@@ -204,37 +234,11 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
         return parent::getDataForSearchIndex($object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getForWebserviceExport($object, $params = [])
-    {
-        if ($object instanceof ResourceInterface) {
-            return $object->getId();
-        }
-
-        return parent::getForWebserviceExport($object, $params);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFromWebserviceImport($value, $object = null, $params = [], $idMapper = null)
-    {
-        return $this->getRepository()->find($value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isAllowEmpty()
     {
         return $this->allowEmpty;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setAllowEmpty($allowEmpty)
     {
         $this->allowEmpty = $allowEmpty;

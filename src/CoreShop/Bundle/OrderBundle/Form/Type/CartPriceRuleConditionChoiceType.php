@@ -10,16 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionChoiceType;
 
 class CartPriceRuleConditionChoiceType extends RuleConditionChoiceType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule_action_condition_choice';
     }

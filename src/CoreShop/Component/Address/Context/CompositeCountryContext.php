@@ -10,35 +10,31 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Context;
 
-use Zend\Stdlib\PriorityQueue;
+use CoreShop\Component\Address\Model\CountryInterface;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeCountryContext implements CountryContextInterface
 {
     /**
      * @var PriorityQueue|CountryContextInterface[]
      */
-    private $countryContexts;
+    private PriorityQueue $countryContexts;
 
     public function __construct()
     {
         $this->countryContexts = new PriorityQueue();
     }
 
-    /**
-     * @param CountryContextInterface $countryContexts
-     * @param int                     $priority
-     */
-    public function addContext(CountryContextInterface $countryContexts, $priority = 0)
+    public function addContext(CountryContextInterface $countryContexts, $priority = 0): void
     {
         $this->countryContexts->insert($countryContexts, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCountry()
+    public function getCountry(): CountryInterface
     {
         foreach ($this->countryContexts as $countryContexts) {
             try {

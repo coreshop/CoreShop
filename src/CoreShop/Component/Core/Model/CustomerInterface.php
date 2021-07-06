@@ -10,51 +10,33 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\AddressesAwareInterface;
+use CoreShop\Component\Address\Model\DefaultAddressAwareInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface as BaseCustomerInterface;
 
-interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterface
+interface CustomerInterface extends
+    BaseCustomerInterface,
+    AddressesAwareInterface,
+    DefaultAddressAwareInterface
 {
-    /**
-     * @return AddressInterface
-     */
-    public function getDefaultAddress();
+    public function getAddressAccessType(): ?string;
 
-    /**
-     * @param AddressInterface $address
-     */
-    public function setDefaultAddress($address);
+    public function setAddressAccessType(?string $addressAccessType);
 
-    /**
-     * @return bool
-     */
-    public function getNewsletterActive();
+    public function getNewsletterActive(): ?bool;
 
-    /**
-     * @param bool $newsletterActive
-     */
-    public function setNewsletterActive($newsletterActive);
+    public function setNewsletterActive(?bool $newsletterActive);
 
-    /**
-     * @return bool
-     */
-    public function getNewsletterConfirmed();
+    public function getNewsletterConfirmed(): ?bool;
 
-    /**
-     * @param bool $newsletterConfirmed
-     */
-    public function setNewsletterConfirmed($newsletterConfirmed);
+    public function setNewsletterConfirmed(?bool $newsletterConfirmed);
 
-    /**
-     * @return string
-     */
-    public function getNewsletterToken();
+    public function getNewsletterToken(): ?string;
 
-    /**
-     * @param string $newsletterToken
-     */
-    public function setNewsletterToken($newsletterToken);
+    public function setNewsletterToken(?string $newsletterToken);
 }

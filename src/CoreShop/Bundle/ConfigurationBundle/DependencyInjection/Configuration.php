@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ConfigurationBundle\DependencyInjection;
 
 use CoreShop\Bundle\ConfigurationBundle\Controller\ConfigurationController;
@@ -23,27 +25,17 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_configuration');
+        $treeBuilder = new TreeBuilder('core_shop_configuration');
+        $rootNode = $treeBuilder->getRootNode();
 
-        $rootNode
-            ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end();
         $this->addModelsSection($rootNode);
 
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()

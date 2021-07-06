@@ -42,7 +42,7 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(coreshop.portlet.abst
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/portlet/get-data?portlet=' + this.portletType,
+                url: Routing.generate('coreshop_admin_portlet_get_data', {portlet: this.portletType}),
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
@@ -237,7 +237,7 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(coreshop.portlet.abst
                                 var storeValue = Ext.getCmp('coreshop_portlet_store').getValue();
                                 this.config = storeValue;
                                 Ext.Ajax.request({
-                                    url: '/admin/portal/update-portlet-config',
+                                    url: Routing.generate('pimcore_admin_portal_updateportletconfig'),
                                     method: 'PUT',
                                     params: {
                                         key: this.portal.key,

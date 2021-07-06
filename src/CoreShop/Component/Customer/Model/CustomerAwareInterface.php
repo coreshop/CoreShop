@@ -10,17 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Model;
 
 interface CustomerAwareInterface
 {
-    /**
-     * @return CustomerInterface|null
-     */
-    public function getCustomer();
+    public function getCustomer(): ?CustomerInterface;
 
-    /**
-     * @param CustomerInterface|null $customer
-     */
-    public function setCustomer($customer);
+    public function setCustomer(?CustomerInterface $customer);
 }

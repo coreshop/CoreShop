@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Currency\Repository;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
@@ -24,5 +26,5 @@ interface ExchangeRateRepositoryInterface extends RepositoryInterface
      *
      * @return ExchangeRateInterface|null
      */
-    public function findOneWithCurrencyPair(CurrencyInterface $fromCurrency, CurrencyInterface $toCurrency);
+    public function findOneWithCurrencyPair(CurrencyInterface $fromCurrency, CurrencyInterface $toCurrency): ?ExchangeRateInterface;
 }

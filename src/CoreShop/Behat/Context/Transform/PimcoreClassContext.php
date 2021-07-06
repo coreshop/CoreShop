@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
@@ -24,20 +26,9 @@ use Webmozart\Assert\Assert;
 
 final class PimcoreClassContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ClassStorageInterface
-     */
     private $classStorage;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface  $classStorage
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ClassStorageInterface $classStorage
@@ -90,6 +81,15 @@ final class PimcoreClassContext implements Context
     public function objectInstance()
     {
         return $this->sharedStorage->get('object-instance');
+    }
+
+
+    /**
+     * @Transform /^object-instance-2$/
+     */
+    public function objectInstance2()
+    {
+        return $this->sharedStorage->get('object-instance-2');
     }
 
     /**

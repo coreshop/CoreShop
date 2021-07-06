@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\NotificationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
@@ -17,17 +19,18 @@ use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class NotificationRuleController extends ResourceController
 {
-    public function getConfigAction(Request $request)
+    public function getConfigAction(Request $request): Response
     {
         $conditions = [];
         $actions = [];
         $types = [];
 
-        $actionTypes = $this->getParameter('coreshop.notification_rule.actions.types');
-        $conditionTypes = $this->getParameter('coreshop.notification_rule.conditions.types');
+        $actionTypes = $this->container->getParameter('coreshop.notification_rule.actions.types');
+        $conditionTypes = $this->container->getParameter('coreshop.notification_rule.conditions.types');
 
         foreach ($actionTypes as $type) {
             if (!in_array($type, $types)) {
@@ -70,7 +73,7 @@ class NotificationRuleController extends ResourceController
         ]);
     }
 
-    public function sortAction(Request $request)
+    public function sortAction(Request $request): Response
     {
         /**
          * @var EntityRepository $repository

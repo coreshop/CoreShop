@@ -10,27 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Repository;
 
-use Pimcore\Model\DataObject\Listing;
+use Pimcore\Model\AbstractModel;
 
 interface PimcoreRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @return string
-     */
-    public function getClassId();
+    public function getClassId(): string;
 
-    /**
-     * @return Listing
-     */
     public function getList();
 
-    /**
-     * @param int  $id
-     * @param bool $force
-     *
-     * @return mixed
-     */
-    public function forceFind($id, $force = true);
+    public function forceFind($id, bool $force = true);
 }

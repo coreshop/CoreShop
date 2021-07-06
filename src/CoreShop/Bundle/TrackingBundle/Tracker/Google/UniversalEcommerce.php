@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
@@ -20,36 +22,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UniversalEcommerce extends AbstractEcommerceTracker
 {
-    /**
-     * @var TrackerInterface
-     */
-    public $tracker;
+    public TrackerInterface $tracker;
+    public ConfigResolverInterface $config;
 
-    /**
-     * @var ConfigResolverInterface
-     */
-    public $config;
-
-    /**
-     * @param TrackerInterface $tracker
-     */
-    public function setTracker(TrackerInterface $tracker)
+    public function setTracker(TrackerInterface $tracker): void
     {
         $this->tracker = $tracker;
     }
 
-    /**
-     * @param ConfigResolverInterface $config
-     */
-    public function setConfigResolver(ConfigResolverInterface $config)
+    public function setConfigResolver(ConfigResolverInterface $config): void
     {
         $this->config = $config;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -58,50 +44,32 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackProduct($product)
+    public function trackProduct($product): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackProductImpression($product)
+    public function trackProductImpression($product): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCartAdd($cart, $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCartRemove($cart, $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutComplete($order)
+    public function trackCheckoutComplete($order): void
     {
         if ($this->isGlobalSiteTagMode() === true) {
             return;
@@ -131,27 +99,17 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, Tracker::BLOCK_AFTER_TRACK);
     }
 
-    /**
-     * @return bool
-     */
-    protected function isGlobalSiteTagMode()
+    protected function isGlobalSiteTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();
         if ($config === false) {
             return false;
         }
 
-        return $config->get('gtagcode');
+        return (bool) $config->get('gtagcode');
     }
 
-    /**
-     * Transform ActionData into classic analytics data array.
-     *
-     * @param array $actionData
-     *
-     * @return array
-     */
-    protected function transformOrder($actionData)
+    protected function transformOrder(array $actionData): array
     {
         return [
             'id' => $actionData['id'],
@@ -163,14 +121,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         ];
     }
 
-    /**
-     * Transform product action into enhanced data object.
-     *
-     * @param array $item
-     *
-     * @return array
-     */
-    protected function transformProductAction($item)
+    protected function transformProductAction(array $item): array
     {
         return $this->filterNullValues([
             'id' => $item['id'],

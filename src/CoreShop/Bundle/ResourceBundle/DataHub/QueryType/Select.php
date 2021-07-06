@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DataHub\QueryType;
 
 use CoreShop\Bundle\ResourceBundle\DataHub\Resolver\ResourceResolver;
@@ -19,9 +21,6 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class Select extends Input
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->enrichConfig(
@@ -37,17 +36,11 @@ class Select extends Input
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
         return Type::int();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResolver($attribute, $fieldDefinition, $class)
     {
         $resolver = new ResourceResolver($fieldDefinition);

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
@@ -18,7 +20,10 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 
-class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface, Data\CustomVersionMarshalInterface
+class ProductUnitDefinition extends Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    Data\CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.
@@ -39,6 +44,26 @@ class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwar
      */
     public $allowEmpty = false;
 
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return '\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return '\\' . ProductUnitDefinitionInterface::class;
+    }
+
     /**
      * @return string | array
      */
@@ -55,25 +80,16 @@ class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwar
         return 'int(11)';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
@@ -85,9 +101,6 @@ class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwar
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preGetData($object, $params = [])
     {
         /**
@@ -95,7 +108,7 @@ class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwar
          */
         $data = $object->getObjectVar($this->getName());
 
-        if ($data instanceof ResourceInterface) {
+        if ($data instanceof ResourceInterface && $data->getId()) {
             //Reload from Database, but only if available
             $tmpData = $this->getRepository()->find($data->getId());
 
@@ -112,9 +125,6 @@ class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwar
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForResource($data, $object = null, $params = [])
     {
         if ($data instanceof ProductUnitDefinitionInterface) {
@@ -124,9 +134,6 @@ class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwar
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         if ((int) $data > 0) {
@@ -136,9 +143,6 @@ class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwar
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
         if ($data instanceof ProductUnitDefinitionInterface) {
@@ -148,33 +152,31 @@ class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwar
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalVersion($object, $data)
     {
         return $this->getDataForEditmode($data, $object);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalVersion($object, $data)
     {
         return $this->getDataFromEditmode($data, $object);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
+    }
+
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         $parsedData = [
@@ -200,20 +202,19 @@ class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwar
         return $parsedData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         return !$data instanceof ProductUnitDefinitionInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionPreview($data, $object = null, $params = [])
     {
         return $data;
+    }
+
+    public function getForCsvExport($object, $params = [])
+    {
+        return '';
     }
 
     /**

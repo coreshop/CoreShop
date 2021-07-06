@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection;
 
 use CoreShop\Bundle\IndexBundle\Controller\FilterController;
@@ -34,18 +36,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_index');
+        $treeBuilder = new TreeBuilder('core_shop_index');
+        $rootNode = $treeBuilder->getRootNode();
 
-        $rootNode
-            ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end();
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
         $this->addIndexColumnsTypeSection($rootNode);

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
@@ -22,8 +24,8 @@ class TaxRate extends AbstractResource implements TaxRateInterface
     use ToggleableTrait;
     use TimestampableTrait;
     use TranslatableTrait {
-        __construct as private initializeTranslationsCollection;
-        getTranslation as private doGetTranslation;
+        TranslatableTrait::__construct as private initializeTranslationsCollection;
+        TranslatableTrait::getTranslation as private doGetTranslation;
     }
 
     /**
@@ -57,33 +59,21 @@ class TaxRate extends AbstractResource implements TaxRateInterface
         return sprintf('%s (%s)', $this->getName('en'), $this->getId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName($language = null)
     {
         return $this->getTranslation($language)->getName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name, $language = null)
     {
         $this->getTranslation($language, false)->setName($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRate()
     {
         return $this->rate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setRate($rate)
     {
         $this->rate = $rate;
@@ -103,9 +93,6 @@ class TaxRate extends AbstractResource implements TaxRateInterface
         return $translation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createTranslation()
     {
         return new TaxRateTranslation();

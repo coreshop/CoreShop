@@ -1,5 +1,62 @@
 # Within 2.1
 
+## 2.1.9
+ - Bugs:
+    - [OrderBundle] fix usage of inherited values in backend-cart/order controllers (https://github.com/coreshop/CoreShop/pull/1461, https://github.com/coreshop/CoreShop/issues/1459)
+    
+## 2.1.8
+ - Bugs:
+    - [ResourceBundle] Fix unique entity validator (https://github.com/coreshop/CoreShop/pull/1385)
+    - [DataHub] fix integration (https://github.com/coreshop/CoreShop/pull/1389)
+   
+ - Features:
+    - [WorkflowBundle] Add enabled option to workflow callbacks (https://github.com/coreshop/CoreShop/pull/1392)
+    
+## 2.1.7
+ - Bugs:
+    - [Pimcore] fix getDataForEditmode (https://github.com/coreshop/CoreShop/pull/1372, https://github.com/coreshop/CoreShop/pull/1361)
+
+## 2.1.6
+ - Bugs:
+    - [CoreBundle][2.1] Fix name of country combo (https://github.com/coreshop/CoreShop/pull/1350)
+
+## 2.1.5
+ - Bugs:
+    - [Translations] fix: add missing translation (https://github.com/coreshop/CoreShop/pull/1308)
+    - [IndexBundle] index ui improvements (https://github.com/coreshop/CoreShop/pull/1300)
+    - [ThemeBundle] fix configuration for default resolvers (https://github.com/coreshop/CoreShop/pull/1301)
+    - [AddressBundle] introduce filter-active action and filter store-base countries by those (https://github.com/coreshop/CoreShop/pull/1302)
+    
+## 2.1.4
+ - Feature:
+    - [CoreBundle] allow store-values to be reset and inherit again (https://github.com/coreshop/CoreShop/pull/1273)
+ - Bugs:
+    - [IndexBundle] Change return type of WorkerInterface::getList (https://github.com/coreshop/CoreShop/pull/1280)
+    - [ThemeBundle] fix default theme-resolvers (https://github.com/coreshop/CoreShop/pull/1281)
+    - [Pimcore] make compatible with Pimcore 6.5 (https://github.com/coreshop/CoreShop/pull/1285)
+    - [Core] fix bug where we calculated item-discount and item-discount-prices (https://github.com/coreshop/CoreShop/pull/1293)
+
+## 2.1.3
+ - Bugs:
+    - [Address, Order, Core] fix release (https://github.com/coreshop/CoreShop/pull/1269)
+
+## 2.1.2
+ - Features:
+    - [FrontendBundle] Change function from private to protected (https://github.com/coreshop/CoreShop/pull/1248)
+    - [Installer] update logo (https://github.com/coreshop/CoreShop/pull/1264)
+    - [Cart] introduce cart-context resolver to allow better extendability of the context used for the cart (https://github.com/coreshop/CoreShop/pull/1267)
+        
+ - Bugs:
+    - [ThemeBundle] fix Undefined index: default_resolvers (https://github.com/coreshop/CoreShop/pull/1235)
+    - [IndexBundle]  $indexIds is always an array, hence the condition is now empty (https://github.com/coreshop/CoreShop/pull/1241)
+    - [Stan] fixes for 2.1 (https://github.com/coreshop/CoreShop/pull/1244)
+    - [CurrencyBundle] fix money-currency type is rounding prices wrong (https://github.com/coreshop/CoreShop/pull/1238)
+    - [CoreBundle] Change repository so that unit definition deletion works with multiple product models (https://github.com/coreshop/CoreShop/pull/1252)
+    - [Order] fix throwing/catching right exceptions in purchasable calculalator (https://github.com/coreshop/CoreShop/pull/1250)
+    - [Core] allow non QuantityPriceRangeAware Products in cart-processor (https://github.com/coreshop/CoreShop/pull/1249)
+    - [IndexBundle] fix index columns form (https://github.com/coreshop/CoreShop/pull/1259)
+    - [Country] don't call the request based resolvers every time (https://github.com/coreshop/CoreShop/pull/1261)
+
 ## 2.1.1
  - Features:
     - [CoreBundle] Implement Variant Unit and QPR Solidifier (https://github.com/coreshop/CoreShop/issues/1157)

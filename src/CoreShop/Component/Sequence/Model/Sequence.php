@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Sequence\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
@@ -33,33 +35,21 @@ class Sequence implements SequenceInterface
      */
     protected $index = 0;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIndex()
     {
         return $this->index;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setType($type)
     {
         $this->type = $type;

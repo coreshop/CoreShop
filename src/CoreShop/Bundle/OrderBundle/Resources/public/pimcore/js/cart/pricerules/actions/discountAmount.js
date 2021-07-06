@@ -32,7 +32,7 @@ coreshop.cart.pricerules.actions.discountAmount = Class.create(coreshop.rules.ac
             fieldLabel: t('coreshop_action_discount_amount_amount'),
             name: 'amount',
             value: amountValue,
-            decimalPrecision: 2
+            decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         });
 
         var applyOn = new Ext.form.ComboBox({

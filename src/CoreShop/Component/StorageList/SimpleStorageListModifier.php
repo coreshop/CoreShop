@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\StorageList;
 
 use CoreShop\Component\StorageList\Model\StorageListInterface;
@@ -17,14 +19,7 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 class SimpleStorageListModifier implements StorageListModifierInterface
 {
-    /**
-     * @var StorageListItemQuantityModifierInterface
-     */
     protected $storageListItemQuantityModifier;
-
-    /**
-     * @var StorageListItemResolverInterface
-     */
     protected $storageListItemFinder;
 
     public function __construct()
@@ -33,18 +28,12 @@ class SimpleStorageListModifier implements StorageListModifierInterface
         $this->storageListItemFinder = new StorageListItemModelEqualsResolver();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addToList(StorageListInterface $storageList, StorageListItemInterface $item)
+    public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
-        return $this->resolveItem($storageList, $item);
+        $this->resolveItem($storageList, $item);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item)
+    public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         $storageList->removeItem($item);
     }
@@ -53,7 +42,7 @@ class SimpleStorageListModifier implements StorageListModifierInterface
      * @param StorageListInterface     $storageList
      * @param StorageListItemInterface $storageListItem
      */
-    private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)
+    private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem): void
     {
         foreach ($storageList->getItems() as $item) {
             if ($this->storageListItemFinder->equals($item, $storageListItem)) {

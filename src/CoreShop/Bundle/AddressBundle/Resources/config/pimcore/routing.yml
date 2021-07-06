@@ -2,6 +2,12 @@ coreshop_admin_country:
     type: coreshop.resources
     resource: |
         alias: coreshop.country
+        additional_routes:
+          config:
+            path: list-active
+            action: listActive
+            methods:
+              - GET
 
 coreshop_admin_address_identifier:
     type: coreshop.resources

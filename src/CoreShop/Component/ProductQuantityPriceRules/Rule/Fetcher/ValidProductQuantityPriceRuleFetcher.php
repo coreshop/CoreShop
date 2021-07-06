@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher;
 
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
@@ -17,23 +19,14 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 
 final class ValidProductQuantityPriceRuleFetcher implements ValidRulesFetcherInterface
 {
-    /**
-     * @var RuleValidationProcessorInterface
-     */
-    private $ruleValidationProcessor;
+    private RuleValidationProcessorInterface $ruleValidationProcessor;
 
-    /**
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     */
     public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor)
     {
         $this->ruleValidationProcessor = $ruleValidationProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context)
+    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context): array
     {
         $validRules = [];
         $rules = $product->getQuantityPriceRules();

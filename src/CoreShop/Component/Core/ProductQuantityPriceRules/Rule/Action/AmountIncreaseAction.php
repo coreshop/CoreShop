@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action;
 
 use CoreShop\Component\Core\Model\CurrencyInterface;
@@ -21,23 +23,14 @@ use Webmozart\Assert\Assert;
 
 class AmountIncreaseAction implements ProductQuantityPriceRuleActionInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
     private $currencyConverter;
 
-    /**
-     * @param CurrencyConverterInterface $currencyConverter
-     */
     public function __construct(CurrencyConverterInterface $currencyConverter)
     {
         $this->currencyConverter = $currencyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context)
+    public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context): int
     {
         /**
          * @var \CoreShop\Component\Core\Model\QuantityRangeInterface $range

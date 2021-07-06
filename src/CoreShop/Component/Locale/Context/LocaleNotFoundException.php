@@ -10,13 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Locale\Context;
 
 final class LocaleNotFoundException extends \RuntimeException
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($message = null, \Exception $previousException = null)
     {
         parent::__construct($message ?: 'Locale could not be found!', 0, $previousException);
@@ -27,7 +26,7 @@ final class LocaleNotFoundException extends \RuntimeException
      *
      * @return self
      */
-    public static function notFound($localeCode)
+    public static function notFound($localeCode): LocaleNotFoundException
     {
         return new self(sprintf('Locale "%s" cannot be found!', $localeCode));
     }
@@ -38,7 +37,7 @@ final class LocaleNotFoundException extends \RuntimeException
      *
      * @return self
      */
-    public static function notAvailable($localeCode, array $availableLocalesCodes)
+    public static function notAvailable($localeCode, array $availableLocalesCodes): LocaleNotFoundException
     {
         return new self(sprintf(
             'Locale "%s" is not available! The available ones are: "%s".',

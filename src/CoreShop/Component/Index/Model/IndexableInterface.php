@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Model;
 
 interface IndexableInterface
@@ -20,22 +22,12 @@ interface IndexableInterface
     public function getId();
 
     /**
-     * @return bool
-     */
-    public function getIndexableEnabled();
-
-    /**
-     * @return bool
-     */
-    public function getIndexable();
-
-    /**
      * @return string
      */
     public function getKey();
 
     /**
-     * @return int
+     * @return string
      */
     public function getClassId();
 
@@ -50,14 +42,11 @@ interface IndexableInterface
     public function getType();
 
     /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getIndexableName($language);
-
-    /**
      * @return mixed
      */
     public function getParent();
+
+    public function getIndexableEnabled(IndexInterface $index): bool;
+    public function getIndexable(IndexInterface $index): bool;
+    public function getIndexableName(IndexInterface $index, string $language): string;
 }

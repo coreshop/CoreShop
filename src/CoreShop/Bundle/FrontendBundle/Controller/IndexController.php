@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +20,6 @@ class IndexController extends FrontendController
 {
     public function indexAction(Request $request)
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Index/index.html'));
+        return $this->render($this->templateConfigurator->findTemplate('Index/index.html'));
     }
 }

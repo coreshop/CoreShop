@@ -30,57 +30,56 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
      */
     public $phpdocType;
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return null;
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return null;
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return null;
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return null;
+    }
+
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForResource($data, $object = null, $params = [])
     {
         return serialize($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return (is_string($data) ? unserialize($data) : $data) ?: null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromGridEditor($data, $object = null, $params = [])
     {
         return $data;
@@ -102,91 +101,53 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
         return 'LONGBLOB';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function checkValidity($data, $omitMandatoryCheck = false)
+    public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         return is_null($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForWebserviceExport($object, $params = [])
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFromWebserviceImport($value, $object = null, $params = [], $idMapper = null)
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForGrid($data, $object = null, $params = [])
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionPreview($data, $object = null, $params = [])
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getForCsvExport($object, $params = [])
     {
-        return null;
+        return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getFilterCondition($value, $operator, $params = [])
     {
-        return null;
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return $this
-     */
-    public function setValues($data = [])
-    {
-        foreach ($data as $key => $value) {
-            $method = 'set' . $key;
-            if (method_exists($this, $method)) {
-                $this->$method($value);
-            }
-        }
-
-        return $this;
+        return '';
     }
 }

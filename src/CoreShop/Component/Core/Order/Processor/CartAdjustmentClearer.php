@@ -10,15 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 
 final class CartAdjustmentClearer implements CartProcessorInterface
 {
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $cart->removeAdjustmentsRecursively(AdjustmentInterface::CART_PRICE_RULE);
         $cart->removeAdjustmentsRecursively(AdjustmentInterface::SHIPPING);

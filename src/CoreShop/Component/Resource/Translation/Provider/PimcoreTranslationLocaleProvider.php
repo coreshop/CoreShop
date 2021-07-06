@@ -10,24 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Translation\Provider;
 
 use Pimcore\Tool;
 
 final class PimcoreTranslationLocaleProvider implements TranslationLocaleProviderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinedLocalesCodes()
+    public function getDefinedLocalesCodes(): array
     {
         return Tool::getValidLanguages();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultLocaleCode()
+    public function getDefaultLocaleCode(): string
     {
         return Tool::getDefaultLanguage();
     }

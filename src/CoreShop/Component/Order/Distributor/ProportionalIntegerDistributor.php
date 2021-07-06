@@ -10,16 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Distributor;
 
 use Webmozart\Assert\Assert;
 
 final class ProportionalIntegerDistributor implements ProportionalIntegerDistributorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function distribute(array $integers, int $amount)
+    public function distribute(array $integers, int $amount): array
     {
         Assert::allInteger($integers);
 

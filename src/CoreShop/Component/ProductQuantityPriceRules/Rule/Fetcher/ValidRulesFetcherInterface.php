@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher;
 
 use CoreShop\Component\Rule\Model\RuleInterface;
@@ -23,5 +25,5 @@ interface ValidRulesFetcherInterface
      *
      * @return RuleInterface[]
      */
-    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context);
+    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context): array;
 }

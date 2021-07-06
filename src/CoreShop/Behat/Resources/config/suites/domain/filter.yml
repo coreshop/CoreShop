@@ -27,4 +27,4 @@ default:
 
                 - coreshop.behat.context.domain.filter
             filters:
-                tags: "@filter"
+                tags: "@domain && @filter"

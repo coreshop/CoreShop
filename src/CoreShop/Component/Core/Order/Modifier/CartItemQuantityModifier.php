@@ -10,9 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Order\Modifier;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
@@ -21,16 +23,12 @@ use Webmozart\Assert\Assert;
 
 class CartItemQuantityModifier implements StorageListItemQuantityModifierInterface
 {
-    /**
-     * @param StorageListItemInterface $item
-     * @param float                    $targetQuantity
-     */
-    public function modify(StorageListItemInterface $item, float $targetQuantity)
+    public function modify(StorageListItemInterface $item, float $targetQuantity): void
     {
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
-        Assert::isInstanceOf($item, CartItemInterface::class);
+        Assert::isInstanceOf($item, OrderItemInterface::class);
 
         $cleanTargetQuantity = $this->roundQuantity($item, $targetQuantity);
 
@@ -43,15 +41,9 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         }
     }
 
-    /**
-     * @param StorageListItemInterface $item
-     * @param float                    $targetQuantity
-     *
-     * @return float
-     */
-    public function roundQuantity(StorageListItemInterface $item, float $targetQuantity)
+    public function roundQuantity(StorageListItemInterface $item, float $targetQuantity): float
     {
-        if (!$item instanceof CartItemInterface) {
+        if (!$item instanceof OrderItemInterface) {
             return $targetQuantity;
         }
 
@@ -69,7 +61,7 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
             return $targetQuantity;
         }
 
-        $quantity = (float) str_replace(',', '.', $targetQuantity);
+        $quantity = (float) str_replace(',', '.', (string)$targetQuantity);
         $formattedQuantity = round($quantity, $scale, PHP_ROUND_HALF_UP);
 
         if ($quantity !== $formattedQuantity) {
@@ -79,12 +71,7 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         return $targetQuantity;
     }
 
-    /**
-     * @param CartItemInterface $cartItem
-     *
-     * @return int|null
-     */
-    protected function getScale(CartItemInterface $cartItem)
+    protected function getScale(OrderItemInterface $cartItem): ?int
     {
         $productUnitDefinition = $cartItem->getUnitDefinition();
         if (!$productUnitDefinition instanceof ProductUnitDefinitionInterface) {

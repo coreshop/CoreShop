@@ -10,34 +10,27 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\MoneyBundle\Twig;
 
-use CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelperInterface;
+use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class FormatMoneyExtension extends AbstractExtension
 {
-    /**
-     * @var FormatMoneyHelperInterface
-     */
-    private $helper;
+    private MoneyFormatterInterface $moneyFormatter;
 
-    /**
-     * @param FormatMoneyHelperInterface $helper
-     */
-    public function __construct(FormatMoneyHelperInterface $helper)
+    public function __construct(MoneyFormatterInterface $moneyFormatter)
     {
-        $this->helper = $helper;
+        $this->moneyFormatter = $moneyFormatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new TwigFilter('coreshop_format_money', [$this->helper, 'formatAmount']),
+            new TwigFilter('coreshop_format_money', [$this->moneyFormatter, 'format']),
         ];
     }
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Context\Country;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
@@ -20,30 +22,16 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class StoreAwareCountryContext implements CountryContextInterface
 {
-    /**
-     * @var CountryContextInterface
-     */
     private $countryContext;
-
-    /**
-     * @var StoreContextInterface
-     */
     private $storeContext;
 
-    /**
-     * @param CountryContextInterface $countryContext
-     * @param StoreContextInterface   $storeContext
-     */
     public function __construct(CountryContextInterface $countryContext, StoreContextInterface $storeContext)
     {
         $this->countryContext = $countryContext;
         $this->storeContext = $storeContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCountry()
+    public function getCountry(): \CoreShop\Component\Address\Model\CountryInterface
     {
         /** @var StoreInterface $store */
         $store = $this->storeContext->getStore();
@@ -61,16 +49,10 @@ final class StoreAwareCountryContext implements CountryContextInterface
         }
     }
 
-    /**
-     * @param CountryInterface $country
-     * @param StoreInterface   $store
-     *
-     * @return bool
-     */
-    private function isCountryAvailable(CountryInterface $country, StoreInterface $store)
+    private function isCountryAvailable(CountryInterface $country, StoreInterface $store): bool
     {
-        return in_array($country->getIsoCode(), array_map(function (CountryInterface $country) {
+        return in_array($country->getIsoCode(), array_map(static function (CountryInterface $country) {
             return $country->getIsoCode();
-        }, $store->getCountries()->toArray()));
+        }, $store->getCountries()->toArray()), true);
     }
 }

@@ -10,19 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\TokenGenerator;
 
 final class UniqueTokenGenerator
 {
-    private $alphabet;
-    private $numbers;
-    private $keys;
-    private $keyLength;
+    private string $alphabet;
+    private string $numbers;
+    private string $keys;
+    private int $keyLength;
 
-    /**
-     * @param bool $onlyNumbers
-     */
-    public function __construct($onlyNumbers = false)
+    public function __construct(bool $onlyNumbers = false)
     {
         $this->alphabet =
             implode(range('a', 'z'))
@@ -39,12 +38,7 @@ final class UniqueTokenGenerator
         $this->keyLength = strlen($this->keys);
     }
 
-    /**
-     * @param int $length
-     *
-     * @return string
-     */
-    public function generate($length)
+    public function generate(int $length): string
     {
         $token = '';
 
@@ -56,13 +50,7 @@ final class UniqueTokenGenerator
         return $token;
     }
 
-    /**
-     * @param int $min
-     * @param int $max
-     *
-     * @return int
-     */
-    private function getRandomInteger($min, $max)
+    private function getRandomInteger(int $min, int $max)
     {
         $range = ($max - $min);
 

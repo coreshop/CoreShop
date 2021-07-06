@@ -10,16 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class FilterUserConditionType extends FilterConditionType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
@@ -27,10 +26,7 @@ final class FilterUserConditionType extends FilterConditionType
             ->add('type', FilterPreConditionChoiceType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_filter_user_condition';
     }

@@ -10,26 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\SEO\Model;
 
 interface SEOOpenGraphAwareInterface
 {
-    /**
-     * @param null $language
-     *
-     * @return string
-     */
-    public function getOGTitle($language = null);
+    public function getOGTitle(string $language = null): ?string;
 
-    /**
-     * @param null $language
-     *
-     * @return string
-     */
-    public function getOGDescription($language = null);
+    public function getOGDescription(string $language = null): ?string;
 
-    /**
-     * @return string
-     */
-    public function getOGType();
+    public function getOGType(): ?string;
 }

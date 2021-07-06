@@ -10,12 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\SEO;
 
 interface SEOPresentationInterface
 {
-    /**
-     * @param mixed $object
-     */
-    public function updateSeoMetadata($object);
+    public function updateSeoMetadata($object): void;
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -17,7 +19,11 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 
-interface CountryInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface, ToggleableInterface
+interface CountryInterface extends
+    ResourceInterface,
+    TranslatableInterface,
+    TimestampableInterface,
+    ToggleableInterface
 {
     /**
      * @return string

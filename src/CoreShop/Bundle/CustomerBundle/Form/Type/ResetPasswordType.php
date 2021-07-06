@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -19,10 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ResetPasswordType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('password', RepeatedType::class, [
@@ -32,10 +31,7 @@ class ResetPasswordType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_reset_password';
     }

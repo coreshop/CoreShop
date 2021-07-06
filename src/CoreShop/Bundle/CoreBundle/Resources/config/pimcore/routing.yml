@@ -4,66 +4,143 @@ payum_all:
 coreshop_admin_payment_provider_config:
     path: /%coreshop.admin.route.base%/payment_providers/get-config
     defaults: { _controller: 'coreshop.admin_controller.payment_provider:getConfigAction'}
+    options:
+        expose: true
 
 coreshop_admin_configuration_save_all:
     path: /%coreshop.admin.route.base%/configurations/save-all
     defaults: { _controller: 'coreshop.admin_controller.configuration:saveAllAction'}
+    options:
+        expose: true
 
 coreshop_admin_configuration_get_all:
     path: /%coreshop.admin.route.base%/configurations/get-all
     defaults: { _controller: 'coreshop.admin_controller.configuration:getAllAction'}
+    options:
+        expose: true
 
 coreshop_admin_settings_get_settings:
     path: /%coreshop.admin.route.base%/settings/get-settings
     methods: [GET]
-    defaults:  { _controller: coreshop.admin_controller.settings:getSettingsAction }
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\SettingsController:getSettingsAction }
+    options:
+        expose: true
 
 coreshop_admin_report_get_data:
     path: /%coreshop.admin.route.base%/report/get-data
     methods: [GET]
-    defaults:  { _controller: coreshop.admin_controller.reports:getReportDataAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ReportsController:getReportDataAction}
+    options:
+        expose: true
 
 coreshop_admin_report_export:
     path: /%coreshop.admin.route.base%/report/export
     methods: [GET]
-    defaults:  { _controller: coreshop.admin_controller.reports:exportReportCsvAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ReportsController:exportReportCsvAction}
+    options:
+        expose: true
 
 coreshop_admin_portlet_get_data:
     path: /%coreshop.admin.route.base%/portlet/get-data
     methods: [GET]
-    defaults:  { _controller: coreshop.admin_controller.portlets:getPortletDataAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\PortletsController:getPortletDataAction}
+    options:
+        expose: true
 
 coreshop_admin_report_portlet:
     path: /%coreshop.admin.route.base%/portlet/export
     methods: [GET]
-    defaults:  { _controller: coreshop.admin_controller.portlets:exportPortletCsvAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\PortletsController:exportPortletCsvAction}
+    options:
+        expose: true
 
 coreshop_admin_settings_get:
     path: /%coreshop.admin.route.base%/settings/get
     methods: [GET]
     defaults:  { _controller: coreshop.admin_controller.settings:getAction }
+    options:
+        expose: true
 
 coreshop_admin_settings_set:
     path: /%coreshop.admin.route.base%/settings/set
     methods: [POST]
     defaults:  { _controller: coreshop.admin_controller.settings:setAction }
+    options:
+        expose: true
 
 coreshop_admin_purchasable_store_preview:
     path: /%coreshop.admin.route.base%/preview
     methods: [GET]
-    defaults:  { _controller: coreshop.admin_controller.product_preview:previewAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ProductPreviewController::previewAction}
+    options:
+        expose: true
 
 coreshop_admin_purchasable_validate_unit_definitions:
     path: /%coreshop.admin.route.base%/product/validation/unit-definitions-deletion
     methods: [GET]
-    defaults:  { _controller: coreshop.admin_controller.product_validation:validateUnitDefinitionDeletionAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ProductValidationController::validateUnitDefinitionDeletionAction}
+    options:
+        expose: true
 
 coreshop_admin_purchsable_variant_unit_solidifier_check:
     path: /%coreshop.admin.route.base%/product-variant-solidifier/check/{objectId}
     methods: [GET]
-    defaults:  { _controller: coreshop.admin_controller.product_variant_unit_solidifer:checkStatusAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController::checkStatusAction}
+    options:
+        expose: true
 
 coreshop_admin_purchsable_variant_unit_solidifier_apply:
     path: /%coreshop.admin.route.base%/product-variant-solidifier/apply/{objectId}
     methods: [PUT]
-    defaults:  { _controller: coreshop.admin_controller.product_variant_unit_solidifer:applyAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController:applyAction}
+    options:
+        expose: true
+
+coreshop_admin_product:
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.product
+      no_default_routes: true
+      additional_routes:
+        config:
+          path: remove-store-values
+          action: removeStoreValues
+          methods:
+            - POST
+
+##### CUSTOMER TRANSFORMER
+coreshop_admin_customer_company_modifier_get_entity_details:
+    path: /%coreshop.admin.route.base%/customer-company-modifier/get-entity-details/{type}/{objectId}
+    methods: [GET]
+    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController:getEntityDetailsAction}
+    options:
+        expose: true
+
+coreshop_admin_customer_company_modifier_validate_assignment:
+    path: /%coreshop.admin.route.base%/customer-company-modifier/validate-assignment/{customerId}/{companyId}
+    methods: [GET]
+    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::validateAssignmentAction, companyId: null}
+    options:
+        expose: true
+
+coreshop_admin_customer_company_modifier_dispatch_existing_assignment:
+    path: /%coreshop.admin.route.base%/customer-company-modifier/dispatch-existing-assignment/{customerId}/{companyId}
+    methods: [POST]
+    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::dispatchExistingAssignmentAction}
+    options:
+        expose: true
+
+coreshop_admin_customer_company_modifier_dispatch_new_assignment:
+    path: /%coreshop.admin.route.base%/customer-company-modifier/dispatch-new-assignment/{customerId}
+    methods: [POST]
+    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::dispatchNewAssignmentAction}
+    options:
+        expose: true
+
+coreshop_admin_customer_company_name_duplication_check:
+    path: /%coreshop.admin.route.base%/customer-company-modifier/duplication-name-check
+    methods: [GET]
+    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::checkForNameDuplicatesAction}
+    options:
+        expose: true
+

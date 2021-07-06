@@ -10,18 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CurrencyBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CurrencyController extends ResourceController
 {
-    public function getConfigAction(Request $request)
+    public function getConfigAction(Request $request): Response
     {
         $settings = [
-            'decimal_precision' => $this->getParameter('coreshop.currency.decimal_precision'),
-            'decimal_factor' => $this->getParameter('coreshop.currency.decimal_factor'),
+            'decimal_precision' => $this->container->getParameter('coreshop.currency.decimal_precision'),
+            'decimal_factor' => $this->container->getParameter('coreshop.currency.decimal_factor'),
         ];
 
         return $this->viewHandler->handle($settings);

@@ -10,45 +10,28 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 
 final class ManufacturerContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $manufacturerFactory;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager          $objectManager
-     * @param FactoryInterface       $manufacturerFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
         FactoryInterface $manufacturerFactory
     ) {
         $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
         $this->manufacturerFactory = $manufacturerFactory;
     }
 

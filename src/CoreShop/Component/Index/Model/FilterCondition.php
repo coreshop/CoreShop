@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
@@ -49,41 +51,26 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
      */
     public $configuration;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setType($type)
     {
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel()
     {
         return $this->label;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLabel($label)
     {
         $this->label = $label;
@@ -91,17 +78,11 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQuantityUnit()
     {
         return $this->quantityUnit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setQuantityUnit($quantityUnit)
     {
         $this->quantityUnit = $quantityUnit;
@@ -109,17 +90,11 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfiguration()
     {
         return $this->configuration;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setConfiguration($configuration)
     {
         $this->configuration = $configuration;

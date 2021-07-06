@@ -1,0 +1,4 @@
+Pimcore\Model\DataObject\Fieldcollection:
+    properties:
+        dao:
+            exclude: true

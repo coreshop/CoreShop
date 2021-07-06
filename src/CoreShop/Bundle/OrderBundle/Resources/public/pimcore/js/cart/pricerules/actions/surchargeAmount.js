@@ -25,26 +25,13 @@ coreshop.cart.pricerules.actions.surchargeAmount = Class.create(coreshop.rules.a
             amountValue = this.data.amount / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
             currency = this.data.currency;
             grossValue = this.data.gross;
-            applyOnValue = this.data.applyOn;
         }
 
         var amount = new Ext.form.NumberField({
             fieldLabel: t('coreshop_action_surcharge_amount'),
             name: 'amount',
             value: amountValue,
-            decimalPrecision: 2
-        });
-
-        var applyOn = new Ext.form.ComboBox({
-            store: [['total', t('coreshop_action_discount_apply_on_total')], ['subtotal', t('coreshop_action_discount_apply_on_subtotal')]],
-            triggerAction: 'all',
-            typeAhead: false,
-            editable: false,
-            forceSelection: true,
-            queryMode: 'local',
-            fieldLabel: t('coreshop_action_discount_apply_on'),
-            name: 'applyOn',
-            value: applyOnValue
+            decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         });
 
         var gross = new Ext.form.Checkbox({
@@ -57,7 +44,6 @@ coreshop.cart.pricerules.actions.surchargeAmount = Class.create(coreshop.rules.a
             items: [
                 amount,
                 gross,
-                applyOn,
                 {
                     xtype: 'coreshop.currency',
                     value: currency

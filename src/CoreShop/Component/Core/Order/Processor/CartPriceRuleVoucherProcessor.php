@@ -10,13 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculatorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
@@ -24,32 +26,11 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
 {
-    /**
-     * @var ProposalCartPriceRuleCalculatorInterface
-     */
     private $proposalCartPriceRuleCalculator;
-
-    /**
-     * @var CartPriceRuleVoucherRepositoryInterface
-     */
     private $voucherCodeRepository;
-
-    /**
-     * @var CartPriceRuleValidationProcessorInterface
-     */
     private $cartPriceRuleValidator;
-
-    /**
-     * @var CartPriceRuleUnProcessorInterface
-     */
     private $cartPriceRuleUnProcessor;
 
-    /**
-     * @param ProposalCartPriceRuleCalculatorInterface  $proposalCartPriceRuleCalculator
-     * @param CartPriceRuleVoucherRepositoryInterface   $voucherCodeRepository
-     * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param CartPriceRuleUnProcessorInterface         $cartPriceRuleUnProcessor
-     */
     public function __construct(
         ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator,
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
@@ -62,10 +43,7 @@ final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
         $this->cartPriceRuleUnProcessor = $cartPriceRuleUnProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $priceRuleItems = $cart->getPriceRuleItems();
 

@@ -1,0 +1,20 @@
+default:
+    suites:
+        ui_currency:
+            contexts:
+                - coreshop.behat.context.hook.pimcore_setup
+                - coreshop.behat.context.hook.coreshop_setup
+
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.transform.shared_storage
+
+                - coreshop.behat.context.setup.backend_security
+
+                - coreshop.behat.context.ui_pimcore.login
+                - coreshop.behat.context.ui_pimcore.menu
+                - coreshop.behat.context.ui_pimcore.pwa
+                - coreshop.behat.context.ui_pimcore.coreshop.currency
+            filters:
+                tags: "@ui_pimcore && @currency"

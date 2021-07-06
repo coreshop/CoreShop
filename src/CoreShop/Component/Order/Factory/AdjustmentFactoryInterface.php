@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Factory;
 
 use CoreShop\Component\Order\Model\AdjustmentInterface;
@@ -17,14 +19,5 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 interface AdjustmentFactoryInterface extends FactoryInterface
 {
-    /**
-     * @param string $type
-     * @param string $label
-     * @param int    $amountGross
-     * @param int    $amountNet
-     * @param bool   $neutral
-     *
-     * @return AdjustmentInterface
-     */
-    public function createWithData(string $type, string $label, int $amountGross, int $amountNet, bool $neutral = false);
+    public function createWithData(string $type, string $label, int $amountGross, int $amountNet, bool $neutral = false): AdjustmentInterface;
 }

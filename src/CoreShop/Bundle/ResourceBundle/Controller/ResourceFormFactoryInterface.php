@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
@@ -18,11 +20,5 @@ use Symfony\Component\Form\FormInterface;
 
 interface ResourceFormFactoryInterface
 {
-    /**
-     * @param MetadataInterface $metadata
-     * @param ResourceInterface $resource
-     *
-     * @return FormInterface
-     */
-    public function create(MetadataInterface $metadata, ResourceInterface $resource);
+    public function create(MetadataInterface $metadata, ResourceInterface $resource): FormInterface;
 }

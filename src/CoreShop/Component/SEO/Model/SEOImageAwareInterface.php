@@ -10,14 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\SEO\Model;
 
 use Pimcore\Model\Asset\Image;
 
 interface SEOImageAwareInterface
 {
-    /**
-     * @return Image
-     */
-    public function getImage();
+    public function getImage(): ?Image;
 }

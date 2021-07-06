@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
@@ -18,14 +20,8 @@ use Webmozart\Assert\Assert;
 
 final class CustomerGroupContext implements Context
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $customerGroupRepository;
 
-    /**
-     * @param RepositoryInterface $customerGroupRepository
-     */
     public function __construct(RepositoryInterface $customerGroupRepository)
     {
         $this->customerGroupRepository = $customerGroupRepository;

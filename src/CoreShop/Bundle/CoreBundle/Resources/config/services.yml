@@ -1,61 +1,50 @@
 imports:
-    - { resource: "services/context.yml" }
-    - { resource: "services/storage.yml" }
-    - { resource: "services/form.yml" }
-    - { resource: "services/checkout.yml" }
-    - { resource: "services/listeners.yml" }
-    - { resource: "services/product.yml" }
-    - { resource: "services/shipping.yml" }
-    - { resource: "services/rules.yml" }
-    - { resource: "services/installer.yml" }
-    - { resource: "services/notification.yml" }
-    - { resource: "services/profiler.yml" }
-    - { resource: "services/order.yml" }
-    - { resource: "services/tracking.yml" }
-    - { resource: "services/customer.yml" }
-    - { resource: "services/settings.yml" }
-    - { resource: "services/cart-processor.yml" }
-    - { resource: "services/reports.yml" }
-    - { resource: "services/pimcore_installer.yml" }
-    - { resource: "services/inventory.yml" }
-    - { resource: "services/handler.yml" }
-    - { resource: "services/commands.yml" }
-    - { resource: "services/locale.yml" }
-    - { resource: "services/payment.yml" }
-    - { resource: "services/grid_config.yml" }
-    - { resource: "services/routing.yml" }
-    - { resource: "services/product-quantity-price-rules.yml" }
-    - { resource: "services/validators.yml" }
-    - { resource: "services/product-store-values.yml" }
-    - { resource: "services/menu.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/context.yml }
+    - { resource: services/storage.yml }
+    - { resource: services/form.yml }
+    - { resource: services/form_extension.yml }
+    - { resource: services/checkout.yml }
+    - { resource: services/listeners.yml }
+    - { resource: services/product.yml }
+    - { resource: services/shipping.yml }
+    - { resource: services/rules.yml }
+    - { resource: services/installer.yml }
+    - { resource: services/notification.yml }
+    - { resource: services/profiler.yml }
+    - { resource: services/order.yml }
+    - { resource: services/tracking.yml }
+    - { resource: services/customer.yml }
+    - { resource: services/settings.yml }
+    - { resource: services/cart-processor.yml }
+    - { resource: services/reports.yml }
+    - { resource: services/pimcore_installer.yml }
+    - { resource: services/inventory.yml }
+    - { resource: services/handler.yml }
+    - { resource: services/commands.yml }
+    - { resource: services/locale.yml }
+    - { resource: services/payment.yml }
+    - { resource: services/grid_config.yml }
+    - { resource: services/routing.yml }
+    - { resource: services/product-quantity-price-rules.yml }
+    - { resource: services/validators.yml }
+    - { resource: services/product-store-values.yml }
+    - { resource: services/menu.yml }
+    - { resource: services/shipping-taxation.yml }
+    - { resource: services/taxation.yml }
 
 services:
     _defaults:
         public: true
 
-    coreshop.core.key_transformer: '@CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer'
     CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface: '@CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer'
     CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer: ~
 
-    coreshop.taxation.factory.tax_calculator: '@CoreShop\Component\Core\Taxation\TaxCalculatorFactory'
-    CoreShop\Component\Core\Taxation\TaxCalculatorFactory:
-        arguments:
-            - '@coreshop.repository.tax_rule'
-
-    coreshop.taxation.tax_applicator: '@CoreShop\Component\Core\Taxation\TaxApplicator'
-    CoreShop\Component\Core\Taxation\TaxApplicator: ~
-
-    coreshop.taxation.factory.cached_tax_calculator: '@CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory'
-    CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory:
-        decorates: coreshop.taxation.factory.tax_calculator
-        arguments:
-            - '@CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory.inner'
-
-    coreshop.security.customer.user_provider: '@CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider'
     CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider:
         arguments:
             - '@coreshop.repository.customer'
             - '%coreshop.model.customer.class%'
+            - '%coreshop.customer.security.login_identifier%'
 
     coreshop.security.customer.password_encoder_factory:
         class: Pimcore\Security\Encoder\Factory\UserAwareEncoderFactory
@@ -63,22 +52,22 @@ services:
             - Pimcore\Security\Encoder\PasswordFieldEncoder
             - ['password']
 
-    coreshop.core.configuration.service: '@CoreShop\Component\Core\Configuration\ConfigurationService'
+    CoreShop\Component\Core\Configuration\ConfigurationServiceInterface: '@CoreShop\Component\Core\Configuration\ConfigurationService'
     CoreShop\Component\Core\Configuration\ConfigurationService:
-        decorates: coreshop.configuration.service
+        decorates: CoreShop\Component\Configuration\Service\ConfigurationService
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@coreshop.repository.configuration'
             - '@coreshop.factory.configuration'
-            - '@coreshop.context.store'
+            - '@CoreShop\Component\Store\Context\StoreContextInterface'
 
-    coreshop.provider.store_based_default_address_provider: '@CoreShop\Component\Core\Provider\StoreBasedAddressProvider'
+    CoreShop\Component\Core\Provider\AddressProviderInterface: '@CoreShop\Component\Core\Provider\StoreBasedAddressProvider'
     CoreShop\Component\Core\Provider\StoreBasedAddressProvider:
         arguments:
             - '@coreshop.factory.address'
-            - '@coreshop.context.shopper'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
 
-    coreshop.provider.taxation.default_country: '@CoreShop\Component\Core\Provider\ContextBasedDefaultTaxAddressProvider'
+    CoreShop\Component\Core\Provider\DefaultTaxAddressProviderInterface: '@CoreShop\Component\Core\Provider\ContextBasedDefaultTaxAddressProvider'
     CoreShop\Component\Core\Provider\ContextBasedDefaultTaxAddressProvider:
         arguments:
             - '@coreshop.factory.address'

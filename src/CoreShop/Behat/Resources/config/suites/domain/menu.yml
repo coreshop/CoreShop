@@ -10,4 +10,4 @@ default:
 
                 - coreshop.behat.context.domain.menu
             filters:
-                tags: "@menu"
+                tags: "@domain && @menu"

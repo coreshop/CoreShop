@@ -20,12 +20,12 @@ coreshop.shippingrule.panel = Class.create(coreshop.rules.panel, {
     iconCls: 'coreshop_icon_carrier_shipping_rule',
     type: 'coreshop_carriers_shipping_rules',
 
-    url: {
-        add: '/admin/coreshop/shipping_rules/add',
-        delete: '/admin/coreshop/shipping_rules/delete',
-        get: '/admin/coreshop/shipping_rules/get',
-        list: '/admin/coreshop/shipping_rules/list',
-        config: '/admin/coreshop/shipping_rules/get-config'
+    routing: {
+        add: 'coreshop_shipping_rule_add',
+        delete: 'coreshop_shipping_rule_delete',
+        get: 'coreshop_shipping_rule_get',
+        list: 'coreshop_shipping_rule_list',
+        config: 'coreshop_shipping_rule_getConfig'
     },
 
     getItemClass: function () {

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CustomerBundle;
 
 use CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler\CompositeCustomerContextPass;
@@ -20,9 +22,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopCustomerBundle extends AbstractResourceBundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -30,10 +29,7 @@ final class CoreShopCustomerBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -41,9 +37,6 @@ final class CoreShopCustomerBundle extends AbstractResourceBundle
         $container->addCompilerPass(new CompositeRequestResolverPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Customer\Model';

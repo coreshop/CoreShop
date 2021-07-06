@@ -5,52 +5,36 @@ parameters:
     coreshop.workflow.include_invoice_state_to_complete_order: false
 
 services:
-    coreshop.state_machine_resolver.order:
-        alias: 'CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver'
-        public: true
-
     CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver:
         public: true
         arguments:
-            - '@coreshop.state_machine_manager'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
             - '%coreshop.workflow.include_invoice_state_to_complete_order%'
-
-    coreshop.state_machine_resolver.order_payment:
-        alias: 'CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver'
-        public: true
 
     CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver:
         public: true
         arguments:
-            - '@coreshop.state_machine_manager'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
             - '@coreshop.repository.payment'
-
-    coreshop.state_machine_resolver.order_shipment:
-        alias: 'CoreShop\Bundle\OrderBundle\StateResolver\OrderShippingStateResolver'
-        public: true
 
     CoreShop\Bundle\OrderBundle\StateResolver\OrderShippingStateResolver:
         public: true
         arguments:
-            - '@coreshop.state_machine_manager'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
             - '@coreshop.repository.order_shipment'
             - '@coreshop.order.shipment.processable'
-
-    # @coreshop.order.invoice.processable
-    coreshop.state_machine_resolver.order_invoice:
-        alias: 'CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver'
-        public: true
 
     CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver:
         public: true
         arguments:
-            - '@coreshop.state_machine_manager'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
             - '@coreshop.repository.order_invoice'
             - '@coreshop.order.invoice.processable'
 
     coreshop.state_machine.marking_store.single_state.order_payment_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - paymentState
 
     coreshop.state_machine.marking_store.order_payment_pimcore_marking_store:
@@ -59,8 +43,9 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_payment_state'
 
     coreshop.state_machine.marking_store.single_state.order_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - orderState
 
     coreshop.state_machine.marking_store.order_pimcore_marking_store:
@@ -69,9 +54,22 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_state'
 
     coreshop.state_machine.marking_store.single_state.order_shipment_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - shippingState
+
+    coreshop.state_machine.marking_store.order_sales_type_pimcore_marking_store:
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
+        arguments:
+            - '@coreshop.state_machine.marking_store.single_state.order_sales_type_state'
+            - false
+
+    coreshop.state_machine.marking_store.single_state.order_sales_type_state:
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
+        arguments:
+            - true
+            - saleState
 
     coreshop.state_machine.marking_store.order_shipment_pimcore_marking_store:
         class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
@@ -79,8 +77,9 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_shipment_state'
 
     coreshop.state_machine.marking_store.single_state.order_invoice_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - invoiceState
 
     coreshop.state_machine.marking_store.order_invoice_pimcore_marking_store:
@@ -89,13 +88,15 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_invoice_state'
 
     coreshop.state_machine.marking_store.single_state.shipment_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - state
 
     coreshop.state_machine.marking_store.single_state.invoice_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - state
 
     coreshop.state_machine.marking_store.shipment_pimcore_marking_store:
@@ -107,19 +108,3 @@ services:
         class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.invoice_state'
-
-    coreshop.workflow.state_manager:
-        class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager
-        arguments:
-            - '@coreshop.workflow.state_info_manager'
-
-    coreshop.workflow.order_history_logger:
-        class: CoreShop\Bundle\OrderBundle\Workflow\OrderHistoryLogger
-        arguments:
-            - '@coreshop.repository.order'
-            - '@coreshop.workflow.history_logger'
-
-    coreshop.workflow.order_state_history_logger:
-        class: CoreShop\Bundle\OrderBundle\Workflow\OrderStateHistoryLogger
-        arguments:
-            - '@coreshop.workflow.state_history_logger'

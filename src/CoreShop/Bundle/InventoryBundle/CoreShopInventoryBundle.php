@@ -10,10 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\InventoryBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class CoreShopInventoryBundle extends Bundle
 {
+
 }

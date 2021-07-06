@@ -10,16 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Repository;
 
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface CartPriceRuleVoucherRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @param string $code
-     *
-     * @return mixed
-     */
-    public function findByCode($code);
+    public function findByCode(string $code): ?CartPriceRuleVoucherCodeInterface;
+
+    public function countCodes(int $length, ?string $prefix = null, ?string $suffix = null): int;
 }

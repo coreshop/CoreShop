@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\MenuBundle\Guard;
 
 use Knp\Menu\ItemInterface;
@@ -18,20 +20,14 @@ use Pimcore\Model\User;
 
 class PimcoreGuard
 {
-    /**
-     * @var TokenStorageUserResolver
-     */
-    private $tokenStorageUserResolver;
+    private TokenStorageUserResolver $tokenStorageUserResolver;
 
-    /**
-     * @param TokenStorageUserResolver $tokenStorageUserResolver
-     */
     public function __construct(TokenStorageUserResolver $tokenStorageUserResolver)
     {
         $this->tokenStorageUserResolver = $tokenStorageUserResolver;
     }
 
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): bool
     {
         if (!$item->getAttribute('permission')) {
             return true;

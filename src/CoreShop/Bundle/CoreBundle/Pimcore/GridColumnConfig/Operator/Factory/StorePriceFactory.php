@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Pimcore\GridColumnConfig\Operator\Factory;
 
 use CoreShop\Bundle\CoreBundle\Pimcore\GridColumnConfig\Operator\StorePrice;
@@ -20,29 +22,15 @@ use Pimcore\DataObject\GridColumnConfig\Operator\OperatorInterface;
 
 final class StorePriceFactory implements OperatorFactoryInterface
 {
-    /**
-     * @var StoreRepositoryInterface
-     */
-    private $storeRepository;
+    private StoreRepositoryInterface $storeRepository;
+    private MoneyFormatterInterface $moneyFormatter;
 
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
-
-    /**
-     * @param StoreRepositoryInterface $storeRepository
-     * @param MoneyFormatterInterface  $moneyFormatter
-     */
     public function __construct(StoreRepositoryInterface $storeRepository, MoneyFormatterInterface $moneyFormatter)
     {
         $this->storeRepository = $storeRepository;
         $this->moneyFormatter = $moneyFormatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(\stdClass $configElement, $context = null): OperatorInterface
     {
         return new StorePrice($this->storeRepository, $this->moneyFormatter, $configElement, $context);

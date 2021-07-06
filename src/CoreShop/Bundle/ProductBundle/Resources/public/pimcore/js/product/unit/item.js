@@ -15,8 +15,8 @@ coreshop.product.unit.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_product_units',
 
-    url: {
-        save: '/admin/coreshop/product_units/save'
+    routing: {
+        save: 'coreshop_product_unit_save'
     },
 
     getPanel: function () {

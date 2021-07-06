@@ -10,19 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Application;
 
 final class Version
 {
-    const MAJOR_VERSION = '2';
-    const MINOR_VERSION = '2';
+    const MAJOR_VERSION = '3';
+    const MINOR_VERSION = '0';
     const RELEASE_VERSION = '0';
-    const EXTRA_VERSION = '';
+    const EXTRA_VERSION = 'alpha';
 
-    /**
-     * @return string
-     */
-    public static function getVersion()
+    public static function getVersion(): string
     {
         $version = sprintf('%s.%s.%s', self::MAJOR_VERSION, self::MINOR_VERSION, self::RELEASE_VERSION);
 

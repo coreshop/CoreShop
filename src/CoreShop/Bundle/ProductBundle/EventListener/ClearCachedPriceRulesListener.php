@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\EventListener;
 
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
@@ -20,10 +22,7 @@ use Pimcore\Cache;
 
 final class ClearCachedPriceRulesListener
 {
-    /**
-     * @param ResourceControllerEvent $event
-     */
-    public function clearCachedRules(ResourceControllerEvent $event)
+    public function clearCachedRules(ResourceControllerEvent $event): void
     {
         /**
          * @var RuleInterface $rule

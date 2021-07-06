@@ -10,14 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
 use Pimcore\Model\DataObject;
-use Pimcore\Model\DataObject\Service;
 use Pimcore\Model\Element;
 
 class DynamicDropdown extends DataObject\ClassDefinition\Data\ManyToOneRelation
 {
+    use DynamicDropdownTrait;
+
     /**
      * Static type of this element.
      *
@@ -25,191 +28,8 @@ class DynamicDropdown extends DataObject\ClassDefinition\Data\ManyToOneRelation
      */
     public $fieldtype = 'coreShopDynamicDropdown';
 
-    /**
-     * @var string
-     */
-    public $folderName;
-
-    /**
-     * @var string
-     */
-    public $className;
-
-    /**
-     * @var string
-     */
-    public $methodName;
-
-    /**
-     * @var string
-     */
-    public $recursive;
-
-    /**
-     * @var string
-     */
-    public $sortBy;
-
-    /**
-     * @var bool
-     */
-    public $onlyPublished;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getObjectsAllowed()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getClasses()
-    {
-        return [['classes' => $this->getClassName()]];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFolderName()
-    {
-        return $this->folderName;
-    }
-
-    /**
-     * @param mixed $folderName
-     */
-    public function setFolderName($folderName)
-    {
-        $this->folderName = $folderName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getClassName()
-    {
-        return $this->className;
-    }
-
-    /**
-     * @param mixed $className
-     */
-    public function setClassName($className)
-    {
-        $this->className = $className;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMethodName()
-    {
-        return $this->methodName;
-    }
-
-    /**
-     * @param mixed $methodName
-     */
-    public function setMethodName($methodName)
-    {
-        $this->methodName = $methodName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRecursive()
-    {
-        return $this->recursive;
-    }
-
-    /**
-     * @param mixed $recursive
-     */
-    public function setRecursive($recursive)
-    {
-        $this->recursive = $recursive;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSortBy()
-    {
-        return $this->sortBy;
-    }
-
-    /**
-     * @param mixed $sortBy
-     */
-    public function setSortBy($sortBy)
-    {
-        $this->sortBy = $sortBy;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOnlyPublished()
-    {
-        return $this->onlyPublished;
-    }
-
-    /**
-     * @param bool $onlyPublished
-     */
-    public function setOnlyPublished($onlyPublished)
-    {
-        $this->onlyPublished = $onlyPublished;
-    }
-
-    /**
-     * @return null|int
-     */
-    public function getDataForEditmode($data, $object = null, $params = array())
-    {
-        if ($data) {
-            return $data->getId();
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromEditmode($data, $object = null, $params = array())
     {
-        return DataObject::getById($data);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataForGrid($data, $object = null, $params = [])
-    {
-        if (is_int($data)) {
-            $data = DataObject::getById($data);
-        }
-
-        if ($data instanceof Element\ElementInterface) {
-            $method = $this->getMethodName();
-
-            return $data->$method();
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function checkValidity($data, $omitMandatoryCheck = false)
-    {
-        return;
+        return Element\Service::getElementById('object', $data);
     }
 }

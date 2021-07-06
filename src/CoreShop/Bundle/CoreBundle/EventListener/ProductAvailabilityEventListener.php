@@ -10,13 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\Repository\CartItemRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderItemRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Model\DataObject\Concrete;
@@ -24,39 +27,25 @@ use Pimcore\Model\FactoryInterface;
 
 final class ProductAvailabilityEventListener
 {
-    /**
-     * @var CartItemRepositoryInterface
-     */
-    private $cartItemRepository;
+    private OrderItemRepositoryInterface $cartItemRepository;
+    private FactoryInterface $pimcoreModelFactory;
+    private array $productIdsToCheck = [];
 
-    /**
-     * @var FactoryInterface
-     */
-    private $pimcoreModelFactory;
-
-    /**
-     * @var int[]
-     */
-    private $productIdsToCheck = [];
-
-    /**
-     * @param CartItemRepositoryInterface $cartItemRepository
-     * @param FactoryInterface            $pimcoreModelFactory
-     */
     public function __construct(
-        CartItemRepositoryInterface $cartItemRepository,
+        OrderItemRepositoryInterface $cartItemRepository,
         FactoryInterface $pimcoreModelFactory
     ) {
         $this->cartItemRepository = $cartItemRepository;
         $this->pimcoreModelFactory = $pimcoreModelFactory;
     }
 
-    /**
-     * @param DataObjectEvent $event
-     */
-    public function preUpdateListener(DataObjectEvent $event)
+    public function preUpdateListener(DataObjectEvent $event): void
     {
         $object = $event->getObject();
+
+        if ($event->hasArgument('isRecycleBinRestore') && $event->getArgument('isRecycleBinRestore')) {
+            return;
+        }
 
         if (!$object instanceof PurchasableInterface) {
             return;
@@ -88,10 +77,7 @@ final class ProductAvailabilityEventListener
         $this->productIdsToCheck[$object->getId()] = $object->getId();
     }
 
-    /**
-     * @param DataObjectEvent $event
-     */
-    public function postUpdateListener(DataObjectEvent $event)
+    public function postUpdateListener(DataObjectEvent $event): void
     {
         $object = $event->getObject();
 
@@ -105,7 +91,7 @@ final class ProductAvailabilityEventListener
 
         unset($this->productIdsToCheck[$object->getId()]);
 
-        $cartItems = $this->cartItemRepository->findCartItemsByProductId($object->getId());
+        $cartItems = $this->cartItemRepository->findOrderItemsByProductId($object->getId());
 
         if (count($cartItems) === 0) {
             return;
@@ -114,10 +100,7 @@ final class ProductAvailabilityEventListener
         $this->informCarts($cartItems);
     }
 
-    /**
-     * @param DataObjectEvent $event
-     */
-    public function postDeleteListener(DataObjectEvent $event)
+    public function postDeleteListener(DataObjectEvent $event): void
     {
         $object = $event->getObject();
 
@@ -125,7 +108,7 @@ final class ProductAvailabilityEventListener
             return;
         }
 
-        $cartItems = $this->cartItemRepository->findCartItemsByProductId($object->getId());
+        $cartItems = $this->cartItemRepository->findOrderItemsByProductId($object->getId());
 
         if (count($cartItems) === 0) {
             return;
@@ -134,19 +117,16 @@ final class ProductAvailabilityEventListener
         $this->informCarts($cartItems);
     }
 
-    /**
-     * @param array $cartItems
-     */
-    private function informCarts($cartItems)
+    private function informCarts(array $cartItems): void
     {
-        /** @var CartItemInterface $cartItem */
+        /** @var OrderItemInterface $cartItem */
         foreach ($cartItems as $cartItem) {
-            $cart = $cartItem->getCart();
-            if (!$cart instanceof CartInterface) {
+            $cart = $cartItem->getOrder();
+            if (!$cart instanceof OrderInterface) {
                 continue;
             }
 
-            if ($cart->getOrder() instanceof OrderInterface) {
+            if ($cart->getSaleState() !== OrderSaleStates::STATE_CART) {
                 continue;
             }
 

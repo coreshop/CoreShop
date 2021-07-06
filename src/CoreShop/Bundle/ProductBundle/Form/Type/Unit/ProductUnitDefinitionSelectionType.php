@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
@@ -22,24 +24,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProductUnitDefinitionSelectionType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
-    protected $productUnitDefinitionRepository;
+    protected RepositoryInterface $productUnitDefinitionRepository;
 
-    /**
-     * @param RepositoryInterface $productUnitDefinitionRepository
-     */
     public function __construct(RepositoryInterface $productUnitDefinitionRepository)
     {
         $this->productUnitDefinitionRepository = $productUnitDefinitionRepository;
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new CallbackTransformer(
             function ($value) {
@@ -59,10 +51,7 @@ final class ProductUnitDefinitionSelectionType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -70,18 +59,12 @@ final class ProductUnitDefinitionSelectionType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return NumberType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_unit_definition_selection';
     }

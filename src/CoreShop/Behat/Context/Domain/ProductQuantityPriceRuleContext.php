@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -22,26 +24,10 @@ use Webmozart\Assert\Assert;
 
 final class ProductQuantityPriceRuleContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
-
-    /**
-     * @var RuleValidationProcessorInterface
-     */
     private $ruleValidationProcessor;
 
-    /**
-     * @param SharedStorageInterface           $sharedStorage
-     * @param ShopperContextInterface          $shopperContext
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ShopperContextInterface $shopperContext,

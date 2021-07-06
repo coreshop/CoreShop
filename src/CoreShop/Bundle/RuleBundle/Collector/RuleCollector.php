@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\RuleBundle\Collector;
 
 use CoreShop\Component\Rule\Condition\TraceableRuleConditionsValidationProcessorInterface;
@@ -19,47 +21,29 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class RuleCollector extends DataCollector
 {
-    /**
-     * @var TraceableRuleConditionsValidationProcessorInterface[]
-     */
-    private $validationProcessors;
+    private array $validationProcessors;
 
-    /**
-     * @param TraceableRuleConditionsValidationProcessorInterface[] $validationProcessors
-     */
     public function __construct(array $validationProcessors)
     {
         $this->validationProcessors = $validationProcessors;
     }
 
-    /**
-     * @return array
-     */
-    public function getProcessedConditions()
+    public function getProcessedConditions(): array
     {
         return $this->data['processedConditions'];
     }
 
-    /**
-     * @return array
-     */
-    public function getProcessedRules()
+    public function getProcessedRules(): array
     {
         return $this->data['processedRules'];
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTypes()
+    public function getTypes(): array
     {
         return $this->data['processedTypes'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         $processedConditions = [];
         $processedRules = [];
@@ -87,18 +71,12 @@ final class RuleCollector extends DataCollector
         $this->data['processedConditions'] = $processedConditions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop.rule_collector';
     }

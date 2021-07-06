@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Model;
 
 trait CarrierAwareTrait
@@ -19,18 +21,12 @@ trait CarrierAwareTrait
      */
     protected $carrier;
 
-    /**
-     * @return CarrierInterface
-     */
-    public function getCarrier()
+    public function getCarrier(): ?CarrierInterface
     {
         return $this->carrier;
     }
 
-    /**
-     * @param CarrierInterface $carrier
-     */
-    public function setCarrier($carrier)
+    public function setCarrier(?CarrierInterface $carrier)
     {
         $this->carrier = $carrier;
     }

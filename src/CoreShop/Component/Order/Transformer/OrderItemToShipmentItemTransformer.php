@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Transformer;
 
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
@@ -23,29 +25,13 @@ use Webmozart\Assert\Assert;
 
 class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformerInterface
 {
-    /**
-     * @var ObjectServiceInterface
-     */
-    private $objectService;
+    private ObjectServiceInterface $objectService;
+    private string $pathForItems;
+    private TransformerEventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var string
-     */
-    private $pathForItems;
-
-    /**
-     * @var TransformerEventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param ObjectServiceInterface              $objectService
-     * @param string                              $pathForItems
-     * @param TransformerEventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         ObjectServiceInterface $objectService,
-        $pathForItems,
+        string $pathForItems,
         TransformerEventDispatcherInterface $eventDispatcher
     ) {
         $this->objectService = $objectService;
@@ -53,9 +39,6 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform(OrderDocumentInterface $shipment, OrderItemInterface $orderItem, OrderDocumentItemInterface $shipmentItem, $quantity, $options = [])
     {
         /**
@@ -86,11 +69,11 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
 
         $shipmentItem->setOrderItem($orderItem);
         $shipmentItem->setQuantity($quantity);
-        $shipmentItem->setTotal($orderItem->getItemPrice(true) * $quantity, true);
-        $shipmentItem->setTotal($orderItem->getItemPrice(false) * $quantity, false);
+        $shipmentItem->setTotal((int)($orderItem->getItemPrice(true) * $quantity), true);
+        $shipmentItem->setTotal((int)($orderItem->getItemPrice(false) * $quantity), false);
 
-        $shipmentItem->setBaseTotal($orderItem->getBaseItemPrice(true) * $quantity, true);
-        $shipmentItem->setBaseTotal($orderItem->getBaseItemPrice(false) * $quantity, false);
+        $shipmentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(true) * $quantity), true);
+        $shipmentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(false) * $quantity), false);
 
         VersionHelper::useVersioning(function () use ($shipmentItem) {
             $shipmentItem->save();

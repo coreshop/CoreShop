@@ -10,54 +10,30 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\StateManager;
 
-use CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent;
+use CoreShop\Bundle\WorkflowBundle\Event\WorkflowTransitionEvent;
 use CoreShop\Bundle\WorkflowBundle\History\HistoryRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
+    private StateMachineManagerInterface $stateMachineManager;
+    private TranslatorInterface $translator;
+    private HistoryRepositoryInterface $historyRepository;
+    private array $stateColors;
 
-    /**
-     * @var StateMachineManagerInterface
-     */
-    private $stateMachineManager;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var HistoryRepositoryInterface
-     */
-    private $historyRepository;
-
-    /**
-     * @var array
-     */
-    private $stateColors;
-
-    /**
-     * @param EventDispatcherInterface     $eventDispatcher
-     * @param StateMachineManagerInterface $stateMachineManager
-     * @param TranslatorInterface          $translator
-     * @param HistoryRepositoryInterface   $historyRepository
-     * @param array                        $stateColors
-     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         StateMachineManagerInterface $stateMachineManager,
         TranslatorInterface $translator,
         HistoryRepositoryInterface $historyRepository,
-        $stateColors
+        array $stateColors
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->stateMachineManager = $stateMachineManager;
@@ -66,14 +42,7 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
         $this->stateColors = $stateColors;
     }
 
-    /**
-     * @param string $workflowName
-     * @param mixed  $value
-     * @param bool   $forFrontend
-     *
-     * @return array
-     */
-    public function getStateInfo($workflowName, $value, $forFrontend = true)
+    public function getStateInfo(string $workflowName, string $value, bool $forFrontend = true): array
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.state.' : 'coreshop_workflow_state_';
         $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $value;
@@ -89,18 +58,10 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
         return $data;
     }
 
-    /**
-     * @param string $subject
-     * @param string $workflowName
-     * @param array  $transitions
-     * @param bool   $forFrontend
-     *
-     * @return array
-     */
-    public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true)
+    public function parseTransitions($subject, string $workflowName, array $transitions = [], bool $forFrontend = true): array
     {
         $event = new WorkflowTransitionEvent($transitions, $workflowName);
-        $this->eventDispatcher->dispatch('coreshop.workflow.valid_transitions', $event);
+        $this->eventDispatcher->dispatch($event, 'coreshop.workflow.valid_transitions');
 
         $valid = [];
         $workflow = $this->stateMachineManager->get($subject, $workflowName);
@@ -113,13 +74,6 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
         return $valid;
     }
 
-    /**
-     * @param string $workflowName
-     * @param string $transition
-     * @param bool   $forFrontend
-     *
-     * @return array
-     */
     public function getTransitionInfo($workflowName, $transition, $forFrontend = true)
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.transition.' : 'coreshop_workflow_transition_';
@@ -135,11 +89,8 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStateHistory($proposal)
+    public function getStateHistory($order): array
     {
-        return $this->historyRepository->getHistory($proposal);
+        return $this->historyRepository->getHistory($order);
     }
 }

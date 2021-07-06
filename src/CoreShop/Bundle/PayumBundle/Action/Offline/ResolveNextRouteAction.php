@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\Action\Offline;
 
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
@@ -41,9 +43,6 @@ final class ResolveNextRouteAction implements ActionInterface
         $request->setRouteName('coreshop_checkout_error');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
         return

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\Action\Offline;
 
 use Payum\Core\Action\ActionInterface;
@@ -20,9 +22,6 @@ use Payum\Offline\Constants;
 
 final class StatusAction implements ActionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function execute($request)
     {
         /* @var $request GetStatusInterface */
@@ -63,9 +62,6 @@ final class StatusAction implements ActionInterface
         $request->markUnknown();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
         return

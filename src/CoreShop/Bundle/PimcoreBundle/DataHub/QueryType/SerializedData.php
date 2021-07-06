@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\DataHub\QueryType;
 
 use CoreShop\Bundle\PimcoreBundle\DataHub\Type\SerializedDataType;
@@ -18,9 +20,6 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class SerializedData extends Input
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->enrichConfig(
@@ -35,9 +34,6 @@ class SerializedData extends Input
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
         return new SerializedDataType();

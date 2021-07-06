@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
@@ -19,24 +21,16 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class ProductStoreValuesRepository extends EntityRepository implements ProductStoreValuesRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findForProduct(ProductInterface $product)
+    public function findForProduct(ProductInterface $product): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :product')
             ->setParameter('product', $product->getId())
             ->getQuery()
-            ->useResultCache(false)
-            ->useQueryCache(true)
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findForProductAndStore(ProductInterface $product, StoreInterface $store)
+    public function findForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :product')
@@ -44,8 +38,6 @@ class ProductStoreValuesRepository extends EntityRepository implements ProductSt
             ->setParameter('product', $product->getId())
             ->setParameter('store', $store)
             ->getQuery()
-            ->useResultCache(false)
-            ->useQueryCache(true)
             ->getOneOrNullResult();
     }
 }

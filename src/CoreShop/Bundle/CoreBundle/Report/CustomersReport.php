@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
@@ -23,43 +25,13 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CustomersReport implements ReportInterface
 {
-    /**
-     * @var int
-     */
-    private $totalRecords = 0;
+    private int $totalRecords = 0;
+    private Connection $db;
+    private MoneyFormatterInterface $moneyFormatter;
+    private LocaleContextInterface $localeContext;
+    private PimcoreRepositoryInterface $orderRepository;
+    private PimcoreRepositoryInterface $customerRepository;
 
-    /**
-     * @var Connection
-     */
-    private $db;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
-
-    /**
-     * @var LocaleContextInterface
-     */
-    private $localeContext;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $customerRepository;
-
-    /**
-     * @param Connection                 $db
-     * @param MoneyFormatterInterface    $moneyFormatter
-     * @param LocaleContextInterface     $localeContext
-     * @param PimcoreRepositoryInterface $orderRepository
-     * @param PimcoreRepositoryInterface $customerRepository
-     */
     public function __construct(
         Connection $db,
         MoneyFormatterInterface $moneyFormatter,
@@ -74,10 +46,7 @@ class CustomersReport implements ReportInterface
         $this->customerRepository = $customerRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -105,7 +74,7 @@ class CustomersReport implements ReportInterface
             ORDER BY COUNT(customer.oo_id) DESC
             LIMIT $offset,$limit";
 
-        $results = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $results = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
         $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 
         foreach ($results as &$result) {
@@ -119,10 +88,7 @@ class CustomersReport implements ReportInterface
         return array_values($results);
     }
 
-    /**
-     * @return int
-     */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

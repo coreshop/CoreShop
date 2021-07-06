@@ -10,29 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Currency\Context;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 
 final class FixedCurrencyContext implements CurrencyContextInterface
 {
-    /**
-     * @var CurrencyInterface
-     */
-    private $currency = null;
+    private ?CurrencyInterface $currency = null;
 
-    /**
-     * @param CurrencyInterface $currency
-     */
-    public function setCurrency($currency)
+    public function setCurrency(CurrencyInterface $currency): void
     {
         $this->currency = $currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrency()
+    public function getCurrency(): CurrencyInterface
     {
         if ($this->currency instanceof CurrencyInterface) {
             return $this->currency;

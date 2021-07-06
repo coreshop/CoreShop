@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Repository;
 
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface as BaseCountryRepositoryInterface;
@@ -23,5 +25,5 @@ interface CountryRepositoryInterface extends BaseCountryRepositoryInterface
      *
      * @return CountryInterface[]
      */
-    public function findForStore(StoreInterface $store);
+    public function findForStore(StoreInterface $store): array;
 }

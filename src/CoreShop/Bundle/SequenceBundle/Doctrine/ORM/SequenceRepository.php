@@ -10,14 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\SequenceBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Sequence\Model\SequenceInterface;
 use CoreShop\Component\Sequence\Repository\SequenceRepositoryInterface;
 
 class SequenceRepository extends EntityRepository implements SequenceRepositoryInterface
 {
-    public function findForType($type)
+    public function findForType(string $type): ?SequenceInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.type = :type')

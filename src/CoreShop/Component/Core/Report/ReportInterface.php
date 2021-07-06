@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Report;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -23,12 +25,12 @@ interface ReportInterface
      *
      * @return array
      */
-    public function getReportData(ParameterBag $parameterBag);
+    public function getReportData(ParameterBag $parameterBag): array;
 
     /**
      * Get total amount of found records.
      *
      * @return int
      */
-    public function getTotal();
+    public function getTotal(): int;
 }

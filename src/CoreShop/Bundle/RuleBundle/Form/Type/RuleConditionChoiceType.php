@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -18,32 +20,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleConditionChoiceType extends AbstractType
 {
-    /**
-     * @var array
-     */
-    private $conditions;
+    private array $conditions;
 
     public function __construct(array $conditions)
     {
         $this->conditions = $conditions;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => array_flip($this->conditions),
         ]);
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_action_condition_choice';
     }

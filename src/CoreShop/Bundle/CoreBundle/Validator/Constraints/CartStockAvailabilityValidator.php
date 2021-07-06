@@ -10,10 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use Symfony\Component\Validator\Constraint;
@@ -22,29 +24,20 @@ use Webmozart\Assert\Assert;
 
 final class CartStockAvailabilityValidator extends ConstraintValidator
 {
-    /**
-     * @var AvailabilityCheckerInterface
-     */
-    private $availabilityChecker;
+    private AvailabilityCheckerInterface $availabilityChecker;
 
-    /**
-     * @param AvailabilityCheckerInterface $availabilityChecker
-     */
     public function __construct(AvailabilityCheckerInterface $availabilityChecker)
     {
         $this->availabilityChecker = $availabilityChecker;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($cart, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
         /**
-         * @var CartInterface         $cart
+         * @var OrderInterface        $value
          * @var CartStockAvailability $constraint
          */
-        Assert::isInstanceOf($cart, CartInterface::class);
+        Assert::isInstanceOf($value, OrderInterface::class);
         Assert::isInstanceOf($constraint, CartStockAvailability::class);
 
         $isStockSufficient = true;
@@ -52,9 +45,9 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
         $insufficientProduct = null;
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
-        foreach ($cart->getItems() as $cartItem) {
+        foreach ($value->getItems() as $cartItem) {
             $product = $cartItem->getProduct();
 
             if (!$product instanceof StockableInterface) {
@@ -67,7 +60,7 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
 
             $isStockSufficient = $this->availabilityChecker->isStockSufficient(
                 $product,
-                $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
+                $this->getExistingCartItemQuantityFromCart($value, $cartItem)
             );
 
             $productsChecked[] = $product->getId();
@@ -87,13 +80,13 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
         }
     }
 
-    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): int
     {
         $product = $cartItem->getProduct();
         $quantity = $cartItem->getDefaultUnitQuantity();
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             if ($item->getId() === $cartItem->getId()) {

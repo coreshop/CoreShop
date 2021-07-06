@@ -30,4 +30,4 @@ default:
                 - coreshop.behat.context.domain.product_quantity_price_rule
                 - coreshop.behat.context.domain.cart
             filters:
-                tags: "@product_quantity_price_rules"
+                tags: "@domain && @product_quantity_price_rules"

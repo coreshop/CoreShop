@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\LocaleBundle\Form\Type;
 
 use Pimcore\Tool;
@@ -22,42 +24,37 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class LocaleChoiceType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['multiple']) {
             $builder->addModelTransformer(new CollectionToArrayTransformer());
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
-                'choices' => function (Options $options) {
+                'choices' => static function (Options $options) {
                     $locales = Tool::getValidLanguages();
 
-                    usort($locales, function ($a, $b): int {
+                    usort($locales, static function ($a, $b): int {
                         return $a <=> $b;
                     });
 
                     return $locales;
                 },
-                'choice_value' => 'id',
-                'choice_label' => 'name',
+                'choice_value' => static function ($value) {
+                    return $value;
+                },
+                'choice_label' => static function($value) {
+                    return $value;
+                },
                 'choice_translation_domain' => false,
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }

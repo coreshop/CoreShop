@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 
 class ProductUnit extends Select
 {
@@ -23,35 +26,33 @@ class ProductUnit extends Select
      */
     public $fieldtype = 'coreShopProductUnit';
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.product_unit');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
+    protected function getModel(): string
     {
         return \Pimcore::getContainer()->getParameter('coreshop.model.product_unit.class');
+    }
+
+    protected function getInterface(): string
+    {
+        return '\\' . ProductUnitInterface::class;
+    }
+
+    protected function getNullable(): bool
+    {
+        return true;
     }
 }

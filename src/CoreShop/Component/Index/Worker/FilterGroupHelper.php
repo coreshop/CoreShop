@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Worker;
 
 use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
@@ -21,22 +23,13 @@ use Pimcore\Model\DataObject\Concrete;
 
 class FilterGroupHelper implements FilterGroupHelperInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $interpreterServiceRegistry;
+    private ServiceRegistryInterface $interpreterServiceRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $interpreterServiceRegistry
-     */
     public function __construct(ServiceRegistryInterface $interpreterServiceRegistry)
     {
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGroupByValuesForFilterGroup(IndexColumnInterface $column, ListingInterface $list, $field)
     {
         $type = 'field';

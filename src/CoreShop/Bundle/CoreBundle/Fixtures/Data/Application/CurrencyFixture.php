@@ -10,45 +10,35 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Currencies;
 
 class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return '2.0';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $countries = CountryLoader::countries(true, true);
         $currencies = [];
@@ -80,7 +70,9 @@ class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface
             $currency->setName($c['iso_4217_name']);
             $currency->setIsoCode($iso);
             $currency->setNumericIsoCode($c['iso_4217_numeric']);
-            $currency->setSymbol(Intl::getCurrencyBundle()->getCurrencySymbol($iso));
+            $currency->setSymbol(Currencies::getSymbol($iso));
+
+            $this->setReference('currency_' . $iso, $currency);
 
             $manager->persist($currency);
         }

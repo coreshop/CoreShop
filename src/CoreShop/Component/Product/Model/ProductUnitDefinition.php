@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
@@ -18,7 +20,7 @@ use Doctrine\Common\Collections\Collection;
 class ProductUnitDefinition extends AbstractResource implements ProductUnitDefinitionInterface
 {
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -50,88 +52,58 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
         $this->id = $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUnit()
     {
         return $this->unit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUnit(ProductUnitInterface $unit)
     {
         $this->unit = $unit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConversionRate()
     {
         return $this->conversionRate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setConversionRate(float $conversionRate = null)
     {
         $this->conversionRate = $conversionRate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrecision()
     {
         return $this->precision;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPrecision(int $precision)
     {
         $this->precision = $precision;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProductUnitDefinitions()
     {
         return $this->productUnitDefinitions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setProductUnitDefinitions(ProductUnitDefinitionsInterface $productUnitDefinitions = null)
     {
         $this->productUnitDefinitions = $productUnitDefinitions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUnitName()
     {
         if ($unit = $this->getUnit()) {
             return $unit->getName();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -141,4 +113,13 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     {
         return sprintf('%s, (Conversion Rate: %s)', $this->getUnitName(), $this->getConversionRate());
     }
+//
+//    public function __clone()
+//    {
+//        if ($this->id === null) {
+//            return;
+//        }
+//
+//        $this->id = null;
+//    }
 }

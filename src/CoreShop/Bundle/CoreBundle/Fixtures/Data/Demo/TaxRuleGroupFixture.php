@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
@@ -18,29 +20,20 @@ use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return '2.0';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
@@ -48,17 +41,14 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
     /**
      * @return string[]
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             TaxRateFixture::class,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         if (!count($this->container->get('coreshop.repository.tax_rule_group')->findAll())) {
             /**

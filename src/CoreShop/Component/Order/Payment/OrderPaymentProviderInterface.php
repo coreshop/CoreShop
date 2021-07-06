@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Payment;
 
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -17,10 +19,5 @@ use CoreShop\Component\Payment\Model\PaymentInterface;
 
 interface OrderPaymentProviderInterface
 {
-    /**
-     * @param OrderInterface $order
-     *
-     * @return PaymentInterface
-     */
-    public function provideOrderPayment(OrderInterface $order);
+    public function provideOrderPayment(OrderInterface $order): PaymentInterface;
 }

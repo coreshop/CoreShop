@@ -1,12 +1,10 @@
 # CoreShop Customer Registration Service
-
-CoreShop already implements a registration Service which handles creating a Customer with Addresses. The Registration Service implements the Interface ```CoreShop\Bundle\CoreBundle\Customer``` and CoreShop implements it using the service ```coreshop.customer.registration_service```
+CoreShop already implements a registration Service which handles creating a Customer with Addresses. 
+The Registration Service implements the Interface `CoreShop\Bundle\CoreBundle\Customer` and CoreShop implements it using the service `coreshop.customer.registration_service`.
 
 ## Usage
-
 To use the Service, you need to pass a Customer, Address, additional Formdata and if Registration is Guest or Customer.
-
-In our example, we gonna do that from a Controller with a FormTypes
+In our example, we gonna do that from a Controller with a FormType.
 
 ```php
 $customer = $this->getCustomer();

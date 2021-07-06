@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
@@ -21,24 +23,14 @@ use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\DataObject\Objectbrick;
+use Pimcore\Model\User;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDaoContext implements Context
 {
-    /**
-     * @var KernelInterface
-     */
     private $kernel;
-
-    /**
-     * @var OrderRepositoryInterface
-     */
     private $orderRepository;
 
-    /**
-     * @param KernelInterface          $kernel
-     * @param OrderRepositoryInterface $orderRepository
-     */
     public function __construct(KernelInterface $kernel, OrderRepositoryInterface $orderRepository)
     {
         $this->kernel = $kernel;
@@ -149,6 +141,18 @@ final class PimcoreDaoContext implements Context
             }
 
             $class->delete();
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearBehatAdminUser()
+    {
+        $user = User::getByName('behat-admin');
+
+        if ($user) {
+            $user->delete();
         }
     }
 

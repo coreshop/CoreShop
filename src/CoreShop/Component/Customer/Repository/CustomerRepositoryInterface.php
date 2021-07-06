@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Repository;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
@@ -24,7 +26,7 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return CustomerInterface|null
      */
-    public function findByResetToken($resetToken);
+    public function findByResetToken(string $resetToken): ?CustomerInterface;
 
     /**
      * Find customer by newsletter token.
@@ -33,17 +35,38 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return CustomerInterface|null
      */
-    public function findByNewsletterToken($newsletterToken);
+    public function findByNewsletterToken(string $newsletterToken): ?CustomerInterface;
 
     /**
-     * Find Customer by email.
+     * Find Customer by Identifier.
+     *
+     * @param string $identifier
+     * @param string $value
+     * @param bool   $isGuest
+     *
+     * @return CustomerInterface|null
+     */
+    public function findUniqueByLoginIdentifier(string $identifier, string $value, bool $isGuest): ?CustomerInterface;
+
+    /**
+     * Find Customer by Email.
      *
      * @param string $email
      * @param bool   $isGuest
      *
      * @return CustomerInterface|null
      */
-    public function findUniqueByEmail($email, $isGuest);
+    public function findUniqueByEmail(string $email, bool $isGuest): ?CustomerInterface;
+
+    /**
+     * Find Customer by Username.
+     *
+     * @param string $username
+     * @param bool   $isGuest
+     *
+     * @return CustomerInterface|null
+     */
+    public function findUniqueByUsername(string $username, bool $isGuest): ?CustomerInterface;
 
     /**
      * Find Guest Customer by Email.
@@ -52,7 +75,7 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return CustomerInterface|null
      */
-    public function findGuestByEmail($email);
+    public function findGuestByEmail(string $email): ?CustomerInterface;
 
     /**
      * Find Customer by Email.
@@ -61,5 +84,14 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return CustomerInterface|null
      */
-    public function findCustomerByEmail($email);
+    public function findCustomerByEmail(string $email): ?CustomerInterface;
+
+    /**
+     * Find Customer by Username.
+     *
+     * @param string $username
+     *
+     * @return CustomerInterface|null
+     */
+    public function findCustomerByUsername(string $username): ?CustomerInterface;
 }

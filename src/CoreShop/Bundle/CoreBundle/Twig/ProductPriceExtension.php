@@ -10,37 +10,30 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
-use CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelperInterface;
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class ProductPriceExtension extends AbstractExtension
 {
-    /**
-     * @var ProductPriceHelperInterface
-     */
-    private $helper;
+    private TaxedProductPriceCalculatorInterface $productPriceCalculator;
 
-    /**
-     * @param ProductPriceHelperInterface $helper
-     */
-    public function __construct(ProductPriceHelperInterface $helper)
+    public function __construct(TaxedProductPriceCalculatorInterface $productPriceCalculator)
     {
-        $this->helper = $helper;
+        $this->productPriceCalculator = $productPriceCalculator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new TwigFilter('coreshop_product_price', [$this->helper, 'getPrice'], ['withTax' => ['with_tax']]),
-            new TwigFilter('coreshop_product_retail_price', [$this->helper, 'getRetailPrice'], ['withTax' => ['with_tax']]),
-            new TwigFilter('coreshop_product_discount_price', [$this->helper, 'getDiscountPrice'], ['withTax' => ['with_tax']]),
-            new TwigFilter('coreshop_product_discount', [$this->helper, 'getDiscount'], ['withTax' => ['with_tax']]),
+            new TwigFilter('coreshop_product_price', [$this->productPriceCalculator, 'getPrice'], ['withTax' => ['with_tax']]),
+            new TwigFilter('coreshop_product_retail_price', [$this->productPriceCalculator, 'getRetailPrice'], ['withTax' => ['with_tax']]),
+            new TwigFilter('coreshop_product_discount_price', [$this->productPriceCalculator, 'getDiscountPrice'], ['withTax' => ['with_tax']]),
+            new TwigFilter('coreshop_product_discount', [$this->productPriceCalculator, 'getDiscount'], ['withTax' => ['with_tax']]),
         ];
     }
 }

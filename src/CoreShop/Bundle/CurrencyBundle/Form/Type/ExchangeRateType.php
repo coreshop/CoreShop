@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CurrencyBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
@@ -20,10 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ExchangeRateType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('exchangeRate', NumberType::class, [
@@ -41,20 +40,14 @@ final class ExchangeRateType extends AbstractResourceType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
         $resolver->setDefault('rounding_mode', NumberToLocalizedStringTransformer::ROUND_HALF_EVEN);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_exchange_rate';
     }

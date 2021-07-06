@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
@@ -18,24 +20,11 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 final class FilterContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $filterRepository;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param RepositoryInterface    $filterRepository
-     */
-    public function __construct(SharedStorageInterface $sharedStorage, RepositoryInterface $filterRepository)
+    public function __construct(SharedStorageInterface $sharedStorage)
     {
         $this->sharedStorage = $sharedStorage;
-        $this->filterRepository = $filterRepository;
     }
 
     /**

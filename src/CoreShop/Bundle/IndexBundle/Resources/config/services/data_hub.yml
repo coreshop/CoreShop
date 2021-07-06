@@ -6,4 +6,4 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.filter.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopFilter }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopFilter }

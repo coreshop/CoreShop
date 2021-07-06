@@ -17,3 +17,7 @@ services:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
         tags:
             - { name: doctrine.event_subscriber, priority: 8192 }
+
+    CoreShop\Bundle\ResourceBundle\EventListener\DeepCopyListener:
+        tags:
+            - { name: kernel.event_subscriber }

@@ -10,33 +10,32 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\EventListener;
 
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Event\CheckoutEvent;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Webmozart\Assert\Assert;
 
 class CheckoutCartLocaleAssignerListener
 {
-    /**
-     * @var LocaleContextInterface
-     */
-    private $localeContext;
+    private LocaleContextInterface $localeContext;
 
     public function __construct(LocaleContextInterface $localeContext)
     {
         $this->localeContext = $localeContext;
     }
 
-    public function assignLocaleOnCheckout(CheckoutEvent $event)
+    public function assignLocaleOnCheckout(CheckoutEvent $event): void
     {
         /**
-         * @var CartInterface $cart
+         * @var OrderInterface $cart
          */
         $cart = $event->getSubject();
 
-        Assert::isInstanceOf($cart, CartInterface::class);
+        Assert::isInstanceOf($cart, OrderInterface::class);
 
         $cart->setLocaleCode($this->localeContext->getLocaleCode());
     }

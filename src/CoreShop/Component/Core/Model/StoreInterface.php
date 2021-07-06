@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\CountriesAwareInterface;
@@ -34,9 +36,9 @@ interface StoreInterface extends BaseStoreInterface, CountriesAwareInterface
     public function getBaseCountry();
 
     /**
-     * @param CountryInterface $baseCurrency
+     * @param CountryInterface $baseCountry
      */
-    public function setBaseCountry(CountryInterface $baseCurrency);
+    public function setBaseCountry(CountryInterface $baseCountry);
 
     /**
      * @return Collection|ConfigurationInterface[]

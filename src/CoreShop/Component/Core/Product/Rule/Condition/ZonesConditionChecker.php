@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
 use CoreShop\Component\Address\Model\CountryInterface;
@@ -20,11 +22,12 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 final class ZonesConditionChecker implements ConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
-    {
+    public function isValid(
+        ResourceInterface $subject,
+        RuleInterface $rule,
+        array $configuration,
+        array $params = []
+    ): bool {
         if (!array_key_exists('country', $params) || !$params['country'] instanceof CountryInterface) {
             return false;
         }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Common;
 
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleChoiceType;
@@ -22,14 +24,24 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 final class ShippingRuleConfigurationType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @var string[]
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected array $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('shippingRule', ShippingRuleChoiceType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
                 ],
             ]);
 
@@ -51,10 +63,7 @@ final class ShippingRuleConfigurationType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_rule_condition_shipping_rule';
     }

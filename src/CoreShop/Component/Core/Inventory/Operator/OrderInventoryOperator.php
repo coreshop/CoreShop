@@ -10,34 +10,27 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Inventory\Operator;
 
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\OrderPaymentStates;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Webmozart\Assert\Assert;
 
 final class OrderInventoryOperator implements OrderInventoryOperatorInterface
 {
-    /**
-     * @var ObjectManager
-     */
     private $productEntityManager;
 
-    /**
-     * @param ObjectManager $productEntityManager
-     */
     public function __construct(ObjectManager $productEntityManager)
     {
         $this->productEntityManager = $productEntityManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function cancel(OrderInterface $order)
+    public function cancel(OrderInterface $order): void
     {
         if (in_array(
             $order->getPaymentState(),
@@ -52,10 +45,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->release($order);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hold(OrderInterface $order)
+    public function hold(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
         foreach ($order->getItems() as $orderItem) {
@@ -76,10 +66,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function sell(OrderInterface $order)
+    public function sell(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
         foreach ($order->getItems() as $orderItem) {
@@ -119,10 +106,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager->flush();
     }
 
-    /**
-     * @param OrderInterface $order
-     */
-    public function release(OrderInterface $order)
+    public function release(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
         foreach ($order->getItems() as $orderItem) {
@@ -151,10 +135,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager->flush();
     }
 
-    /**
-     * @param OrderInterface $order
-     */
-    public function giveBack(OrderInterface $order)
+    public function giveBack(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
         foreach ($order->getItems() as $orderItem) {

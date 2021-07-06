@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
@@ -19,23 +21,14 @@ use Webmozart\Assert\Assert;
 
 final class PriceRuleUpdateEventListener
 {
-    /**
-     * @var ConfigurationServiceInterface
-     */
-    private $configurationService;
+    private ConfigurationServiceInterface $configurationService;
 
-    /**
-     * @param ConfigurationServiceInterface $configurationService
-     */
     public function __construct(ConfigurationServiceInterface $configurationService)
     {
         $this->configurationService = $configurationService;
     }
 
-    /**
-     * @param ResourceControllerEvent $event
-     */
-    public function storeConfigurationThatPriceRulesChanged(ResourceControllerEvent $event)
+    public function storeConfigurationThatPriceRulesChanged(ResourceControllerEvent $event): void
     {
         //coreshop.cart_price_rule.post_save
         //coreshop.product_price_rule.post_save

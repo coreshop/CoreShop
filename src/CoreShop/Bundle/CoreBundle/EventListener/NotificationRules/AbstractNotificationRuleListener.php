@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
@@ -17,20 +19,9 @@ use CoreShop\Component\Notification\Processor\RulesProcessorInterface;
 
 abstract class AbstractNotificationRuleListener
 {
-    /**
-     * @var RulesProcessorInterface
-     */
-    protected $rulesProcessor;
+    protected RulesProcessorInterface $rulesProcessor;
+    protected ShopperContextInterface $shopperContext;
 
-    /**
-     * @var ShopperContextInterface
-     */
-    protected $shopperContext;
-
-    /**
-     * @param RulesProcessorInterface $rulesProcessor
-     * @param ShopperContextInterface $shopperContext
-     */
     public function __construct(
         RulesProcessorInterface $rulesProcessor,
         ShopperContextInterface $shopperContext

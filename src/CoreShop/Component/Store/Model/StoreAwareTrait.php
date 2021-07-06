@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Model;
 
 trait StoreAwareTrait
@@ -19,18 +21,12 @@ trait StoreAwareTrait
      */
     protected $store;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStore()
+    public function getStore(): ?StoreInterface
     {
         return $this->store;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setStore($store)
+    public function setStore(?StoreInterface $store)
     {
         $this->store = $store;
     }

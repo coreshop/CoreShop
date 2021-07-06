@@ -1,5 +1,6 @@
 imports:
-    - { resource: "services/wishlist.yml" }
+    - { resource: services/wishlist.yml }
+    - { resource: services_alias.yml }
 
 services:
     coreshop.frontend.controller.abstract:
@@ -7,19 +8,34 @@ services:
         abstract: true
         calls:
             - [setContainer, ['@service_container']]
-            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
+            - [setTemplateConfigurator, ['@CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface']]
 
-    coreshop.frontend.template_configurator:
-        class: CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator
+    CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface: '@CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator'
+    CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator:
         public: true
         arguments:
             - '%coreshop.frontend.view_bundle%'
             - '%coreshop.frontend.view_suffix%'
 
-    coreshop.frontend.twig.locale_switcher:
-        class: CoreShop\Bundle\FrontendBundle\Twig\LocaleSwitcherExtension
+    CoreShop\Bundle\FrontendBundle\Twig\LocaleSwitcherExtension:
         arguments:
             - '@Pimcore\Model\Document\Service'
-            - '@coreshop.context.shopper'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+        tags:
+            - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\TestHtmlAttributeExtension:
+        arguments:
+            - '%kernel.environment%'
+        tags:
+            - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\TestFormAttributeExtension:
+        arguments:
+            - '%kernel.environment%'
+        tags:
+            - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\MergeRecursiveExtension:
         tags:
             - { name: twig.extension }

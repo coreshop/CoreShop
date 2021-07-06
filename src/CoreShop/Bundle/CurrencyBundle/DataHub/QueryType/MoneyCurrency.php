@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CurrencyBundle\DataHub\QueryType;
 
 use CoreShop\Component\Currency\Model\Money;
@@ -22,15 +24,8 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class MoneyCurrency extends Input
 {
-    /**
-     * @var DoctrineProvider
-     */
-    protected $doctrineProvider;
-
-    /**
-     * @var string
-     */
-    protected $currencyClass;
+    protected DoctrineProvider $doctrineProvider;
+    protected string $currencyClass;
 
     public function __construct(Service $graphQlService, DoctrineProvider $doctrineProvider, string $currencyClass)
     {
@@ -40,9 +35,6 @@ class MoneyCurrency extends Input
         $this->currencyClass = $currencyClass;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->enrichConfig(
@@ -58,9 +50,6 @@ class MoneyCurrency extends Input
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
         return new ObjectType([

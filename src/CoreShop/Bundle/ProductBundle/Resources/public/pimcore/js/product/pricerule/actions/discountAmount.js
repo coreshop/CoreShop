@@ -28,7 +28,7 @@ coreshop.product.pricerule.actions.discountAmount = Class.create(coreshop.rules.
             fieldLabel: t('coreshop_action_discountAmount_amount'),
             name: 'amount',
             value: amountValue,
-            decimalPrecision: 2
+            decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         });
 
         this.form = new Ext.form.Panel({

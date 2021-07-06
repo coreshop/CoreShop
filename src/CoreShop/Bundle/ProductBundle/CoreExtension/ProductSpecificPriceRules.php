@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
@@ -43,6 +45,26 @@ class ProductSpecificPriceRules extends Data implements
      * @var int
      */
     public $height;
+
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return 'array';
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return 'array';
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return 'array';
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return 'array';
+    }
 
     /**
      * @param mixed $object
@@ -87,33 +109,21 @@ class ProductSpecificPriceRules extends Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalVersion($object, $data)
     {
         if (!is_array($data)) {
@@ -133,9 +143,6 @@ class ProductSpecificPriceRules extends Data implements
         return $serialized;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalVersion($object, $data)
     {
         if (!is_array($data)) {
@@ -151,7 +158,6 @@ class ProductSpecificPriceRules extends Data implements
             }
 
             $context = DeserializationContext::create();
-            $context->setSerializeNull(false);
             $context->setGroups(['Version']);
             $context->setAttribute('em', $tempEntityManager);
 
@@ -161,6 +167,16 @@ class ProductSpecificPriceRules extends Data implements
         }
 
         return $entities;
+    }
+
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
     }
 
     /**
@@ -298,9 +314,6 @@ class ProductSpecificPriceRules extends Data implements
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($object, $params = [])
     {
         if (isset($params['force']) && $params['force']) {
@@ -310,9 +323,6 @@ class ProductSpecificPriceRules extends Data implements
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($object, $params = [])
     {
         if ($object instanceof ProductInterface) {
@@ -365,6 +375,10 @@ class ProductSpecificPriceRules extends Data implements
         return $array;
     }
 
+    public function getForCsvExport($object, $params = [])
+    {
+        return '';
+    }
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface

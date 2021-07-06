@@ -10,67 +10,42 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Event;
 
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class PaymentProviderSupportsEvent extends Event
 {
-    /**
-     * @var PaymentProviderInterface
-     */
-    private $paymentProvider;
+    private PaymentProviderInterface $paymentProvider;
+    private ?ResourceInterface $subject;
+    private bool $supported = true;
 
-    /**
-     * @var ResourceInterface
-     */
-    private $subject;
-
-    /**
-     * @var bool
-     */
-    private $supported = true;
-
-    /**
-     * @param PaymentProviderInterface $paymentProvider
-     * @param ResourceInterface        $subject
-     */
     public function __construct(PaymentProviderInterface $paymentProvider, ResourceInterface $subject = null)
     {
         $this->paymentProvider = $paymentProvider;
         $this->subject = $subject;
     }
 
-    /**
-     * @return PaymentProviderInterface
-     */
-    public function getPaymentProvider()
+    public function getPaymentProvider(): PaymentProviderInterface
     {
         return $this->paymentProvider;
     }
 
-    /**
-     * @return ResourceInterface
-     */
-    public function getSubject()
+    public function getSubject(): ?ResourceInterface
     {
         return $this->subject;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSupported()
+    public function isSupported(): bool
     {
         return $this->supported;
     }
 
-    /**
-     * @param bool $supported
-     */
-    public function setSupported(bool $supported)
+    public function setSupported(bool $supported): void
     {
         $this->supported = $supported;
     }

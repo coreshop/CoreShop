@@ -10,39 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\StorageList\Model;
 
 interface StorageListItemInterface
 {
-    /**
-     * @param StorageListItemInterface $storageListItem
-     *
-     * @return bool
-     */
-    public function equals(self $storageListItem);
+    public function equals(self $storageListItem): bool;
 
-    /**
-     * @return int
-     */
     public function getId();
 
-    /**
-     * @return StorageListProductInterface
-     */
     public function getProduct();
 
-    /**
-     * @param mixed $product
-     */
-    public function setProduct($product);
+//    public function setProduct($product);
 
-    /**
-     * @return int
-     */
-    public function getQuantity();
+    public function getQuantity(): ?float;
 
-    /**
-     * @param int $quantity
-     */
-    public function setQuantity($quantity);
+    public function setQuantity(?float $quantity);
 }

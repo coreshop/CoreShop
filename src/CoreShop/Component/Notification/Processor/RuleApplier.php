@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Notification\Processor;
 
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
@@ -18,23 +20,14 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 class RuleApplier implements RuleApplierInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $actionServiceRegistry;
+    private ServiceRegistryInterface $actionServiceRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $actionServiceRegistry
-     */
     public function __construct(ServiceRegistryInterface $actionServiceRegistry)
     {
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function applyRule(NotificationRuleInterface $rule, $subject, $params)
+    public function applyRule(NotificationRuleInterface $rule, $subject, array $params): void
     {
         foreach ($rule->getActions() as $action) {
             $processor = $this->actionServiceRegistry->get($action->getType());

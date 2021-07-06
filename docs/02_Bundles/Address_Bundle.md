@@ -5,7 +5,7 @@ to find the visitors Country.
 
 ## Installation
 ```bash
-$ composer require coreshop/address-bundle:^2.0
+$ composer require coreshop/address-bundle:^3.0
 ```
 
 ### Adding required bundles to kernel

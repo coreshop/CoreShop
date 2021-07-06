@@ -10,20 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject;
+use Pimcore\Model\Exception\NotFoundException;
 
 class ClassInstaller implements ClassInstallerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function createBrick($jsonFile, $brickName)
+    public function createBrick(string $jsonFile, string $brickName): DataObject\Objectbrick\Definition
     {
         try {
             $objectBrick = DataObject\Objectbrick\Definition::getByKey($brickName);
-        } catch (\Exception $e) {
+        } catch (NotFoundException $e) {
             $objectBrick = null;
         }
 
@@ -41,17 +41,20 @@ class ClassInstaller implements ClassInstallerInterface
         return $objectBrick;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createClass($jsonFile, $className, $updateClass = false)
+    public function createClass(string $jsonFile, string $className, bool $updateClass = false): DataObject\ClassDefinition
     {
         $tempClass = new DataObject\ClassDefinition();
-        $id = $tempClass->getDao()->getIdByName($className);
         $class = null;
 
-        if ($id) {
-            $class = DataObject\ClassDefinition::getById($id);
+        try {
+            $id = $tempClass->getDao()->getIdByName($className);
+
+            if ($id) {
+                $class = DataObject\ClassDefinition::getById($id);
+            }
+        }
+        catch (NotFoundException $exception) {
+            //Ignore
         }
 
         if (!$class || $updateClass) {
@@ -91,14 +94,11 @@ class ClassInstaller implements ClassInstallerInterface
         return $class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createFieldCollection($jsonFile, $name)
+    public function createFieldCollection(string $jsonFile, string $name): DataObject\Fieldcollection\Definition
     {
         try {
             $fieldCollection = DataObject\Fieldcollection\Definition::getByKey($name);
-        } catch (\Exception $e) {
+        } catch (NotFoundException $e) {
             $fieldCollection = null;
         }
 

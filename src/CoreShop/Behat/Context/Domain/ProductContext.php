@@ -10,12 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
@@ -25,48 +28,19 @@ use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    private $productRepository;
-
-    /**
-     * @var ProductPriceCalculatorInterface
-     */
     private $productPriceCalculator;
-
-    /**
-     * @var TaxedProductPriceCalculatorInterface
-     */
     private $taxedProductPriceCalculator;
 
-    /**
-     * @param SharedStorageInterface               $sharedStorage
-     * @param ShopperContextInterface              $shopperContext,
-     * @param ProductRepositoryInterface           $productRepository
-     * @param ProductPriceCalculatorInterface      $productPriceCalculator
-     * @param TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ShopperContextInterface $shopperContext,
-        ProductRepositoryInterface $productRepository,
         ProductPriceCalculatorInterface $productPriceCalculator,
         TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->shopperContext = $shopperContext;
-        $this->productRepository = $productRepository;
         $this->productPriceCalculator = $productPriceCalculator;
         $this->taxedProductPriceCalculator = $taxedProductPriceCalculator;
     }
@@ -222,5 +196,34 @@ final class ProductContext implements Context
                 $conversionRate
             )
         );
+    }
+
+    /**
+     * @Then /^the (product) and the (copied-object) should have it's own price$/
+     */
+    public function bothProductsShouldHaveItsOwnPrice(ProductInterface $originalProduct, ProductInterface $copiedObject)
+    {
+        $originalProduct->save();
+        $copiedObject->save();
+
+        $storeValues = $originalProduct->getStoreValues();
+
+        foreach ($storeValues as $storeValue) {
+            if (!$storeValue instanceof ProductStoreValuesInterface) {
+                continue;
+            }
+
+            Assert::eq($storeValue->getProduct()->getId(), $originalProduct->getId());
+        }
+
+        $copiedStoreValues = $copiedObject->getStoreValues();
+
+        foreach ($copiedStoreValues as $copiedStoreValue) {
+            if (!$copiedStoreValue instanceof ProductStoreValuesInterface) {
+                continue;
+            }
+
+            Assert::eq($copiedStoreValue->getProduct()->getId(), $copiedObject->getId());
+        }
     }
 }

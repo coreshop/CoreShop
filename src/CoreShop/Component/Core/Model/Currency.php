@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Currency\Model\Currency as BaseCurrency;
@@ -28,25 +30,16 @@ class Currency extends BaseCurrency implements CurrencyInterface
         $this->countries = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCountries()
     {
         return $this->countries;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCountries()
     {
         return !$this->countries->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCountry(CountryInterface $country)
     {
         if (!$this->hasCountry($country)) {
@@ -55,9 +48,6 @@ class Currency extends BaseCurrency implements CurrencyInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeCountry(CountryInterface $country)
     {
         if ($this->hasCountry($country)) {
@@ -66,9 +56,6 @@ class Currency extends BaseCurrency implements CurrencyInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCountry(CountryInterface $country)
     {
         return $this->countries->contains($country);

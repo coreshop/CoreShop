@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <mapped-superclass name="CoreShop\Component\Core\Model\Country" table="coreshop_country">
+        <many-to-one field="currency" target-entity="CoreShop\Component\Currency\Model\CurrencyInterface" inversed-by="countries">
+            <join-column name="currencyId" referenced-column-name="id" nullable="true"/>
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </many-to-one>
+
+        <many-to-many field="stores" target-entity="CoreShop\Component\Store\Model\StoreInterface" mapped-by="countries"/>
+    </mapped-superclass>
+</doctrine-mapping>

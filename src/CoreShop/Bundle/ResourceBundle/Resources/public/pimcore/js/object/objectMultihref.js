@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.object.objectMultihref');
-coreshop.object.objectMultihref = Class.create(pimcore.object.tags.objects, {
+coreshop.object.objectMultihref = Class.create(pimcore.object.tags.manyToManyObjectRelation, {
 
     type: 'objectMultihref',
     dataChanged: false,

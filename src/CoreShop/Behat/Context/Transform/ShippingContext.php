@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
@@ -21,26 +23,10 @@ use Webmozart\Assert\Assert;
 
 final class ShippingContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var CarrierRepositoryInterface
-     */
     private $carrierRepository;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $shippingRuleRepository;
 
-    /**
-     * @param SharedStorageInterface     $sharedStorage,
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param RepositoryInterface        $shippingRuleRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CarrierRepositoryInterface $carrierRepository,

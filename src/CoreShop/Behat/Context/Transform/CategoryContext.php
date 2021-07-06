@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
@@ -19,20 +21,9 @@ use Webmozart\Assert\Assert;
 
 final class CategoryContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
     private $categoryRepository;
 
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CategoryRepositoryInterface $categoryRepository
@@ -60,7 +51,9 @@ final class CategoryContext implements Context
             sprintf('%d categories has been found with name "%s".', count($list->getObjects()), $categoryName)
         );
 
-        return reset($list->getObjects());
+        $objects = $list->getObjects();
+
+        return reset($objects);
     }
 
     /**

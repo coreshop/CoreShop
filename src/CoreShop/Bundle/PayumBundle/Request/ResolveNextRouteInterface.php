@@ -10,15 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\Request;
 
 interface ResolveNextRouteInterface
 {
-    public function getRouteName();
+    public function getRouteName(): string;
 
-    public function setRouteName(string $routeName);
+    public function setRouteName(string $routeName): void;
 
-    public function getRouteParameters();
+    public function getRouteParameters(): array;
 
-    public function setRouteParameters(array $parameters);
+    public function setRouteParameters(array $parameters): void;
 }

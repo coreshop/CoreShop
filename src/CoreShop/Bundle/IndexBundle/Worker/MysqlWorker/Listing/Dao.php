@@ -10,37 +10,29 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Component\Index\Listing\ListingInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pimcore\Db;
 
 class Dao
 {
-    /**
-     * @var \Pimcore\Db\ConnectionInterface
-     */
-    private $database;
-
-    /**
-     * @var MysqlWorker\Listing
-     */
-    private $model;
-
-    /**
-     * @var int
-     */
-    private $lastRecordCount;
+    private Connection $database;
+    private MysqlWorker\Listing $model;
+    private int $lastRecordCount = 0;
 
     /**
      * @param MysqlWorker\Listing $model
      */
-    public function __construct(MysqlWorker\Listing $model)
+    public function __construct(MysqlWorker\Listing $model, Connection $connection)
     {
         $this->model = $model;
-        $this->database = Db::get();
+        $this->database = $connection;
     }
 
     /**
@@ -71,10 +63,12 @@ class Dao
         } else {
             $queryBuilder->select('DISTINCT q.o_id');
         }
-        $result = $this->database->executeQuery($queryBuilder->getSQL());
-        $this->lastRecordCount = $result->rowCount();
 
-        return $result->fetchAll();
+        $resultSet = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+
+        $this->lastRecordCount = count($resultSet);
+
+        return $resultSet;
     }
 
     /**
@@ -99,24 +93,21 @@ class Dao
                 $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(*) AS count');
             }
 
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAll();
-
-            return $result;
-        } else {
-            $queryBuilder->select($this->quoteIdentifier($fieldName));
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $queryResult = $stmt->fetchAll();
-            $result = [];
-
-            foreach ($queryResult as $row) {
-                if ($row[$fieldName]) {
-                    $result[] = $row[$fieldName];
-                }
-            }
-
-            return $result;
+            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
+
+        $queryBuilder->select($this->quoteIdentifier($fieldName));
+        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+
+        $result = [];
+
+        foreach ($queryResult as $row) {
+            if ($row[$fieldName]) {
+                $result[] = $row[$fieldName];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -172,10 +163,7 @@ class Dao
             $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
             $queryBuilder->groupBy('dest');
 
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAll();
-
-            return $result;
+            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
 
         $queryBuilder->select($this->quoteIdentifier('dest'));
@@ -192,8 +180,7 @@ class Dao
         $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
         $queryBuilder->groupBy('dest');
 
-        $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-        $queryResult = $stmt->fetchAll();
+        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
 
         $result = [];
 
@@ -223,7 +210,7 @@ class Dao
         }
         $stmt = $this->database->executeQuery($queryBuilder->getSQL());
 
-        return $stmt->fetchColumn();
+        return (int)$stmt->fetchColumn();
     }
 
     /**
@@ -339,7 +326,7 @@ class Dao
      *
      * @return int
      */
-    public function getLastRecordCount()
+    public function getLastRecordCount(): int
     {
         return $this->lastRecordCount;
     }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Menu;
 
 use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
@@ -18,7 +20,7 @@ use Knp\Menu\ItemInterface;
 
 class MainMenuBuilder implements MenuBuilderInterface
 {
-    public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type)
+    public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type): void
     {
         $menuItem->setLabel('coreshop');
         $menuItem->setAttributes([
@@ -295,6 +297,31 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_nav_icon_filters')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'filter')
+            ->setExtra('order', 20);
+
+        $customersMenu = $menuItem
+            ->addChild('coreshop_customer')
+            ->setLabel('coreshop_customer')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_customer')
+            ->setAttribute('container', true)
+            ->setExtra('order', 81);
+
+        $customersMenu
+            ->addChild('coreshop_customer_to_company_assign_to_new')
+            ->setLabel('coreshop_customer_to_company_assign_to_new')
+            ->setAttribute('permission', 'coreshop_permission_ctc_assign_to_new')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_customer_to_company_assign_to_new')
+            ->setAttribute('resource', 'coreshop.core')
+            ->setAttribute('function', 'customer_to_company_assign_to_new')
+            ->setExtra('order', 10);
+
+        $customersMenu
+            ->addChild('coreshop_customer_to_company_assign_to_existing')
+            ->setLabel('coreshop_customer_to_company_assign_to_existing')
+            ->setAttribute('permission', 'coreshop_permission_ctc_assign_to_existing')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_customer_to_company_assign_to_existing')
+            ->setAttribute('resource', 'coreshop.core')
+            ->setAttribute('function', 'customer_to_company_assign_to_existing')
             ->setExtra('order', 20);
 
         $menuItem->addChild('coreshop_notification_rules')

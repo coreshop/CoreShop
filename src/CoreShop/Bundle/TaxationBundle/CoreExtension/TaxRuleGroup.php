@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TaxationBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
@@ -24,26 +26,23 @@ class TaxRuleGroup extends Select
      */
     public $fieldtype = 'coreShopTaxRuleGroup';
 
-    /**
-     * Type for the generated phpdoc.
-     *
-     * @var string
-     */
-    public $phpdocType = TaxRuleGroupInterface::class;
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.tax_rule_group');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
+    protected function getModel(): string
     {
         return \Pimcore::getContainer()->getParameter('coreshop.model.tax_rule_group.class');
+    }
+
+    protected function getInterface(): string
+    {
+        return '\\' . TaxRuleGroupInterface::class;
+    }
+
+    protected function getNullable(): bool
+    {
+        return true;
     }
 }

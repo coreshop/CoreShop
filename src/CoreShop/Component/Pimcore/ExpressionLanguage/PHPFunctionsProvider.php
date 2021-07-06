@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\ExpressionLanguage;
 
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
@@ -17,7 +19,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             ExpressionFunction::fromPHP('sprintf'),

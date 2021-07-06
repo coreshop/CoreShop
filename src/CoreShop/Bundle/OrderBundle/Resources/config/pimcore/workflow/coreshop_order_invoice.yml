@@ -38,5 +38,5 @@ core_shop_workflow:
                 after:
                     resolve_state:
                         on: ['invoice']
-                        do: ['@coreshop.state_machine_resolver.order', 'resolve']
+                        do: ['@CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver', 'resolve']
                         args: ['object']

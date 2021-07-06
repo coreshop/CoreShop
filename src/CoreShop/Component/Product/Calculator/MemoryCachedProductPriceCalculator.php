@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -17,50 +19,20 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class MemoryCachedProductPriceCalculator implements ProductPriceCalculatorInterface
 {
-    /**
-     * @var ProductPriceCalculatorInterface
-     */
-    private $inner;
+    private ProductPriceCalculatorInterface $inner;
+    private RequestStack $requestStack;
+    private array $cachedPrice = [];
+    private array $cachedRetailPrice = [];
+    private array $cachedDiscountPrice = [];
+    private array $cachedDiscount = [];
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var array
-     */
-    private $cachedPrice = [];
-
-    /**
-     * @var array
-     */
-    private $cachedRetailPrice = [];
-
-    /**
-     * @var array
-     */
-    private $cachedDiscountPrice = [];
-
-    /**
-     * @var array
-     */
-    private $cachedDiscount = [];
-
-    /**
-     * @param ProductPriceCalculatorInterface $inner
-     * @param RequestStack                    $requestStack
-     */
     public function __construct(ProductPriceCalculatorInterface $inner, RequestStack $requestStack)
     {
         $this->inner = $inner;
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice(ProductInterface $subject, array $context, $includingDiscounts = false)
+    public function getPrice(ProductInterface $subject, array $context, bool $includingDiscounts = false): int
     {
         if (!$this->requestStack->getCurrentRequest()) {
             return $this->inner->getPrice($subject, $context, $includingDiscounts);
@@ -75,10 +47,7 @@ final class MemoryCachedProductPriceCalculator implements ProductPriceCalculator
         return $this->cachedPrice[$identifier];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         if (!$this->requestStack->getCurrentRequest()) {
             return $this->inner->getRetailPrice($subject, $context);
@@ -91,10 +60,7 @@ final class MemoryCachedProductPriceCalculator implements ProductPriceCalculator
         return $this->cachedRetailPrice[$subject->getId()];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscountPrice(ProductInterface $subject, array $context)
+    public function getDiscountPrice(ProductInterface $subject, array $context): int
     {
         if (!$this->requestStack->getCurrentRequest()) {
             return $this->inner->getDiscountPrice($subject, $context);
@@ -107,10 +73,7 @@ final class MemoryCachedProductPriceCalculator implements ProductPriceCalculator
         return $this->cachedDiscountPrice[$subject->getId()];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscount(ProductInterface $subject, array $context, $price)
+    public function getDiscount(ProductInterface $subject, array $context, int $price): int
     {
         if (!$this->requestStack->getCurrentRequest()) {
             return $this->inner->getDiscount($subject, $context, $price);

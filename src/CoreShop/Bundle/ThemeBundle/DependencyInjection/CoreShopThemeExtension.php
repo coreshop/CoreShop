@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ThemeBundle\DependencyInjection;
 
 use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\CompositeThemeResolverPass;
+use CoreShop\Bundle\ThemeBundle\Service\InheritanceLocator;
 use CoreShop\Bundle\ThemeBundle\Service\PimcoreDocumentPropertyResolver;
 use CoreShop\Bundle\ThemeBundle\Service\PimcoreSiteThemeResolver;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
@@ -23,24 +26,19 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class CoreShopThemeExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        if (isset($config['default_resolvers'])) {
-            if (!$config['default_resolvers']['pimcore_site']) {
-                $container->removeDefinition(PimcoreSiteThemeResolver::class);
-            }
+        if (false === $config['default_resolvers']['pimcore_site']) {
+            $container->removeDefinition(PimcoreSiteThemeResolver::class);
+        }
 
-            if (!$config['default_resolvers']['pimcore_document_property']) {
-                $container->removeDefinition(PimcoreDocumentPropertyResolver::class);
-            }
+        if (false === $config['default_resolvers']['pimcore_document_property']) {
+            $container->removeDefinition(PimcoreDocumentPropertyResolver::class);
         }
 
         $container

@@ -21,4 +21,4 @@ default:
                 - coreshop.behat.context.domain.currency
                 - coreshop.behat.context.domain.exchange_rate
             filters:
-                tags: "@currency"
+                tags: "@domain && @currency"

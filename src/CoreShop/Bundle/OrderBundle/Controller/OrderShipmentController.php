@@ -10,10 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
@@ -24,10 +27,12 @@ use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
+use CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -37,7 +42,7 @@ class OrderShipmentController extends PimcoreController
     /**
      * @param Request $request
      *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function getShipAbleItemsAction(Request $request)
     {
@@ -77,7 +82,7 @@ class OrderShipmentController extends PimcoreController
 
                 $event = new GenericEvent($orderItem, $itemToReturn);
 
-                $this->get('event_dispatcher')->dispatch('coreshop.order.shipment.prepare_ship_able', $event);
+                $this->get('event_dispatcher')->dispatch($event, 'coreshop.order.shipment.prepare_ship_able');
 
                 $itemsToReturn[] = $event->getArguments();
             }
@@ -89,7 +94,7 @@ class OrderShipmentController extends PimcoreController
     /**
      * @param Request $request
      *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function createShipmentAction(Request $request)
     {
@@ -104,7 +109,7 @@ class OrderShipmentController extends PimcoreController
                 return $this->viewHandler->handle(
                     [
                         'success' => false,
-                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form),
+                        'message' => $this->get(ErrorSerializer::class)->serializeErrorFromHandledForm($form),
                     ]
                 );
             }
@@ -248,7 +253,7 @@ class OrderShipmentController extends PimcoreController
      */
     protected function getOrderToShipmentTransformer()
     {
-        return $this->get('coreshop.order.transformer.order_to_shipment');
+        return $this->get(OrderToShipmentTransformer::class);
     }
 
     /**

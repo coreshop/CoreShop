@@ -10,53 +10,52 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Checker;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 
 class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
 {
-    /**
-     * @var RuleValidationProcessorInterface
-     */
-    protected $ruleValidationProcessor;
+    protected RuleValidationProcessorInterface $ruleValidationProcessor;
 
-    /**
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     */
     public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor)
     {
         $this->ruleValidationProcessor = $ruleValidationProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
-    {
+    public function findValidShippingRule(
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address
+    ): ?ShippingRuleInterface {
         $shippingRules = $carrier->getShippingRules();
 
         if (count($shippingRules) === 0) {
-            return true;
+            return null;
         }
 
         foreach ($shippingRules as $rule) {
-            $isValid = $this->ruleValidationProcessor->isValid($carrier, $rule->getShippingRule(), [
+            $isValid = $this->ruleValidationProcessor->isValid($carrier, $rule instanceof ShippingRuleInterface ? $rule : $rule->getShippingRule(), [
                 $carrier,
                 'shippable' => $shippable,
                 'address' => $address,
             ]);
 
             if ($isValid === false && $rule->getStopPropagation() === true) {
-                return false;
-            } elseif ($isValid === true) {
-                return $rule;
+                return null;
+            }
+
+            if ($isValid === true) {
+                return $rule instanceof ShippingRuleInterface ? $rule : $rule->getShippingRule();
             }
         }
 
-        return false;
+        return null;
     }
 }

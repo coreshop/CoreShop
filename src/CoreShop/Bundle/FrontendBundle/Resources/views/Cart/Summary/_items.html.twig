@@ -2,7 +2,7 @@
     {{ form_start(form, {}) }}
         {{ form_errors(form) }}
 
-        <table class="table table-bordered">
+        <table class="table table-bordered" {{ coreshop_test_html_attribute('cart-items') }}>
             <thead>
             <tr>
                 <td class="text-center">
@@ -24,7 +24,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in cart.getItems %}
+            {% for item in cart.items %}
                 {% include '@CoreShopFrontend/Cart/Summary/_item.html.twig' with {'item': item, 'form': form.items[loop.index0]} %}
             {% endfor %}
             <tr>
@@ -46,6 +46,6 @@
 
 </div>
 
-{% if cart.getShipping(false) is null %}
-    {{ render(controller('coreshop.frontend.controller.cart:shipmentCalculationAction')) }}
+{% if cart.shipping(false) is null %}
+    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CartController:shipmentCalculationAction')) }}
 {% endif %}

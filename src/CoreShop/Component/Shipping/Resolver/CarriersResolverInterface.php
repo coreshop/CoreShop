@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Resolver;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -24,5 +26,5 @@ interface CarriersResolverInterface
      *
      * @return CarrierInterface[]
      */
-    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address);
+    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address): array;
 }

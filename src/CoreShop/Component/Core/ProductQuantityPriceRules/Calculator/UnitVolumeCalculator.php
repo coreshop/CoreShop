@@ -10,54 +10,43 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\ProductQuantityPriceRules\Calculator;
 
+use CoreShop\Component\Core\Model\QuantityRangeInterface as CoreQuantityRangeInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Calculator\VolumeCalculator;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
-use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
-use CoreShop\Component\Core\Model\QuantityRangeInterface as CoreQuantityRangeInterface;
-use Doctrine\Common\Collections\Collection;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
+use Doctrine\Common\Collections\Collection;
 
 class UnitVolumeCalculator implements CalculatorInterface
 {
-    /**
-     * @var VolumeCalculator
-     */
     protected $inner;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
     protected $actionRegistry;
 
-    /**
-     * @param VolumeCalculator      $inner
-     * @param ServiceRegistryInterface $actionRegistry
-     */
     public function __construct(VolumeCalculator $inner, ServiceRegistryInterface $actionRegistry)
     {
         $this->inner = $inner;
         $this->actionRegistry = $actionRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
         QuantityRangePriceAwareInterface $subject,
         float $quantity,
         int $originalPrice,
         array $context
-    ) {
+    ): int {
         if (!isset($context['unitDefinition']) || !$context['unitDefinition'] instanceof ProductUnitDefinitionInterface) {
-            return $this->inner->calculateForQuantity($quantityPriceRule, $subject, $quantity, $originalPrice, $context);
+            return $this->inner->calculateForQuantity($quantityPriceRule, $subject, $quantity, $originalPrice,
+                $context);
         }
 
         $locatedRange = $this->locate($quantityPriceRule->getRanges(), $quantity, $context['unitDefinition']);
@@ -73,48 +62,42 @@ class UnitVolumeCalculator implements CalculatorInterface
         }
 
         if ($subject instanceof ProductInterface && is_numeric($subject->getItemQuantityFactor()) && $subject->getItemQuantityFactor() > 1) {
-            $price = $price / (int) $subject->getItemQuantityFactor();
+            $price = $price / (int)$subject->getItemQuantityFactor();
         }
 
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculateForRange(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,
         int $originalPrice,
         array $context
-    ) {
+    ): int {
         return $this->inner->calculateForRange($range, $subject, $originalPrice, $context);
     }
 
-    /**
-     * @param Collection                     $ranges
-     * @param float                          $quantity
-     * @param ProductUnitDefinitionInterface $unitDefinition
-     *
-     * @return QuantityRangeInterface|null
-     */
-    protected function locate(Collection $ranges, float $quantity, ProductUnitDefinitionInterface $unitDefinition)
-    {
+    protected function locate(
+        Collection $ranges,
+        float $quantity,
+        ProductUnitDefinitionInterface $unitDefinition
+    ): ?QuantityRangeInterface {
         if ($ranges->isEmpty()) {
             return null;
         }
 
         $cheapestRangePrice = null;
-        $unitFilteredRanges = array_filter($ranges->toArray(), function (CoreQuantityRangeInterface $range) use ($unitDefinition) {
-            if (!$range->getUnitDefinition() instanceof ProductUnitDefinitionInterface) {
-                return false;
-            }
-            if ($range->getUnitDefinition()->getId() !== $unitDefinition->getId()) {
-                return false;
-            }
+        $unitFilteredRanges = array_filter($ranges->toArray(),
+            function (CoreQuantityRangeInterface $range) use ($unitDefinition) {
+                if (!$range->getUnitDefinition() instanceof ProductUnitDefinitionInterface) {
+                    return false;
+                }
+                if ($range->getUnitDefinition()->getId() !== $unitDefinition->getId()) {
+                    return false;
+                }
 
-            return true;
-        });
+                return true;
+            });
 
         // reset array index
         $unitFilteredRanges = array_values($unitFilteredRanges);

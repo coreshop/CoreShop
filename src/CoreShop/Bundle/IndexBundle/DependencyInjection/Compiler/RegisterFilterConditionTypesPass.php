@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -24,8 +26,10 @@ class RegisterFilterConditionTypesPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds(self::INDEX_FILTER_CONDITION_TAG) as $id => $attributes) {
             $definition = $container->findDefinition($id);
 
-            $definition->addTag('coreshop.filter.user_condition_type', $attributes[0]);
-            $definition->addTag('coreshop.filter.pre_condition_type', $attributes[0]);
+            foreach ($attributes as $tag) {
+                $definition->addTag('coreshop.filter.user_condition_type', $tag);
+                $definition->addTag('coreshop.filter.pre_condition_type', $tag);
+            }
         }
     }
 }

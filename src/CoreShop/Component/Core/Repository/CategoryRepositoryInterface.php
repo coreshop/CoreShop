@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Repository;
 
 use CoreShop\Component\Product\Model\CategoryInterface;
@@ -23,14 +25,14 @@ interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
      *
      * @return CategoryInterface[]
      */
-    public function findForStore(StoreInterface $store);
+    public function findForStore(StoreInterface $store): array;
 
     /**
      * @param StoreInterface $store
      *
      * @return CategoryInterface[]
      */
-    public function findFirstLevelForStore(StoreInterface $store);
+    public function findFirstLevelForStore(StoreInterface $store): array;
 
     /**
      * @param CategoryInterface $category
@@ -38,7 +40,7 @@ interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
      *
      * @return CategoryInterface[]
      */
-    public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store);
+    public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array;
 
     /**
      * @param CategoryInterface $category
@@ -46,7 +48,7 @@ interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
      *
      * @return int[]
      */
-    public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store);
+    public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store): array;
 
     /**
      * @param CategoryInterface $category
@@ -54,5 +56,5 @@ interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
      *
      * @return CategoryInterface[]
      */
-    public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store);
+    public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array;
 }

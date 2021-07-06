@@ -15,8 +15,8 @@ coreshop.zone.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_zone',
 
-    url: {
-        save: '/admin/coreshop/zones/save'
+    routing: {
+        save: 'coreshop_zone_save'
     },
 
     getItems: function () {

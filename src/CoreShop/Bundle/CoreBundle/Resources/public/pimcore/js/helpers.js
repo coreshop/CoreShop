@@ -28,17 +28,6 @@ coreshop.helpers.createOrder = function () {
     );
 };
 
-coreshop.util.format.currency = function (currency, v, forceTwoDecimals) {
-
-    var factor = forceTwoDecimals === true ? 100 : pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
-        decimalPrecision = forceTwoDecimals === true ? 2 : pimcore.globalmanager.get('coreshop.currency.decimal_precision'),
-        value = (Math.round(((v / factor) - 0) * factor)) / factor;
-
-    currency = currency + ' ';
-
-    return Ext.util.Format.currency(value, currency, decimalPrecision, false);
-};
-
 coreshop.helpers.showAbout = function () {
 
     var html = '<div class="pimcore_about_window">';

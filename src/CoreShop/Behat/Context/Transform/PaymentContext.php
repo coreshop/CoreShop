@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
@@ -19,20 +21,9 @@ use Webmozart\Assert\Assert;
 
 final class PaymentContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var PaymentProviderRepositoryInterface
-     */
     private $paymentProviderRepository;
 
-    /**
-     * @param SharedStorageInterface             $sharedStorage
-     * @param PaymentProviderRepositoryInterface $paymentProviderRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         PaymentProviderRepositoryInterface $paymentProviderRepository
@@ -62,6 +53,6 @@ final class PaymentContext implements Context
      */
     public function country()
     {
-        return $this->sharedStorage->get('paymentProvider');
+        return $this->sharedStorage->get('payment-provider');
     }
 }

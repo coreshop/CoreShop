@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Currency\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
@@ -45,9 +47,6 @@ class ExchangeRate implements ExchangeRateInterface
         $this->creationDate = new \DateTime();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;

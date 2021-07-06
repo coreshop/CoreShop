@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\StateInterface;
@@ -48,9 +50,6 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface
         return $this->country;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCountry(CountryInterface $country = null)
     {
         $this->country = $country;
@@ -58,17 +57,11 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getState()
     {
         return $this->state;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setState(StateInterface $state = null)
     {
         $this->state = $state;

@@ -5,9 +5,9 @@
     <div class="row">
         <div class="col-md-3">
             {% if category is defined %}
-                {{ render(controller('coreshop.frontend.controller.category:menuLeftAction', {activeCategory: category})) }}
+                {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CategoryController:menuLeftAction', {activeCategory: category})) }}
             {% else %}
-                {{ render(controller('coreshop.frontend.controller.category:menuLeftAction')) }}
+                {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CategoryController:menuLeftAction')) }}
             {% endif %}
 
             {% block left %}

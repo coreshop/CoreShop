@@ -3,18 +3,18 @@
 <div class="col-md-4 col-sm-6 mb-4">
     <div class="d-flex flex-column product-col">
         <div class="image">
-            {% if product.getImage() %}
+            {% if product.image is pimcore_asset_image %}
                 <a href="{{ coreshop_path(product, 'coreshop_product_detail') }}">
-                    {{ product.getImage().getThumbnail("coreshop_productList").getHtml({"class": "img-fluid"})|raw }}
+                    {{ product.image|pimcore_image_thumbnail_html('coreshop_productList', {'class': 'img-fluid'}) }}
                 </a>
             {% endif %}
         </div>
         <div class="caption mb-auto">
             <h4>
-                <a href="{{ coreshop_path(product, 'coreshop_product_detail') }}">{{ product.getName }}</a>
+                <a href="{{ coreshop_path(product, 'coreshop_product_detail') }}">{{ product.name }}</a>
             </h4>
             <div class="description">
-                {{ product.getShortDescription }}
+                {{ product.shortDescription }}
             </div>
         </div>
         <div>
@@ -26,7 +26,7 @@
                     <i class="fa fa-heart"></i>
                 </a>
                 {% if coreshop_inventory_is_available(product) %}
-                    {{ render(url('coreshop_cart_add', {'product': product.id})) }}
+                    {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
                 {% endif %}
             </div>
         </div>

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
 use CoreShop\Component\Resource\Model\TranslationInterface;
@@ -22,29 +24,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ResourceTranslationsType extends AbstractType
 {
-    /**
-     * @var string[]
-     */
-    private $definedLocalesCodes;
+    private array $definedLocalesCodes;
+    private string $defaultLocaleCode;
 
-    /**
-     * @var string
-     */
-    private $defaultLocaleCode;
-
-    /**
-     * @param TranslationLocaleProviderInterface $localeProvider
-     */
     public function __construct(TranslationLocaleProviderInterface $localeProvider)
     {
         $this->definedLocalesCodes = $localeProvider->getDefinedLocalesCodes();
         $this->defaultLocaleCode = $localeProvider->getDefaultLocaleCode();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             /** @var TranslationInterface[] $translations */
@@ -66,10 +55,7 @@ final class ResourceTranslationsType extends AbstractType
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'entries' => $this->definedLocalesCodes,
@@ -84,18 +70,12 @@ final class ResourceTranslationsType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return FixedCollectionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_translations';
     }

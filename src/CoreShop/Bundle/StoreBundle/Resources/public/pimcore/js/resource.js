@@ -13,7 +13,7 @@
 pimcore.registerNS('coreshop.store.resource');
 coreshop.store.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.global.addStore('coreshop_stores', 'coreshop/stores');
+        coreshop.global.addStoreWithRoute('coreshop_stores', 'coreshop_store_list');
 
         pimcore.globalmanager.get('coreshop_stores').load();
 

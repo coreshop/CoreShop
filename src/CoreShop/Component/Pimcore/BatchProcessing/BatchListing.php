@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\BatchProcessing;
 
 use Iterator;
@@ -48,10 +50,6 @@ final class BatchListing implements Iterator, Countable
      */
     private $items = [];
 
-    /**
-     * @param AbstractListing $list
-     * @param int             $batchSize
-     */
     public function __construct(AbstractListing $list, int $batchSize)
     {
         $this->list = $list;
@@ -60,17 +58,11 @@ final class BatchListing implements Iterator, Countable
         $this->list->setLimit($batchSize);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function current()
     {
         return $this->items[$this->index];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function next()
     {
         $this->index++;
@@ -83,25 +75,16 @@ final class BatchListing implements Iterator, Countable
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function key()
     {
         return ($this->index + 1) * ($this->loop + 1);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function valid()
     {
         return isset($this->items[$this->index]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rewind()
     {
         $this->index = 0;

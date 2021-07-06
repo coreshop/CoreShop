@@ -10,31 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Address\Model\ZoneInterface;
-use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Pimcore\Db;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Version;
 
 final class VersionContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage
-    ) {
+    public function __construct(SharedStorageInterface $sharedStorage)
+    {
         $this->sharedStorage = $sharedStorage;
     }
 
@@ -58,7 +49,21 @@ final class VersionContext implements Context
 
         $data = $this->restoreVersion($concrete, $key);
 
-        $this->sharedStorage->set('product-version', $concrete->getLatestVersion(true)->loadData());
+        $GLOBALS['data'] = $data;
+
+        $db = Db::get();
+        $versionData = $db->fetchRow("SELECT id,date,versionCount FROM versions WHERE cid = ? AND ctype='object' ORDER BY `versionCount` DESC, `id` DESC LIMIT 1", $concrete->getId());
+        $version = Version::getById($versionData['id']);
+
+//        $version = $concrete->getLatestVersion();
+
+        if (null === $version) {
+            throw new \Exception('No Version found!');
+        }
+
+        $versionData = $version->loadData(false);
+
+        $this->sharedStorage->set('product-version', $versionData);
 
         $data->save();
 

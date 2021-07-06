@@ -13,8 +13,8 @@
 pimcore.registerNS('coreshop.currency.resource');
 coreshop.currency.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.global.addStore('coreshop_currencies', 'coreshop/currencies');
-        coreshop.global.addStore('coreshop_exchange_rates', 'coreshop/exchange_rates', [
+        coreshop.global.addStoreWithRoute('coreshop_currencies', 'coreshop_currency_list');
+        coreshop.global.addStoreWithRoute('coreshop_exchange_rates', 'coreshop_exchange_rate_list', [
             {name: 'id'},
             {name: 'fromCurrency'},
             {name: 'toCurrency'},
