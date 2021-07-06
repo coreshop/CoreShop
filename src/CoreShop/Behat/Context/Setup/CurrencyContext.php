@@ -25,11 +25,11 @@ use Doctrine\Persistence\ObjectManager;
 
 final class CurrencyContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $currencyFactory;
-    private $currencyRepository;
-    private $fixedCurrencyContext;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $currencyFactory;
+    private CurrencyRepositoryInterface $currencyRepository;
+    private FixedCurrencyContext $fixedCurrencyContext;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

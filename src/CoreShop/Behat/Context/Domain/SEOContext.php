@@ -24,10 +24,10 @@ use Webmozart\Assert\Assert;
 
 final class SEOContext implements Context
 {
-    private $sharedStorage;
-    private $seoPresentation;
-    private $headTitle;
-    private $headMeta;
+    private SharedStorageInterface $sharedStorage;
+    private SEOPresentationInterface $seoPresentation;
+    private HeadTitle $headTitle;
+    private HeadMeta $headMeta;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

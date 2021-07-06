@@ -19,7 +19,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 
 final class OrderContext implements Context
 {
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
 
     public function __construct(SharedStorageInterface $sharedStorage)
     {

@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class LoginContext implements Context
 {
-    private $adminLoginPage;
-    private $pwaPage;
+    private LoginPageInterface $adminLoginPage;
+    private PWAPageInterface $pwaPage;
 
     public function __construct(
         LoginPageInterface $adminLoginPage,

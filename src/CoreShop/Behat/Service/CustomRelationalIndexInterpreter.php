@@ -45,7 +45,7 @@ class CustomRelationalIndexInterpreter implements RelationInterpreterInterface
     }
 
 
-    public function getRelationalColumns()
+    public function getRelationalColumns(): array
     {
         return [
             'custom_col' => IndexColumnInterface::FIELD_TYPE_STRING,

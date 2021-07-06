@@ -24,26 +24,14 @@ use Doctrine\Persistence\ObjectManager;
 
 final class CartPriceRuleVoucherCodeContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $cartPriceRuleVoucherRepository;
-    private $cartPriceRuleVoucherCodeFactory;
-    private $cartPriceRuleGenerator;
-    private $cartPriceRuleGeneratorChecker;
+    private SharedStorageInterface $sharedStorage;
+    private CodeGeneratorCheckerInterface $cartPriceRuleGeneratorChecker;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        CartPriceRuleVoucherRepositoryInterface $cartPriceRuleVoucherRepository,
-        FactoryInterface $cartPriceRuleVoucherCodeFactory,
-        CartPriceRuleVoucherCodeGenerator $cartPriceRuleGenerator,
         CodeGeneratorCheckerInterface $cartPriceRuleGeneratorChecker
     ) {
         $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->cartPriceRuleVoucherRepository = $cartPriceRuleVoucherRepository;
-        $this->cartPriceRuleVoucherCodeFactory = $cartPriceRuleVoucherCodeFactory;
-        $this->cartPriceRuleGenerator = $cartPriceRuleGenerator;
         $this->cartPriceRuleGeneratorChecker = $cartPriceRuleGeneratorChecker;
     }
 

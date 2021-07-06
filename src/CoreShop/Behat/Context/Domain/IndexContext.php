@@ -25,9 +25,9 @@ use Webmozart\Assert\Assert;
 
 final class IndexContext implements Context
 {
-    private $sharedStorage;
-    private $indexRepository;
-    private $entityManager;
+    private SharedStorageInterface $sharedStorage;
+    private RepositoryInterface $indexRepository;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -180,15 +180,7 @@ final class IndexContext implements Context
         $this->indexShouldHaveIndexInTable($tableName, $columns);
     }
 
-    /**
-     * @param IndexInterface     $index
-     * @param IndexableInterface $object
-     * @param string             $column
-     * @param mixed              $value
-     * @param bool               $localized
-     * @param bool               $relational
-     */
-    private function indexEntryShouldHaveValue(IndexInterface $index, IndexableInterface $object, $column, $value, $localized = false, $relational = false)
+    private function indexEntryShouldHaveValue(IndexInterface $index, IndexableInterface $object, string $column, mixed $value, bool $localized = false, bool $relational = false)
     {
         $productEntry = $this->fetchAllFromIndex($index, $object, $localized, $relational);
 

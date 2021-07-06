@@ -21,15 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class OptimisticEntityLockContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var EntityLockManagerInterface
-     */
-    private $entityLockManager;
+    private SharedStorageInterface $sharedStorage;
+    private EntityLockManagerInterface $entityLockManager;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

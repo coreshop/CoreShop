@@ -22,9 +22,9 @@ use Doctrine\Persistence\ObjectManager;
 
 final class ProductUnitContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $productUnitFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $productUnitFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

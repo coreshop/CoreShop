@@ -24,9 +24,9 @@ use Doctrine\Persistence\ObjectManager;
 
 final class ExchangeRateContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $exchangeRateFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $exchangeRateFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

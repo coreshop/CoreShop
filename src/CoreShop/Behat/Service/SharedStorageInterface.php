@@ -16,35 +16,13 @@ namespace CoreShop\Behat\Service;
 
 interface SharedStorageInterface
 {
-    /**
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public function get($key);
+    public function get(string $key): mixed;
 
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
-    public function has($key);
+    public function has(string $key): bool;
 
-    /**
-     * @param string $key
-     * @param mixed  $resource
-     */
-    public function set($key, $resource);
+    public function set(string $key, mixed $resource): void;
 
-    /**
-     * @return mixed
-     */
-    public function getLatestResource();
+    public function getLatestResource(): mixed;
 
-    /**
-     * @param array $clipboard
-     *
-     * @throws \RuntimeException
-     */
-    public function setClipboard(array $clipboard);
+    public function setClipboard(array $clipboard): void;
 }

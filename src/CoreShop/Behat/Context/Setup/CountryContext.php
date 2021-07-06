@@ -28,12 +28,12 @@ use Symfony\Component\Process\Process;
 
 final class CountryContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $countryFactory;
-    private $countryRepository;
-    private $fixedCountryContext;
-    private $kernelRootDirectory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $countryFactory;
+    private CountryRepositoryInterface $countryRepository;
+    private FixedCountryContext $fixedCountryContext;
+    private string $kernelRootDirectory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

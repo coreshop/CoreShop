@@ -28,10 +28,13 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDaoContext implements Context
 {
-    private $kernel;
-    private $orderRepository;
+    private KernelInterface $kernel;
+    private OrderRepositoryInterface $orderRepository;
 
-    public function __construct(KernelInterface $kernel, OrderRepositoryInterface $orderRepository)
+    public function __construct(
+        KernelInterface $kernel,
+        OrderRepositoryInterface $orderRepository
+    )
     {
         $this->kernel = $kernel;
         $this->orderRepository = $orderRepository;

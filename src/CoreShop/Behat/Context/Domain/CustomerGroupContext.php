@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 
 final class CustomerGroupContext implements Context
 {
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
 
     public function __construct(SharedStorageInterface $sharedStorage)
     {

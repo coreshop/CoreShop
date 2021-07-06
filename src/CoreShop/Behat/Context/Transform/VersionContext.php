@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 
 final class VersionContext implements Context
 {
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
 
     public function __construct(SharedStorageInterface $sharedStorage)
     {

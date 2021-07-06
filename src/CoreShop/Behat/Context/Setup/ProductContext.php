@@ -39,13 +39,13 @@ use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    private $sharedStorage;
-    private $productFactory;
-    private $productUnitDefinitions;
-    private $productUnitDefinition;
-    private $productUnitDefinitionPriceFactory;
-    private $unitDefinitionsCloner;
-    private $quantityPriceRulesCloner;
+    private SharedStorageInterface $sharedStorage;
+    private FactoryInterface $productFactory;
+    private FactoryInterface $productUnitDefinitions;
+    private FactoryInterface $productUnitDefinition;
+    private FactoryInterface $productUnitDefinitionPriceFactory;
+    private ProductUnitDefinitionsCloner $unitDefinitionsCloner;
+    private ProductQuantityPriceRulesCloner $quantityPriceRulesCloner;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

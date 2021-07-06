@@ -27,12 +27,12 @@ use Webmozart\Assert\Assert;
 
 final class TaxRuleGroupContext implements Context
 {
-    private $sharedStorage;
-    private $addressFactory;
-    private $taxRuleGroupRepository;
-    private $taxRuleRepository;
-    private $taxCalculatorFactory;
-    private $countryContext;
+    private SharedStorageInterface $sharedStorage;
+    private FactoryInterface $addressFactory;
+    private RepositoryInterface $taxRuleGroupRepository;
+    private TaxRuleRepositoryInterface $taxRuleRepository;
+    private TaxCalculatorFactoryInterface $taxCalculatorFactory;
+    private CountryContextInterface $countryContext;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

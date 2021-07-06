@@ -37,13 +37,7 @@ trait ConditionFormTrait
         Assert::same($class, $this->getConditionFormRegistry()->get($type, 'default'));
     }
 
-    /**
-     * @param string $type
-     * @param mixed  $data
-     *
-     * @return ConditionInterface
-     */
-    protected function createConditionWithForm($type, $data)
+    protected function createConditionWithForm(string $type, mixed $data): ConditionInterface
     {
         $form = $this->getFormFactory()->createNamed('', $this->getConditionFormClass());
 

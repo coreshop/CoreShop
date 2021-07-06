@@ -35,9 +35,9 @@ use Webmozart\Assert\Assert;
 
 final class TrackingContext implements Context
 {
-    private $sharedStorage;
-    private $trackingExtractor;
-    private $trackerRegistry;
+    private SharedStorageInterface $sharedStorage;
+    private TrackingExtractorInterface $trackingExtractor;
+    private ServiceRegistry $trackerRegistry;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
