@@ -54,10 +54,7 @@ coreshop.pimcore.plugin.grid = Class.create({
                 text: t('open'),
                 iconCls: 'pimcore_icon_open',
                 handler: function (grid, menu) {
-                    var $el = Ext.get(menu.focusAnchor),
-                        gridView = grid.getView(),
-                        rowIndex = gridView.indexOf($el.el.up('table')),
-                        data = grid.getStore().getAt(rowIndex);
+                    var data = selectedRows[0];
                     if (data && data.data) {
                         this.openerCallback(data.data.id);
                     }

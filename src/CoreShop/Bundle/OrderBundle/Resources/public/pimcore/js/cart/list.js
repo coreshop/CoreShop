@@ -14,10 +14,6 @@ pimcore.registerNS('coreshop.order.cart.list');
 coreshop.order.cart.list = Class.create(coreshop.order.order.list, {
     type: 'cart',
 
-    url: {
-        folder: '/admin/coreshop/cart/get-folder-configuration'
-    },
-
     enhanceGridLayout: function($super, grid) {
         $super(grid);
 
@@ -25,6 +21,17 @@ coreshop.order.cart.list = Class.create(coreshop.order.order.list, {
         grid.getStore().getProxy().abort();
 
         grid.getStore().load();
+    },
+
+    setupContextMenuPlugin: function () {
+        this.contextMenuPlugin = new coreshop.pimcore.plugin.grid(
+            'coreshop_cart',
+            function (id) {
+                this.open(id);
+            }.bind(this),
+            [coreshop.class_map.coreshop.order],
+            this.getGridPaginator()
+        );
     },
 
     open: function (id, callback) {

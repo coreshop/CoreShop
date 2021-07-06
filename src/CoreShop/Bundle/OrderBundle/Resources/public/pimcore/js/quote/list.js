@@ -16,6 +16,17 @@ coreshop.order.quote.list = Class.create(coreshop.order.order.list, {
 
     open: function (id, callback) {
         coreshop.order.helper.openQuote(id, callback);
+    },
+
+    setupContextMenuPlugin: function () {
+        this.contextMenuPlugin = new coreshop.pimcore.plugin.grid(
+            'coreshop_quote',
+            function (id) {
+                this.open(id);
+            }.bind(this),
+            [coreshop.class_map.coreshop.order],
+            this.getGridPaginator()
+        );
     }
 });
 

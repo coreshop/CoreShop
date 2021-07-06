@@ -31,7 +31,7 @@ coreshop.resource.list = Class.create({
 
     initialize: function () {
         Ext.Ajax.request({
-            url: this.url.folder ? this.url.folder : '/admin/coreshop/' + this.type + '/get-folder-configuration',
+            url: this.generateUrl(),
             ignoreErrors: true,
             success: function (response) {
                 var data = Ext.decode(response.responseText);
@@ -39,6 +39,10 @@ coreshop.resource.list = Class.create({
                 this.setClassFolder()
             }.bind(this)
         });
+    },
+
+    generateUrl: function() {
+        return Routing.generate(this.url.folder);
     },
 
     activate: function () {
