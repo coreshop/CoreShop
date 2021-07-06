@@ -11,26 +11,10 @@
     background: url(../img/customer.svg) center center no-repeat !important;
 }
 
-.coreshop_nav_icon_customer {
-    background: url(../img/customer.svg) center center no-repeat !important;
-}
-
-body.pimcore_version_6 .coreshop_nav_icon_customer {
-    background: url(../img/customer_white.svg) center center no-repeat !important;
-}
-
-.coreshop_nav_icon_customers {
-    background: url(../img/customer.svg) center center no-repeat !important;
-}
-
-body.pimcore_version_6 .coreshop_nav_icon_customers {
+.coreshop_nav_icon_customer, .coreshop_nav_icon_customers {
     background: url(../img/customer_white.svg) center center no-repeat !important;
 }
 
 .coreshop_nav_icon_customer_groups {
-    background: url(../img/customer-group.svg) center center no-repeat !important;
-}
-
-body.pimcore_version_6 .coreshop_nav_icon_customer_groups {
     background: url(../img/customer-group_white.svg) center center no-repeat !important;
 }

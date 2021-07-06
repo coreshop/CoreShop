@@ -22,12 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ExchangeRateController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function saveAction(Request $request): Response
+    public function saveAction(Request $request): JsonResponse
     {
         $resource = $this->repository->find($request->get('id'));
 
