@@ -14,13 +14,7 @@ namespace CoreShop\Component\User\Model;
 
 interface UserAwareInterface
 {
-    /**
-     * @return UserInterface|null
-     */
-    public function getUser();
+    public function getUser(): ?UserInterface;
 
-    /**
-     * @param UserInterface|null $user
-     */
-    public function setUser($user);
+    public function setUser(?UserInterface $user);
 }

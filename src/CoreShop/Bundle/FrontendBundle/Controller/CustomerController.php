@@ -25,6 +25,7 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -286,6 +287,10 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
+        if (!$customer->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
         $form = $this->get('form.factory')->createNamed('coreshop', ChangePasswordType::class);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
@@ -293,10 +298,10 @@ class CustomerController extends FrontendController
 
             if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                 $formData = $handledForm->getData();
-                $customer->setPassword($formData['password']);
-                $customer->save();
+                $customer->getUser()->setPassword($formData['password']);
+                $customer->getUser()->save();
 
-                $this->fireEvent($request, $customer, sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'change_password'));
+                $this->fireEvent($request, $customer->getUser(), sprintf('%s.%s.%s_post', 'coreshop', 'user', 'change_password'));
                 $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.customer.password_successfully_changed'));
 
                 return $this->redirectToRoute('coreshop_customer_profile');
@@ -350,19 +355,14 @@ class CustomerController extends FrontendController
         ]);
     }
 
-    /**
-     * @return CustomerInterface|null
-     */
-    protected function getCustomer()
+    protected function getCustomer(): ?CustomerInterface
     {
         try {
             /**
              * @var CustomerInterface $customer
              */
-            $customer = $this->get(CustomerContextInterface::class)->getCustomer();
-
-            return $customer;
-        } catch (\Exception $ex) {
+            return $this->get(CustomerContextInterface::class)->getCustomer();
+        } catch (\Exception) {
             // fail silently
         }
 

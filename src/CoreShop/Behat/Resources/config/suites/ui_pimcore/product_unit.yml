@@ -1,6 +1,6 @@
 default:
     suites:
-        ui_product_unit:
+        ui_pimcore_product_unit:
             contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup

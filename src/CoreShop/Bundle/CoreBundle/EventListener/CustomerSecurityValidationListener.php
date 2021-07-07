@@ -42,6 +42,7 @@ final class CustomerSecurityValidationListener
 
     public function checkCustomerSecurityDataBeforeUpdate(DataObjectEvent $event): void
     {
+        return;
         if ($this->requestHelper->hasCurrentRequest() && !$this->requestHelper->isFrontendRequestByAdmin()) {
             return;
         }

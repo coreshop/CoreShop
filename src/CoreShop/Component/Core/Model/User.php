@@ -16,25 +16,9 @@ use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\User\Model\User as BaseUser;
 
-class User extends BaseUser implements UserInterface
+abstract class User extends BaseUser implements UserInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getCustomer()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setCustomer($customer)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    public function getRoles()
+    public function getRoles(): array
     {
         $roles = parent::getRoles();
 

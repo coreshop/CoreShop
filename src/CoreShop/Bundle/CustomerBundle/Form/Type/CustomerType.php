@@ -65,6 +65,7 @@ class CustomerType extends AbstractResourceType
         parent::configureOptions($resolver);
 
         $resolver->setDefault('customer', false);
+        $resolver->setDefault('csrf_protection', true);
     }
 
     public function getBlockPrefix(): string

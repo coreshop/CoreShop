@@ -75,6 +75,7 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.factory.customer'
+            - '@coreshop.factory.user'
             - '@CoreShop\Component\Customer\Context\FixedCustomerContext'
             - '@coreshop.factory.address'
         tags:
@@ -337,8 +338,9 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.security_service.frontend'
-            - '@coreshop.repository.customer'
+            - '@coreshop.repository.user'
             - '@coreshop.factory.customer'
+            - '@coreshop.factory.user'
         tags:
             - { name: fob.context_service }
 

@@ -93,7 +93,7 @@ class CustomerManager implements CustomerManagerInterface
             $userBackup->save();
         }
 
-        $this->eventDispatcher->dispatch('coreshop.customer.register', new CustomerRegistrationEvent($customer, []));
+        $this->eventDispatcher->dispatch(new CustomerRegistrationEvent($customer, []), 'coreshop.customer.register');
 
         if (count($addressBackup) > 0) {
             $customer->setDefaultAddress($addressBackup[0]);

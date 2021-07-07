@@ -18,45 +18,30 @@ use Pimcore\Model\DataObject\ClassDefinition\Data\Password;
 
 abstract class User extends AbstractPimcoreModel implements UserInterface
 {
-    /**
-     * The salt to use for hashing.
-     *
-     * @var string
-     */
-    protected $salt;
+    protected ?string $salt;
+    private array $roles = [];
+    protected ?string $plainPassword;
 
-    /**
-     * @var array
-     */
-    private $roles = [];
-
-    /**
-     * Plain password. Used for model validation. Must not be persisted.
-     *
-     * @var string
-     */
-    protected $plainPassword;
-
-    public function setPlainPassword($password)
+    public function setPlainPassword(string $password)
     {
         $this->plainPassword = $password;
 
         return $this;
     }
 
-    public function getPlainPassword()
+    public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    public function setSalt($salt)
+    public function setSalt(string $salt)
     {
         $this->salt = $salt;
 
         return $this;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         // user has no salt as we use password_hash
         // which handles the salt by itself
@@ -76,18 +61,12 @@ abstract class User extends AbstractPimcoreModel implements UserInterface
         $field->getDataForResource($this->getPassword(), $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoles()
+    public function getRoles(): ?array
     {
         return $this->roles;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->getEmail();
     }
@@ -95,7 +74,7 @@ abstract class User extends AbstractPimcoreModel implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isEqualTo(\Symfony\Component\Security\Core\User\UserInterface $user)
+    public function isEqualTo(\Symfony\Component\Security\Core\User\UserInterface $user): bool
     {
         return $user instanceof self && $user->getId() === $this->getId();
     }

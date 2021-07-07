@@ -318,10 +318,18 @@ class RegistrationContext implements Context
     {
         $this->registerPage->open(['_locale' => $localeCode]);
         $this->registerElement->specifyEmail($email);
+        $this->registerElement->verifyEmail($email);
         $this->registerElement->specifyPassword($password);
         $this->registerElement->verifyPassword($password);
         $this->registerElement->specifyFirstName('Carrot');
         $this->registerElement->specifyLastName('Ironfoundersson');
+        $this->registerElement->specifyAddressFirstname('Carrot');
+        $this->registerElement->specifyAddressLastname('Ironfoundersson');
+        $this->registerElement->specifyAddressCity('Vienna');
+        $this->registerElement->specifyAddressStreet('Ring');
+        $this->registerElement->specifyAddressNumber('1');
+        $this->registerElement->specifyAddressPostcode('1010');
+        $this->registerElement->acceptTermsOfService();
         $this->registerElement->register();
     }
 

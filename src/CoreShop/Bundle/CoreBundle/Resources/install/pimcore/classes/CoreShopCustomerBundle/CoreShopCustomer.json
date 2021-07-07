@@ -263,6 +263,33 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "coreShopRelation",
+                                "stack": "coreshop.user",
+                                "relationType": true,
+                                "objectsAllowed": true,
+                                "assetsAllowed": false,
+                                "documentsAllowed": false,
+                                "width": null,
+                                "assetUploadPath": null,
+                                "assetTypes": [],
+                                "documentTypes": [],
+                                "classes": [],
+                                "pathFormatterClass": "",
+                                "name": "user",
+                                "title": "coreshop.customer.user",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             }
                         ],
                         "locked": false

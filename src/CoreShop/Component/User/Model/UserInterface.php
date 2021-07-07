@@ -30,7 +30,7 @@ interface UserInterface extends ResourceInterface, PimcoreModelInterface, Symfon
 
     public function setPassword(?string $password);
 
-    public function getPlainPassword(): string;
+    public function getPlainPassword(): ?string;
 
     public function getPasswordResetHash(): ?string;
 

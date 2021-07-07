@@ -129,26 +129,17 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "manyToOneRelation",
-                                "width": "",
-                                "assetUploadPath": "",
+                                "fieldtype": "coreShopRelation",
+                                "stack": "coreshop.customer",
                                 "relationType": true,
-                                "queryColumnType": {
-                                    "id": "int(11)",
-                                    "type": "enum('document','asset','object')"
-                                },
-                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
-                                "assetTypes": [],
                                 "documentsAllowed": false,
+                                "width": null,
+                                "assetUploadPath": null,
+                                "assetTypes": [],
                                 "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopCustomer"
-                                    }
-                                ],
+                                "classes": [],
                                 "pathFormatterClass": "",
                                 "name": "customer",
                                 "title": "Customer",

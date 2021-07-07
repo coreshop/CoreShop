@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\UserBundle\Event;
 
 use CoreShop\Component\User\Model\UserInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class RequestPasswordChangeEvent extends Event
 {

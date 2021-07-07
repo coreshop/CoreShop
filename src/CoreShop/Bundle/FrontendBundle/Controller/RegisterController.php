@@ -69,7 +69,7 @@ class RegisterController extends FrontendController
             if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                 $passwordResetData = $handledForm->getData();
 
-                $user = $this->get('coreshop.repository.user')->findByEmail($passwordResetData['email']);
+                $user = $this->container->get('coreshop.repository.user')->findByEmail($passwordResetData['email']);
 
                 if (!$user instanceof UserInterface) {
                     return $this->redirectToRoute('coreshop_index');

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
+use CoreShop\Bundle\AddressBundle\Form\Type\SalutationChoiceType;
 use CoreShop\Bundle\CoreBundle\Form\EventSubscriber\CustomerRegistrationFormSubscriber;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
@@ -26,6 +27,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Valid;
 
@@ -59,6 +61,9 @@ class CustomerRegistrationType extends AbstractResourceType
                 'label' => false,
                 'constraints' => [new Valid(['groups' => $this->validationGroups])],
                 'allow_username' => $this->loginIdentifier === 'username',
+            ])
+            ->add('salutation', SalutationChoiceType::class, [
+                'label' => 'coreshop.form.customer.salutation',
             ])
             ->add('gender', ChoiceType::class, [
                 'label' => 'coreshop.form.customer.gender',
@@ -105,5 +110,13 @@ class CustomerRegistrationType extends AbstractResourceType
     public function getBlockPrefix(): string
     {
         return 'coreshop_customer_registration';
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'csrf_protection' => true,
+            'allow_extra_fields' => false
+        ]);
     }
 }

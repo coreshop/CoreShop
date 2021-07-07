@@ -292,12 +292,6 @@ class CheckoutController extends FrontendController
 
         $this->get(TrackerInterface::class)->trackCheckoutComplete($order);
 
-        //After successfull payment, we log out the customer
-        if ($this->get(ShopperContextInterface::class)->hasCustomer() &&
-            $this->get(ShopperContextInterface::class)->getCustomer()->getIsGuest()) {
-            $this->get('security.token_storage')->setToken(null);
-        }
-
         return $this->render($this->templateConfigurator->findTemplate('Checkout/thank-you.html'), [
             'order' => $order,
         ]);

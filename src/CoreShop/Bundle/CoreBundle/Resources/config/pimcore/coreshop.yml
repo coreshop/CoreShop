@@ -10,3 +10,4 @@ imports:
     - { resource: coreshop/coreshop_product.yml }
     - { resource: coreshop/coreshop_customer.yml }
     - { resource: coreshop/coreshop_product_quantity_price_rules.yml }
+    - { resource: coreshop/coreshop_user.yml }
