@@ -22,9 +22,9 @@ interface UserInterface extends ResourceInterface, PimcoreModelInterface, Symfon
     const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
     const CORESHOP_ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
-    public function getEmail(): ?string;
+    public function getLoginIdentifier(): ?string;
 
-    public function setEmail(?string $email);
+    public function setLoginIdentifier(?string $loginIdentifer);
 
     public function getPassword(): ?string;
 

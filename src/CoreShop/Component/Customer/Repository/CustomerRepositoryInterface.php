@@ -21,15 +21,9 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
 {
     public function findByNewsletterToken(string $newsletterToken): ?CustomerInterface;
 
-    public function findUniqueByLoginIdentifier(string $identifier, string $value, bool $isGuest): ?CustomerInterface;
-
     public function findUniqueByEmail(string $email, bool $isGuest): ?CustomerInterface;
-
-    public function findUniqueByUsername(string $username, bool $isGuest): ?CustomerInterface;
 
     public function findGuestByEmail(string $email): ?CustomerInterface;
 
     public function findCustomerByEmail(string $email): ?CustomerInterface;
-
-    public function findCustomerByUsername(string $username): ?CustomerInterface;
 }

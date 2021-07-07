@@ -69,7 +69,7 @@ class RegisterController extends FrontendController
             if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                 $passwordResetData = $handledForm->getData();
 
-                $user = $this->container->get('coreshop.repository.user')->findByEmail($passwordResetData['email']);
+                $user = $this->container->get('coreshop.repository.user')->findByLoginIdentifier($passwordResetData['email']);
 
                 if (!$user instanceof UserInterface) {
                     return $this->redirectToRoute('coreshop_index');
@@ -135,7 +135,12 @@ class RegisterController extends FrontendController
     protected function getCustomer(): ?CustomerInterface
     {
         try {
-            return $this->get(CustomerContextInterface::class)->getCustomer();
+            /**
+             * @var CustomerInterface $customer
+             */
+            $customer = $this->get(CustomerContextInterface::class)->getCustomer();
+
+            return $customer;
         } catch (\Exception $ex) {
         }
 

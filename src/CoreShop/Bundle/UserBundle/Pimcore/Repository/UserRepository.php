@@ -24,18 +24,18 @@ class UserRepository extends PimcoreRepository implements UserRepositoryInterfac
         $list->setCondition('passwordResetHash = ?', [$resetToken]);
         $objects = $list->load();
 
-        if (count($objects) === 1) {
+        if (count($objects) === 1 && $objects[0] instanceof UserInterface) {
             return $objects[0];
         }
 
         return null;
     }
 
-    public function findUniqueByLoginIdentifier(string $identifier, string $value): ?UserInterface
+    public function findByLoginIdentifier(string $value): ?UserInterface
     {
         $list = $this->getList();
 
-        $conditions = [sprintf('%s = ?', $identifier)];
+        $conditions = ['loginIdentifier = ?'];
         $conditionsValues = [$value];
 
         $list->setCondition(implode(' AND ', $conditions), $conditionsValues);
@@ -44,38 +44,6 @@ class UserRepository extends PimcoreRepository implements UserRepositoryInterfac
         $users = $list->getObjects();
 
         if (count($users) > 0 && $users[0] instanceof UserInterface) {
-            return $users[0];
-        }
-
-        return null;
-    }
-
-    public function findByEmail(string $email): ?UserInterface
-    {
-        $list = $this->getList();
-
-        $list->setCondition('email = ?', [$email]);
-        $list->load();
-
-        $users = $list->getObjects();
-
-        if (count($users) > 0) {
-            return $users[0];
-        }
-
-        return null;
-    }
-
-    public function findByUsername(string $username): ?UserInterface
-    {
-        $list = $this->getList();
-
-        $list->setCondition('username = ?', [$username]);
-        $list->load();
-
-        $users = $list->getObjects();
-
-        if (count($users) > 0) {
             return $users[0];
         }
 

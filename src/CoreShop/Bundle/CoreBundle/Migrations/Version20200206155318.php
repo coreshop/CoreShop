@@ -94,7 +94,11 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
              * @var UserInterface $user
              */
             $user = $this->container->get('coreshop.factory.user')->createNew();
-            $user->setEmail($customer->getEmail());
+            $user->setLoginIdentifier(
+                $this->container->getParameter('coreshop.customer.security.login_identifier') === 'username' && method_exists($customer, 'getUsername') ?
+                    $customer->getUsername() :
+                    $customer->getEmail()
+            );
             $user->setPassword($customer->getPassword());
             $user->setParent(Service::createFolderByPath(sprintf(
                 '/%s/%s',

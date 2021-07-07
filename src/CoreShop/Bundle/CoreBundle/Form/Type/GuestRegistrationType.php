@@ -102,7 +102,7 @@ class GuestRegistrationType extends AbstractResourceType
                 /**
                  * @var CustomerInterface $customer
                  */
-                $customer = $this->customerRepository->findOneByEmailWithoutUser($data['email']);
+                $customer = $this->customerRepository->findGuestByEmail($data['email']);
 
                 // assign existing customer or create a new one
                 $form = $event->getForm();

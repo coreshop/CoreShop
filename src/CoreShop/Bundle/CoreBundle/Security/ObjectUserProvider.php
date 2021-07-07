@@ -24,17 +24,14 @@ class ObjectUserProvider implements UserProviderInterface
 {
     protected UserRepositoryInterface $userRepository;
     protected string $className;
-    protected string $loginIdentifier;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
-        string $className,
-        string $loginIdentifier
+        string $className
     )
     {
         $this->userRepository = $userRepository;
         $this->className = $className;
-        $this->loginIdentifier = $loginIdentifier;
     }
 
     public function loadUserByUsername(string $username)
@@ -44,7 +41,7 @@ class ObjectUserProvider implements UserProviderInterface
 
     public function loadUserByIdentifier(string $identifier)
     {
-        $user = $this->userRepository->findUniqueByLoginIdentifier($this->loginIdentifier, $identifier);
+        $user = $this->userRepository->findByLoginIdentifier($identifier);
 
         if ($user instanceof \CoreShop\Component\Core\Model\UserInterface) {
             return $user;

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
 use CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface;
+use CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
@@ -23,7 +24,6 @@ use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Webmozart\Assert\Assert;
 
 class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
@@ -48,14 +48,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
 
     public function doAutoForward(OrderInterface $cart): bool
     {
-        $customer = $cart->getCustomer();
-
-        /**
-         * @var CustomerInterface $customer
-         */
-        Assert::isInstanceOf($customer, CustomerInterface::class);
-
-        return $customer->getUser();
+        return true;
     }
 
     public function validate(OrderInterface $cart): bool
@@ -90,7 +83,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return [
-            'guestForm' => $this->createForm($request)->createView(),
+            'guestForm' => $this->createForm($request, $cart)->createView(),
         ];
     }
 

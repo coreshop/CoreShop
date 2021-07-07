@@ -17,7 +17,7 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SecurityServiceInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\User\Repository\UserRepositoryInterface;
 use Pimcore\File;
@@ -51,7 +51,7 @@ final class FrontendSecurityContext implements Context
      */
     public function iAmLoggedInAs($email)
     {
-        $user = $this->userRepository->findByEmail($email);
+        $user = $this->userRepository->findByLoginIdentifier($email);
         Assert::notNull($user);
 
         $this->securityService->logIn($user);
@@ -72,9 +72,12 @@ final class FrontendSecurityContext implements Context
 //        $customer->setPassword('coreshop');
         $customer->save();
 
+        /**
+         * @var UserInterface $user
+         */
         $user = $this->userFactory->createNew();
         $user->setPassword('coreshop');
-        $user->setEmail('coreshop@pimcore.org');
+        $user->setLoginIdentifier('coreshop@pimcore.org');
         $user->setKey(File::getValidFilename('coreshop@pimcore.org-user'));
         $user->setParent(Folder::getByPath('/'));
         $user->setPublished(true);

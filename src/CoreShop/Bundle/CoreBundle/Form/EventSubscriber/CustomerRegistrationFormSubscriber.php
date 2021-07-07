@@ -54,7 +54,7 @@ final class CustomerRegistrationFormSubscriber implements EventSubscriberInterfa
         /**
          * @var CustomerInterface $existingCustomer
          */
-        $existingCustomer = $this->customerRepository->findOneByEmail($rawData['email']['first']);
+        $existingCustomer = $this->customerRepository->findGuestByEmail($rawData['email']['first']);
         if (null === $existingCustomer || null !== $existingCustomer->getUser()) {
             return;
         }

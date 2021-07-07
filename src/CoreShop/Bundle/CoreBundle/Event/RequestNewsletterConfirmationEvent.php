@@ -14,23 +14,24 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Event;
 
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\UserInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 final class RequestNewsletterConfirmationEvent extends Event
 {
-    private UserInterface $user;
+    private CustomerInterface $customer;
     private string $confirmLink;
 
-    public function __construct(UserInterface $user, $confirmLink)
+    public function __construct(CustomerInterface $customer, $confirmLink)
     {
-        $this->user = $user;
+        $this->customer = $customer;
         $this->confirmLink = $confirmLink;
     }
 
-    public function getUser(): UserInterface
+    public function getCustomer(): CustomerInterface
     {
-        return $this->user;
+        return $this->customer;
     }
 
     public function getConfirmLink(): string

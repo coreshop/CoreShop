@@ -26,18 +26,15 @@ final class CustomerSecurityValidationListener
     protected RequestHelper $requestHelper;
     protected CustomerRepositoryInterface $customerRepository;
     protected string $className;
-    protected string $loginIdentifier;
 
     public function __construct(
         RequestHelper $requestHelper,
         CustomerRepositoryInterface $customerRepository,
-        string $className,
-        string $loginIdentifier
+        string $className
     ) {
         $this->requestHelper = $requestHelper;
         $this->customerRepository = $customerRepository;
         $this->className = $className;
-        $this->loginIdentifier = $loginIdentifier;
     }
 
     public function checkCustomerSecurityDataBeforeUpdate(DataObjectEvent $event): void
@@ -56,14 +53,14 @@ final class CustomerSecurityValidationListener
             return;
         }
 
-        $identifierValue = $this->loginIdentifier === 'email' ? $object->getEmail() : $object->getUsername();
+        $identifierValue = $object->getEmail();
 
         /**
          * @var Listing $listing
          */
         $listing = $this->customerRepository->getList();
         $listing->setUnpublished(true);
-        $listing->addConditionParam(sprintf('%s = ?', $this->loginIdentifier), $identifierValue);
+        $listing->addConditionParam('email', $identifierValue);
         $listing->addConditionParam('o_id != ?', $object->getId());
         $listing->addConditionParam('user__id IS NOT NULL');
 
@@ -73,12 +70,6 @@ final class CustomerSecurityValidationListener
             return;
         }
 
-        throw new ValidationException(
-            sprintf(
-                '%s "%s" is already used. Please use another one.',
-                ucfirst($this->loginIdentifier),
-                $identifierValue
-            )
-        );
+        throw new ValidationException(sprintf('Email "%s" is already used. Please use another one.', $identifierValue));
     }
 }

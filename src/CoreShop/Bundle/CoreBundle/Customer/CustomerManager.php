@@ -13,7 +13,9 @@
 namespace CoreShop\Bundle\CoreBundle\Customer;
 
 use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Concrete;
@@ -52,11 +54,18 @@ class CustomerManager implements CustomerManagerInterface
     public function persistCustomer(CustomerInterface $customer): void
     {
         /**
-         * @var Concrete $customer
+         * @var Concrete|CustomerInterface $customer
          */
         Assert::isInstanceOf($customer, Concrete::class);
 
+        /**
+         * @var AddressInterface $addressBackup
+         */
         $addressBackup = $customer->getObjectVar('addresses');
+
+        /**
+         * @var UserInterface $userBackup
+         */
         $userBackup = $customer->getObjectVar('user');
 
         $customer->setUser(null);
@@ -79,7 +88,9 @@ class CustomerManager implements CustomerManagerInterface
         }
 
         if ($userBackup) {
-            $userBackup->setEmail($customer->getEmail());
+            if ($this->loginIdentifier === 'email') {
+                $userBackup->setLoginIdentifier($customer->getEmail());
+            }
             $userBackup->setCustomer($customer);
             $userBackup->setPassword($userBackup->getPlainPassword());
             $userBackup->setPublished(true);

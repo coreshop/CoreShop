@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +40,16 @@ class SecurityController extends FrontendController
 
     public function loginAction(Request $request): Response
     {
-        if ($this->shopperContext->hasCustomer() && null !== $this->shopperContext->getCustomer()->getUser()) {
+        if ($this->shopperContext->hasCustomer()) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        /**
+         * @var CustomerInterface $customer
+         */
+        $customer = $this->shopperContext->getCustomer();
+
+        if (null !== $customer->getUser()) {
             return $this->redirectToRoute('coreshop_index');
         }
 

@@ -361,7 +361,9 @@ class CustomerController extends FrontendController
             /**
              * @var CustomerInterface $customer
              */
-            return $this->get(CustomerContextInterface::class)->getCustomer();
+            $customer = $this->get(CustomerContextInterface::class)->getCustomer();
+
+            return $customer;
         } catch (\Exception) {
             // fail silently
         }

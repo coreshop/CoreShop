@@ -24,7 +24,7 @@ final class UserRegistrationType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['allow_username']) {
-            $builder->add('username', TextType::class, [
+            $builder->add('loginIdentifier', TextType::class, [
                 'label' => 'coreshop.form.user.username',
             ]);
         }

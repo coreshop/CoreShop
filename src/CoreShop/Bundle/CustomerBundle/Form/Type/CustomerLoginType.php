@@ -22,15 +22,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CustomerLoginType extends AbstractType
 {
-    /**
-     * @var string
-     */
-    protected $loginIdentifier;
+    protected string $loginIdentifier;
 
-    /**
-     * @param string $loginIdentifier
-     */
-    public function __construct($loginIdentifier)
+    public function __construct(string $loginIdentifier)
     {
         $this->loginIdentifier = $loginIdentifier;
     }

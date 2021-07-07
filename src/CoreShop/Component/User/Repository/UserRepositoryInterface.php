@@ -19,9 +19,5 @@ interface UserRepositoryInterface extends PimcoreRepositoryInterface
 {
     public function findByResetToken(string $resetToken): ?UserInterface;
 
-    public function findUniqueByLoginIdentifier(string $identifier, string $value): ?UserInterface;
-
-    public function findByEmail(string $email): ?UserInterface;
-
-    public function findByUsername(string $username): ?UserInterface;
+    public function findByLoginIdentifier(string $value): ?UserInterface;
 }

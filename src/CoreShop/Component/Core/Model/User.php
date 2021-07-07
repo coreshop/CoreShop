@@ -30,8 +30,8 @@ abstract class User extends BaseUser implements UserInterface
             return $roles;
         }
 
-        /** @var CustomerGroupInterface $group */
         if (is_array($customer->getCustomerGroups())) {
+            /** @var CustomerGroupInterface $group */
             foreach ($customer->getCustomerGroups() as $group) {
                 $groupRoles = $group->getRoles();
                 $roles = array_merge($roles, is_array($groupRoles) ? $groupRoles : []);

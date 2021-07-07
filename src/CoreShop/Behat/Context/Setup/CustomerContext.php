@@ -165,7 +165,7 @@ final class CustomerContext implements Context
         $user->setKey(File::getValidFilename($email));
         $user->setParent($customer);
         $user->setPublished(true);
-        $user->setEmail($email);
+        $user->setLoginIdentifier($email);
         $user->setCustomer($customer);
 
         $customer->setUser($user);

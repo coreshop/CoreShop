@@ -78,7 +78,6 @@ services:
             - '@Pimcore\Http\RequestHelper'
             - '@coreshop.repository.customer'
             - '%coreshop.model.customer.class%'
-            - '%coreshop.customer.security.login_identifier%'
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: checkCustomerSecurityDataBeforeUpdate }
 

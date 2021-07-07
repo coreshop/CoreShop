@@ -43,4 +43,8 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, Lo
     public function getCustomerGroups(): ?array;
 
     public function setCustomerGroups(?array $customerGroups);
+
+    public function getCompany(): ?CompanyInterface;
+
+    public function setCompany(?CompanyInterface $company);
 }
