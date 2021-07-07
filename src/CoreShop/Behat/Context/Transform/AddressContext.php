@@ -20,7 +20,7 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 final class AddressContext implements Context
 {
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
 
     public function __construct(SharedStorageInterface $sharedStorage)
     {

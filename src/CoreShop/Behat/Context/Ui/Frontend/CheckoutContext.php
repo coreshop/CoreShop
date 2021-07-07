@@ -30,18 +30,16 @@ use Webmozart\Assert\Assert;
 
 final class CheckoutContext implements Context
 {
-    private $sharedStorage;
-    private $linkGenerator;
-    private $customerPage;
-    private $addressPage;
-    private $shippingPage;
-    private $paymentPage;
-    private $summaryPage;
-    private $thankYouPage;
+    private SharedStorageInterface $sharedStorage;
+    private CustomerPageInterface $customerPage;
+    private AddressPageInterface $addressPage;
+    private ShippingPageInterface $shippingPage;
+    private PaymentPageInterface $paymentPage;
+    private SummaryPageInterface $summaryPage;
+    private ThankYouPageInterface $thankYouPage;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        LinkGeneratorInterface $linkGenerator,
         CustomerPageInterface $customerPage,
         AddressPageInterface $addressPage,
         ShippingPageInterface $shippingPage,
@@ -51,7 +49,6 @@ final class CheckoutContext implements Context
     )
     {
         $this->sharedStorage = $sharedStorage;
-        $this->linkGenerator = $linkGenerator;
         $this->customerPage = $customerPage;
         $this->addressPage = $addressPage;
         $this->shippingPage = $shippingPage;

@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class CategoryContext implements Context
 {
-    private $sharedStorage;
-    private $categoryRepository;
+    private SharedStorageInterface $sharedStorage;
+    private CategoryRepositoryInterface $categoryRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

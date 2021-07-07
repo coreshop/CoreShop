@@ -64,8 +64,8 @@ class AddressCreationController extends PimcoreController
                 }
 
                 $this->get('event_dispatcher')->dispatch(
+                    new AdminAddressCreationEvent($address, $customer, $data),
                     Events::ADMIN_ADDRESS_CREATION,
-                    new AdminAddressCreationEvent($address, $customer, $data)
                 );
 
                 $customer->save();

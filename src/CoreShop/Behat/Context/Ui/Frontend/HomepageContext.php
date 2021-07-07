@@ -20,7 +20,7 @@ use Webmozart\Assert\Assert;
 
 final class HomepageContext implements Context
 {
-    private $homePage;
+    private HomePageInterface $homePage;
 
     public function __construct(HomePageInterface $homePage)
     {

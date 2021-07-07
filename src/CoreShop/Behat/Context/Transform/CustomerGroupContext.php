@@ -20,7 +20,7 @@ use Webmozart\Assert\Assert;
 
 final class CustomerGroupContext implements Context
 {
-    private $customerGroupRepository;
+    private RepositoryInterface $customerGroupRepository;
 
     public function __construct(RepositoryInterface $customerGroupRepository)
     {

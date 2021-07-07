@@ -20,7 +20,7 @@ use Pimcore\Model\DataObject\Concrete;
 
 final class SharedStorageContext implements Context
 {
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
 
     public function __construct(SharedStorageInterface $sharedStorage)
     {

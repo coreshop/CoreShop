@@ -24,8 +24,8 @@ use Pimcore\Model\DataObject\Service;
 
 final class ManufacturerContext implements Context
 {
-    private $sharedStorage;
-    private $manufacturerFactory;
+    private SharedStorageInterface $sharedStorage;
+    private FactoryInterface $manufacturerFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

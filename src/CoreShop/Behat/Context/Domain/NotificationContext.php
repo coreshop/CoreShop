@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class NotificationContext implements Context
 {
-    private $sharedStorage;
-    private $notificationRuleListener;
+    private SharedStorageInterface $sharedStorage;
+    private NotificationRuleListenerInterface $notificationRuleListener;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

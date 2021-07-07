@@ -33,10 +33,10 @@ use Webmozart\Assert\Assert;
 
 final class PaymentController implements Context
 {
-    private $sharedStorage;
-    private $payum;
-    private $router;
-    private $workflowStateInfoManager;
+    private SharedStorageInterface $sharedStorage;
+    private Payum $payum;
+    private RouterInterface $router;
+    private WorkflowStateInfoManagerInterface $workflowStateInfoManager;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

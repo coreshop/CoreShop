@@ -21,8 +21,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class CoreShopSetupContext implements Context
 {
-    private $entityManager;
-    private $notificationRuleListener;
+    private EntityManagerInterface $entityManager;
+    private NotificationRuleListenerInterface $notificationRuleListener;
 
     public function __construct(
         EntityManagerInterface $entityManager,

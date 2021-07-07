@@ -23,9 +23,9 @@ use Webmozart\Assert\Assert;
 
 final class ShippingContext implements Context
 {
-    private $sharedStorage;
-    private $carrierRepository;
-    private $shippingRuleRepository;
+    private SharedStorageInterface $sharedStorage;
+    private CarrierRepositoryInterface $carrierRepository;
+    private RepositoryInterface $shippingRuleRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

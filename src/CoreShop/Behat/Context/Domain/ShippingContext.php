@@ -29,13 +29,13 @@ use Webmozart\Assert\Assert;
 
 final class ShippingContext implements Context
 {
-    private $sharedStorage;
-    private $carrierRepository;
-    private $ruleValidationProcessor;
-    private $addressFactory;
-    private $carrierPriceCalculator;
-    private $shippingRuleValidator;
-    private $cartContextResolver;
+    private SharedStorageInterface $sharedStorage;
+    private CarrierRepositoryInterface $carrierRepository;
+    private RuleValidationProcessorInterface $ruleValidationProcessor;
+    private FactoryInterface $addressFactory;
+    private CarrierPriceCalculatorInterface $carrierPriceCalculator;
+    private ShippableCarrierValidatorInterface $shippingRuleValidator;
+    private CartContextResolverInterface $cartContextResolver;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

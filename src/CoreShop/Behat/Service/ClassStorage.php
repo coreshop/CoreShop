@@ -19,9 +19,9 @@ class ClassStorage implements ClassStorageInterface
     /**
      * @var array
      */
-    private $storage = [];
+    private array $storage = [];
 
-    public function get($className)
+    public function get(string $className): string
     {
         if (!isset($this->storage[$className])) {
             throw new \InvalidArgumentException(sprintf('There is no class name for "%s"!', $className));
@@ -30,19 +30,19 @@ class ClassStorage implements ClassStorageInterface
         return $this->storage[$className];
     }
 
-    public function has($className)
+    public function has(string $className): bool
     {
         return isset($this->storage[$className]);
     }
 
-    public function set($className)
+    public function set(string $className): string
     {
         $this->storage[$className] = $this->getBehatClassName($className);
 
         return $this->storage[$className];
     }
 
-    private function getBehatClassName($className)
+    private function getBehatClassName(string $className)
     {
         return sprintf('Behat%s%s', $className, uniqid());
     }

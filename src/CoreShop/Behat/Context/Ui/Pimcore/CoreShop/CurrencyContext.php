@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class CurrencyContext implements Context
 {
-    private $pwaPage;
-    private $currencyPage;
+    private PWAPageInterface $pwaPage;
+    private CurrencyPageInterface $currencyPage;
 
     public function __construct(
         PWAPageInterface $pwaPage,

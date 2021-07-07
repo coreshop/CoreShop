@@ -38,7 +38,7 @@ class CookieSetter implements CookieSetterInterface
         $this->minkParameters = $minkParameters;
     }
 
-    public function setCookie($name, $value)
+    public function setCookie(string $name, string $value): void
     {
         $this->prepareMinkSessionIfNeeded($this->minkSession);
 
@@ -65,10 +65,6 @@ class CookieSetter implements CookieSetterInterface
             return true;
         }
 
-        if (false !== strpos($session->getCurrentUrl(), $this->minkParameters['base_url'])) {
-            return false;
-        }
-
-        return true;
+        return !(false !== strpos($session->getCurrentUrl(), $this->minkParameters['base_url']));
     }
 }

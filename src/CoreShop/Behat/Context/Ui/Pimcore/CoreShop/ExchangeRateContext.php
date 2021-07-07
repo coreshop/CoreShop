@@ -23,8 +23,8 @@ use Webmozart\Assert\Assert;
 
 final class ExchangeRateContext implements Context
 {
-    private $pwaPage;
-    private $exchangeRatePage;
+    private PWAPageInterface $pwaPage;
+    private ExchangeRatePageInterface $exchangeRatePage;
 
     public function __construct(
         PWAPageInterface $pwaPage,

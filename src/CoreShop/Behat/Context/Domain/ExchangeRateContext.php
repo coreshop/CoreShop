@@ -22,8 +22,8 @@ use Webmozart\Assert\Assert;
 
 final class ExchangeRateContext implements Context
 {
-    private $sharedStorage;
-    private $currencyConverter;
+    private SharedStorageInterface $sharedStorage;
+    private CurrencyConverterInterface $currencyConverter;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

@@ -28,10 +28,10 @@ use Doctrine\Persistence\ObjectManager;
 
 final class FilterContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $filterFactory;
-    private $filterConditionFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $filterFactory;
+    private FactoryInterface $filterConditionFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

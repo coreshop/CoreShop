@@ -28,10 +28,10 @@ use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    private $sharedStorage;
-    private $shopperContext;
-    private $productPriceCalculator;
-    private $taxedProductPriceCalculator;
+    private SharedStorageInterface $sharedStorage;
+    private ShopperContextInterface $shopperContext;
+    private ProductPriceCalculatorInterface $productPriceCalculator;
+    private TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

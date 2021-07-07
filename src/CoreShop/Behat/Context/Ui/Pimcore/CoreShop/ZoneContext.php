@@ -25,8 +25,8 @@ use Webmozart\Assert\Assert;
 
 final class ZoneContext implements Context
 {
-    private $pwaPage;
-    private $zonePage;
+    private PWAPageInterface $pwaPage;
+    private ZonePageInterface $zonePage;
 
     public function __construct(
         PWAPageInterface $pwaPage,

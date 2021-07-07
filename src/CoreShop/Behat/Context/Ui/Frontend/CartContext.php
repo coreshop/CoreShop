@@ -29,11 +29,11 @@ use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
-    private $sharedStorage;
-    private $linkGenerator;
-    private $cartPage;
-    private $productPage;
-    private $notificationChecker;
+    private SharedStorageInterface $sharedStorage;
+    private LinkGeneratorInterface $linkGenerator;
+    private NotificationCheckerInterface $notificationChecker;
+    private CartPageInterface $cartPage;
+    private ProductPageInterface $productPage;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

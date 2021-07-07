@@ -25,11 +25,11 @@ use Webmozart\Assert\Assert;
 
 class CustomerProfileContext implements Context
 {
-    private $sharedStorage;
-    private $changePasswordPage;
-    private $profilePage;
-    private $changeProfilePage;
-    private $notificationChecker;
+    private SharedStorageInterface $sharedStorage;
+    private ChangePasswordPageInterface $changePasswordPage;
+    private ProfilePageInterface $profilePage;
+    private ChangeProfilePageInterface $changeProfilePage;
+    private NotificationCheckerInterface $notificationChecker;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

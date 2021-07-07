@@ -47,13 +47,13 @@ final class ProductQuantityPriceRuleContext implements Context
 {
     use ConditionFormTrait;
 
-    private $sharedStorage;
-    private $objectManager;
-    private $rangeFactory;
-    private $formFactory;
-    private $conditionFormTypeRegistry;
-    private $productQuantityPriceRuleFactory;
-    private $productRepository;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $rangeFactory;
+    private FormFactoryInterface $formFactory;
+    private FormTypeRegistryInterface $conditionFormTypeRegistry;
+    private FactoryInterface $productQuantityPriceRuleFactory;
+    private ProductRepositoryInterface $productRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

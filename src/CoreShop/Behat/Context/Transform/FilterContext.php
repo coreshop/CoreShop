@@ -20,7 +20,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 final class FilterContext implements Context
 {
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
 
     public function __construct(SharedStorageInterface $sharedStorage)
     {
