@@ -21,22 +21,13 @@ use Webmozart\Assert\Assert;
 
 final class CustomerRegistrationFormSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    private $customerRepository;
+    private CustomerRepositoryInterface $customerRepository;
 
-    /**
-     * @param CustomerRepositoryInterface $customerRepository
-     */
     public function __construct(CustomerRepositoryInterface $customerRepository)
     {
         $this->customerRepository = $customerRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -44,11 +35,6 @@ final class CustomerRegistrationFormSubscriber implements EventSubscriberInterfa
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException
-     */
     public function preSubmit(FormEvent $event): void
     {
         $rawData = $event->getData();

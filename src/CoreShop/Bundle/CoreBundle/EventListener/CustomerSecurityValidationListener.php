@@ -42,7 +42,6 @@ final class CustomerSecurityValidationListener
 
     public function checkCustomerSecurityDataBeforeUpdate(DataObjectEvent $event): void
     {
-        return;
         if ($this->requestHelper->hasCurrentRequest() && !$this->requestHelper->isFrontendRequestByAdmin()) {
             return;
         }
@@ -53,7 +52,7 @@ final class CustomerSecurityValidationListener
             return;
         }
 
-        if ($object->getIsGuest() === true) {
+        if ($object->getUser() === null) {
             return;
         }
 
@@ -66,6 +65,7 @@ final class CustomerSecurityValidationListener
         $listing->setUnpublished(true);
         $listing->addConditionParam(sprintf('%s = ?', $this->loginIdentifier), $identifierValue);
         $listing->addConditionParam('o_id != ?', $object->getId());
+        $listing->addConditionParam('user__id IS NOT NULL');
 
         $objects = $listing->getObjects();
 

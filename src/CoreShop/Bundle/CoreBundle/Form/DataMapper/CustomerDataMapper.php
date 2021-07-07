@@ -19,22 +19,13 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class CustomerDataMapper implements DataMapperInterface
 {
-    /**
-     * @var DataMapperInterface
-     */
-    private $propertyPathDataMapper;
+    private DataMapperInterface $propertyPathDataMapper;
 
-    /**
-     * @param PropertyAccessor $propertyAccessor
-     */
     public function __construct(PropertyAccessor $propertyAccessor)
     {
         $this->propertyPathDataMapper = new PropertyPathMapper($propertyAccessor);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mapDataToForms($data, $forms): void
     {
         $formsOtherThanAddress = [];
