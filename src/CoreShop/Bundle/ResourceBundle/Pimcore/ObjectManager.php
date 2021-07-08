@@ -40,7 +40,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     private $modelsToRemove = [];
 
     /**
-     * {@inheritdoc}
+     * @return Concrete|null
      */
     public function find($className, $id)
     {
