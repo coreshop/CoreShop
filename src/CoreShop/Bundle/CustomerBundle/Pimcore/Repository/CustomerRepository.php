@@ -55,7 +55,6 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
 
         $conditions = ['email = ?'];
         $conditionsValues = [$email];
-        $conditionsValues[] = $isGuest ? 1 : 0;
 
         if (!$isGuest) {
             $conditions[] = 'user__id IS NOT NULL';
