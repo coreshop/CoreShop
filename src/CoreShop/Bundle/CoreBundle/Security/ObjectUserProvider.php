@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\Security;
 
 use CoreShop\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -47,7 +47,7 @@ class ObjectUserProvider implements UserProviderInterface
             return $user;
         }
 
-        throw new UserNotFoundException(sprintf('User with email address or username "%s" was not found', $identifier));
+        throw new UsernameNotFoundException(sprintf('User with email address or username "%s" was not found', $identifier));
     }
 
     public function refreshUser(UserInterface $user)
