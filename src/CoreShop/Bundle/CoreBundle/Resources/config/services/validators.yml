@@ -39,3 +39,11 @@ services:
             - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
         tags:
             - { name: validator.constraint_validator, alias: coreshop_cart_minimum_quantity }
+
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\UniqueCustomerValidator:
+        arguments:
+            - '@coreshop.repository.customer'
+            - '@coreshop.repository.user'
+            - '%coreshop.customer.security.login_identifier%'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_unique_customer }

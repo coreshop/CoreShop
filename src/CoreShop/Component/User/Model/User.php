@@ -18,9 +18,9 @@ use Pimcore\Model\DataObject\ClassDefinition\Data\Password;
 
 abstract class User extends AbstractPimcoreModel implements UserInterface
 {
-    protected ?string $salt;
+    protected ?string $salt = null;
     private array $roles = [];
-    protected ?string $plainPassword;
+    protected ?string $plainPassword = null;
 
     public function setPlainPassword(string $password)
     {

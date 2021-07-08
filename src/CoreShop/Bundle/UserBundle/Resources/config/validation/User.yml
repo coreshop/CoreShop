@@ -3,10 +3,3 @@ CoreShop\Component\User\Model\User:
         plainPassword:
             - NotBlank: { groups: [coreshop] }
 
-    constraints:
-        - \CoreShop\Bundle\ResourceBundle\Validator\Constraints\UniqueEntity:
-              groups: ['coreshop']
-              fields: ['email']
-              values: {}
-              message: 'coreshop.form.customer.email.unique'
-              allowSameEntity: true

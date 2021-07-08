@@ -27,8 +27,8 @@ use Webmozart\Assert\Assert;
 
 final class UniqueEntityValidator extends ConstraintValidator
 {
-    protected $expressionLanguage;
-    protected $container;
+    protected ExpressionLanguage $expressionLanguage;
+    protected ContainerInterface $container;
 
     public function __construct(ExpressionLanguage $expressionLanguage, ContainerInterface $container)
     {

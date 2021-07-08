@@ -18,6 +18,8 @@ use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
 use CoreShop\Bundle\AddressBundle\Form\Type\SalutationChoiceType;
 use CoreShop\Bundle\CoreBundle\Form\EventSubscriber\CustomerRegistrationFormSubscriber;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -27,6 +29,8 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -105,6 +109,25 @@ class CustomerRegistrationType extends AbstractResourceType
                 'constraints' => new IsTrue(['groups' => $this->validationGroups]),
             ])
             ->add('submit', SubmitType::class);
+
+
+        if ($this->loginIdentifier !== 'username') {
+            $builder->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event) {
+                $data = $event->getData();
+
+                if (!$data instanceof CustomerInterface) {
+                    return;
+                }
+
+                $user = $data->getObjectVar('user');
+
+                if (!$user instanceof UserInterface) {
+                    return;
+                }
+
+                $user->setLoginIdentifier($data->getEmail());
+            });
+        }
     }
 
     public function getBlockPrefix(): string
@@ -114,6 +137,8 @@ class CustomerRegistrationType extends AbstractResourceType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefaults([
             'csrf_protection' => true,
             'allow_extra_fields' => false
