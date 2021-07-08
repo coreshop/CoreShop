@@ -18,22 +18,26 @@
     }
   ],
   "require": {
-    "coreshop/resource": "^2.0",
+    "coreshop/resource": "^3.0",
+    "pimcore/pimcore": "^10.0.0",
     "symfony/security": "^3.4"
-  },
-  "config": {
-    "bin-dir": "bin"
   },
   "autoload": {
     "psr-4": {
       "CoreShop\\Component\\User\\": ""
     }
   },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

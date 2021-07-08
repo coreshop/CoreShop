@@ -18,23 +18,26 @@
     }
   ],
   "require": {
-    "coreshop/user": "^2.0",
-    "coreshop/resource-bundle": "^2.0",
-    "pimcore/pimcore": "^5.4.0"
-  },
-  "config": {
-    "bin-dir": "bin"
+    "coreshop/user": "^3.0",
+    "coreshop/resource-bundle": "^3.0",
+    "pimcore/pimcore": "^10.0.0"
   },
   "autoload": {
     "psr-4": {
       "CoreShop\\Bundle\\UserBundle\\": ""
     }
   },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }
