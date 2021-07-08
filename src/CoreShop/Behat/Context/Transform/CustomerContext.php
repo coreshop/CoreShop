@@ -57,17 +57,4 @@ final class CustomerContext implements Context
 
         return $customer;
     }
-
-    /**
-     * @Transform /^customer "([^"]+)"$/
-     * @Transform /^username "([^"]+)"$/
-     */
-    public function getCustomerByUsername($username)
-    {
-        $customer = $this->customerRepository->findCustomerByUsername($username);
-
-        Assert::isInstanceOf($customer, CustomerInterface::class);
-
-        return $customer;
-    }
 }

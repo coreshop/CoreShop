@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\AddressType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Form\DataMapperInterface;

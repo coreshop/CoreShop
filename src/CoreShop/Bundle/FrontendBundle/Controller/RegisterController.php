@@ -151,8 +151,6 @@ class RegisterController extends FrontendController
     {
         $resetIdentifier = $this->container->getParameter('coreshop.customer.security.login_identifier');
 
-        $userKey = $resetIdentifier === 'email' ? $customer->getEmail() : $customer->getUsername();
-
-        return hash('md5', $customer->getId() . $userKey . mt_rand() . time());
+        return hash('md5', $customer->getId() . $customer->getLoginIdentifier() . mt_rand() . time());
     }
 }

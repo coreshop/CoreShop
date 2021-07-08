@@ -54,12 +54,12 @@ class CustomerManager implements CustomerManagerInterface
     public function persistCustomer(CustomerInterface $customer): void
     {
         /**
-         * @var Concrete|CustomerInterface $customer
+         * @var Concrete $customer
          */
         Assert::isInstanceOf($customer, Concrete::class);
 
         /**
-         * @var AddressInterface $addressBackup
+         * @var AddressInterface[] $addressBackup
          */
         $addressBackup = $customer->getObjectVar('addresses');
 
@@ -68,6 +68,9 @@ class CustomerManager implements CustomerManagerInterface
          */
         $userBackup = $customer->getObjectVar('user');
 
+        /**
+         * @var CustomerInterface $customer
+         */
         $customer->setUser(null);
         $customer->setAddresses([]);
         $customer->setPublished(true);

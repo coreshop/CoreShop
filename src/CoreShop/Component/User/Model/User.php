@@ -68,7 +68,7 @@ abstract class User extends AbstractPimcoreModel implements UserInterface
 
     public function getUsername(): ?string
     {
-        return $this->getEmail();
+        return $this->getLoginIdentifier();
     }
 
     /**
