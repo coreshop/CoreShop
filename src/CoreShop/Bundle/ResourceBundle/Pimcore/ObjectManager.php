@@ -44,6 +44,9 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function find($className, $id)
     {
+        /**
+         * @var Concrete $className
+         */
         return $className::getById($id);
     }
 
