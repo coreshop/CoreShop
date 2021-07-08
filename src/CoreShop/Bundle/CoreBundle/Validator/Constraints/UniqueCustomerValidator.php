@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\UserInterface;
-use CoreShop\Component\Core\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -24,16 +23,13 @@ use Webmozart\Assert\Assert;
 
 final class UniqueCustomerValidator extends ConstraintValidator
 {
-    private CustomerRepositoryInterface $customerRepository;
     private UserRepositoryInterface $userRepository;
     private string $loginIdentifier;
 
     public function __construct(
-        CustomerRepositoryInterface $customerRepository,
         UserRepositoryInterface $userRepository,
         string $loginIdentifier
     ) {
-        $this->customerRepository = $customerRepository;
         $this->userRepository = $userRepository;
         $this->loginIdentifier = $loginIdentifier;
     }
@@ -53,11 +49,11 @@ final class UniqueCustomerValidator extends ConstraintValidator
 
         $user = $value->getObjectVar('user');
 
-        if (!$user->getLoginIdentifier()) {
-            return;
-        }
-
         if ($user instanceof UserInterface) {
+            if (!$user->getLoginIdentifier()) {
+                return;
+            }
+
             $otherUser = $this->userRepository->findByLoginIdentifier($user->getLoginIdentifier());
 
             if ($otherUser) {
@@ -72,17 +68,6 @@ final class UniqueCustomerValidator extends ConstraintValidator
                 $this->context->buildViolation($message)->atPath($path)->addViolation();
                 return;
             }
-        }
-
-        if (!$value->getEmail()) {
-            return;
-        }
-
-        /** @var CustomerInterface|null $existingCustomer */
-        $existingCustomer = $this->customerRepository->findCustomerByEmail($value->getEmail());
-
-        if (null !== $existingCustomer && null !== $existingCustomer->getUser()) {
-            $this->context->buildViolation($constraint->messageEmail)->atPath('email')->addViolation();
         }
     }
 }

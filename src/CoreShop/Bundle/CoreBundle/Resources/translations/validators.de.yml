@@ -1,6 +1,8 @@
 coreshop:
     form:
         user:
+            email:
+                registerd: 'Ein Benutzer mit dieser Email Adresse ist bereits registriert.'
             username:
                 unique: 'Dieser Benutzername wird bereits verwendet.'
             password:

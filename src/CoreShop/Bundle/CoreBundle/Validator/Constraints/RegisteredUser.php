@@ -8,25 +8,28 @@
  *
  * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 declare(strict_types=1);
 
-namespace CoreShop\Behat\Service;
+namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
-use CoreShop\Component\Store\Model\StoreInterface;
+use Symfony\Component\Validator\Constraint;
 
-final class StoreContextSetter implements StoreContextSetterInterface
+final class RegisteredUser extends Constraint
 {
-    private CookieSetterInterface $cookieSetter;
+    /**
+     * @var string
+     */
+    public $message;
 
-    public function __construct(CookieSetterInterface $cookieSetter)
+    public function validatedBy(): string
     {
-        $this->cookieSetter = $cookieSetter;
+        return 'coreshop_registered_user';
     }
 
-    public function setStore(StoreInterface $store)
+    public function getTargets(): string
     {
-        $this->cookieSetter->setCookie('_store_id', (string)$store->getId());
+        return self::CLASS_CONSTRAINT;
     }
 }

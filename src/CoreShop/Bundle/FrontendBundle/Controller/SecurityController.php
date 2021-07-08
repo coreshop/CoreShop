@@ -44,15 +44,6 @@ class SecurityController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        /**
-         * @var CustomerInterface $customer
-         */
-        $customer = $this->shopperContext->getCustomer();
-
-        if (null !== $customer->getUser()) {
-            return $this->redirectToRoute('coreshop_index');
-        }
-
         $lastError = $this->authenticationUtils->getLastAuthenticationError();
         $lastUsername = $this->authenticationUtils->getLastUsername();
 

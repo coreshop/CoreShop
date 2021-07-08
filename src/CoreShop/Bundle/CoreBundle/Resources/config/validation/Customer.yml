@@ -4,3 +4,7 @@ CoreShop\Component\Core\Model\Customer:
                 groups: [ coreshop ]
                 messageEmail: coreshop.form.customer.email.unique
                 messageUsername: coreshop.form.user.username.unique
+
+        -   \CoreShop\Bundle\CoreBundle\Validator\Constraints\RegisteredUser:
+                groups: [ coreshop_customer_guest ]
+                message: coreshop.form.customer.email.registered
