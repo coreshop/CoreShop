@@ -66,6 +66,7 @@ class FilterController extends ResourceController
              */
             $worker = $this->get('coreshop.registry.index.worker')->get($index->getWorker());
             $list = $this->get(ListingFactoryInterface::class)->createList($index);
+            $list->setLocale($request->getLocale());
             $filterGroupHelper = $worker->getFilterGroupHelper();
             $field = $request->get('field');
             $column = null;

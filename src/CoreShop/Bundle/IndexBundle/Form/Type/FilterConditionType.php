@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,8 +41,10 @@ class FilterConditionType extends AbstractResourceType
         parent::buildForm($builder, $options);
 
         $builder
+            ->add('id', IntegerType::class, ['mapped' => false])
             ->add('type', FilterConditionChoiceType::class)
             ->add('label', TextType::class)
+            ->add('sort', IntegerType::class)
             ->add('quantityUnit', NumberType::class);
 
         $builder
