@@ -23,31 +23,37 @@
             <join-column name="indexId" referenced-column-name="id" nullable="true"/>
         </many-to-one>
 
-        <many-to-many field="preConditions" target-entity="CoreShop\Component\Index\Model\FilterConditionInterface">
+        <many-to-many field="preConditions" target-entity="CoreShop\Component\Index\Model\FilterConditionInterface" orphan-removal="true">
             <join-table name="coreshop_filter_condition_pre_conditions">
                 <join-columns>
-                    <join-column name="filterId" referenced-column-name="id" on-delete="CASCADE"/>
+                    <join-column name="filterId" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
                 </join-columns>
                 <inverse-join-columns>
-                    <join-column name="conditionId" referenced-column-name="id" on-delete="CASCADE"/>
+                    <join-column name="conditionId" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
                 </inverse-join-columns>
             </join-table>
             <cascade>
                 <cascade-all/>
             </cascade>
+            <order-by>
+                <order-by-field name="sort" direction="ASC"/>
+            </order-by>
         </many-to-many>
-        <many-to-many field="conditions" target-entity="CoreShop\Component\Index\Model\FilterConditionInterface">
+        <many-to-many field="conditions" target-entity="CoreShop\Component\Index\Model\FilterConditionInterface" orphan-removal="true">
             <join-table name="coreshop_filter_condition_conditions">
                 <join-columns>
-                    <join-column name="filterId" referenced-column-name="id" on-delete="CASCADE"/>
+                    <join-column name="filterId" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
                 </join-columns>
                 <inverse-join-columns>
-                    <join-column name="conditionId" referenced-column-name="id" on-delete="CASCADE"/>
+                    <join-column name="conditionId" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
                 </inverse-join-columns>
             </join-table>
             <cascade>
                 <cascade-all/>
             </cascade>
+            <order-by>
+                <order-by-field name="sort" direction="ASC"/>
+            </order-by>
         </many-to-many>
 
     </mapped-superclass>

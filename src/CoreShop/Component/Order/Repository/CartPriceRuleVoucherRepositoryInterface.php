@@ -15,10 +15,14 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Repository;
 
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 interface CartPriceRuleVoucherRepositoryInterface extends RepositoryInterface
 {
+    public function findAllPaginator(CartPriceRuleInterface $cartPriceRule, int $offset, int $limit): Paginator;
+
     public function findByCode(string $code): ?CartPriceRuleVoucherCodeInterface;
 
     public function countCodes(int $length, ?string $prefix = null, ?string $suffix = null): int;

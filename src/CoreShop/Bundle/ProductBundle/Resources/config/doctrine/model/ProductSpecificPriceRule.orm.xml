@@ -22,32 +22,38 @@
             <gedmo:timestampable on="update"/>
         </field>
 
-        <many-to-many field="conditions" target-entity="CoreShop\Component\Rule\Model\ConditionInterface">
+        <many-to-many field="conditions" target-entity="CoreShop\Component\Rule\Model\ConditionInterface" orphan-removal="true">
             <join-table name="coreshop_product_specific_price_rule_conditions">
                 <join-columns>
-                    <join-column name="price_rule_id" referenced-column-name="id" on-delete="CASCADE"/>
+                    <join-column name="price_rule_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
                 </join-columns>
                 <inverse-join-columns>
-                    <join-column name="condition_id" referenced-column-name="id" on-delete="CASCADE"/>
+                    <join-column name="condition_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
                 </inverse-join-columns>
             </join-table>
             <cascade>
                 <cascade-all/>
             </cascade>
+            <order-by>
+                <order-by-field name="sort" direction="ASC"/>
+            </order-by>
         </many-to-many>
 
-        <many-to-many field="actions" target-entity="CoreShop\Component\Rule\Model\ActionInterface">
+        <many-to-many field="actions" target-entity="CoreShop\Component\Rule\Model\ActionInterface" orphan-removal="true">
             <join-table name="coreshop_product_specific_price_rule_action">
                 <join-columns>
-                    <join-column name="price_rule_id" referenced-column-name="id" on-delete="CASCADE"/>
+                    <join-column name="price_rule_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
                 </join-columns>
                 <inverse-join-columns>
-                    <join-column name="action_id" referenced-column-name="id" on-delete="CASCADE"/>
+                    <join-column name="action_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
                 </inverse-join-columns>
             </join-table>
             <cascade>
                 <cascade-all/>
             </cascade>
+            <order-by>
+                <order-by-field name="sort" direction="ASC"/>
+            </order-by>
         </many-to-many>
     </mapped-superclass>
 </doctrine-mapping>
