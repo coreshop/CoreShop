@@ -23,6 +23,9 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
     private array $modelsToInsert = [];
     private array $modelsToRemove = [];
 
+    /**
+     * @return Concrete|null
+     */
     public function find($className, $id)
     {
         /**

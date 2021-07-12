@@ -12,6 +12,7 @@
         <field name="label" column="label" nullable="true"/>
         <field name="quantityUnit" column="quantityUnit" type="integer" nullable="true"/>
         <field name="configuration" column="configuration" type="array" nullable="true"/>
+        <field name="sort" column="sort" type="integer" nullable="true" />
 
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>

@@ -19,6 +19,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Valid;
 
 final class FilterPreConditionNestedType extends AbstractType
 {
@@ -38,7 +40,10 @@ final class FilterPreConditionNestedType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('conditions', FilterPreConditionCollectionType::class);
+            ->add('conditions', FilterPreConditionCollectionType::class, [
+                'constraints' => [new Valid(['groups' => $this->validationGroups])],
+                'nested' => true
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
