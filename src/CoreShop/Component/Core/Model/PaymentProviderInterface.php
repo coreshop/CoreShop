@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Payment\Model\PaymentProviderInterface as BasePaymentProviderInterface;
+use CoreShop\Component\PayumPayment\Model\PaymentProviderInterface as BasePaymentProviderInterface;
 use CoreShop\Component\Store\Model\StoresAwareInterface;
 
 interface PaymentProviderInterface extends BasePaymentProviderInterface, StoresAwareInterface
