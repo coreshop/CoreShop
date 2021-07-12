@@ -28,7 +28,7 @@ class RuleConditionCollectionType extends AbstractConfigurationCollectionType
         $resolver->setDefault('nested', false);
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (!$options['nested']) {
             $builder->setDataMapper(new ConditionsFormMapper($builder->getDataMapper()));
