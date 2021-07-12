@@ -32,7 +32,7 @@ final class CachedCurrencyContext implements CurrencyContextInterface
 
     public function getCurrency(): CurrencyInterface
     {
-        if ($this->requestStack->getMasterRequest() instanceof Request) {
+        if ($this->requestStack->getMainRequest() instanceof Request) {
             if (null === $this->currency) {
                 $this->currency = $this->inner->getCurrency();
 

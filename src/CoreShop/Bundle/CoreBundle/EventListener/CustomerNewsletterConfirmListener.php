@@ -52,7 +52,7 @@ final class CustomerNewsletterConfirmListener
             return;
         }
 
-        if (!$this->requestStack->getMasterRequest()) {
+        if (!$this->requestStack->getMainRequest()) {
             return;
         }
 
@@ -65,7 +65,7 @@ final class CustomerNewsletterConfirmListener
             $this->linkGenerator->generate(
                 $event->getSubject(),
                 'coreshop_customer_confirm_newsletter',
-                ['_locale' => $this->requestStack->getMasterRequest()->getLocale()],
+                ['_locale' => $this->requestStack->getMainRequest()->getLocale()],
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
         );

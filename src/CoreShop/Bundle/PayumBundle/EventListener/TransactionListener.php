@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class TransactionListener implements EventSubscriberInterface
 {
-    protected $connection;
+    protected Connection $connection;
 
     public function __construct(Connection $connection)
     {

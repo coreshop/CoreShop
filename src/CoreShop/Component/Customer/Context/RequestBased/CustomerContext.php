@@ -34,7 +34,7 @@ final class CustomerContext implements CustomerContextInterface
     public function getCustomer(): CustomerInterface
     {
         try {
-            return $this->getCustomerForRequest($this->getMasterRequest());
+            return $this->getCustomerForRequest($this->getMainRequest());
         } catch (\UnexpectedValueException $exception) {
             throw new CustomerNotFoundException($exception);
         }
@@ -49,9 +49,9 @@ final class CustomerContext implements CustomerContextInterface
         return $customer;
     }
 
-    private function getMasterRequest(): Request
+    private function getMainRequest(): Request
     {
-        $masterRequest = $this->requestStack->getMasterRequest();
+        $masterRequest = $this->requestStack->getMainRequest();
         if (null === $masterRequest) {
             throw new \UnexpectedValueException('There are not any requests on request stack');
         }

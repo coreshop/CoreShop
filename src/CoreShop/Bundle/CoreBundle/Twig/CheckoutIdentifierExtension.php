@@ -54,7 +54,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
     public function getSteps(): array
     {
         $cart = $this->cartContext->getCart();
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
 
         if (!$request) {
             return [];
@@ -117,7 +117,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
 
         $cart = $this->cartContext->getCart();
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
 
         if (!$request) {
             return null;
@@ -134,7 +134,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         CheckoutManagerInterface $checkoutManager
     ) {
         $identifier = null;
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         $previousIdentifier = $request->get('stepIdentifier');
 
         if (null !== $previousIdentifier && $checkoutManager->hasPreviousStep($previousIdentifier)) {

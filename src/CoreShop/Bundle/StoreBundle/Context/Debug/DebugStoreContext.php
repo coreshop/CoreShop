@@ -39,7 +39,7 @@ final class DebugStoreContext implements StoreContextInterface
 
     public function getStore(): StoreInterface
     {
-        $debugStoreId = $this->debugStoreProvider->getStoreId($this->getMasterRequest());
+        $debugStoreId = $this->debugStoreProvider->getStoreId($this->getMainRequest());
 
         if (null === $debugStoreId) {
             throw new StoreNotFoundException();
@@ -60,9 +60,9 @@ final class DebugStoreContext implements StoreContextInterface
     /**
      * @throws StoreNotFoundException
      */
-    private function getMasterRequest(): Request
+    private function getMainRequest(): Request
     {
-        $masterRequest = $this->requestStack->getMasterRequest();
+        $masterRequest = $this->requestStack->getMainRequest();
         if (null === $masterRequest) {
             throw new StoreNotFoundException();
         }
