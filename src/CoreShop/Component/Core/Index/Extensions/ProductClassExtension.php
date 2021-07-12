@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Index\Extensions;
 
@@ -21,31 +23,19 @@ use CoreShop\Component\Index\Model\IndexInterface;
 
 final class ProductClassExtension implements IndexColumnsExtensionInterface
 {
-    /**
-     * @var string
-     */
     private $productClassName;
 
-    /**
-     * @param string $productClassName
-     */
     public function __construct(string $productClassName)
     {
         $this->productClassName = $productClassName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(IndexInterface $index)
+    public function supports(IndexInterface $index): bool
     {
         return $this->productClassName === $index->getClass();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSystemColumns()
+    public function getSystemColumns(): array
     {
         return [
             'categoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
@@ -54,18 +44,12 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocalizedSystemColumns()
+    public function getLocalizedSystemColumns(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIndexColumns(IndexableInterface $indexable)
+    public function getIndexColumns(IndexableInterface $indexable): array
     {
         if ($indexable instanceof ProductInterface) {
             $categoryIds = [];

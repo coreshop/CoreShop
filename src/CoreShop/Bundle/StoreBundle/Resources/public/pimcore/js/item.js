@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -15,8 +15,8 @@ coreshop.store.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_store',
 
-    url: {
-        save: '/admin/coreshop/stores/save'
+    routing: {
+        save: 'coreshop_store_save'
     },
 
     getItems: function () {
@@ -30,7 +30,7 @@ coreshop.store.item = Class.create(coreshop.resource.item, {
             remoteSort: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/stores/list-sites',
+                url: Routing.generate('coreshop_store_listSites'),
                 reader: {
                     type: 'json'
                 }

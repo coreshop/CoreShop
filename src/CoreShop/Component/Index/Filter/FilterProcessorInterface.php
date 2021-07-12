@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Filter;
 
@@ -18,21 +20,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 interface FilterProcessorInterface
 {
-    /**
-     * @param FilterInterface  $filter
-     * @param ListingInterface $list
-     * @param ParameterBag     $parameterBag
-     *
-     * @return mixed
-     */
-    public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag);
+    public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag): array;
 
-    /**
-     * @param FilterInterface  $filter
-     * @param ListingInterface $list
-     * @param array            $currentFilter
-     *
-     * @return mixed
-     */
-    public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, $currentFilter);
+    public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, array $currentFilter): array;
 }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\TaxationBundle\Form\Type;
 
@@ -18,7 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TaxRuleType extends AbstractResourceType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('taxRate', TaxRateChoiceType::class, [
@@ -34,7 +36,7 @@ class TaxRuleType extends AbstractResourceType
             ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_tax_rule';
     }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -21,54 +23,25 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 final class TaxRuleGroupContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $taxRuleGroupFactory;
+    private FactoryInterface $taxRuleFactory;
 
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $taxRuleGroupFactory;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $taxRuleFactory;
-
-    /**
-     * @var RepositoryInterface
-     */
-    private $taxRuleGroupRepository;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager          $objectManager
-     * @param FactoryInterface       $taxRuleGroupFactory
-     * @param FactoryInterface       $taxRuleFactory
-     * @param RepositoryInterface    $taxRuleGroupRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FactoryInterface $taxRuleGroupFactory,
-        FactoryInterface $taxRuleFactory,
-        RepositoryInterface $taxRuleGroupRepository
+        FactoryInterface $taxRuleFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->taxRuleGroupFactory = $taxRuleGroupFactory;
         $this->taxRuleFactory = $taxRuleFactory;
-        $this->taxRuleGroupRepository = $taxRuleGroupRepository;
     }
 
     /**

@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block checkout %}
-    {{ render(controller('coreshop.frontend.controller.security:loginAction', {renderLayout: false, target: pimcore_url()})) }}
+    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\SecurityController::loginAction', {renderLayout: false, failure: pimcore_url(), target: pimcore_url()})) }}
 
     {% if coreshop_configuration('system.guest.checkout') %}
         <h2 class="main-heading text-center mt-4">
@@ -18,7 +18,33 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                            {{ form(guestForm, {'method': 'POST'}) }}
+                            {{ form_start(guestForm, {'method': 'POST', attr: {'novalidate': 'novalidate'}}) }}
+                                {{ form_row(guestForm.gender, coreshop_test_form_attribute('guest-gender')) }}
+                                {{ form_row(guestForm.firstname, coreshop_test_form_attribute('guest-firstname')) }}
+                                {{ form_row(guestForm.lastname, coreshop_test_form_attribute('guest-lastname')) }}
+
+                                {{ form_row(guestForm.email.first, coreshop_test_form_attribute('guest-email-first')) }}
+                                {{ form_row(guestForm.email.second, coreshop_test_form_attribute('guest-email-second')) }}
+
+                                {{ form_label(guestForm.address) }}
+
+                                {{ form_row(guestForm.address.company, coreshop_test_form_attribute('guest-address-company')) }}
+                                {{ form_row(guestForm.address.salutation, coreshop_test_form_attribute('guest-address-salutation')) }}
+                                {{ form_row(guestForm.address.firstname, coreshop_test_form_attribute('guest-address-firstname')) }}
+                                {{ form_row(guestForm.address.lastname, coreshop_test_form_attribute('guest-address-lastname')) }}
+                                {{ form_row(guestForm.address.street, coreshop_test_form_attribute('guest-address-street')) }}
+                                {{ form_row(guestForm.address.number, coreshop_test_form_attribute('guest-address-number')) }}
+                                {{ form_row(guestForm.address.postcode, coreshop_test_form_attribute('guest-address-post-code')) }}
+                                {{ form_row(guestForm.address.city, coreshop_test_form_attribute('guest-address-city')) }}
+                                {{ form_row(guestForm.address.country, coreshop_test_form_attribute('guest-address-country')) }}
+                                {{ form_row(guestForm.address.phoneNumber, coreshop_test_form_attribute('guest-address-phone-number')) }}
+
+                                {{ form_row(guestForm.termsAccepted, coreshop_test_form_attribute('guest-terms')) }}
+
+                                {{ form_row(guestForm.submit, coreshop_test_form_attribute('guest-button')) }}
+
+                                {{ form_row(guestForm._token) }}
+                            {{ form_end(guestForm, {'method': 'POST', 'render_rest': false}) }}
                         </div>
                     </div>
                 </div>

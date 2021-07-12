@@ -2,118 +2,81 @@ services:
     _defaults:
         public: true
 
-    coreshop.product.tax_factory:
-        class: CoreShop\Component\Core\Product\ProductTaxCalculatorFactory
-        arguments:
-            - '@coreshop.taxation.factory.tax_calculator'
-            - '@coreshop.factory.address'
+    CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner: ~
 
-    coreshop.product.taxed_price_calculator:
-        class: CoreShop\Component\Core\Product\TaxedProductPriceCalculator
-        arguments:
-            - '@coreshop.order.purchasable.calculator'
-            - '@coreshop.provider.taxation.default_country'
-            - '@coreshop.product.tax_factory'
-            - '@coreshop.taxation.tax_applicator'
+    CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner: ~
 
-    coreshop.templating.helper.price:
-        class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper
+    CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface: '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactory'
+    CoreShop\Component\Core\Product\ProductTaxCalculatorFactory:
         arguments:
-            - '@coreshop.product.taxed_price_calculator'
-            - '@coreshop.context.shopper'
-        tags:
-            - { name: templating.helper, alias: coreshop_product_price }
+            - '@CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface'
 
-    coreshop.templating.helper.product_quantity_price_rules:
-        class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelper
+    CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface: '@CoreShop\Component\Core\Product\TaxedProductPriceCalculator'
+    CoreShop\Component\Core\Product\TaxedProductPriceCalculator:
         arguments:
-            - '@coreshop.product_quantity_price_rules.detector.quantity_reference'
-            - '@coreshop.order.purchasable.calculator'
-            - '@coreshop.provider.taxation.default_country'
-            - '@coreshop.product.tax_factory'
-            - '@coreshop.taxation.tax_applicator'
-        tags:
-            - { name: templating.helper, alias: coreshop_product_tax }
+            - '@CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface'
+            - '@CoreShop\Component\Core\Provider\DefaultTaxAddressProviderInterface'
+            - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
+            - '@CoreShop\Component\Core\Taxation\TaxApplicatorInterface'
 
-    coreshop.templating.helper.tax:
-        class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper
+    CoreShop\Bundle\CoreBundle\Twig\ProductPriceExtension:
         arguments:
-            - '@coreshop.templating.helper.price'
-            - '@coreshop.context.shopper'
-            - '@coreshop.product.tax_factory'
-            - '@coreshop.provider.taxation.default_country'
-        tags:
-            - { name: templating.helper, alias: coreshop_product_tax }
-
-    coreshop.twig.extension.price:
-        class: CoreShop\Bundle\CoreBundle\Twig\ProductPriceExtension
-        arguments:
-            - '@coreshop.templating.helper.price'
+            - '@CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface'
         tags:
             - { name: twig.extension }
 
-    coreshop.twig.extension.quantity_price_rule:
-        class: CoreShop\Bundle\CoreBundle\Twig\ProductQuantityPriceRuleRangesPriceExtension
+    CoreShop\Bundle\CoreBundle\Twig\ProductQuantityPriceRuleRangesPriceExtension:
         arguments:
-            - '@coreshop.templating.helper.product_quantity_price_rules'
+            - '@CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetector'
+            - '@CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface'
+            - '@CoreShop\Component\Core\Provider\DefaultTaxAddressProviderInterface'
+            - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
+            - '@CoreShop\Component\Core\Taxation\TaxApplicatorInterface'
         tags:
             - { name: twig.extension }
 
-    coreshop.twig.extension.tax:
-        class: CoreShop\Bundle\CoreBundle\Twig\ProductTaxExtension
+    CoreShop\Bundle\CoreBundle\Twig\ProductTaxExtension:
         arguments:
-            - '@coreshop.templating.helper.tax'
+            - '@CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface'
+            - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
+            - '@CoreShop\Component\Core\Provider\DefaultTaxAddressProviderInterface'
         tags:
             - { name: twig.extension }
 
-    coreshop.templating.helper.configuration:
-        class: CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelper
+    CoreShop\Bundle\CoreBundle\Twig\ConfigurationExtension:
         arguments:
-            - '@coreshop.configuration.service'
-        tags:
-          - { name: templating.helper, alias: coreshop_configuration}
-
-    coreshop.twig.extension.configuration:
-        class: CoreShop\Bundle\CoreBundle\Twig\ConfigurationExtension
-        arguments:
-            - '@coreshop.templating.helper.configuration'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
         tags:
             - { name: twig.extension }
 
-    coreshop.product.price_calculator.property_price:
-        class: CoreShop\Component\Core\Product\Calculator\StoreProductPriceCalculator
+    CoreShop\Component\Core\Product\Calculator\StoreProductPriceCalculator:
         tags:
             - { name: coreshop.product.retail_price_calculator, type: store_price, priority: 10 }
 
-    coreshop.product.price_calculator.unit_price:
-        class: CoreShop\Component\Core\Product\Calculator\StoreProductUnitDefinitionPriceCalculator
+    CoreShop\Component\Core\Product\Calculator\StoreProductUnitDefinitionPriceCalculator:
         tags:
             - { name: coreshop.product.retail_price_calculator, type: store_unit_price, priority: 11 }
 
-    coreshop.order.purchasable.price_calculator.product:
-        class: CoreShop\Component\Core\Order\Calculator\PurchasableProductPriceCalculator
+    CoreShop\Component\Core\Order\Calculator\PurchasableProductPriceCalculator:
         arguments:
-            - '@coreshop.product.price_calculator'
+            - '@CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface'
         tags:
             - { name: coreshop.order.purchasable.price_calculator, type: product, priority: 20 }
 
-    coreshop.order.purchasable.retail_price_calculator.product:
-        class: CoreShop\Component\Core\Order\Calculator\PurchasableProductRetailPriceCalculator
+    CoreShop\Component\Core\Order\Calculator\PurchasableProductRetailPriceCalculator:
         arguments:
-            - '@coreshop.product.price_calculator'
+            - '@CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface'
         tags:
             - { name: coreshop.order.purchasable.retail_price_calculator, type: product, priority: 20 }
 
-    coreshop.order.purchasable.discount_calculator.product:
-      class: CoreShop\Component\Core\Order\Calculator\PurchasableProductDiscountCalculator
-      arguments:
-          - '@coreshop.product.price_calculator'
-      tags:
-          - { name: coreshop.order.purchasable.discount_calculator, type: product, priority: 20 }
+    CoreShop\Component\Core\Order\Calculator\PurchasableProductDiscountCalculator:
+        arguments:
+            - '@CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface'
+        tags:
+            - { name: coreshop.order.purchasable.discount_calculator, type: product, priority: 20 }
 
-    coreshop.order.purchasable.discount_price_calculator.product:
-      class: CoreShop\Component\Core\Order\Calculator\PurchasableProductDiscountPriceCalculator
-      arguments:
-          - '@coreshop.product.price_calculator'
-      tags:
-          - { name: coreshop.order.purchasable.discount_price_calculator, type: product, priority: 20 }
+    CoreShop\Component\Core\Order\Calculator\PurchasableProductDiscountPriceCalculator:
+        arguments:
+            - '@CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface'
+        tags:
+            - { name: coreshop.order.purchasable.discount_price_calculator, type: product, priority: 20 }

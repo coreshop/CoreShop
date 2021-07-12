@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -23,7 +23,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
         unitDefinitionModelName = 'coreshop.product.model.productUnitDefinitions';
         proxy = {
             type: 'ajax',
-            url: '/admin/coreshop/product_unit_definitions/get-product-unit-definitions',
+            url: Routing.generate('coreshop_product_unit_definitions_productUnitDefinitionsList'),
             extraParams: {
                 productId: this.objectId
             },
@@ -182,6 +182,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                 name: 'quantity_amount',
                 getEditor: function () {
                     return new Ext.form.NumberField({
+                        decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision'),
                         minValue: 0
                     });
                 },
@@ -198,9 +199,9 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                     }
 
                     if (value === undefined) {
-                        return coreshop.util.format.currency('', 0);
+                        return '0';
                     } else {
-                        return prefix + coreshop.util.format.currency('', parseFloat(value) * 100);
+                        return prefix + coreshop.util.format.number(parseFloat(value * pimcore.globalmanager.get('coreshop.currency.decimal_factor')));
                     }
                 }
             }],
@@ -283,10 +284,9 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                     }
 
                     if (value === undefined) {
-                        return coreshop.util.format.currency('', 0);
+                        return '0';
                     } else {
-
-                        return coreshop.util.format.currency('', parseFloat(value) * 100);
+                        return coreshop.util.format.number(parseFloat(value * pimcore.globalmanager.get('coreshop.currency.decimal_factor')));
                     }
                 }
             }]
@@ -318,6 +318,40 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
         }
 
         return true;
+    },
+
+    onRangeStartingFromRender: function ($super, field) {
+
+        var grid = field.up('grid'),
+            selectedModel = grid.getSelectionModel().getSelected().getAt(0),
+            unitDefinitionId,
+            unitDefinitionRecord,
+            precision, step = 1;
+
+        $super();
+
+        if (!selectedModel) {
+            return;
+        }
+
+        unitDefinitionId = selectedModel.get('unitDefinition');
+        unitDefinitionRecord = this.productUnitDefinitionsStore.getById(unitDefinitionId);
+
+        if (!unitDefinitionRecord) {
+            return;
+        }
+
+        precision = unitDefinitionRecord.get('precision');
+        if (isNaN(precision)) {
+            return;
+        }
+
+        if (precision > 0) {
+            step = (1 / parseInt('1' + (Ext.String.repeat('0', precision))));
+        }
+
+        field.decimalPrecision = precision;
+        field.step = step;
     },
 
     onPriceBehaviourChange: function ($super, field) {
@@ -381,18 +415,19 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
             if (range.hasOwnProperty('amount')) {
                 p = parseInt(range['amount']);
                 if (p > 0) {
-                    data[key]['amount'] = parseInt(range['amount']) / 100;
+                    data[key]['amount'] = parseInt(range['amount']) / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
                 }
             }
 
             if (range.hasOwnProperty('pseudoPrice')) {
                 p = parseInt(range['pseudoPrice']);
                 if (p > 0) {
-                    data[key]['pseudoPrice'] = parseInt(range['pseudoPrice']) / 100;
+                    data[key]['pseudoPrice'] = parseInt(range['pseudoPrice']) / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
                 }
             }
         });
 
         return data;
     }
+
 });

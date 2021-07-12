@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -18,6 +20,6 @@ class IndexController extends FrontendController
 {
     public function indexAction(Request $request)
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Index/index.html'));
+        return $this->render($this->templateConfigurator->findTemplate('Index/index.html'));
     }
 }

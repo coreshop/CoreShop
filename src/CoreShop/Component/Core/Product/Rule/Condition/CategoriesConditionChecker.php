@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
@@ -27,19 +29,17 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
         CategoriesConditionCheckerTrait::__construct as private __traitConstruct;
     }
 
-    /**
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
     public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
         $this->__traitConstruct($categoryRepository);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
-    {
+    public function isValid(
+        ResourceInterface $subject,
+        RuleInterface $rule,
+        array $configuration,
+        array $params = []
+    ): bool {
         Assert::keyExists($params, 'store');
         Assert::isInstanceOf($params['store'], StoreInterface::class);
 
@@ -48,7 +48,8 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
          */
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $params['store'], $configuration['recursive'] ?: false);
+        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $params['store'],
+            $configuration['recursive'] ?: false);
 
         if (!is_array($subject->getCategories())) {
             return false;

@@ -6,13 +6,20 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Component\Core\Context\ShopperContextInterface;
+use CoreShop\Component\Core\Currency\CurrencyStorageInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
+use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -25,9 +32,9 @@ class CurrencyController extends FrontendController
      */
     public function widgetAction(Request $request)
     {
-        $currencies = $this->get('coreshop.repository.currency')->findActiveForStore($this->get('coreshop.context.shopper')->getStore());
+        $currencies = $this->get('coreshop.repository.currency')->findActiveForStore($this->get(ShopperContextInterface::class)->getStore());
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Currency/_widget.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Currency/_widget.html'), [
             'currencies' => $currencies,
         ]);
     }
@@ -41,12 +48,12 @@ class CurrencyController extends FrontendController
     {
         $currencyCode = $request->get('currencyCode');
         $currency = $this->getCurrencyRepository()->getByCode($currencyCode);
-        $cartManager = $this->get('coreshop.cart.manager');
-        $cartContext = $this->get('coreshop.context.cart');
+        $cartManager = $this->get(CartManagerInterface::class);
+        $cartContext = $this->get(CartContextInterface::class);
         $cart = $cartContext->getCart();
 
-        $store = $this->get('coreshop.context.store')->getStore();
-        $this->get('coreshop.storage.currency')->set($store, $currency);
+        $store = $this->get(StoreContextInterface::class)->getStore();
+        $this->get(CurrencyStorageInterface::class)->set($store, $currency);
 
         $cart->setCurrency($currency);
 

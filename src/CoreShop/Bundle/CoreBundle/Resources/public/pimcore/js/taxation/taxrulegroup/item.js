@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -35,7 +35,7 @@ coreshop.taxrulegroup.item = Class.create(coreshop.taxrulegroup.item, {
         var statesStore = new Ext.data.Store({
             restful: false,
             proxy: new Ext.data.HttpProxy({
-                url: '/admin/coreshop/states/list'
+                url: Routing.generate('coreshop_state_list')
             }),
             reader: new Ext.data.JsonReader({}, [
                 {name: 'id'},
@@ -63,7 +63,7 @@ coreshop.taxrulegroup.item = Class.create(coreshop.taxrulegroup.item, {
         var countryStore = new Ext.data.Store({
             restful: false,
             proxy: new Ext.data.HttpProxy({
-                url: '/admin/coreshop/countries/list'
+                url: Routing.generate('coreshop_country_list')
             }),
             autoLoad: true,
             reader: new Ext.data.JsonReader({}, [
@@ -88,6 +88,9 @@ coreshop.taxrulegroup.item = Class.create(coreshop.taxrulegroup.item, {
             queryMode: 'local',
             disabled: false
         });
+
+        var taxRateStore = Ext.create('store.coreshop_tax_rates');
+        taxRateStore.load();
 
         var gridColumns = [
             {
@@ -125,13 +128,13 @@ coreshop.taxrulegroup.item = Class.create(coreshop.taxrulegroup.item, {
                 width: 200,
                 dataIndex: 'taxRate',
                 editor: new Ext.form.ComboBox({
-                    store: pimcore.globalmanager.get('coreshop_tax_rates'),
+                    store: taxRateStore,
                     valueField: 'id',
                     displayField: 'name',
                     queryMode: 'local'
                 }),
                 renderer: function (taxRate) {
-                    var record = pimcore.globalmanager.get('coreshop_tax_rates').getById(taxRate);
+                    var record = taxRateStore.getById(taxRate);
 
                     if (record) {
                         return record.get('name');

@@ -24,9 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CoreShopPayumPaymentBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -34,9 +31,6 @@ class CoreShopPayumPaymentBundle extends AbstractResourceBundle implements Pimco
         ];
     }
 
-        /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         parent::registerDependentBundles($collection);
@@ -44,9 +38,6 @@ class CoreShopPayumPaymentBundle extends AbstractResourceBundle implements Pimco
         $collection->addBundle(new CoreShopPaymentBundle(), 2200);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -55,85 +46,46 @@ class CoreShopPayumPaymentBundle extends AbstractResourceBundle implements Pimco
         $container->addCompilerPass(new RegisterPaymentSettingsFormsPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\PayumPayment\Model';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNiceName()
     {
         return 'CoreShop - Payum Payment';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return 'CoreShop - Payum Payment Bundle';
     }
 
-    /**
-     * @return string
-     */
-    public function getComposerPackageName()
-    {
-        if (isset(Versions::VERSIONS['coreshop/payum-payment-bundle'])) {
-            return 'coreshop/pauym-payment-bundle';
-        }
-
-        return 'coreshop/core-shop';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getInstaller()
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAdminIframePath()
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getJsPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCssPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEditmodeJsPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEditmodeCssPaths()
     {
         return [];

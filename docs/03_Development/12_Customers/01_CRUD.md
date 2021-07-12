@@ -8,7 +8,7 @@ dynamic and configurable. It uses a Factory and Repository Pattern to do that.
 If you want to create a new Custom, we need to get our Factory Service for that:
 
 ```php
-$customerFactory = $container->get('coreshop.factory.custom');
+$customerFactory = $container->get('coreshop.factory.customer');
 $customer = $customerFactory->createNew();
 ```
 

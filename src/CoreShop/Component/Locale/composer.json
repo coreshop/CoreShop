@@ -18,22 +18,30 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "pimcore/pimcore": "^5.8.0 | ^6.0.0"
+    "pimcore/pimcore": "^10.0.0",
+    "laminas/laminas-stdlib": "^3.3"
   },
-  "config": {
-    "bin-dir": "bin"
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-doctrine": "^0.12",
+    "phpstan/phpstan-webmozart-assert": "^0.12"
   },
   "autoload": {
     "psr-4": {
-      "CoreShop\\Index\\Locale\\": ""
+      "CoreShop\\Component\\Locale\\": ""
     }
   },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

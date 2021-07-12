@@ -6,33 +6,24 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\NotificationBundle\Processor;
 
 use CoreShop\Bundle\NotificationBundle\Events;
 use CoreShop\Component\Notification\Processor\RulesProcessorInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class EventedRuleProcessor implements RulesProcessorInterface
 {
-    /**
-     * @var RulesProcessorInterface
-     */
     private $rulesProcessor;
-
-    /**
-     * @var EventDispatcherInterface
-     */
     private $eventDispatcher;
 
-    /**
-     * @param RulesProcessorInterface  $rulesProcessor
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         RulesProcessorInterface $rulesProcessor,
         EventDispatcherInterface $eventDispatcher
@@ -41,17 +32,14 @@ final class EventedRuleProcessor implements RulesProcessorInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function applyRules($type, $subject, $params = [])
+    public function applyRules(string $type, $subject, array $params = []): void
     {
         $event = new GenericEvent($type, [
             'subject' => $subject,
             'params' => $params,
         ]);
 
-        $this->eventDispatcher->dispatch(Events::PRE_APPLY, $event);
+        $this->eventDispatcher->dispatch($event, Events::PRE_APPLY);
 
         if ($event->isPropagationStopped()) {
             return;
@@ -59,6 +47,6 @@ final class EventedRuleProcessor implements RulesProcessorInterface
 
         $this->rulesProcessor->applyRules($type, $subject, $params);
 
-        $this->eventDispatcher->dispatch(Events::POST_APPLY, $event);
+        $this->eventDispatcher->dispatch($event, Events::POST_APPLY);
     }
 }

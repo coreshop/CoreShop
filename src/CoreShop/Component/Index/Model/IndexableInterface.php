@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Model;
 
@@ -20,22 +22,12 @@ interface IndexableInterface
     public function getId();
 
     /**
-     * @return bool
-     */
-    public function getIndexableEnabled();
-
-    /**
-     * @return bool
-     */
-    public function getIndexable();
-
-    /**
      * @return string
      */
     public function getKey();
 
     /**
-     * @return int
+     * @return string
      */
     public function getClassId();
 
@@ -50,14 +42,11 @@ interface IndexableInterface
     public function getType();
 
     /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getIndexableName($language);
-
-    /**
      * @return mixed
      */
     public function getParent();
+
+    public function getIndexableEnabled(IndexInterface $index): bool;
+    public function getIndexable(IndexInterface $index): bool;
+    public function getIndexableName(IndexInterface $index, string $language): string;
 }

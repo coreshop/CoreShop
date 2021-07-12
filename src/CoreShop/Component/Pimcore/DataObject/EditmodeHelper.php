@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
@@ -17,7 +19,7 @@ use Pimcore\Model\DataObject;
 
 class EditmodeHelper
 {
-    public function getDataForObject(DataObject\Concrete $object, $objectFromVersion = false)
+    public function getDataForObject(DataObject\Concrete $object, bool $objectFromVersion = false): array
     {
         $dataObjectController = new DataObjectController();
         $trackerReflector = new \ReflectionClass(DataObjectController::class);

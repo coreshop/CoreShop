@@ -6,65 +6,44 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\DTO;
 
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 
 class AddToCart implements AddToCartInterface
 {
-    /**
-     * @var CartInterface
-     */
-    private $cart;
+    private OrderInterface $cart;
+    private OrderItemInterface $cartItem;
 
-    /**
-     * @var CartItemInterface
-     */
-    private $cartItem;
-
-    /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
-     */
-    public function __construct(CartInterface $cart, CartItemInterface $cartItem)
+    public function __construct(OrderInterface $cart, OrderItemInterface $cartItem)
     {
         $this->cart = $cart;
         $this->cartItem = $cartItem;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCart()
+    public function getCart(): OrderInterface
     {
         return $this->cart;
     }
 
-    /**
-     * @param CartInterface $cart
-     */
-    public function setCart(CartInterface $cart)
+    public function setCart(OrderInterface $cart)
     {
         $this->cart = $cart;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCartItem()
+    public function getCartItem(): OrderItemInterface
     {
         return $this->cartItem;
     }
 
-    /**
-     * @param CartItemInterface $cartItem
-     */
-    public function setCartItem(CartItemInterface $cartItem)
+    public function setCartItem(OrderItemInterface $cartItem)
     {
         $this->cartItem = $cartItem;
     }

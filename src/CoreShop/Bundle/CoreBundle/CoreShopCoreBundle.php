@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle;
 
@@ -41,6 +43,7 @@ use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
 use CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreShopProductQuantityPriceRulesBundle;
 use CoreShop\Bundle\TrackingBundle\CoreShopTrackingBundle;
+use CoreShop\Bundle\UserBundle\CoreShopUserBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
@@ -48,9 +51,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopCoreBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -58,10 +58,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -71,9 +68,6 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $container->addCompilerPass(new RegisterPortletsPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         parent::registerDependentBundles($collection);
@@ -85,6 +79,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $collection->addBundle(new CoreShopConfigurationBundle(), 3300);
         $collection->addBundle(new CoreShopOrderBundle(), 3200);
         $collection->addBundle(new CoreShopCustomerBundle(), 3100);
+        $collection->addBundle(new CoreShopUserBundle(), 3050);
         $collection->addBundle(new CoreShopInventoryBundle(), 3000);
         $collection->addBundle(new CoreShopProductBundle(), 2900);
         $collection->addBundle(new CoreShopAddressBundle(), 2800);
@@ -102,34 +97,22 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Core\Model';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Core';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Pimcore eCommerce';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
     }
@@ -137,58 +120,38 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     /**
      * @return string
      */
-    public function getComposerVersion()
+    public function getComposerVersion(): string
     {
         $version = Versions::getVersion('coreshop/core-shop');
 
         return $version;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInstaller()
     {
         return $this->container->get(Installer::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAdminIframePath()
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getJsPaths()
     {
-        return [
-            '/admin/coreshop/coreshop.main/menu.js'
-        ];
+        return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCssPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEditmodeJsPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEditmodeCssPaths()
     {
         return [];

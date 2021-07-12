@@ -6,62 +6,41 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Condition;
 
 class InCondition implements ConditionInterface
 {
-    /**
-     * @var string
-     */
-    private $fieldName;
+    private string $fieldName;
+    private array $values;
 
-    /**
-     * @var array
-     */
-    private $values;
-
-    /**
-     * @param string $fieldName
-     * @param array  $value
-     */
-    public function __construct($fieldName, array $value)
+    public function __construct(string $fieldName, array $values)
     {
         $this->fieldName = $fieldName;
-        $this->values = $value;
+        $this->values = $values;
     }
 
-    /**
-     * @return string
-     */
-    public function getFieldName()
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
 
-    /**
-     * @param string $fieldName
-     */
-    public function setFieldName($fieldName)
+    public function setFieldName($fieldName): void
     {
         $this->fieldName = $fieldName;
     }
 
-    /**
-     * @return array
-     */
-    public function getValues()
+    public function getValues(): array
     {
         return $this->values;
     }
 
-    /**
-     * @param array $values
-     */
-    public function setValues(array $values)
+    public function setValues(array $values): void
     {
         $this->values = $values;
     }

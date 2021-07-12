@@ -6,7 +6,7 @@
   ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
   ~ files that are distributed with this source code.
   ~
-  ~ @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+  ~ @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
   ~ @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
   ~
   -->
@@ -16,9 +16,9 @@
 	 viewBox="0 0 61.3 84.6" enable-background="new 0 0 61.3 84.6" xml:space="preserve">
 <style type="text/css">
 	.st0{display:none;}
-	.st1{display:inline;fill:#5CB672;}
+	.st1{display:inline;fill:#cd1017;}
 	.st2{display:inline;fill:#161B1F;}
-	.st3{fill:#5CB672;}
+	.st3{fill:#cd1017;}
 	.st4{fill:#161B1F;}
 </style>
 <g>

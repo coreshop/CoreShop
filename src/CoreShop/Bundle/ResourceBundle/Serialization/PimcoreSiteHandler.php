@@ -6,13 +6,16 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
 use JMS\Serializer\Context;
+use JMS\Serializer\JsonDeserializationVisitor;
 use JMS\Serializer\JsonSerializationVisitor;
 use Pimcore\Model\Site;
 
@@ -25,5 +28,24 @@ class PimcoreSiteHandler
         }
 
         return null;
+    }
+
+    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
+    {
+        if (is_array($relation)) {
+            $result = [];
+
+            foreach ($relation as $rel) {
+                $obj = Site::getById($rel);
+
+                if ($obj) {
+                    $result[] = $obj;
+                }
+            }
+
+            return $result;
+        }
+
+        return Site::getById($relation);
     }
 }

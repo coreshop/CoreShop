@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Calculator;
 
@@ -22,29 +24,20 @@ use CoreShop\Component\ProductQuantityPriceRules\Rule\Action\ProductQuantityPric
 
 class VolumeCalculator implements CalculatorInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    protected $actionRegistry;
+    protected ServiceRegistryInterface $actionRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $actionRegistry
-     */
     public function __construct(ServiceRegistryInterface $actionRegistry)
     {
         $this->actionRegistry = $actionRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
         QuantityRangePriceAwareInterface $subject,
-        int $quantity,
+        float $quantity,
         int $originalPrice,
         array $context
-    ) {
+    ): int {
         $locatedRange = $this->locate($quantityPriceRule->getRanges(), $quantity);
 
         if (!$locatedRange instanceof QuantityRangeInterface) {
@@ -60,15 +53,12 @@ class VolumeCalculator implements CalculatorInterface
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculateForRange(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,
         int $originalPrice,
         array $context
-    ) {
+    ): int {
         $price = $this->calculateRangePrice($range, $subject, $originalPrice, $context);
 
         if (!is_numeric($price) || $price === 0) {
@@ -78,15 +68,7 @@ class VolumeCalculator implements CalculatorInterface
         return $price;
     }
 
-    /**
-     * @param QuantityRangeInterface           $range
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param int                              $originalPrice
-     * @param array                            $context
-     *
-     * @return int
-     */
-    public function calculateRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $originalPrice, array $context)
+    public function calculateRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $originalPrice, array $context): int
     {
         $pricingBehaviour = $range->getPricingBehaviour();
 
@@ -98,13 +80,7 @@ class VolumeCalculator implements CalculatorInterface
         return $service->calculate($range, $subject, $originalPrice, $context);
     }
 
-    /**
-     * @param Collection $ranges
-     * @param int        $quantity
-     *
-     * @return QuantityRangeInterface|null
-     */
-    protected function locate(Collection $ranges, int $quantity)
+    protected function locate(Collection $ranges, float $quantity): ?QuantityRangeInterface
     {
         if ($ranges->isEmpty()) {
             return null;
@@ -113,7 +89,6 @@ class VolumeCalculator implements CalculatorInterface
         $cheapestRangePrice = null;
         /** @var QuantityRangeInterface $range */
         foreach ($ranges as $index => $range) {
-
             if ($range->getRangeStartingFrom() > $quantity) {
                 break;
             }

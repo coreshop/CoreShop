@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Command;
 
@@ -17,10 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class InstallResourcesCommand extends AbstractInstallCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:install:resources')
@@ -31,12 +30,9 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->runCommands(['coreshop:resources:install' => ['--application-name coreshop']], $output, false, true);
+        $this->runCommands(['coreshop:resources:install' => ['--application-name' => 'coreshop']], $output, false, true);
 
         return 0;
     }

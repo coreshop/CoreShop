@@ -25,5 +25,8 @@ CoreShop\Component\Index\Model\Index:
             groups: [List, Detailed]
         columns:
             expose: true
-            type: array
+            type: ArrayCollection
+            groups: [Detailed]
+        indexLastVersion:
+            type: boolean
             groups: [Detailed]

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Installer\Executor;
 
@@ -16,23 +18,14 @@ use Pimcore\Model\DataObject;
 
 final class FolderInstallerProvider
 {
-    /**
-     * @var array
-     */
-    private $folders;
+    private array $folders;
 
-    /**
-     * @param array $folders
-     */
     public function __construct(array $folders)
     {
         $this->folders = $folders;
     }
 
-    /**
-     * Installs all CoreShop needed Folders.
-     */
-    public function installFolders()
+    public function installFolders(): void
     {
         foreach ($this->folders as $folder) {
             DataObject\Service::createFolderByPath(sprintf('/%s', $folder));

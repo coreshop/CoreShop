@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
@@ -40,25 +42,16 @@ class Store extends BaseStore implements StoreInterface
      */
     protected $countries;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigurations()
     {
         return $this->configurations;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasConfigurations()
     {
         return !$this->configurations->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addConfiguration(ConfigurationInterface $configuration)
     {
         if (!$this->hasConfiguration($configuration)) {
@@ -67,9 +60,6 @@ class Store extends BaseStore implements StoreInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeConfiguration(ConfigurationInterface $configuration)
     {
         if ($this->hasConfiguration($configuration)) {
@@ -78,25 +68,16 @@ class Store extends BaseStore implements StoreInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasConfiguration(ConfigurationInterface $configuration)
     {
         return $this->configurations->contains($configuration);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBaseCountry()
     {
         return $this->baseCountry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setBaseCountry(CountryInterface $baseCountry)
     {
         $this->baseCountry = $baseCountry;

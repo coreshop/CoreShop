@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
@@ -17,30 +19,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractResourceType extends AbstractType
 {
-    /**
-     * @var string
-     */
     protected $dataClass;
-
-    /**
-     * @var string[]
-     */
     protected $validationGroups = [];
 
-    /**
-     * @param string   $dataClass        FQCN
-     * @param string[] $validationGroups
-     */
-    public function __construct($dataClass, array $validationGroups = [])
+    public function __construct(string $dataClass, array $validationGroups = [])
     {
         $this->dataClass = $dataClass;
         $this->validationGroups = $validationGroups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => $this->dataClass,

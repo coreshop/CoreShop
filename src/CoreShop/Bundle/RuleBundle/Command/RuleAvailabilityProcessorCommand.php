@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\RuleBundle\Command;
 
@@ -19,14 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class RuleAvailabilityProcessorCommand extends Command
 {
-    /**
-     * @var RuleAvailabilityProcessorInterface
-     */
-    protected $ruleAvailabilityProcessor;
+    private RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor;
 
-    /**
-     * @param RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor
-     */
     public function __construct(RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor)
     {
         $this->ruleAvailabilityProcessor = $ruleAvailabilityProcessor;
@@ -34,25 +30,14 @@ final class RuleAvailabilityProcessorCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * configure command.
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:rules:check-availability')
             ->setDescription('Check for outdated / invalid rules and disable them.');
     }
 
-    /**
-     * Execute command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ruleAvailabilityProcessor->process();
 

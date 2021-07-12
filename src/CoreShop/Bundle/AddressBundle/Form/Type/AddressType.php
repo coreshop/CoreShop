@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
@@ -20,14 +22,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddressType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('company', TextType::class, [
-                'label'    => 'coreshop.form.address.company',
+                'label' => 'coreshop.form.address.company',
                 'required' => false,
             ])
             ->add('salutation', SalutationChoiceType::class, [
@@ -53,10 +52,10 @@ final class AddressType extends AbstractResourceType
             ])
             ->add('country', CountryChoiceType::class, [
                 'active' => true,
-                'label'  => 'coreshop.form.address.country',
+                'label' => 'coreshop.form.address.country',
             ])
             ->add('phoneNumber', TextType::class, [
-                'label'    => 'coreshop.form.address.phone_number',
+                'label' => 'coreshop.form.address.phone_number',
                 'required' => false,
             ])
             ->add('_redirect', HiddenType::class, [
@@ -65,26 +64,20 @@ final class AddressType extends AbstractResourceType
 
         if ($options['show_address_identifier_choice'] === true) {
             $builder->add('addressIdentifier', AddressIdentifierChoiceType::class, [
-                'label'    => false,
+                'label' => false,
                 'required' => false,
             ]);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
         $resolver->setDefault('show_address_identifier_choice', false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_address';
     }

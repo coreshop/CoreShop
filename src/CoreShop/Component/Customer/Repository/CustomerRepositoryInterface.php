@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Customer\Repository;
 
@@ -17,49 +19,11 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
 {
-    /**
-     * Find customer by reset token.
-     *
-     * @param string $resetToken
-     *
-     * @return CustomerInterface|null
-     */
-    public function findByResetToken($resetToken);
+    public function findByNewsletterToken(string $newsletterToken): ?CustomerInterface;
 
-    /**
-     * Find customer by newsletter token.
-     *
-     * @param string $newsletterToken
-     *
-     * @return CustomerInterface|null
-     */
-    public function findByNewsletterToken($newsletterToken);
+    public function findUniqueByEmail(string $email, bool $isGuest): ?CustomerInterface;
 
-    /**
-     * Find Customer by email.
-     *
-     * @param string $email
-     * @param bool   $isGuest
-     *
-     * @return CustomerInterface|null
-     */
-    public function findUniqueByEmail($email, $isGuest);
+    public function findGuestByEmail(string $email): ?CustomerInterface;
 
-    /**
-     * Find Guest Customer by Email.
-     *
-     * @param string $email
-     *
-     * @return CustomerInterface|null
-     */
-    public function findGuestByEmail($email);
-
-    /**
-     * Find Customer by Email.
-     *
-     * @param string $email
-     *
-     * @return CustomerInterface|null
-     */
-    public function findCustomerByEmail($email);
+    public function findCustomerByEmail(string $email): ?CustomerInterface;
 }

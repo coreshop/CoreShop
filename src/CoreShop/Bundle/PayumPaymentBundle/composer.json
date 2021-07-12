@@ -18,25 +18,27 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "coreshop/payment-bundle": "^2.0",
-    "pimcore/pimcore": "^5.8.0",
-    "payum/payum-bundle": "^2.3",
+    "coreshop/payment-bundle": "^3.0",
+    "pimcore/pimcore": "^10.0.0",
+    "payum/payum-bundle": "dev-master",
     "php-http/guzzle6-adapter": "^2.0"
-  },
-  "config": {
-    "bin-dir": "bin"
   },
   "autoload": {
     "psr-4": {
       "CoreShop\\Bundle\\PayumPaymentBundle\\": ""
     }
   },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\MenuBundle\Renderer;
 
@@ -19,32 +21,15 @@ use Twig\Environment;
 
 class JsonRenderer implements RendererInterface
 {
-    /**
-     * @var Environment
-     */
-    private $environment;
+    private Environment $environment;
+    private PimcoreGuard $guard;
+    private array $defaultOptions;
 
-    /**
-     * @var PimcoreGuard
-     */
-    private $guard;
-
-    /**
-     * @var array
-     */
-    private $defaultOptions;
-
-    /**
-     * @param Environment $environment
-     * @param string            $template
-     * @param PimcoreGuard      $guard
-     * @param array             $defaultOptions
-     */
     public function __construct(
         Environment $environment,
-        $template,
+        string $template,
         PimcoreGuard $guard,
-        array $defaultOptions = array()
+        array $defaultOptions = []
     ) {
         $this->environment = $environment;
         $this->guard = $guard;
@@ -53,12 +38,11 @@ class JsonRenderer implements RendererInterface
             'matchingDepth' => null,
             'template' => $template,
             'compressed' => false,
-            'clear_matcher' => true
+            'clear_matcher' => true,
         ), $defaultOptions);
-
     }
 
-    public function render(ItemInterface $item, array $options = array())
+    public function render(ItemInterface $item, array $options = array()): string
     {
         $options = array_merge($this->defaultOptions, $options);
 
@@ -66,18 +50,19 @@ class JsonRenderer implements RendererInterface
 
         $items = $this->recursiveProcessMenuItems($item);
 
-        $html = $this->environment->render($options['template'],
+        $html = $this->environment->render(
+            $options['template'],
             [
                 'item' => $this->renderItem($item),
                 'items' => $items,
-                'options' => $options
+                'options' => $options,
             ]
         );
 
         return $html;
     }
 
-    protected function renderItem(ItemInterface $item)
+    protected function renderItem(ItemInterface $item): array
     {
         return [
             'id' => strtolower($item->getName()),
@@ -86,7 +71,7 @@ class JsonRenderer implements RendererInterface
         ];
     }
 
-    protected function recursiveProcessMenuItems(ItemInterface $item)
+    protected function recursiveProcessMenuItems(ItemInterface $item): array
     {
         $items = [];
 
@@ -108,14 +93,13 @@ class JsonRenderer implements RendererInterface
         return $items;
     }
 
-    public function reorderMenuItems(ItemInterface $menu)
+    public function reorderMenuItems(ItemInterface $menu): void
     {
         $menuOrderArray = array();
         $addLast = array();
         $alreadyTaken = array();
 
         foreach ($menu->getChildren() as $key => $menuItem) {
-
             if ($menuItem->hasChildren()) {
                 $this->reorderMenuItems($menuItem);
             }
@@ -149,8 +133,11 @@ class JsonRenderer implements RendererInterface
                     continue;
                 }
 
-                $menuOrderArray = array_merge(array_slice($menuOrderArray, 0, $position), array($value),
-                    array_slice($menuOrderArray, $position));
+                $menuOrderArray = array_merge(
+                    array_slice($menuOrderArray, 0, $position),
+                    array($value),
+                array_slice($menuOrderArray, $position)
+                    );
             }
         }
 

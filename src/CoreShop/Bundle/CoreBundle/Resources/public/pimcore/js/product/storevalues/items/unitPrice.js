@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -87,6 +87,8 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
             });
 
         }.bind(this));
+
+        this.builder.dirty = true;
 
         return unitDefinitions;
     },
@@ -197,7 +199,7 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
 
         Ext.Array.each(productUnitDefinitionPrices, function (definitionPrice) {
             if (definitionPrice.hasOwnProperty('unitDefinition') && parseInt(definitionPrice.unitDefinition.id) === parseInt(unitDefinitionId)) {
-                data = {'id': definitionPrice.id, 'price': (parseInt(definitionPrice.price) / 100)};
+                data = {'id': definitionPrice.id, 'price': (parseInt(definitionPrice.price) / pimcore.globalmanager.get('coreshop.currency.decimal_factor'))};
                 return false;
             }
         });

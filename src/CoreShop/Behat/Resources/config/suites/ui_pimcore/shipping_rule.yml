@@ -1,0 +1,16 @@
+default:
+    suites:
+        ui_pimcore_shipping_rule:
+            contexts:
+                - coreshop.behat.context.hook.pimcore_setup
+                - coreshop.behat.context.hook.coreshop_setup
+
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.transform.shared_storage
+
+                - coreshop.behat.context.ui_pimcore.login
+                - coreshop.behat.context.ui_pimcore.menu
+            filters:
+                tags: "@ui_pimcore && @shipping_rule"

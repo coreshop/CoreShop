@@ -10,15 +10,8 @@
     background-image: url(../img/logo-fill.svg)
 }
 
-#pimcore_menu_coreshop_main svg {
-    width: 30px!important;
-    height: 30px!important;
-    left: 13px!important;
-    top: 8px!important;
-}
-
-#pimcore_navigation li#pimcore_menu_coreshop:hover:after {
-    background-color: #5CB672;
+#pimcore_navigation li.coreshop_logo_menu:hover svg path {
+    fill: #cd1017;
 }
 
 .icon-coreshop-shop:before { content: '\e800'; } /* '' */
@@ -30,8 +23,42 @@
     background-size: 20px;
 }
 
+.coreshop_nav_icon_logo {
+    background-image: url(../img/logo-fill.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_logo {
+    background-image: url(../img/logo-fill_white.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+}
+
 .coreshop_icon_localization {
     background: url(../img//collaboration.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_localization {
+    background: url(../img//collaboration.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_localization {
+    background: url(../img//collaboration_white.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_customer {
+    background: url(../img/customer_white.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_customer_to_company_assign_to_new {
+    background: url(../img/customer_to_company_assign_to_new_white.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_customer_to_company_assign_to_existing {
+    background: url(../img/customer_to_company_assign_to_existing_white.svg) center center no-repeat !important;
 }
 
 .coreshop_settings_inherited {
@@ -58,6 +85,10 @@
 
 .coreshop_rule_icon_action_freeShipping {
     background: url(../img/free-shipping.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_action_voucherCredit {
+    background: url(../img/voucher.svg) center center no-repeat !important;
 }
 
 .coreshop_rule_icon_condition_currencies {
@@ -168,4 +199,9 @@
 
 .x-tool-download:before {
     content: "\f0ed";
+}
+
+.x-btn.coreshop-transparent-btn {
+    background: transparent;
+    border: transparent;
 }

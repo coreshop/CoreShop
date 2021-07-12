@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -29,7 +29,7 @@ coreshop.product.pricerule.panel = Class.create(coreshop.rules.panel, {
      * @var array
      */
     actions: [],
-    
+
     /**
      * constructor
      */
@@ -37,7 +37,7 @@ coreshop.product.pricerule.panel = Class.create(coreshop.rules.panel, {
         var me = this;
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/product_price_rules/get-config',
+            url: Routing.generate('coreshop_product_price_rule_getConfig'),
             method: 'GET',
             success: function (result) {
                 var config = Ext.decode(result.responseText);
@@ -46,11 +46,11 @@ coreshop.product.pricerule.panel = Class.create(coreshop.rules.panel, {
             }
         });
 
-        this.url = {
-            add: '/admin/coreshop/product_price_rules/add',
-            delete: '/admin/coreshop/product_price_rules/delete',
-            get: '/admin/coreshop/product_price_rules/get',
-            list: '/admin/coreshop/product_price_rules/list'
+        this.routing = {
+            add: 'coreshop_product_price_rule_add',
+            delete: 'coreshop_product_price_rule_delete',
+            get: 'coreshop_product_price_rule_get',
+            list: 'coreshop_product_price_rule_list'
         };
 
         this.panels = [];
@@ -62,7 +62,7 @@ coreshop.product.pricerule.panel = Class.create(coreshop.rules.panel, {
             ],
             proxy: {
                 type: 'ajax',
-                url: this.url.list,
+                url: Routing.generate(this.routing.list),
                 reader: {
                     type: 'json',
                     rootProperty: 'data'

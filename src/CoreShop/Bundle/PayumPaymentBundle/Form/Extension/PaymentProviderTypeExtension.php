@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\PayumPaymentBundle\Form\Extension;
 
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType;
 use CoreShop\Bundle\PayumPaymentBundle\Form\Type\GatewayConfigType;
-use CoreShop\Bundle\PayumPaymentBundle\Model\PaymentProviderInterface;
+use CoreShop\Component\PayumPayment\Model\PaymentProviderInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -22,9 +22,6 @@ use Symfony\Component\Form\FormEvents;
 
 final class PaymentProviderTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -43,11 +40,13 @@ final class PaymentProviderTypeExtension extends AbstractTypeExtension
             });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExtendedType()
     {
         return PaymentProviderType::class;
+    }
+
+    public static function getExtendedTypes(): array
+    {
+        return [PaymentProviderType::class];
     }
 }

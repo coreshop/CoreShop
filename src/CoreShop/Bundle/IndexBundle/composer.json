@@ -18,12 +18,11 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "coreshop/index": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/resource-bundle": "^2.1",
-    "coreshop/menu-bundle": "^2.1",
-    "pimcore/pimcore": "^5.8.0 | ^6.0.0"
+    "coreshop/index": "^3.0",
+    "coreshop/registry": "^3.0",
+    "coreshop/resource-bundle": "^3.0",
+    "coreshop/menu-bundle": "^3.0",
+    "pimcore/pimcore": "^10.0.0"
   },
   "conflict": {
     "dpfaffenbauer/process-manager": "<2.4"
@@ -31,19 +30,27 @@
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Indexing from within Pimcore UI and also tracks the status."
   },
-  "config": {
-    "bin-dir": "bin"
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-doctrine": "^0.12",
+    "phpstan/phpstan-webmozart-assert": "^0.12"
   },
   "autoload": {
     "psr-4": {
       "CoreShop\\Bundle\\IndexBundle\\": ""
     }
   },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "3.0-dev"
     },
     "pimcore": {
       "bundles": [

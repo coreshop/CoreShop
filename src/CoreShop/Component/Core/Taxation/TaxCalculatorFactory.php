@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Taxation;
 
@@ -20,26 +22,22 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {
-    /**
-     * @var TaxRuleRepositoryInterface
-     */
     private $taxRuleRepository;
 
-    /**
-     * @param TaxRuleRepositoryInterface $taxRuleRepository
-     */
-    public function __construct(
-        TaxRuleRepositoryInterface $taxRuleRepository
-    ) {
+    public function __construct(TaxRuleRepositoryInterface $taxRuleRepository)
+    {
         $this->taxRuleRepository = $taxRuleRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaxCalculatorForAddress(TaxRuleGroupInterface $taxRuleGroup, AddressInterface $address)
-    {
-        $taxRules = $this->taxRuleRepository->findForCountryAndState($taxRuleGroup, $address->getCountry(), $address->getState());
+    public function getTaxCalculatorForAddress(
+        TaxRuleGroupInterface $taxRuleGroup,
+        AddressInterface $address
+    ): TaxCalculatorInterface {
+        $taxRules = $this->taxRuleRepository->findForCountryAndState(
+            $taxRuleGroup,
+            $address->getCountry(),
+            $address->getState()
+        );
         $taxRates = [];
         $firstRow = true;
         $behavior = TaxRulesTaxCalculator::COMBINE_METHOD;

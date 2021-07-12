@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Twig;
 
@@ -21,20 +23,9 @@ use Twig\TwigFunction;
 
 final class LocaleSwitcherExtension extends AbstractExtension
 {
-    /**
-     * @var Document\Service
-     */
-    private $documentService;
+    private Document\Service $documentService;
+    private ShopperContextInterface $shopperContext;
 
-    /**
-     * @var ShopperContextInterface
-     */
-    private $shopperContext;
-
-    /**
-     * @param Document\Service        $documentService
-     * @param ShopperContextInterface $shopperContext
-     */
     public function __construct(
         Document\Service $documentService,
         ShopperContextInterface $shopperContext
@@ -43,9 +34,6 @@ final class LocaleSwitcherExtension extends AbstractExtension
         $this->shopperContext = $shopperContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [
@@ -71,7 +59,7 @@ final class LocaleSwitcherExtension extends AbstractExtension
                 $site = Site::getById($store->getSiteId());
 
                 if ($site instanceof Site) {
-                    $basePath = $site->getRootDocument()->getRealFullPath().'/';
+                    $basePath = $site->getRootDocument()->getRealFullPath() . '/';
                 }
             } catch (\Exception $ex) {
                 $basePath = '/';

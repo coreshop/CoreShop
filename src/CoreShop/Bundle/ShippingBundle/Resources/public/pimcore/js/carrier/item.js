@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -15,8 +15,8 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_carrier',
 
-    url: {
-        save: '/admin/coreshop/carriers/save'
+    routing: {
+        save: 'coreshop_carrier_save'
     },
 
     initialize: function (parentPanel, data, panelKey, type) {
@@ -25,7 +25,9 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         this.panelKey = panelKey;
         this.type = type;
 
-        pimcore.globalmanager.get('coreshop_carrier_shipping_rules').load(function () {
+        var store = Ext.create('store.coreshop_carrier_shipping_rules');
+
+        store.load(function () {
             this.initPanel();
         }.bind(this));
     },
@@ -113,7 +115,9 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                         name: 'trackingUrl',
                         fieldLabel: t('coreshop_carrier_trackingUrl'),
                         value: data.trackingUrl
-                    }, {
+                    },
+                    this.getLogoSelect().getLayoutEdit(),
+                    {
                         xtype: 'tabpanel',
                         activeTab: 0,
                         defaults: {
@@ -121,12 +125,36 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                             bodyStyle: 'padding:10px;'
                         },
                         items: langTabs
+                    },
+                    {
+                        xtype: 'combo',
+                        name: 'taxCalculationStrategy',
+                        fieldLabel: t('coreshop_shipping_tax_calc_strategy'),
+                        value: data.taxCalculationStrategy,
+                        forceSelection: true,
+                        queryMode: 'local',
+                        valueField: 'value',
+                        displayField: 'label',
+                        store: pimcore.globalmanager.get('coreshop_shipping_tax_calculation_strategies')
                     }
                 ]
             }]
         });
 
         return this.settingsForm;
+    },
+
+    getLogoSelect: function () {
+        return new coreshop.object.elementHref({
+            id: this.data.logo,
+            type: 'asset',
+            subtype: 'image'
+        }, {
+            classes: [],
+            assetsAllowed: true,
+            name: 'logo',
+            title: t('coreshop_logo')
+        });
     },
 
     getShippingRulesGrid: function () {
@@ -137,22 +165,25 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
             data: this.data.shippingRules
         });
 
+        var store = Ext.create('store.coreshop_carrier_shipping_rules');
+        store.load(function() {
+            this.shippingRuleGroupsGrid.setStore(this.shippingRuleGroupsStore);
+        }.bind(this));
+
         this.shippingRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
-            store: this.shippingRuleGroupsStore,
             columns: [
                 {
                     header: t('coreshop_carriers_shipping_rule'),
                     flex: 2,
                     dataIndex: 'shippingRule',
                     editor: new Ext.form.ComboBox({
-                        store: pimcore.globalmanager.get('coreshop_carrier_shipping_rules'),
+                        store: store,
                         valueField: 'id',
                         displayField: 'name',
                         queryMode: 'local',
                         required: true
                     }),
                     renderer: function (shippingRule) {
-                        var store = pimcore.globalmanager.get('coreshop_carrier_shipping_rules');
                         var pos = store.findExact('id', shippingRule);
                         if (pos >= 0) {
                             return store.getAt(pos).get('name');
@@ -242,7 +273,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 name: 'isFree',
                 fieldLabel: t('coreshop_carrier_isFree'),
                 width: 250,
-                value: parseInt(this.data.isFree)
+                value: this.data.isFree
             }, this.getShippingRulesGrid()]
         });
 

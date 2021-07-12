@@ -2,17 +2,8 @@ services:
     _defaults:
         public: true
 
-    coreshop.store.theme_resolver:
-        alias: coreshop.theme.resolver
-
-    coreshop.store.theme_helper:
-        alias: coreshop.theme.helper
-
-    coreshop.theme.store_resolver:
-        class: CoreShop\Bundle\StoreBundle\Theme\StoreThemeResolver
+    CoreShop\Bundle\StoreBundle\Theme\StoreThemeResolver:
         arguments:
-            - '@coreshop.theme.active_theme'
-            - '@coreshop.context.store'
-            - '@coreshop.repository.store'
+            - '@CoreShop\Component\Store\Context\StoreContextInterface'
         tags:
             - { name: coreshop.theme.resolver, type: coreshop_store, priority: 20 }

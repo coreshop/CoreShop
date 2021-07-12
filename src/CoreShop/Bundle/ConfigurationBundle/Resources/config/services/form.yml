@@ -5,15 +5,13 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.configuration:
-        class: CoreShop\Bundle\ConfigurationBundle\Form\Type\ConfigurationType
+    CoreShop\Bundle\ConfigurationBundle\Form\Type\ConfigurationType:
         arguments:
             - '%coreshop.model.configuration.class%'
             - '%coreshop.form.type.configuration.validation_groups%'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.configuration.collection:
-        class: CoreShop\Bundle\ConfigurationBundle\Form\Type\ConfigurationCollectionType
+    CoreShop\Bundle\ConfigurationBundle\Form\Type\ConfigurationCollectionType:
         tags:
             -  { name: form.type }

@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -20,12 +20,12 @@ coreshop.shippingrule.panel = Class.create(coreshop.rules.panel, {
     iconCls: 'coreshop_icon_carrier_shipping_rule',
     type: 'coreshop_carriers_shipping_rules',
 
-    url: {
-        add: '/admin/coreshop/shipping_rules/add',
-        delete: '/admin/coreshop/shipping_rules/delete',
-        get: '/admin/coreshop/shipping_rules/get',
-        list: '/admin/coreshop/shipping_rules/list',
-        config: '/admin/coreshop/shipping_rules/get-config'
+    routing: {
+        add: 'coreshop_shipping_rule_add',
+        delete: 'coreshop_shipping_rule_delete',
+        get: 'coreshop_shipping_rule_get',
+        list: 'coreshop_shipping_rule_list',
+        config: 'coreshop_shipping_rule_getConfig'
     },
 
     getItemClass: function () {

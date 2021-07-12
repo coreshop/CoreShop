@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
@@ -19,27 +21,10 @@ use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class PimcoreController extends AdminController
 {
-    /**
-     * @var MetadataInterface
-     */
     protected $metadata;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     protected $repository;
-
-    /**
-     * @var FactoryInterface
-     */
     protected $factory;
 
-    /**
-     * @param MetadataInterface          $metadata
-     * @param PimcoreRepositoryInterface $repository
-     * @param FactoryInterface           $factory
-     * @param ViewHandlerInterface       $viewHandler
-     */
     public function __construct(
         MetadataInterface $metadata,
         PimcoreRepositoryInterface $repository,
@@ -56,7 +41,7 @@ class PimcoreController extends AdminController
     /**
      * @throws AccessDeniedException
      */
-    protected function isGrantedOr403()
+    protected function isGrantedOr403(): void
     {
         if ($this->getPermission()) {
             $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();

@@ -6,37 +6,21 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\SEO\Model;
 
 interface PimcoreSEOAwareInterface extends SEOAwareInterface
 {
-    /**
-     * @param string|null $language
-     *
-     * @return string
-     */
-    public function getPimcoreMetaTitle($language = null);
+    public function getPimcoreMetaTitle(?string $language = null): ?string;
 
-    /**
-     * @param string $pimcoreMetaTitle
-     * @param string $language
-     */
-    public function setPimcoreMetaTitle($pimcoreMetaTitle, $language = null);
+    public function setPimcoreMetaTitle(?string $pimcoreMetaTitle, ?string $language = null);
 
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getPimcoreMetaDescription($language = null);
+    public function getPimcoreMetaDescription(?string$language = null): ?string;
 
-    /**
-     * @param string $pimcoreMetaDescription
-     * @param string $language
-     */
-    public function setPimcoreMetaDescription($pimcoreMetaDescription, $language = null);
+    public function setPimcoreMetaDescription(?string $pimcoreMetaDescription, ?string $language = null);
 }

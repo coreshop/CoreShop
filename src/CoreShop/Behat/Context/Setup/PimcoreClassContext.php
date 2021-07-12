@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -30,26 +32,51 @@ use Pimcore\Tool;
 
 final class PimcoreClassContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private ClassStorageInterface $classStorage;
 
-    /**
-     * @var ClassStorageInterface
-     */
-    private $classStorage;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface  $classStorage
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ClassStorageInterface $classStorage
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
+    }
+
+    /**
+     * @Given /^I enable inheritance for class "([^"]+)"$/
+     */
+    public function iEnableInheritanceForPimcoreClass($className)
+    {
+        $definitionUpdater = new ClassUpdate($className);
+        $definitionUpdater->setProperty('allowInherit', true);
+        $definitionUpdater->save();
+    }
+
+    /**
+     * @Given /^I enable variants for class "([^"]+)"$/
+     */
+    public function iEnableVariantsForPimcoreClass($className)
+    {
+        $definitionUpdater = new ClassUpdate($className);
+        $definitionUpdater->setProperty('allowVariants', true);
+        $definitionUpdater->save();
+    }
+
+    /**
+     * @Given /^I enable pimcore inheritance$/
+     */
+    public function enableInheritance()
+    {
+        DataObject\AbstractObject::setGetInheritedValues(true);
+    }
+
+    /**
+     * @Given /^I disable pimcore inheritance$/
+     */
+    public function disableInheritance()
+    {
+        DataObject\AbstractObject::setGetInheritedValues(false);
     }
 
     /**
@@ -318,13 +345,95 @@ final class PimcoreClassContext implements Context
     }
 
     /**
-     * @Given /^the (definition) has a href field "([^"]+)"$/
+     * @Given /^the (definition) has a numeric field "([^"]+)"$/
      */
-    public function definitionHasHrefField($definition, $name)
+    public function definitionHasNumberField($definition, $name)
     {
         $jsonDefinition = sprintf('
             {
-                "fieldtype": "href",
+                "fieldtype": "numeric",
+                "width": "",
+                "defaultValue": null,
+                "queryColumnType": "double",
+                "columnType": "double",
+                "phpdocType": "float",
+                "integer": false,
+                "unsigned": false,
+                "minValue": null,
+                "maxValue": null,
+                "unique": null,
+                "decimalSize": null,
+                "decimalPrecision": null,
+                "name": "%s",
+                "title": "%s",
+                "tooltip": "",
+                "mandatory": false,
+                "noteditable": true,
+                "index": false,
+                "locked": false,
+                "style": "",
+                "permissions": null,
+                "datatype": "data",
+                "relationType": false,
+                "invisible": false,
+                "visibleGridView": false,
+                "visibleSearch": false,
+                "defaultValueGenerator": ""
+            }
+        ', $name, $name);
+
+        $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
+    }
+
+    /**
+     * @Given /^the (definition) has a numeric integer field "([^"]+)"$/
+     */
+    public function definitionHasIntegerField($definition, $name)
+    {
+        $jsonDefinition = sprintf('
+            {
+                "fieldtype": "numeric",
+                "width": "",
+                "defaultValue": null,
+                "queryColumnType": "int",
+                "columnType": "int",
+                "phpdocType": "int",
+                "integer": true,
+                "unsigned": false,
+                "minValue": null,
+                "maxValue": null,
+                "unique": null,
+                "decimalSize": null,
+                "decimalPrecision": null,
+                "name": "%s",
+                "title": "%s",
+                "tooltip": "",
+                "mandatory": true,
+                "noteditable": true,
+                "index": false,
+                "locked": false,
+                "style": "",
+                "permissions": null,
+                "datatype": "data",
+                "relationType": false,
+                "invisible": false,
+                "visibleGridView": false,
+                "visibleSearch": false,
+                "defaultValueGenerator": ""
+            }
+        ', $name, $name);
+
+        $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
+    }
+
+    /**
+     * @Given /^the (definition) has a relation field "([^"]+)"$/
+     */
+    public function definitionHasRelationField($definition, $name)
+    {
+        $jsonDefinition = sprintf('
+            {
+                "fieldtype": "manyToOneRelation",
                 "width": "",
                 "assetUploadPath": "",
                 "relationType": true,
@@ -596,6 +705,15 @@ final class PimcoreClassContext implements Context
 
         $this->sharedStorage->set('object-instance', $instance);
     }
+    /**
+     * @Given /^I reload the (object-instance) into object-instance-2$/
+     */
+    public function iReloadTheObjectInstanceIntoObjectInstance2(Concrete $dataObject)
+    {
+        $newInstance = $dataObject::getById($dataObject->getId(), true);
+
+        $this->sharedStorage->set('object-instance-2', $newInstance);
+    }
 
     /**
      * @Given /^the (object-instance) is published$/
@@ -617,8 +735,25 @@ final class PimcoreClassContext implements Context
 
     /**
      * @Given /the (object-instance) has following values:/
+     * @Given /I change the (object-instance) values:/
+     * @Given /I change the (object-instance-2) values:/
      */
     public function theObjectInstanceHasFollowingValues(Concrete $object, TableNode $table)
+    {
+        $this->setObjectValuesFromTable($object, $table);
+        $object->save();
+    }
+
+    /**
+     * @Given /the (object-instance) has following values as version:/
+     */
+    public function theObjectInstanceHasFollowingValuesAsVersion(Concrete $object, TableNode $table)
+    {
+        $this->setObjectValuesFromTable($object, $table);
+        $object->saveVersion();
+    }
+
+    private function setObjectValuesFromTable(Concrete $object, TableNode $table)
     {
         $hash = $table->getHash();
 
@@ -634,7 +769,7 @@ final class PimcoreClassContext implements Context
 
                     break;
 
-                case 'href':
+                case 'relation':
                     $object->setValue($row['key'], DataObject::getById($row['value']));
 
                     break;
@@ -690,8 +825,6 @@ final class PimcoreClassContext implements Context
                     break;
             }
         }
-
-        $object->save();
     }
 
     /**
@@ -703,7 +836,7 @@ final class PimcoreClassContext implements Context
     private function addFieldDefinitionToDefinition($definition, $fieldDefinition)
     {
         $definitionUpdater = $this->getUpdater($definition);
-        $definitionUpdater->insertField(json_decode(stripslashes($fieldDefinition)));
+        $definitionUpdater->insertField(json_decode(stripslashes($fieldDefinition), true));
         $definitionUpdater->save();
     }
 

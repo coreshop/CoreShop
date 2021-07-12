@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -16,8 +16,8 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_indexes',
 
-    url: {
-        save: '/admin/coreshop/indices/save'
+    routing: {
+        save: 'coreshop_index_save'
     },
 
     getPanel: function () {
@@ -98,7 +98,9 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
                                     value: this.data.worker,
                                     mode: 'local',
                                     listWidth: 100,
-                                    store: this.parentPanel.typesStore,
+                                    store: {
+                                        type: 'coreshop_index_types'
+                                    },
                                     displayField: 'name',
                                     valueField: 'name',
                                     forceSelection: true,
@@ -109,6 +111,12 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
                                             this.getIndexWorkerConfig(value);
                                         }.bind(this)
                                     }
+                                },
+                                {
+                                    xtype: 'checkbox',
+                                    fieldLabel: t('coreshop_index_last_version'),
+                                    name: 'indexLastVersion',
+                                    checked: this.data.indexLastVersion
                                 }
                             ]
                         }
@@ -127,7 +135,6 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
 
     getIndexFields: function () {
         this.fieldsPanel = new coreshop.index.fields(this.data, this.data.class);
-
         this.indexFields = new Ext.panel.Panel({
             iconCls: 'coreshop_icon_indexes_fields',
             title: t('coreshop_indexes_fields'),
@@ -180,6 +187,15 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
         saveData['columns'] = this.fieldsPanel.getData();
 
         return saveData;
+    },
+
+    postSave: function (res) {
+        if (res.success) {
+            if (res.data.class) {
+                this.fieldsPanel.setClass(res.data.class);
+                this.fieldsPanel.reload();
+            }
+        }
     },
 
     isValid: function () {

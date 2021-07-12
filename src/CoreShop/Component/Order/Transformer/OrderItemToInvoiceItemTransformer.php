@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Transformer;
 
@@ -23,29 +25,13 @@ use Webmozart\Assert\Assert;
 
 class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerInterface
 {
-    /**
-     * @var ObjectServiceInterface
-     */
-    private $objectService;
+    private ObjectServiceInterface $objectService;
+    private string $pathForItems;
+    private TransformerEventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var string
-     */
-    private $pathForItems;
-
-    /**
-     * @var TransformerEventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param ObjectServiceInterface              $objectService
-     * @param string                              $pathForItems
-     * @param TransformerEventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         ObjectServiceInterface $objectService,
-        $pathForItems,
+        string $pathForItems,
         TransformerEventDispatcherInterface $eventDispatcher
     ) {
         $this->objectService = $objectService;
@@ -53,9 +39,6 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform(OrderDocumentInterface $invoice, OrderItemInterface $orderItem, OrderDocumentItemInterface $invoiceItem, $quantity, $options = [])
     {
         /**
@@ -87,11 +70,11 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $invoiceItem->setOrderItem($orderItem);
         $invoiceItem->setQuantity($quantity);
 
-        $invoiceItem->setTotal($orderItem->getItemPrice(true) * $quantity, true);
-        $invoiceItem->setTotal($orderItem->getItemPrice(false) * $quantity, false);
+        $invoiceItem->setTotal((int)($orderItem->getItemPrice(true) * $quantity), true);
+        $invoiceItem->setTotal((int)($orderItem->getItemPrice(false) * $quantity), false);
 
-        $invoiceItem->setBaseTotal($orderItem->getBaseItemPrice(true) * $quantity, true);
-        $invoiceItem->setBaseTotal($orderItem->getBaseItemPrice(false) * $quantity, false);
+        $invoiceItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(true) * $quantity), true);
+        $invoiceItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(false) * $quantity), false);
 
         VersionHelper::useVersioning(function () use ($invoiceItem) {
             $invoiceItem->save();

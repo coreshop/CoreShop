@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -35,13 +37,7 @@ trait ConditionFormTrait
         Assert::same($class, $this->getConditionFormRegistry()->get($type, 'default'));
     }
 
-    /**
-     * @param string $type
-     * @param mixed  $data
-     *
-     * @return ConditionInterface
-     */
-    protected function createConditionWithForm($type, $data)
+    protected function createConditionWithForm(string $type, mixed $data): ConditionInterface
     {
         $form = $this->getFormFactory()->createNamed('', $this->getConditionFormClass());
 

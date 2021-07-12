@@ -6,13 +6,15 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface CheckoutStepInterface
@@ -20,43 +22,36 @@ interface CheckoutStepInterface
     /**
      * @return string
      */
-    public function getIdentifier();
+    public function getIdentifier(): string;
 
     /**
      * Determines if this step should be forward if valid.
      *
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      *
      * @return bool
      */
-    public function doAutoForward(CartInterface $cart);
-
-    /**
-     * Check if Checkout Step is valid.
-     *
-     * @param CartInterface $cart
-     *
-     * @return bool
-     */
-    public function validate(CartInterface $cart);
+    public function doAutoForward(OrderInterface $cart): bool;
 
     /**
      * Commit Step from Request (validate form or whatever).
      *
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      * @param Request       $request
+     *
+     * @return bool
      *
      * @throws CheckoutException
      */
-    public function commitStep(CartInterface $cart, Request $request);
+    public function commitStep(OrderInterface $cart, Request $request): bool;
 
     /**
      * Prepare Checkout Step.
      *
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      * @param Request       $request
      *
      * @return array $params for the view
      */
-    public function prepareStep(CartInterface $cart, Request $request);
+    public function prepareStep(OrderInterface $cart, Request $request): array;
 }

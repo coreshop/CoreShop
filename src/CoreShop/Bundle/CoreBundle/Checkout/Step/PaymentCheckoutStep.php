@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
@@ -18,80 +20,46 @@ use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\OptionalCheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
+    private CartManagerInterface $cartManager;
 
-    /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
-
-    /**
-     * @var CartManagerInterface
-     */
-    private $cartManager;
-
-    /**
-     * @param FormFactoryInterface  $formFactory
-     * @param StoreContextInterface $storeContext
-     * @param CartManagerInterface  $cartManager
-     */
     public function __construct(
         FormFactoryInterface $formFactory,
-        StoreContextInterface $storeContext,
         CartManagerInterface $cartManager
     ) {
         $this->formFactory = $formFactory;
-        $this->storeContext = $storeContext;
         $this->cartManager = $cartManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'payment';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRequired(CartInterface $cart)
+    public function isRequired(OrderInterface $cart): bool
     {
         return $cart->getTotal() > 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function doAutoForward(CartInterface $cart)
+    public function doAutoForward(OrderInterface $cart): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate(CartInterface $cart)
+    public function validate(OrderInterface $cart): bool
     {
         return $cart->hasItems() && $cart->getPaymentProvider() instanceof PaymentProviderInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function commitStep(CartInterface $cart, Request $request)
+    public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $cart);
 
@@ -102,33 +70,24 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
                 $this->cartManager->persistCart($cart);
 
                 return true;
-            } else {
-                throw new CheckoutException('Payment Form is invalid', 'coreshop.ui.error.coreshop_checkout_payment_form_invalid');
             }
+
+            throw new CheckoutException('Payment Form is invalid', 'coreshop.ui.error.coreshop_checkout_payment_form_invalid');
         }
 
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareStep(CartInterface $cart, Request $request)
+    public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return [
             'form' => $this->createForm($request, $cart)->createView(),
         ];
     }
 
-    /**
-     * @param Request       $request
-     * @param CartInterface $cart
-     *
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function createForm(Request $request, CartInterface $cart)
+    private function createForm(Request $request, OrderInterface $cart): FormInterface
     {
-        $form = $this->formFactory->createNamed('', PaymentType::class, $cart, [
+        $form = $this->formFactory->createNamed('coreshop', PaymentType::class, $cart, [
             'payment_subject' => $cart,
         ]);
 

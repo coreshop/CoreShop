@@ -13,14 +13,14 @@
                                 {{ 'coreshop.ui.home'|trans }}
                             </a>
                         </li>
-                        {{ render(controller('coreshop.frontend.controller.customer:headerAction')) }}
+                        {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CustomerController::headerAction')) }}
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ coreshop_path('coreshop_wishlist_summary') }}">
                                 {{ 'coreshop.ui.wishlist'|trans }}
                             </a>
-                            {{ render(controller('coreshop.frontend.controller.currency:widgetAction')) }}
+                            {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CurrencyController::widgetAction')) }}
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -42,24 +42,22 @@
     <div class="main-header">
         <div class="container">
             <div class="row">
-                {{ render(controller('coreshop.frontend.controller.search:widgetAction')) }}
+                {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\SearchController::widgetAction')) }}
 
                 <div class="col-md-6">
                     <div id="logo">
                         <a href="{{ coreshop_path('coreshop_index') }}">
-                            <img src="/bundles/coreshopfrontend/static/images/logo.png" title="CoreShop" alt="CoreShop"
-                                 class="img-fluid"/>
-                            {{ 'Core<span class="black">Shop</span>' }}
+                            <img src="/bundles/coreshopfrontend/static/images/logo-full.svg" title="CoreShop" alt="CoreShop" class="img-fluid" width="300px"/>
                         </a>
                     </div>
                 </div>
 
                 <div class="col-md-3 p-sm-2">
-                    {{ render(controller('coreshop.frontend.controller.cart:widgetAction')) }}
+                    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CartController::widgetAction')) }}
                 </div>
             </div>
         </div>
     </div>
 
-    {{ render(controller('coreshop.frontend.controller.category:menuAction')) }}
+    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CategoryController::menuAction')) }}
 </header>

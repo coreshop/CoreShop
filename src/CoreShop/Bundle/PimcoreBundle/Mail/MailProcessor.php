@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\Mail;
 
@@ -16,42 +18,40 @@ use CoreShop\Bundle\PimcoreBundle\Event\MailEvent;
 use CoreShop\Bundle\PimcoreBundle\Events;
 use CoreShop\Component\Pimcore\Mail;
 use Pimcore\Model\Document\Email;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-final class MailProcessor implements MailProcessorInterface
+final class MailProcessor implements Mail\MailProcessorInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, $attachments = [], $params = [])
+    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, array $attachments = [], array $params = []): bool
     {
         $mailHasBeenSent = false;
 
         $mail = new Mail();
 
         foreach ($attachments as $attachment) {
-            if ($attachment instanceof \Swift_Mime_SimpleMimeEntity) {
-                $mail->attach($attachment);
+            if (is_array($attachment)) {
+                $mail->attach($attachment['body'], $attachment['name'], $attachment['content-type']);
             }
         }
 
         $mail->setDocument($emailDocument);
         $mail->setParams($params);
         $mail->addRecipients($recipients);
-        $mail->setEnableLayoutOnPlaceholderRendering(false);
+
+        //BC Remove with 3.1
+        if (method_exists($mail, 'setEnableLayoutOnPlaceholderRendering')) {
+            $mail->setEnableLayoutOnPlaceholderRendering(false);
+        }
+        elseif (method_exists($mail, 'setEnableLayoutOnRendering')) {
+            $mail->setEnableLayoutOnRendering(false);
+        }
 
         $mailEvent = new MailEvent(
             $subject,
@@ -60,14 +60,14 @@ final class MailProcessor implements MailProcessorInterface
             $params
         );
 
-        $this->eventDispatcher->dispatch(Events::PRE_MAIL_SEND, $mailEvent);
+        $this->eventDispatcher->dispatch($mailEvent, Events::PRE_MAIL_SEND);
 
         if ($mailEvent->getShouldSendMail()) {
             $mail->send();
             $mailHasBeenSent = true;
         }
 
-        $this->eventDispatcher->dispatch(Events::POST_MAIL_SEND, $mailEvent);
+        $this->eventDispatcher->dispatch($mailEvent, Events::POST_MAIL_SEND);
 
         return $mailHasBeenSent;
     }

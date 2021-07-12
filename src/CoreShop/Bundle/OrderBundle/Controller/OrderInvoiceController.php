@@ -6,14 +6,17 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
@@ -26,6 +29,7 @@ use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -35,7 +39,7 @@ class OrderInvoiceController extends PimcoreController
     /**
      * @param Request $request
      *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function getInvoiceAbleItemsAction(Request $request)
     {
@@ -75,7 +79,7 @@ class OrderInvoiceController extends PimcoreController
 
                 $event = new GenericEvent($orderItem, $itemToReturn);
 
-                $this->get('event_dispatcher')->dispatch('coreshop.order.invoice.prepare_invoice_able', $event);
+                $this->get('event_dispatcher')->dispatch($event, 'coreshop.order.invoice.prepare_invoice_able');
 
                 $itemsToReturn[] = $event->getArguments();
             }
@@ -87,7 +91,7 @@ class OrderInvoiceController extends PimcoreController
     /**
      * @param Request $request
      *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function createInvoiceAction(Request $request)
     {
@@ -102,7 +106,7 @@ class OrderInvoiceController extends PimcoreController
                 return $this->viewHandler->handle(
                     [
                         'success' => false,
-                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form),
+                        'message' => $this->get(ErrorSerializer::class)->serializeErrorFromHandledForm($form),
                     ]
                 );
             }

@@ -1,0 +1,22 @@
+imports:
+    - ui_pimcore/login.yml
+    - ui_pimcore/menu.yml
+    - ui_pimcore/carrier.yml
+    - ui_pimcore/cart.yml
+    - ui_pimcore/cart_price_rule.yml
+    - ui_pimcore/country.yml
+    - ui_pimcore/currency.yml
+    - ui_pimcore/exchange_rate.yml
+    - ui_pimcore/filter.yml
+    - ui_pimcore/index.yml
+    - ui_pimcore/notification_rule.yml
+    - ui_pimcore/order.yml
+    - ui_pimcore/payment_provider.yml
+    - ui_pimcore/product_price_rule.yml
+    - ui_pimcore/product_unit.yml
+    - ui_pimcore/quote.yml
+    - ui_pimcore/shipping_rule.yml
+    - ui_pimcore/state.yml
+    - ui_pimcore/tax_rate.yml
+    - ui_pimcore/tax_rule.yml
+    - ui_pimcore/zone.yml

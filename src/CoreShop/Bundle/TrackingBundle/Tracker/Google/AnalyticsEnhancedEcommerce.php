@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
@@ -20,48 +22,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 {
-    /**
-     * @var TrackerInterface
-     */
-    public $tracker;
+    public TrackerInterface $tracker;
+    public ConfigResolverInterface $config;
+    protected array $dependencies = ['ec'];
+    protected bool $dependenciesIncluded = false;
 
-    /**
-     * @var ConfigResolverInterface
-     */
-    public $config;
-
-    /**
-     * Dependencies to include before any tracking actions.
-     *
-     * @var array
-     */
-    protected $dependencies = ['ec'];
-
-    /**
-     * @var bool
-     */
-    protected $dependenciesIncluded = false;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTracker(TrackerInterface $tracker)
+    public function setTracker(TrackerInterface $tracker): void
     {
         $this->tracker = $tracker;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfigResolver(ConfigResolverInterface $config)
+    public function setConfigResolver(ConfigResolverInterface $config): void
     {
         $this->config = $config;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -70,10 +46,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackProduct($product)
+    public function trackProduct($product): void
     {
         if ($this->isGlobalSiteTagMode() === true) {
             return;
@@ -89,10 +62,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackProductImpression($product)
+    public function trackProductImpression($product): void
     {
         if ($this->isGlobalSiteTagMode() === true) {
             return;
@@ -108,10 +78,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCartAdd($cart, $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         if ($this->isGlobalSiteTagMode() === true) {
             return;
@@ -121,10 +88,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $this->trackCartAction($product, 'add', $quantity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCartRemove($cart, $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         if ($this->isGlobalSiteTagMode() === true) {
             return;
@@ -134,10 +98,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $this->trackCartAction($product, 'remove', $quantity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
         if ($this->isGlobalSiteTagMode() === true) {
             return;
@@ -150,9 +111,9 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $parameters['calls'] = [];
         $parameters['actionData'] = [];
 
-        if (!is_null($stepIdentifier) || !is_null($checkoutOption)) {
+        if (null !== $stepIdentifier || null !== $checkoutOption) {
             $actionData = ['step' => $stepIdentifier];
-            if (!is_null($checkoutOption)) {
+            if (null !== $checkoutOption) {
                 $actionData['option'] = $checkoutOption;
             }
 
@@ -163,10 +124,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutComplete($order)
+    public function trackCheckoutComplete($order): void
     {
         if ($this->isGlobalSiteTagMode() === true) {
             return;
@@ -192,10 +150,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function trackCartAction($product, $action, $quantity = 1)
+    protected function trackCartAction($product, $action, float $quantity = 1): void
     {
         if ($this->isGlobalSiteTagMode() === true) {
             return;
@@ -214,14 +169,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    /**
-     * Transform ActionData into classic analytics data array.
-     *
-     * @param array $actionData
-     *
-     * @return array
-     */
-    protected function transformOrder($actionData)
+    protected function transformOrder(array $actionData): array
     {
         return [
             'id' => $actionData['id'],
@@ -233,14 +181,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         ];
     }
 
-    /**
-     * Transform product action into enhanced data object.
-     *
-     * @param array $item
-     *
-     * @return array
-     */
-    protected function transformProductAction($item)
+    protected function transformProductAction(array $item): array
     {
         return $this->filterNullValues([
             'id' => $item['id'],
@@ -255,12 +196,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         ]);
     }
 
-    /**
-     * @param array $items
-     *
-     * @return array
-     */
-    protected function buildCheckoutCalls(array $items)
+    protected function buildCheckoutCalls(array $items): array
     {
         $calls = [];
         foreach ($items as $item) {
@@ -270,10 +206,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         return $calls;
     }
 
-    /**
-     * Makes sure dependencies are included once before any call.
-     */
-    protected function ensureDependencies($currency)
+    protected function ensureDependencies($currency): void
     {
         if ($this->dependenciesIncluded || empty($this->dependencies)) {
             return;
@@ -289,16 +222,13 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $this->dependenciesIncluded = true;
     }
 
-    /**
-     * @return bool
-     */
-    protected function isGlobalSiteTagMode()
+    protected function isGlobalSiteTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();
         if ($config === false) {
             return false;
         }
 
-        return $config->get('gtagcode');
+        return (bool) $config->get('gtagcode');
     }
 }

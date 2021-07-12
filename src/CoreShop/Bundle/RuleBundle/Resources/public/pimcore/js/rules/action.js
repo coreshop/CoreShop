@@ -5,16 +5,26 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
 
 pimcore.registerNS('coreshop.rules.action');
 coreshop.rules.action = Class.create({
+    dirty: false,
 
     initialize: function (actions) {
         this.actions = actions;
+        this.dirty = false;
+    },
+
+    reload: function (actions) {
+        this.actionsContainer.removeAll();
+
+        Ext.each(actions, function(action) {
+            this.addAction(action.type, action, false);
+        }.bind(this));
     },
 
     getLayout: function () {
@@ -25,13 +35,13 @@ coreshop.rules.action = Class.create({
         // show only defined actions
         Ext.each(this.actions, function (action) {
 
-            if (action == 'abstract')
+            if (action === 'abstract')
                 return;
 
             addMenu.push({
                 iconCls: 'coreshop_rule_icon_action_' + action,
                 text: t('coreshop_action_' + action),
-                handler: _this.addAction.bind(_this, action, null)
+                handler: _this.addAction.bind(_this, action, null, false)
             });
         });
 
@@ -51,18 +61,26 @@ coreshop.rules.action = Class.create({
         return this.actionsContainer;
     },
 
+    setDirty: function(dirty) {
+        this.dirty = dirty;
+    },
+
     destroy: function () {
         if (this.actionsContainer) {
             this.actionsContainer.destroy();
         }
     },
 
-    addAction: function (type, data) {
+    addAction: function (type, data, dirty) {
         var actionClass = this.getActionClassItem(type);
         var item = new actionClass(this, type, data);
 
         this.actionsContainer.add(item.getLayout());
         this.actionsContainer.updateLayout();
+
+        if (dirty) {
+            this.setDirty(true);
+        }
     },
 
     getActionClassItem: function (type) {
@@ -117,12 +135,14 @@ coreshop.rules.action = Class.create({
                 }
             }
 
-            if (actionClass.data.id) {
-                action['id'] = actionClass.data.id;
+            if (actionClass.id) {
+                action['id'] = actionClass.id;
             }
 
             action['configuration'] = configuration;
             action['type'] = actions[i].xparent.type;
+            action['sort'] = (i + 1);
+
             actionData.push(action);
 
             if (Ext.isFunction(this.prepareAction)) {
@@ -134,6 +154,10 @@ coreshop.rules.action = Class.create({
     },
 
     isDirty: function () {
+        if (this.dirty) {
+            return true;
+        }
+
         if (this.actionsContainer.items) {
             var actions = this.actionsContainer.items.getRange();
             for (var i = 0; i < actions.length; i++) {

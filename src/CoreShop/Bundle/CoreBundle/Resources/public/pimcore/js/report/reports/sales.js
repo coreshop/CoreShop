@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -95,7 +95,8 @@ coreshop.report.reports.sales = Class.create(coreshop.report.abstractStore, {
                     grid: true,
                     minimum: 0,
                     renderer: function(drawing, value, item) {
-                        return Ext.util.Format.number((value/100));
+                        var factor = pimcore.globalmanager.get('coreshop.currency.decimal_factor');
+                        return Ext.util.Format.number((value / factor));
                     }
                 }, {
                     type: 'category',

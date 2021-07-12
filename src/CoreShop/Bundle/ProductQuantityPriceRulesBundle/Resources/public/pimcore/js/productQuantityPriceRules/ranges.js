@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -18,8 +18,10 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
     objectId: null,
     clipboardManager: null,
     pricingBehaviourTypes: [],
+    storeDataChanged: false,
 
     initialize: function (ruleId, objectId, clipboardManager, pricingBehaviourTypes) {
+        this.storeDataChanged = false;
         this.internalTmpId = Ext.id();
         this.ruleId = ruleId;
         this.objectId = objectId;
@@ -129,6 +131,10 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0],
             store = grid.getStore();
 
+        if (this.storeDataChanged === true) {
+            return true;
+        }
+
         if (store.getModifiedRecords().length > 0 || store.getNewRecords().length > 0 || store.getRemovedRecords().length > 0) {
             return true;
         }
@@ -157,9 +163,14 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                 name: 'quantity_range_starting_from',
                 getEditor: function () {
                     return new Ext.form.NumberField({
-                        minValue: 0
+                        minValue: 0,
+                        decimalPrecision: 0,
+                        step: 1,
+                        listeners: {
+                            render: this.onRangeStartingFromRender.bind(this)
+                        }
                     });
-                },
+                }.bind(this),
                 renderer: function (value) {
                     if (value === undefined || value === null) {
                         return '0' + ' ' + t('coreshop_product_quantity_price_rules_quantity_amount');
@@ -217,6 +228,42 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
             },
             {
                 xtype: 'actioncolumn',
+                menuText: t('up'),
+                width: 30,
+                items: [
+                    {
+                        tooltip: t('up'),
+                        icon: '/bundles/pimcoreadmin/img/flat-color-icons/up.svg',
+                        handler: function (grid, rowIndex) {
+                            if (rowIndex > 0) {
+                                var rec = grid.getStore().getAt(rowIndex);
+                                grid.getStore().removeAt(rowIndex);
+                                grid.getStore().insert(rowIndex - 1, [rec]);
+                            }
+                        }.bind(this)
+                    }
+                ]
+            },
+            {
+                xtype: 'actioncolumn',
+                menuText: t('down'),
+                width: 30,
+                items: [
+                    {
+                        tooltip: t('down'),
+                        icon: '/bundles/pimcoreadmin/img/flat-color-icons/down.svg',
+                        handler: function (grid, rowIndex) {
+                            if (rowIndex < (grid.getStore().getCount() - 1)) {
+                                var rec = grid.getStore().getAt(rowIndex);
+                                grid.getStore().removeAt(rowIndex);
+                                grid.getStore().insert(rowIndex + 1, [rec]);
+                            }
+                        }.bind(this)
+                    }
+                ]
+            },
+            {
+                xtype: 'actioncolumn',
                 menuText: t('delete'),
                 width: 40,
                 items: [{
@@ -240,25 +287,81 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
             items: [
                 {
                     xtype: 'grid',
+                    enableDragDrop: true,
+                    ddGroup: 'element',
                     name: 'price-rule-ranges-grid',
                     frame: false,
                     autoScroll: true,
                     store: new Ext.data.Store({
-                        data: this.adjustRangeStoreData(storeData)
+                        data: this.adjustRangeStoreData(storeData),
+                        listeners: {
+                            add: function () {
+                                this.storeDataChanged = true;
+                            }.bind(this),
+                            remove: function () {
+                                this.storeDataChanged = true;
+                            }.bind(this),
+                            clear: function () {
+                                this.storeDataChanged = true;
+                            }.bind(this),
+                            update: function (store) {
+                                if (store.ignoreDataChanged) {
+                                    return;
+                                }
+                                this.storeDataChanged = true;
+                            }.bind(this)
+                        }
                     }),
                     columnLines: true,
                     stripeRows: true,
                     bodyCls: 'pimcore_editable_grid',
                     trackMouseOver: true,
                     columns: columns,
-                    clicksToEdit: 1,
-                    selModel: Ext.create('Ext.selection.CellModel', {}),
+                    selModel: {
+                        selType: 'rowmodel'
+                    },
                     autoExpandColumn: 'value_col',
                     plugins: [
                         this.generateCellEditing()
                     ],
                     viewConfig: {
-                        forceFit: true
+                        forceFit: true,
+                        markDirty: false,
+                        plugins: {
+                            ptype: 'gridviewdragdrop',
+                            draggroup: 'element'
+                        },
+                        listeners: {
+                            drop: function (node, data, dropRec, dropPosition) {
+                                // this is necessary to avoid endless recursion when lists are sorted via d&d
+                                var panel = this.rangesContainer.up('panel'),
+                                    items, subItems;
+
+                                if (panel && panel.hasOwnProperty('items')) {
+                                    items = panel.items;
+                                }
+
+                                if (items && items.hasOwnProperty('items')) {
+                                    subItems = items.items;
+                                }
+
+                                if (subItems && subItems.length > 0) {
+                                    subItems[0].focus();
+                                }
+
+                            }.bind(this),
+                            // see https://github.com/pimcore/pimcore/issues/979
+                            cellmousedown: function (element, td, cellIndex, record, tr, rowIndex, event) {
+                                var el;
+                                if (event.getTarget()) {
+                                    el = Ext.fly(event.getTarget());
+                                    if (el && el.hasOwnProperty('id')) {
+                                        return false;
+                                    }
+                                }
+                                return true;
+                            }
+                        }
                     },
                     tbar: [
                         {
@@ -312,6 +415,10 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
 
     cellEditingIsAllowed: function (record, currentColumnName) {
         return true;
+    },
+
+    onRangeStartingFromRender: function (field) {
+        // keep it for 3rd party modifiers.
     },
 
     onPriceBehaviourChange: function (field) {

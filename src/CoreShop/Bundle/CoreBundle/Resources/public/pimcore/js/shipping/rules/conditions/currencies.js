@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -16,14 +16,15 @@ coreshop.shippingrule.conditions.currencies = Class.create(coreshop.rules.condit
 
     getForm: function () {
         var me = this;
-        var store = pimcore.globalmanager.get('coreshop_currencies');
 
         var currencies = {
             fieldLabel: t('coreshop_condition_currencies'),
             typeAhead: true,
             listWidth: 100,
             width: 500,
-            store: store,
+            store: {
+                type: 'coreshop_currencies'
+            },
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
@@ -32,15 +33,7 @@ coreshop.shippingrule.conditions.currencies = Class.create(coreshop.rules.condit
             name: 'currencies',
             maxHeight: 400,
             delimiter: false,
-            listeners: {
-                beforerender: function () {
-                    if (!store.isLoaded() && !store.isLoading())
-                        store.load();
-
-                    if (me.data && me.data.currencies)
-                        this.setValue(me.data.currencies);
-                }
-            }
+            value: me.data.currencies
         };
 
         if (this.data && this.data.currencies) {

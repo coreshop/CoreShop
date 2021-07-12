@@ -6,33 +6,26 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Expiration;
 
-use CoreShop\Component\Order\Repository\CartRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 
-final class CartExpiration implements ProposalExpirationInterface
+final class CartExpiration implements OrderExpirationInterface
 {
-    /**
-     * @var CartRepositoryInterface
-     */
-    private $cartRepository;
+    private OrderRepositoryInterface $cartRepository;
 
-    /**
-     * @param CartRepositoryInterface $cartRepository
-     */
-    public function __construct(CartRepositoryInterface $cartRepository)
+    public function __construct(OrderRepositoryInterface $cartRepository)
     {
         $this->cartRepository = $cartRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function expire($days, $params = [])
+    public function expire(int $days, array $params = []): void
     {
         if ($days <= 0) {
             return;

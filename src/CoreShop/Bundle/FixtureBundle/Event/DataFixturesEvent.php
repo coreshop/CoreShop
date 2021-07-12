@@ -6,32 +6,26 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FixtureBundle\Event;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutorInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\Event;
+use Doctrine\Persistence\ObjectManager;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class DataFixturesEvent extends Event
 {
-    /** @var ObjectManager */
-    private $manager;
-
-    /** @var string */
-    private $fixturesType;
+    private ObjectManager $manager;
+    private string $fixturesType;
 
     /** @var callable|null */
     private $logger;
 
-    /**
-     * @param ObjectManager $manager      The entity manager
-     * @param string        $fixturesType The type of data fixtures
-     * @param callable|null $logger       The callback for logging messages
-     */
     public function __construct(ObjectManager $manager, $fixturesType, $logger = null)
     {
         $this->manager = $manager;

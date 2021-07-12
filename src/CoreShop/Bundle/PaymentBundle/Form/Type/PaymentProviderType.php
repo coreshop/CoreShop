@@ -6,13 +6,16 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreAssetChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -21,10 +24,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class PaymentProviderType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('identifier', TextType::class)
@@ -34,15 +34,15 @@ final class PaymentProviderType extends AbstractResourceType
             ->add('position', IntegerType::class, [
                 'required' => false,
             ])
+            ->add('logo', PimcoreAssetChoiceType::class, [
+                'required' => false
+            ])
             ->add('active', CheckboxType::class, [
                 'required' => false,
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_payment_provider';
     }

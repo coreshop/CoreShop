@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -45,9 +45,16 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
      */
     public $embeddedClassLayout;
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getObjectsAllowed()
+    {
+        return true;
+    }
+
+    public function getClasses()
+    {
+        return [['classes' => $this->getEmbeddedClassName()]];
+    }
+
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         if (!is_array($data)) {
@@ -56,6 +63,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
 
         $returnData = [];
 
+        $i = 0;
         foreach ($data as $embeddedObject) {
             if (!$embeddedObject instanceof DataObject\Concrete) {
                 continue;
@@ -72,16 +80,20 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
 
             $objectData['id'] = $embeddedObject->getId();
             $objectData['general'] = [
-                'index' => $embeddedObject->getIndex(),
+                'index' => ++$i,
+                'o_published' => $embeddedObject->getPublished(),
+                'o_key' => $embeddedObject->getKey(),
+                'o_id' => $embeddedObject->getId(),
+                'o_modificationDate' => $embeddedObject->getModificationDate(),
+                'o_creationDate' => $embeddedObject->getCreationDate(),
+                'o_classId' => $embeddedObject->getClassId(),
+                'o_className' => $embeddedObject->getClassName(),
+                'o_locked' => $embeddedObject->getLocked(),
+                'o_type' => $embeddedObject->getType(),
+                'o_parentId' => $embeddedObject->getParentId(),
+                'o_userOwner' => $embeddedObject->getUserOwner(),
+                'o_userModification' => $embeddedObject->getUserModification(),
             ];
-
-            $allowedKeys = ['o_published', 'o_key', 'o_id', 'o_modificationDate', 'o_creationDate', 'o_classId', 'o_className', 'o_locked', 'o_type', 'o_parentId', 'o_userOwner', 'o_userModification'];
-
-            foreach (get_object_vars($embeddedObject) as $key => $value) {
-                if (strstr($key, 'o_') && in_array($key, $allowedKeys)) {
-                    $objectData['general'][$key] = $value;
-                }
-            }
 
             $returnData[] = $objectData;
         }
@@ -89,9 +101,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         return $returnData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (!is_array($data)) {
@@ -191,9 +200,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preGetData($object, $params = [])
     {
         $data = $object->getObjectVar($this->getName());
@@ -206,9 +212,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save($object, $params = [])
     {
         if (!$object instanceof DataObject\Concrete) {
@@ -241,10 +244,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         parent::save($object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function checkValidity($data, $omitMandatoryCheck = false)
+    public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
     {
         if (!$omitMandatoryCheck and $this->getMandatory() and empty($data)) {
             throw new Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
@@ -267,9 +267,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         if (!is_array($data) || count($data) === 0) {
@@ -426,25 +423,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         return null;
     }
 
-    /**
-     * @return int
-     */
-    public function getMaxItems()
-    {
-        return $this->maxItems;
-    }
-
-    /**
-     * @param int $maxItems
-     */
-    public function setMaxItems($maxItems)
-    {
-        $this->maxItems = $maxItems;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getLazyLoading()
     {
         return false;

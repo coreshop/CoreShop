@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject\Grid;
 
@@ -20,25 +22,13 @@ interface GridFilterInterface
      * The name of filter action.
      * This value will be translated via backend translator,
      * so it's good practice to choose a symfony standard translation keys like "coreshop.grid.filter.your_filter_name".
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
-    /**
-     * @param DataObject\Listing $list
-     * @param array              $context
-     *
-     * @return DataObject\Listing
-     */
-    public function filter(DataObject\Listing $list, array $context);
+    public function filter(DataObject\Listing $list, array $context): DataObject\Listing;
 
     /**
      * Define if filter is valid for $type.
-     *
-     * @param string $listType
-     *
-     * @return bool
      */
-    public function supports($listType);
+    public function supports(string $listType): bool;
 }

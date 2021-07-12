@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,98 +18,33 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, UserInterface, EquatableInterface, LocaleAwareInterface
+interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, LocaleAwareInterface
 {
-    const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
-    const CORESHOP_ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    public function getSalutation(): ?string;
 
-    /**
-     * @return string
-     */
-    public function getSalutation();
+    public function setSalutation(?string $salutation);
 
-    /**
-     * @param string $salutation
-     */
-    public function setSalutation($salutation);
+    public function getFirstname(): ?string;
 
-    /**
-     * @return string
-     */
-    public function getFirstname();
+    public function setFirstname(?string $firstname);
 
-    /**
-     * @param string $firstname
-     */
-    public function setFirstname($firstname);
+    public function getLastname(): ?string;
 
-    /**
-     * @return string
-     */
-    public function getLastname();
+    public function setLastname(?string $lastname);
 
-    /**
-     * @param string $lastname
-     */
-    public function setLastname($lastname);
+    public function getGender(): ?string;
 
-    /**
-     * @return string
-     */
-    public function getGender();
+    public function setGender(?string $gender);
 
-    /**
-     * @param string $gender
-     */
-    public function setGender($gender);
+    public function getEmail(): ?string;
 
-    /**
-     * @return string
-     */
-    public function getEmail();
+    public function setEmail(?string $email);
 
-    /**
-     * @param string $email
-     */
-    public function setEmail($email);
+    public function getCustomerGroups(): ?array;
 
-    /**
-     * @return string
-     */
-    public function getPassword();
+    public function setCustomerGroups(?array $customerGroups);
 
-    /**
-     * @param string $password
-     */
-    public function setPassword($password);
+    public function getCompany(): ?CompanyInterface;
 
-    /**
-     * @return string
-     */
-    public function getPasswordResetHash();
-
-    /**
-     * @param string $passwordResetHash
-     */
-    public function setPasswordResetHash($passwordResetHash);
-
-    /**
-     * @return bool
-     */
-    public function getIsGuest();
-
-    /**
-     * @param bool $guest
-     */
-    public function setIsGuest($guest);
-
-    /**
-     * @return CustomerGroupInterface[]
-     */
-    public function getCustomerGroups();
-
-    /**
-     * @param CustomerGroupInterface[] $customerGroups
-     */
-    public function setCustomerGroups($customerGroups);
+    public function setCompany(?CompanyInterface $company);
 }

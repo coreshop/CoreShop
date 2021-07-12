@@ -19,8 +19,8 @@ mysql -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 #########
 ##########################################################################################
 mkdir -p $CS_HOME/var/config
-cp $CS_HOME/etc/_config/system.template.php var/config/system.php
 cp app/config/parameters.example.yml app/config/parameters.yml
+
 
 ##########################################################################################
 #########
@@ -29,7 +29,7 @@ cp app/config/parameters.example.yml app/config/parameters.yml
 ##########################################################################################
 composer config minimum-stability dev
 composer config prefer-stable true
-COMPOSER_MEMORY_LIMIT=-1 composer req pimcore/pimcore:$PIMCORE_VERSION symfony/symfony:$SYMFONY_VERSION --no-interaction --no-scripts --no-update
+COMPOSER_MEMORY_LIMIT=-1 composer req pimcore/pimcore:$PIMCORE_VERSION --no-interaction --no-scripts --no-update
 COMPOSER_MEMORY_LIMIT=-1 composer install -o --no-interaction
 
 ##########################################################################################

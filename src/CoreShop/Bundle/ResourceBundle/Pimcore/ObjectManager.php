@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,42 +14,26 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
 use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject\Concrete;
-use Pimcore\Model\Element\ElementInterface;
 use Webmozart\Assert\Assert;
 
-final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
+final class ObjectManager implements \Doctrine\Persistence\ObjectManager
 {
-    /**
-     * @var array
-     */
-    private $repositories = [];
+    private array $repositories = [];
+    private array $modelsToUpdate = [];
+    private array $modelsToInsert = [];
+    private array $modelsToRemove = [];
 
     /**
-     * @var array
-     */
-    private $modelsToUpdate = [];
-
-    /**
-     * @var array
-     */
-    private $modelsToInsert = [];
-
-    /**
-     * @var array
-     */
-    private $modelsToRemove = [];
-
-    /**
-     * {@inheritdoc}
+     * @return Concrete|null
      */
     public function find($className, $id)
     {
+        /**
+         * @var Concrete $className
+         */
         return $className::getById($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function persist($resource)
     {
         /**
@@ -67,9 +51,6 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove($resource)
     {
         $id = $this->getResourceId($resource);
@@ -84,17 +65,11 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function merge($object)
     {
-        //TODO:
+        throw new \InvalidArgumentException('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function clear($objectName = null)
     {
         if (null === $objectName) {
@@ -116,25 +91,16 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function detach($object)
     {
-        //TODO:
+        throw new \InvalidArgumentException('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function refresh($object)
     {
-        //TODO:
+        throw new \InvalidArgumentException('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function flush()
     {
         foreach ($this->modelsToRemove as $className => $classTypeModels) {
@@ -162,9 +128,6 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         $this->modelsToRemove = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRepository($className)
     {
         if (!array_key_exists($className, $this->repositories)) {
@@ -176,22 +139,22 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
 
     public function getClassMetadata($className)
     {
-        // TODO
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     public function getMetadataFactory()
     {
-        // TODO
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     public function initializeObject($obj)
     {
-        // TODO
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     public function contains($object)
     {
-        // TODO
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     /**
@@ -204,7 +167,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param string $resource
+     * @param object $resource
      *
      * @return int
      */
@@ -219,8 +182,9 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         return $id;
     }
 
+
     /**
-     * @param string $resource
+     * @param object $resource
      *
      * @return string
      */
@@ -233,23 +197,5 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         }
 
         return $className;
-    }
-
-    /**
-     * @param string $resource
-     *
-     * @return bool
-     */
-    private function isResourceNew($resource)
-    {
-        if ($resource instanceof ElementInterface) {
-            return is_null($resource->getId()) || $resource->getId() === 0;
-        }
-
-        if (method_exists($resource, 'getId')) {
-            return is_null($resource->getId()) || $resource->getId() === 0;
-        }
-
-        return true;
     }
 }

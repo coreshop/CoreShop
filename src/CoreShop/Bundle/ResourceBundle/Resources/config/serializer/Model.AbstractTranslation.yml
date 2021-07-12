@@ -1,0 +1,7 @@
+CoreShop\Component\Resource\Model\AbstractTranslation:
+    exclusion_policy: ALL
+    xml_root_name: action
+    properties:
+        locale:
+            type: string
+            groups: [Version]

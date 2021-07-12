@@ -6,13 +6,15 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Document;
 
-use Pimcore\Model\Document\Tag\TagInterface;
+use Pimcore\Model\Document\Editable\EditableInterface;
 
 interface DocumentTagFactoryInterface
 {
@@ -20,7 +22,7 @@ interface DocumentTagFactoryInterface
      * @param string $type
      * @param array  $params
      *
-     * @return TagInterface
+     * @return EditableInterface
      */
-    public function create($type, $params);
+    public function create(string $type, array $params): EditableInterface;
 }

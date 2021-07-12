@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Pimcore\Repository;
 
@@ -19,14 +21,12 @@ use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface, ProductVariantRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findLatestByStore(StoreInterface $store, $count = 8)
+    public function findLatestByStore(StoreInterface $store, int $count = 8): array
     {
         $conditions = [
             ['condition' => 'active = ?', 'variable' => 1],
@@ -36,16 +36,13 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         return $this->findBy($conditions, ['o_creationDate DESC'], $count);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllVariants(ProductInterface $product, $recursive = true)
+    public function findAllVariants(ProductInterface $product, bool $recursive = true): array
     {
         $list = $this->getList();
         $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
 
         if ($recursive) {
-            $list->setCondition('o_path LIKE ?', [$product->getRealFullPath() . '/%s']);
+            $list->setCondition('o_path LIKE ?', [$product->getRealFullPath() . '/%']);
         } else {
             $list->setCondition('o_parentId =', [$product->getId()]);
         }
@@ -53,34 +50,45 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store)
+    public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
         $list = $this->getList();
         $dao = $list->getDao();
 
-        $db = \Pimcore\Db::get();
-        $query = $db->select()
-            ->from($dao->getTableName(), ['oo_id'])
-            ->where('o_path LIKE ?', $product->getRealFullPath() . '/%')
-            ->where('stores LIKE ?', '%,' . $store->getId() . ',%')
-            ->where('o_type = ?', 'variant');
+        $query = $this->connection->createQueryBuilder()
+            ->select()
+            ->from($dao->getTableName())
+            ->select('oo_id')
+            ->where('o_path LIKE :path')
+            ->andWhere('stores LIKE :stores')
+            ->andWhere('o_type = :variant')
+            ->setParameter('path', $product->getRealFullPath() . '/%')
+            ->setParameter('stores', '%,' . $store->getId() . ',%')
+            ->setParameter('variant', 'variant');
+
 
         $variantIds = [];
 
-        foreach ($query->execute()->fetchAll() as $column) {
+        foreach ($query->execute()->fetchAllAssociative() as $column) {
             $variantIds[] = $column['oo_id'];
         }
 
         return $variantIds;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProducts($options = [])
+    public function getProducts(array $options = []): array
+    {
+        $list = $this->getProductsListing($options);
+
+        /**
+         * @var ProductInterface[] $products
+         */
+        $products = $list->load();
+
+        return $products;
+    }
+
+    public function getProductsListing(array $options = []): Listing
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -102,8 +110,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $resolver->setAllowedTypes('order_key_quote', 'bool');
         $resolver->setAllowedTypes('order', 'string');
         $resolver->setAllowedTypes('object_types', ['null', 'array']);
-        $resolver->setAllowedTypes('return_type', 'string');
-        $resolver->setAllowedValues('return_type', ['objects', 'list']);
         $resolver->setAllowedValues('object_types', function ($value) {
             $valid = [
                 null,
@@ -111,9 +117,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
                 AbstractObject::OBJECT_TYPE_OBJECT,
                 AbstractObject::OBJECT_TYPE_VARIANT,
             ];
-            $isvalid = $value === null || !array_diff($value, $valid);
-
-            return $isvalid;
+            return $value === null || !array_diff($value, $valid);
         });
 
         $listOptions = $resolver->resolve($options);
@@ -148,6 +152,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $list->setOrderKey($listOptions['order_key'], $listOptions['order_key_quote']);
         $list->setOrder($listOptions['order']);
 
-        return $listOptions['return_type'] === 'objects' ? $list->load() : $list;
+        return $list;
     }
 }

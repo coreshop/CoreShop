@@ -1,18 +1,18 @@
 imports:
-    - { resource: "services/form.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/form.yml }
 
 services:
     _defaults:
         public: true
 
-    coreshop.configuration.service:
-        class: CoreShop\Component\Configuration\Service\ConfigurationService
+    CoreShop\Component\Configuration\Service\ConfigurationServiceInterface: '@CoreShop\Component\Configuration\Service\ConfigurationService'
+    CoreShop\Component\Configuration\Service\ConfigurationService:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@coreshop.repository.configuration'
             - '@coreshop.factory.configuration'
 
-    coreshop.jms_serializer.handler.object:
-        class: CoreShop\Component\Configuration\Serialization\ObjectHandler
+    CoreShop\Bundle\ConfigurationBundle\Serialization\ObjectHandler:
         tags:
           - { name: jms_serializer.handler, type: object, direction: serialization, format: json, method: serializeRelation }

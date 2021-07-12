@@ -2,23 +2,22 @@ services:
     _defaults:
         public: true
 
-    coreshop.order.renderer.pdf:
-        class: CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf
+    CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface: '@CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf'
+    CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf:
         arguments:
             - '%kernel.cache_dir%'
             - '%kernel.project_dir%'
 
-    coreshop.renderer.order.pdf:
-        class: CoreShop\Bundle\OrderBundle\Renderer\OrderDocumentPdfRenderer
+    coreshop.renderer.order.pdf: '@CoreShop\Bundle\OrderBundle\Renderer\OrderDocumentPdfRenderer'
+    CoreShop\Bundle\OrderBundle\Renderer\OrderDocumentPdfRenderer:
         arguments:
             - '@fragment.renderer.inline'
             - '@event_dispatcher'
-            - '@coreshop.order.renderer.pdf'
-            - '@coreshop.theme.helper'
+            - '@CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface'
 
-    coreshop.renderer.order.pdf.asset:
-        class: CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer
+    CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer:
         decorates: coreshop.renderer.order.pdf
         arguments:
-            - '@coreshop.renderer.order.pdf.asset.inner'
+            - '@CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer.inner'
             - '%kernel.environment%'

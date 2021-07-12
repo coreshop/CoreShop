@@ -6,49 +6,30 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\NotificationRuleListenerInterface;
-use CoreShop\Bundle\NotificationBundle\Events;
+use CoreShop\Behat\Service\Setup;
+use CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListenerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class CoreShopSetupContext implements Context
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
+    private NotificationRuleListenerInterface $notificationRuleListener;
 
-    /**
-     * @var NotificationRuleListenerInterface
-     */
-    private $notificationRuleListener;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param EntityManagerInterface            $entityManager
-     * @param NotificationRuleListenerInterface $notificationRuleListener
-     * @param EventDispatcherInterface          $eventDispatcher
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
-        NotificationRuleListenerInterface $notificationRuleListener,
-        EventDispatcherInterface $eventDispatcher
+        NotificationRuleListenerInterface $notificationRuleListener
     ) {
         $this->entityManager = $entityManager;
         $this->notificationRuleListener = $notificationRuleListener;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -60,7 +41,7 @@ final class CoreShopSetupContext implements Context
             return;
         }
 
-        \CoreShop\Test\Setup::setupCoreShop();
+        Setup::setupCoreShop();
     }
 
     /**
@@ -93,12 +74,5 @@ final class CoreShopSetupContext implements Context
     public function clearNotificationRuleListener()
     {
         $this->notificationRuleListener->clear();
-
-        $function = function (GenericEvent $event) {
-            $this->notificationRuleListener->applyNewFired($event->getSubject());
-        };
-
-        $this->eventDispatcher->removeListener(Events::PRE_APPLY, $function);
-        $this->eventDispatcher->addListener(Events::PRE_APPLY, $function);
     }
 }

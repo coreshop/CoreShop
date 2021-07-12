@@ -2,6 +2,14 @@
     background: url(../img/notification-rule.svg) center center no-repeat !important;
 }
 
+.coreshop_nav_icon_notification_rule {
+    background: url(../img/notification-rule.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_notification_rule {
+    background: url(../img/notification-rule_white.svg) center center no-repeat !important;
+}
+
 .coreshop_rule_icon_action_mail {
     background: url(../img/mail.svg) center center no-repeat !important;
 }

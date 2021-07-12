@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -16,8 +16,8 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_notification_rule',
 
-    url: {
-        save: '/admin/coreshop/notification_rules/save'
+    routing: {
+        save: 'coreshop_notification_rule_save'
     },
 
     getPanel: function () {
@@ -141,7 +141,7 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
                 var conditionType = condition.type.replace(type + '.', '');
 
                 if (allowedConditions.indexOf(conditionType) >= 0) {
-                    this.conditions.addCondition(conditionType, condition);
+                    this.conditions.addCondition(conditionType, condition, false);
                 }
             }.bind(this));
         }
@@ -152,7 +152,7 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
                 var actionType = action.type.replace(type + '.', '');
 
                 if (allowedActions.indexOf(actionType) >= 0) {
-                    this.actions.addAction(actionType, action);
+                    this.actions.addAction(actionType, action, false);
                 }
             }.bind(this));
         }

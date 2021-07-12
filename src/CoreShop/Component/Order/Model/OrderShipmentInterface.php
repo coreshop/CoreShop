@@ -6,41 +6,27 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
+
+use Carbon\Carbon;
 
 interface OrderShipmentInterface extends OrderDocumentInterface
 {
-    /**
-     * @return \DateTime
-     */
-    public function getShipmentDate();
+    public function getShipmentDate(): ?Carbon;
 
-    /**
-     * @param \DateTime $shipmentDate
-     */
-    public function setShipmentDate($shipmentDate);
+    public function setShipmentDate(?Carbon $shipmentDate);
 
-    /**
-     * @return string
-     */
-    public function getShipmentNumber();
+    public function getShipmentNumber(): ?string;
 
-    /**
-     * @param string $shipmentNumber
-     */
-    public function setShipmentNumber($shipmentNumber);
+    public function setShipmentNumber(?string $shipmentNumber);
 
-    /**
-     * @return string
-     */
-    public function getTrackingCode();
+    public function getTrackingCode(): ?string;
 
-    /**
-     * @param string $trackingCode
-     */
-    public function setTrackingCode($trackingCode);
+    public function setTrackingCode(?string $trackingCode);
 }

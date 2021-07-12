@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\MenuBundle\DependencyInjection\CompilerPass;
 
@@ -26,9 +28,6 @@ final class MenuBuilderPass implements CompilerPassInterface
 {
     public const MENU_BUILDER_TAG = 'coreshop.menu';
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->has('coreshop.menu.registry')) {
@@ -49,14 +48,15 @@ final class MenuBuilderPass implements CompilerPassInterface
         $map = [];
         foreach ($container->findTaggedServiceIds(self::MENU_BUILDER_TAG) as $id => $attributes) {
             foreach ($attributes as $tag) {
+
                 $definition = $container->findDefinition($id);
 
-                if (!isset($attributes[0]['type'])) {
-                    $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+                if (!isset($tag['type'])) {
+                    $tag['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
                 }
 
-                if (!isset($attributes[0]['menu'])) {
-                    $attributes[0]['menu'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+                if (!isset($tag['menu'])) {
+                    $tag['menu'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
                 }
 
                 $type = $tag['menu'];
@@ -67,16 +67,15 @@ final class MenuBuilderPass implements CompilerPassInterface
                         [MenuBuilderInterface::class, 'menu-' . $type]
                     );
 
-
                     $builderService = new Definition(
                         Builder::class,
-                        [new Reference('knp_menu.factory'), $type, new Reference('coreshop.menu.registry.'.$type)]
+                        [new Reference('knp_menu.factory'), $type, new Reference('coreshop.menu.registry.' . $type)]
                     );
 
-                    $container->setDefinition('coreshop.menu.builder.'.$type, $builderService);
-                    $container->setDefinition('coreshop.menu.registry.'.$type, $registries[$type]);
+                    $container->setDefinition('coreshop.menu.builder.' . $type, $builderService);
+                    $container->setDefinition('coreshop.menu.registry.' . $type, $registries[$type]);
 
-                    $menuBuilders[sprintf('coreshop.%s', $type)] = [new ServiceClosureArgument(new Reference('coreshop.menu.builder.'.$type)), 'createMenu'];
+                    $menuBuilders[sprintf('coreshop.%s', $type)] = [new ServiceClosureArgument(new Reference('coreshop.menu.builder.' . $type)), 'createMenu'];
 
                     $types[] = $type;
                 }

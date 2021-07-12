@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
@@ -22,14 +24,14 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
     use StoreAwareTrait;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
     /**
      * @var int
      */
-    protected $price;
+    protected $price = 0;
 
     /**
      * @var ProductInterface
@@ -46,41 +48,26 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
         $this->productUnitDefinitionPrices = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId(int $id)
     {
         $this->id = $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice()
     {
-        return $this->price;
+        return (int) $this->price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPrice(int $price)
     {
         $this->price = $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice)
     {
         if (!$this->productUnitDefinitionPrices->contains($productUnitDefinitionPrice)) {
@@ -89,9 +76,6 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice)
     {
         if ($this->productUnitDefinitionPrices->contains($productUnitDefinitionPrice)) {
@@ -99,25 +83,16 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProductUnitDefinitionPrices()
     {
         return $this->productUnitDefinitionPrices;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProduct()
     {
         return $this->product;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
@@ -129,5 +104,10 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
     public function __toString()
     {
         return sprintf('Price: %s (Store: %d)', $this->getPrice(), $this->getStore()->getId());
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
     }
 }

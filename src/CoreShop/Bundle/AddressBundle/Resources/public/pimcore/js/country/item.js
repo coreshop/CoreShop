@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -15,8 +15,8 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_country',
 
-    url: {
-        save: '/admin/coreshop/countries/save'
+    routing: {
+        save: 'coreshop_country_save'
     },
 
     getItems: function () {
@@ -79,7 +79,9 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
                 fieldLabel: t('coreshop_country_addressFormat'),
                 xtype: 'textarea',
                 name: 'addressFormat',
-                value: data.addressFormat
+                value: data.addressFormat,
+                width: 500,
+                height: 400
             },
             {
                 xtype: 'tagfield',

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -23,61 +25,23 @@ use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject\ClassDefinition;
 
 final class IndexContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private ClassStorageInterface $classStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $indexFactory;
+    private ServiceRegistryInterface $workerServiceRegistry;
+    private FactoryInterface $indexColumnFactory;
 
-    /**
-     * @var ClassStorageInterface
-     */
-    private $classStorage;
-
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $indexFactory;
-
-    /**
-     * @var RepositoryInterface
-     */
-    private $indexRepository;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $workerServiceRegistry;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $indexColumnFactory;
-
-    /**
-     * @param SharedStorageInterface   $sharedStorage
-     * @param ClassStorageInterface    $classStorage
-     * @param ObjectManager            $objectManager
-     * @param FactoryInterface         $indexFactory
-     * @param RepositoryInterface      $indexRepository
-     * @param ServiceRegistryInterface $workerServiceRegistry
-     * @param FactoryInterface         $indexColumnFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ClassStorageInterface $classStorage,
         ObjectManager $objectManager,
         FactoryInterface $indexFactory,
-        RepositoryInterface $indexRepository,
         ServiceRegistryInterface $workerServiceRegistry,
         FactoryInterface $indexColumnFactory
     ) {
@@ -85,7 +49,6 @@ final class IndexContext implements Context
         $this->classStorage = $classStorage;
         $this->objectManager = $objectManager;
         $this->indexFactory = $indexFactory;
-        $this->indexRepository = $indexRepository;
         $this->workerServiceRegistry = $workerServiceRegistry;
         $this->indexColumnFactory = $indexColumnFactory;
     }
@@ -97,6 +60,15 @@ final class IndexContext implements Context
     public function theSiteHasAIndexForClassWithType($name, ClassDefinition $class, $type)
     {
         $this->createIndex($name, $class->getName(), $type);
+    }
+
+    /**
+     * @Given /the (index) allows version changes$/
+     */
+    public function theIndexAllowsVersionChanges(IndexInterface $index)
+    {
+        $index->setIndexLastVersion(true);
+        $this->saveIndex($index);
     }
 
     /**

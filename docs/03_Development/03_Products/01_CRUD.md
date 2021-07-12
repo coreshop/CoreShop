@@ -1,6 +1,6 @@
 # CoreShop Product
 
-CoreShop uses Pimcore Data Objects to persist Product Information. But, it adds a little wrapper around it to be mire
+CoreShop uses Pimcore Data Objects to persist Product Information. But, it adds a little wrapper around it to be more
 dynamic and configurable. It uses a Factory and Repository Pattern to do that.
 
 ## Create

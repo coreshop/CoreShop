@@ -6,32 +6,25 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 final class CartItemType extends AbstractResourceType
 {
-    /**
-     * @var DataMapperInterface
-     */
-    private $dataMapper;
+    private DataMapperInterface $dataMapper;
 
-    /**
-     * @param string $dataClass
-     * @param array $validationGroups
-     * @param DataMapperInterface $dataMapper
-     */
     public function __construct(
         string $dataClass,
         array $validationGroups,
@@ -42,32 +35,26 @@ final class CartItemType extends AbstractResourceType
         $this->dataMapper = $dataMapper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
 
-            if (!$data instanceof CartItemInterface) {
+            if (!$data instanceof OrderItemInterface) {
                 return;
             }
 
-            $event->getForm()->add('quantity', IntegerType::class, [
-                'attr' => ['min' => 1],
+            $event->getForm()->add('quantity', QuantityType::class, [
+                'html5' => true,
                 'label' => 'coreshop.ui.quantity',
-                'disabled' => $data->getIsGiftItem(),
+                'disabled' => (bool)$data->getIsGiftItem(),
             ]);
         });
 
         $builder->setDataMapper($this->dataMapper);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_cart_item';
     }

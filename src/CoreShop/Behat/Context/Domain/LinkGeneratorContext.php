@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -20,20 +22,9 @@ use Webmozart\Assert\Assert;
 
 final class LinkGeneratorContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private LinkGeneratorInterface $linkGenerator;
 
-    /**
-     * @var LinkGeneratorInterface
-     */
-    private $linkGenerator;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param LinkGeneratorInterface $linkGenerator
-     */
     public function __construct(SharedStorageInterface $sharedStorage, LinkGeneratorInterface $linkGenerator)
     {
         $this->sharedStorage = $sharedStorage;
@@ -46,7 +37,7 @@ final class LinkGeneratorContext implements Context
     public function theGeneratedUrlForObjectShouldBe(Concrete $object, $url)
     {
         $generatedUrl = $this->linkGenerator->generate($object, null, ['_locale' => 'en']);
-        $url = str_replace('%id', $object->getId(), $url);
+        $url = str_replace('%id', (string)$object->getId(), $url);
 
         Assert::eq(
             $generatedUrl,
@@ -65,7 +56,7 @@ final class LinkGeneratorContext implements Context
     public function theGeneratedUrlForObjectWithRouteShouldBe(Concrete $object, $routeName, $url)
     {
         $generatedUrl = $this->linkGenerator->generate($object, $routeName, ['_locale' => 'en']);
-        $url = str_replace('%id', $object->getId(), $url);
+        $url = str_replace('%id', (string)$object->getId(), $url);
 
         Assert::eq(
             $generatedUrl,

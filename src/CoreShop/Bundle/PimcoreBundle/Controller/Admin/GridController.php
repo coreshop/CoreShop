@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
@@ -16,15 +18,11 @@ use CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface;
 use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class GridController extends AdminController
 {
-    /**
-     * @param string $listType
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getGridFiltersAction($listType)
+    public function getGridFiltersAction(string $listType): Response
     {
         $gridFilterRepository = $this->get('coreshop.registry.grid.filter');
         $trans = $this->get('translator');
@@ -45,12 +43,7 @@ class GridController extends AdminController
         return $this->json($services);
     }
 
-    /**
-     * @param string $listType
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getGridActionsAction($listType)
+    public function getGridActionsAction(string $listType): Response
     {
         $gridActionRepository = $this->get('coreshop.registry.grid.action');
         $trans = $this->get('translator');
@@ -71,12 +64,7 @@ class GridController extends AdminController
         return $this->json($services);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function applyGridAction(Request $request)
+    public function applyGridAction(Request $request): Response
     {
         $requestedIds = $request->request->get('ids');
         $actionId = $request->request->get('actionId');

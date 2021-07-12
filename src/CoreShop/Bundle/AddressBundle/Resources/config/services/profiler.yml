@@ -2,10 +2,10 @@ services:
     _defaults:
         public: true
 
-    coreshop.country_collector:
-        class: CoreShop\Bundle\AddressBundle\Collector\CountryCollector
+    CoreShop\Bundle\AddressBundle\Collector\CountryCollector:
         arguments:
-            - '@coreshop.context.country'
+            - '@CoreShop\Component\Address\Context\CountryContextInterface'
+            - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
             - false
         tags:
-            - { name: data_collector, template: 'CoreShopAddressBundle:Collector:country.html.twig', id: coreshop.country_collector }
+            - { name: data_collector, template: '@CoreShopAddress/Collector/country.html.twig', id: coreshop.country_collector }

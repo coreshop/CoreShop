@@ -1,0 +1,27 @@
+services:
+    coreshop.datahub.graphql.querytypegenerator.resource.currency:
+        class: CoreShop\Component\Resource\DataHub\QueryType\Resource
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@coreshop.data_hub.doctrine_provider'
+            - '%coreshop.model.currency.class%'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopCurrency }
+
+    coreshop.datahub.graphql.querytypegenerator.resource.currency.list:
+        class: CoreShop\Component\Resource\DataHub\QueryType\ResourceList
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@coreshop.data_hub.doctrine_provider'
+            - '%coreshop.model.currency.class%'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopCurrencyMultiselect }
+
+    coreshop.datahub.graphql.querytypegenerator.resource.money_currency:
+        class: CoreShop\Bundle\CurrencyBundle\DataHub\QueryType\MoneyCurrency
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@coreshop.data_hub.doctrine_provider'
+            - '%coreshop.model.currency.class%'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopMoneyCurrency }

@@ -9,7 +9,7 @@ All models in Coreshop are placed in the ```Coreshop\Component\*ComponentName*\M
 First things first: If you want to extend coreshop models your Bundle must extend the `AbstractResourceBundle`. Next you have set your supported drivers. Just add the following lines of code to your bundle class:
 
 ```php
-public function getSupportedDrivers()
+public function getSupportedDrivers(); array
 {
     return [
         CoreShopResourceBundle::DRIVER_DOCTRINE_ORM
@@ -19,7 +19,7 @@ public function getSupportedDrivers()
  After that have to tell the bundle where your models are. For that, add the override the following method in your bundle class and return the model namespace. Here is an example for the `AppBundle`
  
 ```php 
- protected function getModelNamespace()
+ protected function getModelNamespace(): string
 {
     return "AppBundle\Model";
 } 

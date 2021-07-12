@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -63,6 +63,10 @@ pimcore.object.tags.coreShopProductQuantityPriceRules = Class.create(pimcore.obj
 
         if (this.isDirty()) {
             this.reloadPriceRuleData(object, task, fieldName);
+
+            for (var i = 0; i < this.panels.length; i++) {
+                this.panels[i].resetDirty();
+            }
         }
 
     },
@@ -75,7 +79,7 @@ pimcore.object.tags.coreShopProductQuantityPriceRules = Class.create(pimcore.obj
     reloadPriceRuleData: function (object, task, fieldName) {
         this.component.setLoading(true);
         Ext.Ajax.request({
-            url: '/admin/object/get',
+            url: Routing.generate('pimcore_admin_dataobject_dataobject_get'),
             params: {id: object.id},
             ignoreErrors: true,
             success: function (response) {

@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -13,16 +13,13 @@
 pimcore.registerNS('coreshop.shipping.resource');
 coreshop.shipping.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.global.addStore('coreshop_carriers', 'coreshop/carriers', [
+        coreshop.global.addStoreWithRoute('coreshop_carriers', 'coreshop_carrier_list', [
             [
                 {name: 'id'},
                 {name: 'identifier'}
             ]
         ]);
-        coreshop.global.addStore('coreshop_carrier_shipping_rules', 'coreshop/shipping_rules');
-
-        pimcore.globalmanager.get('coreshop_carriers').load();
-        pimcore.globalmanager.get('coreshop_carrier_shipping_rules').load();
+        coreshop.global.addStoreWithRoute('coreshop_carrier_shipping_rules', 'coreshop_shipping_rule_list');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.shipping', this);
     },

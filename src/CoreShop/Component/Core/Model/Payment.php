@@ -6,54 +6,42 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Payment\Model\Payment as BasePayment;
+use Webmozart\Assert\Assert;
 
 class Payment extends BasePayment implements PaymentInterface
 {
-    /**
-     * @var OrderInterface
-     */
-    protected $order;
+    protected ?OrderInterface $order = null;
+    protected ?CurrencyInterface $currency = null;
 
-    /**
-     * @var CurrencyInterface
-     */
-    protected $currency;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrder()
+    public function getOrder(): ?OrderInterface
     {
         return $this->order;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOrder(\CoreShop\Component\Order\Model\OrderInterface $order)
     {
+        Assert::isInstanceOf($order, OrderInterface::class);
+
         $this->order = $order;
         $this->orderId = $order->getId();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrency()
+
+    public function getCurrency(): ?CurrencyInterface
     {
         return $this->currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCurrency($currency)
     {
         $this->currencyCode = $currency->getIsoCode();

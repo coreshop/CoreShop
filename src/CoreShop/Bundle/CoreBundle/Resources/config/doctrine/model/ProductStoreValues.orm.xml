@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <mapped-superclass name="CoreShop\Component\Core\Model\ProductStoreValues"
+                       table="coreshop_product_store_values">
+        <unique-constraints>
+            <unique-constraint name="product_store" columns="product,store"/>
+        </unique-constraints>
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="product" column="product" type="pimcoreObject"/>
+        <field name="price" column="price" type="bigint"/>
+
+        <many-to-one field="store" target-entity="CoreShop\Component\Store\Model\StoreInterface">
+            <join-column name="store" referenced-column-name="id" on-delete="CASCADE"/>
+            <cascade>
+                <cascade-merge/>
+            </cascade>
+        </many-to-one>
+
+        <one-to-many field="productUnitDefinitionPrices" target-entity="CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface" mapped-by="productStoreValues" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+    </mapped-superclass>
+</doctrine-mapping>

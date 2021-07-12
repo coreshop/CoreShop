@@ -6,15 +6,19 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             expose: true
             type: integer
             xml_attribute: true
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         unit:
             expose: true
             type: CoreShop\Component\Product\Model\ProductUnit
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         conversionRate:
             expose: true
             type: float
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
+        precision:
+            expose: true
+            type: int
+            groups: [List, Detailed, Version]
         productUnitDefinitions:
             expose: true
             type: CoreShop\Component\Product\Model\ProductUnitDefinitions

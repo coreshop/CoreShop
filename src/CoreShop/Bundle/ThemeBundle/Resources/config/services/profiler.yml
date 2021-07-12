@@ -2,10 +2,9 @@ services:
     _defaults:
         public: true
 
-    coreshop.theme_collector:
-        class: CoreShop\Bundle\ThemeBundle\Collector\ThemeCollector
+    CoreShop\Bundle\ThemeBundle\Collector\ThemeCollector:
         arguments:
-            - '@coreshop.theme.active_theme'
-            - '@coreshop.theme.resolver'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface'
         tags:
-            - { name: data_collector, template: 'CoreShopThemeBundle:Collector:theme.html.twig', id: coreshop.theme_collector }
+            - { name: data_collector, template: '@CoreShopTheme/Collector/theme.html.twig', id: coreshop.theme_collector }

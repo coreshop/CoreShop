@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -21,18 +21,18 @@ coreshop.country.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_country',
     type: 'coreshop_countries',
 
-    url: {
-        add: '/admin/coreshop/countries/add',
-        delete: '/admin/coreshop/countries/delete',
-        get: '/admin/coreshop/countries/get',
-        list: '/admin/coreshop/countries/list'
+    routing: {
+        add: 'coreshop_country_add',
+        delete: 'coreshop_country_delete',
+        get: 'coreshop_country_get',
+        list: 'coreshop_country_list'
     },
 
     initialize: function ($super) {
         this.store = new Ext.data.Store({
             restful: false,
             proxy: new Ext.data.HttpProxy({
-                url: this.url.list
+                url: Routing.generate(this.routing.list)
             }),
             reader: new Ext.data.JsonReader({
                 rootProperty: 'data'

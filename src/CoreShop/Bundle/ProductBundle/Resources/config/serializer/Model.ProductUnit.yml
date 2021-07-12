@@ -6,14 +6,14 @@ CoreShop\Component\Product\Model\ProductUnit:
             expose: true
             type: integer
             xml_attribute: true
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         name:
             expose: true
             type: string
             groups: [List, Detailed]
         translations:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]
     virtual_properties:
         getFullLabel:

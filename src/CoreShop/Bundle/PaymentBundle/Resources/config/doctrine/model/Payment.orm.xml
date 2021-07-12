@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Payment\Model\Payment"
+                       table="coreshop_payment">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="state" column="state"/>
+        <field name="orderId" column="orderId" type="integer"/>
+        <field name="datePayment" column="datePayment" type="datetime"/>
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+        <many-to-one field="paymentProvider" target-entity="CoreShop\Component\Payment\Model\PaymentProviderInterface">
+            <join-column name="payment_provider_id" referenced-column-name="id" nullable="true"/>
+        </many-to-one>
+    </mapped-superclass>
+</doctrine-mapping>

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Address\Context\RequestBased;
 
@@ -20,30 +22,16 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CountryContext implements CountryContextInterface
 {
-    /**
-     * @var RequestResolverInterface
-     */
-    private $requestResolver;
+    private RequestResolverInterface $requestResolver;
+    private RequestStack $requestStack;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @param RequestResolverInterface $requestResolver
-     * @param RequestStack             $requestStack
-     */
     public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
     {
         $this->requestResolver = $requestResolver;
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCountry()
+    public function getCountry(): CountryInterface
     {
         try {
             return $this->getCountryForRequest($this->getMasterRequest());
@@ -52,12 +40,7 @@ final class CountryContext implements CountryContextInterface
         }
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return CountryInterface
-     */
-    private function getCountryForRequest(Request $request)
+    private function getCountryForRequest(Request $request): CountryInterface
     {
         $country = $this->requestResolver->findCountry($request);
 
@@ -66,10 +49,7 @@ final class CountryContext implements CountryContextInterface
         return $country;
     }
 
-    /**
-     * @return Request
-     */
-    private function getMasterRequest()
+    private function getMasterRequest(): Request
     {
         $masterRequest = $this->requestStack->getMasterRequest();
         if (null === $masterRequest) {
@@ -79,10 +59,7 @@ final class CountryContext implements CountryContextInterface
         return $masterRequest;
     }
 
-    /**
-     * @param CountryInterface|null $country
-     */
-    private function assertCountryWasFound(CountryInterface $country = null)
+    private function assertCountryWasFound(CountryInterface $country = null): void
     {
         if (null === $country) {
             throw new \UnexpectedValueException('Country was not found for given request');

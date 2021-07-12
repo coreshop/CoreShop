@@ -1,9 +1,9 @@
 imports:
-    - { resource: "admin.yml" }
-    - { resource: "coreshop.yml" }
-    - { resource: "security.yml" }
-    - { resource: "checkout.yml" }
-    - { resource: "workflow.yml" }
+    - { resource: admin.yml }
+    - { resource: coreshop.yml }
+    - { resource: checkout.yml }
+    - { resource: workflow.yml }
+    - { resource: migrations.yml }
 
 jms_serializer:
     metadata:
@@ -14,12 +14,14 @@ jms_serializer:
 
 twig:
     globals:
-        coreshop: "@coreshop.context.shopper"
+        coreshop: '@CoreShop\Component\Core\Context\ShopperContextInterface'
 
 pimcore:
+    security:
+        encoder_factories:
+            '%coreshop.model.user.class%': coreshop.security.user.password_encoder_factory
     objects:
         class_definitions:
             data:
                 map:
-                    coreShopStorePrice: CoreShop\Bundle\CoreBundle\CoreExtension\StorePrice
                     coreShopStoreValues: CoreShop\Bundle\CoreBundle\CoreExtension\StoreValues

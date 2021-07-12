@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -23,7 +23,7 @@ coreshop.order.order.shipment = Class.create({
         this.cb = cb;
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/order-shipment/get-ship-able-items',
+            url: Routing.generate('coreshop_admin_order_shipment_get_processable_items'),
             params: {
                 id: this.order.o_id
             },
@@ -72,7 +72,7 @@ coreshop.order.order.shipment = Class.create({
                 text: t('coreshop_price'),
                 width: 100,
                 align: 'right',
-                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                renderer: coreshop.util.format.currency.bind(this, this.order.currency.isoCode)
             },
             {
                 xtype: 'gridcolumn',
@@ -171,7 +171,7 @@ coreshop.order.order.shipment = Class.create({
                         data['items'] = itemsToShip;
 
                         Ext.Ajax.request({
-                            url: '/admin/coreshop/order-shipment/create-shipment',
+                            url: Routing.generate('coreshop_admin_order_shipment_create'),
                             method: 'post',
                             jsonData: data,
                             success: function (response) {

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Shipping\Model;
 
@@ -16,6 +18,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 use Doctrine\Common\Collections\Collection;
+use Pimcore\Model\Asset;
 
 interface CarrierInterface extends ResourceInterface, TimestampableInterface, TranslatableInterface
 {
@@ -38,7 +41,7 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
 
     /**
      * @param string $description
-     * @param null   $language
+     * @param null $language
      */
     public function setDescription($description, $language = null);
 
@@ -51,7 +54,7 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
 
     /**
      * @param string $title
-     * @param null   $language
+     * @param null $language
      */
     public function setTitle($title, $language = null);
 
@@ -74,6 +77,26 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
      * @param bool $isFree
      */
     public function setIsFree($isFree);
+
+    /**
+     * @return Asset|null
+     */
+    public function getLogo();
+
+    /**
+     * @param Asset $logo
+     */
+    public function setLogo($logo);
+
+    /**
+     * @return string|null
+     */
+    public function getTaxCalculationStrategy();
+
+    /**
+     * @param string $taxCalculationStrategy
+     */
+    public function setTaxCalculationStrategy($taxCalculationStrategy);
 
     /**
      * @return Collection|ShippingRuleGroupInterface[]

@@ -8,4 +8,10 @@ core_shop_customer:
                 guest: coreshop/guests
             classes:
                 interface: CoreShop\Component\Core\Model\CustomerInterface
+                repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\CustomerRepository
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomer.json'
+        company:
+            path: coreshop/customers
+            classes:
+                interface: CoreShop\Component\Core\Model\CompanyInterface
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCompany.json'

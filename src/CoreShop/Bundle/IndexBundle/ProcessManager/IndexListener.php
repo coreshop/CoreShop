@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\ProcessManager;
 
@@ -21,25 +23,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class IndexListener
 {
-    /**
-     * @var ProcessInterface
-     */
-    private $process;
+    private ProcessInterface $process;
+    private ProcessFactoryInterface $processFactory;
+    private ProcessLogger $processLogger;
 
-    /**
-     * @var ProcessFactoryInterface
-     */
-    private $processFactory;
-
-    /**
-     * @var ProcessLogger
-     */
-    private $processLogger;
-
-    /**
-     * @param FactoryInterface $processFactory
-     * @param ProcessLogger    $processLogger
-     */
     public function __construct(FactoryInterface $processFactory, ProcessLogger $processLogger)
     {
         $this->processFactory = $processFactory;

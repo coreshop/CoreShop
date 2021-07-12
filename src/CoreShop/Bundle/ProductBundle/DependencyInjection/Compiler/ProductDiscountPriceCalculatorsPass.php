@@ -6,37 +6,26 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler;
 
-final class ProductDiscountPriceCalculatorsPass extends AbstractProductPriceCalculatorPass
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
+
+final class ProductDiscountPriceCalculatorsPass extends RegisterSimpleRegistryTypePass
 {
     public const PRODUCT_DISCOUNT_PRICE_CALCULATOR_TAG = 'coreshop.product.discount_price_calculator';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRegistry()
+    public function __construct()
     {
-        return 'coreshop.registry.product.discount_price_calculators';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTag()
-    {
-        return self::PRODUCT_DISCOUNT_PRICE_CALCULATOR_TAG;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getParameter()
-    {
-        return 'coreshop.product.discount_price_calculators';
+        parent::__construct(
+            'coreshop.registry.product.discount_price_calculators',
+            'coreshop.product.discount_price_calculators',
+            self::PRODUCT_DISCOUNT_PRICE_CALCULATOR_TAG
+        );
     }
 }

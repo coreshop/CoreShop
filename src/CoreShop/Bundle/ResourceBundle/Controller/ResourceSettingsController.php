@@ -6,24 +6,22 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 use Pimcore\Model\Element\AbstractElement;
 use Pimcore\Model\Element\Service;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResourceSettingsController extends AdminController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function getNicePathAction(Request $request)
+    public function getNicePathAction(Request $request): Response
     {
         $targets = $this->decodeJson($request->get('targets'));
         $result = [];
@@ -39,10 +37,7 @@ class ResourceSettingsController extends AdminController
         return $this->viewHandler->handle(['success' => true, 'data' => $result]);
     }
 
-    /**
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function getConfigAction()
+    public function getConfigAction(): Response
     {
         $config = [
             'classMap' => [],
@@ -50,7 +45,7 @@ class ResourceSettingsController extends AdminController
         ];
 
         if ($this->container->hasParameter('coreshop.all.pimcore_classes')) {
-            $classes = $this->getParameter('coreshop.all.pimcore_classes');
+            $classes = $this->container->getParameter('coreshop.all.pimcore_classes');
 
             foreach ($classes as $key => $definition) {
                 $alias = explode('.', $key);
@@ -71,6 +66,7 @@ class ResourceSettingsController extends AdminController
                 $alias = $alias[1];
 
                 $config['stack'][$application][$alias] = $impl;
+                $config['full_stack'][] = $key;
             }
         }
 

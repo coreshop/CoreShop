@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,9 +20,9 @@ interface ConfigurationServiceInterface
      * @param string $key
      * @param bool   $returnObject
      *
-     * @return ConfigurationInterface
+     * @return ConfigurationInterface|null
      */
-    public function get($key, $returnObject = false);
+    public function get(string $key, bool $returnObject = false);
 
     /**
      * @param string $key
@@ -30,12 +30,10 @@ interface ConfigurationServiceInterface
      *
      * @return ConfigurationInterface
      */
-    public function set($key, $data);
+    public function set(string $key, $data): ConfigurationInterface;
 
     /**
      * @param string $key
-     *
-     * @return ConfigurationInterface
      */
-    public function remove($key);
+    public function remove(string $key): void;
 }

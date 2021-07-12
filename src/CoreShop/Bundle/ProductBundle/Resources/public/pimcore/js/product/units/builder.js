@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -85,7 +85,10 @@ coreshop.product.unit.builder = Class.create({
                 idValue: hasId ? defaultUnitDefinition.id : null,
                 unitName: 'defaultUnitDefinition.unit',
                 unitLabel: 'coreshop_product_unit_default_type',
-                unitValue: defaultUnitDefinition !== null ? defaultUnitDefinition.unit.id : this.getDefaultUnitStoreValue()
+                unitValue: defaultUnitDefinition !== null ? defaultUnitDefinition.unit.id : this.getDefaultUnitStoreValue(),
+                precisionLabel: 'coreshop_product_unit_precision',
+                precisionName: 'defaultUnitDefinition.precision',
+                precisionValue: defaultUnitDefinition !== null && !isNaN(defaultUnitDefinition.precision) ? defaultUnitDefinition.precision : 0,
             }, true);
 
         return Ext.create('Ext.form.Panel', {
@@ -161,7 +164,7 @@ coreshop.product.unit.builder = Class.create({
     },
 
     getAdditionalUnitDefinitions: function () {
-        var defaultUnit = this.getDefaultUnitDefinition(),
+        var defaultUnitDefinition = this.getDefaultUnitDefinition(),
             unitDefinitions = this.getDataValue('unitDefinitions'),
             additionalUnits = [];
 
@@ -169,9 +172,9 @@ coreshop.product.unit.builder = Class.create({
             return [];
         }
 
-        Ext.Array.each(unitDefinitions, function (unit) {
-            if (unit['id'] !== defaultUnit['id']) {
-                additionalUnits.push(unit);
+        Ext.Array.each(unitDefinitions, function (unitDefinition) {
+            if (unitDefinition.hasOwnProperty('unit') && unitDefinition.unit.id !== defaultUnitDefinition.unit.id) {
+                additionalUnits.push(unitDefinition);
             }
         });
 
@@ -191,6 +194,9 @@ coreshop.product.unit.builder = Class.create({
                 unitLabel: 'coreshop_product_unit_type',
                 unitValue: data !== null && Ext.isObject(data) ? data.unit.id : null,
                 conversionRateName: 'additionalUnitDefinitions.' + this.additionalUnitsCounter + '.conversionRate',
+                precisionLabel: 'coreshop_product_unit_precision',
+                precisionName: 'additionalUnitDefinitions.' + this.additionalUnitsCounter + '.precision',
+                precisionValue: data !== null && !isNaN(data.precision) ? data.precision : 0,
                 conversionRateLabel: 'coreshop_product_unit_conversion_rate',
                 conversionRateValue: data !== null ? data.conversionRate : 0
             }, false);
@@ -207,25 +213,32 @@ coreshop.product.unit.builder = Class.create({
             xtype: 'button',
             itemId: 'additional-unit-delete-button',
             iconCls: 'pimcore_icon_delete',
-            handler: function (compositeField) {
-                Ext.MessageBox.confirm(t('info'), t('coreshop_product_unit_additional_unit_definition_delete_confirm'), function (buttonValue) {
-
-                    if (buttonValue !== 'yes') {
-                        return;
-                    }
-
-                    fieldSet.remove(compositeField);
-
-                    this.dirty = true;
-                    this.checkAddUnitBlockAvailability(fieldSet);
-                    this.adjustUnitStores(false);
-                    this.dispatchUnitDefinitionChangeEvent();
-                }.bind(this));
-
-            }.bind(this, compositeField)
+            cls: 'coreshop-transparent-btn',
+            handler: this.onAdditionalUnitDelete.bind(this, fieldSet, compositeField)
         });
 
         fieldSet.add(compositeField);
+    },
+
+    onAdditionalUnitDelete: function (fieldSet, compositeField) {
+
+        Ext.MessageBox.confirm(
+            t('info'),
+            t('coreshop_product_unit_additional_unit_definition_delete_confirm'),
+            function (buttonValue) {
+
+                if (buttonValue !== 'yes') {
+                    return;
+                }
+
+                fieldSet.remove(compositeField);
+
+                this.dirty = true;
+                this.checkAddUnitBlockAvailability(fieldSet);
+                this.adjustUnitStores(false);
+                this.dispatchUnitDefinitionChangeEvent();
+
+            }.bind(this));
     },
 
     adjustUnitStores: function (initializing) {
@@ -276,11 +289,40 @@ coreshop.product.unit.builder = Class.create({
     },
 
     dispatchUnitDefinitionChangeEvent: function () {
+
+        var values = coreshop.helpers.convertDotNotationToObject(this.getValues()),
+            additionalUnitDefinitions = this.getAdditionalUnitDefinitions();
+
+        if (values.hasOwnProperty('additionalUnitDefinitions')) {
+            Ext.Object.each(values.additionalUnitDefinitions, function (index, additionalUnitDefinition) {
+                var unitId = null, id = null;
+                if (additionalUnitDefinition.hasOwnProperty('unit')) {
+                    unitId = additionalUnitDefinition.unit;
+                }
+
+                if (Ext.isArray(additionalUnitDefinitions)) {
+                    Ext.Array.each(additionalUnitDefinitions, function (additionalUnitDefinition) {
+                        if (additionalUnitDefinition.hasOwnProperty('id')
+                            && additionalUnitDefinition.hasOwnProperty('unit')
+                            && Ext.isObject(additionalUnitDefinition.unit)
+                            && additionalUnitDefinition.unit.id === unitId) {
+                            id = additionalUnitDefinition.id;
+                        }
+
+                    }.bind(this));
+                }
+
+                if (id !== null) {
+                    values.additionalUnitDefinitions[index].id = id;
+                }
+            });
+        }
+
         coreshop.broker.fireEvent(
             'pimcore.object.tags.coreShopProductUnitDefinitions.change',
             {
                 objectId: this.objectId,
-                availableUnitDefinitions: this.convertDotNotationToObject(this.getValues())
+                availableUnitDefinitions: values
             }
         );
     },
@@ -350,7 +392,7 @@ coreshop.product.unit.builder = Class.create({
                 xtype: 'combo',
                 fieldLabel: t(data.unitLabel),
                 name: data.unitName,
-                labelWidth: 80,
+                labelWidth: isDefault ? 120 : 80,
                 store: null,
                 triggerAction: 'all',
                 itemCls: 'unit-store',
@@ -362,9 +404,10 @@ coreshop.product.unit.builder = Class.create({
                 displayField: 'fullLabel',
                 valueField: 'id',
                 value: data.unitValue,
-                maxWidth: isDefault ? 250 : 200,
+                maxWidth: isDefault ? 280 : 200,
                 readOnly: data.idValue !== null && isDefault === false,
                 listeners: {
+                    beforerender: this.onBeforeUnitComboRender.bind(this, data),
                     change: function (comp, value) {
                         if (comp.getName() === 'defaultUnitDefinition.unit' && value) {
                             this.adjustAdditionalUnitLabel();
@@ -379,17 +422,28 @@ coreshop.product.unit.builder = Class.create({
             }
         ];
 
+        fields.push({
+            xtype: 'numberfield',
+            fieldLabel: t(data.precisionLabel),
+            name: data.precisionName,
+            labelWidth: 80,
+            minValue: 0,
+            value: data.precisionValue,
+            decimalPrecision: 1,
+            maxWidth: 150,
+        });
+
         if (isDefault === false) {
 
             fields.push({
                 xtype: 'numberfield',
                 fieldLabel: t(data.conversionRateLabel),
                 name: data.conversionRateName,
-                labelWidth: 110,
+                labelWidth: 140,
                 minValue: 0,
                 value: data.conversionRateValue,
                 decimalPrecision: 2,
-                maxWidth: 220,
+                maxWidth: 250,
             });
 
             fields.push({
@@ -402,6 +456,10 @@ coreshop.product.unit.builder = Class.create({
 
         return fields;
 
+    },
+
+    onBeforeUnitComboRender: function (data, comp) {
+        // keep it for 3rd party modifiers.
     },
 
     postSaveObject: function (object, refreshedData) {
@@ -432,24 +490,5 @@ coreshop.product.unit.builder = Class.create({
 
     getValues: function () {
         return this.form.getForm().getFieldValues();
-    },
-
-    convertDotNotationToObject: function (data) {
-        var obj = {};
-
-        Object.keys(data).forEach(function (key) {
-            var val = data[key];
-            var step = obj
-            key.split('.').forEach(function (part, index, arr) {
-                if (index === arr.length - 1) {
-                    step[part] = val;
-                } else if (step[part] === undefined) {
-                    step[part] = {};
-                }
-                step = step[part];
-            });
-        });
-
-        return obj;
     }
 });

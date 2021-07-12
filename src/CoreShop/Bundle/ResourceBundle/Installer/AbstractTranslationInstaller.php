@@ -6,51 +6,34 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\TranslationConfiguration;
-use Pimcore\Model\Translation\AbstractTranslation;
-use Pimcore\Model\Translation\TranslationInterface;
-use Pimcore\Model\Translation\Website;
+use Pimcore\Model\Translation;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
-use Webmozart\Assert\Assert;
 
 abstract class AbstractTranslationInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
     protected $kernel;
+    protected $translationType;
 
-    /**
-     * @var string
-     */
-    protected $translationClass;
-
-    /**
-     * @param KernelInterface $kernel
-     * @param string          $translationClass
-     */
-    public function __construct(KernelInterface $kernel, $translationClass = Website::class)
+    public function __construct(KernelInterface $kernel, string $translationType = Translation::DOMAIN_DEFAULT)
     {
         $this->kernel = $kernel;
-        $this->translationClass = $translationClass;
-
-        Assert::implementsInterface($translationClass, TranslationInterface::class);
+        $this->translationType = $translationType;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $this->getIdentifier($applicationName);
 
@@ -84,7 +67,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
             $progress->start(count($translationsToInstall));
 
             foreach ($translationsToInstall as $name => $translationData) {
-                $progress->setMessage(sprintf('<error>Install %s Translation %s</error>', end(explode('\\', $this->translationClass)), $name));
+                $progress->setMessage(sprintf('Install %s Translation %s', $this->translationType, $name));
 
                 $this->installTranslation($name, $translationData);
 
@@ -92,26 +75,18 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln(sprintf('  - <info>Translations have been installed successfully</info>'));
         }
     }
 
-    /**
-     * @param string $applicationName
-     *
-     * @return mixed
-     */
-    abstract protected function getIdentifier($applicationName = null);
+    abstract protected function getIdentifier(?string $applicationName = null): string;
 
-    /**
-     * @param string $name
-     * @param array  $properties
-     *
-     * @return AbstractTranslation
-     */
-    private function installTranslation($name, $properties)
+    private function installTranslation(string $name, array $properties): Translation
     {
-        /** @var AbstractTranslation $translation */
-        $translation = $this->translationClass::getByKey($name, true);
+        /** @var Translation $translation */
+        $translation = Translation::getByKey($name, $this->translationType, true);
         $translationData = $translation->getTranslations();
         $coreShopTranslationData = $properties['languages'];
 

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Rule\Calculator;
 
@@ -19,31 +21,21 @@ use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
 use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
 use CoreShop\Component\Product\Model\PriceRuleInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
 use CoreShop\Component\Product\Rule\Action\ProductDiscountActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Action\ProductDiscountPriceActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
 
-final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInterface, ProductRetailPriceCalculatorInterface, ProductDiscountPriceCalculatorInterface
+final class ProductPriceRuleCalculator implements
+    ProductDiscountCalculatorInterface,
+    ProductRetailPriceCalculatorInterface,
+    ProductDiscountPriceCalculatorInterface
 {
-    /**
-     * @var ValidRulesFetcherInterface
-     */
-    private $validRulesFetcher;
+    private ValidRulesFetcherInterface $validRulesFetcher;
+    private ServiceRegistryInterface $actionServiceRegistry;
 
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $actionServiceRegistry;
-
-    /**
-     * @param ValidRulesFetcherInterface $validRulesFetcher
-     * @param ServiceRegistryInterface   $actionServiceRegistry
-     */
     public function __construct(
         ValidRulesFetcherInterface $validRulesFetcher,
         ServiceRegistryInterface $actionServiceRegistry
@@ -52,10 +44,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         $price = null;
 
@@ -96,10 +85,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscountPrice(ProductInterface $subject, array $context)
+    public function getDiscountPrice(ProductInterface $subject, array $context): int
     {
         $price = null;
 
@@ -110,7 +96,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
 
         foreach ($rules as $rule) {
             /**
-             * @var ActionInterface
+             * @var ActionInterface $action
              */
             foreach ($rule->getActions() as $action) {
                 $processor = $this->actionServiceRegistry->get($action->getType());
@@ -139,10 +125,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscount(ProductInterface $subject, array $context, $price)
+    public function getDiscount(ProductInterface $subject, array $context, int $price): int
     {
         $discount = 0;
 

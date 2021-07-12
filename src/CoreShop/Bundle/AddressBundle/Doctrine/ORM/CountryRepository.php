@@ -6,29 +6,27 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\AddressBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
+use Doctrine\ORM\QueryBuilder;
 
 class CountryRepository extends EntityRepository implements CountryRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function createListQueryBuilder()
+    public function createListQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findByName($name, $locale)
+    public function findByName(string $name, string $locale): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.translations', 'translation')
@@ -37,22 +35,15 @@ class CountryRepository extends EntityRepository implements CountryRepositoryInt
             ->setParameter('name', $name)
             ->setParameter('locale', $locale)
             ->getQuery()
-            ->useQueryCache(true)
-            ->useResultCache(true)
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findByCode($code)
+    public function findByCode($code): ?CountryInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.isoCode= :isoCode')
             ->setParameter('isoCode', $code)
             ->getQuery()
-            ->useQueryCache(true)
-            ->useResultCache(true)
             ->getOneOrNullResult();
     }
 }

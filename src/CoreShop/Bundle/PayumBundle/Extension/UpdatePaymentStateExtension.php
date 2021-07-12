@@ -6,14 +6,16 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\PayumBundle\Extension;
 
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
-use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Payum\Core\Extension\Context;
@@ -24,36 +26,21 @@ use Payum\Core\Request\Notify;
 
 final class UpdatePaymentStateExtension implements ExtensionInterface
 {
-    /**
-     * @var StateMachineManager
-     */
-    private $stateMachineManager;
+    private StateMachineManager $stateMachineManager;
 
-    /**
-     * @param StateMachineManager $stateMachineManager
-     */
     public function __construct(StateMachineManager $stateMachineManager)
     {
         $this->stateMachineManager = $stateMachineManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onPreExecute(Context $context)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onExecute(Context $context)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onPostExecute(Context $context)
     {
         if ($context->getException()) {
@@ -97,11 +84,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
         }
     }
 
-    /**
-     * @param PaymentInterface $payment
-     * @param string           $nextState
-     */
-    private function updatePaymentState(PaymentInterface $payment, string $nextState)
+    private function updatePaymentState(PaymentInterface $payment, string $nextState): void
     {
         $workflow = $this->stateMachineManager->get($payment, PaymentTransitions::IDENTIFIER);
         if (null !== $transition = $this->stateMachineManager->getTransitionToState($workflow, $payment, $nextState)) {

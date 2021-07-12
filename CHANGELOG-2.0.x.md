@@ -1,5 +1,45 @@
 # Within V2
 
+## 2.0.12
+ - Translations:
+   - New Crowdin translations (https://github.com/coreshop/CoreShop/pull/1165)
+ - Tests
+   - [Tests] add conflict for monolog (https://github.com/coreshop/CoreShop/pull/1178)
+ - Bug
+   - [TRACKING] use single item price in order item extractor (https://github.com/coreshop/CoreShop/pull/1231)
+
+## 2.0.11
+ - Bugs:
+   - [IndexBundle] use doctrine schema-config to create index-table schema (https://github.com/coreshop/CoreShop/pull/1142)
+
+## 2.0.10
+ - Bugs:
+   - [PayumBundle]: add sandbox to PayPal Configuration (https://github.com/coreshop/CoreShop/pull/1112)
+
+## 2.0.9
+ - Bugs:
+   - [Pimcore] fix stan tests on 2.0 (https://github.com/coreshop/CoreShop/pull/998)
+   - [CurrencyBundle] fix for money-currency editable when data comes from pimcore editmode (https://github.com/coreshop/CoreShop/pull/1023)
+   - [PimcoreBundle] use reflection to get class methods (https://github.com/coreshop/CoreShop/pull/1038)
+   - [CoreExtensions] don't allow any diff until properly implemented (https://github.com/coreshop/CoreShop/pull/1050)
+   - [ProductBundle] specific price rules: keep id on save (https://github.com/coreshop/CoreShop/pull/1045)
+   - [TrackingBundle] fix total tax in tag manager tracker (https://github.com/coreshop/CoreShop/pull/1053) @solverat 
+   - [IndexBundle] fix iterator and nested interpreter (https://github.com/coreshop/CoreShop/pull/1054)
+   - [IndexBundle] fix index iterator interpreter (https://github.com/coreshop/CoreShop/pull/1076)
+   - [ResourceBundle] fix resource-select options (https://github.com/coreshop/CoreShop/pull/1077)
+   - [Tests] fix stan and travis tests (https://github.com/coreshop/CoreShop/pull/1078) 
+   - [Docs] Fix extend docs (https://github.com/coreshop/CoreShop/pull/1082)
+   - [PimcoreBundle] embedd CoreExtension - Protected members are available only via getters (https://github.com/coreshop/CoreShop/pull/1089) @rishadomar
+   - [IndexBundle] fix order-direction now serialized properly (https://github.com/coreshop/CoreShop/pull/1097)  
+   - [All] Fixing Configuration Keys (https://github.com/coreshop/CoreShop/pull/1100) @khusseini 
+   - [FrontendBundle] CategoryController perPage Configuration fix (https://github.com/coreshop/CoreShop/pull/1105)
+
+ - Features:
+   - [All] make CoreShop stores more async, don't load them initially (https://github.com/coreshop/CoreShop/pull/1025)
+   - [Order] introduce checkout events (https://github.com/coreshop/CoreShop/pull/1043)
+   - [CoreShop] Update CI (https://github.com/coreshop/CoreShop/pull/1056)
+   - [CoreShop] Smaller CI changes (https://github.com/coreshop/CoreShop/pull/1060) 
+
 ## 2.0.8
  - Bug:
    - [Pimcore] Make CoreShop compatible with Pimcore 5.8.0 (https://github.com/coreshop/CoreShop/pull/977)

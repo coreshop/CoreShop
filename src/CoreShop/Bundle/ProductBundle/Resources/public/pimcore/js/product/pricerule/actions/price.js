@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -20,7 +20,7 @@ coreshop.product.pricerule.actions.price = Class.create(coreshop.rules.actions.a
         var currency = null;
 
         if (this.data) {
-            priceValue = this.data.price / 100;
+            priceValue = this.data.price / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
             currency = this.data.currency;
         }
 
@@ -28,7 +28,7 @@ coreshop.product.pricerule.actions.price = Class.create(coreshop.rules.actions.a
             fieldLabel: t('coreshop_action_price'),
             name: 'price',
             value: priceValue,
-            decimalPrecision: 2
+            decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         });
 
         this.form = new Ext.form.Panel({

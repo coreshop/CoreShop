@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Notification\Rule\Action\Order;
 
@@ -20,23 +22,14 @@ use Pimcore\Model\Document;
 
 class OrderMailActionProcessor implements NotificationRuleProcessorInterface
 {
-    /**
-     * @var OrderMailProcessorInterface
-     */
     private $orderMailProcessor;
 
-    /**
-     * @param OrderMailProcessorInterface $orderMailProcessor
-     */
     public function __construct(OrderMailProcessorInterface $orderMailProcessor)
     {
         $this->orderMailProcessor = $orderMailProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function apply($subject, NotificationRuleInterface $rule, array $configuration, $params = [])
+    public function apply($subject, NotificationRuleInterface $rule, array $configuration, array $params = []): void
     {
         if (!array_key_exists('doNotSendToDesignatedRecipient', $configuration)) {
             $configuration['doNotSendToDesignatedRecipient'] = false;
@@ -54,7 +47,7 @@ class OrderMailActionProcessor implements NotificationRuleProcessorInterface
         if ($order instanceof OrderInterface) {
             $language = $order->getLocaleCode();
 
-            if (is_null($language)) {
+            if (null === $language) {
                 throw new \Exception('OrderMailActionProcessor: Language is not set.');
             }
 

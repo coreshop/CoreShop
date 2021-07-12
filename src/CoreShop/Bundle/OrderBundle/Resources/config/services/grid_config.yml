@@ -2,17 +2,15 @@ services:
     _defaults:
         public: true
 
-    coreshop.data_object.grid_column_config.operator.factory.order_state:
-        class: CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory\OrderStateFactory
+    CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory\OrderStateFactory:
         arguments:
-            - '@coreshop.workflow.state_info_manager'
+            - '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'
         tags:
             - { name: pimcore.data_object.grid_column_config.operator_factory, id: coreshop_order_state }
 
-    coreshop.data_object.grid_column_config.operator.factory.price_formatter:
-        class: CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory\PriceFormatterFactory
+    CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory\PriceFormatterFactory:
         arguments:
-            - '@coreshop.money_formatter'
-            - '@coreshop.context.locale'
+            - '@CoreShop\Component\Currency\Formatter\MoneyFormatterInterface'
+            - '@CoreShop\Component\Locale\Context\LocaleContextInterface'
         tags:
             - { name: pimcore.data_object.grid_column_config.operator_factory, id: coreshop_price_formatter }

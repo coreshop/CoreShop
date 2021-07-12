@@ -6,43 +6,32 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Currency;
 
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
+use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Resource\Storage\StorageInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
 final class CurrencyStorage implements CurrencyStorageInterface
 {
-    /**
-     * @var StorageInterface
-     */
     private $storage;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
     private $currencyRepository;
 
-    /**
-     * @param StorageInterface            $storage
-     * @param CurrencyRepositoryInterface $currencyRepository
-     */
     public function __construct(StorageInterface $storage, CurrencyRepositoryInterface $currencyRepository)
     {
         $this->storage = $storage;
         $this->currencyRepository = $currencyRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function set(StoreInterface $store, CurrencyInterface $currency)
+    public function set(StoreInterface $store, CurrencyInterface $currency): void
     {
         if ($this->isBaseCurrency($currency, $store) || !$this->isAvailableCurrency($currency, $store)) {
             $this->storage->remove($this->provideKey($store));
@@ -53,33 +42,26 @@ final class CurrencyStorage implements CurrencyStorageInterface
         $this->storage->set($this->provideKey($store), $currency->getId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get(StoreInterface $store)
+    public function get(StoreInterface $store): CurrencyInterface
     {
         if ($this->storage->get($this->provideKey($store))) {
-            return $this->currencyRepository->find($this->storage->get($this->provideKey($store)));
+            $currency = $this->currencyRepository->find($this->storage->get($this->provideKey($store)));
+
+            if ($currency instanceof CurrencyInterface) {
+                return $currency;
+            }
         }
 
-        return null;
+        throw new CurrencyNotFoundException();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    private function provideKey(StoreInterface $store)
+    private function provideKey(StoreInterface $store): string
     {
         return '_currency_' . $store->getId();
     }
 
-    /**
-     * @param CurrencyInterface $currency
-     * @param StoreInterface    $store
-     *
-     * @return bool
-     */
-    private function isBaseCurrency(CurrencyInterface $currency, StoreInterface $store)
+
+    private function isBaseCurrency(CurrencyInterface $currency, StoreInterface $store): bool
     {
         if ($store instanceof \CoreShop\Component\Core\Model\StoreInterface) {
             return $store->getCurrency()->getId() === $currency->getId();
@@ -88,17 +70,11 @@ final class CurrencyStorage implements CurrencyStorageInterface
         return false;
     }
 
-    /**
-     * @param CurrencyInterface $currency
-     * @param StoreInterface    $store
-     *
-     * @return bool
-     */
-    private function isAvailableCurrency(CurrencyInterface $currency, StoreInterface $store)
+    private function isAvailableCurrency(CurrencyInterface $currency, StoreInterface $store): bool
     {
         return in_array($currency->getIsoCode(), array_map(function (CurrencyInterface $currency) {
             return $currency->getIsoCode();
-        }, $this->getCurrenciesForStore($store)));
+        }, $this->getCurrenciesForStore($store)), true);
     }
 
     /**
@@ -106,7 +82,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
      *
      * @return CurrencyInterface[]
      */
-    private function getCurrenciesForStore(StoreInterface $store)
+    private function getCurrenciesForStore(StoreInterface $store): array
     {
         return $this->currencyRepository->findActiveForStore($store);
     }

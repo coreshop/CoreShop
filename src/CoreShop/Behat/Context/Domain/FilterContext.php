@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -30,32 +32,11 @@ use Webmozart\Assert\Assert;
 
 final class FilterContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private RepositoryInterface $filterRepository;
+    private FilteredListingFactoryInterface $filterListFactory;
+    private FilterProcessorInterface $filterProcessor;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $filterRepository;
-
-    /**
-     * @var FilteredListingFactoryInterface
-     */
-    private $filterListFactory;
-
-    /**
-     * @var FilterProcessorInterface
-     */
-    private $filterProcessor;
-
-    /**
-     * @param SharedStorageInterface          $sharedStorage
-     * @param RepositoryInterface             $filterRepository
-     * @param FilteredListingFactoryInterface $filterListFactory
-     * @param FilterProcessorInterface        $filterProcessor
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         RepositoryInterface $filterRepository,
@@ -111,14 +92,14 @@ final class FilterContext implements Context
             $shouldHaveConditions[] = $value['value'];
         }
 
-        $field = reset(
-            array_filter(
-                $filter->getConditions()->toArray(),
-                function (FilterConditionInterface $condition) use ($field) {
-                    return $condition->getConfiguration()['field'] === $field;
-                }
-            )
+        $filtered = array_filter(
+            $filter->getConditions()->toArray(),
+            static function (FilterConditionInterface $condition) use ($field) {
+                return $condition->getConfiguration()['field'] === $field;
+            }
         );
+
+        $field = reset($filtered);
 
         Assert::isInstanceOf($field, FilterConditionInterface::class);
         Assert::eq($field->getType(), $conditionType);
@@ -150,14 +131,14 @@ final class FilterContext implements Context
     ) {
         $conditions = $this->prepareFilter($filter);
 
-        $field = reset(
-            array_filter(
-                $filter->getConditions()->toArray(),
-                function (FilterConditionInterface $condition) use ($field) {
-                    return $condition->getConfiguration()['field'] === $field;
-                }
-            )
+        $filtered = array_filter(
+            $filter->getConditions()->toArray(),
+            static function (FilterConditionInterface $condition) use ($field) {
+                return $condition->getConfiguration()['field'] === $field;
+            }
         );
+
+        $field = reset($filtered);
 
         Assert::isInstanceOf($field, FilterConditionInterface::class);
         Assert::eq($field->getType(), $conditionType);
@@ -204,16 +185,16 @@ final class FilterContext implements Context
      * @Then /the (filter) should have (\d+) item(?:|s) for (manufacturer "[^"]+") in field "([^"]+)"$/
      * @Then /the (filter) should have (\d+) item(?:|s) for value "([^"]+)" in field "([^"]+)"$/
      */
-    public function theFilterShouldHaveXItemsForCategoryWithObjectCondition(FilterInterface $filter, $countOfValues, $value, $field)
+    public function theFilterShouldHaveXItemsForCategoryWithObjectCondition(FilterInterface $filter, $countOfValues, $value, string $field)
     {
         if ($value instanceof ResourceInterface) {
             $value = $value->getId();
         }
 
-        if (strstr($field, '[]')) {
+        if (strpos($field, '[]') !== false) {
             $field = str_replace('[]', '', $field);
 
-            if (strstr($value, ',')) {
+            if (is_string($value) && strpos($value, ',') !== false) {
                 $value = explode(',', $value);
             } else {
                 $value = [$value];
@@ -249,7 +230,7 @@ final class FilterContext implements Context
                 continue;
             }
 
-            $result[] = $object->getIndexableName('en');
+            $result[] = $object->getIndexableName($filter->getIndex(), 'en');
         }
 
         Assert::eq([$firstResult, $secondResult], $result);

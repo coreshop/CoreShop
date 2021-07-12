@@ -1,0 +1,40 @@
+CoreShop\Component\Customer\Model\Customer:
+    exclusion_policy: ALL
+    xml_root_name: customer
+    virtual_properties:
+        salutation:
+            serialized_name: salutation
+            exp: object.getSalutation()
+            type: string
+            groups: [Detailed]
+        firstname:
+            serialized_name: firstname
+            exp: object.getFirstname()
+            type: string
+            groups: [Detailed]
+        lastname:
+            serialized_name: lastname
+            exp: object.getLastname()
+            type: string
+            groups: [Detailed]
+        gender:
+            serialized_name: gender
+            exp: object.getGender()
+            type: string
+            groups: [Detailed]
+        email:
+            serialized_name: email
+            exp: object.getEmail()
+            type: string
+            groups: [Detailed]
+        localeCode:
+            serialized_name: localeCode
+            exp: object.getLocaleCode()
+            type: string
+            groups: [Detailed]
+        customerGroups:
+            serialized_name: customerGroups
+            exp: object.getCustomerGroups()
+            type: array
+            groups: [Detailed]
+

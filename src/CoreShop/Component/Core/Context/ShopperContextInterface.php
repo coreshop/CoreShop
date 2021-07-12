@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Context;
 
@@ -24,30 +26,30 @@ interface ShopperContextInterface extends StoreContextInterface, CurrencyContext
     /**
      * @return array
      */
-    public function getContext();
+    public function getContext(): array;
 
     /**
      * @return bool
      */
-    public function hasStore();
+    public function hasStore(): bool;
 
     /**
      * @return bool
      */
-    public function hasCurrency();
+    public function hasCurrency(): bool;
 
     /**
      * @return bool
      */
-    public function hasLocaleCode();
+    public function hasLocaleCode(): bool;
 
     /**
      * @return bool
      */
-    public function hasCountry();
+    public function hasCountry(): bool;
 
     /**
      * @return bool
      */
-    public function hasCustomer();
+    public function hasCustomer(): bool;
 }

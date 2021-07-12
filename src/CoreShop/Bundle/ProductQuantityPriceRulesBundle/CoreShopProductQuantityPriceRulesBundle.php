@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle;
 
@@ -21,9 +23,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -31,7 +30,7 @@ class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
         ];
     }
 
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -40,25 +39,16 @@ class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ProductQuantityPriceRulesCalculatorPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Product Quantity Price Rules';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Product Quantity Price Rules Bundle';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\ProductQuantityPriceRules\Model';

@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -77,7 +77,7 @@ coreshop.filter.abstract = Class.create({
 
             this.valueStore = new Ext.data.ArrayStore({
                 proxy: new Ext.data.HttpProxy({
-                    url: '/admin/coreshop/filters/get-values-for-filter-field'
+                    url: Routing.generate('coreshop_filter_getValuesForFilterField')
                 }),
                 reader: new Ext.data.JsonReader({}, [
                     {name: 'value'},

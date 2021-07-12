@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Filter;
 
@@ -20,23 +22,14 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class NestedFilterConditionProcessor implements FilterConditionProcessorInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $conditionProcessors;
+    private ServiceRegistryInterface $conditionProcessors;
 
-    /**
-     * @param ServiceRegistryInterface $conditionProcessors
-     */
     public function __construct(ServiceRegistryInterface $conditionProcessors)
     {
         $this->conditionProcessors = $conditionProcessors;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $conditions = $condition->getConfiguration()['conditions'];
         $conditionParams = [];
@@ -63,10 +56,7 @@ final class NestedFilterConditionProcessor implements FilterConditionProcessorIn
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $conditions = $condition->getConfiguration()['conditions'];
 

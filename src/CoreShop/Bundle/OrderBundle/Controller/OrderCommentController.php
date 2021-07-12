@@ -6,15 +6,18 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Notes;
+use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\User;
@@ -32,7 +35,7 @@ class OrderCommentController extends PimcoreController
         $orderId = $request->get('id');
         $order = $this->getOrderRepository()->find($orderId);
 
-        $objectNoteService = $this->get('coreshop.object_note_service');
+        $objectNoteService = $this->get(NoteServiceInterface::class);
         $notes = $objectNoteService->getObjectNotes($order, Notes::NOTE_ORDER_COMMENT);
 
         $parsedData = [];
@@ -70,7 +73,7 @@ class OrderCommentController extends PimcoreController
         }
 
         try {
-            $objectNoteService = $this->get('coreshop.object_note_service');
+            $objectNoteService = $this->get(NoteServiceInterface::class);
             $commentEntity = $objectNoteService->createPimcoreNoteInstance($order, Notes::NOTE_ORDER_COMMENT);
             $commentEntity->setTitle('Order Comment');
             $commentEntity->setDescription(nl2br($comment));
@@ -91,9 +94,12 @@ class OrderCommentController extends PimcoreController
     public function deleteAction(Request $request)
     {
         $commentId = $request->get('id');
-        $objectNoteService = $this->get('coreshop.object_note_service');
+        $objectNoteService = $this->get(NoteServiceInterface::class);
         $commentEntity = $objectNoteService->getNoteById($commentId);
-        $commentEntity->delete();
+
+        if ($commentEntity instanceof Note) {
+            $commentEntity->getDao()->delete();
+        }
 
         return $this->viewHandler->handle(['success' => true]);
     }

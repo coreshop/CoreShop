@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
@@ -26,38 +28,12 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
+    private RegistryInterface $metaDataRegistry;
+    private ObjectManager $objectManager;
+    private GridConfigInstallerInterface $gridConfigInstaller;
+    private PimcoreClassInstallerInterface $pimcoreClassInstaller;
 
-    /**
-     * @var RegistryInterface
-     */
-    private $metaDataRegistry;
-
-    /**
-     * @var GridConfigInstallerInterface
-     */
-    private $gridConfigInstaller;
-
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var PimcoreClassInstallerInterface
-     */
-    private $pimcoreClassInstaller;
-
-    /**
-     * @param KernelInterface                $kernel
-     * @param RegistryInterface              $metaDataRegistry
-     * @param ObjectManager                  $objectManager
-     * @param GridConfigInstallerInterface   $gridConfigInstaller
-     * @param PimcoreClassInstallerInterface $classInstaller
-     */
     public function __construct(
         KernelInterface $kernel,
         RegistryInterface $metaDataRegistry,
@@ -72,10 +48,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
         $this->pimcoreClassInstaller = $classInstaller;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.grid_config', $applicationName) : 'coreshop.all.pimcore.admin.install.grid_config';
 
@@ -109,7 +82,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
             $progress->start(count($gridConfigsToInstall));
 
             foreach ($gridConfigsToInstall as $name => $gridData) {
-                $progress->setMessage(sprintf('<error>Install Grid Config %s</error>', $name));
+                $progress->setMessage(sprintf('Install Grid Config %s', $name));
 
                 $this->gridConfigInstaller->installGridConfig($gridData['data'], $gridData['name'], $this->findClassId($gridData['class']), true);
 
@@ -117,15 +90,13 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>Grid Configs have been installed successfully</info>');
         }
     }
 
-    /**
-     * @param string $classIdentifier
-     *
-     * @return int
-     */
-    private function findClassId($classIdentifier)
+    private function findClassId(string $classIdentifier): string
     {
         $metadata = $this->metaDataRegistry->get($classIdentifier);
 

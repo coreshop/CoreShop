@@ -6,13 +6,15 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Validator\Constraints;
 
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -24,35 +26,24 @@ use Webmozart\Assert\Assert;
 
 final class CartPriceRuleValidator extends ConstraintValidator
 {
-    /**
-     * @var CartPriceRuleValidationProcessorInterface
-     */
-    private $ruleValidationProcessor;
+    private CartPriceRuleValidationProcessorInterface $ruleValidationProcessor;
+    private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
 
-    /**
-     * @var CartPriceRuleVoucherRepositoryInterface
-     */
-    private $voucherCodeRepository;
-
-    /**
-     * @param CartPriceRuleValidationProcessorInterface $ruleValidationProcessor
-     * @param CartPriceRuleVoucherRepositoryInterface   $voucherCodeRepository
-     */
-    public function __construct(CartPriceRuleValidationProcessorInterface $ruleValidationProcessor, CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
+    public function __construct(
+        CartPriceRuleValidationProcessorInterface $ruleValidationProcessor,
+        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+    )
     {
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->voucherCodeRepository = $voucherCodeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         /** @var CartPriceRule $constraint */
         Assert::isInstanceOf($constraint, CartPriceRule::class);
 
-        if (!$value instanceof CartInterface) {
+        if (!$value instanceof OrderInterface) {
             return;
         }
 

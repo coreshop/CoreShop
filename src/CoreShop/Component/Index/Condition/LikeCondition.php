@@ -6,94 +6,58 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Condition;
 
 class LikeCondition implements ConditionInterface
 {
-    /**
-     * @var string
-     */
-    private $fieldName;
+    private string $fieldName;
+    private string $pattern;
+    private string $value;
+    private array $allowedPatterns = ['left', 'right', 'both'];
 
-    /**
-     * @var string
-     */
-    private $pattern;
-
-    /**
-     * @var string
-     */
-    private $value;
-
-    /**
-     * @var array
-     */
-    private $allowedPatterns = ['left', 'right', 'both'];
-
-    /**
-     * @param string $fieldName
-     * @param string $pattern
-     * @param string $value
-     */
-    public function __construct($fieldName, string $pattern, string $value)
+    public function __construct(string $fieldName, string $pattern, string $value)
     {
         $this->fieldName = $fieldName;
         $this->pattern = $pattern;
         $this->value = $value;
 
-        if (!in_array($pattern, $this->allowedPatterns)) {
+        if (!in_array($pattern, $this->allowedPatterns, true)) {
             throw new \InvalidArgumentException(sprintf('Pattern %s not allowed, allowed are %s', $pattern, implode(', ', $this->allowedPatterns)));
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getFieldName()
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
 
-    /**
-     * @param string $fieldName
-     */
-    public function setFieldName($fieldName)
+    public function setFieldName(string $fieldName): void
     {
         $this->fieldName = $fieldName;
     }
 
-    /**
-     * @return string
-     */
-    public function getPattern()
+    public function getPattern(): string
     {
         return $this->pattern;
     }
 
-    /**
-     * @param string $pattern
-     */
-    public function setPattern(string $pattern)
+    public function setPattern(string $pattern): void
     {
         $this->pattern = $pattern;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @param string $value
-     */
-    public function setValue(string $value)
+    public function setValue(string $value): void
     {
         $this->value = $value;
     }

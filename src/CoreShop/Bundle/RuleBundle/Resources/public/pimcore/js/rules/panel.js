@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -35,7 +35,7 @@ coreshop.rules.panel = Class.create(coreshop.resource.panel, {
         var me = this;
 
         Ext.Ajax.request({
-            url: this.url.config,
+            url: this.routing.config ? Routing.generate(this.routing.config) : this.url.config,
             method: 'GET',
             success: function (result) {
                 var config = Ext.decode(result.responseText);

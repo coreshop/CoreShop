@@ -6,48 +6,40 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreFieldcollection;
 
-class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInterface
+abstract class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->getObject()->getId() . '_tax_item_' . $this->getIndex();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAdjustable()
+    public function getAdjustable(): ?AdjustableInterface
     {
-        if ($this->getObject() instanceof AdjustableInterface) {
-            return $this->getObject();
+        $object = $this->getObject();
+
+        if ($object instanceof AdjustableInterface) {
+            return $object;
         }
 
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAmount($withTax = true)
+    public function getAmount(bool $withTax = true): int
     {
         return $withTax ? $this->getPimcoreAmountGross() : $this->getPimcoreAmountNet();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setAmount(int $grossAmount, int $netAmount)
     {
         $this->setPimcoreAmountGross($grossAmount);
@@ -58,17 +50,11 @@ class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInt
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNeutral()
+    public function getNeutral(): bool
     {
-        return $this->getPimcoreNeutral();
+        return (bool)$this->getPimcoreNeutral();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setNeutral(bool $neutral)
     {
         if ($this->getPimcoreNeutral() !== $neutral) {
@@ -78,103 +64,67 @@ class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInt
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCharge()
+    public function isCharge(): bool
     {
         return 0 > $this->getAmount();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCredit()
+    public function isCredit(): bool
     {
         return 0 < $this->getAmount();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTypeIdentifier()
+    public function getTypeIdentifier(): ?string
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setTypeIdentifier($typeIdentifier)
+    public function setTypeIdentifier(?string $typeIdentifier)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLabel()
+    public function getLabel(): ?string
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setLabel($label)
+    public function setLabel(?string $label)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setPimcoreAmountNet($pimcoreAmountNet)
+    public function setPimcoreAmountNet(int $pimcoreAmountNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPimcoreAmountNet()
+    public function getPimcoreAmountNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setPimcoreAmountGross($pimcoreAmountGross)
+    public function setPimcoreAmountGross(int $pimcoreAmountGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPimcoreAmountGross()
+    public function getPimcoreAmountGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setPimcoreNeutral($pimcoreNeutral)
+    public function setPimcoreNeutral(?bool $pimcoreNeutral)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPimcoreNeutral()
+    public function getPimcoreNeutral(): ?bool
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    private function recalculateAdjustable()
+    private function recalculateAdjustable(): void
     {
         $adjustable = $this->getAdjustable();
         if (null !== $adjustable) {

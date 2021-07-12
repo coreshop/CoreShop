@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Maintenance;
 
@@ -18,20 +20,9 @@ use Pimcore\Maintenance\TaskInterface;
 
 final class RuleAvailabilityTask implements TaskInterface
 {
-    /**
-     * @var ConfigurationServiceInterface
-     */
-    private $configurationService;
+    private ConfigurationServiceInterface $configurationService;
+    private RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor;
 
-    /**
-     * @var RuleAvailabilityProcessorInterface
-     */
-    private $ruleAvailabilityProcessor;
-
-    /**
-     * @param ConfigurationServiceInterface      $configurationService
-     * @param RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor
-     */
     public function __construct(
         ConfigurationServiceInterface $configurationService,
         RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor
@@ -40,7 +31,7 @@ final class RuleAvailabilityTask implements TaskInterface
         $this->ruleAvailabilityProcessor = $ruleAvailabilityProcessor;
     }
 
-    public function execute()
+    public function execute(): void
     {
         $lastMaintenance = $this->configurationService->get('system.rule.availability_check.last_run');
 

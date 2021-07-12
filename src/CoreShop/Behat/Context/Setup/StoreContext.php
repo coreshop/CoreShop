@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -24,55 +26,17 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class StoreContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private EntityManagerInterface $entityManager;
+    private FactoryInterface $storeFactory;
+    private FactoryInterface $currencyFactory;
+    private FactoryInterface $countryFactory;
+    private FixedStoreContext $fixedStoreContext;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $storeFactory;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $currencyFactory;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $countryFactory;
-
-    /**
-     * @var StoreRepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var FixedStoreContext
-     */
-    private $fixedStoreContext;
-
-    /**
-     * @param SharedStorageInterface   $sharedStorage
-     * @param EntityManagerInterface   $entityManager
-     * @param FactoryInterface         $storeFactory
-     * @param StoreRepositoryInterface $storeRepository
-     * @param FactoryInterface         $currencyFactory
-     * @param FactoryInterface         $countryFactory
-     * @param FixedStoreContext        $fixedStoreContext
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         EntityManagerInterface $entityManager,
         FactoryInterface $storeFactory,
-        StoreRepositoryInterface $storeRepository,
         FactoryInterface $currencyFactory,
         FactoryInterface $countryFactory,
         FixedStoreContext $fixedStoreContext
@@ -80,7 +44,6 @@ final class StoreContext implements Context
         $this->sharedStorage = $sharedStorage;
         $this->entityManager = $entityManager;
         $this->storeFactory = $storeFactory;
-        $this->storeRepository = $storeRepository;
         $this->currencyFactory = $currencyFactory;
         $this->countryFactory = $countryFactory;
         $this->fixedStoreContext = $fixedStoreContext;
@@ -147,6 +110,16 @@ final class StoreContext implements Context
     }
 
     /**
+     * @Given /^the (store "[^"]+") is the default store$/
+     */
+    public function theStoreIsDefault(StoreInterface $store)
+    {
+        $store->setIsDefault(true);
+
+        $this->saveStore($store);
+    }
+
+    /**
      * @param string                 $name
      * @param CurrencyInterface|null $currency
      * @param CountryInterface|null  $country
@@ -179,10 +152,17 @@ final class StoreContext implements Context
              * @var CountryInterface $country
              */
             $country = $this->countryFactory->createNew();
-            $country->setName('Austria');
+            $country->setName('Austria', 'en');
             $country->setIsoCode('AT');
             $country->setCurrency($currency);
             $country->setActive(true);
+            $country->setAddressFormat('
+                {{ company }}
+                {{ salutation }} {{ firstname }} {{ lastname }}
+                {{ street }}
+                {{ postcode }}
+                {{ country.name }}
+            ');
 
             $this->entityManager->persist($country);
 

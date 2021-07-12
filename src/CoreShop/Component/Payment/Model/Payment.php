@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Model;
 
@@ -46,7 +48,7 @@ class Payment implements PaymentInterface
     protected $state = PaymentInterface::STATE_NEW;
 
     /**
-     * @var array
+     * @var array|object
      */
     protected $details = [];
 
@@ -60,35 +62,16 @@ class Payment implements PaymentInterface
      */
     protected $orderId;
 
-    /**
-     * @var string
-     */
-    protected $number;
-
-    /**
-     * @var string
-     */
-    protected $description;
-
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPaymentProvider()
     {
         return $this->paymentProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPaymentProvider(PaymentProviderInterface $paymentProvider)
     {
         $this->paymentProvider = $paymentProvider;
@@ -126,49 +109,34 @@ class Payment implements PaymentInterface
         $this->currencyCode = $currencyCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDatePayment()
     {
         return $this->datePayment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDatePayment($datePayment)
     {
         $this->datePayment = $datePayment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getState()
     {
         return $this->state;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setState($state)
     {
         $this->state = $state;
     }
 
     /**
-     * {@inheritdoc}
+     * @return object|array|null
      */
     public function getDetails()
     {
         return $this->details;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDetails($details)
     {
         if ($details instanceof \Traversable) {

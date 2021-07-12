@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\TrackingBundle\EventListener;
 
@@ -17,72 +19,31 @@ use Pimcore\Http\ResponseHelper;
 use Pimcore\Analytics\SiteId\SiteIdProvider;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\Templating\EngineInterface;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class GtmDataLayerBlockListener
 {
-    /**
-     * @var PimcoreContextResolver
-     */
-    protected $pimcoreContextResolver;
+    protected PimcoreContextResolver $pimcoreContextResolver;
+    protected ResponseHelper $responseHelper;
+    protected SiteIdProvider $siteIdProvider;
+    protected CodeTracker $codeTracker;
 
-    /**
-     * @var ResponseHelper
-     */
-    protected $responseHelper;
-
-    /**
-     * @var CodeTracker
-     */
-    protected $codeTracker;
-
-    /**
-     * @var SiteIdProvider
-     */
-    private $siteIdProvider;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var EngineInterface
-     */
-    private $templatingEngine;
-
-    /**
-     * @param PimcoreContextResolver   $pimcoreContextResolver
-     * @param ResponseHelper           $responseHelper
-     * @param SiteIdProvider           $siteIdProvider
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param EngineInterface          $templatingEngine
-     * @param CodeTracker              $codeTracker
-     */
     public function __construct(
         PimcoreContextResolver $pimcoreContextResolver,
         ResponseHelper $responseHelper,
         SiteIdProvider $siteIdProvider,
-        EventDispatcherInterface $eventDispatcher,
-        EngineInterface $templatingEngine,
         CodeTracker $codeTracker
     ) {
         $this->pimcoreContextResolver = $pimcoreContextResolver;
         $this->responseHelper = $responseHelper;
         $this->siteIdProvider = $siteIdProvider;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->templatingEngine = $templatingEngine;
         $this->codeTracker = $codeTracker;
     }
 
-    /**
-     * @param FilterResponseEvent $event
-     */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();
+
         if (!$event->isMasterRequest()) {
             return;
         }
@@ -118,10 +79,7 @@ class GtmDataLayerBlockListener
         $response->setContent($content);
     }
 
-    /**
-     * @return string
-     */
-    private function generateCode()
+    private function generateCode(): string
     {
         $html = '';
         foreach ($this->codeTracker->getBlocks() as $code) {

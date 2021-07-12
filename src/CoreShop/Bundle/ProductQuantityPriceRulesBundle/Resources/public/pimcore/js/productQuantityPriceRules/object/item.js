@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -26,6 +26,8 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
         // remove dirty flag!
         this.settings.getForm().setValues(this.settings.getForm().getValues());
         this.ranges.postSaveObject(object, refreshedRuleData, task, fieldName);
+
+        this.conditions.reload(refreshedRuleData.conditions);
     },
 
     onClipboardUpdated: function () {
@@ -101,7 +103,7 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
         // add saved conditions
         if (this.data.conditions) {
             Ext.each(this.data.conditions, function (condition) {
-                this.conditions.addCondition(condition.type, condition);
+                this.conditions.addCondition(condition.type, condition, false);
             }.bind(this));
         }
 

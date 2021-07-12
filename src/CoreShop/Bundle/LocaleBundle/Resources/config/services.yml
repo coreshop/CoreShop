@@ -1,21 +1,22 @@
+imports:
+    - { resource: services_alias.yml }
+
 services:
     _defaults:
         public: true
 
-    coreshop.context.locale.composite:
-        class: CoreShop\Component\Locale\Context\CompositeLocaleContext
-        decorates: coreshop.context.locale
-        decoration_priority: 256
+    CoreShop\Component\Locale\Context\LocaleContextInterface: '@CoreShop\Component\Locale\Context\CompositeLocaleContext'
+    CoreShop\Component\Locale\Context\CompositeLocaleContext:
         public: false
 
-    coreshop.context.locale.pimcore:
-        class: CoreShop\Component\Locale\Context\PimcoreLocaleContext
+    CoreShop\Component\Locale\Context\PimcoreLocaleContext:
+        #Quite Important to keep that, otherwise we get some pretty weird issues.
+        lazy: true
         arguments:
-            - '@pimcore.locale'
+            - '@Pimcore\Localization\LocaleServiceInterface'
         tags:
             - { name: coreshop.context.locale, priority: 100 }
 
-    coreshop.context.locale.fixed:
-        class: CoreShop\Component\Locale\Context\FixedLocaleContext
+    CoreShop\Component\Locale\Context\FixedLocaleContext:
         tags:
             - { name: coreshop.context.locale, priority: 200 }

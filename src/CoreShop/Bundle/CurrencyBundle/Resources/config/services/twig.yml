@@ -1,0 +1,16 @@
+services:
+    CoreShop\Bundle\CurrencyBundle\Twig\CurrencyExtension:
+        tags:
+            - { name: twig.extension }
+
+    CoreShop\Bundle\CurrencyBundle\Twig\ConvertCurrencyExtension:
+        arguments:
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverter'
+        tags:
+            - { name: twig.extension }
+
+    CoreShop\Bundle\CurrencyBundle\Twig\DisplayFractionExtension:
+        arguments:
+            - '@CoreShop\Component\Currency\Display\DefaultDisplayFractionProvider'
+        tags:
+            - { name: twig.extension }

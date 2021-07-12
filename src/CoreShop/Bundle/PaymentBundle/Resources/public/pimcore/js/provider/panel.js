@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -21,12 +21,12 @@ coreshop.provider.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_payment_provider',
     type: 'coreshop_payment_provider',
 
-    url: {
-        add: '/admin/coreshop/payment_providers/add',
-        delete: '/admin/coreshop/payment_providers/delete',
-        get: '/admin/coreshop/payment_providers/get',
-        list: '/admin/coreshop/payment_providers/list',
-        config: '/admin/coreshop/payment_providers/get-config'
+    routing: {
+        add: 'coreshop_payment_provider_add',
+        delete: 'coreshop_payment_provider_delete',
+        get: 'coreshop_payment_provider_get',
+        list: 'coreshop_payment_provider_list',
+        config: 'coreshop_admin_payment_provider_config'
     },
 
     factoryTypes: null,
@@ -42,7 +42,7 @@ coreshop.provider.panel = Class.create(coreshop.resource.panel, {
         this.store = new Ext.data.Store({
             restful: false,
             proxy: new Ext.data.HttpProxy({
-                url: this.url.list
+                url: Routing.generate(this.routing.list)
             }),
             reader: new Ext.data.JsonReader({
                 rootProperty: 'data'
@@ -67,7 +67,7 @@ coreshop.provider.panel = Class.create(coreshop.resource.panel, {
         pimcore.globalmanager.add('coreshop_payment_provider_factories', this.factoryTypes);
 
         Ext.Ajax.request({
-            url: this.url.config,
+            url: Routing.generate(this.routing.config),
             method: 'get',
             success: function (response) {
                 try {

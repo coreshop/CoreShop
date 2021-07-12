@@ -6,44 +6,33 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Factory;
 
 use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
 use CoreShop\Component\Index\Factory\ListingFactoryInterface;
 use CoreShop\Component\Index\Filter\FilterProcessorInterface;
+use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FilteredListingFactory implements FilteredListingFactoryInterface
 {
-    /**
-     * @var ListingFactoryInterface
-     */
-    private $listingFactory;
+    private ListingFactoryInterface $listingFactory;
+    private FilterProcessorInterface $filterProcessor;
 
-    /**
-     * @var FilterProcessorInterface
-     */
-    private $filterProcessor;
-
-    /**
-     * @param ListingFactoryInterface  $listingFactory
-     * @param FilterProcessorInterface $filterProcessor
-     */
     public function __construct(ListingFactoryInterface $listingFactory, FilterProcessorInterface $filterProcessor)
     {
         $this->listingFactory = $listingFactory;
         $this->filterProcessor = $filterProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createList(FilterInterface $filter, ParameterBag $parameterBag)
+    public function createList(FilterInterface $filter, ParameterBag $parameterBag): ListingInterface
     {
         $list = $this->listingFactory->createList($filter->getIndex());
 

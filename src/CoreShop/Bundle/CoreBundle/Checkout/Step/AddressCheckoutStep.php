@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
@@ -19,78 +21,52 @@ use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Webmozart\Assert\Assert;
 
 class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
+    private CartManagerInterface $cartManager;
 
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
-     * @var CartManagerInterface
-     */
-    private $cartManager;
-
-    /**
-     * @param FormFactoryInterface  $formFactory
-     * @param TokenStorageInterface $tokenStorage
-     * @param CartManagerInterface  $cartManager
-     */
     public function __construct(
         FormFactoryInterface $formFactory,
-        TokenStorageInterface $tokenStorage,
         CartManagerInterface $cartManager
     ) {
         $this->formFactory = $formFactory;
-        $this->tokenStorage = $tokenStorage;
         $this->cartManager = $cartManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'address';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function doAutoForward(CartInterface $cart)
+    public function doAutoForward(OrderInterface $cart): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate(CartInterface $cart)
+    public function validate(OrderInterface $cart): bool
     {
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
         return $cart->hasItems()
             && ($cart->hasShippableItems() === false || $cart->getShippingAddress() instanceof AddressInterface)
             && $cart->getInvoiceAddress() instanceof AddressInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function commitStep(CartInterface $cart, Request $request)
+    public function commitStep(OrderInterface $cart, Request $request): bool
     {
-        $customer = $this->getCustomer();
+        $customer = $cart->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
+        }
+
         $form = $this->createForm($request, $cart, $customer);
 
         if ($form->isSubmitted()) {
@@ -106,14 +82,15 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareStep(CartInterface $cart, Request $request)
+    public function prepareStep(OrderInterface $cart, Request $request): array
     {
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
-        $customer = $this->getCustomer();
+        $customer = $cart->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
+        }
 
         return [
             'form' => $this->createForm($request, $cart, $customer)->createView(),
@@ -121,38 +98,15 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
         ];
     }
 
-    /**
-     * @return CustomerInterface
-     *
-     * @throws CheckoutException
-     */
-    private function getCustomer()
+    private function createForm(Request $request, OrderInterface $cart, CustomerInterface $customer): FormInterface
     {
-        $customer = $this->tokenStorage->getToken()->getUser();
-
-        if (!$customer instanceof CustomerInterface) {
-            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
-        }
-
-        return $customer;
-    }
-
-    /**
-     * @param Request           $request
-     * @param CartInterface     $cart
-     * @param CustomerInterface $customer
-     *
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function createForm(Request $request, CartInterface $cart, CustomerInterface $customer)
-    {
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
         $options = [
             'customer' => $customer,
         ];
 
-        $form = $this->formFactory->createNamed('', AddressType::class, $cart, $options);
+        $form = $this->formFactory->createNamed('coreshop', AddressType::class, $cart, $options);
 
         if ($cart->hasShippableItems() === false) {
             $form->remove('shippingAddress');

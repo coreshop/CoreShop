@@ -1,8 +1,6 @@
 $(function() {
-
     if($('#map-block').length > 0) {
-        // GOOGLE MAP
-        $("#map-block").height($("#map-wrapper").height());	// Set Map Height
+        $("#map-block").height($("#map-wrapper").height());
         function initialize($) {
             var mapOptions = {
                 zoom: 18,
@@ -14,5 +12,4 @@ $(function() {
 
         google.maps.event.addDomListener(window, 'load', initialize);
     }
-
 });

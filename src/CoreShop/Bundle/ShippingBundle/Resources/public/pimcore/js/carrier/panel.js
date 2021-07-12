@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -21,11 +21,48 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_carriers',
     type: 'coreshop_carriers',
 
-    url: {
-        add: '/admin/coreshop/carriers/add',
-        delete: '/admin/coreshop/carriers/delete',
-        get: '/admin/coreshop/carriers/get',
-        list: '/admin/coreshop/carriers/list'
+    routing: {
+        add: 'coreshop_carrier_add',
+        delete: 'coreshop_carrier_delete',
+        get: 'coreshop_carrier_get',
+        list: 'coreshop_carrier_list',
+        config: 'coreshop_carrier_getConfig'
+    },
+
+    /**
+     * constructor
+     */
+    initialize: function () {
+        this.getConfig();
+
+        this.panels = [];
+    },
+
+    getConfig: function () {
+        this.taxCalculationStrategyStore = new Ext.data.JsonStore({
+            data: []
+        });
+
+        pimcore.globalmanager.add('coreshop_shipping_tax_calculation_strategies', this.taxCalculationStrategyStore);
+
+        Ext.Ajax.request({
+            url: Routing.generate(this.routing.config),
+            method: 'get',
+            success: function (response) {
+                try {
+                    var res = Ext.decode(response.responseText);
+
+                    res.taxCalculationStrategies.forEach(element => element.label = t(element.label));
+
+                    this.taxCalculationStrategyStore.loadData(res.taxCalculationStrategies);
+
+                    // create layout
+                    this.getLayout();
+                } catch (e) {
+                    //pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'), 'error');
+                }
+            }.bind(this)
+        });
     },
 
     getItemClass: function() {

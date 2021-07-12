@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
@@ -18,23 +20,14 @@ use Webmozart\Assert\Assert;
 
 final class OrderDocumentWorkflowListener extends AbstractNotificationRuleListener
 {
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
-    /**
-     * @param string $type
-     */
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * @param Event $event
-     */
-    public function applyDocumentWorkflowTransitionCompleted(Event $event)
+    public function applyDocumentWorkflowTransitionCompleted(Event $event): void
     {
         $subject = $event->getSubject();
 

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\Rule\Condition;
 
@@ -20,15 +22,12 @@ use Symfony\Component\Form\FormEvents;
 
 final class ProductQuantityPriceRuleNestedConfigurationType extends AbstractNestedConfigurationType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('conditions', ProductQuantityPriceRuleConditionCollectionType::class);
+            ->add('conditions', ProductQuantityPriceRuleConditionCollectionType::class, ['nested' => true]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
@@ -41,10 +40,7 @@ final class ProductQuantityPriceRuleNestedConfigurationType extends AbstractNest
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_quantity_price_rules_rule_condition_nested';
     }

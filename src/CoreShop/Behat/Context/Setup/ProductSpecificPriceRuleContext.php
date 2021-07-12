@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -36,11 +38,10 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
-use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 
 final class ProductSpecificPriceRuleContext implements Context
@@ -48,58 +49,20 @@ final class ProductSpecificPriceRuleContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FormFactoryInterface $formFactory;
+    private FormTypeRegistryInterface $conditionFormTypeRegistry;
+    private FormTypeRegistryInterface $actionFormTypeRegistry;
+    private FactoryInterface $productSpecificPriceRuleFactory;
 
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $conditionFormTypeRegistry;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $actionFormTypeRegistry;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $productSpecificPriceRuleFactory;
-
-    /**
-     * @var ProductSpecificPriceRuleRepositoryInterface
-     */
-    private $productSpecificPriceRuleRepository;
-
-    /**
-     * @param SharedStorageInterface                      $sharedStorage
-     * @param ObjectManager                               $objectManager
-     * @param FormFactoryInterface                        $formFactory
-     * @param FormTypeRegistryInterface                   $conditionFormTypeRegistry
-     * @param FormTypeRegistryInterface                   $actionFormTypeRegistry
-     * @param FactoryInterface                            $productSpecificPriceRuleFactory
-     * @param ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FormFactoryInterface $formFactory,
         FormTypeRegistryInterface $conditionFormTypeRegistry,
         FormTypeRegistryInterface $actionFormTypeRegistry,
-        FactoryInterface $productSpecificPriceRuleFactory,
-        ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
+        FactoryInterface $productSpecificPriceRuleFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
@@ -107,11 +70,11 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
         $this->actionFormTypeRegistry = $actionFormTypeRegistry;
         $this->productSpecificPriceRuleFactory = $productSpecificPriceRuleFactory;
-        $this->productSpecificPriceRuleRepository = $productSpecificPriceRuleRepository;
     }
 
     /**
      * @Given /^adding a product specific price rule to (product "[^"]+") named "([^"]+)"$/
+     * @Given /^adding a product specific price rule to this (product) named "([^"]+)"$/
      */
     public function addingAProductSpecificPriceRuleToProduct(ProductInterface $product, $ruleName)
     {
@@ -400,41 +363,26 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormRegistry()
     {
         return $this->conditionFormTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormClass()
     {
         return ProductSpecificPriceRuleConditionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getActionFormRegistry()
     {
         return $this->actionFormTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getActionFormClass()
     {
         return ProductSpecificPriceRuleActionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getFormFactory()
     {
         return $this->formFactory;

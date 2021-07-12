@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
@@ -17,42 +19,29 @@ use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Pimcore\Tool;
 use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Intl\Data\Provider\LanguageDataProvider;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Languages;
 
 class CountryFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return '2.0';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             ZoneFixture::class,
@@ -61,54 +50,51 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $countries = CountryLoader::countries(true, true);
         /**
          * @var StoreInterface $store
          */
-        $store = $this->container->get('coreshop.repository.store')->findStandard();
+        $store = $this->getReference('store');
 
         $addressFormatReplaces = [
             'recipient' => [
-                '%Text(company);',
+                '{{ company }};',
                 PHP_EOL,
-                '%Text(salutation);',
-                '%Text(firstname);',
-                '%Text(lastname);',
+                '{{ salutation }}',
+                '{{ firstname }}',
+                '{{ lastname }}',
             ],
             'street' => [
-                '%Text(street);',
-                '%Text(number);',
+                '{{ street}}',
+                '{{ number }}',
             ],
-            'postalcode' => ' %Text(postcode); ',
-            'city' => '%Text(city);',
+            'postalcode' => ' {{ postcode }}',
+            'city' => '{{ city }}',
             'country' => [
-                '%DataObject(country,{"method" : "getName"});',
-                '%Text(phone);',
+                '{{ country.name }}',
+                '{{ phoneNumber }}',
             ],
             'region' => '',
+            'region_short' => ''
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
         $defaultSalutations = ['mrs', 'mr'];
         $languages = Tool::getValidLanguages();
         $alpha3CodeMap = [];
 
-        /**
-         * @var LanguageDataProvider $languageDataProvider
-         */
-        $languageDataProvider = Intl::getLanguageBundle();
-
         foreach ($languages as $lang) {
             $langPart = strpos($lang, '_') ? explode('_', $lang)[0] : $lang;
-            $alpha3CodeMap[$lang] = $languageDataProvider->getAlpha3Code($langPart);
+            $alpha3CodeMap[$lang] = Languages::getAlpha3Code($langPart);
         }
 
         foreach ($countries as $country) {
             if ($country instanceof Country) {
+                if (null === $country->getCurrency() || !isset($country->getCurrency()['iso_4217_code'])) {
+                    continue;
+                }
+
                 /**
                  * @var CountryInterface $newCountry
                  */
@@ -129,6 +115,8 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 $newCountry->setZone($this->container->get('coreshop.repository.zone')->findOneBy(['name' => $country->getContinent()]));
                 $newCountry->setCurrency($this->container->get('coreshop.repository.currency')->getByCode($country->getCurrency()['iso_4217_code']));
 
+                $this->setReference('country_' . $country->getIsoAlpha2(), $newCountry);
+
                 $extra = $country->getExtra();
                 $addressFormat = $defaultAddressFormat;
 
@@ -138,7 +126,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
                 foreach ($addressFormatReplaces as $replaceKey => $replaces) {
                     if (!is_array($replaces)) {
-                        $replaces = [];
+                        $replaces = [$replaces];
                     }
 
                     $replaceTo = trim(implode(' ', $replaces));
@@ -146,6 +134,12 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
                     $addressFormat = str_replace($replaceFrom, $replaceTo, $addressFormat);
                 }
+
+                $addressFormat = explode(PHP_EOL, $addressFormat);
+                $addressFormat = array_map(function($entry) {
+                    return trim($entry);
+                }, $addressFormat);
+                $addressFormat = implode(PHP_EOL, $addressFormat);
 
                 $newCountry->setAddressFormat($addressFormat);
                 $newCountry->setSalutations($defaultSalutations);
@@ -183,8 +177,13 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         $manager->persist($store);
         $manager->flush();
 
-        $store->setCurrency($this->container->get('coreshop.repository.currency')->getByCode('EUR'));
-        $store->setBaseCountry($this->container->get('coreshop.repository.country')->findOneBy(['isoCode' => 'AT']));
+        if ($this->hasReference('currency_EUR')) {
+            $store->setCurrency($this->getReference('currency_EUR'));
+        }
+
+        if ($this->hasReference('country_AT')) {
+            $store->setBaseCountry($this->getReference('country_AT'));
+        }
 
         $manager->persist($store);
         $manager->flush();

@@ -6,45 +6,27 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
-final class ExtractorRegistryServicePass implements CompilerPassInterface
+final class ExtractorRegistryServicePass extends RegisterSimpleRegistryTypePass
 {
     public const EXTRACTOR_TAG = 'coreshop.seo.extractor';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function __construct()
     {
-        if (!$container->has('coreshop.registry.seo.extractor')) {
-            return;
-        }
-
-        $registry = $container->getDefinition('coreshop.registry.seo.extractor');
-
-        $map = [];
-        foreach ($container->findTaggedServiceIds('coreshop.seo.extractor') as $id => $attributes) {
-            $definition = $container->findDefinition($id);
-
-            if (!isset($attributes[0]['type'])) {
-                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-
-            $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
-        }
-
-        $container->setParameter('coreshop.seo.extractors', $map);
+        parent::__construct(
+            'coreshop.registry.seo.extractor',
+            'coreshop.seo.extractors',
+            self::EXTRACTOR_TAG
+        );
     }
+
 }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher;
 
@@ -17,23 +19,14 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 
 final class ValidProductQuantityPriceRuleFetcher implements ValidRulesFetcherInterface
 {
-    /**
-     * @var RuleValidationProcessorInterface
-     */
-    private $ruleValidationProcessor;
+    private RuleValidationProcessorInterface $ruleValidationProcessor;
 
-    /**
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     */
     public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor)
     {
         $this->ruleValidationProcessor = $ruleValidationProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context)
+    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context): array
     {
         $validRules = [];
         $rules = $product->getQuantityPriceRules();

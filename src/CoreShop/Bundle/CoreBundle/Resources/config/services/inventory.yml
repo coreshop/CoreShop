@@ -2,7 +2,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.inventory.order_operator:
-      class: CoreShop\Component\Core\Inventory\Operator\OrderInventoryOperator
-      arguments:
-          - '@coreshop.manager.product'
+    CoreShop\Component\Core\Inventory\Operator\OrderInventoryOperatorInterface: '@CoreShop\Component\Core\Inventory\Operator\OrderInventoryOperator'
+    CoreShop\Component\Core\Inventory\Operator\OrderInventoryOperator:
+        arguments:
+            - '@coreshop.manager.product'

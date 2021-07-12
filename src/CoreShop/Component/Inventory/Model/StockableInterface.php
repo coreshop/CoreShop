@@ -6,51 +6,29 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Inventory\Model;
 
 interface StockableInterface
 {
-    /**
-     * @return string
-     */
-    public function getInventoryName();
+    public function getInventoryName(): ?string;
 
-    /**
-     * @return bool
-     */
-    public function isInStock();
+    public function isInStock(): bool;
 
-    /**
-     * @return int
-     */
-    public function getOnHold();
+    public function getOnHold(): ?int;
 
-    /**
-     * @param int $onHold
-     */
-    public function setOnHold($onHold);
+    public function setOnHold(?int $onHold);
 
-    /**
-     * @return int
-     */
-    public function getOnHand();
+    public function getOnHand(): ?int;
 
-    /**
-     * @param int $onHand
-     */
-    public function setOnHand($onHand);
+    public function setOnHand(?int $onHand);
 
-    /**
-     * @return bool
-     */
-    public function getIsTracked();
+    public function getIsTracked(): ?bool;
 
-    /**
-     * @param bool $tracked
-     */
-    public function setIsTracked($tracked);
+    public function setIsTracked(?bool $tracked);
 }

@@ -6,49 +6,48 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Listing;
 
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Order\OrderInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Zend\Paginator\Adapter\AdapterInterface;
-use Zend\Paginator\AdapterAggregateInterface;
+use Doctrine\DBAL\Connection;
+use Pimcore\Model\DataObject\Concrete;
 
-interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
+interface ListingInterface extends \Countable, \IteratorAggregate
 {
-    /**
-     * Order Key Price.
-     */
-    const ORDERKEY_PRICE = 'orderkey_price';
-
     /**
      * Variant mode defines how to consider variants in product list results
      * - does not consider variants in search results.
      */
-    const VARIANT_MODE_HIDE = 'hide';
+    public const VARIANT_MODE_HIDE = 'hide';
 
     /**
      * Variant mode defines how to consider variants in product list results
      * - considers variants in search results and returns objects and variants.
      */
-    const VARIANT_MODE_INCLUDE = 'include';
+    public const VARIANT_MODE_INCLUDE = 'include';
 
     /**
      * Variant mode defines how to consider variants in product list results
      * - considers variants in search results but only returns corresponding objects in search results.
      */
-    const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
+    public const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
 
     /**
      * @param IndexInterface  $index
      * @param WorkerInterface $worker
+     * @param Connection $connection
      */
-    public function __construct(IndexInterface $index, WorkerInterface $worker);
+    public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection);
 
     /**
      * Returns all products valid for this search.
@@ -56,6 +55,13 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * @return PimcoreModelInterface[]
      */
     public function getObjects();
+
+    /**
+     * @param int $offset
+     * @param int $itemCountPerPage
+     * @return PimcoreModelInterface[]
+     */
+    public function getItems(int $offset, int $itemCountPerPage);
 
     /**
      * Adds filter condition to product list
@@ -114,7 +120,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * gets order direction.
      *
-     * @return string
+     * @return OrderInterface|string|null
      */
     public function getOrder();
 
@@ -185,7 +191,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      *
      * @param array $options
      *
-     * @return PimcoreModelInterface[]
+     * @return Concrete[]
      */
     public function load(array $options = []);
 

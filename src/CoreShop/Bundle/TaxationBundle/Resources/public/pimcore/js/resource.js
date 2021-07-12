@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -13,14 +13,13 @@
 pimcore.registerNS('coreshop.taxation.resource');
 coreshop.taxation.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.global.addStore('coreshop_tax_rates', 'coreshop/tax_rates', [
+        coreshop.global.addStoreWithRoute('coreshop_tax_rates', 'coreshop_tax_rate_list', [
             {name: 'id'},
             {name: 'name'},
             {name: 'rate'}
         ]);
-        coreshop.global.addStore('coreshop_taxrulegroups', 'coreshop/tax_rule_groups');
-
-        pimcore.globalmanager.get('coreshop_tax_rates').load();
+        coreshop.global.addStoreWithRoute('coreshop_taxrulegroups', 'coreshop_tax_rule_group_list');
+        coreshop.global.addStoreWithRoute('coreshop_tax_rule_groups', 'coreshop_tax_rule_group_list');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.taxation', this);
     },

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
@@ -17,28 +19,13 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface OrderDocumentItemInterface extends ResourceInterface, PimcoreModelInterface
 {
-    /**
-     * @return OrderInterface
-     */
-    public function getDocument();
+    public function getDocument(): OrderDocumentInterface;
 
-    /**
-     * @return OrderItemInterface
-     */
-    public function getOrderItem();
+    public function getOrderItem(): ?OrderItemInterface;
 
-    /**
-     * @param OrderItemInterface $orderItem
-     */
-    public function setOrderItem($orderItem);
+    public function setOrderItem(?OrderItemInterface $orderItem);
 
-    /**
-     * @return int
-     */
-    public function getQuantity();
+    public function getQuantity(): ?float;
 
-    /**
-     * @param int $amount
-     */
-    public function setQuantity($amount);
+    public function setQuantity(?float $amount);
 }

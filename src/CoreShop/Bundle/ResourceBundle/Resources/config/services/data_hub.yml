@@ -1,0 +1,6 @@
+services:
+    coreshop.data_hub.doctrine_provider:
+        class: CoreShop\Component\Resource\DataHub\DoctrineProvider
+        public: true
+        arguments:
+            - '@doctrine.orm.default_entity_manager'

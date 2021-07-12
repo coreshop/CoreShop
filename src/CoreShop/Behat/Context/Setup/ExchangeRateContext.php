@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -18,46 +20,22 @@ use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\ExchangeRateInterface;
 use CoreShop\Component\Currency\Repository\ExchangeRateRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 final class ExchangeRateContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $exchangeRateFactory;
 
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $exchangeRateFactory;
-
-    /**
-     * @var ExchangeRateRepositoryInterface
-     */
-    private $exchangeRateRepository;
-
-    /**
-     * @param SharedStorageInterface          $sharedStorage
-     * @param ObjectManager                   $objectManager
-     * @param FactoryInterface                $exchangeRateFactory
-     * @param ExchangeRateRepositoryInterface $exchangeRateRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
-        FactoryInterface $exchangeRateFactory,
-        ExchangeRateRepositoryInterface $exchangeRateRepository
+        FactoryInterface $exchangeRateFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->exchangeRateFactory = $exchangeRateFactory;
-        $this->exchangeRateRepository = $exchangeRateRepository;
     }
 
     /**

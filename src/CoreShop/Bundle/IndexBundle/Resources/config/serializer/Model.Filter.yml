@@ -15,7 +15,7 @@ CoreShop\Component\Index\Model\Filter:
             expose: true
             type: string
             groups: [Detailed]
-        order:
+        orderDirection:
             expose: true
             type: string
             groups: [Detailed]
@@ -29,9 +29,9 @@ CoreShop\Component\Index\Model\Filter:
             groups: [Detailed]
         preConditions:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]
         conditions:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]

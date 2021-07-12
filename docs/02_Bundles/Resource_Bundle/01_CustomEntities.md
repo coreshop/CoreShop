@@ -21,7 +21,7 @@ interface CustomEntityInterface extends ResourceInterface, TranslatableInterface
 
 //AppBundle/Model/CustomEntity.php
 
-interface CustomEntity implements CustomEntityInterface {
+class CustomEntity implements CustomEntityInterface {
     use TranslatableTrait {
         __construct as private initializeTranslationsCollection;
     }
@@ -84,7 +84,7 @@ interface CustomEntityTranslationInterface extends ResourceInterface, Timestampa
 
 //AppBundle/Model/CustomEntityTranslation.php
 
-class CustomEntityTranslation extends AbstractTranslation implements CountryTranslationInterface
+class CustomEntityTranslation extends AbstractTranslation implements CustomEntityTranslationInterface
 {
     protected $id;
     protected $name;
@@ -182,11 +182,11 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('resources')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('country')
+                        ->arrayNode('custom_entity')
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->variableNode('options')->end()
-                                ->scalarNode('permission')->defaultValue('country')->cannotBeOverwritten()->end()
+                                ->scalarNode('permission')->defaultValue('custom_entity')->cannotBeOverwritten()->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()

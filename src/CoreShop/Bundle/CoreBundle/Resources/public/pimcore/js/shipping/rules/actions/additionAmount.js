@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -19,7 +19,7 @@ coreshop.shippingrule.actions.additionAmount = Class.create(coreshop.rules.actio
         var currency = null;
 
         if (this.data) {
-            amountValue = this.data.amount / 100;
+            amountValue = this.data.amount / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
             currency = this.data.currency;
         }
 
@@ -27,7 +27,7 @@ coreshop.shippingrule.actions.additionAmount = Class.create(coreshop.rules.actio
             fieldLabel: t('coreshop_action_discountAmount_amount'),
             name: 'amount',
             value: amountValue,
-            decimalPrecision: 2
+            decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         });
 
         this.form = new Ext.form.Panel({

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Calculator;
 
@@ -17,23 +19,14 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositePurchasableDiscountCalculator implements PurchasableDiscountCalculatorInterface
 {
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
-    protected $discountCalculators;
+    protected PrioritizedServiceRegistryInterface $discountCalculators;
 
-    /**
-     * @param PrioritizedServiceRegistryInterface $discountCalculators
-     */
     public function __construct(PrioritizedServiceRegistryInterface $discountCalculators)
     {
         $this->discountCalculators = $discountCalculators;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscount(PurchasableInterface $purchasable, array $context, $basePrice)
+    public function getDiscount(PurchasableInterface $purchasable, array $context, int $convertedPrice): int
     {
         $discounts = 0;
 
@@ -41,7 +34,7 @@ class CompositePurchasableDiscountCalculator implements PurchasableDiscountCalcu
          * @var PurchasableDiscountCalculatorInterface $calculator
          */
         foreach ($this->discountCalculators->all() as $calculator) {
-            $discounts += $calculator->getDiscount($purchasable, $context, $basePrice);
+            $discounts += $calculator->getDiscount($purchasable, $context, $convertedPrice);
         }
 
         return $discounts;

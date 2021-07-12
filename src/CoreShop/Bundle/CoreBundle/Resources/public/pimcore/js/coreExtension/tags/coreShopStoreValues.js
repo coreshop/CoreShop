@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,7 +17,6 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
     productUnitDefinitionsStore: null,
 
     initialize: function (data, fieldConfig) {
-
         this.defaultValue = null;
         this.storeValuesBuilder = {};
 
@@ -40,7 +39,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/product_unit_definitions/get-product-additional-unit-definitions',
+                url: Routing.generate('coreshop_product_unit_definitions_productAdditionalUnitDefinitionsList'),
                 extraParams: {
                     productId: this.object.id
                 },
@@ -88,7 +87,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
     reloadStoreValuesData: function (object, task, fieldName) {
         this.component.setLoading(true);
         Ext.Ajax.request({
-            url: '/admin/object/get',
+            url: Routing.generate('pimcore_admin_dataobject_dataobject_get'),
             params: {id: object.id},
             ignoreErrors: true,
             success: function (response) {
@@ -190,7 +189,6 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
         }
 
         Ext.Object.each(pimcore.globalmanager.get('coreshop_stores').getRange(), function (index, store) {
-
             var data, valuesBuilder, formPanel = new Ext.Panel({
                 xtype: 'panel',
                 border: false,
@@ -199,7 +197,8 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
                 deferredRender: true,
                 hideMode: 'offsets',
                 iconCls: 'coreshop_icon_store',
-                title: store.get('name')
+                title: store.get('name'),
+                items: []
             });
 
             if (this.fieldConfig.labelWidth) {
@@ -208,6 +207,42 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
 
             data = this.data.hasOwnProperty(store.getId()) ? this.data[store.getId()] : null;
             valuesBuilder = new coreshop.product.storeValues.builder(this.fieldConfig, store, data, this.productUnitDefinitionsStore, this.object.id);
+
+            if (data && data.hasOwnProperty('inherited') && !data.inherited && data.inheritable) {
+                formPanel.add({
+                    xtype: 'button',
+                    text: t('coreshop_restore_inheritance'),
+                    iconCls: 'pimcore_icon_delete',
+                    handler: function() {
+                        Ext.Msg.confirm(t('coreshop_restore_inheritance'), t('coreshop_restore_inheritance_message'), function (btn) {
+                            if (btn === 'yes') {
+                                this.component.setLoading(true);
+
+                                Ext.Ajax.request({
+                                    url: Routing.generate('coreshop_product_removeStoreValues'),
+                                    method: 'post',
+                                    params: {id: this.object.id, storeValuesId: data.values.id},
+                                    ignoreErrors: true,
+                                    success: function (response) {
+                                        // maybe object is already gone due manual reload
+                                        if(this.component.destroyed === true) {
+                                            return;
+                                        }
+
+                                        this.component.setLoading(false);
+
+                                        pimcore.globalmanager.get('object_' + this.object.id).reload();
+
+                                    }.bind(this),
+                                    failure: function () {
+                                        this.component.setLoading(false);
+                                    }.bind(this),
+                                });
+                            }
+                        }.bind(this));
+                    }.bind(this)
+                });
+            }
 
             formPanel.add([valuesBuilder.getForm()]);
             tabPanel.add([formPanel]);

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -19,42 +21,16 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Currency\Context\FixedCurrencyContext;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 final class CurrencyContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $currencyFactory;
+    private CurrencyRepositoryInterface $currencyRepository;
+    private FixedCurrencyContext $fixedCurrencyContext;
 
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $currencyFactory;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
-    private $currencyRepository;
-
-    /**
-     * @var FixedCurrencyContext
-     */
-    private $fixedCurrencyContext;
-
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param ObjectManager               $objectManager
-     * @param FactoryInterface            $currencyFactory
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param FixedCurrencyContext        $fixedCurrencyContext
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,

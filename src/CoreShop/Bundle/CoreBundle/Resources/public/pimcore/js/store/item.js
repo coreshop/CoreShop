@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -14,28 +14,36 @@ coreshop.store.item = Class.create(coreshop.store.item, {
 
     getFormPanel: function ($super) {
         var me = this,
-            store = pimcore.globalmanager.get('coreshop_countries'),
             panel = $super();
 
         panel.down('fieldset').add(
             [
                 {
-                    xtype: 'combo',
+                    xtype: 'coreshop.country',
                     fieldLabel: t('coreshop_base_country'),
-                    typeAhead: true,
+                    name: 'baseCountry',
                     value: this.data.baseCountry,
-                    mode: 'local',
-                    listWidth: 100,
-                    store: pimcore.globalmanager.get('coreshop_countries_active'),
-                    displayField: 'name',
-                    valueField: 'id',
-                    forceSelection: true,
-                    triggerAction: 'all',
-                    name: 'baseCountry'
+                    name: 'baseCountry',
+                    store: {
+                        proxy: {
+                            type: 'ajax',
+                            url: Routing.generate('coreshop_country_listActive'),
+                            reader: {
+                                type: 'json',
+                            }
+                        },
+                        fields: [
+                            {name: 'id'},
+                            {name: 'name'}
+                        ],
+                        autoLoad: true,
+                        remoteSort: false,
+                        remoteFilter: false
+                    }
                 },
                 {
                     xtype: 'checkbox',
-                    fieldLabel: t('coreshop_base_use_gross_prices'),
+                    fieldLabel: t('coreshop_use_gross_prices'),
                     value: this.data.useGrossPrice,
                     name: 'useGrossPrice'
                 },
@@ -45,7 +53,9 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                     typeAhead: true,
                     listWidth: 100,
                     width: 500,
-                    store: store,
+                    store: {
+                        type: 'coreshop_countries'
+                    },
                     displayField: 'name',
                     valueField: 'id',
                     forceSelection: true,
@@ -54,15 +64,7 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                     name: 'countries',
                     height: 400,
                     delimiter: false,
-                    listeners: {
-                        beforerender: function () {
-                            if (!store.isLoaded() && !store.isLoading())
-                                store.load();
-
-                            if (me.data && me.data.countries)
-                                this.setValue(me.data.countries);
-                        }
-                    }
+                    value: me.data.countries
                 }
             ]
         );

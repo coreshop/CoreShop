@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -19,7 +19,7 @@ coreshop.order.order.createPayment = {
         var paymentProvidersStore = new Ext.data.Store({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/payment_providers/list',
+                url: Routing.generate('coreshop_payment_provider_list'),
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
@@ -58,7 +58,7 @@ coreshop.order.order.createPayment = {
                                 window.setLoading(t('loading'));
 
                                 Ext.Ajax.request({
-                                    url: '/admin/coreshop/order-payment/add-payment',
+                                    url: Routing.generate('coreshop_admin_order_payment_add'),
                                     method: 'post',
                                     params: formValues,
                                     callback: function (request, success, response) {
@@ -123,7 +123,7 @@ coreshop.order.order.createPayment = {
                         xtype: 'numberfield',
                         name: 'amount',
                         fieldLabel: t('coreshop_amount'),
-                        decimalPrecision: 4,
+                        decimalPrecision: 2,
                         afterLabelTextTpl: [
                             '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
                         ],

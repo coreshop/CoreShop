@@ -6,14 +6,17 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,26 +24,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends FrontendController
 {
-    /**
-     * @var AuthenticationUtils
-     */
-    protected $authenticationUtils;
+    protected AuthenticationUtils $authenticationUtils;
+    protected FormFactoryInterface $formFactory;
+    protected ShopperContextInterface $shopperContext;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
-     * @var ShopperContextInterface
-     */
-    protected $shopperContext;
-
-    /**
-     * @param AuthenticationUtils     $authenticationUtils
-     * @param FormFactoryInterface    $formFactory
-     * @param ShopperContextInterface $shopperContext
-     */
     public function __construct(
         AuthenticationUtils $authenticationUtils,
         FormFactoryInterface $formFactory,
@@ -51,14 +38,9 @@ class SecurityController extends FrontendController
         $this->shopperContext = $shopperContext;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function loginAction(Request $request)
+    public function loginAction(Request $request): Response
     {
-        if ($this->shopperContext->hasCustomer() && $this->shopperContext->getCustomer()->getIsGuest() === false) {
+        if ($this->shopperContext->hasCustomer()) {
             return $this->redirectToRoute('coreshop_index');
         }
 
@@ -72,25 +54,20 @@ class SecurityController extends FrontendController
         $viewWithLayout = $this->templateConfigurator->findTemplate('Security/login.html');
         $viewWithoutLayout = $this->templateConfigurator->findTemplate('Security/_login-form.html');
 
-        return $this->renderTemplate($renderLayout ? $viewWithLayout : $viewWithoutLayout, [
+        return $this->render($renderLayout ? $viewWithLayout : $viewWithoutLayout, [
             'form' => $form->createView(),
             'last_username' => $lastUsername,
             'last_error' => $lastError,
             'target' => $request->get('target', null),
+            'failure' => $request->get('failure', null),
         ]);
     }
 
-    /**
-     * @param Request $request
-     */
     public function checkAction(Request $request)
     {
         throw new \RuntimeException('You must configure the check path to be handled by the firewall.');
     }
 
-    /**
-     * @param Request $request
-     */
     public function logoutAction(Request $request)
     {
         throw new \RuntimeException('You must configure the logout path to be handled by the firewall.');

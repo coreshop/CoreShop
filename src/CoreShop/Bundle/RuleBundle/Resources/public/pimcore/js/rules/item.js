@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -37,22 +37,37 @@ coreshop.rules.item = Class.create(coreshop.resource.item, {
         // add saved conditions
         if (this.data.conditions) {
             Ext.each(this.data.conditions, function (condition) {
-                this.conditions.addCondition(condition.type, condition);
+                this.conditions.addCondition(condition.type, condition, false);
             }.bind(this));
         }
 
         // add saved actions
         if (this.data.actions) {
             Ext.each(this.data.actions, function (action) {
-                this.actions.addAction(action.type, action);
+                this.actions.addAction(action.type, action, false);
             }.bind(this));
         }
 
         return items;
     },
 
+    resetDirty: function() {
+        if (this.actions) {
+            this.actions.setDirty(false);
+        }
+
+        if (this.conditions) {
+            this.conditions.setDirty(false);
+        }
+    },
+
+    postSave: function(result) {
+        this.conditions.reload(result.data.conditions);
+        this.actions.reload(result.data.actions);
+    },
+
     getSaveData: function () {
-        saveData = this.settingsForm.getForm().getFieldValues();
+        var saveData = this.settingsForm.getForm().getFieldValues();
         saveData['conditions'] = this.conditions.getConditionsData();
         saveData['actions'] = this.actions.getActionsData();
 

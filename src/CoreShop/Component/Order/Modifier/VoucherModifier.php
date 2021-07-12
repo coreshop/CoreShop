@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Modifier;
 
@@ -21,20 +23,9 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 class VoucherModifier implements VoucherModifierInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
+    protected CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
 
-    /**
-     * @var CartPriceRuleVoucherRepositoryInterface
-     */
-    private $voucherCodeRepository;
-
-    /**
-     * @param EntityManagerInterface                  $entityManager
-     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
@@ -43,10 +34,7 @@ class VoucherModifier implements VoucherModifierInterface
         $this->voucherCodeRepository = $voucherCodeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function increment(OrderInterface $order)
+    public function increment(OrderInterface $order): void
     {
         $priceRuleItems = $order->getPriceRuleItems();
         if (!$priceRuleItems instanceof Fieldcollection) {
@@ -58,10 +46,19 @@ class VoucherModifier implements VoucherModifierInterface
                 continue;
             }
 
+            if (!$item->getVoucherCode()) {
+                continue;
+            }
+
             $voucherCode = $this->voucherCodeRepository->findByCode($item->getVoucherCode());
             if ($voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                 $voucherCode->setUsed(true);
                 $voucherCode->setUses($voucherCode->getUses() + 1);
+
+                if ($voucherCode->isCreditCode()) {
+                    $voucherCode->setCreditUsed(-1 * $item->getDiscount(true));
+                }
+
                 $this->entityManager->persist($voucherCode);
             }
         }
@@ -69,10 +66,7 @@ class VoucherModifier implements VoucherModifierInterface
         $this->entityManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function decrement(OrderInterface $order)
+    public function decrement(OrderInterface $order): void
     {
         $priceRuleItems = $order->getPriceRuleItems();
         if (!$priceRuleItems instanceof Fieldcollection) {
@@ -89,6 +83,11 @@ class VoucherModifier implements VoucherModifierInterface
                 if ($voucherCode->getUses() !== 0) {
                     $voucherCode->setUses($voucherCode->getUses() - 1);
                     $voucherCode->setUsed($voucherCode->getUses() !== 0);
+
+                    if ($voucherCode->isCreditCode()) {
+                        $voucherCode->setCreditUsed(max(0,$voucherCode->getCreditUsed() - (-1 * $item->getDiscount(true))));
+                    }
+
                     $this->entityManager->persist($voucherCode);
                 }
             }

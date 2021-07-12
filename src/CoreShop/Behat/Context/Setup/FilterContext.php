@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -22,61 +24,24 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 final class FilterContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $filterFactory;
+    private FactoryInterface $filterConditionFactory;
 
-    /**
-     * @var ClassStorageInterface
-     */
-    private $classStorage;
-
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $filterFactory;
-
-    /**
-     * @var RepositoryInterface
-     */
-    private $filterRepository;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $filterConditionFactory;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface  $classStorage
-     * @param ObjectManager          $objectManager
-     * @param FactoryInterface       $filterFactory
-     * @param RepositoryInterface    $filterRepository
-     * @param FactoryInterface       $filterConditionFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        ClassStorageInterface $classStorage,
         ObjectManager $objectManager,
         FactoryInterface $filterFactory,
-        RepositoryInterface $filterRepository,
         FactoryInterface $filterConditionFactory
     ) {
         $this->sharedStorage = $sharedStorage;
-        $this->classStorage = $classStorage;
         $this->objectManager = $objectManager;
         $this->filterFactory = $filterFactory;
-        $this->filterRepository = $filterRepository;
         $this->filterConditionFactory = $filterConditionFactory;
     }
 

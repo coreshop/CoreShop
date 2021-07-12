@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
@@ -16,36 +18,24 @@ use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Tool\Email\Log;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class NoteService implements NoteServiceInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNoteById($id)
+    public function getNoteById(int $id): ?Note
     {
         return Note::getById($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createPimcoreNoteInstance(Concrete $object, $noteType)
+    public function createPimcoreNoteInstance(Concrete $object, string $noteType): Note
     {
         $note = new Note();
         $note->setElement($object);
@@ -55,10 +45,7 @@ class NoteService implements NoteServiceInterface
         return $note;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createAnonymousNoteInstance($noteType)
+    public function createAnonymousNoteInstance(string $noteType): Note
     {
         $note = new Note();
         $note->setDate(time());
@@ -67,10 +54,7 @@ class NoteService implements NoteServiceInterface
         return $note;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getObjectNotes(Concrete $object, $noteType)
+    public function getObjectNotes(Concrete $object, string $noteType): array
     {
         $noteList = new Note\Listing();
         $noteList->addConditionParam('type = ?', $noteType);
@@ -81,10 +65,7 @@ class NoteService implements NoteServiceInterface
         return $noteList->load();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function storeNoteForEmail(Note $note, Document\Email $emailDocument)
+    public function storeNoteForEmail(Note $note, Document\Email $emailDocument): Note
     {
         //Because logger does not return any id, we need to fetch the last one!
         $listing = new Log\Listing();
@@ -101,25 +82,19 @@ class NoteService implements NoteServiceInterface
         return $this->storeNote($note);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function storeNote(Note $note, $eventParams = [])
+    public function storeNote(Note $note, array $eventParams = []): Note
     {
         $note->save();
 
         $this->eventDispatcher->dispatch(
-            sprintf('coreshop.note.%s.post_add', $note->getType()),
-            new GenericEvent($note, $eventParams)
+            new GenericEvent($note, $eventParams),
+            sprintf('coreshop.note.%s.post_add', $note->getType())
         );
 
         return $note;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteNote($noteId, $eventParams = [])
+    public function deleteNote(int $noteId, array $eventParams = []): void
     {
         $note = $this->getNoteById($noteId);
 
@@ -134,8 +109,8 @@ class NoteService implements NoteServiceInterface
         }
 
         $this->eventDispatcher->dispatch(
-            sprintf('coreshop.note.%s.pot_delete', $noteType),
-            new GenericEvent($note, $eventParams)
+            new GenericEvent($note, $eventParams),
+            sprintf('coreshop.note.%s.pot_delete', $noteType)
         );
     }
 }

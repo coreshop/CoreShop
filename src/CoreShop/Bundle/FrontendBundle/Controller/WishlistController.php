@@ -6,14 +6,17 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\Model\StorageListItem;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
@@ -43,7 +46,7 @@ class WishlistController extends FrontendController
         }
 
         /**
-         * @var StorageListItemInterface $wishlistItem
+         * @var StorageListItem $wishlistItem
          */
         $wishlistItem = $this->get('coreshop.factory.wishlist_item')->createNew();
         $wishlistItem->setProduct($product);
@@ -91,7 +94,7 @@ class WishlistController extends FrontendController
      */
     public function summaryAction(Request $request)
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Wishlist/summary.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Wishlist/summary.html'), [
             'wishlist' => $this->getWishlist(),
         ]);
     }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -23,26 +25,10 @@ use Webmozart\Assert\Assert;
 
 final class IndexContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private RepositoryInterface $indexRepository;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $indexRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param RepositoryInterface    $indexRepository
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         RepositoryInterface $indexRepository,
@@ -79,6 +65,17 @@ final class IndexContext implements Context
     }
 
     /**
+     * @Then /^the (index) should have relational columns "([^"]+)"$/
+     */
+    public function theIndexShouldHaveRelationalColumns(IndexInterface $index, $columns)
+    {
+        $columns = explode(', ', $columns);
+        $tableName = sprintf('coreshop_index_mysql_relations_%s', $index->getName());
+
+        $this->indexShouldHaveColumnsInTable($tableName, $columns);
+    }
+
+    /**
      * @Then /^the (index) should have localized columns "([^"]+)"$/
      */
     public function theIndexShouldHaveLocalizedColumns(IndexInterface $index, $columns)
@@ -87,6 +84,16 @@ final class IndexContext implements Context
         $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());
 
         $this->indexShouldHaveColumnsInTable($tableName, $columns);
+    }
+
+    /**
+     * @Then /^the (index) should have a column "([^"]+)" of type "([^"]+)"$/
+     */
+    public function theIndexShouldHaveAColumnOfType(IndexInterface $index, $column, $type)
+    {
+        $tableName = sprintf('coreshop_index_mysql_%s', $index->getName());
+
+        $this->indexShouldHaveColumnOfType($tableName, $column, $type);
     }
 
     /**
@@ -141,6 +148,16 @@ final class IndexContext implements Context
         $this->indexEntryShouldHaveValue($index, $object, $column, $value, true);
     }
 
+        /**
+     * @Then /^the (index) relational column "([^"]+)" for (product "[^"]+") should have value "([^"]+)"$/
+     * @Then /^the (index) relational column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
+     * @Then /^the (index) relational column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/
+     */
+    public function theIndexRelatioanlColumnForProductShouldHaveValue(IndexInterface $index, $column, IndexableInterface $object, $value)
+    {
+        $this->indexEntryShouldHaveValue($index, $object, $column, $value, false, true);
+    }
+
     /**
      * @Then /^the (index) should have an index for "([^"]+)"$/
      */
@@ -163,16 +180,9 @@ final class IndexContext implements Context
         $this->indexShouldHaveIndexInTable($tableName, $columns);
     }
 
-    /**
-     * @param IndexInterface     $index
-     * @param IndexableInterface $object
-     * @param string             $column
-     * @param mixed              $value
-     * @param bool               $localized
-     */
-    private function indexEntryShouldHaveValue(IndexInterface $index, IndexableInterface $object, $column, $value, $localized = false)
+    private function indexEntryShouldHaveValue(IndexInterface $index, IndexableInterface $object, string $column, mixed $value, bool $localized = false, bool $relational = false)
     {
-        $productEntry = $this->fetchAllFromIndex($index, $object, $localized);
+        $productEntry = $this->fetchAllFromIndex($index, $object, $localized, $relational);
 
         Assert::isArray($productEntry, sprintf('Could not find index entry for product %s', $object->getId()));
         Assert::keyExists($productEntry, $column, sprintf('Could not find column %s in index', $column));
@@ -192,26 +202,33 @@ final class IndexContext implements Context
      * @param IndexInterface          $index
      * @param IndexableInterface|null $object
      * @param bool                    $localized
+     * @param bool                    $relational
      *
      * @return array
      */
-    private function fetchAllFromIndex(IndexInterface $index, IndexableInterface $object = null, $localized = false)
+    private function fetchAllFromIndex(IndexInterface $index, IndexableInterface $object = null, $localized = false, $relational = false)
     {
         if ($localized) {
             $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());
+        } elseif ($relational) {
+            $tableName = sprintf('coreshop_index_mysql_relations_%s', $index->getName());
         } else {
             $tableName = sprintf('coreshop_index_mysql_%s', $index->getName());
         }
 
         if ($object instanceof Concrete) {
             if ($localized) {
-                return $this->entityManager->getConnection()->fetchAssoc(sprintf('SELECT * FROM %s WHERE oo_id = %s', $tableName, $object->getId()));
+                return $this->entityManager->getConnection()->fetchAssociative(sprintf('SELECT * FROM %s WHERE oo_id = %s', $tableName, $object->getId()));
             }
 
-            return $this->entityManager->getConnection()->fetchAssoc(sprintf('SELECT * FROM %s WHERE o_id = %s', $tableName, $object->getId()));
+            if ($relational) {
+                return $this->entityManager->getConnection()->fetchAssociative(sprintf('SELECT * FROM %s WHERE src = %s', $tableName, $object->getId()));
+            }
+
+            return $this->entityManager->getConnection()->fetchAssociative(sprintf('SELECT * FROM %s WHERE o_id = %s', $tableName, $object->getId()));
         }
 
-        return $this->entityManager->getConnection()->fetchAll(sprintf('SELECT * FROM %s', $tableName));
+        return $this->entityManager->getConnection()->fetchAllAssociative(sprintf('SELECT * FROM %s', $tableName));
     }
 
     /**
@@ -239,6 +256,23 @@ final class IndexContext implements Context
 
             Assert::true($found, sprintf('Table column %s not found, found columns %s', $col, implode(', ', $columns)));
         }
+    }
+
+    /**
+     * @param string $tableName
+     * @param string $column
+     * @param string $type
+     */
+    private function indexShouldHaveColumnOfType(string $tableName, string $column, string $type)
+    {
+        $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
+
+        Assert::true($schemaManager->tablesExist([$tableName]), sprintf('Table with name %s should exist but was not found', $tableName));
+
+        $doctrineCol = $schemaManager->listTableDetails($tableName)->getColumn($column);
+        $actualType = $schemaManager->getDatabasePlatform()->getColumnDeclarationSQL($column, $doctrineCol->toArray());
+
+        Assert::eq($type, $actualType);
     }
 
     /**

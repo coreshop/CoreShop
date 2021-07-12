@@ -4,20 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    {%- spaceless -%}
+    {%- apply spaceless -%}
+        {% do pimcore_head_link().setCacheBuster(false) %}
         {% do pimcore_head_link().appendStylesheet(asset('bundles/coreshopfrontend/static/css/shop.css')) %}
         {% do pimcore_head_link().appendStylesheet(asset('bundles/coreshopfrontend/static/css/owl.carousel.css')) %}
 
+        {% do pimcore_head_script().setCacheBuster(false) %}
         {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/jquery-1.11.1.min.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/jquery.spinner.min.js')) %}
         {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/popper.min.js')) %}
         {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/bootstrap.min.js')) %}
         {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/owl.carousel.min.js')) %}
         {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/handle-prototypes.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/plugin/coreshop.plugin.quantity.js')) %}
         {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/custom.js')) %}
         {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/shop.js')) %}
 
         {% do pimcore_head_title().setSeparator(' | ') %}
-    {%- endspaceless -%}
+    {%- endapply -%}
 
     {% block layout_head_meta deferred %}
         {{ pimcore_head_title('CoreShop') }}

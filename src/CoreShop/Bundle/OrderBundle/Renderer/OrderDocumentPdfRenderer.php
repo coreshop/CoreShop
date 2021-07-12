@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Renderer;
 
@@ -17,39 +19,18 @@ use CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 
 class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
-    /**
-     * @var FragmentRendererInterface
-     */
-    private $fragmentRenderer;
+    private FragmentRendererInterface $fragmentRenderer;
+    private EventDispatcherInterface $eventDispatcher;
+    private PdfRendererInterface $renderer;
+    private ThemeHelperInterface $themeHelper;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var PdfRendererInterface
-     */
-    private $renderer;
-
-    /**
-     * @var ThemeHelperInterface
-     */
-    private $themeHelper;
-
-    /**
-     * @param FragmentRendererInterface $fragmentRenderer
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param PdfRendererInterface      $renderer
-     * @param ThemeHelperInterface      $themeHelper
-     */
     public function __construct(
         FragmentRendererInterface $fragmentRenderer,
         EventDispatcherInterface $eventDispatcher,
@@ -62,10 +43,7 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
         $this->themeHelper = $themeHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
+    public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string
     {
         return $this->themeHelper->useTheme($orderDocument->getOrder()->getStore()->getTemplate(), function () use ($orderDocument) {
             $params = [
@@ -97,7 +75,10 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 
             $event = new WkhtmlOptionsEvent($orderDocument);
 
-            $this->eventDispatcher->dispatch(sprintf('coreshop.order.%s.wkhtml.options', $orderDocument::getDocumentType()), $event);
+            $this->eventDispatcher->dispatch(
+                $event,
+                sprintf('coreshop.order.%s.wkhtml.options', $orderDocument::getDocumentType())
+            );
 
             return $this->renderer->fromString($content, $contentHeader, $contentFooter, ['options' => [$event->getOptions()]]);
         });

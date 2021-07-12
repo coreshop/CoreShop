@@ -6,61 +6,62 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
 final class AddToCartAvailabilityValidator extends ConstraintValidator
 {
-    /**
-     * @var AvailabilityCheckerInterface
-     */
-    private $availabilityChecker;
+    private AvailabilityCheckerInterface $availabilityChecker;
+    private StorageListItemResolverInterface $cartItemResolver;
 
-    /**
-     * @param AvailabilityCheckerInterface $availabilityChecker
-     */
-    public function __construct(AvailabilityCheckerInterface $availabilityChecker)
+    public function __construct(
+        AvailabilityCheckerInterface $availabilityChecker,
+        StorageListItemResolverInterface $cartItemResolver
+    )
     {
         $this->availabilityChecker = $availabilityChecker;
+        $this->cartItemResolver = $cartItemResolver;
     }
 
-    /**
-     * @param mixed      $addToCartDto
-     * @param Constraint $constraint
-     */
-    public function validate($addToCartDto, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
-        Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
+        Assert::isInstanceOf($value, AddToCartInterface::class);
         Assert::isInstanceOf($constraint, AddToCartAvailability::class);
 
         /**
          * @var PurchasableInterface $purchasable
          */
-        $purchasable = $addToCartDto->getCartItem()->getProduct();
+        $purchasable = $value->getCartItem()->getProduct();
 
         if (!$purchasable instanceof StockableInterface) {
             return;
         }
 
         /**
-         * @var CartItemInterface $cartItem
-         * @var CartInterface $cart
+         * @var OrderItemInterface $cartItem
          */
-        $cartItem = $addToCartDto->getCartItem();
-        $cart = $addToCartDto->getCart();
+        $cartItem = $value->getCartItem();
+
+        /**
+         * @var OrderInterface $cart
+         */
+        $cart = $value->getCart();
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $purchasable,
@@ -75,27 +76,21 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
-     *
-     * @return int
-     */
-    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): float
     {
         $product = $cartItem->getProduct();
         $quantity = 0;
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            if (!$product && $item->equals($cartItem)) {
-                return $item->getDefaultUnitQuantity();
+            if (!$product && $this->cartItemResolver->equals($item, $cartItem)) {
+                return $item->getDefaultUnitQuantity() ?? 0.0;
             }
 
             if ($item->getProduct() instanceof $product && $item->getProduct()->getId() === $product->getId()) {
-                $quantity += $item->getDefaultUnitQuantity();
+                $quantity += $item->getDefaultUnitQuantity() ?? 0.0;
             }
         }
 

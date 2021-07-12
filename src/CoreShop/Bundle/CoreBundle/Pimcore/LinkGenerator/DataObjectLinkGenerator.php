@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator;
 
@@ -20,26 +22,10 @@ use Webmozart\Assert\Assert;
 
 class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 {
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
+    private string $routeName;
+    private UrlGeneratorInterface $urlGenerator;
 
-    /**
-     * @var string
-     */
-    private $routeName;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
-
-    /**
-     * @param string                $type
-     * @param string                $routeName
-     * @param UrlGeneratorInterface $urlGenerator
-     */
     public function __construct(string $type, string $routeName, UrlGeneratorInterface $urlGenerator)
     {
         $this->type = $type;
@@ -49,9 +35,6 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 
     public function generate(Concrete $object, array $params = []): string
     {
-        /**
-         * @var Concrete $object
-         */
         Assert::isInstanceOf($object, Concrete::class);
 
         $locale = isset($params['_locale']) ? $params['_locale'] : null;

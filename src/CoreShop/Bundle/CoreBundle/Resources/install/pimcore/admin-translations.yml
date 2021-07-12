@@ -1,0 +1,195 @@
+translations:
+    coreshop.company.addresses:
+        languages:
+            en: 'Addresses'
+            de: 'Adressen'
+
+    coreshop.customer.addresses:
+        languages:
+            en: 'Addresses'
+            de: 'Adressen'
+
+    coreshop.customer.address_access_type:
+        languages:
+            en: 'Access Type'
+            de: 'Zugriffstyp'
+
+    coreshop.customer.default_address:
+        languages:
+            en: 'Default Address'
+            de: 'Standardadresse'
+
+    coreshop.category.informations:
+        languages:
+            en: 'Informations'
+            de: 'Informationen'
+
+    coreshop.category.filter:
+        languages:
+            en: 'Filter'
+            de: 'Filter'
+
+    coreshop.category.stores:
+        languages:
+            en: 'Stores'
+            de: 'Stores'
+
+    coreshop.category.seo:
+        languages:
+            en: 'SEO'
+            de: 'SEO'
+
+    coreshop.category.seo_meta_title:
+        languages:
+            en: 'Meta Title'
+            de: 'Meta Titel'
+
+    coreshop.category.seo_meta_description:
+        languages:
+            en: 'Meta Description'
+            de: 'Meta Beschreibung'
+
+    coreshop.product.digital_product:
+        languages:
+            en: 'Digital Product'
+            de: 'Digitales Produkt'
+
+    coreshop.product.stores:
+        languages:
+            en: 'Stores'
+            de: 'Stores'
+
+    coreshop.product.seo:
+        languages:
+            en: 'SEO'
+            de: 'SEO'
+
+    coreshop.product.seo_meta_title:
+        languages:
+            en: 'Meta Title'
+            de: 'Meta Titel'
+
+    coreshop.product.seo_meta_description:
+        languages:
+            en: 'Meta Description'
+            de: 'Meta Beschreibung'
+
+    coreshop.product.stock:
+        languages:
+            en: 'Stock'
+            de: 'Lager'
+
+    coreshop.product.on_hold:
+        languages:
+            en: 'On Hold'
+            de: 'Reserviert'
+
+    coreshop.product.on_hand:
+        languages:
+            en: 'On Hand'
+            de: 'Auf Lager'
+
+    coreshop.product.is_tracked:
+        languages:
+            en: 'Is Tracked'
+            de: 'Lgaerstand verwalten'
+
+    coreshop.product.quantity_restrictions:
+        languages:
+            en: 'Quantity Restrictions'
+            de: 'Mengen einschränken'
+
+    coreshop.product.minimum_quantity_to_order:
+        languages:
+            en: 'Minimum Quantity To Order'
+            de: 'Mindestbestellmenge'
+
+    coreshop.product.maximal_quantity_to_order:
+        languages:
+            en: 'Maximal Quantity To Order'
+            de: 'Maximalbestellmenge'
+
+    coreshop.product.store_values:
+        languages:
+            en: 'Store Values'
+            de: 'Store Werte'
+
+    coreshop.product.tax_rule:
+        languages:
+            en: 'Tax Rule'
+            de: 'Steuerregel'
+
+    coreshop.product.quantity_price_rules:
+        languages:
+            en: 'Quantity Price Rules'
+            de: 'Mengen Preis Regeln'
+
+    coreshop.order.carrier:
+        languages:
+            en: 'Carrier'
+            de: 'Versanddienst'
+
+    coreshop.order.payment_settings:
+        languages:
+            en: 'Payment Settings'
+            de: 'Zahlungseinstellungen'
+
+    coreshop.order.comment:
+        languages:
+            en: 'Comment'
+            de: 'Kommentar'
+
+    coreshop.order.shipping:
+        languages:
+            en: 'Shipping'
+            de: 'Versand'
+
+    coreshop.order.shipping_tax_rate:
+        languages:
+            en: 'Tax Rate'
+            de: 'Steuersatz'
+
+    coreshop.order.weight:
+        languages:
+            en: 'Weight'
+            de: 'Gewicht'
+
+    coreshop.order.needs_recalculation:
+        languages:
+            en: 'Needs Recalculation'
+            de: 'Braucht neuberechnung'
+
+    coreshop.order_item.digital_product:
+        languages:
+            en: 'Digital Product'
+            de: 'Digitales Produkt'
+
+    coreshop.order_item.default_unit_quantity:
+        languages:
+            en: 'Default Unit Quantity'
+            de: 'Einheitsmenge'
+
+    coreshop.order_item.item_weight:
+        languages:
+            en: 'Weight'
+            de: 'Gewicht'
+
+    coreshop.order_item.total_weight:
+        languages:
+            en: 'Total Weight'
+            de: 'Gesamtgewicht'
+
+    coreshop.order_shipment.carrier:
+        languages:
+            en: 'Carrier'
+            de: 'Versanddienst'
+
+    coreshop.order_shipment.weight:
+        languages:
+            en: 'Weight'
+            de: 'Gewicht'
+
+    coreshop.order_shipment_item.weight:
+        languages:
+            en: 'Weight'
+            de: 'Gewicht'

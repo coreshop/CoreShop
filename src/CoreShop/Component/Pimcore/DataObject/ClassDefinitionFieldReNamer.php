@@ -6,13 +6,16 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Db\Db;
+use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -24,43 +27,20 @@ use Pimcore\Tool;
  */
 class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 {
-    /**
-     * @var ClassDefinition
-     */
-    private $definition;
+    private ClassDefinition $definition;
+    private string $oldFieldName;
+    private string $newFieldName;
+    private Connection $database;
 
-    /**
-     * @var string
-     */
-    private $oldFieldName;
-
-    /**
-     * @var string
-     */
-    private $newFieldName;
-
-    /**
-     * @var \Pimcore\Db\Connection
-     */
-    private $database;
-
-    /**
-     * @param ClassDefinition $definition
-     * @param string          $oldFieldName
-     * @param string          $newFieldName
-     */
     public function __construct(ClassDefinition $definition, string $oldFieldName, string $newFieldName)
     {
         $this->definition = $definition;
         $this->newFieldName = $newFieldName;
         $this->oldFieldName = $oldFieldName;
-        $this->database = Db::get();
+        $this->database = Db::getDoctrineConnection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rename()
+    public function rename(): void
     {
         $queries = $this->getRenameQueries();
 
@@ -73,25 +53,16 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): ClassDefinition
     {
         return $this->definition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOldFieldName(): string
     {
         return $this->oldFieldName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNewFieldName(): string
     {
         return $this->newFieldName;
@@ -102,7 +73,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
      *
      * @throws \Exception
      */
-    protected function getRenameQueries()
+    protected function getRenameQueries(): array
     {
         $fieldDefinition = $this->definition->getFieldDefinition($this->oldFieldName);
         $isLocalizedField = false;
@@ -140,35 +111,39 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         $columnRenames = [];
 
         foreach ($queryTables as $queryTable) {
-            if (is_array($fieldDefinition->getQueryColumnType())) {
-                foreach ($fieldDefinition->getQueryColumnType() as $fkey => $fvalue) {
-                    $columnName = $key . '__' . $fkey;
-                    $newColumnName = $key . '__' . $this->newFieldName;
+            if ($fieldDefinition instanceof Data\QueryResourcePersistenceAwareInterface) {
+                if (is_array($fieldDefinition->getQueryColumnType())) {
+                    foreach ($fieldDefinition->getQueryColumnType() as $fkey => $fvalue) {
+                        $columnName = $key.'__'.$fkey;
+                        $newColumnName = $key.'__'.$this->newFieldName;
 
-                    $columnRenames[$queryTable][$columnName] = $newColumnName;
+                        $columnRenames[$queryTable][$columnName] = $newColumnName;
+                    }
                 }
-            }
 
-            if (!is_array($fieldDefinition->getQueryColumnType()) && !is_array($fieldDefinition->getColumnType())) {
-                if ($fieldDefinition->getQueryColumnType()) {
-                    $columnRenames[$queryTable][$key] = $this->newFieldName;
+                if (!is_array($fieldDefinition->getQueryColumnType())) {
+                    if ($fieldDefinition->getQueryColumnType()) {
+                        $columnRenames[$queryTable][$key] = $this->newFieldName;
+                    }
                 }
             }
         }
 
         foreach ($storeTables as $storeTable) {
-            if (!$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
-                foreach ($fieldDefinition->getColumnType() as $fkey => $fvalue) {
-                    $columnName = $key . '__' . $fkey;
-                    $newColumnName = $key . '__' . $this->newFieldName;
+            if ($fieldDefinition instanceof Data\ResourcePersistenceAwareInterface) {
+                if ($fieldDefinition instanceof Data && !$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
+                    foreach ($fieldDefinition->getColumnType() as $fkey => $fvalue) {
+                        $columnName = $key.'__'.$fkey;
+                        $newColumnName = $key.'__'.$this->newFieldName;
 
-                    $columnRenames[$storeTable][$columnName] = $newColumnName;
+                        $columnRenames[$storeTable][$columnName] = $newColumnName;
+                    }
                 }
-            }
 
-            if (!is_array($fieldDefinition->getQueryColumnType()) && !is_array($fieldDefinition->getColumnType())) {
-                if ($fieldDefinition->getColumnType() && !$fieldDefinition->isRelationType()) {
-                    $columnRenames[$storeTable][$key] = $this->newFieldName;
+                if (!is_array($fieldDefinition->getColumnType())) {
+                    if ($fieldDefinition instanceof Data && $fieldDefinition->getColumnType() && !$fieldDefinition->isRelationType()) {
+                        $columnRenames[$storeTable][$key] = $this->newFieldName;
+                    }
                 }
             }
         }
@@ -193,6 +168,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 
         if ($fieldDefinition instanceof Data\Objectbricks) {
             $brickDefinitions = new Objectbrick\Definition\Listing();
+            $brickDefinitions = $brickDefinitions->load();
 
             /**
              * @var Objectbrick\Definition $brickDefinition
@@ -249,7 +225,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
              * @var Data\Localizedfields $localizedFieldDefinition
              */
             $localizedFieldDefinition = $this->definition->getFieldDefinition('localizedfields');
-            $localizedFieldDefinition->fieldDefinitionsCache = null;
+            $localizedFieldDefinition->fieldDefinitionsCache = [];
         } else {
             $fieldDefinitions = $this->definition->getFieldDefinitions();
 

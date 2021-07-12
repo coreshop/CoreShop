@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 
@@ -21,40 +23,36 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class CartRepository extends PimcoreRepository implements CartRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findForCustomer(CustomerInterface $customer)
+    public function findForCustomer(CustomerInterface $customer): array
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND order__id is null', [$customer->getId()]);
         $list->load();
 
-        return $list->getObjects();
+        /**
+         * @var OrderInterface[] $carts
+         */
+        $carts = $list->getObjects();
+
+        return $carts;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findNamedForCustomer(CustomerInterface $customer, $name)
+    public function findNamedForCustomer(CustomerInterface $customer, $name): ?OrderInterface
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND name = ? AND order__id is null', [$customer->getId(), $name]);
         $list->load();
 
-        if ($list->getTotalCount() > 0) {
-            $objects = $list->getObjects();
+        $objects = $list->getObjects();
 
+        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer)
+    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND store = ? AND order__id is null ', [$customer->getId(), $store->getId()]);
@@ -62,56 +60,47 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         $list->setOrder('DESC');
         $list->load();
 
-        if ($list->getTotalCount() > 0) {
-            $objects = $list->getObjects();
+        $objects = $list->getObjects();
 
+        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findCartById($id)
+    public function findCartById($id): ?OrderInterface
     {
         $list = $this->getList();
         $list->setCondition('o_id = ? AND order__id is null ', [$id]);
         $list->load();
 
-        if ($list->getTotalCount() > 0) {
-            $objects = $list->getObjects();
+        $objects = $list->getObjects();
 
+        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findCartByOrder(OrderInterface $order)
+    public function findCartByOrder(OrderInterface $order): ?OrderInterface
     {
         $list = $this->getList();
         $list->setCondition('order__id = ? ', [$order->getId()]);
         $list->setLimit(1);
         $list->load();
 
-        if ($list->getTotalCount() > 0) {
-            $objects = $list->getObjects();
+        $objects = $list->getObjects();
 
+        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findExpiredCarts($days, $anonymous, $customer)
+    public function findExpiredCarts($days, $anonymous, $customer): array
     {
         $list = $this->getList();
 
@@ -120,7 +109,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         $params = [];
 
         $daysTimestamp = Carbon::now();
-        $daysTimestamp->subDay($days);
+        $daysTimestamp->subDays($days);
 
         $conditions[] = 'o_creationDate < ?';
         $params[] = $daysTimestamp->getTimestamp();
@@ -149,6 +138,11 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         $list->setCondition($sql, $params);
 
-        return $list->load();
+        /**
+         * @var OrderInterface[] $result
+         */
+        $result = $list->getObjects();
+
+        return $result;
     }
 }

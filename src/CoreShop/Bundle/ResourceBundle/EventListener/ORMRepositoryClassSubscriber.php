@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
@@ -18,28 +20,19 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 
 final class ORMRepositoryClassSubscriber extends AbstractDoctrineSubscriber
 {
-    /**
-     * @return array
-     */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::loadClassMetadata,
         ];
     }
 
-    /**
-     * @param LoadClassMetadataEventArgs $eventArgs
-     */
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $this->setCustomRepositoryClass($eventArgs->getClassMetadata());
     }
 
-    /**
-     * @param ClassMetadata $metadata
-     */
-    private function setCustomRepositoryClass(ClassMetadata $metadata)
+    private function setCustomRepositoryClass(ClassMetadata $metadata): void
     {
         try {
             $resourceMetadata = $this->resourceRegistry->getByClass($metadata->getName());

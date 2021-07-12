@@ -25,13 +25,13 @@ CoreShop\Component\Order\Model\CartPriceRule:
             groups: [List, Detailed]
         conditions:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]
         actions:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]
         translations:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]

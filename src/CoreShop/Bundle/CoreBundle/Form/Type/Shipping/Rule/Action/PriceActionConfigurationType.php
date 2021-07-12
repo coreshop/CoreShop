@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action;
 
@@ -23,19 +25,29 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class PriceActionConfigurationType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @var string[]
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected array $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('price', MoneyType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
                 ],
             ])
             ->add('currency', CurrencyChoiceType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
                 ],
             ]);
 
@@ -57,10 +69,7 @@ class PriceActionConfigurationType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_rule_action_price';
     }

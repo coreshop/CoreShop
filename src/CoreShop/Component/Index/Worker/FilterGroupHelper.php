@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Worker;
 
@@ -21,22 +23,13 @@ use Pimcore\Model\DataObject\Concrete;
 
 class FilterGroupHelper implements FilterGroupHelperInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $interpreterServiceRegistry;
+    private ServiceRegistryInterface $interpreterServiceRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $interpreterServiceRegistry
-     */
     public function __construct(ServiceRegistryInterface $interpreterServiceRegistry)
     {
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGroupByValuesForFilterGroup(IndexColumnInterface $column, ListingInterface $list, $field)
     {
         $type = 'field';
@@ -75,13 +68,31 @@ class FilterGroupHelper implements FilterGroupHelperInterface
                 break;
 
             default:
-                $values = $list->getGroupByValues($field);
+                $rawValues = $list->getGroupByValues($field, true);
+                $values = [];
+
+                foreach ($rawValues as $v) {
+                    $explode = explode(',', $v['value']);
+
+                    foreach ($explode as $e) {
+                        if (!$e) {
+                            continue;
+                        }
+
+                        if ($values[$e]) {
+                            $values[$e]['count'] += $v['count'];
+                            continue;
+                        }
+
+                        $values[$e] = ['value' => $e, 'count' => $v['count']];
+                    }
+                }
 
                 foreach ($values as $value) {
                     if ($value) {
                         $returnValues[] = [
-                            'key' => $value,
-                            'value' => $value,
+                            'key' => $value['value'],
+                            'value' => $value['value'],
                         ];
                     } else {
                         $returnValues[] = [

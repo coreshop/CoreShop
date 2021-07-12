@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\ResourceBundle\Form\DataTransformer\PimcoreAssetDataTransformer: ~
+
+    CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreAssetChoiceType:
+        arguments:
+            - '@CoreShop\Bundle\ResourceBundle\Form\DataTransformer\PimcoreAssetDataTransformer'
+        tags:
+            - { name: form.type }

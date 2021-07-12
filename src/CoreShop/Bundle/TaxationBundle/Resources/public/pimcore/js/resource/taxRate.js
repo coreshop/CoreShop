@@ -1,13 +1,10 @@
-Ext.define('CoreShop.store.TaxRate', {
+Ext.define('CoreShop.taxation.TaxRate', {
     extend: 'CoreShop.resource.ComboBox',
     alias: 'widget.coreshop.taxRate',
 
     name: 'taxRate',
     fieldLabel: t('coreshop_tax_rate'),
-
-    initComponent: function () {
-        this.store = pimcore.globalmanager.get('coreshop_tax_rates');
-
-        this.callParent();
+    store: {
+        type: 'coreshop_tax_rates'
     }
 });

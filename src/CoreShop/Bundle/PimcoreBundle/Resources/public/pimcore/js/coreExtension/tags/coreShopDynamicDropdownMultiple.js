@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -13,18 +13,26 @@ pimcore.registerNS('pimcore.object.tags.coreShopDynamicDropdownMultiple');
 pimcore.object.tags.coreShopDynamicDropdownMultiple = Class.create(pimcore.object.tags.multiselect, {
     type: 'coreShopDynamicDropdownMultiple',
 
+     initialize: function (data, fieldConfig) {
+        this.data = data;
+        this.data_mapped = (data ? data : []).map(function(data) {
+            return parseInt(data.id);
+        });
+        this.fieldConfig = fieldConfig;
+    },
+
     getLayoutEdit: function () {
         this.options_store = new Ext.data.JsonStore({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/dynamic-dropdown/options',
+                url: Routing.generate('coreshop_dynamic_dropdown_options'),
                 extraParams: {
                     folderName: this.fieldConfig.folderName,
                     methodName: this.fieldConfig.methodName,
                     className: this.fieldConfig.className,
                     recursive: this.fieldConfig.recursive,
                     current_language: pimcore.settings.language,
-                    sortNy: this.fieldConfig.sortBy
+                    sortBy: this.fieldConfig.sortBy
                 },
                 reader: {
                     type: 'json',
@@ -57,7 +65,7 @@ pimcore.object.tags.coreShopDynamicDropdownMultiple = Class.create(pimcore.objec
             valueField: 'value',
             labelWidth: this.fieldConfig.labelWidth ? this.fieldConfig.labelWidth : 100,
             autoLoadOnValue: true,
-            value: this.data
+            value: this.data_mapped
         };
 
         options.width = 300;
@@ -69,10 +77,6 @@ pimcore.object.tags.coreShopDynamicDropdownMultiple = Class.create(pimcore.objec
 
         if (this.fieldConfig.height) {
             options.height = this.fieldConfig.height;
-        }
-
-        if (typeof this.data === 'string' || typeof this.data === 'number') {
-            options.value = this.data;
         }
 
         this.component = Ext.create('Ext.ux.form.MultiSelect', options);

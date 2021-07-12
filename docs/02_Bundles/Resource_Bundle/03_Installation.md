@@ -59,7 +59,7 @@ final class Configuration implements ConfigurationInterface
 
 ```
 
-## Routes Exmaple File
+## Routes Example File
 ```yaml
 yeah_route:
   pattern: "/(\\w+)\\/yeah-route/"

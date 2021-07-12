@@ -6,20 +6,24 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\QueryResourcePersistenceAwareInterface;
-use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
+use Pimcore\Model\DataObject\Concrete;
 
-class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInterface, QueryResourcePersistenceAwareInterface
+class ProductUnitDefinition extends Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    Data\CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.
@@ -40,6 +44,26 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
      */
     public $allowEmpty = false;
 
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return '\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return '\\' . ProductUnitDefinitionInterface::class;
+    }
+
     /**
      * @return string | array
      */
@@ -56,9 +80,16 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
         return 'int(11)';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function isDiffChangeAllowed($object, $params = [])
+    {
+        return false;
+    }
+
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
+    }
+
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
@@ -70,19 +101,14 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preGetData($object, $params = [])
     {
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
-        }
+        /**
+         * @var Concrete $object
+         */
+        $data = $object->getObjectVar($this->getName());
 
-        if ($data instanceof ResourceInterface) {
+        if ($data instanceof ResourceInterface && $data->getId()) {
             //Reload from Database, but only if available
             $tmpData = $this->getRepository()->find($data->getId());
 
@@ -99,9 +125,6 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForResource($data, $object = null, $params = [])
     {
         if ($data instanceof ProductUnitDefinitionInterface) {
@@ -111,9 +134,6 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         if ((int) $data > 0) {
@@ -123,9 +143,6 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
         if ($data instanceof ProductUnitDefinitionInterface) {
@@ -135,29 +152,45 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function marshalVersion($object, $data)
+    {
+        return $this->getDataForEditmode($data, $object);
+    }
+
+    public function unmarshalVersion($object, $data)
+    {
+        return $this->getDataFromEditmode($data, $object);
+    }
+
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
+    }
+
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         $parsedData = [
-            'id'               => null,
+            'id' => null,
             'conversationRate' => null,
-            'unitName'         => null
+            'precision' => null,
+            'unitName' => null,
         ];
 
         if ($data instanceof ProductUnitDefinitionInterface) {
             $parsedData = [
                 'id' => $data->getId(),
                 'conversationRate' => $data->getConversionRate(),
+                'precision' => $data->getPrecision(),
                 'unitName' => $data->getUnit()->getName(),
                 'fullLabel' => $data->getUnit()->getFullLabel(),
                 'fullPluralLabel' => $data->getUnit()->getFullPluralLabel(),
@@ -169,20 +202,19 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
         return $parsedData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         return !$data instanceof ProductUnitDefinitionInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionPreview($data, $object = null, $params = [])
     {
         return $data;
+    }
+
+    public function getForCsvExport($object, $params = [])
+    {
+        return '';
     }
 
     /**

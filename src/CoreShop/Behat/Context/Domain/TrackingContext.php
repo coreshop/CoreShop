@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -21,8 +23,6 @@ use CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce;
-use CoreShop\Bundle\TrackingBundle\Tracker\Matomo\Matomo;
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
@@ -35,26 +35,10 @@ use Webmozart\Assert\Assert;
 
 final class TrackingContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private TrackingExtractorInterface $trackingExtractor;
+    private ServiceRegistry $trackerRegistry;
 
-    /**
-     * @var TrackingExtractorInterface
-     */
-    private $trackingExtractor;
-
-    /**
-     * @var ServiceRegistry
-     */
-    private $trackerRegistry;
-
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param TrackingExtractorInterface $trackingExtractor
-     * @param ServiceRegistry            $trackerRegistry
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         TrackingExtractorInterface $trackingExtractor,
@@ -91,10 +75,9 @@ final class TrackingContext implements Context
 
         $tracker->trackProductImpression($this->trackingExtractor->updateMetadata($product));
 
-        $placeholderHelper = new \Pimcore\Placeholder();
-        $code = $placeholderHelper->replacePlaceholders($code->getRaw(), ['product' => $product]);
+        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
 
-        Assert::eq(preg_replace("/\r|\n/", '', $this->getRenderedPartForTracker($tracker)), preg_replace("/\r|\n/", '', $code));
+        Assert::eq(preg_replace("/\r|\n/", '', $this->getRenderedPartForTracker($tracker)), preg_replace("/\r|\n/", '', $result));
     }
 
     /**
@@ -106,16 +89,15 @@ final class TrackingContext implements Context
 
         $tracker->trackProduct($this->trackingExtractor->updateMetadata($product));
 
-        $placeholderHelper = new \Pimcore\Placeholder();
-        $code = $placeholderHelper->replacePlaceholders($code->getRaw(), ['product' => $product]);
+        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
 
-        Assert::eq($this->getRenderedPartForTracker($tracker), $code);
+        Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
 
     /**
      * @Then /^tracking cart-add for (my cart) with (product) with tracker "([^"]+)" should generate:$/
      */
-    public function trackCartAdd(CartInterface $cart, ProductInterface $product, $tracker, PyStringNode $code)
+    public function trackCartAdd(OrderInterface $cart, ProductInterface $product, $tracker, PyStringNode $code)
     {
         $tracker = $this->getTracker($tracker);
 
@@ -123,44 +105,42 @@ final class TrackingContext implements Context
 
         $params = ['cart' => $cart, 'product' => $product];
 
-        if ($cart->getItems() > 0) {
-            $params['cartItem'] = $cart->getItems()[0];
+        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
+
+        if (count($cart->getItems()) > 0) {
+            $result = str_replace('##item_id##', (string)$cart->getItems()[0]->getId(), $result);
         }
 
-        $placeholderHelper = new \Pimcore\Placeholder();
-        $code = $placeholderHelper->replacePlaceholders($code->getRaw(), $params);
-
-        Assert::eq($this->getRenderedPartForTracker($tracker), $code);
+        Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
 
     /**
      * @Then /^tracking cart-remove for (my cart) with (product) with tracker "([^"]+)" should generate:$/
      */
-    public function trackCartRemove(CartInterface $cart, ProductInterface $product, $tracker, PyStringNode $code)
+    public function trackCartRemove(OrderInterface $cart, ProductInterface $product, $tracker, PyStringNode $code)
     {
         $tracker = $this->getTracker($tracker);
 
         $tracker->trackCartRemove($this->trackingExtractor->updateMetadata($cart), $this->trackingExtractor->updateMetadata($product), 1);
 
-        $placeholderHelper = new \Pimcore\Placeholder();
-        $code = $placeholderHelper->replacePlaceholders($code->getRaw(), ['cart' => $cart, 'product' => $product]);
+        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
 
-        Assert::eq($this->getRenderedPartForTracker($tracker), $code);
+        Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
 
     /**
      * @Then /^tracking checkout step for (my cart) with tracker "([^"]+)" should generate:$/
      */
-    public function trackCheckoutStep(CartInterface $cart, $tracker, PyStringNode $code)
+    public function trackCheckoutStep(OrderInterface $cart, $tracker, PyStringNode $code)
     {
         $tracker = $this->getTracker($tracker);
 
         $tracker->trackCheckoutStep($this->trackingExtractor->updateMetadata($cart));
 
-        $placeholderHelper = new \Pimcore\Placeholder();
-        $code = $placeholderHelper->replacePlaceholders($code->getRaw(), ['cart' => $cart, 'cartItem' => $cart->getItems()[0]->getId()]);
+        $result = str_replace('##id##', (string)$cart->getId(), $code->getRaw());
+        $result = str_replace('##item_id##', (string)$cart->getItems()[0]->getId(), $result);
 
-        Assert::eq($this->getRenderedPartForTracker($tracker), $code);
+        Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
 
     /**
@@ -172,11 +152,8 @@ final class TrackingContext implements Context
 
         $tracker->trackCheckoutComplete($this->trackingExtractor->updateMetadata($order));
 
-        $placeholderHelper = new \Pimcore\Placeholder();
-        $code = $placeholderHelper->replacePlaceholders($code->getRaw(), [
-            'order' => $order,
-            'orderItem' => $order->getItems()[0],
-        ]);
+        $result = str_replace('##id##', (string)$order->getId(), $code->getRaw());
+        $result = str_replace('##item_id##', (string)$order->getItems()[0]->getId(), $result);
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $code);
     }
@@ -191,13 +168,12 @@ final class TrackingContext implements Context
         $code = '';
 
         if ($tracker instanceof TagManagerEnhancedEcommerce) {
-            $code = implode('', $tracker->codeTracker->getBlocks());
+            $code = implode('', $tracker->getCodeTracker()->getBlocks());
         } elseif ($tracker instanceof TagManagerClassicEcommerce) {
-            $code = implode('', $tracker->codeTracker->getBlocks());
+            $code = implode('', $tracker->getCodeTracker()->getBlocks());
         } elseif ($tracker instanceof AnalyticsEnhancedEcommerce ||
             $tracker instanceof GlobalSiteTagEnhancedEcommerce ||
-            $tracker instanceof UniversalEcommerce ||
-            $tracker instanceof Matomo
+            $tracker instanceof UniversalEcommerce
         ) {
             $trackerReflector = new \ReflectionClass(AbstractTracker::class);
             $codeCollectorProperty = $trackerReflector->getProperty('codeCollector');
@@ -216,7 +192,7 @@ final class TrackingContext implements Context
 
             $codePartsProperty->setAccessible(false);
 
-            if ($tracker instanceof  UniversalEcommerce) {
+            if ($tracker instanceof UniversalEcommerce) {
                 $code = implode(
                     PHP_EOL,
                     $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_AFTER_TRACK]['append']
@@ -235,13 +211,13 @@ final class TrackingContext implements Context
     }
 
     /**
-     * @param string $tracker
+     * @param string $trackerIdentifier
      *
      * @return TrackerInterface
      */
-    private function getTracker($tracker)
+    private function getTracker(string $trackerIdentifier)
     {
-        $tracker = $this->trackerRegistry->get($tracker);
+        $tracker = $this->trackerRegistry->get($trackerIdentifier);
 
         /**
          * @var $tracker TrackerInterface

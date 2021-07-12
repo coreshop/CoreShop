@@ -1,0 +1,9 @@
+services:
+    coreshop.datahub.graphql.querytypegenerator.resource.product_quantity_price_rule:
+        class: CoreShop\Component\Resource\DataHub\QueryType\ResourceList
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@coreshop.data_hub.doctrine_provider'
+            - '%coreshop.model.product_quantity_price_rule.class%'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopProductQuantityPriceRules }

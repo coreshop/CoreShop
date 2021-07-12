@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -17,7 +17,7 @@ coreshop.shippingrule.conditions.shippingRule = Class.create(coreshop.rules.cond
 
     getForm: function () {
         var me = this;
-        var store = pimcore.globalmanager.get('coreshop_carrier_shipping_rules');
+        var store = pimcore.globalmanager.get('');
 
         var rule = {
             xtype: 'combo',
@@ -25,7 +25,9 @@ coreshop.shippingrule.conditions.shippingRule = Class.create(coreshop.rules.cond
             typeAhead: true,
             listWidth: 100,
             width: 500,
-            store: store,
+            store: {
+                type: 'coreshop_carrier_shipping_rules'
+            },
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
@@ -34,15 +36,7 @@ coreshop.shippingrule.conditions.shippingRule = Class.create(coreshop.rules.cond
             name: 'shippingRule',
             maxHeight: 400,
             delimiter: false,
-            listeners: {
-                beforerender: function () {
-                    if (!store.isLoaded() && !store.isLoading())
-                        store.load();
-
-                    if (me.data && me.data.shippingRule)
-                        this.setValue(me.data.shippingRule);
-                }
-            }
+            value: me.data.shippingRule
         };
 
         if (this.data && this.data.shippingRule) {

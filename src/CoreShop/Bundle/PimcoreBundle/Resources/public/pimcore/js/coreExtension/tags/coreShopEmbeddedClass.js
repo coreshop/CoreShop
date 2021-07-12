@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -97,7 +97,7 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
             pimcore.globalmanager.get('coreshop_embedded_class_layouts_loading')[cacheKey] = true;
 
             Ext.Ajax.request({
-                url: '/admin/coreshop/embedded-class/get-layout-configuration',
+                url: Routing.generate('coreshop_pimcore_embedded_class_get_layout_configuration'),
                 params: {
                     className: className,
                     layoutId: layoutId
@@ -141,10 +141,10 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
                 index: t('new')
             },
             object = {
+                general: general,
                 data: data,
                 metaData: {}
             };
-
         me.addEmbeddedClass(object, general, false);
     },
 

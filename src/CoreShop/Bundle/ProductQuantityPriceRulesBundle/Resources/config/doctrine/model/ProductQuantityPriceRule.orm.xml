@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule"
+                       table="coreshop_product_quantity_price_rule">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="name" column="name"/>
+        <field name="active" column="active" type="boolean"/>
+        <field name="priority" column="priority" type="integer"/>
+        <field name="product" column="product" type="integer"/>
+        <field name="calculationBehaviour" column="calculation_behaviour"/>
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+        <many-to-many field="conditions" target-entity="CoreShop\Component\Rule\Model\ConditionInterface" orphan-removal="true">
+            <join-table name="coreshop_product_quantity_price_rule_conditions">
+                <join-columns>
+                    <join-column name="product_quantity_price_rule_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="condition_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+                </inverse-join-columns>
+            </join-table>
+            <cascade>
+                <cascade-all/>
+            </cascade>
+            <order-by>
+                <order-by-field name="sort" direction="ASC"/>
+            </order-by>
+        </many-to-many>
+
+        <one-to-many field="ranges"
+                     target-entity="CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface"
+                     mapped-by="rule" orphan-removal="true" fetch="LAZY">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
+    </mapped-superclass>
+</doctrine-mapping>

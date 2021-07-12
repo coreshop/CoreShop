@@ -6,36 +6,39 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
+use CoreShop\Component\Address\Model\CountryInterface;
+use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
 
 class Country extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
     public $fieldtype = 'coreShopCountry';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRepository()
+    protected function getRepository(): CountryRepositoryInterface
     {
         return \Pimcore::getContainer()->get('coreshop.repository.country');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
+    protected function getModel(): string
     {
         return \Pimcore::getContainer()->getParameter('coreshop.model.country.class');
+    }
+
+    protected function getInterface(): string
+    {
+        return '\\' . CountryInterface::class;
+    }
+
+    protected function getNullable(): bool
+    {
+        return true;
     }
 }

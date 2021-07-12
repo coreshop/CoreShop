@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
@@ -16,36 +18,15 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface ProposalCartPriceRuleItemInterface extends ResourceInterface
 {
-    /**
-     * @return CartPriceRuleInterface
-     */
-    public function getCartPriceRule();
+    public function getCartPriceRule(): ?CartPriceRuleInterface;
 
-    /**
-     * @param CartPriceRuleInterface $cartPriceRule
-     */
-    public function setCartPriceRule($cartPriceRule);
+    public function setCartPriceRule(?CartPriceRuleInterface $cartPriceRule);
 
-    /**
-     * @return string
-     */
-    public function getVoucherCode();
+    public function getVoucherCode(): ?string;
 
-    /**
-     * @param string $voucherCode
-     */
-    public function setVoucherCode($voucherCode);
+    public function setVoucherCode(?string $voucherCode);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getDiscount($withTax = true);
+    public function getDiscount(bool $withTax = true): int;
 
-    /**
-     * @param int  $discount
-     * @param bool $withTax
-     */
-    public function setDiscount($discount, $withTax = true);
+    public function setDiscount(int $discount, bool $withTax = true);
 }

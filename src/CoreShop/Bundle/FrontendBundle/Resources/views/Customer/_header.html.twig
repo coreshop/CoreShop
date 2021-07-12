@@ -1,4 +1,4 @@
-{%  if customer and not customer.isGuest() %}
+{%  if customer and customer.user %}
     <li class="nav-item">
         <a class="nav-link" href="{{ coreshop_path(customer, 'coreshop_customer_profile') }}">
             {{ 'coreshop.ui.account'|trans }}
@@ -15,7 +15,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ coreshop_path('coreshop_logout') }}">
+        <a class="nav-link" href="{{ coreshop_path('coreshop_logout') }}" {{ coreshop_test_html_attribute('logout-button') }}>
             {{ 'coreshop.ui.logout'|trans }}
         </a>
     </li>

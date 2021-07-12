@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -21,11 +21,11 @@ coreshop.cart.pricerules.conditions.amount = Class.create(coreshop.rules.conditi
         var me = this;
 
         if (this.data && this.data.minAmount) {
-            minAmountValue = this.data.minAmount / 100;
+            minAmountValue = this.data.minAmount / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
         }
 
         if (this.data && this.data.maxAmount) {
-            maxAmountValue = this.data.maxAmount / 100;
+            maxAmountValue = this.data.maxAmount / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
         }
 
         var minAmount = new Ext.form.NumberField({
@@ -33,7 +33,7 @@ coreshop.cart.pricerules.conditions.amount = Class.create(coreshop.rules.conditi
             name: 'minAmount',
             value: minAmountValue,
             minValue: 0,
-            decimalPrecision: 2
+            decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         });
 
         var maxAmount = new Ext.form.NumberField({
@@ -41,7 +41,7 @@ coreshop.cart.pricerules.conditions.amount = Class.create(coreshop.rules.conditi
             name: 'maxAmount',
             value: maxAmountValue,
             minValue: 0,
-            decimalPrecision: 2
+            decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         });
 
         this.form = Ext.create('Ext.form.Panel', {

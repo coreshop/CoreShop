@@ -6,42 +6,28 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Repository\CartRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 
 final class CartContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private OrderRepositoryInterface $cartRepository;
+    private CartContextInterface $cartContext;
 
-    /**
-     * @var CartRepositoryInterface
-     */
-    private $cartRepository;
-
-    /**
-     * @var CartContextInterface
-     */
-    private $cartContext;
-
-    /**
-     * @param SharedStorageInterface  $sharedStorage
-     * @param CartRepositoryInterface $cartRepository
-     * @param CartContextInterface    $cartContext
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        CartRepositoryInterface $cartRepository,
+        OrderRepositoryInterface $cartRepository,
         CartContextInterface $cartContext
     ) {
         $this->sharedStorage = $sharedStorage;
@@ -51,7 +37,7 @@ final class CartContext implements Context
 
     /**
      * @Transform /^my cart/
-     * @Transform /^cart(?:|s)/
+     * @Transform /^cart(?:s)/
      */
     public function cart()
     {

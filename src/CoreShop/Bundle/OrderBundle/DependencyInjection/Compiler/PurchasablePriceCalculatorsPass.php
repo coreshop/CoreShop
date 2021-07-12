@@ -6,44 +6,26 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
-final class PurchasablePriceCalculatorsPass implements CompilerPassInterface
+final class PurchasablePriceCalculatorsPass extends RegisterSimpleRegistryTypePass
 {
     public const PURCHASABLE_PRICE_CALCULATOR_TAG = 'coreshop.order.purchasable.price_calculator';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function __construct()
     {
-        if (!$container->has('coreshop.registry.order.purchasable.price_calculators')) {
-            return;
-        }
-
-        $registry = $container->getDefinition('coreshop.registry.order.purchasable.price_calculators');
-
-        $map = [];
-        foreach ($container->findTaggedServiceIds(self::PURCHASABLE_PRICE_CALCULATOR_TAG) as $id => $attributes) {
-            $definition = $container->findDefinition($id);
-
-            if (!isset($attributes[0]['type'])) {
-                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'] ?? 1000, new Reference($id)]);
-        }
-
-        $container->setParameter('coreshop.order.purchasable.price_calculators', $map);
+        parent::__construct(
+            'coreshop.registry.order.purchasable.price_calculators',
+            'coreshop.order.purchasable.price_calculators',
+            self::PURCHASABLE_PRICE_CALCULATOR_TAG
+        );
     }
 }

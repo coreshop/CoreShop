@@ -6,39 +6,35 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
+use CoreShop\Component\Resource\Model\AbstractObject;
 use Pimcore\Cache;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\DataObject\Objectbrick;
+use Pimcore\Model\User;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDaoContext implements Context
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
+    private OrderRepositoryInterface $orderRepository;
 
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @param KernelInterface          $kernel
-     * @param OrderRepositoryInterface $orderRepository
-     */
-    public function __construct(KernelInterface $kernel, OrderRepositoryInterface $orderRepository)
+    public function __construct(
+        KernelInterface $kernel,
+        OrderRepositoryInterface $orderRepository
+    )
     {
         $this->kernel = $kernel;
         $this->orderRepository = $orderRepository;
@@ -61,7 +57,7 @@ final class PimcoreDaoContext implements Context
         Cache\Runtime::clear();
 
         /**
-         * Delete Orders first, otherwise the CustomerDeletionListener would trigger
+         * Delete Orders first, otherwise the CustomerDeletionListener would trigger.
          *
          * @var Listing $list
          */
@@ -149,6 +145,26 @@ final class PimcoreDaoContext implements Context
 
             $class->delete();
         }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearBehatAdminUser()
+    {
+        $user = User::getByName('behat-admin');
+
+        if ($user) {
+            $user->delete();
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function disableGlobalInheritance()
+    {
+        AbstractObject::setGetInheritedValues(false);
     }
 
     /**

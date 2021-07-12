@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
@@ -24,26 +26,10 @@ use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderShippingStateResolver implements StateResolverInterface
 {
-    /**
-     * @var StateMachineManager
-     */
-    private $stateMachineManager;
+    private StateMachineManager $stateMachineManager;
+    private OrderShipmentRepositoryInterface $orderShipmentRepository;
+    private ProcessableInterface $processable;
 
-    /**
-     * @var OrderShipmentRepositoryInterface
-     */
-    private $orderShipmentRepository;
-
-    /**
-     * @var ProcessableInterface
-     */
-    private $processable;
-
-    /**
-     * @param StateMachineManager              $stateMachineManager
-     * @param OrderShipmentRepositoryInterface $orderShipmentRepository
-     * @param ProcessableInterface             $processable
-     */
     public function __construct(
         StateMachineManager $stateMachineManager,
         OrderShipmentRepositoryInterface $orderShipmentRepository,
@@ -54,12 +40,7 @@ final class OrderShippingStateResolver implements StateResolverInterface
         $this->processable = $processable;
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return mixed|void
-     */
-    public function resolve(OrderInterface $order)
+    public function resolve(OrderInterface $order): void
     {
         if ($order->getShippingState() === OrderShipmentStates::STATE_SHIPPED) {
             return;
@@ -76,12 +57,6 @@ final class OrderShippingStateResolver implements StateResolverInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param string         $shipmentState
-     *
-     * @return int
-     */
     private function countOrderShipmentsInState(OrderInterface $order, string $shipmentState): int
     {
         $shipments = $this->orderShipmentRepository->getDocuments($order);
@@ -97,13 +72,6 @@ final class OrderShippingStateResolver implements StateResolverInterface
         return $items;
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param string         $shipmentState
-     * @param string         $orderShippingState
-     *
-     * @return bool
-     */
     private function allShipmentsInStateButOrderStateNotUpdated(
         OrderInterface $order,
         string $shipmentState,
@@ -117,11 +85,6 @@ final class OrderShippingStateResolver implements StateResolverInterface
             $this->processable->isFullyProcessed($order);
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return bool
-     */
     private function isPartiallyShippedButOrderStateNotUpdated(OrderInterface $order): bool
     {
         $shipmentInShippedStateAmount = $this->countOrderShipmentsInState($order, ShipmentStates::STATE_SHIPPED);

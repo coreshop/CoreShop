@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator;
 
@@ -17,21 +19,9 @@ use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
 
 class OrderState extends AbstractOperator
 {
-    /**
-     * @var bool
-     */
-    private $highlightLabel = false;
+    private bool $highlightLabel = false;
+    private WorkflowStateInfoManagerInterface $workflowManager;
 
-    /**
-     * @var WorkflowStateInfoManagerInterface
-     */
-    private $workflowManager;
-
-    /**
-     * @param WorkflowStateInfoManagerInterface $workflowManager
-     * @param \stdClass                         $config
-     * @param null                              $context
-     */
     public function __construct(WorkflowStateInfoManagerInterface $workflowManager, \stdClass $config, $context = null)
     {
         parent::__construct($config, $context);
@@ -102,12 +92,7 @@ class OrderState extends AbstractOperator
         return $result;
     }
 
-    /**
-     * @param string $hex
-     *
-     * @return array
-     */
-    private function hex2rgb($hex)
+    private function hex2rgb(string $hex): array
     {
         $hex = str_replace('#', '', $hex);
 
@@ -120,27 +105,19 @@ class OrderState extends AbstractOperator
             $g = hexdec(substr($hex, 2, 2));
             $b = hexdec(substr($hex, 4, 2));
         }
-        $rgb = [$r, $g, $b];
 
-        return $rgb;
+        return [$r, $g, $b];
     }
 
-    /**
-     * @param int $r
-     * @param int $g
-     * @param int $b
-     *
-     * @return string
-     */
-    private function getContrastColor($r, $g, $b)
+    private function getContrastColor(int $r, int $g, int $b): string
     {
-        $l1 = 0.2126 * pow($r / 255, 2.2) +
-            0.7152 * pow($g / 255, 2.2) +
-            0.0722 * pow($b / 255, 2.2);
+        $l1 = 0.2126 * (($r / 255) ** 2.2) +
+            0.7152 * (($g / 255) ** 2.2) +
+            0.0722 * (($b / 255) ** 2.2);
 
-        $l2 = 0.2126 * pow(0 / 255, 2.2) +
-            0.7152 * pow(0 / 255, 2.2) +
-            0.0722 * pow(0 / 255, 2.2);
+        $l2 = 0.2126 * ((0 / 255) ** 2.2) +
+            0.7152 * ((0 / 255) ** 2.2) +
+            0.0722 * ((0 / 255) ** 2.2);
 
         if ($l1 > $l2) {
             $contrastRatio = (int) (($l1 + 0.05) / ($l2 + 0.05));
@@ -150,8 +127,8 @@ class OrderState extends AbstractOperator
 
         if ($contrastRatio > 7) {
             return 'black';
-        } else {
-            return 'white';
         }
+
+        return 'white';
     }
 }

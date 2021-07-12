@@ -2,11 +2,10 @@ services:
     _defaults:
         public: true
 
-    coreshop.cart_collector:
-        class: CoreShop\Bundle\OrderBundle\Collector\CartCollector
+    CoreShop\Bundle\OrderBundle\Collector\CartCollector:
         arguments:
-            - '@coreshop.context.cart'
-            - '@coreshop.context.locale'
+            - '@CoreShop\Component\Order\Context\CartContextInterface'
+            - '@CoreShop\Component\Locale\Context\LocaleContextInterface'
             - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
         tags:
-            - { name: data_collector, template: 'CoreShopOrderBundle:Collector:cart.html.twig', id: coreshop.cart_collector }
+            - { name: data_collector, template: '@CoreShopOrder/Collector/cart.html.twig', id: coreshop.cart_collector }

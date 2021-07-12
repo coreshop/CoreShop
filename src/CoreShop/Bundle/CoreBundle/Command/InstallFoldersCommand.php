@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Command;
 
@@ -21,16 +23,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class InstallFoldersCommand extends AbstractInstallCommand
 {
-    /**
-     * @var FolderInstallerProvider
-     */
-    protected $folderInstaller;
+    protected FolderInstallerProvider $folderInstaller;
 
-    /**
-     * @param KernelInterface         $kernel
-     * @param CommandDirectoryChecker $directoryChecker
-     * @param FolderInstallerProvider $folderInstaller
-     */
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
@@ -41,10 +35,7 @@ final class InstallFoldersCommand extends AbstractInstallCommand
         parent::__construct($kernel, $directoryChecker);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:install:folders')
@@ -55,10 +46,7 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln(sprintf(

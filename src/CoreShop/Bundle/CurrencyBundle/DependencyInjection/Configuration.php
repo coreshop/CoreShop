@@ -6,18 +6,20 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CurrencyBundle\DependencyInjection;
 
+use CoreShop\Bundle\CurrencyBundle\Controller\CurrencyController;
 use CoreShop\Bundle\CurrencyBundle\Controller\ExchangeRateController;
 use CoreShop\Bundle\CurrencyBundle\Doctrine\ORM\CurrencyRepository;
 use CoreShop\Bundle\CurrencyBundle\Doctrine\ORM\ExchangeRateRepository;
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyType;
 use CoreShop\Bundle\CurrencyBundle\Form\Type\ExchangeRateType;
-use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Currency\Model\Currency;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
@@ -30,17 +32,15 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('coreshop_currency');
+        $treeBuilder = new TreeBuilder('core_shop_currency');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->integerNode('money_decimal_factor')->defaultValue(100)->end()
+                ->integerNode('money_decimal_precision')->defaultValue(2)->end()
             ->end();
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
@@ -68,7 +68,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue(Currency::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(CurrencyInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(CurrencyController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(CurrencyRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(CurrencyType::class)->cannotBeEmpty()->end()

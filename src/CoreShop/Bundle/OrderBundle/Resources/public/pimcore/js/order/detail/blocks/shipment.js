@@ -5,13 +5,13 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.detail.blocks.shipment');
-coreshop.order.order.detail.blocks.shipment = Class.create(coreshop.order.sale.detail.abstractBlock, {
+pimcore.registerNS('coreshop.order.order.detail.blocks.shipment');
+coreshop.order.order.detail.blocks.shipment = Class.create(coreshop.order.order.detail.abstractBlock, {
     initBlock: function () {
         var me = this;
 
@@ -79,7 +79,7 @@ coreshop.order.order.detail.blocks.shipment = Class.create(coreshop.order.sale.d
                                 defaultBindProperty: null,
                                 handler: function (widgetColumn) {
                                     var record = widgetColumn.getWidgetRecord();
-                                    var url = '/admin/coreshop/order-shipment/update-shipment-state',
+                                    var url = Routing.generate('coreshop_admin_order_shipment_update_state'),
                                         transitions = record.get('transitions'),
                                         id = record.get('o_id');
                                     if (transitions.length !== 0) {

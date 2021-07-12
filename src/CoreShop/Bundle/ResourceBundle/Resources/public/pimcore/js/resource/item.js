@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -17,6 +17,10 @@ coreshop.resource.item = Class.create({
 
     url: {
         save: ''
+    },
+
+    routing: {
+        save: null
     },
 
     multiShopSettings: false,
@@ -52,6 +56,7 @@ coreshop.resource.item = Class.create({
 
         panel = new Ext.panel.Panel({
             title: this.getTitleText(),
+            itemId: this.panelKey,
             closable: true,
             iconCls: this.iconCls,
             layout: 'border',
@@ -85,7 +90,7 @@ coreshop.resource.item = Class.create({
             var saveData = this.getSaveData();
 
             saveData['id'] = this.data.id;
-            saveData = this.convertDotNotationToObject(saveData);
+            saveData = coreshop.helpers.convertDotNotationToObject(saveData);
 
             if (saveData.hasOwnProperty('stores')) {
                 var stores = [];
@@ -98,7 +103,7 @@ coreshop.resource.item = Class.create({
             }
 
             Ext.Ajax.request({
-                url: this.url.save,
+                url: this.routing.save ? Routing.generate(this.routing.save) : this.url.save,
                 method: 'post',
                 jsonData: saveData,
                 success: function (response) {
@@ -144,21 +149,6 @@ coreshop.resource.item = Class.create({
     },
 
     convertDotNotationToObject: function (data) {
-        var obj = {};
-
-        Object.keys(data).forEach(function (key) {  //loop through the keys in the object
-            var val = data[key];  //grab the value of this key
-            var step = obj;  //reference the object that holds the values
-            key.split(".").forEach(function (part, index, arr) {   //split the parts and loop
-                if (index === arr.length - 1) {  //If we are at the last index, than we set the value
-                    step[part] = val;
-                } else if (step[part] === undefined) {  //If we have not seen this key before, create an object
-                    step[part] = {};
-                }
-                step = step[part];  //Step up the object we are referencing
-            });
-        });
-
-        return obj;
+        return coreshop.helpers.convertDotNotationToObject(data);
     }
 });

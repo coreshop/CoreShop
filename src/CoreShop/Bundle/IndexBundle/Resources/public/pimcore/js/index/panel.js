@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -19,13 +19,13 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_indexes',
     type: 'coreshop_indexes',
 
-    url: {
-        add: '/admin/coreshop/indices/add',
-        delete: '/admin/coreshop/indices/delete',
-        get: '/admin/coreshop/indices/get',
-        list: '/admin/coreshop/indices/list',
-        config: '/admin/coreshop/indices/get-config',
-        types: '/admin/coreshop/indices/get-types'
+    routing: {
+        add: 'coreshop_index_add',
+        delete: 'coreshop_index_delete',
+        get: 'coreshop_index_get',
+        list: 'coreshop_index_list',
+        config: 'coreshop_index_getConfig',
+        types: 'coreshop_index_getTypes'
     },
 
     typesStore: null,
@@ -34,22 +34,6 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
      * constructor
      */
     initialize: function () {
-        var proxy = new Ext.data.HttpProxy({
-            url: this.url.types
-        });
-
-        var reader = new Ext.data.JsonReader({}, [
-            {name: 'name'}
-        ]);
-
-        this.typesStore = new Ext.data.Store({
-            restful: false,
-            proxy: proxy,
-            reader: reader,
-            autoload: true
-        });
-        this.typesStore.load();
-
         this.getConfig();
 
         this.panels = [];
@@ -87,10 +71,10 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
         pimcore.globalmanager.add('coreshop_index_getters', this.getterStore);
         pimcore.globalmanager.add('coreshop_index_interpreters', this.interpreterStore);
         pimcore.globalmanager.add('coreshop_index_classes', this.classes);
-        pimcore.globalmanager.add('coreshop_index_fieldTypes', this.fieldTypeStore);
+        pimcore.globalmanager.add('coreshop_index_field_types', this.fieldTypeStore);
 
         Ext.Ajax.request({
-            url: this.url.config,
+            url: Routing.generate(this.routing.config),
             method: 'get',
             success: function (response) {
                 try {

@@ -10,25 +10,22 @@ services:
     _defaults:
         public: true
 
-  # Forms
-    coreshop.form.type.product_price_rule:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleType
+    # Forms
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleType:
         arguments:
             - '%coreshop.model.product_price_rule.class%'
             - '%coreshop.form.type.product_price_rule.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.product_price_rule_translation:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleTranslationType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleTranslationType:
         arguments:
             - '%coreshop.model.product_price_rule_translation.class%'
             - '%coreshop.form.type.product_price_rule_translation.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.product_price_rule.rule_action:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleActionType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleActionType:
         arguments:
             - '%coreshop.model.rule_action.class%'
             - '%coreshop.form.type.product_price_rule.rule_action.validation_groups%'
@@ -36,29 +33,25 @@ services:
         tags:
             - { name: form.type }
 
-    coreshop.form.product_price_rule.type.rule_action.collection:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleActionCollectionType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleActionCollectionType:
         arguments:
             - '@coreshop.registry.product_price_rule.actions'
         tags:
             - { name: form.type }
 
-    coreshop.form.product_price_rule.type.rule_condition.collection:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionCollectionType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionCollectionType:
         arguments:
             - '@coreshop.registry.product_price_rule.conditions'
         tags:
             - { name: form.type }
 
-    coreshop.form.product_price_rule.type.rule_action_choice:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleActionChoiceType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleActionChoiceType:
         arguments:
             - '%coreshop.product_price_rule.actions%'
         tags:
             - { name: form.type }
 
-    coreshop.form.product_price_rule.type.rule_condition:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionType:
         arguments:
             - '%coreshop.model.rule_condition.class%'
             - '%coreshop.form.type.product_price_rule.rule_condition.validation_groups%'
@@ -66,8 +59,7 @@ services:
         tags:
             - { name: form.type }
 
-    coreshop.form.product_price_rule.type.rule_condition_choice:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionChoiceType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionChoiceType:
         arguments:
             - '%coreshop.product_price_rule.conditions%'
         tags:
@@ -79,6 +71,8 @@ services:
         arguments:
             - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
             - product-price-rule-conditions
+        tags:
+            - { name: coreshop.registry, type_hint: productPriceRuleConditions }
 
     coreshop.form_registry.product_price_rule.conditions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -88,6 +82,8 @@ services:
         arguments:
             - CoreShop\Component\Product\Rule\Action\ActionProcessorInterface
             - product-price-rule-actions
+        tags:
+            - { name: coreshop.registry, type_hint: productPriceRuleActions }
 
     coreshop.form_registry.product_price_rule.actions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -106,8 +102,8 @@ services:
             - 'Product Price Rules'
 
     # Price Calculators
-    coreshop.product.price_calculator.product_price_valid_rules_fetcher:
-        class: CoreShop\Component\Product\Rule\Fetcher\ValidProductPriceRuleFetcher
+    coreshop.product.price_calculator.product_price_valid_rules_fetcher: '@CoreShop\Component\Product\Rule\Fetcher\ValidProductPriceRuleFetcher'
+    CoreShop\Component\Product\Rule\Fetcher\ValidProductPriceRuleFetcher:
         arguments:
             - '@coreshop.repository.product_price_rule'
             - '@coreshop.product_price_rule.processor'

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\EventListener;
 
@@ -18,52 +20,34 @@ use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 final class SessionCartSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var PimcoreContextResolver
-     */
-    private $pimcoreContext;
+    private PimcoreContextResolver $pimcoreContext;
+    private CartContextInterface $cartContext;
+    private string $sessionKeyName;
 
-    /**
-     * @var CartContextInterface
-     */
-    private $cartContext;
-
-    /**
-     * @var string
-     */
-    private $sessionKeyName;
-
-    /**
-     * @param PimcoreContextResolver $pimcoreContextResolver
-     * @param CartContextInterface   $cartContext
-     * @param string                 $sessionKeyName
-     */
-    public function __construct(PimcoreContextResolver $pimcoreContextResolver, CartContextInterface $cartContext, $sessionKeyName)
+    public function __construct(
+        PimcoreContextResolver $pimcoreContextResolver,
+        CartContextInterface $cartContext,
+        string $sessionKeyName
+    )
     {
         $this->pimcoreContext = $pimcoreContextResolver;
         $this->cartContext = $cartContext;
         $this->sessionKeyName = $sessionKeyName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => ['onKernelResponse'],
         ];
     }
 
-    /**
-     * @param FilterResponseEvent $event
-     */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if ($this->pimcoreContext->matchesPimcoreContext($event->getRequest(), PimcoreContextResolver::CONTEXT_ADMIN)) {
             return;

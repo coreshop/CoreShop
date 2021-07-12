@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -137,7 +137,9 @@ coreshop.resource.panel = Class.create({
         if (!this.grid) {
 
             this.grid = Ext.create('Ext.grid.Panel',
-                Ext.apply({},
+                Ext.apply({
+                        itemId: this.layoutId + '-navigation',
+                    },
                     this.getGridConfiguration(),
                     this.getDefaultGridConfiguration()
                 )
@@ -164,6 +166,7 @@ coreshop.resource.panel = Class.create({
                 // add button
                 text: t('add'),
                 iconCls: 'pimcore_icon_add',
+                itemId: 'add-button',
                 handler: this.addItem.bind(this)
             }
         ];
@@ -195,7 +198,19 @@ coreshop.resource.panel = Class.create({
     },
 
     addItem: function () {
-        Ext.MessageBox.prompt(t('add'), t('coreshop_enter_the_name'), this.addItemComplete.bind(this), null, null, '');
+        Ext.create('Ext.window.MessageBox', {
+            itemId: this.layoutId + '-new-dialog'
+        }).show({
+            title: t('add'),
+            message: t('coreshop_enter_the_name'),
+            prompt: true,
+            minWidth: Ext.MessageBox.minPromptWidth,
+            buttons: Ext.MessageBox.OKCANCEL,
+            callback: this.addItemComplete.bind(this),
+            scope: null,
+            multiline: null,
+            value: '',
+        });
     },
 
     addItemComplete: function (button, value, object) {
@@ -207,9 +222,9 @@ coreshop.resource.panel = Class.create({
             jsonData = this.prepareAdd(jsonData);
         }
 
-        if (button === 'ok' && value.length > 2) {
+        if (button === 'ok') {
             Ext.Ajax.request({
-                url: this.url.add,
+                url: this.routing.add ? Routing.generate(this.routing.add) : this.url.add,
                 jsonData: jsonData,
                 method: 'post',
                 success: function (response) {
@@ -233,7 +248,7 @@ coreshop.resource.panel = Class.create({
 
     deleteItem: function (record) {
         Ext.Ajax.request({
-            url: this.url.delete,
+            url: this.routing.delete ? Routing.generate(this.routing.delete) : this.url.delete,
             method: 'DELETE',
             params: {
                 id: record.id
@@ -252,7 +267,7 @@ coreshop.resource.panel = Class.create({
     },
 
     getPanelKey: function (record) {
-        return this.layoutId + record.id;
+        return this.layoutId + '_' + record.id;
     },
 
     openItem: function (record) {
@@ -263,7 +278,7 @@ coreshop.resource.panel = Class.create({
         }
         else {
             Ext.Ajax.request({
-                url: this.url.get,
+                url: this.routing.get ? Routing.generate(this.routing.get) : this.url.get,
                 params: {
                     id: record.id
                 },
@@ -291,7 +306,8 @@ coreshop.resource.panel = Class.create({
         if (!this.panel) {
             this.panel = new Ext.TabPanel({
                 region: 'center',
-                border: false
+                border: false,
+                itemId: this.layoutId + '_tabs'
             });
         }
 

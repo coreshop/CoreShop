@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
@@ -37,83 +39,64 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
      */
     protected $pseudoPrice = 0;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAmount()
     {
-        return $this->amount;
+        return (int) $this->amount;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setAmount(int $amount)
     {
         $this->amount = $amount;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency()
     {
         return $this->currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCurrency(CurrencyInterface $currency = null)
     {
         $this->currency = $currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUnitDefinition()
     {
         return $this->unitDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition = null)
     {
         $this->unitDefinition = $unitDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasUnitDefinition()
     {
         return $this->unitDefinition instanceof ProductUnitDefinitionInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPseudoPrice()
     {
-        return $this->pseudoPrice;
+        return (int) $this->pseudoPrice;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasPseudoPrice()
     {
-        return $this->pseudoPrice !== 0;
+        return $this->getPseudoPrice() !== 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPseudoPrice(int $pseudoPrice)
     {
         $this->pseudoPrice = $pseudoPrice;
+    }
+
+    public function __clone()
+    {
+        parent::__clone();
+
+        if ($this->unitDefinition === null) {
+            return;
+        }
+
+        $this->unitDefinition = null;
     }
 }

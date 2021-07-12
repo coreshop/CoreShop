@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler;
 
@@ -22,9 +24,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class TraceableValidationProcessorPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->getParameter('kernel.debug')) {
@@ -39,6 +38,14 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
             }
 
             $definition = $container->getDefinition($serviceId);
+
+            if (null === $definition->getClass()) {
+                continue;
+            }
+
+            if ($definition->isDeprecated() || $definition->isAbstract()) {
+                continue;
+            }
 
             if (!@class_exists($definition->getClass())) {
                 continue;
@@ -66,7 +73,7 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
                 $validationProcessors,
             ]);
             $collector->addTag('data_collector', [
-                'template' => 'CoreShopRuleBundle:Collector:rule.html.twig',
+                'template' => '@CoreShopRule/Collector/rule.html.twig',
                 'id' => 'coreshop.rule_collector',
             ]);
 

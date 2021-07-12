@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -37,7 +37,7 @@ coreshop.filter.condition = Class.create({
             addMenu.push({
                 iconCls: 'coreshop_filters_icon_conditions_' + condition,
                 text: t('coreshop_filters_' + condition),
-                handler: _this.addCondition.bind(_this, condition, {})
+                handler: _this.addCondition.bind(_this, condition, {}, true)
             });
 
         });
@@ -102,6 +102,7 @@ coreshop.filter.condition = Class.create({
             }
 
             condition['type'] = conditions[i].xparent.type;
+            condition['sort'] = (i + 1);
 
             conditionsData.push(condition);
         }

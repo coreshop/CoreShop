@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Installer\Configuration;
 
@@ -17,32 +19,34 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class RouteConfiguration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('staticroutes');
+        $treeBuilder = new TreeBuilder('staticroutes');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-            ->arrayNode('routes')
-            ->useAttributeAsKey('name')
-            ->arrayPrototype()
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('name')->cannotBeEmpty()->end()
-            ->scalarNode('pattern')->cannotBeEmpty()->end()
-            ->scalarNode('reverse')->cannotBeEmpty()->end()
-            ->scalarNode('module')->cannotBeEmpty()->end()
-            ->scalarNode('controller')->cannotBeEmpty()->end()
-            ->scalarNode('action')->cannotBeEmpty()->end()
-            ->scalarNode('variables')->defaultValue('')->end()
-            ->integerNode('priority')->defaultValue(1)->end()
-            ->end()
-            ->end()
-            ->end()
+                ->arrayNode('routes')
+                    ->useAttributeAsKey('name')
+                    ->arrayPrototype()
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('name')->cannotBeEmpty()->end()
+                            ->scalarNode('pattern')->cannotBeEmpty()->end()
+                            ->scalarNode('reverse')->cannotBeEmpty()->end()
+                            ->scalarNode('module')->cannotBeEmpty()->end()
+                            ->scalarNode('controller')->cannotBeEmpty()->end()
+                            ->scalarNode('action')->cannotBeEmpty()->end()
+                            ->scalarNode('variables')->defaultValue('')->end()
+                            ->scalarNode('defaults')->defaultValue(null)->end()
+                            ->integerNode('priority')->defaultValue(1)->end()
+                            ->arrayNode('methods')
+                                ->useAttributeAsKey('name')
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

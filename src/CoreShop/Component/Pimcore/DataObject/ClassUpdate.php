@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
@@ -17,32 +19,14 @@ use Pimcore\Model\DataObject;
 
 class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameInterface
 {
-    /**
-     * @var string
-     */
-    private $className;
+    private DataObject\ClassDefinition $classDefinition;
+    private array $fieldsToRename = [];
 
-    /**
-     * @var DataObject\ClassDefinition
-     */
-    private $classDefinition;
-
-    /**
-     * @var array
-     */
-    private $fieldsToRename = [];
-
-    /**
-     * @param string $className
-     *
-     * @throws ClassDefinitionNotFoundException
-     */
-    public function __construct($className)
+    public function __construct(string $className)
     {
-        $this->className = $className;
         $this->classDefinition = DataObject\ClassDefinition::getByName($className);
 
-        if (is_null($this->classDefinition)) {
+        if (null === $this->classDefinition) {
             throw new ClassDefinitionNotFoundException(sprintf('ClassDefinition %s not found', $className));
         }
 
@@ -50,20 +34,17 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
         $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->classDefinition), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function save()
+    public function save(): bool
     {
         foreach ($this->fieldsToRename as $from => $to) {
             $renamer = new ClassDefinitionFieldReNamer($this->classDefinition, $from, $to);
             $renamer->rename();
         }
 
-        return DataObject\ClassDefinition\Service::importClassDefinitionFromJson($this->classDefinition, json_encode($this->jsonDefinition), true);
+        return null !== DataObject\ClassDefinition\Service::importClassDefinitionFromJson($this->classDefinition, json_encode($this->jsonDefinition), true);
     }
 
-    public function renameField($fieldName, $newFieldName)
+    public function renameField(string $fieldName, string $newFieldName): void
     {
         $this->findField(
             $fieldName,

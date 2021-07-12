@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -23,37 +25,12 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class PaymentProvidersReport implements ReportInterface
 {
-    /**
-     * @var int
-     */
-    private $totalRecords = 0;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private RepositoryInterface $paymentProviderRepository;
+    private PimcoreRepositoryInterface $orderRepository;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var Connection
-     */
-    private $db;
-
-    /**
-     * @var RepositoryInterface
-     */
-    private $paymentProviderRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param RepositoryInterface        $paymentProviderRepository
-     * @param PimcoreRepositoryInterface $orderRepository
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
@@ -66,10 +43,7 @@ class PaymentProvidersReport implements ReportInterface
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -108,7 +82,7 @@ class PaymentProvidersReport implements ReportInterface
           WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp 
           GROUP BY paymentProvider";
 
-        $results = $this->db->fetchAll($sql);
+        $results = $this->db->fetchAllAssociative($sql);
         $data = [];
 
         foreach ($results as $result) {
@@ -127,10 +101,7 @@ class PaymentProvidersReport implements ReportInterface
         return array_values($data);
     }
 
-    /**
-     * @return int
-     */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

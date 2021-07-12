@@ -5,13 +5,13 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
 
 pimcore.registerNS('coreshop.order.sale.detail.blocks.carriage');
-coreshop.order.order.detail.blocks.carriage = Class.create(coreshop.order.sale.detail.abstractBlock, {
+coreshop.order.order.detail.blocks.carriage = Class.create(coreshop.order.order.detail.abstractBlock, {
     saleInfo: null,
 
     initBlock: function () {
@@ -94,6 +94,6 @@ coreshop.order.order.detail.blocks.carriage = Class.create(coreshop.order.sale.d
         me.currencyPanel.setHtml('<span style="font-weight:bold;">' + t('coreshop_currency') + ': </span>' + me.sale.currency.name);
         me.weightPanel.setHtml('<span style="font-weight:bold;">' + t('coreshop_weight') + ': </span>' + (me.sale.shippingPayment.weight ? me.sale.shippingPayment.weight : 0));
         me.carrierPanel.setHtml('<span style="font-weight:bold;">' + t('coreshop_carrier') + ': </span>' + me.sale.shippingPayment.carrier);
-        me.pricePanel.setHtml('<span style="font-weight:bold;">' + t('coreshop_price') + ': </span>' + coreshop.util.format.currency(me.sale.currency.symbol, me.sale.shippingPayment.cost));
+        me.pricePanel.setHtml('<span style="font-weight:bold;">' + t('coreshop_price') + ': </span>' + coreshop.util.format.currency(me.sale.currency.isoCode, me.sale.shippingPayment.cost));
     }
 });

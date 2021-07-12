@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
@@ -24,26 +26,10 @@ use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderInvoiceStateResolver implements StateResolverInterface
 {
-    /**
-     * @var StateMachineManager
-     */
-    private $stateMachineManager;
+    private StateMachineManager $stateMachineManager;
+    private OrderInvoiceRepositoryInterface $orderInvoiceRepository;
+    private ProcessableInterface $processable;
 
-    /**
-     * @var OrderInvoiceRepositoryInterface
-     */
-    private $orderInvoiceRepository;
-
-    /**
-     * @var ProcessableInterface
-     */
-    private $processable;
-
-    /**
-     * @param StateMachineManager             $stateMachineManager
-     * @param OrderInvoiceRepositoryInterface $orderInvoiceRepository
-     * @param ProcessableInterface            $processable
-     */
     public function __construct(
         StateMachineManager $stateMachineManager,
         OrderInvoiceRepositoryInterface $orderInvoiceRepository,
@@ -54,12 +40,7 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         $this->processable = $processable;
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return mixed|void
-     */
-    public function resolve(OrderInterface $order)
+    public function resolve(OrderInterface $order): void
     {
         if ($order->getInvoiceState() === OrderInvoiceStates::STATE_INVOICED) {
             return;
@@ -76,12 +57,6 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param string         $invoiceState
-     *
-     * @return int
-     */
     private function countOrderInvoicesInState(OrderInterface $order, string $invoiceState): int
     {
         $invoices = $this->orderInvoiceRepository->getDocuments($order);
@@ -97,13 +72,6 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         return $items;
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param string         $invoiceState
-     * @param string         $orderInvoiceState
-     *
-     * @return bool
-     */
     private function allInvoicesInStateButOrderStateNotUpdated(
         OrderInterface $order,
         string $invoiceState,
@@ -117,11 +85,6 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
             $this->processable->isFullyProcessed($order);
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return bool
-     */
     private function isPartiallyInvoicedButOrderStateNotUpdated(OrderInterface $order): bool
     {
         $invoiceInCompleteStateAmount = $this->countOrderInvoicesInState($order, InvoiceStates::STATE_COMPLETE);

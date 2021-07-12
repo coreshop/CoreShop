@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
@@ -20,20 +22,14 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
 {
-    /**
-     * @return array
-     */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::loadClassMetadata,
         ];
     }
 
-    /**
-     * @param LoadClassMetadataEventArgs $eventArgs
-     */
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $metadata = $eventArgs->getClassMetadata();
 
@@ -46,10 +42,7 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
         }
     }
 
-    /**
-     * @param ClassMetadataInfo $metadata
-     */
-    private function convertToEntityIfNeeded(ClassMetadataInfo $metadata)
+    private function convertToEntityIfNeeded(ClassMetadataInfo $metadata): void
     {
         if (false === $metadata->isMappedSuperclass) {
             return;
@@ -66,11 +59,7 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
         }
     }
 
-    /**
-     * @param ClassMetadataInfo $metadata
-     * @param Configuration     $configuration
-     */
-    private function setAssociationMappings(ClassMetadataInfo $metadata, $configuration)
+    private function setAssociationMappings(ClassMetadataInfo $metadata, Configuration $configuration): void
     {
         $class = $metadata->getName();
         if (!class_exists($class)) {
@@ -106,10 +95,7 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
         }
     }
 
-    /**
-     * @param ClassMetadataInfo $metadata
-     */
-    private function unsetAssociationMappings(ClassMetadataInfo $metadata)
+    private function unsetAssociationMappings(ClassMetadataInfo $metadata): void
     {
         if (false === $this->isResource($metadata)) {
             return;
@@ -122,12 +108,7 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
         }
     }
 
-    /**
-     * @param string $type
-     *
-     * @return bool
-     */
-    private function isRelation($type)
+    private function isRelation(int $type): bool
     {
         return in_array(
             $type,

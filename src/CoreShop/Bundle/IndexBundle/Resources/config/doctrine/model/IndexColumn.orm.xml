@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Index\Model\IndexColumn" table="coreshop_index_column">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="objectKey" column="objectKey" nullable="true"/>
+        <field name="objectType" column="objectType"/>
+        <field name="dataType" column="dataType"/>
+        <field name="name" column="name"/>
+        <field name="getter" column="getter" nullable="true"/>
+        <field name="columnType" column="columnType"/>
+        <field name="getterConfig" column="getterConfig" type="array" nullable="true"/>
+        <field name="interpreter" column="interpreter" nullable="true"/>
+        <field name="interpreterConfig" column="interpreterConfig" type="array" nullable="true"/>
+        <field name="configuration" column="configuration" type="array" nullable="true"/>
+
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+        <many-to-one field="index" target-entity="CoreShop\Component\Index\Model\IndexInterface" inversed-by="columns">
+            <join-column name="indexId" referenced-column-name="id" nullable="true"/>
+        </many-to-one>
+
+    </mapped-superclass>
+</doctrine-mapping>

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
@@ -19,23 +21,14 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class SqlInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
-    /**<
-     * @param KernelInterface $kernel
-     */
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.sql', $applicationName) : 'coreshop.all.pimcore.admin.install.sql';
 
@@ -53,7 +46,7 @@ final class SqlInstaller implements ResourceInstallerInterface
             $progress->start(count($sqlFilesToExecute));
 
             foreach ($sqlFilesToExecute as $sqlFile) {
-                $progress->setMessage(sprintf('<error>Execute SQL File %s</error>', $sqlFile));
+                $progress->setMessage(sprintf('<info>Execute SQL File %s</info>', $sqlFile));
 
                 $db->executeQuery(file_get_contents($this->kernel->locateResource($sqlFile)));
 
@@ -61,6 +54,9 @@ final class SqlInstaller implements ResourceInstallerInterface
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>SQLs have been installed successfully</info>');
         }
     }
 }

@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -60,16 +60,16 @@ coreshop.order.order.editInvoice = {
                         name: 'amount',
                         fieldLabel: t('coreshop_total_without_tax'),
                         disabled: true,
-                        value: invoice.get('totalNet') / 100,
-                        renderer: coreshop.util.format.currency.bind(this, currency.symbol)
+                        value: invoice.get('totalNet') / pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
+                        renderer: coreshop.util.format.currency.bind(this, currency.isoCode)
                     },
                     {
                         xtype: 'textfield',
                         name: 'amount',
                         fieldLabel: t('coreshop_total'),
                         disabled: true,
-                        value: invoice.get('totalGross') / 100,
-                        renderer: coreshop.util.format.currency.bind(this, currency.symbol)
+                        value: invoice.get('totalGross') / pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
+                        renderer: coreshop.util.format.currency.bind(this, currency.isoCode)
                     },
                     {
                         xtype: 'button',

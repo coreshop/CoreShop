@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
@@ -17,27 +19,13 @@ use Pimcore\Model\DataObject;
 
 class BrickDefinitionUpdate extends AbstractDefinitionUpdate
 {
-    /**
-     * @var string
-     */
-    private $brickKey;
+    private DataObject\Objectbrick\Definition $brickDefinition;
 
-    /**
-     * @var DataObject\Objectbrick\Definition
-     */
-    private $brickDefinition;
-
-    /**
-     * @param string $brickKey
-     *
-     * @throws ClassDefinitionNotFoundException
-     */
-    public function __construct($brickKey)
+    public function __construct(string $brickKey)
     {
-        $this->brickKey = $brickKey;
         $this->brickDefinition = DataObject\Objectbrick\Definition::getByKey($brickKey);
 
-        if (is_null($this->brickDefinition)) {
+        if (null === $this->brickDefinition) {
             throw new ClassDefinitionNotFoundException(sprintf('Brick Definition %s not found', $brickKey));
         }
 
@@ -45,11 +33,8 @@ class BrickDefinitionUpdate extends AbstractDefinitionUpdate
         $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->brickDefinition), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function save()
+    public function save(): bool
     {
-        return DataObject\ClassDefinition\Service::importObjectBrickFromJson($this->brickDefinition, json_encode($this->jsonDefinition), true);
+        return null !== DataObject\ClassDefinition\Service::importObjectBrickFromJson($this->brickDefinition, json_encode($this->jsonDefinition), true);
     }
 }

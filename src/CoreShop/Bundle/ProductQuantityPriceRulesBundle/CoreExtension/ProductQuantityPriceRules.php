@@ -6,24 +6,38 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension;
 
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRuleValidationEvent;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
+use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
+use CoreShop\Component\ProductQuantityPriceRules\Events;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Repository\ProductQuantityPriceRuleRepositoryInterface;
+use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
+use Doctrine\ORM\EntityManager;
+use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
-class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface
+class ProductQuantityPriceRules extends Data implements
+    Data\CustomResourcePersistingInterface,
+    Data\CustomVersionMarshalInterface
 {
+    use TempEntityManagerTrait;
+
     /**
      * Static type of this element.
      *
@@ -36,68 +50,24 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      */
     public $height;
 
-    /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    private function getContainer()
+    public function getParameterTypeDeclaration(): ?string
     {
-        return \Pimcore::getContainer();
+        return 'array';
     }
 
-    /**
-     * @return ProductQuantityPriceRuleRepositoryInterface
-     */
-    private function getProductQuantityPriceRuleRepository()
+    public function getReturnTypeDeclaration(): ?string
     {
-        return $this->getContainer()->get('coreshop.repository.product_quantity_price_rule');
+        return 'array';
     }
 
-    /**
-     * @return \Symfony\Component\Form\FormFactoryInterface
-     */
-    private function getFormFactory()
+    public function getPhpdocInputType(): ?string
     {
-        return $this->getContainer()->get('form.factory');
+        return 'array';
     }
 
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getEntityManager()
+    public function getPhpdocReturnType(): ?string
     {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getRangeEntityManager()
-    {
-        return $this->getContainer()->get('coreshop.manager.product_quantity_price_rule_range');
-    }
-
-    /**
-     * @return \JMS\Serializer\SerializerInterface
-     */
-    private function getSerializer()
-    {
-        return $this->getContainer()->get('jms_serializer');
-    }
-
-    /**
-     * @return array
-     */
-    private function getConfigConditions()
-    {
-        return $this->getContainer()->getParameter('coreshop.product_quantity_price_rules.conditions');
-    }
-
-    /**
-     * @return array
-     */
-    private function getConfigActions()
-    {
-        return $this->getContainer()->getParameter('coreshop.product_quantity_price_rules.actions');
+        return 'array';
     }
 
     /**
@@ -110,7 +80,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         Assert::isInstanceOf($object, QuantityRangePriceAwareInterface::class);
 
         if (!$object instanceof Concrete) {
-            return null;
+            return [];
         }
 
         $data = $object->getObjectVar($this->getName());
@@ -127,9 +97,6 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preSetData($object, $data, $params = [])
     {
         $this->markAsLoaded($object);
@@ -137,12 +104,74 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function isDiffChangeAllowed($object, $params = [])
+    {
+        return false;
+    }
+
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
+    }
+
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];
+    }
+
+    public function marshalVersion($object, $data)
+    {
+        if (!is_array($data)) {
+            return null;
+        }
+
+        $serialized = [];
+
+        foreach ($data as $datum) {
+            $context = SerializationContext::create();
+            $context->setSerializeNull(true);
+            $context->setGroups(['Version']);
+
+            $serialized[] = $this->getSerializer()->toArray($datum, $context);
+        }
+
+        return $serialized;
+    }
+
+    public function unmarshalVersion($object, $data)
+    {
+        if (!is_array($data)) {
+            return null;
+        }
+
+        $entities = [];
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+
+        foreach ($data as $storeData) {
+            if (!is_array($storeData)) {
+                continue;
+            }
+
+            $context = DeserializationContext::create();
+            $context->setGroups(['Version']);
+            $context->setAttribute('em', $tempEntityManager);
+
+            $data = $this->getSerializer()->fromArray($storeData, $this->getProductQuantityPriceRuleRepository()->getClassName(), $context);
+
+            $entities[] = $data;
+        }
+
+        return $entities;
+    }
+
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
     }
 
     /**
@@ -150,7 +179,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      * @param null  $object
      * @param array $params
      *
-     * @return ProductQuantityPriceRuleInterface[]
+     * @return array
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -164,7 +193,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             $pricingBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_behaviour_' . strtolower($type)];
         }
 
-        $data = [
+        $serializedData = [
             'conditions' => array_keys($this->getConfigConditions()),
             'actions' => array_keys($this->getConfigActions()),
             'rules' => [],
@@ -178,12 +207,11 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
             $context->setGroups(['Default', 'Detailed']);
-            $quantityPriceRules = $this->load($object, ['force' => true]);
-            $serializedData = $this->getSerializer()->serialize($quantityPriceRules, 'json', $context);
-            $data['rules'] = json_decode($serializedData, true);
+
+            $serializedData['rules'] = $this->getSerializer()->toArray($data, $context);
         }
 
-        return $data;
+        return $serializedData;
     }
 
     /**
@@ -200,41 +228,50 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         $prices = [];
         $errors = [];
 
-        if ($data && $object instanceof Concrete) {
-            foreach ($data as $rule) {
-                $ruleId = isset($rule['id']) && is_numeric($rule['id']) ? $rule['id'] : null;
+        if (!is_array($data) || !$object instanceof Concrete) {
+            return $prices;
+        }
 
-                $storedRule = null;
-                $ruleData = null;
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+        $specificPriceRuleRepository = $this->getProductQuantityPriceRuleRepositoryFactory()->createNewRepository($tempEntityManager);
 
-                if ($ruleId !== null) {
-                    $storedRule = $this->getProductQuantityPriceRuleRepository()->find($ruleId);
-                }
+        $event = new ProductQuantityPriceRuleValidationEvent($object, $data);
+        $this->getEventDispatcher()->dispatch($event, Events::RULES_DATA_FROM_EDITMODE_VALIDATION);
 
-                if ($storedRule instanceof ProductQuantityPriceRuleInterface) {
-                    $ruleData = $this->checkForRangeOrphans($storedRule, $rule);
-                }
+        foreach ($event->getData() as $rule) {
 
-                $form = $this->getFormFactory()->createNamed('', ProductQuantityPriceRuleType::class, $ruleData);
+            $storedRule = null;
+            $ruleData = null;
 
-                $form->submit($rule);
+            $ruleId = isset($rule['id']) && is_numeric($rule['id']) ? $rule['id'] : null;
 
-                if ($form->isValid()) {
-                    $formData = $form->getData();
-                    $formData->setProduct($object->getId());
-                    $prices[] = $formData;
-                } else {
-                    foreach ($form->getErrors(true, true) as $e) {
-                        $errorMessageTemplate = $e->getMessageTemplate();
-                        foreach ($e->getMessageParameters() as $key => $value) {
-                            $errorMessageTemplate = str_replace($key, $value, $errorMessageTemplate);
-                        }
+            if ($ruleId !== null) {
+                $storedRule = $specificPriceRuleRepository->find($ruleId);
+            }
 
-                        $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
+            if ($storedRule instanceof ProductQuantityPriceRuleInterface) {
+                $ruleData = $this->checkForRangeOrphans($tempEntityManager, $storedRule, $rule);
+            }
+
+            $form = $this->getFormFactory()->createNamed('', ProductQuantityPriceRuleType::class, $ruleData);
+
+            $form->submit($rule);
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+                $formData->setProduct($object->getId());
+                $prices[] = $formData;
+            } else {
+                foreach ($form->getErrors(true, true) as $e) {
+                    $errorMessageTemplate = $e->getMessageTemplate();
+                    foreach ($e->getMessageParameters() as $key => $value) {
+                        $errorMessageTemplate = str_replace($key, $value, $errorMessageTemplate);
                     }
 
-                    throw new \Exception(implode(PHP_EOL, $errors));
+                    $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
                 }
+
+                throw new \Exception(implode(PHP_EOL, $errors));
             }
         }
 
@@ -250,40 +287,41 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      */
     public function save($object, $params = [])
     {
-        if ($object instanceof QuantityRangePriceAwareInterface) {
-            if (!$object instanceof Concrete) {
-                return;
-            }
-
-            $existingQuantityPriceRules = $object->getObjectVar($this->getName());
-            $all = $this->load($object, ['force' => true]);
-            $founds = [];
-
-            if (is_array($existingQuantityPriceRules)) {
-                foreach ($existingQuantityPriceRules as $quantityPriceRule) {
-                    if ($quantityPriceRule instanceof ProductQuantityPriceRuleInterface) {
-                        $quantityPriceRule->setProduct($object->getId());
-
-                        $this->getEntityManager()->persist($quantityPriceRule);
-
-                        $founds[] = $quantityPriceRule->getId();
-                    }
-                }
-            }
-
-            foreach ($all as $quantityPriceRule) {
-                if (!in_array($quantityPriceRule->getId(), $founds)) {
-                    $this->getEntityManager()->remove($quantityPriceRule);
-                }
-            }
-
-            $this->getEntityManager()->flush();
+        if (!$object instanceof QuantityRangePriceAwareInterface) {
+            return;
         }
+
+        if (!$object instanceof Concrete) {
+            return;
+        }
+
+        $entityMerger = new EntityMerger($this->getEntityManager());
+        $existingQuantityPriceRules = $object->getObjectVar($this->getName());
+        $all = $this->load($object, ['force' => true]);
+        $founds = [];
+
+        if (is_array($existingQuantityPriceRules)) {
+            foreach ($existingQuantityPriceRules as $quantityPriceRule) {
+                if ($quantityPriceRule instanceof ProductQuantityPriceRuleInterface) {
+                    $quantityPriceRule->setProduct($object->getId());
+
+                    $entityMerger->merge($quantityPriceRule);
+                    $this->getEntityManager()->persist($quantityPriceRule);
+
+                    $founds[] = $quantityPriceRule->getId();
+                }
+            }
+        }
+
+        foreach ($all as $quantityPriceRule) {
+            if (!in_array($quantityPriceRule->getId(), $founds)) {
+                $this->getEntityManager()->remove($quantityPriceRule);
+            }
+        }
+
+        $this->getEntityManager()->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($object, $params = [])
     {
         if (isset($params['force']) && $params['force']) {
@@ -293,9 +331,6 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($object, $params = [])
     {
         if ($object instanceof QuantityRangePriceAwareInterface) {
@@ -368,7 +403,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    protected function checkForRangeOrphans(ProductQuantityPriceRuleInterface $storedRule, array $currentRule)
+    protected function checkForRangeOrphans(EntityManager $entityManager, ProductQuantityPriceRuleInterface $storedRule, array $currentRule)
     {
         if ($storedRule->getRanges()->isEmpty()) {
             return $storedRule;
@@ -392,13 +427,89 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         }
 
         foreach ($invalidatedRanges as $invalidatedRange) {
-            $this->getRangeEntityManager()->remove($invalidatedRange);
+            $entityManager->remove($invalidatedRange);
             $storedRule->removeRange($invalidatedRange);
         }
 
-        $this->getRangeEntityManager()->flush();
-        $this->getEntityManager()->refresh($storedRule);
+        $entityManager->flush();
+        $entityManager->refresh($storedRule);
 
         return $storedRule;
+    }
+
+    public function getForCsvExport($object, $params = [])
+    {
+        return '';
+    }
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    private function getContainer()
+    {
+        return \Pimcore::getContainer();
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    private function getEventDispatcher()
+    {
+        return \Pimcore::getContainer()->get('event_dispatcher');
+    }
+
+    /**
+     * @return ProductQuantityPriceRuleRepositoryInterface
+     */
+    private function getProductQuantityPriceRuleRepository()
+    {
+        return $this->getContainer()->get('coreshop.repository.product_quantity_price_rule');
+    }
+    /**
+     * @return RepositoryFactoryInterface
+     */
+    private function getProductQuantityPriceRuleRepositoryFactory()
+    {
+        return $this->getContainer()->get('coreshop.repository.factory.product_quantity_price_rule');
+    }
+
+    /**
+     * @return \Symfony\Component\Form\FormFactoryInterface
+     */
+    private function getFormFactory()
+    {
+        return $this->getContainer()->get('form.factory');
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    private function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine.orm.entity_manager');
+    }
+
+    /**
+     * @return \JMS\Serializer\Serializer
+     */
+    private function getSerializer()
+    {
+        return $this->getContainer()->get('jms_serializer');
+    }
+
+    /**
+     * @return array
+     */
+    private function getConfigConditions()
+    {
+        return $this->getContainer()->getParameter('coreshop.product_quantity_price_rules.conditions');
+    }
+
+    /**
+     * @return array
+     */
+    private function getConfigActions()
+    {
+        return $this->getContainer()->getParameter('coreshop.product_quantity_price_rules.actions');
     }
 }

@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -237,12 +237,16 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
     download: function () {
         var me = this;
 
-        var url = '/admin/coreshop/report/export?report=' + me.reportType;
-        var filterParams = me.getFilterParams();
+        var options = {};
+        this.getStore().setLoadOptions(options);
 
-        url += '&' + Ext.urlEncode(filterParams);
+        var operation = this.getStore().createOperation('read', options);
+        var request = this.getStore().getProxy().buildRequest(operation);
 
-        pimcore.helpers.download(url);
+        var filterParams = request.getParams();
+        filterParams['report'] = me.reportType;
+
+        pimcore.helpers.download(Routing.generate('coreshop_admin_report_export', filterParams));
     },
 
     getStore: function () {
@@ -257,9 +261,10 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             this.store = new Ext.data.Store({
                 autoDestroy: true,
                 remoteSort: this.remoteSort,
+                pageSize: 50,
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/coreshop/report/get-data?report=' + this.reportType,
+                    url: Routing.generate('coreshop_admin_report_get_data', { report: this.reportType }),
                     actionMethods: {
                         read: 'GET'
                     },

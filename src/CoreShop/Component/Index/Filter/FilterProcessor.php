@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Filter;
 
@@ -20,23 +22,18 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FilterProcessor implements FilterProcessorInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $conditionProcessors;
+    private ServiceRegistryInterface $preConditionProcessors;
+    private ServiceRegistryInterface $userConditionProcessors;
 
-    /**
-     * @param ServiceRegistryInterface $conditionProcessors
-     */
-    public function __construct(ServiceRegistryInterface $conditionProcessors)
-    {
-        $this->conditionProcessors = $conditionProcessors;
+    public function __construct(
+        ServiceRegistryInterface $preConditionProcessors,
+        ServiceRegistryInterface $userConditionProcessors
+    ) {
+        $this->preConditionProcessors = $preConditionProcessors;
+        $this->userConditionProcessors = $userConditionProcessors;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag)
+    public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag): array
     {
         $currentFilter = [];
         $conditions = $filter->getConditions();
@@ -50,17 +47,14 @@ class FilterProcessor implements FilterProcessorInterface
 
         if ($filter->hasPreConditions()) {
             foreach ($preConditions as $condition) {
-                $currentFilter = $this->getConditionProcessorForCondition($condition)->addCondition($condition, $filter, $list, $currentFilter, $parameterBag, true);
+                $currentFilter = $this->getPreConditionProcessorForCondition($condition)->addCondition($condition, $filter, $list, $currentFilter, $parameterBag, true);
             }
         }
 
         return $currentFilter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, $currentFilter): array
     {
         $conditions = $filter->getConditions();
         $preparedConditions = [];
@@ -74,13 +68,23 @@ class FilterProcessor implements FilterProcessorInterface
         return $preparedConditions;
     }
 
-    /**
-     * @param FilterConditionInterface $condition
-     *
-     * @return FilterConditionProcessorInterface
-     */
-    private function getConditionProcessorForCondition(FilterConditionInterface $condition)
+    private function getConditionProcessorForCondition(FilterConditionInterface $condition): FilterConditionProcessorInterface
     {
-        return $this->conditionProcessors->get($condition->getType());
+        /**
+         * @var FilterConditionProcessorInterface $processor
+         */
+        $processor = $this->userConditionProcessors->get($condition->getType());
+
+        return $processor;
+    }
+
+    private function getPreConditionProcessorForCondition(FilterConditionInterface $condition): FilterConditionProcessorInterface
+    {
+        /**
+         * @var FilterConditionProcessorInterface $processor
+         */
+        $processor = $this->preConditionProcessors->get($condition->getType());
+
+        return $processor;
     }
 }

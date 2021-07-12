@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Inventory\Operator;
 
@@ -19,26 +21,26 @@ interface OrderInventoryOperatorInterface
     /**
      * @param OrderInterface $order
      */
-    public function hold(OrderInterface $order);
+    public function hold(OrderInterface $order): void;
 
     /**
      * @param OrderInterface $order
      *
      * @throws \InvalidArgumentException
      */
-    public function sell(OrderInterface $order);
+    public function sell(OrderInterface $order): void;
 
     /**
      * @param OrderInterface $order
      *
      * @throws \InvalidArgumentException
      */
-    public function release(OrderInterface $order);
+    public function release(OrderInterface $order): void;
 
     /**
      * @param OrderInterface $order
      *
      * @throws \InvalidArgumentException
      */
-    public function giveBack(OrderInterface $order);
+    public function giveBack(OrderInterface $order): void;
 }

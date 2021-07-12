@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,14 +21,15 @@ coreshop.product.storeValues.items.price = Class.create(coreshop.product.storeVa
                 componentCls: 'object_field',
                 labelWidth: 250,
                 minValue: 0,
-                value: 0
+                value: 0,
+                decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
             });
 
         // do not fire dirty flag on initial data setup
         priceField.suspendEvents();
 
         if (price !== null) {
-            priceField.setValue(price / 100);
+            priceField.setValue(price / pimcore.globalmanager.get('coreshop.currency.decimal_factor'));
             priceField.resetOriginalValue();
             priceField.setFieldLabel(priceField.fieldLabel + ' (' + this.builder.data.currencySymbol + ')');
         }

@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -13,26 +13,14 @@
 pimcore.registerNS('coreshop.address.resource');
 coreshop.address.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.global.addStore('coreshop_zones', 'coreshop/zones', [
+        coreshop.global.addStoreWithRoute('coreshop_zones', 'coreshop_zone_list', [
             {name: 'id'},
             {name: 'name'},
             {name: 'active'}
         ]);
-        coreshop.global.addStore('coreshop_countries', 'coreshop/countries', null, 'name');
-        coreshop.global.addStore('coreshop_address_identifier', 'coreshop/address_identifiers', null, 'name');
-        coreshop.global.addStore('coreshop_countries_active', 'coreshop/countries', null, 'name');
-        coreshop.global.addStore('coreshop_states', 'coreshop/states');
-
-        pimcore.globalmanager.get('coreshop_countries_active').addFilter({
-            property: 'active',
-            value: true
-        });
-
-        pimcore.globalmanager.get('coreshop_countries').load();
-        pimcore.globalmanager.get('coreshop_address_identifier').load();
-        pimcore.globalmanager.get('coreshop_countries_active').load();
-        pimcore.globalmanager.get('coreshop_states').load();
-        pimcore.globalmanager.get('coreshop_zones').load();
+        coreshop.global.addStoreWithRoute('coreshop_countries', 'coreshop_country_list', null, 'name');
+        coreshop.global.addStoreWithRoute('coreshop_address_identifier', 'coreshop_address_identifier_list', null, 'name');
+        coreshop.global.addStoreWithRoute('coreshop_states', 'coreshop_state_list');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.address', this);
     },

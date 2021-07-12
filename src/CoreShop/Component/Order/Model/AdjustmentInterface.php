@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
@@ -19,52 +21,22 @@ interface AdjustmentInterface extends ResourceInterface
     const SHIPPING = 'shipping';
     const CART_PRICE_RULE = 'cart_price_rule';
 
-    /**
-     * @return AdjustableInterface|null
-     */
-    public function getAdjustable();
+    public function getAdjustable(): ?AdjustableInterface;
 
-    /**
-     * @return string|null
-     */
-    public function getTypeIdentifier();
+    public function getTypeIdentifier(): ?string;
 
-    /**
-     * @param string|null $typeIdentifier
-     */
-    public function setTypeIdentifier($typeIdentifier);
+    public function setTypeIdentifier(?string $typeIdentifier);
 
-    /**
-     * @return string|null
-     */
-    public function getLabel();
+    public function getLabel(): ?string;
 
-    /**
-     * @param string|null $label
-     */
-    public function setLabel($label);
+    public function setLabel(?string $label);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getAmount($withTax = true);
+    public function getAmount(bool $withTax = true): int;
 
-    /**
-     * @param int $grossAmount
-     * @param int $netAmount
-     */
     public function setAmount(int $grossAmount, int $netAmount);
 
-    /**
-     * @return bool
-     */
-    public function getNeutral();
+    public function getNeutral(): bool;
 
-    /**
-     * @param bool $neutral
-     */
     public function setNeutral(bool $neutral);
 
     /**
@@ -72,12 +44,12 @@ interface AdjustmentInterface extends ResourceInterface
      *
      * @return bool
      */
-    public function isCharge();
+    public function isCharge(): bool;
 
     /**
      * Adjustments with amount > 0 are called "credits".
      *
      * @return bool
      */
-    public function isCredit();
+    public function isCredit(): bool;
 }

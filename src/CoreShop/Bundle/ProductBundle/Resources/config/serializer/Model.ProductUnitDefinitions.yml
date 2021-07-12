@@ -6,7 +6,7 @@ CoreShop\Component\Product\Model\ProductUnitDefinitions:
             expose: true
             type: integer
             xml_attribute: true
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         product:
             expose: true
             type: integer
@@ -14,8 +14,8 @@ CoreShop\Component\Product\Model\ProductUnitDefinitions:
         defaultUnitDefinition:
             expose: true
             type: CoreShop\Component\Product\Model\ProductUnitDefinition
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         unitDefinitions:
             expose: true
-            type: array<CoreShop\Component\Product\Model\ProductUnitDefinition>
-            groups: [List, Detailed]
+            type: ArrayCollection<CoreShop\Component\Product\Model\ProductUnitDefinition>
+            groups: [List, Detailed, Version]

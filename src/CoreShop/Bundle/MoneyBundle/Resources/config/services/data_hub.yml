@@ -1,0 +1,7 @@
+services:
+    coreshop.datahub.graphql.querytypegenerator.resource.money_types:
+        class: CoreShop\Bundle\MoneyBundle\DataHub\QueryType\Money
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopMoney }

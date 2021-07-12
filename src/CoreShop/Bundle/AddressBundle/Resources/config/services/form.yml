@@ -11,91 +11,79 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.country_choice:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\CountryChoiceType
+    CoreShop\Bundle\AddressBundle\Form\Type\CountryChoiceType:
         arguments:
             - '@coreshop.repository.country'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.salutation_choice:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\SalutationChoiceType
+    CoreShop\Bundle\AddressBundle\Form\Type\SalutationChoiceType:
         arguments:
-            - '@coreshop.context.country'
+            - '@CoreShop\Component\Address\Context\CountryContextInterface'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.country:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\CountryType
+    CoreShop\Bundle\AddressBundle\Form\Type\CountryType:
         arguments:
             - '%coreshop.model.country.class%'
             - '%coreshop.form.type.country.validation_groups%'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.country_translation:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\CountryTranslationType
+    CoreShop\Bundle\AddressBundle\Form\Type\CountryTranslationType:
         arguments:
             - '%coreshop.model.country_translation.class%'
             - '%coreshop.form.type.country_translation.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.state_choice:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\StateChoiceType
+    CoreShop\Bundle\AddressBundle\Form\Type\StateChoiceType:
         arguments:
             - '@coreshop.repository.state'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.state:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\StateType
+    CoreShop\Bundle\AddressBundle\Form\Type\StateType:
         arguments:
             - '%coreshop.model.state.class%'
             - '%coreshop.form.type.state.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.state_translation:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\StateTranslationType
+    CoreShop\Bundle\AddressBundle\Form\Type\StateTranslationType:
         arguments:
             - '%coreshop.model.state_translation.class%'
             - '%coreshop.form.type.state_translation.validation_groups%'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.zone_choice:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\ZoneChoiceType
+    CoreShop\Bundle\AddressBundle\Form\Type\ZoneChoiceType:
         arguments:
             - '@coreshop.repository.zone'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.zone:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\ZoneType
+    CoreShop\Bundle\AddressBundle\Form\Type\ZoneType:
         arguments:
             - '%coreshop.model.zone.class%'
             - '%coreshop.form.type.zone.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.address:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\AddressType
+    CoreShop\Bundle\AddressBundle\Form\Type\AddressType:
         arguments:
             - '%coreshop.model.address.class%'
             - '%coreshop.form.type.address.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.address_identifier_choice:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\AddressIdentifierChoiceType
+    CoreShop\Bundle\AddressBundle\Form\Type\AddressIdentifierChoiceType:
         arguments:
             - '@coreshop.repository.address_identifier'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.address_identifier:
-        class: CoreShop\Bundle\AddressBundle\Form\Type\AddressIdentifierType
+    CoreShop\Bundle\AddressBundle\Form\Type\AddressIdentifierType:
         arguments:
             - '%coreshop.model.address_identifier.class%'
             - '%coreshop.form.type.address_identifier.validation_groups%'

@@ -6,28 +6,29 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductUnitDefinitionsController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function productUnitDefinitionsListAction(Request $request)
+    public function productUnitDefinitionsListAction(Request $request): Response
     {
         $definitions = [];
 
@@ -44,12 +45,7 @@ class ProductUnitDefinitionsController extends ResourceController
         return $this->viewHandler->handle($definitions);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function productAdditionalUnitDefinitionsListAction(Request $request)
+    public function productAdditionalUnitDefinitionsListAction(Request $request): Response
     {
         $definitions = [];
 
@@ -59,6 +55,10 @@ class ProductUnitDefinitionsController extends ResourceController
         /** @var ProductInterface $product */
         $product = $repository->find($request->get('productId'));
 
+        if ($product instanceof Concrete) {
+            $product = VersionHelper::getLatestVersion($product);
+        }
+
         if ($product instanceof ProductInterface) {
             $definitions = $this->getUnitDefinitionsForProduct($product, 'additional');
         }
@@ -66,15 +66,9 @@ class ProductUnitDefinitionsController extends ResourceController
         return $this->viewHandler->handle($definitions);
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param string           $type
-     *
-     * @return array
-     */
-    protected function getUnitDefinitionsForProduct(ProductInterface $product, string $type = 'all')
+    protected function getUnitDefinitionsForProduct(ProductInterface $product, string $type = 'all'): Collection
     {
-        $definitions = [];
+        $definitions = new ArrayCollection();
 
         if ($product->hasUnitDefinitions()) {
             $productUnitDefinitions = $product->getUnitDefinitions();
@@ -87,6 +81,23 @@ class ProductUnitDefinitionsController extends ResourceController
             }
         }
 
-        return $definitions;
+        return $definitions->filter(function(ProductUnitDefinitionInterface $unitDefinition) {
+            return null !== $unitDefinition->getId();
+        });
+    }
+
+    protected function getLatestVersion(Concrete $object): Concrete
+    {
+        $modificationDate = $object->getModificationDate();
+        $latestVersion = $object->getLatestVersion();
+        if ($latestVersion) {
+            $latestObj = $latestVersion->loadData();
+            if ($latestObj instanceof Concrete) {
+                $object = $latestObj;
+                $object->setModificationDate($modificationDate); // set de modification-date from published version to compare it in js-frontend
+            }
+        }
+
+        return $object;
     }
 }

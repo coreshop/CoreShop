@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FixtureBundle\Fixture\Loader;
 
@@ -24,31 +26,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DataFixturesLoader extends ContainerAwareLoader
 {
-    /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
+    protected array $loadedFixtures = [];
+    protected ?\ReflectionProperty $ref = null;
+    protected UpdateDataFixturesFixture $updateDataFixturesFixture;
+    protected DataFixtureRepositoryInterface $dataFixtureRepository;
 
-    /** @var array */
-    protected $loadedFixtures;
-
-    /** @var \ReflectionProperty */
-    protected $ref;
-
-    /**
-     * @var UpdateDataFixturesFixture
-     */
-    protected $updateDataFixturesFixture;
-
-    /**
-     * @var DataFixtureRepositoryInterface
-     */
-    protected $dataFixtureRepository;
-
-    /**
-     * @param EntityManager                  $em
-     * @param ContainerInterface             $container
-     * @param UpdateDataFixturesFixture      $updateDataFixturesFixture
-     * @param DataFixtureRepositoryInterface $dataFixtureRepository
-     */
     public function __construct(
         EntityManager $em,
         ContainerInterface $container,
@@ -62,9 +45,6 @@ class DataFixturesLoader extends ContainerAwareLoader
         $this->dataFixtureRepository = $dataFixtureRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFixtures()
     {
         $sorter = new DataFixturesSorter();

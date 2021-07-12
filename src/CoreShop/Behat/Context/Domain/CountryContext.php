@@ -6,60 +6,46 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Context\CountryContextInterface;
+use CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 
 final class CountryContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private CountryRepositoryInterface $countryRepository;
+    private CountryContextInterface $countryContext;
+    private AddressFormatterInterface $addressFormatter;
+    private GeoLiteBasedRequestResolver $geoLiteResolver;
 
-    /**
-     * @var CountryRepositoryInterface
-     */
-    private $countryRepository;
-
-    /**
-     * @var CountryContextInterface
-     */
-    private $countryContext;
-
-    /**
-     * @var AddressFormatterInterface
-     */
-    private $addressFormatter;
-
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param CountryRepositoryInterface $countryRepository
-     * @param CountryContextInterface    $countryContext
-     * @param AddressFormatterInterface  $addressFormatter
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CountryRepositoryInterface $countryRepository,
         CountryContextInterface $countryContext,
-        AddressFormatterInterface $addressFormatter
+        AddressFormatterInterface $addressFormatter,
+        GeoLiteBasedRequestResolver $geoLiteResolver
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->countryRepository = $countryRepository;
         $this->countryContext = $countryContext;
         $this->addressFormatter = $addressFormatter;
+        $this->geoLiteResolver = $geoLiteResolver;
     }
 
     /**
@@ -84,7 +70,8 @@ final class CountryContext implements Context
         Assert::eq(
             $country->getCurrency()->getId(),
             $currency->getId(),
-            sprintf('%s country should use currency %s but uses %s instead.', $country->getName(), $currency->getIsoCode(), $country->getCurrency()->getIsoCode())
+            sprintf('%s country should use currency %s but uses %s instead.', $country->getName(),
+                $currency->getIsoCode(), $country->getCurrency()->getIsoCode())
         );
     }
 
@@ -124,5 +111,27 @@ final class CountryContext implements Context
                 $actualFormattedAddress
             )
         );
+    }
+
+    /**
+     * @Then /^when I check the geo-lite resolver with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
+     * @Then /^when I check the geo-lite resolver again with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
+     */
+    public function whenIcheckTheGeoLiteResolver($ipAddress, $countryIso)
+    {
+        $request = Request::create(
+            'localhost',
+            'GET',
+            [],
+            [],
+            [],
+            [
+                'REMOTE_ADDR' => $ipAddress
+            ]
+        );
+
+        $country = $this->geoLiteResolver->findCountry($request);
+
+        Assert::eq($country ? $country->getIsoCode() : null, $countryIso);
     }
 }

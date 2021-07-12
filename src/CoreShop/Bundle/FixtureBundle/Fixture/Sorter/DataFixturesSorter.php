@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FixtureBundle\Fixture\Sorter;
 
@@ -24,11 +26,8 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
  */
 final class DataFixturesSorter
 {
-    /** @var array */
-    private $orderedFixtures = [];
-
-    /** @var array */
-    private $fixtures = [];
+    private array $orderedFixtures = [];
+    private array $fixtures = [];
 
     /**
      * Returns the array of data fixtures to execute.
@@ -62,8 +61,6 @@ final class DataFixturesSorter
 
     /**
      * Order fixtures by priority.
-     *
-     * @return array
      */
     private function orderFixturesByNumber()
     {
@@ -90,8 +87,6 @@ final class DataFixturesSorter
 
     /**
      * @param bool $usedPrioritySorting
-     *
-     * @return array
      *
      * @throws CircularReferenceException
      *

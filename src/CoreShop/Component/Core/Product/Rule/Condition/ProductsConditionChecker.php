@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
@@ -27,26 +29,25 @@ class ProductsConditionChecker implements ConditionCheckerInterface
         ProductVariantsCheckerTrait::__construct as private __traitConstruct;
     }
 
-    /**
-     * @param ProductVariantRepositoryInterface $productRepository
-     */
     public function __construct(ProductVariantRepositoryInterface $productRepository)
     {
         $this->__traitConstruct($productRepository);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
-    {
+    public function isValid(
+        ResourceInterface $subject,
+        RuleInterface $rule,
+        array $configuration,
+        array $params = []
+    ): bool {
         Assert::isInstanceOf($subject, ProductInterface::class);
 
         if (!array_key_exists('store', $params) || !$params['store'] instanceof StoreInterface) {
             return false;
         }
 
-        $productIdsToCheck = $this->getProductsToCheck($configuration['products'], $params['store'], $configuration['include_variants'] ?: false);
+        $productIdsToCheck = $this->getProductsToCheck($configuration['products'], $params['store'],
+            $configuration['include_variants'] ?: false);
 
         return in_array($subject->getId(), $productIdsToCheck);
     }

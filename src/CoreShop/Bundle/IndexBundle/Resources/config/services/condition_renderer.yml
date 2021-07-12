@@ -4,59 +4,53 @@ services:
         arguments:
             - CoreShop\Component\Index\Condition\DynamicRendererInterface
             - condition-renderers
+        tags:
+            - { name: coreshop.registry, type_hint: indexConditionRenderers }
 
     ## Renderer
-    coreshop.index.condition.renderer:
-        class: CoreShop\Component\Index\Condition\ConditionRenderer
+    CoreShop\Component\Index\Condition\ConditionRendererInterface: '@CoreShop\Component\Index\Condition\ConditionRenderer'
+    CoreShop\Component\Index\Condition\ConditionRenderer:
         arguments:
             - '@coreshop.registry.index.condition.renderers'
 
-    coreshop.index.condition.renderer.mysql.abstract:
-        class: CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer
+    CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer:
         abstract: true
         arguments:
             - '@doctrine.dbal.default_connection'
 
-    coreshop.index.condition.renderer.mysql.compare:
-        class: CoreShop\Bundle\IndexBundle\Condition\Mysql\CompareRenderer
-        parent: coreshop.index.condition.renderer.mysql.abstract
+    CoreShop\Bundle\IndexBundle\Condition\Mysql\CompareRenderer:
+        parent: CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer
         tags:
             - { name: coreshop.index.condition.renderer, type: mysql_compare }
 
-    coreshop.index.condition.renderer.mysql.concat:
-        class: CoreShop\Bundle\IndexBundle\Condition\Mysql\ConcatRenderer
+    CoreShop\Bundle\IndexBundle\Condition\Mysql\ConcatRenderer:
         arguments:
             - '@doctrine.dbal.default_connection'
-            - '@coreshop.index.condition.renderer'
+            - '@CoreShop\Component\Index\Condition\ConditionRenderer'
         tags:
             - { name: coreshop.index.condition.renderer, type: mysql_concat }
 
-    coreshop.index.condition.renderer.mysql.in:
-        class: CoreShop\Bundle\IndexBundle\Condition\Mysql\InRenderer
-        parent: coreshop.index.condition.renderer.mysql.abstract
+    CoreShop\Bundle\IndexBundle\Condition\Mysql\InRenderer:
+        parent: CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer
         tags:
             - { name: coreshop.index.condition.renderer, type: mysql_in }
 
-    coreshop.index.condition.renderer.mysql.is_null:
-        class: CoreShop\Bundle\IndexBundle\Condition\Mysql\IsNullRenderer
-        parent: coreshop.index.condition.renderer.mysql.abstract
+    CoreShop\Bundle\IndexBundle\Condition\Mysql\IsNullRenderer:
+        parent: CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer
         tags:
             - { name: coreshop.index.condition.renderer, type: mysql_is_null }
 
-    coreshop.index.condition.renderer.mysql.is:
-        class: CoreShop\Bundle\IndexBundle\Condition\Mysql\IsRenderer
-        parent: coreshop.index.condition.renderer.mysql.abstract
+    CoreShop\Bundle\IndexBundle\Condition\Mysql\IsRenderer:
+        parent: CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer
         tags:
             - { name: coreshop.index.condition.renderer, type: mysql_is }
 
-    coreshop.index.condition.renderer.mysql.like:
-        class: CoreShop\Bundle\IndexBundle\Condition\Mysql\LikeRenderer
-        parent: coreshop.index.condition.renderer.mysql.abstract
+    CoreShop\Bundle\IndexBundle\Condition\Mysql\LikeRenderer:
+        parent: CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer
         tags:
             - { name: coreshop.index.condition.renderer, type: mysql_like }
 
-    coreshop.index.condition.renderer.mysql.range:
-        class: CoreShop\Bundle\IndexBundle\Condition\Mysql\RangeRenderer
-        parent: coreshop.index.condition.renderer.mysql.abstract
+    CoreShop\Bundle\IndexBundle\Condition\Mysql\RangeRenderer:
+        parent: CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer
         tags:
             - { name: coreshop.index.condition.renderer, type: mysql_range }

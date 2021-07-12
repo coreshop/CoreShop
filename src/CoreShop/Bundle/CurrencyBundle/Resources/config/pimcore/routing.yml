@@ -2,8 +2,15 @@ coreshop_admin_currency:
     type: coreshop.resources
     resource: |
       alias: coreshop.currency
+      additional_routes:
+        config:
+          path: get-config
+          action: getConfig
+          methods:
+            - GET
 
 coreshop_admin_exchange_rate:
     type: coreshop.resources
     resource: |
       alias: coreshop.exchange_rate
+

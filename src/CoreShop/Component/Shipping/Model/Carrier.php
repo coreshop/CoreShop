@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Shipping\Model;
 
@@ -17,6 +19,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pimcore\Model\Asset;
 
 class Carrier extends AbstractResource implements CarrierInterface
 {
@@ -47,6 +50,16 @@ class Carrier extends AbstractResource implements CarrierInterface
     private $isFree = false;
 
     /**
+     * @var Asset|null
+     */
+    private $logo;
+
+    /**
+     * @var string
+     */
+    private $taxCalculationStrategy;
+
+    /**
      * @var Collection|ShippingRuleGroupInterface[]
      */
     protected $shippingRules;
@@ -58,113 +71,91 @@ class Carrier extends AbstractResource implements CarrierInterface
         $this->shippingRules = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier()
     {
         return $this->identifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription($language = null)
     {
         return $this->getTranslation($language)->getDescription();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDescription($description, $language = null)
     {
         $this->getTranslation($language)->setDescription($description);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTitle($language = null)
     {
         return $this->getTranslation($language)->getTitle();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTitle($title, $language = null)
     {
         $this->getTranslation($language)->setTitle($title);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTrackingUrl()
     {
         return $this->trackingUrl;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTrackingUrl($trackingUrl)
     {
         $this->trackingUrl = $trackingUrl;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIsFree()
     {
         return $this->isFree;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIsFree($isFree)
     {
         $this->isFree = $isFree;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+    }
+
+    public function getTaxCalculationStrategy()
+    {
+        return $this->taxCalculationStrategy;
+    }
+
+    public function setTaxCalculationStrategy($taxCalculationStrategy)
+    {
+        $this->taxCalculationStrategy = $taxCalculationStrategy;
+    }
+
     public function getShippingRules()
     {
         return $this->shippingRules;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasShippingRules()
     {
         return !$this->shippingRules->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addShippingRule(ShippingRuleGroupInterface $shippingRuleGroup)
     {
         if (!$this->hasShippingRule($shippingRuleGroup)) {
@@ -174,9 +165,6 @@ class Carrier extends AbstractResource implements CarrierInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeShippingRule(ShippingRuleGroupInterface $shippingRuleGroup)
     {
         if ($this->hasShippingRule($shippingRuleGroup)) {
@@ -185,9 +173,6 @@ class Carrier extends AbstractResource implements CarrierInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasShippingRule(ShippingRuleGroupInterface $shippingRuleGroup)
     {
         return $this->shippingRules->contains($shippingRuleGroup);
@@ -207,11 +192,10 @@ class Carrier extends AbstractResource implements CarrierInterface
         return $translation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createTranslation()
     {
         return new CarrierTranslation();
     }
+
+
 }

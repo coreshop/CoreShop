@@ -2,19 +2,19 @@ services:
     _defaults:
         public: true
 
-    coreshop.resource_controller.view_handler:
-        class: CoreShop\Bundle\ResourceBundle\Controller\ViewHandler
+    CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandler'
+    CoreShop\Bundle\ResourceBundle\Controller\ViewHandler:
         public: false
         arguments:
             - '@jms_serializer'
 
-    coreshop.resource_controller.event_dispatcher:
-        class: CoreShop\Bundle\ResourceBundle\Controller\EventDispatcher
+    CoreShop\Bundle\ResourceBundle\Controller\EventDispatcherInterface: '@CoreShop\Bundle\ResourceBundle\Controller\EventDispatcher'
+    CoreShop\Bundle\ResourceBundle\Controller\EventDispatcher:
         public: false
         arguments:
             - '@event_dispatcher'
 
-    coreshop.resource_controller.form_factory:
-        class: CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactory
+    CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactoryInterface: '@CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactory'
+    CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactory:
         arguments:
             - '@form.factory'

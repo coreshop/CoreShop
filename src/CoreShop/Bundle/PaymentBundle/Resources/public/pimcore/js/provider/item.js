@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -15,8 +15,8 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_payment_provider',
 
-    url: {
-        save: '/admin/coreshop/payment_providers/save'
+    routing: {
+        save: 'coreshop_payment_provider_save'
     },
 
     getItems: function () {
@@ -77,6 +77,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
                 name: 'active',
                 checked: this.data.active
             },
+            this.getLogoSelect().getLayoutEdit(),
             {
                 xtype: 'combobox',
                 itemId: 'paymentFactory',
@@ -120,7 +121,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             buttons: [
                 {
                     text: t('save'),
-                    handler: this.save.bind(this, function(res) {
+                    handler: this.save.bind(this, function (res) {
                         if (res.success) {
                             this.formPanel.down('#paymentFactory').setReadOnly(true);
                         }
@@ -156,6 +157,19 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         }
 
         return this.gatewayConfigPanel;
+    },
+
+    getLogoSelect: function () {
+        return new coreshop.object.elementHref({
+            id: this.data.logo,
+            type: 'asset',
+            subtype: 'image'
+        }, {
+            classes: [],
+            assetsAllowed: true,
+            name: 'logo',
+            title: t('coreshop_logo')
+        });
     },
 
     getGatewayConfigPanelLayout: function (type) {

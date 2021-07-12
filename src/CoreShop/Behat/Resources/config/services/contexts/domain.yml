@@ -1,12 +1,14 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.behat.context.domain.product:
         class: CoreShop\Behat\Context\Domain\ProductContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.context.shopper'
-            - '@__symfony__.coreshop.repository.product'
-            - '@__symfony__.coreshop.product.price_calculator'
-            - '@__symfony__.coreshop.product.taxed_price_calculator'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+            - '@CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface'
+            - '@CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface'
         tags:
             - { name: fob.context_service }
 
@@ -14,8 +16,8 @@ services:
         class: CoreShop\Behat\Context\Domain\ProductSpecificPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.context.shopper'
-            - '@__symfony__.coreshop.product_specific_price_rule.processor'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+            - '@coreshop.product_specific_price_rule.processor'
         tags:
             - { name: fob.context_service }
 
@@ -23,8 +25,8 @@ services:
         class: CoreShop\Behat\Context\Domain\ProductPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.context.shopper'
-            - '@__symfony__.coreshop.product_price_rule.processor'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+            - '@coreshop.product_price_rule.processor'
         tags:
             - { name: fob.context_service }
 
@@ -32,7 +34,7 @@ services:
         class: CoreShop\Behat\Context\Domain\CustomerContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.context.customer'
+            - '@CoreShop\Component\Customer\Context\CustomerContextInterface'
         tags:
             - { name: fob.context_service }
 
@@ -40,9 +42,9 @@ services:
         class: CoreShop\Behat\Context\Domain\CurrencyContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.repository.currency'
-            - '@__symfony__.coreshop.context.currency'
-            - '@__symfony__.coreshop.money_formatter'
+            - '@coreshop.repository.currency'
+            - '@CoreShop\Component\Currency\Context\CurrencyContextInterface'
+            - '@CoreShop\Component\Currency\Formatter\MoneyFormatterInterface'
         tags:
             - { name: fob.context_service }
 
@@ -50,7 +52,7 @@ services:
         class: CoreShop\Behat\Context\Domain\ExchangeRateContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.currency_converter'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:
             - { name: fob.context_service }
 
@@ -58,7 +60,7 @@ services:
         class: CoreShop\Behat\Context\Domain\TaxRateContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.repository.tax_rate'
+            - '@coreshop.repository.tax_rate'
         tags:
             - { name: fob.context_service }
 
@@ -66,11 +68,11 @@ services:
         class: CoreShop\Behat\Context\Domain\TaxRuleGroupContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.factory.address'
-            - '@__symfony__.coreshop.repository.tax_rule_group'
-            - '@__symfony__.coreshop.repository.tax_rule'
-            - '@__symfony__.coreshop.taxation.factory.tax_calculator'
-            - '@__symfony__.coreshop.context.country'
+            - '@coreshop.factory.address'
+            - '@coreshop.repository.tax_rule_group'
+            - '@coreshop.repository.tax_rule'
+            - '@CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface'
+            - '@CoreShop\Component\Address\Context\CountryContextInterface'
         tags:
             - { name: fob.context_service }
 
@@ -78,7 +80,7 @@ services:
         class: CoreShop\Behat\Context\Domain\CartContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.context.cart'
+            - '@CoreShop\Component\Order\Context\CartContextInterface'
         tags:
             - { name: fob.context_service }
 
@@ -86,7 +88,7 @@ services:
         class: CoreShop\Behat\Context\Domain\CategoryContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.repository.category'
+            - '@coreshop.repository.category'
         tags:
             - { name: fob.context_service }
 
@@ -94,11 +96,12 @@ services:
         class: CoreShop\Behat\Context\Domain\ShippingContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.repository.carrier'
-            - '@__symfony__.coreshop.shipping_rule.processor'
-            - '@__symfony__.coreshop.factory.address'
-            - '@__symfony__.coreshop.carrier.price_calculator'
-            - '@__symfony__.coreshop.carrier.shipping_rule.checker'
+            - '@coreshop.repository.carrier'
+            - '@coreshop.shipping_rule.processor'
+            - '@coreshop.factory.address'
+            - '@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface'
+            - '@CoreShop\Component\Shipping\Validator\ShippingRuleCarrierValidator'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
         tags:
             - { name: fob.context_service }
 
@@ -106,9 +109,10 @@ services:
         class: CoreShop\Behat\Context\Domain\CountryContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.repository.country'
-            - '@__symfony__.coreshop.context.country'
-            - '@__symfony__.coreshop.address.formatter'
+            - '@coreshop.repository.country'
+            - '@CoreShop\Component\Address\Context\CountryContextInterface'
+            - '@CoreShop\Component\Address\Formatter\AddressFormatterInterface'
+            - '@CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver'
         tags:
             - { name: fob.context_service }
 
@@ -116,8 +120,8 @@ services:
         class: CoreShop\Behat\Context\Domain\IndexContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.repository.index'
-            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@coreshop.repository.index'
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: fob.context_service }
 
@@ -133,7 +137,7 @@ services:
         class: CoreShop\Behat\Context\Domain\OrderContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.state_machine_manager'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
         tags:
             - { name: fob.context_service }
 
@@ -141,7 +145,7 @@ services:
         class: CoreShop\Behat\Context\Domain\NotificationContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.behat.notification_rule_listener'
+            - '@CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListener'
         tags:
             - { name: fob.context_service }
 
@@ -149,9 +153,9 @@ services:
         class: CoreShop\Behat\Context\Domain\SEOContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.seo.presentation'
-            - '@__symfony__.Pimcore\Templating\Helper\HeadTitle'
-            - '@__symfony__.Pimcore\Templating\Helper\HeadMeta'
+            - '@CoreShop\Component\SEO\SEOPresentationInterface'
+            - '@Pimcore\Twig\Extension\Templating\HeadTitle'
+            - '@Pimcore\Twig\Extension\Templating\HeadMeta'
         tags:
             - { name: fob.context_service }
 
@@ -159,14 +163,7 @@ services:
         class: CoreShop\Behat\Context\Domain\LinkGeneratorContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.link_generator'
-        tags:
-            - { name: fob.context_service }
-
-    coreshop.behat.context.domain.placeholder:
-        class: CoreShop\Behat\Context\Domain\PlaceholderContext
-        arguments:
-            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
         tags:
             - { name: fob.context_service }
 
@@ -174,11 +171,11 @@ services:
         class: CoreShop\Behat\Context\Domain\PimcoreContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '%__symfony__.kernel.root_dir%/../web'
-            - '%__symfony__.coreshop.all.pimcore.admin.js%'
-            - '%__symfony__.coreshop.all.pimcore.admin.css%'
-            - '%__symfony__.coreshop.all.pimcore.admin.editmode_js%'
-            - '%__symfony__.coreshop.all.pimcore.admin.editmode_css%'
+            - '%kernel.project_dir%/public'
+            - '%coreshop.all.pimcore.admin.js%'
+            - '%coreshop.all.pimcore.admin.css%'
+            - '%coreshop.all.pimcore.admin.editmode_js%'
+            - '%coreshop.all.pimcore.admin.editmode_css%'
         tags:
             - { name: fob.context_service }
 
@@ -186,9 +183,9 @@ services:
         class: CoreShop\Behat\Context\Domain\FilterContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.repository.filter'
-            - '@__symfony__.coreshop.factory.filter.list'
-            - '@__symfony__.coreshop.filter.processor'
+            - '@coreshop.repository.filter'
+            - '@CoreShop\Component\Index\Factory\FilteredListingFactoryInterface'
+            - '@CoreShop\Component\Index\Filter\FilterProcessorInterface'
         tags:
             - { name: fob.context_service }
 
@@ -196,8 +193,8 @@ services:
         class: CoreShop\Behat\Context\Domain\TrackingContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.tracking.extractor'
-            - '@__symfony__.coreshop.registry.tracking.tracker'
+            - '@CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface'
+            - '@coreshop.registry.tracking.tracker'
         tags:
             - { name: fob.context_service }
 
@@ -205,7 +202,7 @@ services:
         class: CoreShop\Behat\Context\Domain\IndexConditionContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.registry.index.worker'
+            - '@coreshop.registry.index.worker'
         tags:
             - { name: fob.context_service }
 
@@ -213,8 +210,15 @@ services:
         class: CoreShop\Behat\Context\Domain\CartPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.context.shopper'
-            - '@__symfony__.coreshop.cart_price_rule.rule_validation.processor'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+            - '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.cart_price_rule_voucher_code:
+        class: CoreShop\Behat\Context\Domain\CartPriceRuleVoucherCodeContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }
 
@@ -222,8 +226,7 @@ services:
         class: CoreShop\Behat\Context\Domain\ThemeContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.theme.resolver'
-            - '@__symfony__.coreshop.theme.active_theme'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface'
         tags:
             - { name: fob.context_service }
 
@@ -231,8 +234,8 @@ services:
         class: CoreShop\Behat\Context\Domain\ProductQuantityPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.context.shopper'
-            - '@__symfony__.coreshop.product_quantity_price_rules.processor'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+            - '@coreshop.product_quantity_price_rules.processor'
         tags:
             - { name: fob.context_service }
 
@@ -240,7 +243,7 @@ services:
         class: CoreShop\Behat\Context\Domain\ProductUnitContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.repository.product_unit'
+            - '@coreshop.repository.product_unit'
         tags:
             - { name: fob.context_service }
 
@@ -248,6 +251,13 @@ services:
         class: CoreShop\Behat\Context\Domain\MenuContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.knp_menu.menu_provider'
+            - '@knp_menu.menu_provider'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.recycle_bin:
+        class: CoreShop\Behat\Context\Domain\RecycleBinContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }

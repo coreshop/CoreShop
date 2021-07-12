@@ -19,22 +19,25 @@
   ],
   "require": {
     "php": "^7.2",
-    "coreshop/payment": "2.1",
-    "payum/payum": "^1.5"
-  },
-  "config": {
-    "bin-dir": "bin"
+    "coreshop/payment": "3.0",
+    "payum/payum": "dev-master"
   },
   "autoload": {
     "psr-4": {
       "CoreShop\\Component\\PayumPayment\\": ""
     }
   },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

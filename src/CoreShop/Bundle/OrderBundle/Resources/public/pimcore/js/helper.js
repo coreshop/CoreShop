@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -20,9 +20,10 @@ coreshop.order.helper.openSale = function (id, type, callback) {
         pimcore.globalmanager.add(cacheIdentifier, true);
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/'+type+'/detail',
+            url: Routing.generate('coreshop_admin_order_get_order'),
             params: {
-                id: id
+                id: id,
+                saleType: type
             },
             success: function (response) {
                 var res = Ext.decode(response.responseText);
@@ -65,7 +66,7 @@ coreshop.order.helper.openSaleByNumberDialog = function(type, keyCode, e) {
 
 coreshop.order.helper.openSaleByNumber = function (type, number) {
     Ext.Ajax.request({
-        url: '/admin/coreshop/'+type+'/find',
+        url: Routing.generate('coreshop_admin_'+type+'_find'),
         params: {
             number: number
         },
@@ -86,4 +87,8 @@ coreshop.order.helper.openOrder = function (id, callback) {
 
 coreshop.order.helper.openQuote = function (id, callback) {
     coreshop.order.helper.openSale(id, 'quote', callback);
+};
+
+coreshop.order.helper.openCart = function (id, callback) {
+    coreshop.order.helper.openSale(id, 'cart', callback);
 };

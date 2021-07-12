@@ -5,16 +5,26 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
 
 pimcore.registerNS('coreshop.rules.condition');
-
 coreshop.rules.condition = Class.create({
+    dirty: false,
+
     initialize: function (conditions) {
         this.conditions = conditions;
+        this.dirty = false;
+    },
+
+    reload: function (conditions) {
+        this.conditionsContainer.removeAll();
+
+        Ext.each(conditions, function(condition) {
+            this.addCondition(condition.type, condition, false);
+        }.bind(this));
     },
 
     getLayout: function () {
@@ -31,7 +41,7 @@ coreshop.rules.condition = Class.create({
             addMenu.push({
                 iconCls: _this.getConditionStyleClass(condition),
                 text: t('coreshop_condition_' + condition),
-                handler: _this.addCondition.bind(_this, condition, null)
+                handler: _this.addCondition.bind(_this, condition, null, true)
             });
 
         });
@@ -50,6 +60,10 @@ coreshop.rules.condition = Class.create({
         });
 
         return this.conditionsContainer;
+    },
+
+    setDirty: function(dirty) {
+        this.dirty = dirty;
     },
 
     destroy: function () {
@@ -78,7 +92,7 @@ coreshop.rules.condition = Class.create({
         return coreshop.rules.conditions.abstract;
     },
 
-    addCondition: function (type, data) {
+    addCondition: function (type, data, dirty) {
         // create condition
         var conditionClass = this.getConditionClassItem(type);
         var item = new conditionClass(this, type, data);
@@ -88,6 +102,10 @@ coreshop.rules.condition = Class.create({
 
         this.conditionsContainer.add(item.getLayout());
         this.conditionsContainer.updateLayout();
+
+        if (dirty) {
+            this.setDirty(true);
+        }
     },
 
     getConditionsData: function () {
@@ -125,12 +143,13 @@ coreshop.rules.condition = Class.create({
                 }
             }
 
-            if (conditionClass.data.id) {
-                condition['id'] = conditionClass.data.id;
+            if (conditionClass.id) {
+                condition['id'] = conditionClass.id;
             }
 
             condition['configuration'] = configuration;
             condition['type'] = conditions[i].xparent.type;
+            condition['sort'] = (i + 1);
 
             if (Ext.isFunction(this.prepareCondition)) {
                 condition = this.prepareCondition(condition);
@@ -143,6 +162,10 @@ coreshop.rules.condition = Class.create({
     },
 
     isDirty: function () {
+        if (this.dirty) {
+            return true;
+        }
+
         if (this.conditionsContainer.items) {
             var conditions = this.conditionsContainer.items.getRange();
             for (var i = 0; i < conditions.length; i++) {

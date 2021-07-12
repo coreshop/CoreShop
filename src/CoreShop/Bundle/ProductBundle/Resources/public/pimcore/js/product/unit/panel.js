@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -18,11 +18,11 @@ coreshop.product.unit.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_product_units',
     type: 'coreshop_product_units',
 
-    url : {
-        add: '/admin/coreshop/product_units/add',
-        delete: '/admin/coreshop/product_units/delete',
-        get: '/admin/coreshop/product_units/get',
-        list: '/admin/coreshop/product_units/list'
+    routing : {
+        add: 'coreshop_product_unit_add',
+        delete: 'coreshop_product_unit_delete',
+        get: 'coreshop_product_unit_get',
+        list: 'coreshop_product_unit_list'
     },
 
     getItemClass: function () {

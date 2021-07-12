@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Product\Calculator;
 
@@ -23,10 +25,7 @@ use Webmozart\Assert\Assert;
 
 final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPriceCalculatorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         /**
          * @var $subject \CoreShop\Component\Core\Model\ProductInterface
@@ -35,8 +34,6 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
         Assert::keyExists($context, 'store');
         Assert::isInstanceOf($context['store'], StoreInterface::class);
 
-        $price = null;
-
         if (!isset($context['unitDefinition']) || !$context['unitDefinition'] instanceof ProductUnitDefinitionInterface) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }
@@ -44,7 +41,7 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
         $contextUnitDefinition = $context['unitDefinition'];
         $contextStore = $context['store'];
 
-        $storeValues = $subject->getStoreValues($contextStore);
+        $storeValues = $subject->getStoreValuesForStore($contextStore);
         if (!$storeValues instanceof ProductStoreValuesInterface) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }
@@ -65,8 +62,8 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
 
         $price = $filteredDefinitionPrices->first()->getPrice();
 
-        if (is_null($price)) {
-            return false;
+        if (null === $price) {
+            throw new NoRetailPriceFoundException(__CLASS__);
         }
 
         return $price;

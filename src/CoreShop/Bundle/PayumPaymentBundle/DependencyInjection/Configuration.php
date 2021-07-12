@@ -23,13 +23,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('coreshop_payum_payment');
+        $treeBuilder = new TreeBuilder('coreshop_payum_payment');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
@@ -41,9 +38,6 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
     private function addResourcesSection(ArrayNodeDefinition $node)
     {
         $node

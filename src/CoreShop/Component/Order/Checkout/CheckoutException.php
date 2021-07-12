@@ -6,23 +6,19 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Checkout;
 
 class CheckoutException extends \RuntimeException
 {
-    /**
-     * @var string
-     */
-    private $translatableText;
+    private string $translatableText;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($reason, $translatableText)
+    public function __construct(string $reason, string $translatableText)
     {
         parent::__construct($reason);
 
@@ -32,7 +28,7 @@ class CheckoutException extends \RuntimeException
     /**
      * @return string
      */
-    public function getTranslatableText()
+    public function getTranslatableText(): string
     {
         return $this->translatableText;
     }
@@ -40,7 +36,7 @@ class CheckoutException extends \RuntimeException
     /**
      * @param string $translatableText
      */
-    public function setTranslatableText($translatableText)
+    public function setTranslatableText(string $translatableText): void
     {
         $this->translatableText = $translatableText;
     }

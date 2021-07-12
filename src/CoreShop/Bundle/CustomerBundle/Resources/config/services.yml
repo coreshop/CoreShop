@@ -1,36 +1,33 @@
 imports:
-    - { resource: "services/form.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/form.yml }
 
 services:
     _defaults:
         public: true
 
-    coreshop.context.customer.composite:
-        class: CoreShop\Component\Customer\Context\CompositeCustomerContext
+    CoreShop\Component\Customer\Context\CustomerContextInterface: '@CoreShop\Component\Customer\Context\CompositeCustomerContext'
+    CoreShop\Component\Customer\Context\CompositeCustomerContext:
         public: false
 
-    coreshop.context.customer.request_based:
-        class: CoreShop\Component\Customer\Context\RequestBased\CustomerContext
+    CoreShop\Component\Customer\Context\RequestBased\CustomerContext:
         public: false
         arguments:
-            - '@coreshop.context.customer.request_based.resolver'
+            - '@CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver'
             - '@request_stack'
         tags:
             - { name: coreshop.context.customer }
 
-    coreshop.context.customer.fixed:
-        class: CoreShop\Component\Customer\Context\FixedCustomerContext
+    CoreShop\Component\Customer\Context\FixedCustomerContext:
         tags:
             - { name: coreshop.context.customer }
 
-    coreshop.context.customer.request_based.resolver.composite:
-        class: CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver
+    CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface: '@CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver'
+    CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver:
         public: false
 
-    coreshop.context.customer.request_based.resolver.token_based:
-        class: CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver
-        public: false
+    CoreShop\Component\Core\Context\TokenBasedCustomerContext:
         arguments:
-            - '@security.token_storage'
+            - '@Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
         tags:
-            - { name: coreshop.context.customer.request_based.resolver }
+            - { name: coreshop.context.customer }

@@ -6,28 +6,20 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Service;
 
 class SharedStorage implements SharedStorageInterface
 {
-    /**
-     * @var array
-     */
-    private $clipboard = [];
+    private array $clipboard = [];
+    private ?string $latestKey = null;
 
-    /**
-     * @var string|null
-     */
-    private $latestKey;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function get($key)
+    public function get(string $key): mixed
     {
         if (!isset($this->clipboard[$key])) {
             throw new \InvalidArgumentException(sprintf('There is no current resource for "%s"!', $key));
@@ -36,27 +28,18 @@ class SharedStorage implements SharedStorageInterface
         return $this->clipboard[$key];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function has($key)
+    public function has(string $key): bool
     {
         return isset($this->clipboard[$key]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function set($key, $resource)
+    public function set(string $key, mixed $resource): void
     {
         $this->clipboard[$key] = $resource;
         $this->latestKey = $key;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLatestResource()
+    public function getLatestResource(): mixed
     {
         if (!isset($this->clipboard[$this->latestKey])) {
             throw new \InvalidArgumentException(sprintf('There is no "%s" latest resource!', $this->latestKey));
@@ -65,10 +48,7 @@ class SharedStorage implements SharedStorageInterface
         return $this->clipboard[$this->latestKey];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setClipboard(array $clipboard)
+    public function setClipboard(array $clipboard): void
     {
         $this->clipboard = $clipboard;
     }

@@ -5,54 +5,47 @@ services:
     coreshop.order_shipment.number_generator.default:
         class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
         arguments:
-            - '@coreshop.sequence.generator'
+            - '@CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface'
             - 'shipment'
 
-    coreshop.order_shipment.transformer.order_item_to_shipment_item:
-        class: CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer
+    CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer:
         arguments:
-            - '@coreshop.object_service'
+            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
             - '%coreshop.folder.order_shipment_item%'
-            - '@coreshop.transformer.event_dispatcher'
+            - '@CoreShop\Component\Order\Transformer\TransformerEventDispatcherInterface'
 
-    coreshop.order.transformer.order_to_shipment:
-        class: CoreShop\Component\Order\Transformer\OrderToShipmentTransformer
+    CoreShop\Component\Order\Transformer\OrderToShipmentTransformer:
         arguments:
-            - '@coreshop.order_shipment.transformer.order_item_to_shipment_item'
-            - '@coreshop.core.key_transformer'
+            - '@CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer'
             - '@coreshop.order_shipment.number_generator.default'
             - '%coreshop.folder.order_shipment%'
-            - '@coreshop.object_service'
+            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
             - '@coreshop.repository.order_item'
             - '@coreshop.factory.order_shipment_item'
-            - '@coreshop.transformer.event_dispatcher'
+            - '@CoreShop\Component\Order\Transformer\TransformerEventDispatcherInterface'
 
     coreshop.order.transformer.order_to_shipment.state_applier:
         class: CoreShop\Component\Order\Transformer\OrderToOrderDocumentTransformerWorkflowApplier
-        decorates: 'coreshop.order.transformer.order_to_shipment'
+        decorates: CoreShop\Component\Order\Transformer\OrderToShipmentTransformer
         arguments:
              - '@coreshop.order.transformer.order_to_shipment.state_applier.inner'
-             - '@coreshop.state_machine_manager'
+             - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
              - !php/const CoreShop\Component\Order\ShipmentStates::STATE_NEW
              - !php/const CoreShop\Component\Order\ShipmentTransitions::IDENTIFIER
              - !php/const CoreShop\Component\Order\ShipmentTransitions::TRANSITION_CREATE
 
-    coreshop.form.type.order_shipment_creation_items:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationItemsType
+    CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationItemsType:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.order_shipment_creation:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType
+    CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType:
         tags:
            - { name: form.type }
 
-    coreshop.form.type.order_invoice_creation_items:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationItemsType
+    CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationItemsType:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.order_invoice_creation:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationType
+    CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationType:
         tags:
             - { name: form.type }

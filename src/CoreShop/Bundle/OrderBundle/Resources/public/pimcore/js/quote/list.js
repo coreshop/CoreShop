@@ -5,14 +5,18 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
 
 pimcore.registerNS('coreshop.order.quote.list');
-coreshop.order.quote.list = Class.create(coreshop.order.sale.list, {
+coreshop.order.quote.list = Class.create(coreshop.order.order.list, {
     type: 'quote',
+
+    open: function (id, callback) {
+        coreshop.order.helper.openQuote(id, callback);
+    },
 
     setupContextMenuPlugin: function () {
         this.contextMenuPlugin = new coreshop.pimcore.plugin.grid(
@@ -20,13 +24,9 @@ coreshop.order.quote.list = Class.create(coreshop.order.sale.list, {
             function (id) {
                 this.open(id);
             }.bind(this),
-            [coreshop.class_map.coreshop.quote],
+            [coreshop.class_map.coreshop.order],
             this.getGridPaginator()
         );
-    },
-
-    open: function (id, callback) {
-        coreshop.order.helper.openQuote(id, callback);
     }
 });
 

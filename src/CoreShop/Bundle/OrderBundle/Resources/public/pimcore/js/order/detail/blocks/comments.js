@@ -5,13 +5,13 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.detail.blocks.comments');
-coreshop.order.order.detail.blocks.comments = Class.create(coreshop.order.sale.detail.abstractBlock, {
+pimcore.registerNS('coreshop.order.order.detail.blocks.comments');
+coreshop.order.order.detail.blocks.comments = Class.create(coreshop.order.order.detail.abstractBlock, {
     saleInfo: null,
 
     initBlock: function () {
@@ -40,7 +40,7 @@ coreshop.order.order.detail.blocks.comments = Class.create(coreshop.order.sale.d
         me.layout.setLoading(t('loading'));
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/order-comment/list',
+            url: Routing.generate('coreshop_admin_order_comments_list'),
             params: {
                 id: me.sale.o_id
             },
@@ -188,7 +188,7 @@ coreshop.order.order.detail.blocks.comments = Class.create(coreshop.order.sale.d
         formValues['id'] = me.sale.o_id;
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/order-comment/add',
+            url: Routing.generate('coreshop_admin_order_comments_add'),
             method: 'post',
             params: formValues,
             callback: function (request, success, response) {
@@ -219,7 +219,7 @@ coreshop.order.order.detail.blocks.comments = Class.create(coreshop.order.sale.d
                 me.layout.setLoading(t('loading'));
 
                 Ext.Ajax.request({
-                    url: '/admin/coreshop/order-comment/delete',
+                    url: Routing.generate('coreshop_admin_order_comments_delete'),
                     method: 'post',
                     params: {
                         id: comment.id

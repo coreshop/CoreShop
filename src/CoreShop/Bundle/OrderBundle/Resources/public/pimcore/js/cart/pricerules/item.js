@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -15,8 +15,8 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_price_rule',
 
-    url: {
-        save: '/admin/coreshop/cart_price_rules/save'
+    routing: {
+        save: 'coreshop_cart_price_rule_save'
     },
 
     getPanel: function () {
@@ -150,8 +150,8 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         totalProperty: 'total'
                     },
                     api: {
-                        read: '/admin/coreshop/cart_price_rules/get-voucher-codes',
-                        destroy: '/admin/coreshop/cart_price_rules/delete-voucher-code'
+                        read: Routing.generate('coreshop_cart_price_rule_getVoucherCodes'),
+                        destroy: Routing.generate('coreshop_cart_price_rule_deleteVoucherCode')
                     },
                     extraParams: {
                         cartPriceRule: this.data.id
@@ -164,6 +164,8 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                     {name: 'code', type: 'string'}
                 ]
             });
+
+            var pagingBar = pimcore.helpers.grid.buildDefaultPagingToolbar(store);
 
             var grid = new Ext.grid.Panel({
                 store: store,
@@ -216,7 +218,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 ],
                 region: 'center',
                 flex: 1,
-                bbar: pimcore.helpers.grid.buildDefaultPagingToolbar(store)
+                bbar: pagingBar
             });
 
             grid.on('beforerender', function () {
@@ -256,7 +258,11 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_vouchers_export'),
                             handler: function () {
-                                pimcore.helpers.download('/admin/coreshop/cart_price_rules/export-voucher-codes?cartPriceRule=' + this.data.id);
+                                var page = store.currentPage;
+                                var size = store.getPageSize();
+                                var start = (page - 1) * size;
+
+                                pimcore.helpers.download(Routing.generate('coreshop_cart_price_rule_exportVoucherCodes', {start: start, limit: size, cartPriceRule: this.data.id}));
                             }.bind(this)
                         }
                     ]
@@ -298,7 +304,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         params['cartPriceRule'] = this.data.id;
 
                         Ext.Ajax.request({
-                            url: '/admin/coreshop/cart_price_rules/create-voucher-code',
+                            url: Routing.generate('coreshop_cart_price_rule_createVoucherCode'),
                             method: 'post',
                             jsonData: params,
                             success: function (response) {
@@ -385,7 +391,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         params['cartPriceRule'] = this.data.id;
 
                         Ext.Ajax.request({
-                            url: '/admin/coreshop/cart_price_rules/generate-voucher-codes',
+                            url: Routing.generate('coreshop_cart_price_rule_generateVoucherCodes'),
                             method: 'post',
                             jsonData: params,
                             success: function (response) {
@@ -396,7 +402,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                                     this.getVoucherCodes().down('grid').getStore().load();
                                 } else {
                                     btn.setDisabled(false);
-                                    pimcore.helpers.showNotification(t('error'), 'error', 'error');
+                                    Ext.Msg.alert(t('error'), res.message);
                                 }
                             }.bind(this),
                             failure: function(response) {

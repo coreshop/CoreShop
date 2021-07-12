@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Command;
 
@@ -20,67 +22,82 @@ use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class IndexCommand extends Command
 {
-    /**
-     * @var RepositoryInterface
-     */
-    protected $indexRepository;
+    private RepositoryInterface $indexRepository;
+    private IndexUpdaterServiceInterface $indexUpdater;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var IndexUpdaterServiceInterface
-     */
-    protected $indexUpdater;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @param RepositoryInterface          $indexRepository
-     * @param IndexUpdaterServiceInterface $indexUpdater
-     * @param EventDispatcherInterface     $eventDispatcher
-     */
     public function __construct(
         RepositoryInterface $indexRepository,
         IndexUpdaterServiceInterface $indexUpdater,
         EventDispatcherInterface $eventDispatcher
     ) {
+        parent::__construct();
+
         $this->indexRepository = $indexRepository;
         $this->indexUpdater = $indexUpdater;
         $this->eventDispatcher = $eventDispatcher;
-
-        parent::__construct();
     }
 
-    /**
-     * configure command.
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:index')
-            ->setDescription('Reindex all Objects');
+            ->setDescription('Reindex all Objects')
+            ->addArgument(
+                'indices',
+                InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
+                'IDs or names of Indices which are re-indexed',
+                null
+            );
     }
 
-    /**
-     * Execute command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $indices = $this->indexRepository->findAll();
-        $classesToUpdate = [];
+        $indices = $classesToUpdate = [];
+        $indexIds = $input->getArgument('indices');
+
+        if (empty($indexIds)) {
+            $indices = $this->indexRepository->findAll();
+        } else {
+            foreach ($indexIds as $id) {
+                if (is_numeric($id)) {
+                    $index = $this->indexRepository->find($id);
+                } else {
+                    $index = $this->indexRepository->findOneBy(['name' => $id]);
+                }
+
+                if (null === $index) {
+                    continue;
+                }
+
+                $indices[] = $index;
+            }
+        }
+
+        if (empty($indices)) {
+            if (null === $indexIds) {
+                $output->writeln('<info>No Indices available, you have to first create an Index.</info>');
+                $this->dispatchInfo('status', 'No Indices available, you have to first create an Index.');
+            } else {
+                $output->writeln(
+                    sprintf('<info>No Indices found for %s</info>', implode(', ', $indexIds))
+                );
+                $this->dispatchInfo(
+                    'status',
+                    sprintf('No Indices found for %s', implode(', ', $indexIds))
+                );
+            }
+
+            return 0;
+        }
 
         /**
          * @var IndexInterface $index
@@ -162,12 +179,8 @@ final class IndexCommand extends Command
         return 0;
     }
 
-    /**
-     * @param string $type
-     * @param string $info
-     */
-    private function dispatchInfo(string $type, string $info)
+    private function dispatchInfo(string $type, $info): void
     {
-        $this->eventDispatcher->dispatch(sprintf('coreshop.index.%s', $type), new GenericEvent($info));
+        $this->eventDispatcher->dispatch(new GenericEvent($info), sprintf('coreshop.index.%s', $type));
     }
 }

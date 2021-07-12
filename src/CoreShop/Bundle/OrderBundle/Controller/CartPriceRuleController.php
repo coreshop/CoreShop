@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
@@ -18,6 +20,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +55,9 @@ class CartPriceRuleController extends ResourceController
             throw new NotFoundHttpException();
         }
 
-        return $this->viewHandler->handle(['total' => count($cartPriceRule->getVoucherCodes()), 'data' => $cartPriceRule->getVoucherCodes(), 'success' => true], ['group' => 'Detailed']);
+        $data = $this->getVoucherCodeRepository()->findAllPaginator($cartPriceRule, (int)$request->get('start', 0), (int)$request->get('limit', 50));
+
+        return $this->viewHandler->handle(['total' => count($data), 'data' => iterator_to_array($data->getIterator()), 'success' => true], ['group' => 'Detailed']);
     }
 
     /**
@@ -119,7 +124,9 @@ class CartPriceRuleController extends ResourceController
             return $this->viewHandler->handle(['success' => true]);
         }
 
-        return $this->viewHandler->handle(['success' => false]);
+        $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
+
+        return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
     }
 
     /**
@@ -141,7 +148,9 @@ class CartPriceRuleController extends ResourceController
                 'uses',
             ]);
 
-            foreach ($priceRule->getVoucherCodes() as $code) {
+            $codes = $this->getVoucherCodeRepository()->findAllPaginator($priceRule, (int)$request->get('start', 0), (int)$request->get('limit', 50));
+
+            foreach ($codes as $code) {
                 $data = [
                     'code' => $code->getCode(),
                     'creationDate' => $code->getCreationDate() instanceof \DateTime ? $code->getCreationDate()->getTimestamp() : '',
@@ -149,7 +158,7 @@ class CartPriceRuleController extends ResourceController
                     'uses' => $code->getUses(),
                 ];
 
-                $csvData[] = implode(';', $data);
+                $csvData[] = implode(',', $data);
             }
 
             $csv = implode(PHP_EOL, $csvData);
@@ -157,7 +166,7 @@ class CartPriceRuleController extends ResourceController
             header('Content-Encoding: UTF-8');
             header('Content-type: text/csv; charset=UTF-8');
             header("Content-Disposition: attachment; filename=\"$fileName.csv\"");
-            ini_set('display_errors', false); //to prevent warning messages in csv
+            ini_set('display_errors', 'off'); //to prevent warning messages in csv
             echo "\xEF\xBB\xBF";
             echo $csv;
             die();
@@ -207,11 +216,19 @@ class CartPriceRuleController extends ResourceController
     }
 
     /**
+     * @return CartPriceRuleVoucherRepositoryInterface
+     */
+    protected function getVoucherCodeRepository()
+    {
+        return $this->get('coreshop.repository.cart_price_rule_voucher_code');
+    }
+
+    /**
      * @return mixed
      */
     protected function getConfigActions()
     {
-        return $this->getParameter('coreshop.cart_price_rule.actions');
+        return $this->container->getParameter('coreshop.cart_price_rule.actions');
     }
 
     /**
@@ -219,6 +236,6 @@ class CartPriceRuleController extends ResourceController
      */
     protected function getConfigConditions()
     {
-        return $this->getParameter('coreshop.cart_price_rule.conditions');
+        return $this->container->getParameter('coreshop.cart_price_rule.conditions');
     }
 }

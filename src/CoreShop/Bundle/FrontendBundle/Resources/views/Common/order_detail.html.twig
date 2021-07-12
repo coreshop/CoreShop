@@ -1,7 +1,7 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
 
 <h2 class="main-heading text-center">
-    {{ 'coreshop.ui.order'|trans }} {{ order.getOrderNumber }}
+    {{ 'coreshop.ui.order'|trans }} {{ order.orderNumber }}
 </h2>
 
 <div class="row">
@@ -13,7 +13,7 @@
                 </h4>
             </div>
             <div class="card-body panel-delivery-address">
-                {{ order.getShippingAddress|coreshop_format_address }}
+                {{ order.shippingAddress|coreshop_format_address }}
             </div>
         </div>
     </div>
@@ -25,13 +25,13 @@
                 </h4>
             </div>
             <div class="card-body panel-delivery-address">
-                {{ order.getInvoiceAddress|coreshop_format_address }}
+                {{ order.invoiceAddress|coreshop_format_address }}
             </div>
         </div>
     </div>
 </div>
 
-{% if order.hasItems() %}
+{% if order.hasItems %}
     <div class="table-responsive order-table">
         <table class="table table-bordered">
             <thead>
@@ -54,66 +54,73 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in order.getItems %}
+            {% for item in order.items %}
 
-                {% set productIsAvailable = item.getProduct and item.getProduct.isPublished and item.getProduct.getActive != false %}
+                {% set productIsAvailable = item.product and item.product.isPublished and item.product.active != false %}
                 {% set productUrl = '/' %}
 
                 {% if productIsAvailable %}
-                    {% set productUrl = coreshop_path(item.getProduct, 'coreshop_product_detail') %}
+                    {% set productUrl = coreshop_path(item.product, 'coreshop_product_detail') %}
                 {% endif %}
 
-                <tr class="shopping-cart-item shopping-cart-item-{{ item.getId }}">
+                <tr class="shopping-cart-item shopping-cart-item-{{ item.id }}">
                     <td class="text-center">
-                        {% if productIsAvailable and item.getProduct.getImage() %}
+                        {% if productIsAvailable and item.product.image is pimcore_asset_image %}
                             <a class="" href="{{ productUrl }}">
-                                {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-fluid', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+                                {{ item.product.image|pimcore_image_thumbnail_html("coreshop_productCart", {'class': 'img-fluid', 'alt': item.product.name, 'title': item.product.name}) }}
                             </a>
                         {% endif %}
                     </td>
                     <td class="text-center">
                         {% if productIsAvailable %}
-                            <a href="{{ productUrl }}">{{ item.getName() }}</a>
+                            <a href="{{ productUrl }}">{{ item.name }}</a>
                         {% else %}
-                            {{ item.getName() }}
+                            {{ item.name }}
                         {% endif %}
 
-                        {% if item.getIsGiftItem %}
+                        {% if item.isGiftItem %}
                             <br/><span>{{ 'coreshop.ui.gift_item'|trans }}</span>
                         {% endif %}
                     </td>
                     <td class="text-center">
-                        <span>{{ item.getQuantity }}</span>
+                        <span>{{ item.quantity }}</span>
                     </td>
                     <td class="text-right cart-item-price">
-                        {% set price = item.getItemPrice %}
-                        {% set retailPrice = item.getItemRetailPrice %}
+                        {% set price = item.convertedItemPrice %}
+                        {% set discount = item.convertedItemDiscount %}
+                        {% set discountPrice = item.convertedItemDiscountPrice %}
+                        {% set retailPrice = item.convertedItemRetailPrice %}
 
-                        {% if price != retailPrice %}
-                            <span class="price-old">{{ currency.format(retailPrice, order.getCurrency.isoCode) }}</span>
+                        <span class="price-new">{{ currency.format(price, order.currency.isoCode) }}</span>
+
+                        {% if price < retailPrice %}
+                            {% if discountPrice > 0 %}
+                                <span class="price-old">{{ currency.format(discountPrice, order.currency.isoCode) }}</span>
+                            {% endif %}
+                            {% if discount > 0 %}
+                                <span class="price-discount">(-{{ currency.format(discount, order.currency.isoCode) }})</span>
+                            {% endif %}
                         {% endif %}
-
-                        {{ currency.format(price, order.getCurrency.isoCode) }}
                     </td>
                     <td class="text-right cart-item-total-price">
-                        {{ currency.format(item.getTotal, order.getCurrency.isoCode) }}
+                        {{ currency.format(item.convertedTotal, order.currency.isoCode) }}
                     </td>
                 </tr>
             {% endfor %}
             {% if order.hasPriceRules %}
-                {% for priceRule in order.getPriceRuleItems %}
+                {% for priceRule in order.priceRuleItems %}
                     <tr>
                         <td colspan="2" class="text-center">
-                            {{ priceRule.cartPriceRule.getName }}
+                            {{ priceRule.cartPriceRule.label ?: priceRule.cartPriceRule.name }}
                         </td>
                         <td class="text-center">
 
                         </td>
                         <td class="text-right">
-                            -{{ currency.format(priceRule.getDiscount(true), order.getCurrency.isoCode) }}
+                            -{{ currency.format(priceRule.getDiscount(true), order.currency.isoCode) }}
                         </td>
                         <td class="text-right">
-                            -{{ currency.format(priceRule.getDiscount(false), order.getCurrency.isoCode) }}
+                            -{{ currency.format(priceRule.getDiscount(false), order.currency.isoCode) }}
                         </td>
                     </tr>
                 {% endfor %}
@@ -121,11 +128,11 @@
 
             </tbody>
             <tfoot>
-            {% set shipping = order.getShipping(false) %}
-            {% set shippingIt = order.getShipping(true) %}
-            {% set discount = order.getDiscount(false) %}
-            {% set discountIt = order.getDiscount(true) %}
-            {% set taxes = order.getTaxes() %}
+            {% set shipping = order.convertedShipping(false) %}
+            {% set shippingIt = order.convertedShipping(true) %}
+            {% set discount = order.convertedDiscount(false) %}
+            {% set discountIt = order.convertedDiscount(true) %}
+            {% set taxes = order.convertedTaxes %}
             {% set rowspan = 10 + taxes|length %}
 
             {% if shipping == 0 %}
@@ -144,7 +151,7 @@
                     <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
                 </td>
                 <td colspan="1" class="text-right cart-sub-total">
-                    {{ currency.format(order.getSubtotal(true), order.getCurrency.isoCode) }}
+                    {{ currency.format(order.convertedSubtotal(true), order.currency.isoCode) }}
                 </td>
             </tr>
             <tr>
@@ -152,26 +159,26 @@
                     <strong>{{ 'coreshop.ui.subtotal_excl'|trans }}:</strong>
                 </td>
                 <td colspan="1" class="text-right cart-discount">
-                    {{ currency.format(order.getSubtotal(false), order.getCurrency.isoCode) }}
+                    {{ currency.format(order.convertedSubtotal(false), order.currency.isoCode) }}
                 </td>
             </tr>
-            {% if discount > 0 %}
+            {% if discount != 0 %}
                 <tr>
                     <td class="text-right">
-                        <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
+                        <strong>{{ discount > 0 ? 'coreshop.ui.surcharge_incl'|trans : 'coreshop.ui.discount_incl'|trans }}:</strong>
                     </td>
                     <td colspan="1"
                         class="text-right cart-discount">
-                        -{{ currency.format(discountIt, order.getCurrency.isoCode) }}
+                        {{ currency.format(discountIt, order.currency.isoCode) }}
                     </td>
                 </tr>
                 <tr>
                     <td class="text-right">
-                        <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
+                        <strong>{{ discount > 0 ? 'coreshop.ui.surcharge_excl'|trans : 'coreshop.ui.discount_excl'|trans }}:</strong>
                     </td>
                     <td colspan="1"
                         class="text-right cart-discount">
-                        -{{ currency.format(discount, order.getCurrency.isoCode) }}
+                        {{ currency.format(discount, order.currency.isoCode) }}
                     </td>
                 </tr>
             {% endif %}
@@ -182,7 +189,7 @@
                     </td>
                     <td colspan="1"
                         class="text-right cart-shipping">
-                        {{ currency.format(shippingIt, order.getCurrency.isoCode) }}
+                        {{ currency.format(shippingIt, order.currency.isoCode) }}
                     </td>
                 </tr>
                 <tr>
@@ -191,18 +198,18 @@
                     </td>
                     <td colspan="1"
                         class="text-right cart-shipping">
-                        {{ currency.format(shipping, order.getCurrency.isoCode) }}
+                        {{ currency.format(shipping, order.currency.isoCode) }}
                     </td>
                 </tr>
             {% endif %}
             {% for taxItem in taxes %}
                 <tr>
                     <td class="text-right cart-tax-detail">
-                        <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
+                        <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.name) }}:</strong>
                     </td>
                     <td colspan="1"
                         class="text-right cart-tax-detail">
-                        {{ currency.format(taxItem.amount, order.getCurrency.isoCode) }}
+                        {{ currency.format(taxItem.amount, order.currency.isoCode) }}
                     </td>
                 </tr>
             {% endfor %}
@@ -211,7 +218,7 @@
                     <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
                 </td>
                 <td colspan="1" class="text-right cart-tax">
-                    {{ currency.format(order.getTotalTax, order.getCurrency.isoCode) }}
+                    {{ currency.format(order.convertedTotalTax, order.currency.isoCode) }}
                 </td>
             </tr>
             <tr>
@@ -220,7 +227,7 @@
                 </td>
                 <td colspan="1"
                     class="text-right cart-total-price">
-                    {{ currency.format(order.getTotal, order.getCurrency.isoCode) }}
+                    {{ currency.format(order.convertedTotal, order.currency.isoCode) }}
                 </td>
             </tr>
             </tfoot>

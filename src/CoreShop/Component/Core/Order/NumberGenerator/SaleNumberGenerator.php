@@ -6,49 +6,35 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Order\NumberGenerator;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
-use CoreShop\Component\Order\Model\SaleInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class SaleNumberGenerator implements NumberGeneratorInterface
 {
-    /**
-     * @var NumberGeneratorInterface
-     */
     private $numberGenerator;
-
-    /**
-     * @var ConfigurationServiceInterface
-     */
     private $configurationService;
-
-    /**
-     * @var string
-     */
     private $prefixConfigurationKey;
-
-    /**
-     * @var string
-     */
     private $suffixConfigurationKey;
 
-    /**
-     * @param NumberGeneratorInterface      $numberGenerator
-     * @param ConfigurationServiceInterface $configurationService
-     * @param string                        $prefixConfigurationKey
-     * @param string                        $suffixConfigurationKey
-     */
-    public function __construct(NumberGeneratorInterface $numberGenerator, ConfigurationServiceInterface $configurationService, $prefixConfigurationKey, $suffixConfigurationKey)
+    public function __construct(
+        NumberGeneratorInterface $numberGenerator,
+        ConfigurationServiceInterface $configurationService,
+        string $prefixConfigurationKey,
+        string $suffixConfigurationKey
+    )
     {
         $this->numberGenerator = $numberGenerator;
         $this->configurationService = $configurationService;
@@ -56,14 +42,11 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
         $this->suffixConfigurationKey = $suffixConfigurationKey;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generate(ResourceInterface $model)
+    public function generate(ResourceInterface $model): string
     {
         $store = null;
 
-        if ($model instanceof SaleInterface) {
+        if ($model instanceof OrderInterface) {
             $store = $model->getStore();
         } elseif ($model instanceof OrderDocumentInterface) {
             $store = $model->getOrder()->getStore();

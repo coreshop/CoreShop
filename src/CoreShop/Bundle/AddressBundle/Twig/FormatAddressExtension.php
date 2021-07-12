@@ -6,38 +6,31 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\AddressBundle\Twig;
 
-use CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelperInterface;
+use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class FormatAddressExtension extends AbstractExtension
 {
-    /**
-     * @var FormatAddressHelperInterface
-     */
-    private $helper;
+    private AddressFormatterInterface $addressFormatter;
 
-    /**
-     * @param FormatAddressHelperInterface $helper
-     */
-    public function __construct(FormatAddressHelperInterface $helper)
+    public function __construct(AddressFormatterInterface $addressFormatter)
     {
-        $this->helper = $helper;
+        $this->addressFormatter = $addressFormatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new TwigFilter('coreshop_format_address', [$this->helper, 'formatAddress'], ['is_safe' => ['html']]),
+            new TwigFilter('coreshop_format_address', [$this->addressFormatter, 'formatAddress'], ['is_safe' => ['html']]),
         ];
     }
 }

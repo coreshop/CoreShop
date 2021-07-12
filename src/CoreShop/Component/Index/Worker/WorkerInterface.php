@@ -6,18 +6,23 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Worker;
 
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Extension\IndexExtensionInterface;
+use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
-use Pimcore\Model\Listing\AbstractListing;
 
+/**
+ * @method renameIndexStructures(IndexInterface $index, string $oldName, string $newName);
+ */
 interface WorkerInterface
 {
     /**
@@ -64,7 +69,7 @@ interface WorkerInterface
      *
      * @param IndexInterface $index
      *
-     * @return AbstractListing
+     * @return ListingInterface
      */
     public function getList(IndexInterface $index);
 
@@ -85,7 +90,7 @@ interface WorkerInterface
      *
      * @return mixed
      */
-    public function renderFieldType($type);
+    public function renderFieldType(string $type);
 
     /**
      * @return FilterGroupHelperInterface

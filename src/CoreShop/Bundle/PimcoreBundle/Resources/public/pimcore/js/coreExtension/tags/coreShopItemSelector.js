@@ -5,14 +5,21 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 pimcore.registerNS('pimcore.object.tags.coreShopItemSelector');
 pimcore.object.tags.coreShopItemSelector = Class.create(pimcore.object.tags.multiselect, {
-    delimiter:',',
     type: 'coreShopItemSelector',
+
+     initialize: function (data, fieldConfig) {
+        this.data = data;
+        this.data_mapped = (data ? data : []).map(function(data) {
+            return parseInt(data.id);
+        });
+        this.fieldConfig = fieldConfig;
+    },
 
     getLayoutEdit: function() {
         Ext.require([
@@ -22,7 +29,7 @@ pimcore.object.tags.coreShopItemSelector = Class.create(pimcore.object.tags.mult
         this.options_store = new Ext.data.JsonStore({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/dynamic-dropdown/options',
+                url: Routing.generate('coreshop_dynamic_dropdown_options'),
                 extraParams: {
                     folderName: this.fieldConfig.folderName,
                     methodName: this.fieldConfig.methodName,
@@ -58,7 +65,7 @@ pimcore.object.tags.coreShopItemSelector = Class.create(pimcore.object.tags.mult
             fromTitle: t('coreshop_dynamic_dropdown_itemselector_available'),
             toTitle: t('coreshop_dynamic_dropdown_itemselector_selected'),
             width: 600,
-            value: this.data
+            value: this.data_mapped
         };
 
         if (this.fieldConfig.width) {
@@ -66,9 +73,8 @@ pimcore.object.tags.coreShopItemSelector = Class.create(pimcore.object.tags.mult
         }
 
         this.component = new Ext.ux.form.ItemSelector(options);
+
         return this.component;
-
-
     },
 
     getGridColumnEditor:function (field) {

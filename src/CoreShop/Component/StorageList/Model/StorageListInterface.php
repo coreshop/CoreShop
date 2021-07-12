@@ -6,38 +6,23 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\StorageList\Model;
 
 interface StorageListInterface
 {
-    /**
-     * @return StorageListItemInterface[]
-     */
-    public function getItems();
+    public function getItems(): ?array;
 
-    /**
-     * @return bool
-     */
-    public function hasItems();
+    public function hasItems(): bool;
 
-    /**
-     * @param StorageListItemInterface $item
-     */
-    public function addItem($item);
+    public function addItem($item): void;
 
-    /**
-     * @param StorageListItemInterface $item
-     */
-    public function removeItem($item);
+    public function removeItem($item): void;
 
-    /**
-     * @param StorageListItemInterface $item
-     *
-     * @return bool
-     */
-    public function hasItem($item);
+    public function hasItem($item): bool;
 }

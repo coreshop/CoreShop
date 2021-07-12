@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -22,11 +22,11 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
     type: 'coreshop_exchange_rate',
 
     url: {
-        add: '/admin/coreshop/exchange_rates/add',
-        save: '/admin/coreshop/exchange_rates/save',
-        delete: '/admin/coreshop/exchange_rates/delete',
-        get: '/admin/coreshop/exchange_rates/get',
-        list: '/admin/coreshop/exchange_rates/list'
+        add: 'coreshop_exchange_rate_add',
+        save: 'coreshop_exchange_rate_save',
+        delete: 'coreshop_currency_delete',
+        get: 'coreshop_exchange_rate_get',
+        list: 'coreshop_exchange_rate_list'
     },
 
     getItems: function () {
@@ -35,6 +35,9 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
 
     getExchangeRatesGrid: function () {
         pimcore.globalmanager.get(this.storeId).load();
+
+        var currencyStore = Ext.create('store.coreshop_currencies');
+        currencyStore.load();
 
         this.grid = Ext.create('Ext.grid.Panel', {
             store: pimcore.globalmanager.get(this.storeId),
@@ -45,15 +48,14 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
                     flex: 1,
                     dataIndex: 'fromCurrency',
                     editor: new Ext.form.ComboBox({
-                        store: pimcore.globalmanager.get('coreshop_currencies'),
+                        store: currencyStore,
                         valueField: 'id',
                         displayField: 'name',
                         queryMode: 'local',
                         required: true
                     }),
-                    renderer: function (currencyId) {
-                        var store = pimcore.globalmanager.get('coreshop_currencies');
-                        var currency = store.getById(currencyId);
+                    renderer: function (currencyId) {;
+                        var currency = currencyStore.getById(currencyId);
                         if (currency) {
                             return currency.get('name');
                         }
@@ -66,15 +68,14 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
                     flex: 1,
                     dataIndex: 'toCurrency',
                     editor: new Ext.form.ComboBox({
-                        store: pimcore.globalmanager.get('coreshop_currencies'),
+                        store: currencyStore,
                         valueField: 'id',
                         displayField: 'name',
                         queryMode: 'local',
                         required: true
                     }),
                     renderer: function (currencyId) {
-                        var store = pimcore.globalmanager.get('coreshop_currencies');
-                        var currency = store.getById(currencyId);
+                        var currency = currencyStore.getById(currencyId);
                         if (currency) {
                             return currency.get('name');
                         }
@@ -105,7 +106,7 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
 
                             if (!rec.phantom) {
                                 Ext.Ajax.request({
-                                    url: this.url.delete,
+                                    url: Routing.generate(this.routing.delete),
                                     jsonData: rec.data,
                                     method: 'delete',
                                     success: function (response) {
@@ -136,7 +137,7 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
 
         this.grid.on('edit', function (editor, e) {
             Ext.Ajax.request({
-                url: this.url.save,
+                url: Routing.generate(this.routing.save),
                 jsonData: e.record.data,
                 method: 'post',
                 success: function (response) {

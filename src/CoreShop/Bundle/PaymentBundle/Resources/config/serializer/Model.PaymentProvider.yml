@@ -19,7 +19,11 @@ CoreShop\Component\Payment\Model\PaymentProvider:
             expose: true
             type: integer
             groups: [Detailed]
+        logo:
+            expose: true
+            type: pimcoreAsset
+            groups: [Detailed]
         translations:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]

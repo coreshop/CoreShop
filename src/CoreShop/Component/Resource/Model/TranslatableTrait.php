@@ -6,19 +6,22 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\PersistentCollection;
 
 trait TranslatableTrait
 {
     /**
-     * @var ArrayCollection|PersistentCollection|TranslationInterface[]
+     * @var ArrayCollection|PersistentCollection|ArrayCollection<TranslationInterface>
      */
     protected $translations;
 
@@ -98,7 +101,7 @@ trait TranslatableTrait
     }
 
     /**
-     * @return TranslationInterface[]
+     * @return TranslationInterface[]|Collection
      */
     public function getTranslations()
     {

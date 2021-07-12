@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory;
 
@@ -20,20 +22,9 @@ use Pimcore\DataObject\GridColumnConfig\Operator\OperatorInterface;
 
 class PriceFormatterFactory implements OperatorFactoryInterface
 {
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
+    private MoneyFormatterInterface $moneyFormatter;
+    private LocaleContextInterface $localeService;
 
-    /**
-     * @var LocaleContextInterface
-     */
-    private $localeService;
-
-    /**
-     * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface  $localeService
-     */
     public function __construct(
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService
@@ -42,13 +33,7 @@ class PriceFormatterFactory implements OperatorFactoryInterface
         $this->localeService = $localeService;
     }
 
-    /**
-     * @param \stdClass $configElement
-     * @param null      $context
-     *
-     * @return OperatorInterface
-     */
-    public function build(\stdClass $configElement, $context = null): OperatorInterface
+    public function build(\stdClass $configElement, array $context = [])
     {
         return new PriceFormatter($this->moneyFormatter, $this->localeService, $configElement, $context);
     }

@@ -6,11 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Tracking;
+declare(strict_types=1);
 
 namespace CoreShop\Component\Tracking\Tracker;
 
@@ -19,59 +19,39 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class CompositeTracker implements TrackerInterface
 {
-    /**
-     * @var TrackingExtractorInterface
-     */
-    private $extractor;
+    private TrackingExtractorInterface $extractor;
+    private ServiceRegistryInterface $trackerRegistry;
 
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $trackerRegistry;
-
-    /**
-     * @param TrackingExtractorInterface $extractor
-     * @param ServiceRegistryInterface   $trackerRegistry
-     */
     public function __construct(TrackingExtractorInterface $extractor, ServiceRegistryInterface $trackerRegistry)
     {
         $this->extractor = $extractor;
         $this->trackerRegistry = $trackerRegistry;
     }
 
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return true;
     }
 
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackProduct($product)
+    public function trackProduct($product): void
     {
         $data = $this->extractTrackingData($product);
 
         $this->compositeTrackerCall('trackProduct', [$data]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackProductImpression($product)
+    public function trackProductImpression($product): void
     {
         $data = $this->extractTrackingData($product);
 
         $this->compositeTrackerCall('trackProductImpression', [$data]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCartAdd($cart, $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         $cart = $this->extractTrackingData($cart);
         $product = $this->extractTrackingData($product);
@@ -79,10 +59,7 @@ class CompositeTracker implements TrackerInterface
         $this->compositeTrackerCall('trackCartAdd', [$cart, $product, $quantity]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCartRemove($cart, $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         $cart = $this->extractTrackingData($cart);
         $product = $this->extractTrackingData($product);
@@ -90,20 +67,14 @@ class CompositeTracker implements TrackerInterface
         $this->compositeTrackerCall('trackCartRemove', [$cart, $product, $quantity]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
         $cart = $this->extractTrackingData($cart);
 
         $this->compositeTrackerCall('trackCheckoutStep', [$cart, $stepIdentifier, $isFirstStep, $checkoutOption]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutComplete($order)
+    public function trackCheckoutComplete($order): void
     {
         $order = $this->extractTrackingData($order);
 
@@ -114,7 +85,7 @@ class CompositeTracker implements TrackerInterface
      * @param callable $function
      * @param array    $data
      */
-    private function compositeTrackerCall($function, $data)
+    private function compositeTrackerCall($function, array $data): void
     {
         /**
          * @var TrackerInterface $tracker
@@ -128,11 +99,6 @@ class CompositeTracker implements TrackerInterface
         }
     }
 
-    /**
-     * @param mixed $object
-     *
-     * @return array
-     */
     private function extractTrackingData($object): array
     {
         return $this->extractor->updateMetadata($object);

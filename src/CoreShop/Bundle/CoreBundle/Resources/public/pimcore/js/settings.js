@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -22,15 +22,22 @@ coreshop.core.settings = Class.create({
 
     getData: function () {
         Ext.Ajax.request({
-            url: '/admin/coreshop/configurations/get-all',
+            url: Routing.generate('coreshop_admin_configuration_get_all'),
             success: function (response) {
 
                 this.data = Ext.decode(response.responseText).data;
 
-                this.getTabPanel();
+                this.loadStores();
 
             }.bind(this)
         });
+    },
+
+    loadStores: function()
+    {
+        this.stores = Ext.create('store.coreshop_stores').load(function() {
+            this.getTabPanel();
+        }.bind(this));
     },
 
     getValue: function (shopId, key) {
@@ -185,7 +192,7 @@ coreshop.core.settings = Class.create({
         }
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/configurations/save-all',
+            url: Routing.generate('coreshop_admin_configuration_save_all'),
             method: 'post',
             params: {
                 values: Ext.encode(values),
@@ -248,8 +255,7 @@ coreshop.core.settings = Class.create({
 
         var me = this,
             shopPanel,
-            store = pimcore.globalmanager.get('coreshop_stores'),
-            shop = store.getById(shopId);
+            shop = this.stores.getById(shopId);
 
         if (!shop) {
             alert('STORE NOT FOUND!');
@@ -283,7 +289,7 @@ coreshop.core.settings = Class.create({
                     defaults: {width: 600},
                     items: [
                         {
-                            fieldLabel: t('coreshop_base_guestcheckout'),
+                            fieldLabel: t('coreshop_guestcheckout'),
                             xtype: 'checkbox',
                             name: 'system.guest.checkout',
                             checked: this.getValue(shopId, 'system.guest.checkout')

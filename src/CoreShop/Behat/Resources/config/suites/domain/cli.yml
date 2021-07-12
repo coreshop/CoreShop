@@ -1,7 +1,7 @@
 default:
     suites:
         domain_cli:
-            contexts_services:
+            contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
 
@@ -10,4 +10,4 @@ default:
 
                 - coreshop.behat.context.cli.installer
             filters:
-                tags: "@cli"
+                tags: "@domain && @cli"

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Form\DataMapper;
 
@@ -20,20 +22,9 @@ use Symfony\Component\Form\DataMapperInterface;
  */
 class CartItemQuantityDataMapper implements DataMapperInterface
 {
-    /**
-     * @var StorageListItemQuantityModifierInterface
-     */
-    private $cartItemQuantityModifier;
+    private StorageListItemQuantityModifierInterface $cartItemQuantityModifier;
+    private DataMapperInterface $propertyPathDataMapper;
 
-    /**
-     * @var DataMapperInterface
-     */
-    private $propertyPathDataMapper;
-
-    /**
-     * @param StorageListItemQuantityModifierInterface $cartItemQuantityModifier
-     * @param DataMapperInterface $propertyPathDataMapper
-     */
     public function __construct(
         StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
         DataMapperInterface $propertyPathDataMapper
@@ -42,17 +33,11 @@ class CartItemQuantityDataMapper implements DataMapperInterface
         $this->propertyPathDataMapper = $propertyPathDataMapper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mapDataToForms($data, $forms): void
     {
         $this->propertyPathDataMapper->mapDataToForms($data, $forms);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mapFormsToData($forms, &$data): void
     {
         $formsOtherThanQuantity = [];
@@ -62,6 +47,7 @@ class CartItemQuantityDataMapper implements DataMapperInterface
         foreach ($forms as $key => $form) {
             if ('quantity' === $form->getName()) {
                 $quantityForm = $form;
+
                 continue;
             }
 
@@ -74,7 +60,7 @@ class CartItemQuantityDataMapper implements DataMapperInterface
 
         if (null !== $quantityForm) {
             $targetQuantity = $quantityForm->getData();
-            $this->cartItemQuantityModifier->modify($data, (int) $targetQuantity);
+            $this->cartItemQuantityModifier->modify($data, (float) $targetQuantity);
         }
     }
 }

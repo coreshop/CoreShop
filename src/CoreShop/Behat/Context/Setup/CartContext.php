@@ -6,84 +6,50 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
+use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Factory\CartItemFactoryInterface;
+use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private CartContextInterface $cartContext;
+    private StorageListModifierInterface $cartModifier;
+    private CartManagerInterface $cartManager;
+    private AddToCartFactoryInterface $addToCartFactory;
+    private OrderItemFactoryInterface $factory;
+    private FormFactoryInterface $formFactory;
 
-    /**
-     * @var CartContextInterface
-     */
-    private $cartContext;
-
-    /**
-     * @var StorageListModifierInterface
-     */
-    private $cartModifier;
-
-    /**
-     * @var CartManagerInterface
-     */
-    private $cartManager;
-
-    /**
-     * @var AddToCartFactoryInterface
-     */
-    private $addToCartFactory;
-
-    /**
-     * @var CartItemFactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
-     * @param SharedStorageInterface       $sharedStorage
-     * @param CartContextInterface         $cartContext
-     * @param StorageListModifierInterface $cartModifier
-     * @param CartManagerInterface         $cartManager
-     * @param AddToCartFactoryInterface    $addToCartFactory
-     * @param CartItemFactoryInterface     $factory
-     * @param FormFactoryInterface         $formFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CartContextInterface $cartContext,
         StorageListModifierInterface $cartModifier,
         CartManagerInterface $cartManager,
         AddToCartFactoryInterface $addToCartFactory,
-        CartItemFactoryInterface $factory,
+        OrderItemFactoryInterface $factory,
         FormFactoryInterface $formFactory
     ) {
         $this->sharedStorage = $sharedStorage;
@@ -123,8 +89,8 @@ final class CartContext implements Context
 
         $formData = [
             'cartItem' => [
-                'quantity' => 1
-            ]
+                'quantity' => 1,
+            ],
         ];
 
         $form->submit($formData);
@@ -135,17 +101,20 @@ final class CartContext implements Context
 
     /**
      * @Given /^I add the (product "[^"]+" with unit "[^"]+") to my cart$/
+     * @Given /^I add the (product "[^"]+" with unit "[^"]+") in quantity ([^"]+) to my cart$/
      * @Given /^I add another (product "[^"]+" with unit "[^"]+") to my cart$/
+     * @Given /^I add another (product "[^"]+" with unit "[^"]+") in quantity ([^"]+) to my cart$/
      */
-    public function addProductInUnitToCart(array $productAndUnit)
+    public function addProductInUnitToCart(array $productAndUnit, float $quantity = 1.0)
     {
         $cart = $this->cartContext->getCart();
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $this->factory->createWithPurchasable($productAndUnit['product']);
         $cartItem->setUnitDefinition($productAndUnit['unit']);
+        $cartItem->setQuantity($quantity);
 
         $this->cartModifier->addToList($cart, $cartItem);
 
@@ -186,7 +155,9 @@ final class CartContext implements Context
     {
         Assert::greaterThan(count($customer->getAddresses()), 0);
 
-        $this->cartContext->getCart()->setShippingAddress(reset($customer->getAddresses()));
+        $address = $customer->getAddresses();
+
+        $this->cartContext->getCart()->setShippingAddress(reset($address));
         $this->cartManager->persistCart($this->cartContext->getCart());
     }
 
@@ -227,7 +198,7 @@ final class CartContext implements Context
     /**
      * @Given /^(my cart) uses (currency "[^"]+")$/
      */
-    public function myCartIsUsingCurrency(CartInterface $cart, CurrencyInterface $currency)
+    public function myCartIsUsingCurrency(OrderInterface $cart, CurrencyInterface $currency)
     {
         $cart->setCurrency($currency);
 
@@ -237,7 +208,7 @@ final class CartContext implements Context
     /**
      * @Given /^(my cart) uses (store "[^"]+")$/
      */
-    public function myCartIsUsingStore(CartInterface $cart, StoreInterface $store)
+    public function myCartIsUsingStore(OrderInterface $cart, StoreInterface $store)
     {
         $cart->setStore($store);
 
@@ -247,18 +218,18 @@ final class CartContext implements Context
     /**
      * @Given /^I refresh (my cart)$/
      */
-    public function iRefreshMyCart(CartInterface $cart)
+    public function iRefreshMyCart(OrderInterface $cart)
     {
         $this->cartManager->persistCart($cart);
     }
 
     /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
+     * @param OrderInterface     $cart
+     * @param OrderItemInterface $cartItem
      *
      * @return AddToCartInterface
      */
-    protected function createAddToCart(CartInterface $cart, CartItemInterface $cartItem)
+    private function createAddToCart(\CoreShop\Component\Order\Model\OrderInterface $cart, \CoreShop\Component\Order\Model\OrderItemInterface $cartItem)
     {
         return $this->addToCartFactory->createWithCartAndCartItem($cart, $cartItem);
     }

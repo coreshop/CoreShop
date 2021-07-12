@@ -1,0 +1,243 @@
+CoreShop\Component\Order\Model\Order:
+    exclusion_policy: ALL
+    xml_root_name: order
+    virtual_properties:
+        token:
+            serialized_name: token
+            exp: object.getToken()
+            type: string
+            groups: [List, Detailed]
+        saleState:
+            serialized_name: saleState
+            exp: object.getSaleState()
+            type: string
+            groups: [List, Detailed]
+        orderState:
+            serialized_name: orderState
+            exp: object.getOrderState()
+            type: string
+            groups: [List, Detailed]
+        shippingState:
+            serialized_name: shippingState
+            exp: object.getShippingState()
+            type: string
+            groups: [Detailed]
+        invoiceState:
+            serialized_name: invoiceState
+            exp: object.getInvoiceState()
+            type: string
+            groups: [Detailed]
+        paymentState:
+            serialized_name: paymentState
+            exp: object.getPaymentState()
+            type: string
+            groups: [Detailed]
+        paymentProvider:
+            serialized_name: paymentProvider
+            exp: object.getPaymentProvider()
+            groups: [Detailed]
+        paymentSettings:
+            serialized_name: paymentSettings
+            exp: object.getPaymentSettings()
+            type: array
+            groups: [Detailed]
+        baseCurrency:
+            serialized_name: baseCurrency
+            exp: object.getBaseCurrency()
+            groups: [Detailed]
+        convertedTaxes:
+            serialized_name: convertedTaxes
+            exp: object.getConvertedTaxes()
+            type: array
+            groups: [Detailed]
+        backendCreated:
+            serialized_name: backendCreated
+            exp: object.getBackendCreated()
+            type: boolean
+            groups: [Detailed]
+        priceRuleItems:
+            serialized_name: priceRuleItems
+            exp: object.getPriceRuleItems()
+            type: array
+            groups: [Detailed]
+        paymentTotal:
+            serialized_name: paymentTotal
+            exp: object.getPaymentTotal()
+            type: integer
+            groups: [Detailed]
+        totalTax:
+            serialized_name: totalTax
+            exp: object.getTotalTax()
+            type: integer
+            groups: [Detailed]
+        convertedTotalTax:
+            serialized_name: convertedTotalTax
+            exp: object.getConvertedTotalTax()
+            type: integer
+            groups: [Detailed]
+        subtotalTax:
+            serialized_name: subtotalTax
+            exp: object.getSubtotalTax()
+            type: integer
+            groups: [Detailed]
+        convertedSubtotalTax:
+            serialized_name: convertedSubtotalTax
+            exp: object.getConvertedSubtotalTax()
+            type: integer
+            groups: [Detailed]
+        shippingTax:
+            serialized_name: shippingTax
+            exp: object.getShippingTax()
+            type: integer
+            groups: [Detailed]
+        convertedShippingTax:
+            serialized_name: convertedShippingTax
+            exp: object.getConvertedShippingTax()
+            type: integer
+            groups: [Detailed]
+        discountNet:
+            serialized_name: discountNet
+            exp: object.getDiscount(false)
+            type: integer
+            groups: [Detailed]
+        discountGross:
+            serialized_name: discountGross
+            exp: object.getDiscount(true)
+            type: integer
+            groups: [Detailed]
+        convertedDiscountNet:
+            serialized_name: convertedDiscountNet
+            exp: object.getConvertedDiscount(false)
+            type: integer
+            groups: [Detailed]
+        convertedDiscountGross:
+            serialized_name: convertedDiscountGross
+            exp: object.getConvertedDiscount(true)
+            type: integer
+            groups: [Detailed]
+        subtotalNet:
+            serialized_name: subtotalNet
+            exp: object.getSubtotal(false)
+            type: integer
+            groups: [Detailed]
+        subtotaGross:
+            serialized_name: subtotaGross
+            exp: object.getSubtotal(true)
+            type: integer
+            groups: [Detailed]
+        convertedSubtotalNet:
+            serialized_name: convertedSubtotalNet
+            exp: object.getConvertedSubtotal(false)
+            type: integer
+            groups: [Detailed]
+        convertedSubtotaGross:
+            serialized_name: convertedSubtotaGross
+            exp: object.getConvertedSubtotal(true)
+            type: integer
+            groups: [Detailed]
+        totalNet:
+            serialized_name: totalNet
+            exp: object.getTotal(false)
+            type: integer
+            groups: [Detailed]
+        totalGross:
+            serialized_name: totalGross
+            exp: object.getTotal(true)
+            type: integer
+            groups: [Detailed]
+        convertedTotalNet:
+            serialized_name: convertedTotalNet
+            exp: object.getConvertedTotal(false)
+            type: integer
+            groups: [Detailed]
+        convertedTotalGross:
+            serialized_name: convertedTotalGross
+            exp: object.getConvertedTotal(true)
+            type: integer
+            groups: [Detailed]
+        shippingNet:
+            serialized_name: shippingNet
+            exp: object.getShipping(false)
+            type: integer
+            groups: [Detailed]
+        shippingGross:
+            serialized_name: shippingGross
+            exp: object.getShipping(true)
+            type: integer
+            groups: [Detailed]
+        convertedShippingNet:
+            serialized_name: convertedSshippingNet
+            exp: object.getConvertedShipping(false)
+            type: integer
+            groups: [Detailed]
+        convertedShippingGross:
+            serialized_name: convertedShippingGross
+            exp: object.getConvertedShipping(true)
+            type: integer
+            groups: [Detailed]
+        convertedAdjustments:
+            serialized_name: convertedAdjustments
+            exp: object.getConvertedAdjustments()
+            type: array
+            groups: [Detailed]
+        orderNumber:
+            serialized_name: orderNumber
+            exp: object.getOrderNumber()
+            type: string
+            groups: [Detailed]
+        orderDate:
+            serialized_name: orderDate
+            exp: object.getOrderDate()
+            type: DateTime
+            groups: [Detailed]
+        shippingAddress:
+            serialized_name: shippingAddress
+            exp: object.getShippingAddress()
+            type: array
+            groups: [Detailed]
+        invoiceAddress:
+            serialized_name: invoiceAddress
+            exp: object.getInvoiceAddress()
+            type: array
+            groups: [Detailed]
+        taxes:
+            serialized_name: taxes
+            exp: object.getTaxes()
+            type: array
+            groups: [Detailed]
+        comment:
+            serialized_name: comment
+            exp: object.getComment()
+            type: string
+            groups: [Detailed]
+        additionalData:
+            serialized_name: additionalData
+            exp: object.getAdditionalData()
+            type: array
+            groups: [Detailed]
+        localeCode:
+            serialized_name: localeCode
+            exp: object.getLocaleCode()
+            type: string
+            groups: [Detailed]
+        adjustments:
+            serialized_name: adjustments
+            exp: object.getAdjustments()
+            type: array
+            groups: [Detailed]
+        currency:
+            serialized_name: currency
+            exp: object.getCurrency()
+            groups: [Detailed]
+        store:
+            serialized_name: store
+            exp: object.getStore()
+            groups: [Detailed]
+        items:
+            serialized_name: items
+            exp: object.getItems()
+            groups: [Detailed]
+        customer:
+            serialized_name: customer
+            exp: object.getCustomer()
+            groups: [Detailed]

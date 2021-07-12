@@ -1,14 +1,13 @@
-/**
- * Import Definitions.
- *
- * LICENSE
+/*
+ * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2016-2018 w-vision AG (https://www.w-vision.ch)
- * @license    https://github.com/w-vision/ImportDefinitions/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ *
  */
 
 pimcore.registerNS('coreshop.index.interpreters.iterator');
@@ -16,10 +15,6 @@ pimcore.registerNS('coreshop.index.interpreters.iterator');
 coreshop.index.interpreters.iterator = Class.create(coreshop.index.interpreters.abstract, {
     getStore: function() {
         return pimcore.globalmanager.get('coreshop_index_interpreters');
-    },
-
-    getClassItem: function() {
-        return coreshop.index.interpreters;
     },
 
     getForm: function (record, config) {
@@ -77,17 +72,16 @@ coreshop.index.interpreters.iterator = Class.create(coreshop.index.interpreters.
     getInterpreterPanelLayout : function (type, record, parentConfig, config) {
         if (type) {
             type = type.toLowerCase();
-            var classItem = this.getClassItem();
 
-            if (classItem[type]) {
-                this.interpreter = new classItem[type];
+            if (coreshop.index.interpreters[type]) {
+                this.interpreterPanelClass = new coreshop.index.interpreters[type];
 
-                this.interpreterPanel.add(this.interpreter.getForm(record, Ext.isObject(config) ? config : {}, parentConfig));
+                this.interpreterPanel.add(this.interpreterPanelClass.getForm(record, Ext.isObject(config) ? config : {}, parentConfig));
                 this.interpreterPanel.show();
             } else {
                 this.interpreterPanel.hide();
 
-                this.interpreter = null;
+                this.interpreterPanelClass = null;
             }
         } else {
             this.interpreterPanel.hide();
@@ -95,21 +89,21 @@ coreshop.index.interpreters.iterator = Class.create(coreshop.index.interpreters.
     },
 
     isValid: function() {
-        if (!this.interpreter) {
-            return false;
+        if (!this.interpreterPanelClass) {
+            return this.interpreterTypeCombo.getValue() ? true : false;
         }
 
-        return this.interpreter.isValid();
+        return this.interpreterPanelClass.isValid();
     },
 
     getInterpreterData: function () {
         // get defined conditions
-        if (this.interpreter) {
+        if (this.interpreterPanelClass) {
             var interpreterConfig  = {};
             var interpreterForm = this.interpreterPanel.getForm();
 
-            if (Ext.isFunction(this.interpreter.getInterpreterData)) {
-                interpreterConfig = this.interpreter.getInterpreterData();
+            if (Ext.isFunction(this.interpreterPanelClass.getInterpreterData)) {
+                interpreterConfig = this.interpreterPanelClass.getInterpreterData();
             }
             else {
                 Ext.Object.each(interpreterForm.getFieldValues(), function (key, value) {
@@ -125,6 +119,10 @@ coreshop.index.interpreters.iterator = Class.create(coreshop.index.interpreters.
             };
         }
 
-        return {};
+        return {
+            interpreter: {
+                type: this.interpreterTypeCombo.getValue()
+            }
+        };
     }
 });

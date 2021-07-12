@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -16,14 +16,15 @@ coreshop.shippingrule.conditions.zones = Class.create(coreshop.rules.conditions.
 
     getForm: function () {
         var me = this;
-        var store = pimcore.globalmanager.get('coreshop_zones');
 
         var zones = {
             fieldLabel: t('coreshop_condition_zones'),
             typeAhead: true,
             listWidth: 100,
             width: 500,
-            store: store,
+            store: {
+                type: 'coreshop_zones'
+            },
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
@@ -32,15 +33,7 @@ coreshop.shippingrule.conditions.zones = Class.create(coreshop.rules.conditions.
             name: 'zones',
             maxHeight: 400,
             delimiter: false,
-            listeners: {
-                beforerender: function () {
-                    if (!store.isLoaded() && !store.isLoading())
-                        store.load();
-
-                    if (me.data && me.data.zones)
-                        this.setValue(me.data.zones);
-                }
-            }
+            value: me.data.zones
         };
 
         if (this.data && this.data.zones) {

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -19,6 +21,8 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner;
+use CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
@@ -29,54 +33,36 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Folder;
+use Pimcore\Model\DataObject\Service;
 use Pimcore\Tool;
+use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private FactoryInterface $productFactory;
+    private FactoryInterface $productUnitDefinitions;
+    private FactoryInterface $productUnitDefinition;
+    private FactoryInterface $productUnitDefinitionPriceFactory;
+    private ProductUnitDefinitionsCloner $unitDefinitionsCloner;
+    private ProductQuantityPriceRulesCloner $quantityPriceRulesCloner;
 
-    /**
-     * @var FactoryInterface
-     */
-    private $productFactory;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $productUnitDefinitions;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $productUnitDefinition;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $productUnitDefinitionPriceFactory;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface       $productFactory
-     * @param FactoryInterface       $productUnitDefinitions
-     * @param FactoryInterface       $productUnitDefinition
-     * @param FactoryInterface       $productUnitDefinitionPriceFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $productFactory,
         FactoryInterface $productUnitDefinitions,
         FactoryInterface $productUnitDefinition,
-        FactoryInterface $productUnitDefinitionPriceFactory
+        FactoryInterface $productUnitDefinitionPriceFactory,
+        ProductUnitDefinitionsCloner $unitDefinitionsCloner,
+        ProductQuantityPriceRulesCloner $quantityPriceRulesCloner
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->productFactory = $productFactory;
         $this->productUnitDefinitions = $productUnitDefinitions;
         $this->productUnitDefinition = $productUnitDefinition;
         $this->productUnitDefinitionPriceFactory = $productUnitDefinitionPriceFactory;
+        $this->unitDefinitionsCloner = $unitDefinitionsCloner;
+        $this->quantityPriceRulesCloner = $quantityPriceRulesCloner;
     }
 
     /**
@@ -112,7 +98,8 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the site has a product "([^"]+)" priced at ([^"]+)$/
+     * @Given /^the site has a product "([^"]+)" priced at (\d+)$/
+     * @Given /^the site has a product "([^"]+)" priced at (\d+) for (store "[^"]+")$/
      */
     public function theSiteHasAProductPricedAt(string $productName, int $price = 100, StoreInterface $store = null)
     {
@@ -122,9 +109,23 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+)$/
+     * @Given /^the (product "[^"]+") is (:?also) priced at (\d+) for (store "[^"]+")$/
+     * @Given /^the (product) is priced at (\d+) for (store "[^"]+")$/
      */
-    public function theProductHasAVariant(
+    public function theProductIsPriced(ProductInterface $product, int $price, StoreInterface $store)
+    {
+        $product->setStores(array_merge($product->getStores(), [$store->getId()]));
+        $product->setStoreValuesOfType('price', $price, $store);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+)$/
+     * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+) for (store "[^"]+")$/
+     * @Given /^the (product) has a variant "([^"]+)" priced at ([^"]+)$/
+     */
+    public function theProductHasAVariantPricedAt(
         ProductInterface $product,
         string $productName,
         int $price = 100,
@@ -132,7 +133,20 @@ final class ProductContext implements Context
     ) {
         $variant = $this->createVariant($product, $productName, $price, $store);
 
-        $this->saveVariant($variant);
+        $this->saveProduct($variant);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has a variant "([^"]+)"$/
+     * @Given /^the (product) has a variant "([^"]+)"$/
+     */
+    public function theProductHasAVariant(
+        ProductInterface $product,
+        string $productName
+    ) {
+        $variant = $this->createSimpleVariant($product, $productName);
+
+        $this->saveProduct($variant);
     }
 
     /**
@@ -172,7 +186,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") weighs ([^"]+)kg$/
      * @Given /^the (product) weighs ([^"]+)kg$/
      */
-    public function theProductWeighsKg(ProductInterface $product, $kg)
+    public function theProductWeighsKg(ProductInterface $product, float $kg)
     {
         $product->setWeight($kg);
 
@@ -183,11 +197,28 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") measurements are ([^"]+)x([^"]+)x([^"]+)$/
      * @Given /^the (product) measurements are ([^"]+)x([^"]+)x([^"]+)$/
      */
-    public function theProductsMeasurementsAre(ProductInterface $product, $width, $height, $depth)
+    public function theProductsMeasurementsAre(ProductInterface $product, float $width, float $height, float $depth)
     {
         $product->setWidth($width);
         $product->setHeight($height);
         $product->setDepth($depth);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") is active and published and available for (store "[^"]+")$/
+     * @Given /^the (product) is active and published and available for (store "[^"]+")$/
+     * @Given /^the (product) is active and published and available$/
+     */
+    public function theProductIsActivePublishedAndAvailableForStore(ProductInterface $product, StoreInterface $store = null)
+    {
+        $product->setActive(true);
+        $product->setPublished(true);
+
+        if (null !== $store) {
+            $product->setStores([$store->getId()]);
+        }
 
         $this->saveProduct($product);
     }
@@ -221,6 +252,50 @@ final class ProductContext implements Context
     public function theProductIsNotActive(ProductInterface $product)
     {
         $product->setActive(false);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") is stock tracked$/
+     * @Given /^the (product) is stock tracked$/
+     */
+    public function theProductIsTracked(ProductInterface $product)
+    {
+        $product->setIsTracked(true);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") is not stock tracked$/
+     * @Given /^the (product) is not stock tracked$/
+     */
+    public function theProductIsNotTracked(ProductInterface $product)
+    {
+        $product->setIsTracked(false);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has (\d+) on hand$/
+     * @Given /^the (product) has (\d+) on hand$/
+     */
+    public function theProductHasOnHand(ProductInterface $product, int $onHand)
+    {
+        $product->setOnHand($onHand);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has (\d+) on hold$/
+     * @Given /^the (product) has (\d+) on hold$/
+     */
+    public function theProductHasOnHold(ProductInterface $product, int $onHold)
+    {
+        $product->setOnHold($onHold);
 
         $this->saveProduct($product);
     }
@@ -275,7 +350,18 @@ final class ProductContext implements Context
      */
     public function theProductHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store)
     {
-        $product->setStorePrice($price, $store);
+        $product->setStoreValuesOfType('price', $price, $store);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (variant "[^"]+") has a price of ([^"]+) for (store "[^"]+")$/
+     * @Given /^the (variants) price is ([^"]+) for (store "[^"]+")$/
+     */
+    public function theVariantHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store)
+    {
+        $product->setStoreValuesOfType('price', $price, $store);
 
         $this->saveProduct($product);
     }
@@ -287,6 +373,16 @@ final class ProductContext implements Context
     public function theProductHasAMinimumOrderQuantity(ProductInterface $product, int $miminumQuantity)
     {
         $product->setMinimumQuantityToOrder($miminumQuantity);
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has a maximum order quantity of "([^"]+)"$/
+     * @Given /^the (product) has a maximum order quantity of "([^"]+)"$/
+     */
+    public function theProductHasAMaximumOrderQuantity(ProductInterface $product, int $maximumQuantity)
+    {
+        $product->setMaximumQuantityToOrder($maximumQuantity);
         $this->saveProduct($product);
     }
 
@@ -312,16 +408,19 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price ([^"]+)$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price ([^"]+)$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+")$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+")$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("[^"]+") and price (\d+)$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+)$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
      */
     public function theProductHasAnAdditionalUnit(
         ProductInterface $product,
         ProductUnitInterface $unit,
         $conversionRate,
-        int $price = null
+        int $price = null,
+        int $precison = 0
     ) {
         $definitions = $this->getOrCreateUnitDefinitions($product->getUnitDefinitions());
 
@@ -330,7 +429,8 @@ final class ProductContext implements Context
          */
         $defaultUnitDefinition = $this->productUnitDefinition->createNew();
         $defaultUnitDefinition->setUnit($unit);
-        $defaultUnitDefinition->setConversionRate((float)$conversionRate);
+        $defaultUnitDefinition->setConversionRate((float) $conversionRate);
+        $defaultUnitDefinition->setPrecision($precison);
 
         $definitions->addAdditionalUnitDefinition($defaultUnitDefinition);
 
@@ -344,18 +444,50 @@ final class ProductContext implements Context
              */
             $productUnitDefinitionPrice = $this->productUnitDefinitionPriceFactory->createNew();
             $productUnitDefinitionPrice->setUnitDefinition($defaultUnitDefinition);
-            $productUnitDefinitionPrice->setPrice((int)$price);
+            $productUnitDefinitionPrice->setPrice($price);
 
             /**
              * @var ProductStoreValuesInterface $storeValues
              */
-            $storeValues = $product->getStoreValues($store);
+            $storeValues = $product->getStoreValuesForStore($store);
             $storeValues->addProductUnitDefinitionPrice($productUnitDefinitionPrice);
 
-            $product->setStoreValues($storeValues, $store);
+            $product->setStoreValuesForStore($storeValues, $store);
         }
 
         $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^I copy the (product)$/
+     */
+    public function iCopyTheProduct(ProductInterface $product)
+    {
+        $objectService = new Service();
+        $newObject = $objectService->copyAsChild($product->getParent(), $product);
+
+        $this->sharedStorage->set('copied-object', $newObject);
+    }
+    /**
+     * @Given /^I copy the (products) unit-definitions and quantity-price-rules to all variants$/
+     */
+    public function iCopyTheUnitDefinitionsAndQuantityPriceRulesToAllVariants(ProductInterface $product)
+    {
+        /**
+         * @var Concrete $product
+         */
+        Assert::isInstanceOf($product, Concrete::class);
+
+        foreach ($product->getChildren([AbstractObject::OBJECT_TYPE_VARIANT], true) as $variant) {
+
+            if (!$variant instanceof ProductInterface) {
+                continue;
+            }
+
+            $this->unitDefinitionsCloner->clone($variant, $product, false);
+            $this->quantityPriceRulesCloner->clone($variant, $product, false);
+            $variant->save();
+        }
     }
 
     private function getOrCreateUnitDefinitions(ProductUnitDefinitionsInterface $definitions = null)
@@ -405,10 +537,30 @@ final class ProductContext implements Context
 
         if (null !== $store) {
             $product->setStores([$store->getId()]);
-            $product->setStorePrice($price, $store);
+            $product->setStoreValuesOfType('price', $price, $store);
         }
 
         return $product;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param string           $productName
+     *
+     * @return ProductInterface
+     */
+    private function createSimpleVariant(
+        ProductInterface $product,
+        string $productName
+    ) {
+        $variant = $this->createSimpleProduct($productName);
+        $variant->setParent($product);
+
+        if ($variant instanceof Concrete) {
+            $variant->setType(AbstractObject::OBJECT_TYPE_VARIANT);
+        }
+
+        return $variant;
     }
 
     /**
@@ -425,12 +577,7 @@ final class ProductContext implements Context
         int $price = 100,
         StoreInterface $store = null
     ) {
-        $variant = $this->createSimpleProduct($productName);
-        $variant->setParent($product);
-
-        if ($variant instanceof Concrete) {
-            $variant->setType(AbstractObject::OBJECT_TYPE_VARIANT);
-        }
+        $variant = $this->createSimpleVariant($product, $productName);
 
         if (null === $store && $this->sharedStorage->has('store')) {
             $store = $this->sharedStorage->get('store');
@@ -438,7 +585,7 @@ final class ProductContext implements Context
 
         if (null !== $store) {
             $variant->setStores([$store->getId()]);
-            $variant->setStorePrice($price, $store);
+            $variant->setStoreValuesOfType('price', $price, $store);
         }
 
         return $variant;
@@ -450,15 +597,11 @@ final class ProductContext implements Context
     private function saveProduct(ProductInterface $product)
     {
         $product->save();
-        $this->sharedStorage->set('product', $product);
-    }
 
-    /**
-     * @param ProductInterface $product
-     */
-    private function saveVariant(ProductInterface $product)
-    {
-        $product->save();
-        $this->sharedStorage->set('variant', $product);
+        if ($product->getType() === 'variant') {
+            $this->sharedStorage->set('variant', $product);
+        } else {
+            $this->sharedStorage->set('product', $product);
+        }
     }
 }

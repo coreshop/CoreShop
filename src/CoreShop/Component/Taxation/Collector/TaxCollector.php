@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Taxation\Collector;
 
@@ -20,20 +22,9 @@ use CoreShop\Component\Taxation\Model\TaxRateInterface;
 
 class TaxCollector implements TaxCollectorInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $taxRateRepository;
+    private RepositoryInterface $taxRateRepository;
+    private FactoryInterface $taxItemFactory;
 
-    /**
-     * @var FactoryInterface
-     */
-    private $taxItemFactory;
-
-    /**
-     * @param RepositoryInterface $taxRateRepository
-     * @param FactoryInterface    $taxItemFactory
-     */
     public function __construct(
         RepositoryInterface $taxRateRepository,
         FactoryInterface $taxItemFactory
@@ -42,13 +33,10 @@ class TaxCollector implements TaxCollectorInterface
         $this->taxItemFactory = $taxItemFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = [])
+    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array
     {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
-            $taxesAmount = $taxCalculator->getTaxesAmount($price, true);
+            $taxesAmount = $taxCalculator->getTaxesAmountAsArray($price);
 
             if (is_array($taxesAmount)) {
                 foreach ($taxesAmount as $id => $amount) {
@@ -60,13 +48,10 @@ class TaxCollector implements TaxCollectorInterface
         return $usedTaxes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = [])
+    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array
     {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
-            $taxesAmount = $taxCalculator->getTaxesAmountFromGross($price, true);
+            $taxesAmount = $taxCalculator->getTaxesAmountFromGrossAsArray($price);
 
             if (is_array($taxesAmount)) {
                 foreach ($taxesAmount as $id => $amount) {
@@ -78,10 +63,7 @@ class TaxCollector implements TaxCollectorInterface
         return $usedTaxes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function mergeTaxes(array $taxes1, array $taxes2)
+    public function mergeTaxes(array $taxes1, array $taxes2): array
     {
         foreach ($taxes1 as $id => $tax) {
             $this->addTaxToArray($id, $tax->getAmount(), $taxes2);

@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -22,13 +22,13 @@ coreshop.notification.rule.panel = Class.create(coreshop.rules.panel, {
     iconCls: 'coreshop_icon_notification_rule',
     type: 'coreshop_notification_rule',
 
-    url: {
-        add: '/admin/coreshop/notification_rules/add',
-        delete: '/admin/coreshop/notification_rules/delete',
-        get: '/admin/coreshop/notification_rules/get',
-        list: '/admin/coreshop/notification_rules/list',
-        config: '/admin/coreshop/notification_rules/get-config',
-        sort: '/admin/coreshop/notification_rules/sort'
+    routing: {
+        add: 'coreshop_notification_rule_add',
+        delete: 'coreshop_notification_rule_delete',
+        get: 'coreshop_notification_rule_get',
+        list: 'coreshop_notification_rule_list',
+        config: 'coreshop_notification_rule_getConfig',
+        sort: 'coreshop_notification_rule_sort'
     },
 
     getItemClass: function () {
@@ -67,7 +67,7 @@ coreshop.notification.rule.panel = Class.create(coreshop.rules.panel, {
                         this.grid.setLoading(t('loading'));
 
                         Ext.Ajax.request({
-                            url: this.url.sort,
+                            url: Routing.generate(this.routing.sort),
                             method: 'post',
                             params: {
                                 rule: data.records[0].getId(),

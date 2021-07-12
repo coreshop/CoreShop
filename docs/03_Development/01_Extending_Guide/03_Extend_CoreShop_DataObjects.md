@@ -1,6 +1,8 @@
 # Extending CoreShop
 
-CoreShop Data Objects (like CoreShopProduct or CoreShopOrder) should not be changed directly within Pimcore.
+CoreShop Data Objects (like CoreShopProduct or CoreShopOrder) can be changed directly within Pimcore.
+
+## Replace CoreShop Object Classes with your own Classes
 
 CoreShop uses Pimcore Parameters to determine the Pimcore Object Class. To change it, simply add this to your config.yml
 
@@ -15,4 +17,3 @@ core_shop_order:
                 factory: AppBundle\Factory\OrderFactory
 ```
 
-TODO: Be more clear about that

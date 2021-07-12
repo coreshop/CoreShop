@@ -6,50 +6,30 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
 use Webmozart\Assert\Assert;
 
 final class ThemeContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private ThemeResolverInterface $themeResolver;
 
-    /**
-     * @var ThemeResolverInterface
-     */
-    private $themeResolver;
-
-    /**
-     * @var ActiveThemeInterface
-     */
-    private $activeTheme;
-
-    /**
-     * ThemeContext constructor.
-     *
-     * @param SharedStorageInterface $sharedStorage
-     * @param ThemeResolverInterface $themeResolver
-     * @param ActiveThemeInterface   $activeTheme
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        ThemeResolverInterface $themeResolver,
-        ActiveThemeInterface $activeTheme
+        ThemeResolverInterface $themeResolver
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->themeResolver = $themeResolver;
-        $this->activeTheme = $activeTheme;
     }
 
     /**
@@ -57,8 +37,8 @@ final class ThemeContext implements Context
      */
     public function currentThemeNameIs(string $currentThemeName)
     {
-        $this->themeResolver->resolveTheme($this->activeTheme);
+        $theme = $this->themeResolver->resolveTheme();
 
-        Assert::same($this->activeTheme->getActiveTheme(), $currentThemeName);
+        Assert::same($theme, $currentThemeName);
     }
 }

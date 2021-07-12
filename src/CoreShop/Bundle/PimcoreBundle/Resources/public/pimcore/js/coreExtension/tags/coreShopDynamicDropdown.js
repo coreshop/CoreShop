@@ -5,13 +5,19 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 pimcore.registerNS('pimcore.object.tags.coreShopDynamicDropdown');
 pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.select, {
     type: 'coreShopDynamicDropdown',
+
+     initialize: function (data, fieldConfig) {
+        this.data = data;
+        this.data_mapped = data ? parseInt(data.id) : null;
+        this.fieldConfig = fieldConfig;
+    },
 
     getGridColumnEditor: function (field) {
         if (field.layout.noteditable) {
@@ -20,7 +26,7 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
         this.options_store = new Ext.data.JsonStore({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/dynamic-dropdown/options',
+                url: Routing.generate('coreshop_dynamic_dropdown_options'),
                 extraParams: {
                     folderName: field.layout.folderName,
                     methodName: field.layout.methodName,
@@ -39,7 +45,7 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
             fields: ['key', 'value'],
             listeners: {
                 load: function (store, records, success, operation) {
-                    console.debug(operation);
+
                 }.bind(this)
             },
             autoLoad: true
@@ -51,9 +57,11 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
             editable: false,
             mode: 'local',
             valueField: 'value',
-            displayField: 'key'
+            displayField: 'key',
+            autoComplete: false,
+            forceSelection: true,
+            selectOnFocus: true,
         };
-
 
         return new Ext.form.ComboBox(options);
     },
@@ -86,7 +94,7 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
         this.options_store = new Ext.data.JsonStore({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/dynamic-dropdown/options',
+                url: Routing.generate('coreshop_dynamic_dropdown_options'),
                 extraParams: {
                     folderName: this.fieldConfig.folderName,
                     methodName: this.fieldConfig.methodName,
@@ -129,7 +137,7 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
             queryMode: 'local',
             autoSelect: false,
             autoLoadOnValue: true,
-            value: this.data,
+            value: this.data_mapped,
             plugins: ['clearbutton'],
             listConfig: {
                 getInnerTpl: function (displayField) {

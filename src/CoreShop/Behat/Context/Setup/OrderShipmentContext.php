@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -24,49 +26,20 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 final class OrderShipmentContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private OrderDocumentTransformerInterface $shipmentTransformer;
+    private FactoryInterface $orderShipmentFactory;
+    private StateMachineApplier $stateMachineApplier;
 
-    /**
-     * @var OrderDocumentTransformerInterface
-     */
-    private $shipmentTransformer;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $orderShipmentFactory;
-
-    /**
-     * @var OrderDocumentRepositoryInterface
-     */
-    private $orderShipmentRepository;
-
-    /**
-     * @var StateMachineApplier
-     */
-    private $stateMachineApplier;
-
-    /**
-     * @param SharedStorageInterface            $sharedStorage
-     * @param OrderDocumentTransformerInterface $shipmentTransformer
-     * @param FactoryInterface                  $orderShipmentFactory
-     * @param OrderDocumentRepositoryInterface  $orderShipmentRepository
-     * @param StateMachineApplier               $stateMachineApplier
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         OrderDocumentTransformerInterface $shipmentTransformer,
         FactoryInterface $orderShipmentFactory,
-        OrderDocumentRepositoryInterface $orderShipmentRepository,
         StateMachineApplier $stateMachineApplier
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->shipmentTransformer = $shipmentTransformer;
         $this->orderShipmentFactory = $orderShipmentFactory;
-        $this->orderShipmentRepository = $orderShipmentRepository;
         $this->stateMachineApplier = $stateMachineApplier;
     }
 
@@ -76,7 +49,8 @@ final class OrderShipmentContext implements Context
      */
     public function iCreateAFullShipmentForOrder(OrderInterface $order)
     {
-        $orderItem = reset($order->getItems());
+        $items = $order->getItems();
+        $orderItem = reset($items);
 
         $orderShipment = $this->orderShipmentFactory->createNew();
         $orderShipment = $this->shipmentTransformer->transform($order, $orderShipment, [

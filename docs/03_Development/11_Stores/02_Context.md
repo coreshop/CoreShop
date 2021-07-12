@@ -53,20 +53,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class DocumentBasedRequestRequestResolver implements RequestResolverInterface
 {
-    /**
-     * @var StoreRepositoryInterface
-     */
-    private $storeRepository;
+    private StoreRepositoryInterface $storeRepository;
 
-    /**
-     * @param StoreRepositoryInterface $storeRepository
-     */
     public function __construct(StoreRepositoryInterface $storeRepository)
     {
         $this->storeRepository = $storeRepository;
     }
 
-    public function findStore(Request $request)
+    public function findStore(Request $request): ?StoreInterface
     {
         if (substr($request->getPathInfo(), 0, 3) === '/en') {
             return $this->storeRepository->find(1);

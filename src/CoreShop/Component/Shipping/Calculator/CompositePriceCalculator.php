@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Shipping\Calculator;
 
@@ -18,31 +20,19 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class CompositePriceCalculator implements CarrierPriceCalculatorInterface
 {
-    /**
-     * @var CarrierPriceCalculatorInterface[]
-     */
-    protected $calculators;
+    protected array $calculators;
 
-    /**
-     * @param CarrierPriceCalculatorInterface[] $calculators
-     */
     public function __construct(array $calculators)
     {
         $this->calculators = $calculators;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int
     {
-        $price = false;
+        $price = 0;
 
-        /*
-         * First Price wins
-         */
         foreach ($this->calculators as $calculator) {
-            $actionPrice = $calculator->getPrice($carrier, $shippable, $address);
+            $actionPrice = $calculator->getPrice($carrier, $shippable, $address, $context);
 
             if (false !== $actionPrice && null !== $actionPrice) {
                 $price = $actionPrice;

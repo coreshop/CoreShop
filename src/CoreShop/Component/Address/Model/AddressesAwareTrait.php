@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Address\Model;
 
@@ -19,9 +21,6 @@ trait AddressesAwareTrait
      */
     protected $addresses;
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAddress(AddressInterface $address)
     {
         $addresses = $this->getAddresses();
@@ -39,9 +38,6 @@ trait AddressesAwareTrait
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addAddress(AddressInterface $address)
     {
         $addresses = $this->getAddresses();
@@ -56,18 +52,23 @@ trait AddressesAwareTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAddresses()
+    public function removeAddress(AddressInterface $address)
+    {
+        if (!$this->hasAddress($address)) {
+            return;
+        }
+
+        $this->setAddresses(array_filter($this->getAddresses(), function (AddressInterface $storedAddress) use ($address) {
+            return $storedAddress->getId() !== $address->getId();
+        }));
+    }
+
+    public function getAddresses(): ?array
     {
         return $this->addresses;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setAddresses($addresses)
+    public function setAddresses(?array $addresses)
     {
         $this->addresses = $addresses;
     }

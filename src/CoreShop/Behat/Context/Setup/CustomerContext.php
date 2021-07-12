@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -17,6 +19,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Customer\Context\FixedCustomerContext;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
@@ -26,48 +29,22 @@ use Pimcore\Model\DataObject\Folder;
 
 final class CustomerContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private FactoryInterface $customerFactory;
+    private FactoryInterface $userFactory;
+    private FixedCustomerContext $fixedCustomerContext;
+    private FactoryInterface $addressFactory;
 
-    /**
-     * @var FactoryInterface
-     */
-    private $customerFactory;
-
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    private $customerRepository;
-
-    /**
-     * @var FixedCustomerContext
-     */
-    private $fixedCustomerContext;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $addressFactory;
-
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param FactoryInterface            $customerFactory
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param FixedCustomerContext        $fixedCustomerContext
-     * @param FactoryInterface            $addressFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $customerFactory,
-        CustomerRepositoryInterface $customerRepository,
+        FactoryInterface $userFactory,
         FixedCustomerContext $fixedCustomerContext,
         FactoryInterface $addressFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->customerFactory = $customerFactory;
-        $this->customerRepository = $customerRepository;
+        $this->userFactory = $userFactory;
         $this->fixedCustomerContext = $fixedCustomerContext;
         $this->addressFactory = $addressFactory;
     }
@@ -80,6 +57,35 @@ final class CustomerContext implements Context
         $category = $this->createCustomer($email);
 
         $this->saveCustomer($category);
+    }
+
+    /**
+     * @Given /^the site has a customer "([^"]+)" with password "([^"]+)"$/
+     * @Given /^the site has a customer "([^"]+)" with password "([^"]+)" and name "([^"]+)" "([^"]+)"$/
+     */
+    public function theSiteHasACustomerWithPassword(string $email, string $password, ?string $firstname = null, ?string $lastname = null)
+    {
+        $customer = $this->createCustomer($email);
+
+        $customer->getUser()->setPassword($password);
+
+        if ($firstname) {
+            $customer->setFirstname($firstname);
+        }
+
+        if ($lastname) {
+            $customer->setLastname($lastname);
+        }
+
+        $this->saveCustomer($customer);
+    }
+
+    /**
+     * @Then /^the (customer "[^"]+") was deleted$/
+     */
+    public function accountWasDeleted(CustomerInterface $customer)
+    {
+        $customer->delete();
     }
 
     /**
@@ -103,6 +109,7 @@ final class CustomerContext implements Context
 
     /**
      * @Given /^the (customer "[^"]+") has an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
+     * @Given /^the (customer) has an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
      */
     public function theCustomerHasAnAddress(
         CustomerInterface $customer,
@@ -128,6 +135,8 @@ final class CustomerContext implements Context
 
         $customer->addAddress($address);
         $customer->save();
+
+        $this->sharedStorage->set('address', $address);
     }
 
     /**
@@ -140,11 +149,26 @@ final class CustomerContext implements Context
         /** @var CustomerInterface $customer */
         $customer = $this->customerFactory->createNew();
 
+        list ($firstname, $lastname) = explode('@', $email);
+
+        $customer->setPublished(true);
         $customer->setKey(File::getValidFilename($email));
         $customer->setParent(Folder::getByPath('/'));
         $customer->setEmail($email);
-        $customer->setFirstname(reset(explode('@', $email)));
-        $customer->setLastname(end(explode('@', $email)));
+        $customer->setFirstname($firstname);
+        $customer->setLastname($lastname);
+
+        /**
+         * @var UserInterface $user
+         */
+        $user = $this->userFactory->createNew();
+        $user->setKey(File::getValidFilename($email));
+        $user->setParent($customer);
+        $user->setPublished(true);
+        $user->setLoginIdentifier($email);
+        $user->setCustomer($customer);
+
+        $customer->setUser($user);
 
         return $customer;
     }
@@ -154,7 +178,19 @@ final class CustomerContext implements Context
      */
     private function saveCustomer(CustomerInterface $customer)
     {
+        $user = $customer->getUser();
+        $customer->setUser(null);
         $customer->save();
+
+        if ($user) {
+            $user->setParent($customer);
+            $user->save();
+
+            $customer->setUser($user);
+            $customer->save();
+
+            $this->sharedStorage->set('user', $user);
+        }
 
         $this->sharedStorage->set('customer', $customer);
     }

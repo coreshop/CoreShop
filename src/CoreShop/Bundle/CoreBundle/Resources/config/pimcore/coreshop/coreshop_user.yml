@@ -1,0 +1,6 @@
+core_shop_user:
+    pimcore:
+        user:
+            classes:
+                interface: CoreShop\Component\Core\Model\UserInterface
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopUserBundle/CoreShopUser.json'

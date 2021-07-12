@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -15,8 +15,8 @@ coreshop.taxrulegroup.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_tax_rule_groups',
 
-    url: {
-        save: '/admin/coreshop/tax_rule_groups/save'
+    routing: {
+        save: 'coreshop_tax_rule_group_save'
     },
 
     getItems: function () {
@@ -93,19 +93,22 @@ coreshop.taxrulegroup.item = Class.create(coreshop.resource.item, {
             data: this.data.taxRules
         });
 
+        var taxRatesStore = Ext.create('store.coreshop_tax_rates');
+        taxRatesStore.load();
+
         var gridColumns = [
             {
                 header: t('coreshop_tax'),
                 width: 200,
                 dataIndex: 'taxRate',
                 editor: new Ext.form.ComboBox({
-                    store: pimcore.globalmanager.get('coreshop_tax_rates'),
+                    store: taxRatesStore,
                     valueField: 'id',
                     displayField: 'name',
                     queryMode: 'local'
                 }),
                 renderer: function (taxRate) {
-                    var record = pimcore.globalmanager.get('coreshop_tax_rates').getById(taxRate);
+                    var record = taxRatesStore.getById(taxRate);
 
                     if (record) {
                         return record.get('name');

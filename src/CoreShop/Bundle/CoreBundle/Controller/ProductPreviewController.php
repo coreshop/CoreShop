@@ -6,15 +6,20 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use CoreShop\Component\Core\Model\PimcoreStoresAwareInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use CoreShop\Component\Store\Model\StoresAwareInterface;
 use Pimcore\Model\Site;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +27,7 @@ use Pimcore\Model\DataObject;
 
 class ProductPreviewController extends AdminController
 {
-    public function previewAction(Request $request)
+    public function previewAction(Request $request): Response
     {
         if (!$request->get('store')) {
             return new Response('No Store selected');
@@ -44,17 +49,23 @@ class ProductPreviewController extends AdminController
             }
         }
 
+        $id = $request->get('id');
+
         /**
          * @var DataObject\Concrete $object
          */
-        $object = $this->get('coreshop.repository.product')->find($request->get('id'));
+        $object = DataObject::getById($id);
 
-        if (!$object instanceof ProductInterface) {
-            return new Response('Store Preview is only available for Products');
+        if (!$object instanceof DataObject\Concrete) {
+            return new Response('Store Preview is only available for DataObjects');
+        }
+
+        if (!$object instanceof PimcoreStoresAwareInterface) {
+            return new Response('Store Preview is only available for objects implementing CoreShop\Component\Core\Model\PimcoreStoresAwareInterface');
         }
 
         if (!in_array($store->getId(), array_values($object->getStores()))) {
-            return new Response('Selected Store is Invalid for Product');
+            return new Response('Selected Store is Invalid for Object');
         }
 
         $url = $object->getClass()->getPreviewUrl();
@@ -83,6 +94,9 @@ class ProductPreviewController extends AdminController
 
         $urlParts = parse_url($url);
 
-        return $this->redirect(($site ? 'https://' . $site->getMainDomain() : '') . $urlParts['path']);
+        $newUrl = ($site ? 'https://' . $site->getMainDomain() : '') . $urlParts['path'];
+        $newUrl .= '?pimcore_object_preview=' . $id . '&_dc=' . time() . (isset($urlParts['query']) ? '&' . $urlParts['query'] : '');
+
+        return $this->redirect($newUrl);
     }
 }

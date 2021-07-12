@@ -6,27 +6,22 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class BodyListener
 {
-    /**
-     * Core request handler.
-     *
-     * @param GetResponseEvent $event
-     *
-     * @throws BadRequestHttpException
-     */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         $contentType = $request->headers->get('Content-Type');
@@ -41,23 +36,16 @@ class BodyListener
                     $data = @json_decode($content, true);
 
                     if (is_array($data)) {
-                        $request->request = new ParameterBag($data);
+                        $request->request = new InputBag($data);
                     } else {
-                        throw new BadRequestHttpException('Invalid ' . $format . ' message received');
+                        throw new BadRequestHttpException('Invalid '.$format.' message received');
                     }
                 }
             }
         }
     }
 
-    /**
-     * Check if we should try to decode the body.
-     *
-     * @param Request $request
-     *
-     * @return bool
-     */
-    protected function isDecodeable(Request $request)
+    protected function isDecodeable(Request $request): bool
     {
         if (!in_array($request->getMethod(), ['POST', 'PUT', 'PATCH', 'DELETE'])) {
             return false;
@@ -66,15 +54,12 @@ class BodyListener
         return !$this->isFormRequest($request);
     }
 
-    /**
-     * Check if the content type indicates a form submission.
-     *
-     * @param Request $request
-     *
-     * @return bool
-     */
-    private function isFormRequest(Request $request)
+    private function isFormRequest(Request $request): bool
     {
+        if (null === $request->headers->get('Content-Type')) {
+            return false;
+        }
+
         $contentTypeParts = explode(';', $request->headers->get('Content-Type'));
 
         if (isset($contentTypeParts[0])) {

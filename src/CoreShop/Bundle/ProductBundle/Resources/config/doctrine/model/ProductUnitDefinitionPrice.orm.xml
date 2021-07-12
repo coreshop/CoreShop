@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <mapped-superclass name="CoreShop\Component\Product\Model\ProductUnitDefinitionPrice"
+                       table="coreshop_product_unit_definition_price">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="price" column="price" type="bigint"/>
+
+        <many-to-one field="unitDefinition" target-entity="CoreShop\Component\Product\Model\ProductUnitDefinitionInterface">
+            <join-column name="unit_definition" referenced-column-name="id" on-delete="CASCADE"/>
+            <cascade>
+                <cascade-merge/>
+                <cascade-persist/>
+            </cascade>
+        </many-to-one>
+    </mapped-superclass>
+</doctrine-mapping>

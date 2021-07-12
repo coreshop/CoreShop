@@ -18,39 +18,47 @@
     }
   ],
   "require": {
-    "php": "^7.2",
     "doctrine/orm": "^2.5",
-    "doctrine/doctrine-bundle": "^1.6",
-    "jms/serializer-bundle": "^2.0",
+    "doctrine/doctrine-bundle": "^2.2",
+    "jms/serializer-bundle": "^3.0",
     "stof/doctrine-extensions-bundle": "^1.2",
-    "coreshop/pimcore-bundle": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/resource": "^2.0",
-    "symfony/config": "^3.4 | ^4.0",
-    "symfony/expression-language": "^3.4 | ^4.0",
-    "symfony/form": "^3.4 | ^4.0",
-    "symfony/framework-bundle": "^3.4 | ^4.0",
-    "symfony/security-csrf": "^3.4 | ^4.0",
-    "symfony/templating": "^3.4 | ^4.0",
-    "symfony/twig-bundle": "^3.4 | ^4.0",
-    "symfony/validator": "^3.4 | ^4.0",
-    "symfony/yaml": "^3.4 | ^4.0",
-    "gedmo/doctrine-extensions": "^2.4.12",
-    "pimcore/pimcore": "^5.8.0 | ^6.0.0"
+    "coreshop/pimcore-bundle": "^3.0",
+    "coreshop/optimistic-entity-lock-bundle": "^3.0",
+    "coreshop/registry": "^3.0",
+    "coreshop/resource": "^3.0",
+    "symfony/config": "^5.2.0",
+    "symfony/expression-language": "^5.2.0",
+    "symfony/form": "^5.2.0",
+    "symfony/framework-bundle": "^5.2.0",
+    "symfony/security-csrf": "^5.2.0",
+    "symfony/templating": "^5.2.0",
+    "symfony/twig-bundle": "^5.2.0",
+    "symfony/validator": "^5.2.0",
+    "symfony/yaml": "^5.2.0",
+    "gedmo/doctrine-extensions": "^3.0.0",
+    "pimcore/pimcore": "^10.0.0"
   },
-  "config": {
-    "bin-dir": "bin"
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-doctrine": "^0.12",
+    "phpstan/phpstan-webmozart-assert": "^0.12"
   },
   "autoload": {
     "psr-4": {
       "CoreShop\\Bundle\\ResourceBundle\\": ""
     }
   },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

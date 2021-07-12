@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Transform;
 
@@ -18,14 +20,8 @@ use Pimcore\Model\DataObject\Concrete;
 
 final class SharedStorageContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     */
     public function __construct(SharedStorageInterface $sharedStorage)
     {
         $this->sharedStorage = $sharedStorage;
@@ -40,10 +36,26 @@ final class SharedStorageContext implements Context
     }
 
     /**
+     * @Transform /^(?:this|that|the) ([^"]+)$/
+     */
+    public function getResource($resource)
+    {
+        return $this->sharedStorage->get(str_replace([' ', '-', '\''], '_', $resource));
+    }
+
+    /**
      * @Transform /^(object)$/
      */
     public function getLatestObject()
     {
         return $this->getLatestResource() instanceof Concrete ? $this->getLatestResource() : null;
+    }
+
+    /**
+     * @Transform /^(copied-object)$/
+     */
+    public function getCopiedObject()
+    {
+        return $this->sharedStorage->get('copied-object');
     }
 }

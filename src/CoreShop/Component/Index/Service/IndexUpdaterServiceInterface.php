@@ -6,25 +6,19 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Service;
+
+use CoreShop\Component\Index\Model\IndexableInterface;
 
 interface IndexUpdaterServiceInterface
 {
-    /**
-     * Update all Indices with $subject.
-     *
-     * @param mixed $subject
-     */
-    public function updateIndices($subject);
+    public function updateIndices(IndexableInterface $subject, bool $isVersionChange = false): void;
 
-    /**
-     * Remove all Indices with $subject.
-     *
-     * @param mixed $subject
-     */
-    public function removeIndices($subject);
+    public function removeIndices(IndexableInterface $subject): void;
 }

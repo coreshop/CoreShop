@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
@@ -19,49 +21,31 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TagManagerClassicEcommerce extends AbstractEcommerceTracker
 {
-    /**
-     * @var CodeTracker
-     */
-    public $codeTracker;
+    public CodeTracker $codeTracker;
+    public ConfigResolverInterface $config;
+    protected bool $dataLayerIncluded = false;
 
-    /**
-     * @var ConfigResolverInterface
-     */
-    public $config;
-
-    /**
-     * @var bool
-     */
-    protected $dataLayerIncluded = false;
-
-    /**
-     * @param TrackerInterface $tracker
-     */
-    public function setTracker(TrackerInterface $tracker)
+    public function setTracker(TrackerInterface $tracker): void
     {
         // not implemented in GTM. Use CodeTracker instead.
     }
 
-    /**
-     * @param CodeTracker $tracker
-     */
-    public function setCodeTracker(CodeTracker $tracker)
+    public function setCodeTracker(CodeTracker $tracker): void
     {
         $this->codeTracker = $tracker;
     }
 
-    /**
-     * @param ConfigResolverInterface $config
-     */
-    public function setConfigResolver(ConfigResolverInterface $config)
+    public function getCodeTracker(): CodeTracker
+    {
+        return $this->codeTracker;
+    }
+
+    public function setConfigResolver(ConfigResolverInterface $config): void
     {
         $this->config = $config;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -70,50 +54,32 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackProduct($product)
+    public function trackProduct($product): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackProductImpression($product)
+    public function trackProductImpression($product): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCartAdd($cart, $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCartRemove($cart, $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutComplete($order)
+    public function trackCheckoutComplete($order): void
     {
         $this->ensureDataLayer();
 
@@ -131,14 +97,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
         $this->codeTracker->addCodePart($result);
     }
 
-    /**
-     * Transform ActionData into gtag data array.
-     *
-     * @param array $actionData
-     *
-     * @return array
-     */
-    protected function transformOrder($actionData)
+    protected function transformOrder(array $actionData): array
     {
         return [
             'transactionId' => $actionData['id'],
@@ -150,14 +109,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
         ];
     }
 
-    /**
-     * Transform product action into gtag data object.
-     *
-     * @param array $item
-     *
-     * @return array
-     */
-    protected function transformProductAction($item)
+    protected function transformProductAction(array $item): array
     {
         return $this->filterNullValues([
             'id' => $item['id'],
@@ -169,10 +121,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
         ]);
     }
 
-    /**
-     * Makes sure data layer is included once before any call.
-     */
-    protected function ensureDataLayer()
+    protected function ensureDataLayer(): void
     {
         if ($this->dataLayerIncluded) {
             return;

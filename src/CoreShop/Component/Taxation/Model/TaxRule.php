@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Taxation\Model;
 
@@ -57,17 +59,11 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBehavior()
     {
         return $this->behavior;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setBehavior($behavior)
     {
         $this->behavior = $behavior;
@@ -75,17 +71,11 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxRuleGroup()
     {
         return $this->taxRuleGroup;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup = null)
     {
         $this->taxRuleGroup = $taxRuleGroup;
@@ -93,17 +83,11 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxRate()
     {
         return $this->taxRate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTaxRate(TaxRateInterface $taxRate)
     {
         $this->taxRate = $taxRate;

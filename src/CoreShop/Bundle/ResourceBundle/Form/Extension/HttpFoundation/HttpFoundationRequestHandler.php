@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Form\Extension\HttpFoundation;
 
@@ -28,14 +30,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 final class HttpFoundationRequestHandler extends \Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
 {
-    /**
-     * @var ServerParams
-     */
-    private $serverParams;
+    private ServerParams $serverParams;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(ServerParams $serverParams = null)
     {
         parent::__construct($serverParams);
@@ -43,10 +39,7 @@ final class HttpFoundationRequestHandler extends \Symfony\Component\Form\Extensi
         $this->serverParams = $serverParams ?: new ServerParams();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handleRequest(FormInterface $form, $request = null)
+    public function handleRequest(FormInterface $form, $request = null): void
     {
         if (!$request instanceof Request) {
             throw new UnexpectedTypeException($request, 'Symfony\Component\HttpFoundation\Request');

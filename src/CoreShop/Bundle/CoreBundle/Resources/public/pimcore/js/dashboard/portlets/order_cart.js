@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -42,7 +42,7 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(coreshop.portlet.abst
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/portlet/get-data?portlet=' + this.portletType,
+                url: Routing.generate('coreshop_admin_portlet_get_data', {portlet: this.portletType}),
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
@@ -237,7 +237,7 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(coreshop.portlet.abst
                                 var storeValue = Ext.getCmp('coreshop_portlet_store').getValue();
                                 this.config = storeValue;
                                 Ext.Ajax.request({
-                                    url: '/admin/portal/update-portlet-config',
+                                    url: Routing.generate('pimcore_admin_portal_updateportletconfig'),
                                     method: 'PUT',
                                     params: {
                                         key: this.portal.key,

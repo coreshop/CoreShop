@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Address\Model;
 
@@ -17,128 +19,53 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface AddressInterface extends ResourceInterface, PimcoreModelInterface
 {
-    /**
-     * @return string
-     */
-    public function getSalutation();
+    public function getSalutation(): ?string;
 
-    /**
-     * @param string $salutation
-     */
-    public function setSalutation($salutation);
+    public function setSalutation(?string $salutation);
 
-    /**
-     * @return string
-     */
-    public function getFirstname();
+    public function getFirstname(): ?string;
 
-    /**
-     * @param string $firstname
-     */
-    public function setFirstname($firstname);
+    public function setFirstname(?string $firstname);
 
-    /**
-     * @return string
-     */
-    public function getLastname();
+    public function getLastname(): ?string;
 
-    /**
-     * @param string $lastname
-     */
-    public function setLastname($lastname);
+    public function setLastname(?string $lastname);
 
-    /**
-     * @return string
-     */
-    public function getCompany();
+    public function getCompany(): ?string;
 
-    /**
-     * @param string $company
-     */
-    public function setCompany($company);
+    public function setCompany(?string $company);
 
-    /**
-     * @return string
-     */
-    public function getStreet();
+    public function getStreet(): ?string;
 
-    /**
-     * @param string $street
-     */
-    public function setStreet($street);
+    public function setStreet(?string $street);
 
-    /**
-     * @return string
-     */
-    public function getNumber();
+    public function getNumber(): ?string;
 
-    /**
-     * @param string $number
-     */
-    public function setNumber($number);
+    public function setNumber(?string $number);
 
-    /**
-     * @return string
-     */
-    public function getPostcode();
+    public function getPostcode(): ?string;
 
-    /**
-     * @param string $postcode
-     */
-    public function setPostcode($postcode);
+    public function setPostcode(?string $postcode);
 
-    /**
-     * @return string
-     */
-    public function getCity();
+    public function getCity(): ?string;
 
-    /**
-     * @param string $city
-     */
-    public function setCity($city);
+    public function setCity(?string $city);
 
-    /**
-     * @return CountryInterface
-     */
-    public function getCountry();
+    public function getCountry(): ?CountryInterface;
 
-    /**
-     * @param string $country
-     */
-    public function setCountry($country);
+    public function setCountry(?CountryInterface $country);
 
-    /**
-     * @return StateInterface
-     */
-    public function getState();
+    public function getState(): ?StateInterface;
 
-    /**
-     * @param string $state
-     */
-    public function setState($state);
+    public function setState(?StateInterface $state);
 
-    /**
-     * @return string
-     */
     public function getPhoneNumber();
 
-    /**
-     * @param string $phoneNumber
-     */
-    public function setPhoneNumber($phoneNumber);
+    public function setPhoneNumber(?string $phoneNumber);
 
-    /**
-     * @return AddressIdentifierInterface|null
-     */
-    public function getAddressIdentifier();
+    public function getAddressIdentifier(): ?AddressIdentifierInterface;
 
-    /**
-     * @param AddressIdentifierInterface $addressIdentifier
-     */
-    public function setAddressIdentifier($addressIdentifier);
+    public function setAddressIdentifier(?AddressIdentifierInterface $addressIdentifier);
 
-    /**
-     * @return bool
-     */
-    public function hasAddressIdentifier();
+    public function hasAddressIdentifier(): bool;
 }

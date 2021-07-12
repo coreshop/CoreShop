@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -16,39 +18,23 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
-use Pimcore\Templating\Helper\HeadMeta;
-use Pimcore\Templating\Helper\HeadTitle;
+use Pimcore\Twig\Extension\Templating\HeadMeta;
+use Pimcore\Twig\Extension\Templating\HeadTitle;
 use Webmozart\Assert\Assert;
 
 final class SEOContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private SEOPresentationInterface $seoPresentation;
+    private HeadTitle $headTitle;
+    private HeadMeta $headMeta;
 
-    /**
-     * @var SEOPresentationInterface
-     */
-    private $seoPresentation;
-
-    /**
-     * @var HeadTitle
-     */
-    private $headTitle;
-
-    /**
-     * @var HeadMeta
-     */
-    private $headMeta;
-
-    /**
-     * @param SharedStorageInterface   $sharedStorage
-     * @param SEOPresentationInterface $seoPresentation
-     * @param HeadTitle                $headTitle
-     * @param HeadMeta                 $headMeta
-     */
-    public function __construct(SharedStorageInterface $sharedStorage, SEOPresentationInterface $seoPresentation, HeadTitle $headTitle, HeadMeta $headMeta)
+    public function __construct(
+        SharedStorageInterface $sharedStorage,
+        SEOPresentationInterface $seoPresentation,
+        HeadTitle $headTitle,
+        HeadMeta $headMeta
+    )
     {
         $this->sharedStorage = $sharedStorage;
         $this->seoPresentation = $seoPresentation;
@@ -60,7 +46,7 @@ final class SEOContext implements Context
      * @Then /^the (product "[^"]+") should have meta title "([^"]+)"$/
      * @Then /^the (product) should have meta title "([^"]+)"$/
      */
-    public function productShouldHaveMetaTitle(ProductInterface $product, $title)
+    public function productShouldHaveMetaTitle(ProductInterface $product, string $title)
     {
         $this->seoPresentation->updateSeoMetadata($product);
 
@@ -72,13 +58,21 @@ final class SEOContext implements Context
      * @Then /^the (product "[^"]+") should have meta description "([^"]+)"$/
      * @Then /^the (product) should have meta description "([^"]+)"$/
      */
-    public function productShouldHaveMetaDescription(ProductInterface $product, $description)
+    public function productShouldHaveMetaDescription(ProductInterface $product, string $description)
     {
         $this->seoPresentation->updateSeoMetadata($product);
 
         $descriptionItem = null;
 
-        foreach ($this->headMeta as $item) {
+        foreach ($this->headMeta->getContainer()->getArrayCopy() as $item) {
+            if (!$item instanceof \stdClass) {
+                continue;
+            }
+
+            if (!isset($item->name)) {
+                continue;
+            }
+
             if ($item->name === 'description') {
                 $descriptionItem = $item;
 

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
@@ -16,15 +18,11 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Model\ConfigurationInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ConfigurationController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function saveAllAction(Request $request)
+    public function saveAllAction(Request $request): Response
     {
         $values = $this->decodeJson($request->get('values'));
         $values = array_htmlspecialchars($values);
@@ -40,10 +38,7 @@ class ConfigurationController extends ResourceController
         return $this->viewHandler->handle(['success' => true]);
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getAllAction()
+    public function getAllAction(): Response
     {
         $stores = $this->get('coreshop.repository.store')->findAll();
         $valueArray = [];
@@ -68,11 +63,8 @@ class ConfigurationController extends ResourceController
         return $this->viewHandler->handle(['success' => true, 'data' => $valueArray]);
     }
 
-    /**
-     * @return ConfigurationServiceInterface
-     */
-    private function getConfigurationService()
+    private function getConfigurationService(): ConfigurationServiceInterface
     {
-        return $this->get('coreshop.configuration.service');
+        return $this->get(ConfigurationServiceInterface::class);
     }
 }

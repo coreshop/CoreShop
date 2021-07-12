@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\MenuBundle\DependencyInjection;
 
@@ -21,10 +23,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopMenuExtension extends AbstractPimcoreExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
@@ -32,10 +31,8 @@ final class CoreShopMenuExtension extends AbstractPimcoreExtension
 
         $loader->load('services.yml');
 
-
         $container
             ->registerForAutoconfiguration(MenuBuilderInterface::class)
-            ->addTag(MenuBuilderPass::MENU_BUILDER_TAG)
-        ;
+            ->addTag(MenuBuilderPass::MENU_BUILDER_TAG);
     }
 }

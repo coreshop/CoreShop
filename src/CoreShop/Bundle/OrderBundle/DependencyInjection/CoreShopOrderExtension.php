@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
@@ -21,6 +23,7 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRetailPr
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableWholesalePriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartContextsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartProcessorPass;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface;
@@ -37,15 +40,14 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopOrderExtension extends AbstractModelExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
+        $loader->load('services.yml');
+
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
         $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {
@@ -56,6 +58,13 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             $this->registerStack('coreshop', $config['stack'], $container);
         }
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
+        $container->setParameter('coreshop.order.legacy_serialization', $config['legacy_serialization']);
         $container->setParameter('coreshop.cart.expiration.days', $config['expiration']['cart']['days']);
         $container->setParameter('coreshop.cart.expiration.anonymous', $config['expiration']['cart']['anonymous']);
         $container->setParameter('coreshop.cart.expiration.customer', $config['expiration']['cart']['customer']);
@@ -66,47 +75,38 @@ final class CoreShopOrderExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(CartPriceRuleActionProcessorInterface::class)
-            ->addTag(CartPriceRuleActionPass::CART_PRICE_RULE_ACTION_TAG)
-        ;
+            ->addTag(CartPriceRuleActionPass::CART_PRICE_RULE_ACTION_TAG);
 
         $container
             ->registerForAutoconfiguration(CartRuleConditionCheckerInterface::class)
-            ->addTag(CartPriceRuleConditionPass::CART_PRICE_RULE_CONDITION_TAG)
-        ;
+            ->addTag(CartPriceRuleConditionPass::CART_PRICE_RULE_CONDITION_TAG);
 
         $container
             ->registerForAutoconfiguration(PurchasableDiscountCalculatorInterface::class)
-            ->addTag(PurchasableDiscountCalculatorsPass::PURCHASABLE_DISCOUNT_CALCULATOR_TAG)
-        ;
+            ->addTag(PurchasableDiscountCalculatorsPass::PURCHASABLE_DISCOUNT_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(PurchasableDiscountPriceCalculatorInterface::class)
-            ->addTag(PurchasableDiscountPriceCalculatorsPass::PURCHASABLE_DISCOUNT_PRICE_CALCULATOR_TAG)
-        ;
+            ->addTag(PurchasableDiscountPriceCalculatorsPass::PURCHASABLE_DISCOUNT_PRICE_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(PurchasablePriceCalculatorInterface::class)
-            ->addTag(PurchasablePriceCalculatorsPass::PURCHASABLE_PRICE_CALCULATOR_TAG)
-        ;
+            ->addTag(PurchasablePriceCalculatorsPass::PURCHASABLE_PRICE_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(PurchasableRetailPriceCalculatorInterface::class)
-            ->addTag(PurchasableRetailPriceCalculatorsPass::PURCHASABLE_RETAIL_PRICE_CALCULATOR_TAG)
-        ;
+            ->addTag(PurchasableRetailPriceCalculatorsPass::PURCHASABLE_RETAIL_PRICE_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(PurchasableWholesalePriceCalculatorInterface::class)
-            ->addTag(PurchasableWholesalePriceCalculatorsPass::PURCHASABLE_WHOLESALE_PRICE_CALCULATOR_TAG)
-        ;
+            ->addTag(PurchasableWholesalePriceCalculatorsPass::PURCHASABLE_WHOLESALE_PRICE_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(CartContextInterface::class)
-            ->addTag(RegisterCartContextsPass::CART_CONTEXT_TAG)
-        ;
+            ->addTag(RegisterCartContextsPass::CART_CONTEXT_TAG);
 
         $container
             ->registerForAutoconfiguration(CartProcessorInterface::class)
-            ->addTag(RegisterCartProcessorPass::CART_PROCESSOR_TAG)
-        ;
+            ->addTag(RegisterCartProcessorPass::CART_PROCESSOR_TAG);
     }
 }

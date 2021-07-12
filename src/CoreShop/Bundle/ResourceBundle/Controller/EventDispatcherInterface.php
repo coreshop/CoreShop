@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
@@ -24,7 +26,7 @@ interface EventDispatcherInterface
      * @param ResourceInterface $resource
      * @param Request           $request
      */
-    public function dispatch($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
+    public function dispatch($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 
     /**
      * @param string            $eventName
@@ -32,7 +34,7 @@ interface EventDispatcherInterface
      * @param ResourceInterface $resource
      * @param Request           $request
      */
-    public function dispatchPreEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
+    public function dispatchPreEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 
     /**
      * @param string            $eventName
@@ -40,7 +42,7 @@ interface EventDispatcherInterface
      * @param ResourceInterface $resource
      * @param Request           $request
      */
-    public function dispatchPostEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
+    public function dispatchPostEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 
     /**
      * @param string            $eventName
@@ -48,5 +50,5 @@ interface EventDispatcherInterface
      * @param ResourceInterface $resource
      * @param Request           $request
      */
-    public function dispatchInitializeEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
+    public function dispatchInitializeEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 }

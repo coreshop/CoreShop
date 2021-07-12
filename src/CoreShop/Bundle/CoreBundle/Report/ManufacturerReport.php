@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -25,55 +27,15 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ManufacturerReport implements ReportInterface
 {
-    /**
-     * @var int
-     */
-    private $totalRecords = 0;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private MoneyFormatterInterface $moneyFormatter;
+    private LocaleContextInterface $localeService;
+    private PimcoreRepositoryInterface $orderRepository;
+    private PimcoreRepositoryInterface $manufacturerRepository;
+    private PimcoreRepositoryInterface $orderItemRepository;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var Connection
-     */
-    private $db;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
-
-    /**
-     * @var LocaleContextInterface
-     */
-    private $localeService;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $manufacturerRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderItemRepository;
-
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param MoneyFormatterInterface    $moneyFormatter
-     * @param LocaleContextInterface     $localeService
-     * @param PimcoreRepositoryInterface $manufacturerRepository
-     * @param PimcoreRepositoryInterface $orderRepository
-     * @param PimcoreRepositoryInterface $orderItemRepository
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
@@ -92,10 +54,7 @@ class ManufacturerReport implements ReportInterface
         $this->orderItemRepository = $orderItemRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -112,7 +71,7 @@ class ManufacturerReport implements ReportInterface
         $orderItemClassId = $this->orderItemRepository->getClassId();
         $orderCompleteState = OrderStates::STATE_COMPLETE;
 
-        if (is_null($storeId)) {
+        if (null === $storeId) {
             return [];
         }
 
@@ -141,7 +100,7 @@ class ManufacturerReport implements ReportInterface
             ORDER BY quantityCount DESC
             LIMIT $offset,$limit";
 
-        $results = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $results = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
         $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 
@@ -164,9 +123,9 @@ class ManufacturerReport implements ReportInterface
     }
 
     /**
-     * @return int
+     * {@@inheritdoc}
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

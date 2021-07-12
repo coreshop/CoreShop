@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
@@ -21,7 +23,11 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
         __construct as storesAwareConstructor;
     }
 
-    private $logo;
+    /**
+     * @var CurrencyInterface
+     */
+    
+    protected $currency;
 
     public function __construct()
     {
@@ -30,27 +36,14 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
         $this->storesAwareConstructor();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function getCurrency()
     {
-        return sprintf('%s', $this->getIdentifier());
+        return $this->currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLogo()
+    public function setCurrency($currency)
     {
-        return $this->logo;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLogo($logo)
-    {
-        $this->logo = $logo;
+        $this->currencyCode = $currency->getIsoCode();
+        $this->currency = $currency;
     }
 }

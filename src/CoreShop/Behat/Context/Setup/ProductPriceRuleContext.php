@@ -6,14 +6,17 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\QuantityConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
@@ -42,7 +45,7 @@ use CoreShop\Component\Product\Repository\ProductPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 
 final class ProductPriceRuleContext implements Context
@@ -50,58 +53,20 @@ final class ProductPriceRuleContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FormFactoryInterface $formFactory;
+    private FormTypeRegistryInterface $conditionFormTypeRegistry;
+    private FormTypeRegistryInterface $actionFormTypeRegistry;
+    private FactoryInterface $productPriceRuleFactory;
 
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $conditionFormTypeRegistry;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $actionFormTypeRegistry;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $productPriceRuleFactory;
-
-    /**
-     * @var ProductPriceRuleRepositoryInterface
-     */
-    private $productPriceRuleRepository;
-
-    /**
-     * @param SharedStorageInterface              $sharedStorage
-     * @param ObjectManager                       $objectManager
-     * @param FormFactoryInterface                $formFactory
-     * @param FormTypeRegistryInterface           $conditionFormTypeRegistry
-     * @param FormTypeRegistryInterface           $actionFormTypeRegistry
-     * @param FactoryInterface                    $productPriceRuleFactory
-     * @param ProductPriceRuleRepositoryInterface $productPriceRuleRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FormFactoryInterface $formFactory,
         FormTypeRegistryInterface $conditionFormTypeRegistry,
         FormTypeRegistryInterface $actionFormTypeRegistry,
-        FactoryInterface $productPriceRuleFactory,
-        ProductPriceRuleRepositoryInterface $productPriceRuleRepository
+        FactoryInterface $productPriceRuleFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
@@ -109,7 +74,6 @@ final class ProductPriceRuleContext implements Context
         $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
         $this->actionFormTypeRegistry = $actionFormTypeRegistry;
         $this->productPriceRuleFactory = $productPriceRuleFactory;
-        $this->productPriceRuleRepository = $productPriceRuleRepository;
     }
 
     /**
@@ -449,6 +413,25 @@ final class ProductPriceRuleContext implements Context
     }
 
     /**
+     * @Given /^the (price rule "[^"]+") has a condition quantity with min (\d+) and max (\d+)$/
+     * @Given /^the (price rule) has a condition quantity with min (\d+) and max (\d+)$/
+     */
+    public function theProductPriceRuleHasAQuantityCondition(
+        ProductPriceRuleInterface $rule,
+        int $min,
+        int $max
+    ) {
+        $this->assertConditionForm(QuantityConfigurationType::class, 'quantity');
+
+        $configuration = [
+            'minQuantity' => $min,
+            'maxQuantity' => $max,
+        ];
+
+        $this->addCondition($rule, $this->createConditionWithForm('quantity', $configuration));
+    }
+
+    /**
      * @param ProductPriceRuleInterface $rule
      * @param ConditionInterface        $condition
      */
@@ -472,41 +455,26 @@ final class ProductPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormRegistry()
     {
         return $this->conditionFormTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormClass()
     {
         return ProductPriceRuleConditionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getActionFormRegistry()
     {
         return $this->actionFormTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getActionFormClass()
     {
         return ProductPriceRuleActionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getFormFactory()
     {
         return $this->formFactory;

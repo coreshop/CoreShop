@@ -1,6 +1,9 @@
 # CoreShop Tracking Bundle
 
-    - implements all Tracker for Ecommerce Tracking
+## Installation
+```bash
+$ composer require coreshop/tracking-bundle:^3.0
+```
 
 ## Usage
 
