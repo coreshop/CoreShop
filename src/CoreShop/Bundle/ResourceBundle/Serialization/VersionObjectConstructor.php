@@ -102,6 +102,10 @@ class VersionObjectConstructor implements ObjectConstructorInterface
             return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
         }
 
+        if (array_key_exists('id', $identifierList) && !$identifierList['id']) {
+            return $this->fallbacksFallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+        }
+
         // Entity update, load it from database
         $object = $objectManager->find($metadata->name, $identifierList);
 
