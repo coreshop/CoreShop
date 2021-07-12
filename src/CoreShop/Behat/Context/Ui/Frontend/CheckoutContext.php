@@ -24,6 +24,7 @@ use CoreShop\Behat\Page\Frontend\Checkout\ThankYouPageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Webmozart\Assert\Assert;
@@ -229,4 +230,110 @@ final class CheckoutContext implements Context
     {
         $this->thankYouPage->verify();
     }
+
+    /**
+     * @Given I specify the guest checkout firstname :firstname
+     */
+    public function iSpecifyTheGuestCheckoutFirstname(?string $firstname = null): void
+    {
+        $this->customerPage->specifyGuestFirstname($firstname);
+    }
+
+    /**
+     * @Given I specify the guest checkout lastname :lastname
+     */
+    public function iSpecifyTheGuestCheckoutLastname(?string $lastname = null): void
+    {
+        $this->customerPage->specifyGuestLastname($lastname);
+    }
+
+    /**
+     * @Given I specify the guest checkout email address :email
+     */
+    public function iSpecifyTheGuestCheckoutEmail(?string $email = null): void
+    {
+        $this->customerPage->specifyGuestEmail($email);
+        $this->customerPage->specifyGuestEmailRepeat($email);
+    }
+
+    /**
+     * @Given I specify the guest checkout address firstname :firstname
+     */
+    public function iSpecifyTheGuestCheckoutAddressFirstname(?string $firstname = null): void
+    {
+        $this->customerPage->specifyGuestAddressFirstname($firstname);
+    }
+
+    /**
+     * @Given I specify the guest checkout address lastname :lastname
+     */
+    public function iSpecifyTheGuestCheckoutAddressLastname(?string $lastname = null): void
+    {
+        $this->customerPage->specifyGuestAddressLastname($lastname);
+    }
+
+    /**
+     * @Given I specify the guest checkout address street :street
+     */
+    public function iSpecifyTheGuestCheckoutAddressStreet(?string $street = null): void
+    {
+        $this->customerPage->specifyGuestAddressStreet($street);
+    }
+
+    /**
+     * @Given I specify the guest checkout address number :number
+     */
+    public function iSpecifyTheGuestCheckoutAddressNumber(?string $number = null): void
+    {
+        $this->customerPage->specifyGuestAddressNumber($number);
+    }
+
+    /**
+     * @Given I specify the guest checkout address postcode :postcode
+     */
+    public function iSpecifyTheGuestCheckoutAddressPostcode(?string $postcode = null): void
+    {
+        $this->customerPage->specifyGuestAddressPostcode($postcode);
+    }
+
+    /**
+     * @Given I specify the guest checkout address city :city
+     */
+    public function iSpecifyTheGuestCheckoutAddressCity(?string $city = null): void
+    {
+        $this->customerPage->specifyGuestAddressCity($city);
+    }
+
+    /**
+     * @Given I specify the guest checkout address phone number :number
+     */
+    public function iSpecifyTheGuestCheckoutAddressPhoneNumber(?string $number = null): void
+    {
+        $this->customerPage->specifyGuestAddressPhoneNumber($number);
+    }
+
+    /**
+     * @Given /^I specify the guest checkout address (country "[^"]+")$/
+     */
+    public function iSpecifyTheAddressCountry(?CountryInterface $country = null): void
+    {
+        $this->customerPage->specifyGuestAddressCountry($country ? $country->getId() : null);
+    }
+
+    /**
+     * @Given I accept the guest checkout terms of service
+     */
+    public function iAcceptTheGuestCheckoutTermsOfService(): void
+    {
+        $this->customerPage->acceptTermsOfService();
+    }
+
+    /**
+     * @When I submit the guest checkout
+     */
+    public function iSubmitTheGuestCheckout()
+    {
+        $this->customerPage->submitGuestCheckout();
+    }
+
 }

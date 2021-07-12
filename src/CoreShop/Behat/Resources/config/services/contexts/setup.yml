@@ -354,3 +354,11 @@ services:
             - '@coreshop.security_service.backend'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.configuration:
+        class: CoreShop\Behat\Context\Setup\ConfigurationContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop.configuration.service'
+        tags:
+            - { name: fob.context_service }

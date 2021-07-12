@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
-use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\AddressType;
+use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
@@ -29,6 +29,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Valid;
 
 class GuestRegistrationType extends AbstractResourceType
@@ -102,7 +103,7 @@ class GuestRegistrationType extends AbstractResourceType
                 /**
                  * @var CustomerInterface $customer
                  */
-                $customer = $this->customerRepository->findGuestByEmail($data['email']);
+                $customer = $this->customerRepository->findGuestByEmail($data['email']['first']);
 
                 // assign existing customer or create a new one
                 $form = $event->getForm();
@@ -114,12 +115,20 @@ class GuestRegistrationType extends AbstractResourceType
 
                 if (null === $formCustomer || null !== $formCustomer->getUser()) {
                     $customer = $this->customerFactory->createNew();
-                    $customer->setEmail($data['email']);
+                    $customer->setEmail($data['email']['first']);
                     $form->setData($customer);
                 }
             })
             ->setDataLocked(false);
     }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        parent::configureOptions($resolver);
+
+        $resolver->setDefault('csrf_protection', true);
+    }
+
 
     public function getBlockPrefix(): string
     {
