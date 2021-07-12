@@ -32,6 +32,11 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
     public $type;
 
     /**
+     * @var int
+     */
+    public $sort;
+
+    /**
      * @var string
      */
     public $field;
@@ -64,6 +69,16 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
+    public function setSort($sort)
+    {
+        $this->sort = $sort;
     }
 
     public function getLabel()

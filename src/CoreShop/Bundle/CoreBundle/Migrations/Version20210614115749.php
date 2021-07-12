@@ -19,6 +19,10 @@ class Version20210614115749 extends AbstractMigration
         if (!$schema->getTable('coreshop_rule_action')->hasColumn('sort')) {
             $this->addSql('ALTER TABLE coreshop_rule_action ADD sort INT DEFAULT NULL;');
         }
+
+        if (!$schema->getTable('coreshop_filter_condition')->hasColumn('sort')) {
+            $this->addSql('ALTER TABLE coreshop_filter_condition ADD sort INT DEFAULT NULL;');
+        }
     }
 
     /**
