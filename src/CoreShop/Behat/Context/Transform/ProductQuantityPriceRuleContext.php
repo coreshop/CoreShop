@@ -23,8 +23,8 @@ use Webmozart\Assert\Assert;
 
 final class ProductQuantityPriceRuleContext implements Context
 {
-    private $sharedStorage;
-    private $productQuantityPriceRuleRepository;
+    private SharedStorageInterface $sharedStorage;
+    private ProductQuantityPriceRuleRepositoryInterface $productQuantityPriceRuleRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

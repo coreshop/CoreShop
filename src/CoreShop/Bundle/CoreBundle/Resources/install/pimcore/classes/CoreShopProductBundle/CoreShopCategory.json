@@ -285,8 +285,6 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
-    "generateTypeDeclarations": true,
-
     "propertyVisibility": {
         "grid": {
             "id": true,

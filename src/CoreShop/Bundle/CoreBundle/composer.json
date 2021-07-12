@@ -41,6 +41,7 @@
     "coreshop/fixture-bundle": "^3.0",
     "coreshop/workflow-bundle": "^3.0",
     "coreshop/menu-bundle": "^3.0",
+    "coreshop/user-bundle": "^3.0",
     "coreshop/core": "^3.0",
     "fzaninotto/faker": "^1.6",
     "rinvex/countries": "^7.0",

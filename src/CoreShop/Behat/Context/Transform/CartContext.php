@@ -21,9 +21,9 @@ use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 
 final class CartContext implements Context
 {
-    private $sharedStorage;
-    private $cartRepository;
-    private $cartContext;
+    private SharedStorageInterface $sharedStorage;
+    private OrderRepositoryInterface $cartRepository;
+    private CartContextInterface $cartContext;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

@@ -119,7 +119,11 @@ class OrderCreationController extends PimcoreController
                 );
             }
 
+            /**
+             * @var OrderInterface $cart
+             */
             $cart = $handledForm->getData();
+            $cart->setCreationDate(time());
 
             $workflow = $manager->get($cart, OrderSaleTransitions::IDENTIFIER);
 

@@ -25,22 +25,18 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Webmozart\Assert\Assert;
 
 class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
     private FormFactoryInterface $formFactory;
-    private TokenStorageInterface $tokenStorage;
     private CartManagerInterface $cartManager;
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        TokenStorageInterface $tokenStorage,
         CartManagerInterface $cartManager
     ) {
         $this->formFactory = $formFactory;
-        $this->tokenStorage = $tokenStorage;
         $this->cartManager = $cartManager;
     }
 
@@ -65,7 +61,12 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
 
     public function commitStep(OrderInterface $cart, Request $request): bool
     {
-        $customer = $this->getCustomer();
+        $customer = $cart->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
+        }
+
         $form = $this->createForm($request, $cart, $customer);
 
         if ($form->isSubmitted()) {
@@ -85,23 +86,16 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
-        $customer = $this->getCustomer();
-
-        return [
-            'form' => $this->createForm($request, $cart, $customer)->createView(),
-            'hasShippableItems' => $cart->hasShippableItems(),
-        ];
-    }
-
-    private function getCustomer(): CustomerInterface
-    {
-        $customer = $this->tokenStorage->getToken()->getUser();
+        $customer = $cart->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
             throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
         }
 
-        return $customer;
+        return [
+            'form' => $this->createForm($request, $cart, $customer)->createView(),
+            'hasShippableItems' => $cart->hasShippableItems(),
+        ];
     }
 
     private function createForm(Request $request, OrderInterface $cart, CustomerInterface $customer): FormInterface

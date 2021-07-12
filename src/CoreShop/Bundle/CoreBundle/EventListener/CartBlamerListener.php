@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Context\CartNotFoundException;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
@@ -42,11 +43,11 @@ final class CartBlamerListener
     public function onInteractiveLogin(InteractiveLoginEvent $interactiveLoginEvent): void
     {
         $user = $interactiveLoginEvent->getAuthenticationToken()->getUser();
-        if (!$user instanceof CustomerInterface) {
+        if (!$user instanceof UserInterface) {
             return;
         }
 
-        $this->blame($user);
+        $this->blame($user->getCustomer());
     }
 
     public function onRegisterEvent(CustomerRegistrationEvent $event): void

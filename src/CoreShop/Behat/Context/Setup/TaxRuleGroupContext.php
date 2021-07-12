@@ -27,10 +27,10 @@ use Doctrine\Persistence\ObjectManager;
 
 final class TaxRuleGroupContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $taxRuleGroupFactory;
-    private $taxRuleFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $taxRuleGroupFactory;
+    private FactoryInterface $taxRuleFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

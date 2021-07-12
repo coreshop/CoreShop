@@ -10,8 +10,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Component\Customer\Model;
 
 use CoreShop\Component\Locale\Model\LocaleAwareInterface;
@@ -20,16 +18,8 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-interface CustomerInterface extends
-    ResourceInterface,
-    PimcoreModelInterface,
-    UserInterface,
-    EquatableInterface,
-    LocaleAwareInterface
+interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, LocaleAwareInterface
 {
-    const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
-    const CORESHOP_ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
-
     public function getSalutation(): ?string;
 
     public function setSalutation(?string $salutation);
@@ -42,10 +32,6 @@ interface CustomerInterface extends
 
     public function setLastname(?string $lastname);
 
-    public function getCompany(): ?CompanyInterface;
-
-    public function setCompany(?CompanyInterface $company);
-
     public function getGender(): ?string;
 
     public function setGender(?string $gender);
@@ -54,29 +40,11 @@ interface CustomerInterface extends
 
     public function setEmail(?string $email);
 
-    public function getUsername();
-
-    public function setUsername(?string $username);
-
-    public function getPassword(): ?string;
-
-    public function setPassword(?string $password);
-
-    public function getPasswordResetHash(): ?string;
-
-    public function setPasswordResetHash(?string $passwordResetHash);
-
-    public function getIsGuest(): ?bool;
-
-    public function setIsGuest(?bool $guest);
-
-    /**
-     * @return CustomerGroupInterface[]
-     */
     public function getCustomerGroups(): ?array;
 
-    /**
-     * @param CustomerGroupInterface[] $customerGroups
-     */
     public function setCustomerGroups(?array $customerGroups);
+
+    public function getCompany(): ?CompanyInterface;
+
+    public function setCompany(?CompanyInterface $company);
 }

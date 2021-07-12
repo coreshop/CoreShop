@@ -26,10 +26,10 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 final class OrderInvoiceContext implements Context
 {
-    private $sharedStorage;
-    private $invoiceTransformer;
-    private $orderInvoiceFactory;
-    private $stateMachineApplier;
+    private SharedStorageInterface $sharedStorage;
+    private OrderDocumentTransformerInterface $invoiceTransformer;
+    private FactoryInterface $orderInvoiceFactory;
+    private StateMachineApplier $stateMachineApplier;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

@@ -18,11 +18,9 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\AddressesAwareInterface;
 use CoreShop\Component\Address\Model\DefaultAddressAwareInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface as BaseCustomerInterface;
+use CoreShop\Component\User\Model\UserAwareInterface;
 
-interface CustomerInterface extends
-    BaseCustomerInterface,
-    AddressesAwareInterface,
-    DefaultAddressAwareInterface
+interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterface, UserAwareInterface, DefaultAddressAwareInterface
 {
     public function getAddressAccessType(): ?string;
 

@@ -32,8 +32,8 @@ use Pimcore\Tool;
 
 final class PimcoreClassContext implements Context
 {
-    private $sharedStorage;
-    private $classStorage;
+    private SharedStorageInterface $sharedStorage;
+    private ClassStorageInterface $classStorage;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

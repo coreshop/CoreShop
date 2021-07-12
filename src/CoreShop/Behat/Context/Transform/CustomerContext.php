@@ -22,8 +22,8 @@ use Webmozart\Assert\Assert;
 
 final class CustomerContext implements Context
 {
-    private $sharedStorage;
-    private $customerRepository;
+    private SharedStorageInterface $sharedStorage;
+    private CustomerRepositoryInterface $customerRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -52,19 +52,6 @@ final class CustomerContext implements Context
     public function customer()
     {
         $customer = $this->sharedStorage->get('customer');
-
-        Assert::isInstanceOf($customer, CustomerInterface::class);
-
-        return $customer;
-    }
-
-    /**
-     * @Transform /^customer "([^"]+)"$/
-     * @Transform /^username "([^"]+)"$/
-     */
-    public function getCustomerByUsername($username)
-    {
-        $customer = $this->customerRepository->findCustomerByUsername($username);
 
         Assert::isInstanceOf($customer, CustomerInterface::class);
 

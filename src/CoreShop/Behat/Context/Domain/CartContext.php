@@ -30,8 +30,8 @@ use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
-    private $sharedStorage;
-    private $cartContext;
+    private SharedStorageInterface $sharedStorage;
+    private CartContextInterface $cartContext;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

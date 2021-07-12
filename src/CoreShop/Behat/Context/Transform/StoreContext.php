@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class StoreContext implements Context
 {
-    private $sharedStorage;
-    private $storeRepository;
+    private SharedStorageInterface $sharedStorage;
+    private StoreRepositoryInterface $storeRepository;
 
     public function __construct(SharedStorageInterface $sharedStorage, StoreRepositoryInterface $storeRepository)
     {

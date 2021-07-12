@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class MenuContext implements Context
 {
-    private $pwaPage;
-    private $menuElement;
+    private PWAPageInterface $pwaPage;
+    private MenuElementInterface $menuElement;
 
     public function __construct(
         PWAPageInterface $pwaPage,

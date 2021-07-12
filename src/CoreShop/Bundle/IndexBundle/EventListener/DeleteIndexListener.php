@@ -35,17 +35,17 @@ final class DeleteIndexListener
 
         Assert::isInstanceOf($resource, IndexInterface::class);
 
-        $worker = $resource->getWorker();
+        $workerType = $resource->getWorker();
 
         // do not throw an exception since the worker field could be empty!
-        if (!$this->workerServiceRegistry->has($worker)) {
+        if (!$this->workerServiceRegistry->has($workerType)) {
             return;
         }
 
         /**
          * @var WorkerInterface $worker
          */
-        $worker = $this->workerServiceRegistry->get($worker);
+        $worker = $this->workerServiceRegistry->get($workerType);
         $worker->deleteIndexStructures($resource);
     }
 }

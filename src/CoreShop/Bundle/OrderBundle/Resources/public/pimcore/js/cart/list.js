@@ -23,6 +23,17 @@ coreshop.order.cart.list = Class.create(coreshop.order.order.list, {
         grid.getStore().load();
     },
 
+    setupContextMenuPlugin: function () {
+        this.contextMenuPlugin = new coreshop.pimcore.plugin.grid(
+            'coreshop_cart',
+            function (id) {
+                this.open(id);
+            }.bind(this),
+            [coreshop.class_map.coreshop.order],
+            this.getGridPaginator()
+        );
+    },
+
     open: function (id, callback) {
         coreshop.order.helper.openCart(id, callback);
     }

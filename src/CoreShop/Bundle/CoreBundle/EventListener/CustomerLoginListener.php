@@ -28,6 +28,8 @@ final class CustomerLoginListener
 
     public function onCustomerRegister(CustomerRegistrationEvent $customerRegistrationEvent): void
     {
-        $this->customerLoginService->loginCustomer($customerRegistrationEvent->getCustomer());
+        if (null !== $customerRegistrationEvent->getCustomer()->getUser()) {
+            $this->customerLoginService->loginCustomer($customerRegistrationEvent->getCustomer()->getUser());
+        }
     }
 }

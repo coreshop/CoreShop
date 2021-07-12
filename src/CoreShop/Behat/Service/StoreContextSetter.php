@@ -14,13 +14,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Service;
 
-use CoreShop\Behat\Service\CookieSetterInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
 final class StoreContextSetter implements StoreContextSetterInterface
 {
-    /** @var CookieSetterInterface */
-    private $cookieSetter;
+    private CookieSetterInterface $cookieSetter;
 
     public function __construct(CookieSetterInterface $cookieSetter)
     {
@@ -29,6 +27,6 @@ final class StoreContextSetter implements StoreContextSetterInterface
 
     public function setStore(StoreInterface $store)
     {
-        $this->cookieSetter->setCookie('_store_id', $store->getId());
+        $this->cookieSetter->setCookie('_store_id', (string)$store->getId());
     }
 }

@@ -24,8 +24,8 @@ use Webmozart\Assert\Assert;
 
 final class StateContext implements Context
 {
-    private $pwaPage;
-    private $statePage;
+    private PWAPageInterface $pwaPage;
+    private StatePageInterface $statePage;
 
     public function __construct(
         PWAPageInterface $pwaPage,

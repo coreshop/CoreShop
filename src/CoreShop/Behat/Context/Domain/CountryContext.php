@@ -28,11 +28,11 @@ use Webmozart\Assert\Assert;
 
 final class CountryContext implements Context
 {
-    private $sharedStorage;
-    private $countryRepository;
-    private $countryContext;
-    private $addressFormatter;
-    private $geoLiteResolver;
+    private SharedStorageInterface $sharedStorage;
+    private CountryRepositoryInterface $countryRepository;
+    private CountryContextInterface $countryContext;
+    private AddressFormatterInterface $addressFormatter;
+    private GeoLiteBasedRequestResolver $geoLiteResolver;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

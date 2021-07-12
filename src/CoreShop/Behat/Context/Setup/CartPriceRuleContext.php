@@ -62,16 +62,16 @@ final class CartPriceRuleContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    private $sharedStorage;
-    private $objectManager;
-    private $formFactory;
-    private $conditionFormTypeRegistry;
-    private $actionFormTypeRegistry;
-    private $cartPriceRuleFactory;
-    private $cartPriceRuleVoucherRepository;
-    private $cartPriceRuleProcessor;
-    private $cartManager;
-    private $cartPriceRuleVoucherCodeFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FormFactoryInterface $formFactory;
+    private FormTypeRegistryInterface $conditionFormTypeRegistry;
+    private FormTypeRegistryInterface $actionFormTypeRegistry;
+    private FactoryInterface $cartPriceRuleFactory;
+    private CartPriceRuleVoucherRepositoryInterface $cartPriceRuleVoucherRepository;
+    private CartPriceRuleProcessorInterface $cartPriceRuleProcessor;
+    private CartManagerInterface $cartManager;
+    private FactoryInterface $cartPriceRuleVoucherCodeFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

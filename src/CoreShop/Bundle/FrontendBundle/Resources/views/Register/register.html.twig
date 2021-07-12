@@ -21,18 +21,22 @@
                 <div class="col-sm-12">
                     <div class="card card-smart">
                         <div class="card-body">
-                            {{ form_start(form, {'method': 'POST', attr: {'novalidate': 'novalidate'}}) }}
-                                {{ form_label(form.customer) }}
 
-                                {{ form_row(form.customer.salutation, coreshop_test_form_attribute('register-salutation')) }}
-                                {{ form_row(form.customer.gender, coreshop_test_form_attribute('register-gender')) }}
-                                {{ form_row(form.customer.firstname, coreshop_test_form_attribute('register-firstname')) }}
-                                {{ form_row(form.customer.lastname, coreshop_test_form_attribute('register-lastname')) }}
-                                {{ form_row(form.customer.email.first, coreshop_test_form_attribute('register-email-first')) }}
-                                {{ form_row(form.customer.email.second, coreshop_test_form_attribute('register-email-second')) }}
-                                {{ form_row(form.customer.password.first, coreshop_test_form_attribute('register-password-first')) }}
-                                {{ form_row(form.customer.password.second, coreshop_test_form_attribute('register-password-second')) }}
-                                {{ form_row(form.customer.newsletterActive, coreshop_test_form_attribute('register-newsletter-active')) }}
+                            {{ form_start(form, {'method': 'POST', attr: {'novalidate': 'novalidate'}}) }}
+                                {{ form_row(form.salutation, coreshop_test_form_attribute('register-salutation')) }}
+                                {{ form_row(form.gender, coreshop_test_form_attribute('register-gender')) }}
+                                {{ form_row(form.firstname, coreshop_test_form_attribute('register-firstname')) }}
+                                {{ form_row(form.lastname, coreshop_test_form_attribute('register-lastname')) }}
+
+                                {% if form.user.loginIdentifier is defined %}
+                                    {{ form_row(form.user.loginIdentifier, coreshop_test_form_attribute('register-user-username')) }}
+                                {% endif %}
+
+                                {{ form_row(form.email.first, coreshop_test_form_attribute('register-email-first')) }}
+                                {{ form_row(form.email.second, coreshop_test_form_attribute('register-email-second')) }}
+                                {{ form_row(form.user.plainPassword.first, coreshop_test_form_attribute('register-password-first')) }}
+                                {{ form_row(form.user.plainPassword.second, coreshop_test_form_attribute('register-password-second')) }}
+                                {{ form_row(form.newsletterActive, coreshop_test_form_attribute('register-newsletter-active')) }}
 
                                 {{ form_label(form.address) }}
 

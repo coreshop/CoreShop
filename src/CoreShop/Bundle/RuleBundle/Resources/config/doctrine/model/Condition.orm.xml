@@ -8,6 +8,7 @@
         </id>
 
         <field name="type" column="type"/>
+        <field name="sort" column="sort" type="integer" nullable="true" />
         <field name="configuration" column="configuration" type="array" nullable="true"/>
     </mapped-superclass>
 </doctrine-mapping>

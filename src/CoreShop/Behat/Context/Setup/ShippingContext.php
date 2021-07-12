@@ -59,15 +59,14 @@ final class ShippingContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    private $sharedStorage;
-    private $objectManager;
-    private $formFactory;
-    private $conditionFormTypeRegistry;
-    private $actionFormTypeRegistry;
-    private $carrierRepository;
-    private $carrierFactory;
-    private $shippingRuleFactory;
-    private $shippingRuleGroupFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FormFactoryInterface $formFactory;
+    private FormTypeRegistryInterface $conditionFormTypeRegistry;
+    private FormTypeRegistryInterface $actionFormTypeRegistry;
+    private FactoryInterface $carrierFactory;
+    private FactoryInterface $shippingRuleFactory;
+    private FactoryInterface $shippingRuleGroupFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

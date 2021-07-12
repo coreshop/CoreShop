@@ -25,10 +25,10 @@ use Webmozart\Assert\Assert;
 
 final class CurrencyContext implements Context
 {
-    private $sharedStorage;
-    private $currencyRepository;
-    private $currencyContext;
-    private $moneyFormatter;
+    private SharedStorageInterface $sharedStorage;
+    private CurrencyRepositoryInterface $currencyRepository;
+    private CurrencyContextInterface $currencyContext;
+    private MoneyFormatterInterface $moneyFormatter;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,

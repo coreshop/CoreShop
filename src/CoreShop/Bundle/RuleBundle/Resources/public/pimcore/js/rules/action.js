@@ -19,6 +19,14 @@ coreshop.rules.action = Class.create({
         this.dirty = false;
     },
 
+    reload: function (actions) {
+        this.actionsContainer.removeAll();
+
+        Ext.each(actions, function(action) {
+            this.addAction(action.type, action, false);
+        }.bind(this));
+    },
+
     getLayout: function () {
         // init
         var _this = this;
@@ -127,12 +135,14 @@ coreshop.rules.action = Class.create({
                 }
             }
 
-            if (actionClass.data.id) {
-                action['id'] = actionClass.data.id;
+            if (actionClass.id) {
+                action['id'] = actionClass.id;
             }
 
             action['configuration'] = configuration;
             action['type'] = actions[i].xparent.type;
+            action['sort'] = (i + 1);
+
             actionData.push(action);
 
             if (Ext.isFunction(this.prepareAction)) {

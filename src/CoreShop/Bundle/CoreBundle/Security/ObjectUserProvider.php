@@ -14,8 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Security;
 
-use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
+use CoreShop\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,39 +22,41 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ObjectUserProvider implements UserProviderInterface
 {
-    protected CustomerRepositoryInterface $customerRepository;
+    protected UserRepositoryInterface $userRepository;
     protected string $className;
-    protected string $loginIdentifier;
 
     public function __construct(
-        CustomerRepositoryInterface $customerRepository,
-        string $className,
-        string $loginIdentifier
+        UserRepositoryInterface $userRepository,
+        string $className
     )
     {
-        $this->customerRepository = $customerRepository;
+        $this->userRepository = $userRepository;
         $this->className = $className;
-        $this->loginIdentifier = $loginIdentifier;
     }
 
-    public function loadUserByUsername($userNameOrEmailAddress)
+    public function loadUserByUsername(string $username)
     {
-        $customer = $this->customerRepository->findUniqueByLoginIdentifier($this->loginIdentifier, $userNameOrEmailAddress, false);
+        return $this->loadUserByIdentifier($username);
+    }
 
-        if ($customer instanceof CustomerInterface) {
-            return $customer;
+    public function loadUserByIdentifier(string $identifier)
+    {
+        $user = $this->userRepository->findByLoginIdentifier($identifier);
+
+        if ($user instanceof \CoreShop\Component\Core\Model\UserInterface) {
+            return $user;
         }
 
-        throw new UsernameNotFoundException(sprintf('User with email address or username "%s" was not found', $userNameOrEmailAddress));
+        throw new UsernameNotFoundException(sprintf('User with email address or username "%s" was not found', $identifier));
     }
 
     public function refreshUser(UserInterface $user)
     {
-        if (!$user instanceof CustomerInterface) {
+        if (!$user instanceof \CoreShop\Component\Core\Model\UserInterface) {
             throw new UnsupportedUserException();
         }
 
-        return $this->customerRepository->find($user->getId());
+        return $this->userRepository->find($user->getId());
     }
 
     public function supportsClass($class)

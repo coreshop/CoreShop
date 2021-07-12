@@ -30,6 +30,9 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Notes;
+use CoreShop\Component\Order\OrderInvoiceStates;
+use CoreShop\Component\Order\OrderPaymentStates;
+use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
@@ -282,7 +285,7 @@ class OrderController extends PimcoreController
             'customerName' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname() : '',
             'customerEmail' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getEmail() : '',
             'store' => $order->getStore() instanceof StoreInterface ? $order->getStore()->getId() : null,
-            'orderState' => $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState(), false),
+            'orderState' => $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState() ?? OrderStates::STATE_NEW, false),
             'orderPaymentState' => $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState(), false),
             'orderShippingState' => $this->workflowStateManager->getStateInfo('coreshop_order_shipment', $order->getShippingState(), false),
             'orderInvoiceState' => $this->workflowStateManager->getStateInfo('coreshop_order_invoice', $order->getInvoiceState(), false)
@@ -397,10 +400,10 @@ class OrderController extends PimcoreController
             $jsonSale['priceRule'] = $rules;
         }
 
-        $jsonSale['orderState'] = $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState(), false);
-        $jsonSale['orderPaymentState'] = $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState(), false);
-        $jsonSale['orderShippingState'] = $this->workflowStateManager->getStateInfo('coreshop_order_shipment', $order->getShippingState(), false);
-        $jsonSale['orderInvoiceState'] = $this->workflowStateManager->getStateInfo('coreshop_order_invoice', $order->getInvoiceState(), false);
+        $jsonSale['orderState'] = $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState() ?? OrderStates::STATE_NEW, false);
+        $jsonSale['orderPaymentState'] = $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState() ?? OrderPaymentStates::STATE_NEW, false);
+        $jsonSale['orderShippingState'] = $this->workflowStateManager->getStateInfo('coreshop_order_shipment', $order->getShippingState() ?? OrderShipmentStates::STATE_NEW, false);
+        $jsonSale['orderInvoiceState'] = $this->workflowStateManager->getStateInfo('coreshop_order_invoice', $order->getInvoiceState() ?? OrderInvoiceStates::STATE_NEW, false);
 
         $availableTransitions = $this->workflowStateManager->parseTransitions($order, 'coreshop_order', [
             'cancel',

@@ -36,6 +36,7 @@
     "coreshop/notification": "^3.0",
     "coreshop/payum-bundle": "^3.0",
     "coreshop/seo": "^3.0",
+    "coreshop/user": "^3.0",
     "coreshop/tracking": "^3.0",
     "pimcore/pimcore": "^10.0.0"
   },
