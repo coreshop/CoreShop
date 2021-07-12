@@ -329,17 +329,17 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     public function getTableName()
     {
-        return $this->worker->getTablename($this->index);
+        return $this->worker->getTablename($this->index->getName());
     }
 
     public function getQueryTableName()
     {
-        return $this->worker->getLocalizedViewName($this->index, $this->getLocale());
+        return $this->worker->getLocalizedViewName($this->index->getName(), $this->getLocale());
     }
 
     public function getRelationTablename()
     {
-        return $this->worker->getRelationTablename($this->index);
+        return $this->worker->getRelationTablename($this->index->getName());
     }
 
     public function quote($value)
@@ -397,7 +397,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     protected function addUserSpecificConditions(QueryBuilder $queryBuilder, $excludedFieldName = null)
     {
-        $relationalTableName = $this->worker->getRelationTablename($this->index);
+        $relationalTableName = $this->worker->getRelationTablename($this->index->getName());
         foreach ($this->relationConditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {

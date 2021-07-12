@@ -111,7 +111,7 @@
                 {% for priceRule in order.priceRuleItems %}
                     <tr>
                         <td colspan="2" class="text-center">
-                            {{ priceRule.cartPriceRule.name }}
+                            {{ priceRule.cartPriceRule.label ?: priceRule.cartPriceRule.name }}
                         </td>
                         <td class="text-center">
 

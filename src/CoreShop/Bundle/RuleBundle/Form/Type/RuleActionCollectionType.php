@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
+use CoreShop\Bundle\RuleBundle\Form\DataMapper\ActionsFormMapper;
 use CoreShop\Bundle\RuleBundle\Form\Type\Core\AbstractConfigurationCollectionType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleActionCollectionType extends AbstractConfigurationCollectionType
@@ -22,6 +24,11 @@ class RuleActionCollectionType extends AbstractConfigurationCollectionType
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->setDataMapper(new ActionsFormMapper($builder->getDataMapper()));
     }
 
     public function getBlockPrefix(): string

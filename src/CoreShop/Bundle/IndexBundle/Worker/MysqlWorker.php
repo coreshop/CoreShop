@@ -34,7 +34,7 @@ use Pimcore\Tool;
 
 class MysqlWorker extends AbstractWorker
 {
-    protected $database;
+    protected Connection $database;
 
     public function __construct(
         ServiceRegistryInterface $extensionsRegistry,
@@ -61,9 +61,9 @@ class MysqlWorker extends AbstractWorker
     {
         $schemaManager = $this->database->getSchemaManager();
 
-        $tableName = $this->getTablename($index);
-        $localizedTableName = $this->getLocalizedTablename($index);
-        $relationalTableName = $this->getRelationTablename($index);
+        $tableName = $this->getTablename($index->getName());
+        $localizedTableName = $this->getLocalizedTablename($index->getName());
+        $relationalTableName = $this->getRelationTablename($index->getName());
 
         $oldTables = [];
 
@@ -94,7 +94,7 @@ class MysqlWorker extends AbstractWorker
 
     protected function createTableSchema(IndexInterface $index, Schema $tableSchema)
     {
-        $table = $tableSchema->createTable($this->getTablename($index));
+        $table = $tableSchema->createTable($this->getTablename($index->getName()));
         $table->addOption('row_format', 'DYNAMIC');
 
         $table->addColumn('o_id', 'integer');
@@ -143,7 +143,7 @@ class MysqlWorker extends AbstractWorker
 
     protected function createLocalizedTableSchema(IndexInterface $index, Schema $tableSchema)
     {
-        $table = $tableSchema->createTable($this->getLocalizedTablename($index));
+        $table = $tableSchema->createTable($this->getLocalizedTablename($index->getName()));
         $table->addOption('row_format', 'DYNAMIC');
 
         $table->addColumn('oo_id', 'integer');
@@ -193,7 +193,7 @@ class MysqlWorker extends AbstractWorker
 
     protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema)
     {
-        $table = $tableSchema->createTable($this->getRelationTablename($index));
+        $table = $tableSchema->createTable($this->getRelationTablename($index->getName()));
         $table->addOption('row_format', 'DYNAMIC');
 
         $table->addColumn('src', 'integer');
@@ -226,9 +226,9 @@ class MysqlWorker extends AbstractWorker
         $languages = Tool::getValidLanguages(); //TODO: Use Locale Service
 
         foreach ($languages as $language) {
-            $localizedTable = $this->getLocalizedTablename($index);
-            $localizedViewName = $this->getLocalizedViewName($index, $language);
-            $tableName = $this->getTableName($index);
+            $localizedTable = $this->getLocalizedTablename($index->getName());
+            $localizedViewName = $this->getLocalizedViewName($index->getName(), $language);
+            $tableName = $this->getTableName($index->getName());
 
             // create view
             $viewQuery = <<<QUERY
@@ -278,12 +278,43 @@ QUERY;
             $languages = Tool::getValidLanguages();
 
             foreach ($languages as $language) {
-                $this->database->executeQuery('DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index, $language) . '`');
+                $this->database->executeQuery('DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index->getName(), $language) . '`');
             }
 
-            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getTablename($index) . '`');
-            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index) . '`');
-            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index) . '`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getTablename($index->getName()) . '`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index->getName()) . '`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index->getName()) . '`');
+        } catch (\Exception $e) {
+            $this->logger->error($e);
+        }
+    }
+
+    public function renameIndexStructures(IndexInterface $index, string $oldName, string $newName)
+    {
+        try {
+            $languages = Tool::getValidLanguages();
+            $potentialTables = [
+                $this->getTablename($oldName) => $this->getTablename($newName),
+                $this->getLocalizedTablename($oldName) => $this->getLocalizedTablename($newName),
+                $this->getRelationTablename($oldName) => $this->getRelationTablename($newName)
+            ];
+            $allViews = $this->database->getSchemaManager()->listViews();
+
+            foreach ($languages as $language) {
+                $potentialTables[$this->getLocalizedViewName($oldName, $language)] = $this->getLocalizedViewName($newName, $language);
+            }
+
+            foreach ($potentialTables as $oldTable => $newTable) {
+                if (array_key_exists($oldTable, $allViews) || $this->database->getSchemaManager()->tablesExist($oldTable)) {
+                    $this->database->executeQuery(
+                        sprintf(
+                            'RENAME TABLE `%s` TO `%s`',
+                            $oldTable,
+                            $newTable
+                        )
+                    );
+                }
+            }
         } catch (\Exception $e) {
             $this->logger->error($e);
         }
@@ -291,9 +322,9 @@ QUERY;
 
     public function deleteFromIndex(IndexInterface $index, IndexableInterface $object)
     {
-        $this->database->delete($this->getTablename($index), ['o_id' => $object->getId()]);
-        $this->database->delete($this->getLocalizedTablename($index), ['oo_id' => $object->getId()]);
-        $this->database->delete($this->getRelationTablename($index), ['src' => $object->getId()]);
+        $this->database->delete($this->getTablename($index->getName()), ['o_id' => $object->getId()]);
+        $this->database->delete($this->getLocalizedTablename($index->getName()), ['oo_id' => $object->getId()]);
+        $this->database->delete($this->getRelationTablename($index->getName()), ['src' => $object->getId()]);
     }
 
     public function updateIndex(IndexInterface $index, IndexableInterface $object)
@@ -316,7 +347,7 @@ QUERY;
             }
 
             try {
-                $this->database->delete($this->getRelationTablename($index), ['src' => $object->getId()]);
+                $this->database->delete($this->getRelationTablename($index->getName()), ['src' => $object->getId()]);
 
                 $this->doInsertRelationalData($index, $preparedData['relation']);
             } catch (\Exception $e) {
@@ -364,7 +395,7 @@ QUERY;
             $insertData[] = $value;
         }
 
-        $insert = 'INSERT INTO ' . $this->getTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
+        $insert = 'INSERT INTO ' . $this->getTablename($index->getName()) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
             . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
         $this->database->executeQuery($insert, array_merge($updateData, $insertData));
@@ -373,7 +404,7 @@ QUERY;
     protected function doInsertRelationalData(IndexInterface $index, $data)
     {
         foreach ($data as $rd) {
-            $this->database->insert($this->getRelationTablename($index), $rd);
+            $this->database->insert($this->getRelationTablename($index->getName()), $rd);
         }
     }
 
@@ -425,7 +456,7 @@ QUERY;
                 $insertData[] = $value;
             }
 
-            $insert = 'INSERT INTO ' . $this->getLocalizedTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
+            $insert = 'INSERT INTO ' . $this->getLocalizedTablename($index->getName()) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
                 . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
             $this->database->executeQuery($insert, array_merge($updateData, $insertData));
@@ -486,23 +517,23 @@ QUERY;
         return new MysqlWorker\Listing($index, $this, $this->database);
     }
 
-    public function getTablename(IndexInterface $index): string
+    public function getTablename(string $name): string
     {
-        return 'coreshop_index_mysql_' . $index->getName();
+        return 'coreshop_index_mysql_' . $name;
     }
 
-    public function getLocalizedTablename(IndexInterface $index): string
+    public function getLocalizedTablename(string $name): string
     {
-        return 'coreshop_index_mysql_localized_' . $index->getName();
+        return 'coreshop_index_mysql_localized_' . $name;
     }
 
-    public function getLocalizedViewName(IndexInterface $index, string $language): string
+    public function getLocalizedViewName(string $name, string $language): string
     {
-        return $this->getLocalizedTablename($index) . '_' . $language;
+        return $this->getLocalizedTablename($name) . '_' . $language;
     }
 
-    public function getRelationTablename(IndexInterface $index): string
+    public function getRelationTablename(string $name): string
     {
-        return 'coreshop_index_mysql_relations_' . $index->getName();
+        return 'coreshop_index_mysql_relations_' . $name;
     }
 }
