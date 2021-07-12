@@ -42,7 +42,8 @@ final class NestedConfigurationType extends AbstractNestedConfigurationType
 
         $builder
             ->add('conditions', CartPriceRuleConditionCollectionType::class, [
-                'constraints' => new Valid(['groups' => $this->validationGroups])
+                'constraints' => new Valid(['groups' => $this->validationGroups]),
+                'nested' => true
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

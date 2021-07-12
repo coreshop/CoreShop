@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
+use CoreShop\Bundle\IndexBundle\Form\DataMapper\ConditionsFormMapper;
 use CoreShop\Bundle\IndexBundle\Form\Type\Core\AbstractConfigurationCollectionType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class FilterPreConditionCollectionType extends AbstractConfigurationCollectionType
@@ -24,6 +26,14 @@ final class FilterPreConditionCollectionType extends AbstractConfigurationCollec
         parent::configureOptions($resolver);
 
         $resolver->setDefault('entry_type', FilterPreConditionType::class);
+        $resolver->setDefault('nested', false);
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        if (!$options['nested']) {
+            $builder->setDataMapper(new ConditionsFormMapper($builder->getDataMapper()));
+        }
     }
 
     public function getBlockPrefix(): string

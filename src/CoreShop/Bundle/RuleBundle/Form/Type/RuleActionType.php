@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class RuleActionType extends AbstractConfigurableRuleElementType
@@ -21,6 +22,9 @@ class RuleActionType extends AbstractConfigurableRuleElementType
     public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         parent::buildForm($builder, $options);
+
+        $builder->add('id', IntegerType::class, ['mapped' => false]);
+        $builder->add('sort', IntegerType::class);
     }
 
     public function getBlockPrefix(): string
