@@ -102,6 +102,7 @@ coreshop.filter.condition = Class.create({
             }
 
             condition['type'] = conditions[i].xparent.type;
+            condition['sort'] = (i + 1);
 
             conditionsData.push(condition);
         }

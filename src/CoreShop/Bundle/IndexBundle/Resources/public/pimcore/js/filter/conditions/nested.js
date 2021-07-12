@@ -56,12 +56,6 @@ coreshop.filter.conditions.nested = Class.create(coreshop.filter.conditions.abst
     getData: function () {
         var conditions = this.conditions.getData();
 
-        Ext.Object.each(conditions, function(key, cond) {
-            if (!cond.id) {
-                cond.id = Ext.id(null, 'cs-');
-            }
-        });
-
         return {
             configuration: {
                 conditions: conditions,
