@@ -62,6 +62,16 @@ class Payment implements PaymentInterface
      */
     protected $orderId;
 
+    /**
+     * @var string
+     */
+    protected $number;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
     public function getId()
     {
         return $this->id;

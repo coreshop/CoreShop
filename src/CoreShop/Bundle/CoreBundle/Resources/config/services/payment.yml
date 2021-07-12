@@ -12,9 +12,3 @@ services:
             - '@coreshop.repository.payment_provider'
             - '@CoreShop\Component\Store\Context\StoreContextInterface'
 
-    CoreShop\Bundle\CoreBundle\Payment\Resolver\EventBasedPaymentProviderResolver:
-        decoration_priority: 5
-        decorates: CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface
-        arguments:
-            - '@CoreShop\Bundle\CoreBundle\Payment\Resolver\EventBasedPaymentProviderResolver.inner'
-            - '@event_dispatcher'
