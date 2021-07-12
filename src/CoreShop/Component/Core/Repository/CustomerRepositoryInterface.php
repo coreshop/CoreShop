@@ -10,14 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
+namespace CoreShop\Component\Core\Repository;
 
-namespace CoreShop\Bundle\CoreBundle\Customer;
-
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface as BaseCustomerRepositoryInterface;
 
-interface RegistrationServiceInterface
+interface CustomerRepositoryInterface extends BaseCustomerRepositoryInterface
 {
-    public function registerCustomer(CustomerInterface $customer, AddressInterface $address, array $formData, bool $isGuest = false): void;
+    /**
+     * @param string $email
+     * @return CustomerInterface|null
+     */
+    public function findOneByEmailWithoutUser(string $email);
 }

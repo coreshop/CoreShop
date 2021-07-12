@@ -20,7 +20,7 @@ twig:
 pimcore:
     security:
         encoder_factories:
-            '%coreshop.model.customer.class%': coreshop.security.customer.password_encoder_factory
+            '%coreshop.model.user.class%': coreshop.security.user.password_encoder_factory
     objects:
         class_definitions:
             data:

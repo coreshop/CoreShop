@@ -1,0 +1,8 @@
+coreshop:
+    form:
+        user:
+            email:
+                unique: 'Diese E-Mail-Adresse wird bereits verwendet.'
+                must_match: 'E-Mail-Adressen müssen übereinstimmen.'
+            password:
+                must_match: 'Passwörter müssen übereinstimmen.'

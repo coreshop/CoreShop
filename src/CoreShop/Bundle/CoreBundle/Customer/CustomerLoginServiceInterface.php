@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Customer;
 
-use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 
 interface CustomerLoginServiceInterface
 {
-    public function loginCustomer(CustomerInterface $customer): void;
+    public function loginCustomer(UserInterface $user): void;
 }

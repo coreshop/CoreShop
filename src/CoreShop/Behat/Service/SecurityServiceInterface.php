@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Service;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\User\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
 
@@ -23,7 +24,7 @@ interface SecurityServiceInterface
     /**
      * @throws \InvalidArgumentException
      */
-    public function logIn(CustomerInterface $user): void;
+    public function logIn(UserInterface $user): void;
 
     public function logOut(): void;
 

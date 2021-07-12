@@ -20,14 +20,13 @@ services:
     #default steps
     CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep:
         arguments:
-            - '@CoreShop\Component\Customer\Context\CustomerContextInterface'
             - '@form.factory'
-            - '@CoreShop\Bundle\CoreBundle\Customer\RegistrationServiceInterface'
+            - '@coreshop.customer.manager'
+            - '@coreshop.context.locale'
 
     CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep:
         arguments:
             - '@form.factory'
-            - '@security.token_storage'
             - '@CoreShop\Component\Order\Manager\CartManagerInterface'
 
     CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep:

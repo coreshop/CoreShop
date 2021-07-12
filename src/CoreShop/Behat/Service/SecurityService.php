@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Service;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -39,7 +40,7 @@ final class SecurityService implements SecurityServiceInterface
         $this->sessionTokenVariable = sprintf('_security_%s', $firewallContextName);
     }
 
-    public function logIn(CustomerInterface $user): void
+    public function logIn(UserInterface $user): void
     {
         $token = new UsernamePasswordToken($user, $user->getPassword(), $this->firewallContextName, $user->getRoles());
         $this->setToken($token);

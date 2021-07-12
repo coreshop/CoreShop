@@ -3,7 +3,7 @@ parameters:
 
 security:
     providers:
-        coreshop_customer:
+        coreshop_user:
             id: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
         pimcore_admin:
             id: Pimcore\Bundle\AdminBundle\Security\User\UserProvider
@@ -46,13 +46,13 @@ security:
 
         coreshop_frontend:
             anonymous: ~
-            provider: coreshop_customer
+            provider: coreshop_user
             pattern: '%coreshop.security.frontend_regex%'
             context: shop
             form_login:
                 login_path: coreshop_login
                 check_path: coreshop_login_check
-                provider: coreshop_customer
+                provider: coreshop_user
                 failure_path: coreshop_login
                 default_target_path: coreshop_index
                 use_forward: false

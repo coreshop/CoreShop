@@ -1,6 +1,6 @@
 default:
     suites:
-        ui_exchange_rate:
+        ui_pimcore_exchange_rate:
             contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup

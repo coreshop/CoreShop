@@ -15,9 +15,40 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Frontend\Checkout;
 
 use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
-use CoreShop\Component\Address\Model\AddressInterface;
 
 interface CustomerPageInterface extends FrontendPageInterface
 {
+    public function specifyGuestGender(?string $gender): void;
 
+    public function specifyGuestFirstname(?string $firstname): void;
+
+    public function specifyGuestLastname(?string $lastname): void;
+
+    public function specifyGuestEmail(?string $email): void;
+
+    public function specifyGuestEmailRepeat(?string $email): void;
+
+    public function specifyGuestAddressCompany(?string $company): void;
+
+    public function specifyGuestAddressSalutation(?string $salutation): void;
+
+    public function specifyGuestAddressFirstname(?string $firstname): void;
+
+    public function specifyGuestAddressLastname(?string $lastname): void;
+
+    public function specifyGuestAddressStreet(?string $street): void;
+
+    public function specifyGuestAddressNumber(?string $number): void;
+
+    public function specifyGuestAddressPostcode(?string $postcode): void;
+
+    public function specifyGuestAddressCity(?string $city): void;
+
+    public function specifyGuestAddressPhoneNumber(?string $number): void;
+
+    public function specifyGuestAddressCountry(?int $country): void;
+
+    public function acceptTermsOfService(): void;
+
+    public function submitGuestCheckout(): void;
 }

@@ -1,4 +1,5 @@
-/*
+<?php
+/**
  * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
@@ -7,10 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
  */
 
-pimcore.registerNS('coreshop.order.sale.list');
-coreshop.order.sale.list = Class.create(coreshop.resource.list, {
-    supportsCreate: true
-});
+namespace CoreShop\Component\Core\Model;
+
+use CoreShop\Component\Customer\Model\CustomerAwareInterface;
+use CoreShop\Component\User\Model\UserInterface as BaseUserInterface;
+
+interface UserInterface extends BaseUserInterface, CustomerAwareInterface
+{
+
+}

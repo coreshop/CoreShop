@@ -53,66 +53,19 @@ class CustomerType extends AbstractResourceType
                 'label' => 'coreshop.form.customer.lastname',
             ]);
 
-        if ($options['use_repeat_email']) {
-            $builder
-                ->add('email', RepeatedType::class, [
-                    'type' => EmailType::class,
-                    'invalid_message' => 'coreshop.form.customer.email.must_match',
-                    'first_options' => ['label' => 'coreshop.form.customer.email'],
-                    'second_options' => ['label' => 'coreshop.form.customer.email_repeat'],
-
-                ]);
-        } else {
-            $builder->add('email', EmailType::class);
-        }
-
-        if ($options['allow_username']) {
-            $builder->add('username', TextType::class, [
-                'label' => 'coreshop.form.customer.username',
+        $builder
+            ->add('newsletterActive', CheckboxType::class, [
+                'label' => 'coreshop.form.customer.newsletter.subscribe',
+                'required' => false,
             ]);
-        }
-
-        if (!$options['guest'] && $options['allow_password_field']) {
-            $builder
-                ->add('password', RepeatedType::class, [
-                    'type' => PasswordType::class,
-                    'invalid_message' => 'coreshop.form.customer.password.must_match',
-                    'first_options' => ['label' => 'coreshop.form.customer.password'],
-                    'second_options' => ['label' => 'coreshop.form.customer.password_repeat'],
-                ]);
-        }
-
-        if (!$options['guest']) {
-            $builder
-                ->add('newsletterActive', CheckboxType::class, [
-                    'label' => 'coreshop.form.customer.newsletter.subscribe',
-                    'required' => false,
-                ]);
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefault('use_repeat_email', true);
-        $resolver->setDefault('guest', false);
-        $resolver->setDefault('allow_password_field', false);
-        $resolver->setDefault('allow_username', false);
         $resolver->setDefault('customer', false);
         $resolver->setDefault('csrf_protection', true);
-        $resolver->setDefaults(array(
-            'validation_groups' => function (FormInterface $form) {
-                $isGuest = $form->getConfig()->getOption('guest');
-                $validationGroups = $this->validationGroups;
-
-                if ($isGuest) {
-                    return $this->guestValidationGroups;
-                }
-
-                return $validationGroups;
-            },
-        ));
     }
 
     public function getBlockPrefix(): string

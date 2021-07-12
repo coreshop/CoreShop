@@ -57,6 +57,11 @@ interface PimcoreModelInterface extends ResourceInterface, ElementInterface
     /**
      * @return mixed
      */
+    public function getObjectVar($field);
+
+    /**
+     * @return mixed
+     */
     public function save();
 
     /**

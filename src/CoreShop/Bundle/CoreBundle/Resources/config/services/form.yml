@@ -1,4 +1,6 @@
 parameters:
+
+    coreshop.form.type.customer_guest.validation_groups: [coreshop]
     coreshop.form.type.customer_registration_type.validation_groups: [coreshop]
     coreshop.form.type.guest_registration_type.validation_groups: [coreshop_customer]
     coreshop.form.type.product_price_rule.condition.quantity.validation_groups: [coreshop]
@@ -10,6 +12,10 @@ services:
     _defaults:
         public: true
 
+    CoreShop\Bundle\CoreBundle\Form\DataMapper\CustomerDataMapper:
+        arguments:
+            - '@property_accessor'
+
     CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType:
         arguments:
             - '@coreshop.repository.customer'
@@ -19,6 +25,17 @@ services:
 
     CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType:
         arguments:
+            - '%coreshop.model.customer.class%'
+            - '%coreshop.form.type.customer_registration_type.validation_groups%'
+            - '%coreshop.customer.security.login_identifier%'
+            - '@CoreShop\Bundle\CoreBundle\Form\DataMapper\CustomerDataMapper'
+            - '@coreshop.repository.customer'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\UserRegistrationType:
+        arguments:
+            - '%coreshop.model.user.class%'
             - '%coreshop.form.type.customer_registration_type.validation_groups%'
             - '%coreshop.customer.security.login_identifier%'
         tags:
@@ -26,8 +43,11 @@ services:
 
     CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType:
         arguments:
-            - '%coreshop.form.type.customer_registration_type.validation_groups%'
-            - '%coreshop.form.type.guest_registration_type.validation_groups%'
+            - '%coreshop.model.customer.class%'
+            - '%coreshop.form.type.customer_guest.validation_groups%'
+            - '@CoreShop\Bundle\CoreBundle\Form\DataMapper\CustomerDataMapper'
+            - '@coreshop.repository.customer'
+            - '@coreshop.factory.customer'
         tags:
             - { name: form.type }
 

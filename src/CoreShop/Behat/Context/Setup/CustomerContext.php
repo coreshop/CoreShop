@@ -19,6 +19,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Customer\Context\FixedCustomerContext;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
@@ -30,17 +31,20 @@ final class CustomerContext implements Context
 {
     private SharedStorageInterface $sharedStorage;
     private FactoryInterface $customerFactory;
+    private FactoryInterface $userFactory;
     private FixedCustomerContext $fixedCustomerContext;
     private FactoryInterface $addressFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $customerFactory,
+        FactoryInterface $userFactory,
         FixedCustomerContext $fixedCustomerContext,
         FactoryInterface $addressFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->customerFactory = $customerFactory;
+        $this->userFactory = $userFactory;
         $this->fixedCustomerContext = $fixedCustomerContext;
         $this->addressFactory = $addressFactory;
     }
@@ -63,8 +67,7 @@ final class CustomerContext implements Context
     {
         $customer = $this->createCustomer($email);
 
-        $customer->setPassword($password);
-        $customer->setPublished(true);
+        $customer->getUser()->setPassword($password);
 
         if ($firstname) {
             $customer->setFirstname($firstname);
@@ -148,11 +151,24 @@ final class CustomerContext implements Context
 
         list ($firstname, $lastname) = explode('@', $email);
 
+        $customer->setPublished(true);
         $customer->setKey(File::getValidFilename($email));
         $customer->setParent(Folder::getByPath('/'));
         $customer->setEmail($email);
         $customer->setFirstname($firstname);
         $customer->setLastname($lastname);
+
+        /**
+         * @var UserInterface $user
+         */
+        $user = $this->userFactory->createNew();
+        $user->setKey(File::getValidFilename($email));
+        $user->setParent($customer);
+        $user->setPublished(true);
+        $user->setLoginIdentifier($email);
+        $user->setCustomer($customer);
+
+        $customer->setUser($user);
 
         return $customer;
     }
@@ -162,7 +178,19 @@ final class CustomerContext implements Context
      */
     private function saveCustomer(CustomerInterface $customer)
     {
+        $user = $customer->getUser();
+        $customer->setUser(null);
         $customer->save();
+
+        if ($user) {
+            $user->setParent($customer);
+            $user->save();
+
+            $customer->setUser($user);
+            $customer->save();
+
+            $this->sharedStorage->set('user', $user);
+        }
 
         $this->sharedStorage->set('customer', $customer);
     }
