@@ -10,7 +10,7 @@ Feature: Ability to complete the checkout
     And the customer has an address with country "Austria", "4600", "Wels", "Freiung", "9-11/N3"
     And the site has a carrier "Post" and ships for 10 in currency "EUR"
     And the site has a payment provider "Bankwire" using factory "offline"
-    And adding a cart price rule named "Easter Madness"
+    And adding a cart price rule named "Free Shipping"
     And the cart rule is active
     And the cart rule is not a voucher rule
     And the cart rule has a action free-shipping
