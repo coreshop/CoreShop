@@ -89,12 +89,12 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
     public function setDescription($description);
 
     /**
-     * @return array
+     * @return object
      */
     public function getDetails();
 
     /**
-     * @var array $details
+     * @var object $details
      */
     public function setDetails($details);
 
@@ -104,7 +104,7 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
     public function getCurrencyCode();
 
     /**
-     * @param $currencyCode
+     * @param string $currencyCode
      */
     public function setCurrencyCode($currencyCode);
 }

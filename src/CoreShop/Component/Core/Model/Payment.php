@@ -30,6 +30,9 @@ class Payment extends BasePayment implements PaymentInterface
 
     public function setOrder(\CoreShop\Component\Order\Model\OrderInterface $order)
     {
+        /**
+         * @var OrderInterface $order
+         */
         Assert::isInstanceOf($order, OrderInterface::class);
 
         $this->order = $order;

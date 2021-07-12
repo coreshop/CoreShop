@@ -23,12 +23,6 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
         __construct as storesAwareConstructor;
     }
 
-    /**
-     * @var CurrencyInterface
-     */
-    
-    protected $currency;
-
     public function __construct()
     {
         parent::__construct();
@@ -36,14 +30,4 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
         $this->storesAwareConstructor();
     }
 
-    public function getCurrency()
-    {
-        return $this->currency;
-    }
-
-    public function setCurrency($currency)
-    {
-        $this->currencyCode = $currency->getIsoCode();
-        $this->currency = $currency;
-    }
 }

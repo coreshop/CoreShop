@@ -19,7 +19,7 @@ use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
-use Payum\Core\Model\ArrayObject;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
