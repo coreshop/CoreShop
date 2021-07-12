@@ -61,8 +61,13 @@ coreshop.rules.item = Class.create(coreshop.resource.item, {
         }
     },
 
+    postSave: function(result) {
+        this.conditions.reload(result.data.conditions);
+        this.actions.reload(result.data.actions);
+    },
+
     getSaveData: function () {
-        saveData = this.settingsForm.getForm().getFieldValues();
+        var saveData = this.settingsForm.getForm().getFieldValues();
         saveData['conditions'] = this.conditions.getConditionsData();
         saveData['actions'] = this.actions.getActionsData();
 

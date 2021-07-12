@@ -20,7 +20,7 @@
             <gedmo:timestampable on="update"/>
         </field>
 
-        <many-to-many field="conditions" target-entity="CoreShop\Component\Rule\Model\ConditionInterface">
+        <many-to-many field="conditions" target-entity="CoreShop\Component\Rule\Model\ConditionInterface" orphan-removal="true">
             <join-table name="coreshop_notification_rule_conditions">
                 <join-columns>
                     <join-column name="notification_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
@@ -32,9 +32,12 @@
             <cascade>
                 <cascade-all/>
             </cascade>
+            <order-by>
+                <order-by-field name="sort" direction="ASC"/>
+            </order-by>
         </many-to-many>
 
-        <many-to-many field="actions" target-entity="CoreShop\Component\Rule\Model\ActionInterface">
+        <many-to-many field="actions" target-entity="CoreShop\Component\Rule\Model\ActionInterface" orphan-removal="true">
             <join-table name="coreshop_notification_rule_action">
                 <join-columns>
                     <join-column name="notification_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
@@ -46,6 +49,9 @@
             <cascade>
                 <cascade-all/>
             </cascade>
+            <order-by>
+                <order-by-field name="sort" direction="ASC"/>
+            </order-by>
         </many-to-many>
 
     </mapped-superclass>
