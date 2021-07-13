@@ -18,10 +18,10 @@ CoreShop comes with a lot of build-in events.
 | Name | EventType | Description |
 |:-----|:------------|:----------|
 | `coreshop.cart.update` | GenericEvent | Fires after cart has been updated |
-| `coreshop.cart.item_add_pre` | GenericEvent | Fires before a item gets added to cart |
-| `coreshop.cart.item_add_post` | GenericEvent | Fires after a item gets added to cart |
-| `coreshop.cart.item_remove_pre` | GenericEvent | Fires before a item gets removed from cart |
-| `coreshop.cart.item_remove_post` | GenericEvent | Fires after a item gets removed from cart |
+| `coreshop.cart.pre_add_item` | GenericEvent | Fires before a item gets added to cart |
+| `coreshop.cart.post_add_item` | GenericEvent | Fires after a item gets added to cart |
+| `coreshop.cart.pre_remove_item` | GenericEvent | Fires before a item gets removed from cart |
+| `coreshop.cart.post_remove_item` | GenericEvent | Fires after a item gets removed from cart |
 
 ## Customer
 
