@@ -21,7 +21,7 @@
     "coreshop/payment-bundle": "^3.0",
     "pimcore/pimcore": "^10.0.0",
     "payum/payum-bundle": "dev-master",
-    "php-http/guzzle6-adapter": "^2.0"
+    "php-http/guzzle7-adapter": "^0.1"
   },
   "autoload": {
     "psr-4": {

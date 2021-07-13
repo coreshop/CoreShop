@@ -45,7 +45,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     protected $position = 1;
 
     /**
-     * @var Asset\Image
+     * @var Asset|null
      */
      protected $logo;
 
