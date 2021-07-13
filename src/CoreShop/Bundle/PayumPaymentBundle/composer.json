@@ -23,6 +23,11 @@
     "payum/payum-bundle": "dev-master",
     "php-http/guzzle7-adapter": "^0.1"
   },
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-doctrine": "^0.12",
+    "phpstan/phpstan-webmozart-assert": "^0.12"
+  },
   "autoload": {
     "psr-4": {
       "CoreShop\\Bundle\\PayumPaymentBundle\\": ""
