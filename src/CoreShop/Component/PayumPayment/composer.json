@@ -18,7 +18,7 @@
     }
   ],
   "require": {
-    "php": "^7.2",
+    "php": "^8.0",
     "coreshop/payment": "^3.0",
     "payum/payum": "dev-master"
   },
