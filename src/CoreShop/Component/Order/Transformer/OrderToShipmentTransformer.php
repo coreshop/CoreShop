@@ -24,6 +24,7 @@ use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
@@ -31,8 +32,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 {
     protected OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer;
     protected NumberGeneratorInterface $numberGenerator;
-    protected string $shipmentFolderPath;
-    protected ObjectServiceInterface $objectService;
+    protected FolderCreationServiceInterface $folderCreationService;
     protected PimcoreRepositoryInterface $orderItemRepository;
     protected PimcoreFactoryInterface $shipmentItemFactory;
     protected TransformerEventDispatcherInterface $eventDispatcher;
@@ -40,16 +40,14 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
     public function __construct(
         OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer,
         NumberGeneratorInterface $numberGenerator,
-        string $shipmentFolderPath,
-        ObjectServiceInterface $objectService,
+        FolderCreationServiceInterface $folderCreationService,
         PimcoreRepositoryInterface $orderItemRepository,
         PimcoreFactoryInterface $shipmentItemFactory,
         TransformerEventDispatcherInterface $eventDispatcher
     ) {
         $this->orderItemToShipmentItemTransformer = $orderItemToShipmentItemTransformer;
         $this->numberGenerator = $numberGenerator;
-        $this->shipmentFolderPath = $shipmentFolderPath;
-        $this->objectService = $objectService;
+        $this->folderCreationService = $folderCreationService;
         $this->orderItemRepository = $orderItemRepository;
         $this->shipmentItemFactory = $shipmentItemFactory;
         $this->eventDispatcher = $eventDispatcher;
@@ -65,7 +63,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
         $this->eventDispatcher->dispatchPreEvent('shipment', $shipment, ['order' => $order, 'items' => $itemsToTransform]);
 
-        $shipmentFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->shipmentFolderPath));
+        $shipmentFolder = $this->folderCreationService->createFolderForResource($shipment, ['prefix' => $order->getFullPath()]);
 
         $shipment->setOrder($order);
 

@@ -9,12 +9,8 @@ services:
     CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface: '@CoreShop\Bundle\CoreBundle\Customer\CustomerManager'
     CoreShop\Bundle\CoreBundle\Customer\CustomerManager:
         arguments:
-            - '@coreshop.object_service'
             - '@event_dispatcher'
-            - '%coreshop.folder.customer%'
-            - '%coreshop.folder.guest%'
-            - '%coreshop.folder.user%'
-            - '%coreshop.folder.address%'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
             - '%coreshop.customer.security.login_identifier%'
 
     CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface: '@CoreShop\Bundle\CoreBundle\Customer\CustomerLoginService'
@@ -54,9 +50,7 @@ services:
         public: false
         arguments:
             - '@coreshop.factory.company'
-            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
-            - '%coreshop.folder.company%'
-            - '%coreshop.folder.address%'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
 
     CoreShop\Component\Core\Customer\Address\AddressAssignmentManagerInterface: '@CoreShop\Component\Core\Customer\Address\AddressAssignmentManager'
     CoreShop\Component\Core\Customer\Address\AddressAssignmentManager:

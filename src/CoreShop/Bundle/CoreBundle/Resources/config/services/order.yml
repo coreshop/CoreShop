@@ -106,17 +106,15 @@ services:
     CoreShop\Component\Core\Order\Committer\OrderCommitter:
         arguments:
             - '@CoreShop\Component\Order\Manager\CartManagerInterface'
-            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
             - '@coreshop.order.number_generator.default'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface'
             - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
-            - '%coreshop.folder.order%'
 
     CoreShop\Component\Order\Committer\QuoteCommitterInterface: '@CoreShop\Component\Core\Order\Committer\QuoteCommitter'
     CoreShop\Component\Core\Order\Committer\QuoteCommitter:
         arguments:
             - '@CoreShop\Component\Order\Manager\CartManagerInterface'
-            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
             - '@coreshop.quote.number_generator.default'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface'
-            - '%coreshop.folder.quote%'

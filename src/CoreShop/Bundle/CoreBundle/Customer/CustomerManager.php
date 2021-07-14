@@ -17,6 +17,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Service;
@@ -25,29 +26,17 @@ use Webmozart\Assert\Assert;
 
 class CustomerManager implements CustomerManagerInterface
 {
-    private ObjectServiceInterface $objectService;
     private EventDispatcherInterface $eventDispatcher;
-    private string $customerFolder;
-    private string $guestFolder;
-    private string $userFolder;
-    private string $addressFolder;
+    private FolderCreationServiceInterface $folderCreationService;
     private string $loginIdentifier;
 
     public function __construct(
-        ObjectServiceInterface $objectService,
         EventDispatcherInterface $eventDispatcher,
-        string $customerFolder,
-        string $guestFolder,
-        string $userFolder,
-        string $addressFolder,
+        FolderCreationServiceInterface $folderCreationService,
         string $loginIdentifier,
     ) {
-        $this->objectService = $objectService;
         $this->eventDispatcher = $eventDispatcher;
-        $this->customerFolder = $customerFolder;
-        $this->guestFolder = $guestFolder;
-        $this->userFolder = $userFolder;
-        $this->addressFolder = $addressFolder;
+        $this->folderCreationService = $folderCreationService;
         $this->loginIdentifier = $loginIdentifier;
     }
 
@@ -74,7 +63,12 @@ class CustomerManager implements CustomerManagerInterface
         $customer->setUser(null);
         $customer->setAddresses([]);
         $customer->setPublished(true);
-        $customer->setParent($this->objectService->createFolderByPath(sprintf('/%s/%s', ($userBackup ? $this->customerFolder : $this->guestFolder), mb_strtoupper(mb_substr($customer->getLastname(), 0, 1)))));
+        $customer->setParent(
+            $this->folderCreationService->createFolderForResource($customer, [
+                'path' => ($userBackup ? 'customer' : 'guest'),
+                'prefix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
+            ])
+        );
         $customer->setKey(File::getValidFilename($customer->getEmail()));
         $customer->setKey(Service::getUniqueKey($customer));
         $customer->save();
@@ -82,11 +76,11 @@ class CustomerManager implements CustomerManagerInterface
         foreach ($addressBackup as $address) {
             $address->setPublished(true);
             $address->setKey(uniqid());
-            $address->setParent($this->objectService->createFolderByPath(sprintf(
-                '/%s/%s',
-                $customer->getFullPath(),
-                $this->addressFolder
-            )));
+            $address->setParent(
+                $this->folderCreationService->createFolderForResource($address, [
+                    'prefix' => $customer->getFullPath(),
+                ])
+            );
             $address->save();
         }
 
@@ -97,11 +91,11 @@ class CustomerManager implements CustomerManagerInterface
             $userBackup->setCustomer($customer);
             $userBackup->setPassword($userBackup->getPlainPassword());
             $userBackup->setPublished(true);
-            $userBackup->setParent($this->objectService->createFolderByPath(sprintf(
-                '/%s/%s',
-                $customer->getFullPath(),
-                $this->userFolder
-            )));
+            $userBackup->setParent(
+                $this->folderCreationService->createFolderForResource($userBackup, [
+                    'prefix' => $customer->getFullPath()
+                ])
+            );
             $userBackup->setKey(File::getValidFilename($customer->getEmail()));
             $userBackup->setKey(Service::getUniqueKey($userBackup));
             $userBackup->save();

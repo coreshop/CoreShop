@@ -24,10 +24,10 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
@@ -35,8 +35,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 {
     protected OrderDocumentItemTransformerInterface $orderItemToInvoiceItemTransformer;
     protected NumberGeneratorInterface $numberGenerator;
-    protected string $invoiceFolderPath;
-    protected ObjectServiceInterface $objectService;
+    protected FolderCreationServiceInterface $folderCreationService;
     protected PimcoreRepositoryInterface $orderItemRepository;
     protected PimcoreFactoryInterface $invoiceItemFactory;
     protected OrderInvoiceRepositoryInterface $invoiceRepository;
@@ -46,8 +45,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
         NumberGeneratorInterface $numberGenerator,
-        string $invoiceFolderPath,
-        ObjectServiceInterface $objectService,
+        FolderCreationServiceInterface $folderCreationService,
         PimcoreRepositoryInterface $orderItemRepository,
         PimcoreFactoryInterface $invoiceItemFactory,
         OrderInvoiceRepositoryInterface $invoiceRepository,
@@ -56,8 +54,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     ) {
         $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
         $this->numberGenerator = $numberGenerator;
-        $this->invoiceFolderPath = $invoiceFolderPath;
-        $this->objectService = $objectService;
+        $this->folderCreationService = $folderCreationService;
         $this->orderItemRepository = $orderItemRepository;
         $this->invoiceItemFactory = $invoiceItemFactory;
         $this->invoiceRepository = $invoiceRepository;
@@ -75,7 +72,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $this->eventDispatcher->dispatchPreEvent('invoice', $invoice, ['order' => $order, 'items' => $itemsToTransform]);
 
-        $invoiceFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->invoiceFolderPath));
+        $invoiceFolder = $this->folderCreationService->createFolderForResource($invoice, ['prefix' => $order->getFullPath()]);
 
         $invoice->setOrder($order);
 

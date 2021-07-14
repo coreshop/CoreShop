@@ -22,6 +22,7 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\AbstractObject;
@@ -34,55 +35,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CustomerTransformHelper implements CustomerTransformHelperInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    protected $companyFactory;
+    protected FactoryInterface $companyFactory;
+    protected FolderCreationServiceInterface $folderCreationService;
 
-    /**
-     * @var ObjectServiceInterface
-     */
-    protected $objectService;
-
-    /**
-     * @var string
-     */
-    protected $companyFolder;
-
-    /**
-     * @var string
-     */
-    protected $addressFolder;
-
-    /**
-     * @param FactoryInterface       $companyFactory
-     * @param ObjectServiceInterface $objectService
-     * @param string                 $companyFolder
-     * @param string                 $addressFolder
-     */
     public function __construct(
         FactoryInterface $companyFactory,
-        ObjectServiceInterface $objectService,
-        $companyFolder,
-        $addressFolder
+        FolderCreationServiceInterface $folderCreationService,
     ) {
         $this->companyFactory = $companyFactory;
-        $this->objectService = $objectService;
-        $this->companyFolder = $companyFolder;
-        $this->addressFolder = $addressFolder;
+        $this->folderCreationService = $folderCreationService;
     }
 
-    public function getEntityAddressFolderPath(string $rootPath)
+    public function getEntityAddressFolderPath(AddressInterface $address, string $rootPath): DataObject\Folder
     {
-        /**
-         * @var DataObject\Folder $folder
-         */
-        $folder = $this->objectService->createFolderByPath(sprintf('%s/%s', $rootPath, $this->addressFolder));
-
-        return $folder;
+        return $this->folderCreationService->createFolderForResource(
+            $address, ['prefix' => $rootPath]
+        );
     }
 
-    public function getSaveKeyForMoving(ElementInterface $object, ElementInterface $newParent)
+    public function getSaveKeyForMoving(ElementInterface $object, ElementInterface $newParent): string
     {
         $incrementId = 1;
         $originalKey = $object->getKey();
@@ -98,7 +69,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $newKey;
     }
 
-    public function moveCustomerToNewCompany(CustomerInterface $customer, array $transformOptions)
+    public function moveCustomerToNewCompany(CustomerInterface $customer, array $transformOptions): CustomerInterface
     {
         $resolver = $this->getMoveOptionsResolver();
 
@@ -116,10 +87,12 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
 
         $company->setValues($options['companyData']);
         $company->setPublished(true);
-        $company->setParent($this->objectService->createFolderByPath(sprintf(
-            '/%s/%s',
-            $this->companyFolder, mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
-        )));
+        $company->setParent(
+            $this->folderCreationService->createFolderForResource(
+                $company,
+                ['suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))]
+            )
+        );
 
         $company->setKey(File::getValidFilename($company->getName()));
         $company->setKey(DataObject\Service::getUniqueKey($company));
@@ -137,7 +110,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $this->moveCustomerToCompany($customer, $company, $options);
     }
 
-    public function moveCustomerToExistingCompany(CustomerInterface $customer, CompanyInterface $company, array $transformOptions)
+    public function moveCustomerToExistingCompany(CustomerInterface $customer, CompanyInterface $company, array $transformOptions): CustomerInterface
     {
         $resolver = $this->getMoveOptionsResolver();
 
@@ -150,10 +123,10 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $this->moveCustomerToCompany($customer, $company, $options);
     }
 
-    public function moveAddressToNewAddressStack(AddressInterface $address, ElementInterface $newHolder, $removeOldRelations = true)
+    public function moveAddressToNewAddressStack(AddressInterface $address, ElementInterface $newHolder, bool $removeOldRelations = true): AddressInterface
     {
         $path = $newHolder->getFullPath();
-        $newParent = $this->getEntityAddressFolderPath($path);
+        $newParent = $this->getEntityAddressFolderPath($address, $path);
 
         if (!$newHolder instanceof AddressesAwareInterface) {
             return $address;
@@ -179,14 +152,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $address;
     }
 
-    /**
-     * @param CustomerInterface $customer
-     * @param CompanyInterface  $company
-     * @param array             $options
-     *
-     * @throws \Exception
-     */
-    protected function moveCustomerToCompany(CustomerInterface $customer, CompanyInterface $company, array $options)
+    protected function moveCustomerToCompany(CustomerInterface $customer, CompanyInterface $company, array $options): CustomerInterface
     {
         $customer->setParent($company);
         $customer->setKey($this->getSaveKeyForMoving($customer, $company));
@@ -203,13 +169,10 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
 
         $this->forceSave($customer);
 
-        // @todo: fire post event
+        return $customer;
     }
 
-    /**
-     * @param AddressInterface $address
-     */
-    protected function removeAddressRelations(AddressInterface $address)
+    protected function removeAddressRelations(AddressInterface $address): void
     {
         // no need to search for dependencies: address is new.
         if ($this->isNewEntity($address)) {
@@ -251,10 +214,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    protected function getMoveOptionsResolver()
+    protected function getMoveOptionsResolver(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -275,11 +235,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $resolver;
     }
 
-    /**
-     * @param ElementInterface $element
-     * @param bool             $useVersioning
-     */
-    protected function forceSave(ElementInterface $element, $useVersioning = true)
+    protected function forceSave(ElementInterface $element, bool $useVersioning = true): void
     {
         if ($element instanceof Concrete) {
             $element->setOmitMandatoryCheck(true);
@@ -290,14 +246,8 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }, $useVersioning);
     }
 
-    /**
-     * @param ElementInterface $element
-     *
-     * @return bool
-     */
-    protected function isNewEntity(ElementInterface $element)
+    protected function isNewEntity(ElementInterface $element): bool
     {
         return is_null($element->getId()) || $element->getId() === 0;
     }
-
 }
