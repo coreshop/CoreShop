@@ -41,7 +41,5 @@ final class CoreShopPaymentExtension extends AbstractModelExtension
         }
 
         $loader->load('services.yml');
-
-        $container->setParameter('coreshop.payment_gateways', $config['gateways']);
     }
 }

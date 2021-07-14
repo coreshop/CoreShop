@@ -32,6 +32,7 @@
     "coreshop/product-quantity-price-rules": "^3.0",
     "coreshop/index": "^3.0",
     "coreshop/payment": "^3.0",
+    "coreshop/payum-payment": "^3.0",
     "coreshop/taxation": "^3.0",
     "coreshop/notification": "^3.0",
     "coreshop/payum-bundle": "^3.0",

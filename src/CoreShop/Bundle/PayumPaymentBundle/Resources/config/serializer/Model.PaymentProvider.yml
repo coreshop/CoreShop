@@ -1,0 +1,7 @@
+CoreShop\Bundle\PayumPaymentBundle\Model\PaymentProvider:
+    exclusion_policy: ALL
+    xml_root_name: payment_provider
+    properties:
+        gatewayConfig:
+            groups: [Detailed]
+

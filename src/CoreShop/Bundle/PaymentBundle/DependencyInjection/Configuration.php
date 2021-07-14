@@ -41,10 +41,7 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('gateways')
-                    ->useAttributeAsKey('name')
-                    ->prototype('scalar')
-                ->end()
+                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
             ->end();
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
@@ -52,9 +49,6 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
     private function addModelsSection(ArrayNodeDefinition $node)
     {
         $node
@@ -117,9 +111,6 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
     private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()

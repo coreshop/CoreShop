@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle;
 
-use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\WorkflowBundle\CoreShopWorkflowBundle;
@@ -33,7 +32,6 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
     {
         parent::registerDependentBundles($collection);
 
-        $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
         $collection->addBundle(new CoreShopWorkflowBundle(), 1550);
     }
 

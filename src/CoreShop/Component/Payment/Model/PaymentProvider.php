@@ -47,7 +47,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     /**
      * @var Asset|null
      */
-    protected $logo;
+     protected $logo;
 
     public function __construct()
     {
@@ -59,7 +59,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
      */
     public function __toString()
     {
-        return $this->getIdentifier();
+        return sprintf('%s', $this->getIdentifier());
     }
 
     public function getId()
@@ -145,5 +145,4 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     {
         return new PaymentProviderTranslation();
     }
-
 }

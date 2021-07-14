@@ -12,14 +12,13 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\PayumBundle\Model;
+namespace CoreShop\Component\PayumPayment\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use Payum\Core\Model\GatewayConfig as BaseGatewayConfig;
-use Payum\Core\Model\GatewayConfigInterface;
 
-class GatewayConfig extends BaseGatewayConfig implements ResourceInterface, GatewayConfigInterface
+class GatewayConfig extends BaseGatewayConfig implements ResourceInterface
 {
     use SetValuesTrait;
 

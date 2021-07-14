@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
+namespace CoreShop\Bundle\PayumPaymentBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

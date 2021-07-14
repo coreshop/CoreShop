@@ -36,6 +36,7 @@
     "coreshop/frontend-bundle": "^3.0",
     "coreshop/sequence-bundle": "^3.0",
     "coreshop/payum-bundle": "^3.0",
+    "coreshop/payum-payment-bundle": "^3.0",
     "coreshop/configuration-bundle": "^3.0",
     "coreshop/notification-bundle": "^3.0",
     "coreshop/fixture-bundle": "^3.0",

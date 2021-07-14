@@ -14,12 +14,11 @@ namespace CoreShop\Component\Order\Payment;
 
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
+use CoreShop\Component\Order\Model\Payment;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
-use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\Model\Payment;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
@@ -34,8 +33,7 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         int $decimalFactor,
         int $decimalPrecision,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         $this->paymentFactory = $paymentFactory;
         $this->decimalFactor = $decimalFactor;
         $this->decimalPrecision = $decimalPrecision;
@@ -46,10 +44,11 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
     {
         $tokenGenerator = new UniqueTokenGenerator(true);
         $uniqueId = $tokenGenerator->generate(15);
-        $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
+        $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '',
+                str_replace(' ', '_', $order->getOrderNumber())).'_'.$uniqueId;
 
         /**
-         * @var PaymentInterface $payment
+         * @var OrderPaymentInterface $payment
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);
@@ -59,8 +58,9 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $payment->setDatePayment(new \DateTime());
         $payment->setCurrency($order->getCurrency());
 
+
         if ($order instanceof PaymentSettingsAwareInterface) {
-            $payment->setDetails(new ArrayObject($order->getPaymentSettings() ?? []));
+            $payment->setDetails($order->getPaymentSettings() ?? []);
         }
 
         if ($payment instanceof OrderPaymentInterface) {
@@ -75,11 +75,8 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
             ]
         );
 
-        //payum setters
-        if ($payment instanceof Payment) {
-            $payment->setCurrencyCode($payment->getCurrency()->getIsoCode());
-            $payment->setDescription($description);
-        }
+        $payment->setDescription($description);
+        $payment->setCurrencyCode($payment->getCurrency()->getIsoCode());
 
         return $payment;
     }

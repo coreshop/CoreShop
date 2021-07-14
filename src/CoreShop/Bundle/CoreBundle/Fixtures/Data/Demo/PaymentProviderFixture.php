@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
-use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
+use CoreShop\Component\PayumPayment\Model\GatewayConfig;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;

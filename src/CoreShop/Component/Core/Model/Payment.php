@@ -14,26 +14,40 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Payment\Model\Payment as BasePayment;
 use Webmozart\Assert\Assert;
 
 class Payment extends BasePayment implements PaymentInterface
 {
-    /**
-     * @var OrderInterface
-     */
-    protected $order;
+    protected ?OrderInterface $order = null;
+    protected ?CurrencyInterface $currency = null;
 
-    public function getOrder()
+    public function getOrder(): ?OrderInterface
     {
         return $this->order;
     }
 
     public function setOrder(\CoreShop\Component\Order\Model\OrderInterface $order)
     {
+        /**
+         * @var OrderInterface $order
+         */
         Assert::isInstanceOf($order, OrderInterface::class);
 
         $this->order = $order;
         $this->orderId = $order->getId();
+    }
+
+
+    public function getCurrency(): ?CurrencyInterface
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency($currency)
+    {
+        $this->currencyCode = $currency->getIsoCode();
+        $this->currency = $currency;
     }
 }

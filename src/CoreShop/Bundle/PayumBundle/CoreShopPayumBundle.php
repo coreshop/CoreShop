@@ -15,9 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\PayumBundle;
 
 use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
-use CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle;
 use CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler\PayumReplyToSymfonyPass;
-use CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler\RegisterGatewayConfigTypePass;
+use CoreShop\Bundle\PayumPaymentBundle\CoreShopPayumPaymentBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Payum\Bundle\PayumBundle\PayumBundle;
@@ -37,7 +36,6 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RegisterGatewayConfigTypePass());
         $container->addCompilerPass(new PayumReplyToSymfonyPass());
     }
 
@@ -46,12 +44,12 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
         parent::registerDependentBundles($collection);
 
         $collection->addBundle(new CoreShopOrderBundle(), 3200);
-        $collection->addBundle(new CoreShopPaymentBundle(), 2200);
+        $collection->addBundle(new CoreShopPayumPaymentBundle(), 2100);
         $collection->addBundle(new PayumBundle(), 1300);
     }
 
     protected function getModelNamespace()
     {
-        return 'CoreShop\Bundle\PayumBundle\Model';
+        return 'CoreShop\Component\PayumPayment\Model';
     }
 }

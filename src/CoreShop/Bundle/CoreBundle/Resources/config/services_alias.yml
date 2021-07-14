@@ -198,10 +198,6 @@ services:
         alias: CoreShop\Component\Core\Payment\Resolver\StoreBasedPaymentProviderResolver
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Core\Payment\Resolver\StoreBasedPaymentProviderResolver instead'
 
-    coreshop.payment.event_based_payment_provider_resolver:
-        alias: CoreShop\Bundle\CoreBundle\Payment\Resolver\EventBasedPaymentProviderResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\CoreBundle\Payment\Resolver\EventBasedPaymentProviderResolver instead'
-
     coreshop.product_quantity_price_rules.action.amount_decrease:
         alias: CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\AmountDecreaseAction
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\AmountDecreaseAction instead'

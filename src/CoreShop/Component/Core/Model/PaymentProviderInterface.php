@@ -14,19 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Payment\Model\PaymentProviderInterface as BasePaymentProviderInterface;
+use CoreShop\Component\PayumPayment\Model\PaymentProviderInterface as BasePaymentProviderInterface;
 use CoreShop\Component\Store\Model\StoresAwareInterface;
-use Payum\Core\Model\GatewayConfigInterface;
 
 interface PaymentProviderInterface extends BasePaymentProviderInterface, StoresAwareInterface
 {
-    /**
-     * @param GatewayConfigInterface $gatewayConfig
-     */
-    public function setGatewayConfig(GatewayConfigInterface $gatewayConfig);
 
-    /**
-     * @return GatewayConfigInterface
-     */
-    public function getGatewayConfig();
 }

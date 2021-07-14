@@ -6,29 +6,24 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
+namespace CoreShop\Bundle\PayumPaymentBundle\Resolver;
 
-namespace CoreShop\Bundle\CoreBundle\Payment\Resolver;
-
-use CoreShop\Bundle\CoreBundle\Event\PaymentProviderSupportsEvent;
-use CoreShop\Component\Core\Events;
+use CoreShop\Bundle\PayumPaymentBundle\Event\PaymentProviderSupportsEvent;
+use CoreShop\Bundle\PayumPaymentBundle\Events;
 use CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterface
 {
     private PaymentProviderResolverInterface $inner;
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(
-        PaymentProviderResolverInterface $inner,
-        EventDispatcherInterface $eventDispatcher
-    )
+    public function __construct(PaymentProviderResolverInterface $inner, EventDispatcherInterface $eventDispatcher)
     {
         $this->inner = $inner;
         $this->eventDispatcher = $eventDispatcher;

@@ -19,7 +19,6 @@
   ],
   "require": {
     "coreshop/payment": "^3.0",
-    "coreshop/currency-bundle": "^3.0",
     "coreshop/resource-bundle": "^3.0",
     "coreshop/workflow-bundle": "^3.0",
     "pimcore/pimcore": "^10.0.0"

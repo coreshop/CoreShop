@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\CoreBundle\Controller;
+namespace CoreShop\Bundle\PayumPaymentBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Response;

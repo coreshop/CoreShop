@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\PayumBundle\Model;
+namespace CoreShop\Component\PayumPayment\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
