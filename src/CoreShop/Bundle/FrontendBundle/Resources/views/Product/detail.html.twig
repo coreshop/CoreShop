@@ -20,14 +20,14 @@
 
         <div class="col-sm-5 images-block">
             {% if product.image is pimcore_asset_image %}
-                {{ product.image|pimcore_image_thumbnail_html("coreshop_productDetail", {"class": "img-responsive thumbnail"}) }}
+                {{ product.image|pimcore_image_thumbnail_html("coreshop_productDetail", {'imgAttributes': {'class': 'img-fluid img-thumbnail'}}) }}
             {% endif %}
 
             {% if product.images|length > 0 %}
                 <div class="row">
                     {% for image in product.images %}
                         <div class="col-12 col-sm-6">
-                            {{ image|pimcore_image_thumbnail_html("coreshop_productDetailThumbnail", {"class": "img-responsive thumbnail"}) }}
+                            {{ image|pimcore_image_thumbnail_html("coreshop_productDetailThumbnail", {'imgAttributes': {'class': 'img-fluid img-thumbnail'}}) }}
                         </div>
                     {% endfor %}
                 </div>
