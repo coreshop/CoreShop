@@ -33,9 +33,7 @@ services:
     CoreShop\Bundle\OrderBundle\Manager\CartManager:
         arguments:
             - '@CoreShop\Component\Order\Processor\CartProcessorInterface'
-            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
-            - '%coreshop.folder.cart%'
-            - '%coreshop.folder.order_item%'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
 
     coreshop.cart_item.quantity_modifier: '@CoreShop\Component\StorageList\StorageListItemQuantityModifier'
     CoreShop\Component\StorageList\StorageListItemQuantityModifier: ~

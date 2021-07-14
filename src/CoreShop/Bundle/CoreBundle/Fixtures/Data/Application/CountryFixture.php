@@ -60,7 +60,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
         $addressFormatReplaces = [
             'recipient' => [
-                '{{ company }};',
+                '{{ company }}',
                 PHP_EOL,
                 '{{ salutation }}',
                 '{{ firstname }}',

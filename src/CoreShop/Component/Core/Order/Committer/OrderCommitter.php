@@ -29,59 +29,32 @@ use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
-use Pimcore\Model\DataObject\Folder;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
 class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
 {
-    /**
-     * @var CartManagerInterface
-     */
-    protected $cartManager;
-
-    /**
-     * @var ObjectServiceInterface
-     */
-    protected $objectService;
-
-    /**
-     * @var NumberGeneratorInterface
-     */
-    protected $numberGenerator;
-
-    /**
-     * @var ObjectClonerInterface
-     */
-    protected $objectCloner;
-
-    /**
-     * @var StateMachineApplierInterface
-     */
-    private $stateMachineApplier;
-
-    /**
-     * @var string
-     */
-    protected $orderFolderPath;
+    protected CartManagerInterface $cartManager;
+    protected FolderCreationServiceInterface $folderCreationService;
+    protected NumberGeneratorInterface $numberGenerator;
+    protected ObjectClonerInterface $objectCloner;
+    protected StateMachineApplierInterface $stateMachineApplier;
 
     public function __construct(
         CartManagerInterface $cartManager,
-        ObjectServiceInterface $objectService,
+        FolderCreationServiceInterface $folderCreationService,
         NumberGeneratorInterface $numberGenerator,
         ObjectClonerInterface $objectCloner,
         StateMachineApplierInterface $stateMachineApplier,
-        string $orderFolderPath
     ) {
         $this->cartManager = $cartManager;
-        $this->objectService = $objectService;
+        $this->folderCreationService = $folderCreationService;
         $this->numberGenerator = $numberGenerator;
         $this->objectCloner = $objectCloner;
         $this->stateMachineApplier = $stateMachineApplier;
-        $this->orderFolderPath = $orderFolderPath;
     }
 
     public function commitOrder(OrderInterface $order): void
@@ -91,13 +64,10 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
          */
         Assert::isInstanceOf($order, \CoreShop\Component\Core\Model\OrderInterface::class);
 
-        $orderFolder = $this->objectService->createFolderByPath(
-            sprintf(
-                '%s/%s',
-                $this->orderFolderPath,
-                date('Y/m/d')
-            )
-        );
+        $orderFolder = $this->folderCreationService->createFolderForResource($order, [
+            'suffix' => date('Y/m/d'),
+            'path' => 'order'
+        ]);
         $orderNumber = $this->numberGenerator->generate($order);
 
         $order->setParent($orderFolder);
@@ -122,7 +92,7 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
          */
         $shippingAddress = $this->objectCloner->cloneObject(
             $originalShippingAddress,
-            $this->objectService->createFolderByPath(sprintf('%s/addresses', $order->getFullPath())),
+            $this->folderCreationService->createFolderForResource($originalShippingAddress, ['prefix' => $order->getFullPath()]),
             'shipping',
             false
         );
@@ -131,7 +101,7 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
          */
         $invoiceAddress = $this->objectCloner->cloneObject(
             $order->getInvoiceAddress(),
-            $this->objectService->createFolderByPath(sprintf('%s/addresses', $order->getFullPath())),
+            $this->folderCreationService->createFolderForResource($order->getInvoiceAddress(), ['prefix' => $order->getFullPath()]),
             'invoice',
             false
         );

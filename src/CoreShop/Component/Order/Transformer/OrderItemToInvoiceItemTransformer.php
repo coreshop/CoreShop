@@ -19,23 +19,20 @@ use CoreShop\Component\Order\Model\OrderDocumentItemInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Webmozart\Assert\Assert;
 
 class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerInterface
 {
-    private ObjectServiceInterface $objectService;
-    private string $pathForItems;
-    private TransformerEventDispatcherInterface $eventDispatcher;
+    protected FolderCreationServiceInterface $folderCreationService;
+    protected TransformerEventDispatcherInterface $eventDispatcher;
 
     public function __construct(
-        ObjectServiceInterface $objectService,
-        string $pathForItems,
+        FolderCreationServiceInterface $folderCreationService,
         TransformerEventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectService = $objectService;
-        $this->pathForItems = $pathForItems;
+        $this->folderCreationService = $folderCreationService;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -61,7 +58,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
             ]
         );
 
-        $itemFolder = $this->objectService->createFolderByPath($invoice->getFullPath() . '/' . $this->pathForItems);
+        $itemFolder = $this->folderCreationService->createFolderForResource($invoiceItem, ['prefix' => $invoice->getFullPath()]);
 
         $invoiceItem->setKey($orderItem->getKey());
         $invoiceItem->setParent($itemFolder);

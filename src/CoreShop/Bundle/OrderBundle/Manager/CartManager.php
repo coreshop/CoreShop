@@ -20,29 +20,27 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 
 final class CartManager implements CartManagerInterface
 {
     private CartProcessorInterface $cartProcessor;
-    private ObjectServiceInterface $objectService;
-    private string $cartFolderPath;
-    private string $cartItemFolderPath;
+    private FolderCreationServiceInterface $folderCreationService;
 
     public function __construct(
         CartProcessorInterface $cartProcessor,
-        ObjectServiceInterface $objectService,
-        string $cartFolderPath,
-        string $cartItemFolderPath
+        FolderCreationServiceInterface $folderCreationService
     ) {
         $this->cartProcessor = $cartProcessor;
-        $this->objectService = $objectService;
-        $this->cartFolderPath = $cartFolderPath;
-        $this->cartItemFolderPath = $cartItemFolderPath;
+        $this->folderCreationService = $folderCreationService;
     }
 
     public function persistCart(OrderInterface $cart): void
     {
-        $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
+        $cartsFolder = $this->folderCreationService->createFolderForResource($cart, [
+            'suffix' => date('Y/m/d'),
+            'path' => 'cart'
+        ]);
 
         VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
             $tempItems = $cart->getItems();
@@ -62,8 +60,9 @@ final class CartManager implements CartManagerInterface
              */
             foreach ($tempItems as $index => $item) {
                 $item->setParent(
-                    $this->objectService->createFolderByPath(
-                        sprintf('%s/%s', $cart->getFullPath(), $this->cartItemFolderPath)
+                    $this->folderCreationService->createFolderForResource(
+                        $item,
+                        ['prefix' => $cart->getFullPath()]
                     )
                 );
                 $item->setPublished(true);

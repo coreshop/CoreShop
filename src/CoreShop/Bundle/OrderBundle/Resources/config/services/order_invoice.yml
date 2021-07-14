@@ -10,16 +10,14 @@ services:
 
     CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer:
         arguments:
-            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
-            - '%coreshop.folder.order_invoice_item%'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
             - '@CoreShop\Component\Order\Transformer\TransformerEventDispatcherInterface'
 
     CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer:
         arguments:
             - '@CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer'
             - '@coreshop.order_invoice.number_generator.default'
-            - '%coreshop.folder.order_invoice%'
-            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
             - '@coreshop.repository.order_item'
             - '@coreshop.factory.order_invoice_item'
             - '@coreshop.repository.order_invoice'

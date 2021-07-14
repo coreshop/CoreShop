@@ -21,21 +21,19 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Webmozart\Assert\Assert;
 
 class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformerInterface
 {
-    private ObjectServiceInterface $objectService;
-    private string $pathForItems;
-    private TransformerEventDispatcherInterface $eventDispatcher;
+    protected FolderCreationServiceInterface $folderCreationService;
+    protected TransformerEventDispatcherInterface $eventDispatcher;
 
     public function __construct(
-        ObjectServiceInterface $objectService,
-        string $pathForItems,
+        FolderCreationServiceInterface $folderCreationService,
         TransformerEventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectService = $objectService;
-        $this->pathForItems = $pathForItems;
+        $this->folderCreationService = $folderCreationService;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -61,7 +59,7 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
             ]
         );
 
-        $itemFolder = $this->objectService->createFolderByPath($shipment->getFullPath() . '/' . $this->pathForItems);
+        $itemFolder = $this->folderCreationService->createFolderForResource($shipmentItem, ['prefix' => $shipment->getFullPath()]);
 
         $shipmentItem->setKey($orderItem->getKey());
         $shipmentItem->setParent($itemFolder);
