@@ -1,4 +1,4 @@
-CoreShop Resource Bundle
+CoreShop Payum Payment Bundle
 ==================
 
 CoreShop
@@ -11,7 +11,7 @@ CoreShop is an eCommerce Solution for Pimcore. It is build from decoupled compon
 Documentation
 -------------
 
-Documentation is available on [**coreshop.org**](https://docs.coreshop.org/3.0.0/Bundles/Resource_Bundle/index.html).
+Documentation is available on [**coreshop.org**](https://www.coreshop.org/docs/2.1.0/Bundles/PayumPayment_Bundle.html).
 
 Bug tracking
 ------------

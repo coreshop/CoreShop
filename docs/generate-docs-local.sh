@@ -12,6 +12,8 @@ cd ../docs-build
 find . -name 'README.md' -print0 | xargs -0 -n1 bash -c 'mv "$0" "${0/README.md/index.md}"'
 find ./docs -type f -name '*.md' -print0 | xargs -0 sed -i '' -e 's/README/index/g'
 
-~/.composer/vendor/bin/daux generate --destination=generated-docs
+cd docs
 
-cd ..
+/usr/local/opt/php@7.3/bin/php ~/.composer/vendor/bin/daux generate --destination=generated-docs -s .
+
+cd ../..
