@@ -85,7 +85,7 @@ final class PaymentController implements Context
         /**
          * @var Response $result
          */
-        foreach ($responses as $index => $result) {
+        foreach ($responses as $index => $result) {SluggableLinkGenerator
             Assert::eq(
                 $result->getStatusCode(),
                 200,

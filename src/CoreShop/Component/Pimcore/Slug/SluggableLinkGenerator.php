@@ -40,8 +40,8 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
         $slugs = $object->getSlug($params['_locale'] ?? null);
         $slug = null;
         $site = $params['site'] ?? (
-            $this->requestStack->getMainRequest() ?
-                $this->siteResolver->getSite($this->requestStack->getMainRequest()) :
+            $this->requestStack->getMasterRequest() ?
+                $this->siteResolver->getSite($this->requestStack->getMasterRequest()) :
                 null
             );
 
