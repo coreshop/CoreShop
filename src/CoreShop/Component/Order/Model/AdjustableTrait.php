@@ -157,6 +157,14 @@ trait AdjustableTrait
                 }
             }
         }
+
+        if (method_exists($this, 'getUnits')) {
+            foreach ($this->getUnits() as $item) {
+                if ($item instanceof AdjustableInterface) {
+                    $item->removeAdjustmentsRecursively($type);
+                }
+            }
+        }
     }
 
     public function getAdjustmentsTotal(?string $type = null, bool $withTax = true): int

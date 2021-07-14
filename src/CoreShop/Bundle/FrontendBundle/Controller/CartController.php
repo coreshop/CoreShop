@@ -20,6 +20,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\ShippingCalculatorType;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier;
 use CoreShop\Component\Order\Cart\CartModifierInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
@@ -32,6 +33,7 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
+use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -178,7 +180,9 @@ class CartController extends FrontendController
             return $this->redirect($redirect);
         }
 
-        $cartItem = $this->get('coreshop.factory.order_item')->createWithPurchasable($product);
+        $cartItem = $this->get('coreshop.factory.order_item')->createWithPurchasable($product, 0);
+
+        $this->getQuantityModifer()->modify($cartItem, 1);
 
         $addToCart = $this->createAddToCart($this->getCart(), $cartItem);
 
@@ -330,6 +334,14 @@ class CartController extends FrontendController
     protected function getCartModifier()
     {
         return $this->get(CartModifierInterface::class);
+    }
+
+    /**
+     * @return StorageListItemQuantityModifierInterface
+     */
+    protected function getQuantityModifer()
+    {
+        return $this->get(CartItemQuantityModifier::class);
     }
 
     /**

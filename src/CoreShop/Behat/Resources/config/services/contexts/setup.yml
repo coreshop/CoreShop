@@ -145,6 +145,7 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@CoreShop\Component\Order\Context\CartContextInterface'
             - '@CoreShop\Component\Order\Cart\CartModifierInterface'
+            - '@CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier'
             - '@CoreShop\Component\Order\Manager\CartManagerInterface'
             - '@CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface'
             - '@coreshop.factory.order_item'

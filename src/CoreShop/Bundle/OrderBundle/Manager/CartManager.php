@@ -59,6 +59,9 @@ final class CartManager implements CartManagerInterface
              * @var OrderItemInterface $item
              */
             foreach ($tempItems as $index => $item) {
+                $tempUnits = $item->getUnits();
+
+                $item->setUnits([]);
                 $item->setParent(
                     $this->folderCreationService->createFolderForResource(
                         $item,
@@ -68,6 +71,14 @@ final class CartManager implements CartManagerInterface
                 $item->setPublished(true);
                 $item->setKey($index+1);
                 $item->save();
+
+                $item->setUnits($tempUnits);
+
+                foreach ($item->getUnits() ?? [] as $unitIndex => $unit) {
+                    $unit->setParent($item);
+                    $unit->setPublished(true);
+                    $unit->setKey($unitIndex+1);
+                }
             }
 
             $cart->setItems($tempItems);
@@ -77,6 +88,10 @@ final class CartManager implements CartManagerInterface
              * @var OrderItemInterface $cartItem
              */
             foreach ($cart->getItems() as $cartItem) {
+                foreach ($cartItem->getUnits() as $unit) {
+                    $unit->save();
+                }
+
                 $cartItem->save();
             }
 
