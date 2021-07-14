@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Cart;
 
+use CoreShop\Component\Order\CartEvents;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
@@ -56,7 +57,7 @@ class CartModifier implements CartModifierInterface
 
         $this->eventDispatcher->dispatch(
             new GenericEvent($storageList, ['item' => $item]),
-            'coreshop.cart.remove_add_pre'
+            CartEvents::PRE_REMOVE_ITEM
         );
 
         $storageList->removeItem($item);
@@ -64,7 +65,7 @@ class CartModifier implements CartModifierInterface
 
         $this->eventDispatcher->dispatch(
             new GenericEvent($storageList, ['item' => $item]),
-            'coreshop.cart.remove_add_post'
+            CartEvents::POST_REMOVE_ITEM
         );
     }
 
@@ -85,6 +86,16 @@ class CartModifier implements CartModifierInterface
             }
         }
 
+        $this->eventDispatcher->dispatch(
+            new GenericEvent($storageList, ['item' => $storageListItem]),
+            CartEvents::PRE_ADD_ITEM
+        );
+
         $storageList->addItem($storageListItem);
+
+        $this->eventDispatcher->dispatch(
+            new GenericEvent($storageList, ['item' => $storageListItem]),
+            CartEvents::POST_ADD_ITEM
+        );
     }
 }
