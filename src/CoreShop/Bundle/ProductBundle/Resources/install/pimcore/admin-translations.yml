@@ -158,3 +158,13 @@ translations:
         languages:
             en: 'Depth'
             de: 'Tiefe'
+
+    coreshop.product.slug:
+        languages:
+            en: 'Slug'
+            de: 'Slug'
+
+    coreshop.category.slug:
+        languages:
+            en: 'Slug'
+            de: 'Slug'

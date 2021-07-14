@@ -43,65 +43,129 @@ class Commerce extends Base
         'Industrial',
     ];
     protected static $productName = [
-        'adjective' => [
-            'Small',
-            'Ergonomic',
-            'Rustic',
-            'Intelligent',
-            'Gorgeous',
-            'Incredible',
-            'Fantastic',
-            'Practical',
-            'Sleek',
-            'Awesome',
-            'Enormous',
-            'Mediocre',
-            'Synergistic',
-            'Heavy Duty',
-            'Lightweight',
-            'Aerodynamic',
-            'Durable',
+        'en' => [
+            'adjective' => [
+                'Small',
+                'Ergonomic',
+                'Rustic',
+                'Intelligent',
+                'Gorgeous',
+                'Incredible',
+                'Fantastic',
+                'Practical',
+                'Sleek',
+                'Awesome',
+                'Enormous',
+                'Mediocre',
+                'Synergistic',
+                'Heavy Duty',
+                'Lightweight',
+                'Aerodynamic',
+                'Durable',
+            ],
+            'material' => [
+                'Steel',
+                'Wooden',
+                'Concrete',
+                'Plastic',
+                'Cotton',
+                'Granite',
+                'Rubber',
+                'Leather',
+                'Silk',
+                'Wool',
+                'Linen',
+                'Marble',
+                'Iron',
+                'Bronze',
+                'Copper',
+                'Aluminum',
+                'Paper',
+            ],
+            'product' => [
+                'Chair',
+                'Car',
+                'Computer',
+                'Gloves',
+                'Pants',
+                'Shirt',
+                'Table',
+                'Shoes',
+                'Hat',
+                'Plate',
+                'Knife',
+                'Bottle',
+                'Coat',
+                'Lamp',
+                'Keyboard',
+                'Bag',
+                'Bench',
+                'Clock',
+                'Watch',
+                'Wallet',
+            ],
         ],
-        'material' => [
-            'Steel',
-            'Wooden',
-            'Concrete',
-            'Plastic',
-            'Cotton',
-            'Granite',
-            'Rubber',
-            'Leather',
-            'Silk',
-            'Wool',
-            'Linen',
-            'Marble',
-            'Iron',
-            'Bronze',
-            'Copper',
-            'Aluminum',
-            'Paper',
-        ],
-        'product' => [
-            'Chair',
-            'Car',
-            'Computer',
-            'Gloves',
-            'Pants',
-            'Shirt',
-            'Table',
-            'Shoes',
-            'Hat',
-            'Plate',
-            'Knife',
-            'Bottle',
-            'Coat',
-            'Lamp',
-            'Keyboard',
-            'Bag',
-            'Bench',
-            'Clock',
-            'Watch',
-            'Wallet',
+        'de' => [
+            'adjective' => [
+                'Klein',
+                'Ergonomisch',
+                'Rustikal',
+                'Intelligent',
+                'Herrlich',
+                'Unglaublich',
+                'Fantastisch',
+                'Praktisch',
+                'Glatt',
+                'Genial',
+                'Enorm',
+                'Mittelmäßig',
+                'Synergistisch',
+                'Schwerlast',
+                'Leicht',
+                'Aerodynamisch',
+                'Dauerhaft',
+            ],
+            'material' => [
+                'Stahl',
+                'Hölzern',
+                'Beton',
+                'Plastik',
+                'Baumwolle',
+                'Granit',
+                'Gummi',
+                'Leder',
+                'Die Seide',
+                'Wolle',
+                'Leinen',
+                'Marmor',
+                'Eisen',
+                'Bronze',
+                'Kupfer',
+                'Aluminium',
+                'Papier',
+            ],
+            'product' => [
+                'Stuhl',
+                'Wagen',
+                'Computer',
+                'Handschuhe',
+                'Hose',
+                'Hemd',
+                'Tabelle',
+                'Schuhe',
+                'Hut',
+                'Teller',
+                'Messer',
+                'Flasche',
+                'Mantel',
+                'Lampe',
+                'Tastatur',
+                'Tasche',
+                'Bank',
+                'Uhr',
+                'Uhr',
+                'Brieftasche',
+            ],
         ],
     ];
     protected static $promotionCode = [
@@ -124,8 +188,8 @@ class Commerce extends Base
     public function promotionCode(int $digits = 6): string
     {
         return static::randomElement(static::$promotionCode['adjective'])
-            . static::randomElement(static::$promotionCode['noun'])
-            . $this->generator->randomNumber($digits, true);
+            .static::randomElement(static::$promotionCode['noun'])
+            .$this->generator->randomNumber($digits, true);
     }
 
     public function department(int $max = 3, bool $fixedAmount = false): string
@@ -154,10 +218,10 @@ class Commerce extends Base
         return static::randomElement(static::$department);
     }
 
-    public function productName(): string
+    public function productName(?string $locale = null): string
     {
-        return static::randomElement(static::$productName['adjective'])
-            . ' ' . static::randomElement(static::$productName['material'])
-            . ' ' . static::randomElement(static::$productName['product']);
+        return static::randomElement(static::$productName[$locale ?? 'en']['adjective'])
+            .' '.static::randomElement(static::$productName[$locale ?? 'en']['material'])
+            .' '.static::randomElement(static::$productName[$locale ?? 'en']['product']);
     }
 }

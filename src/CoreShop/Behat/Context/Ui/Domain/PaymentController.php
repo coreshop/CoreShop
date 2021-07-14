@@ -86,10 +86,6 @@ final class PaymentController implements Context
          * @var Response $result
          */
         foreach ($responses as $index => $result) {
-            echo "Request:" . $requests[$index]->getUri() . PHP_EOL;
-            echo (string)$result->getBody();
-            echo PHP_EOL;
-//
             Assert::eq(
                 $result->getStatusCode(),
                 200,

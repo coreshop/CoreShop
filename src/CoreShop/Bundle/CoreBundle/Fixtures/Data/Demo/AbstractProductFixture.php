@@ -23,9 +23,11 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Faker\Factory;
 use Faker\Provider\Barcode;
+use Faker\Provider\Base;
 use Faker\Provider\Lorem;
 use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject\Service;
+use Pimcore\Tool;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -49,6 +51,11 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
 
     protected function createProduct(string $parentPath): ProductInterface
     {
+        $fakerDE = Factory::create('de_DE');
+        $fakerDE->addProvider(new Lorem($fakerDE));
+        $fakerDE->addProvider(new Barcode($fakerDE));
+        $fakerDE->addProvider(new Commerce($fakerDE));
+
         $faker = Factory::create();
         $faker->addProvider(new Lorem($faker));
         $faker->addProvider(new Barcode($faker));
@@ -99,9 +106,12 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
          * @var ProductInterface $product
          */
         $product = $this->container->get('coreshop.factory.product')->createNew();
-        $product->setName($faker->productName);
+        foreach (Tool::getValidLanguages() as $language) {
+            $product->setName($faker->productName($language), $language);
+
+            $product->setShortDescription($language === 'de' ? $fakerDE->text() : $faker->text(), $language);
+        }
         $product->setSku($faker->ean13);
-        $product->setShortDescription($faker->text());
         $product->setDescription(implode('<br/>', $faker->paragraphs(3)));
         $product->setEan($faker->ean13);
         $product->setActive(true);

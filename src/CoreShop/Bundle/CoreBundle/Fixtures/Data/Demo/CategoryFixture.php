@@ -22,6 +22,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Pimcore\Model\DataObject\Service;
+use Pimcore\Tool;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -51,7 +52,11 @@ class CategoryFixture extends AbstractFixture implements ContainerAwareInterface
                  * @var CategoryInterface $category
                  */
                 $category = $this->container->get('coreshop.factory.category')->createNew();
-                $category->setName($faker->department);
+
+                foreach (Tool::getValidLanguages() as $language) {
+                    $category->setName($faker->department, $language);
+                }
+
                 $category->setParent($this->container->get(ObjectServiceInterface::class)->createFolderByPath('/demo/categories'));
                 $category->setStores([$this->container->get('coreshop.repository.store')->findStandard()->getId()]);
                 $category->setPublished(true);

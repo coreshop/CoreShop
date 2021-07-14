@@ -15,22 +15,18 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Pimcore\Http\RequestHelper;
-use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function latestAction(Request $request)
+    public function latestAction(Request $request): Response
     {
         $productRepository = $this->get('coreshop.repository.product');
 
@@ -39,20 +35,39 @@ class ProductController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function detailAction(Request $request)
+    public function detailSlugAction(Request $request, ProductInterface $object)
+    {
+        $this->validateProduct($request, $object);
+
+        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($object);
+        $this->get(TrackerInterface::class)->trackProduct($object);
+
+        return $this->render($this->templateConfigurator->findTemplate('Product/detail.html'), [
+            'product' => $object,
+        ]);
+    }
+
+    public function detailAction(Request $request): Response
     {
         $product = $this->getProductByRequest($request);
-
-        $isFrontendRequestByAdmin = false;
 
         if (!$product instanceof ProductInterface) {
             throw new NotFoundHttpException('product not found');
         }
+
+        $this->validateProduct($request, $product);
+
+        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($product);
+        $this->get(TrackerInterface::class)->trackProduct($product);
+
+        return $this->render($this->templateConfigurator->findTemplate('Product/detail.html'), [
+            'product' => $product,
+        ]);
+    }
+
+    protected function validateProduct(Request $request, ProductInterface $product): void
+    {
+        $isFrontendRequestByAdmin = false;
 
         if ($this->get(RequestHelper::class)->isFrontendRequestByAdmin($request)) {
             $isFrontendRequestByAdmin = true;
@@ -65,21 +80,9 @@ class ProductController extends FrontendController
         if (!in_array($this->get(StoreContextInterface::class)->getStore()->getId(), $product->getStores())) {
             throw new NotFoundHttpException('product not found');
         }
-
-        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($product);
-        $this->get(TrackerInterface::class)->trackProduct($product);
-
-        return $this->render($this->templateConfigurator->findTemplate('Product/detail.html'), [
-            'product' => $product,
-        ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return DataObject\Concrete
-     */
-    protected function getProductByRequest(Request $request)
+    protected function getProductByRequest(Request $request): ?PurchasableInterface
     {
         return $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
     }
