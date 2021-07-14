@@ -66,7 +66,7 @@ class CustomerManager implements CustomerManagerInterface
         $customer->setParent(
             $this->folderCreationService->createFolderForResource($customer, [
                 'path' => ($userBackup ? 'customer' : 'guest'),
-                'prefix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
+                'suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
             ])
         );
         $customer->setKey(File::getValidFilename($customer->getEmail()));
