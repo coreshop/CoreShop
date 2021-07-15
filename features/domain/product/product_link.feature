@@ -8,4 +8,4 @@ Feature: In order that a customer can visit the product page
     Then the product "Shoe" should be priced at "100"
 
   Scenario: Create URL for product
-    Then the generated url for object should be "/en/shop/shoe~p%id"
+    Then the generated url for object should be "/en/shoe"

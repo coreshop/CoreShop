@@ -7,4 +7,4 @@ Feature: In order that a customer can visit the category page
     And the site has a category "Shirts"
 
   Scenario: Create URL for product
-    Then the generated url for object should be "/en/shop/shirts~c%id"
+    Then the generated url for object should be "/en/shirts"
