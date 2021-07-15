@@ -5,7 +5,7 @@
         <div class="image">
             {% if product.image is pimcore_asset_image %}
                 <a href="{{ coreshop_path(product, 'coreshop_product_detail') }}">
-                    {{ product.image|pimcore_image_thumbnail_html('coreshop_productList', {'class': 'img-fluid'}) }}
+                    {{ product.image|pimcore_image_thumbnail_html('coreshop_productList', {'imgAttributes': {'class': 'img-fluid'}}) }}
                 </a>
             {% endif %}
         </div>
