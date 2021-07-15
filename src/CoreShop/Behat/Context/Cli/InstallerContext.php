@@ -107,10 +107,7 @@ final class InstallerContext implements Context
      */
     private function iExecuteCommandAndConfirm($name)
     {
-        try {
-            $this->tester->setInputs(['y']);
-            $this->tester->execute(['command' => $name]);
-        } catch (\Exception $e) {
-        }
+        $this->tester->setInputs(['y']);
+        $this->tester->execute(['command' => $name]);
     }
 }
