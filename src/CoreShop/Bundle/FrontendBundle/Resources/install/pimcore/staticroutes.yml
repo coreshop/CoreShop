@@ -6,20 +6,6 @@ routes:
     variables: _locale
     priority: 1
 
-  coreshop_category_list:
-    pattern: '/(\w+)\/shop\/(.*?)\~c([0-9]+)$/'
-    reverse: '/%_locale/shop/%name~c%category'
-    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CategoryController:indexAction'
-    variables: _locale,name,category
-    priority: 2
-
-  coreshop_product_detail:
-    pattern: '/(\w+)\/shop\/(.*?)\~p([0-9]+)$/'
-    reverse: '/%_locale/shop/%name~p%product'
-    controller: 'CoreShop\Bundle\FrontendBundle\Controller\ProductController:detailAction'
-    variables: _locale,name,product
-    priority: 2
-
   coreshop_cart_summary:
     pattern: '/(\w+)\/shop\/cart$/'
     reverse: '/%_locale/shop/cart'

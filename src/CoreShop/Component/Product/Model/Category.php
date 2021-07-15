@@ -34,6 +34,11 @@ abstract class Category extends AbstractPimcoreModel implements CategoryInterfac
         return count($this->getChildren()) > 0;
     }
 
+    public function getNameForSlug($language = null): ?string
+    {
+        return $this->getName($language);
+    }
+
     public function getHierarchy(): array
     {
         $hierarchy = [];

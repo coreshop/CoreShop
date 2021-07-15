@@ -20,10 +20,7 @@ use CoreShop\Component\Product\Model\ProductUnitInterface;
 
 class ProductPage extends AbstractFrontendPage implements ProductPageInterface
 {
-    public function getRouteName(): string
-    {
-        return 'coreshop_product_detail';
-    }
+    use SluggablePageTrait;
 
     public function getContent(): string
     {
