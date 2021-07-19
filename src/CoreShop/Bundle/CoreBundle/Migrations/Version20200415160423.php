@@ -18,7 +18,7 @@ class Version20200415160423 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $this->writeMessage('Start migration for Order Invoice Objects');
+        $this->write('Start migration for Order Invoice Objects');
 
         $orderInvoiceList = $this->container->get('coreshop.repository.order_invoice')->getList();
         $batchList = new BatchListing($orderInvoiceList, 50);

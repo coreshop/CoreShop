@@ -23,7 +23,7 @@ class Version20200415151505 extends AbstractMigration implements ContainerAwareI
         $classUpdater = new ClassUpdate($orderClassName);
 
         if ($classUpdater->hasField('saleState')) {
-            $this->writeMessage('Field "saleState" already found, skipping');
+            $this->write('Field "saleState" already found, skipping');
             return;
         }
 
