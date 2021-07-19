@@ -139,7 +139,7 @@ class MainMenuBuilder implements MenuBuilderInterface
         $localization
             ->addChild('coreshop_taxes')
             ->setLabel('coreshop_taxes')
-            ->setAttribute('permission', 'coreshop_permission_tax_item')
+            ->setAttribute('permission', 'coreshop_permission_tax_rate')
             ->setAttribute('iconCls', 'coreshop_nav_icon_taxes')
             ->setAttribute('resource', 'coreshop.taxation')
             ->setAttribute('function', 'tax_item')
