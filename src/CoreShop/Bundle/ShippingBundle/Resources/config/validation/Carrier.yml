@@ -4,3 +4,5 @@ CoreShop\Component\Shipping\Model\Carrier:
             - NotBlank: { groups: [coreshop] }
         isFree:
             - Type: { type: boolean }
+        hideFromCheckout:
+            - Type: { type: boolean }

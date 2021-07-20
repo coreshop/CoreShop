@@ -15,6 +15,10 @@ CoreShop\Component\Shipping\Model\Carrier:
             expose: true
             type: string
             groups: [Detailed]
+        hideFromCheckout:
+            expose: true
+            type: boolean
+            groups: [Detailed]
         isFree:
             expose: true
             type: boolean

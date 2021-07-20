@@ -47,6 +47,11 @@ class Carrier extends AbstractResource implements CarrierInterface
     /**
      * @var bool
      */
+    private $hideFromCheckout = false;
+
+    /**
+     * @var bool
+     */
     private $isFree = false;
 
     /**
@@ -114,6 +119,16 @@ class Carrier extends AbstractResource implements CarrierInterface
     public function setTrackingUrl($trackingUrl)
     {
         $this->trackingUrl = $trackingUrl;
+    }
+
+    public function getHideFromCheckout()
+    {
+        return $this->hideFromCheckout;
+    }
+
+    public function setHideFromCheckout($hideFromCheckout)
+    {
+        $this->hideFromCheckout = $hideFromCheckout;
     }
 
     public function getIsFree()
