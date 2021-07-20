@@ -41,8 +41,6 @@ services:
           - { name: console.command, command: coreshop:install }
 
     CoreShop\Bundle\CoreBundle\Command\MigrateCommand:
-        arguments:
-            - '%coreshop.all.dependant.bundles%'
         tags:
             - { name: console.command, command: coreshop:migrate }
 

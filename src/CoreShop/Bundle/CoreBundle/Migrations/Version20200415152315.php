@@ -17,7 +17,7 @@ class Version20200415152315 extends AbstractMigration implements ContainerAwareI
      */
     public function up(Schema $schema): void
     {
-        $this->writeMessage('Start migration for Order Class Fields');
+        $this->write('Start migration for Order Class Fields');
 
         $orderClassName = $this->container->getParameter('coreshop.model.order.pimcore_class_name');
 
@@ -243,7 +243,7 @@ class Version20200415152315 extends AbstractMigration implements ContainerAwareI
             if ($classUpdater->hasField($field['name'])) {
                 $fieldBefore = $field['name'];
 
-                $this->writeMessage(
+                $this->write(
                     sprintf('Field "%s" already found, skipping', $field['name'])
                 );
 

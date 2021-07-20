@@ -64,15 +64,23 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
             $classUpdater->insertFieldAfter('localeCode', $userField);
         }
 
-        $classUpdater->replaceFieldProperties('password', [
-            'noteditable' => true,
-        ]);
-        $classUpdater->replaceFieldProperties('passwordResetHash', [
-            'noteditable' => true,
-        ]);
-        $classUpdater->replaceFieldProperties('isGuest', [
-            'noteditable' => true,
-        ]);
+        if ($classUpdater->hasField('password')) {
+            $classUpdater->replaceFieldProperties('password', [
+                'noteditable' => true,
+            ]);
+        }
+
+        if ($classUpdater->hasField('passwordResetHash')) {
+            $classUpdater->replaceFieldProperties('passwordResetHash', [
+                'noteditable' => true,
+            ]);
+        }
+
+        if ($classUpdater->hasField('isGuest')) {
+            $classUpdater->replaceFieldProperties('isGuest', [
+                'noteditable' => true,
+            ]);
+        }
 
         $classUpdater->save();
 

@@ -23,19 +23,6 @@ use Symfony\Component\Process\Process;
 
 final class MigrateCommand extends Command
 {
-    /**
-     * @var array
-     */
-    protected array $dependantBundles = [];
-
-    public function __construct(array $dependantBundles)
-    {
-        parent::__construct();
-
-        $this->dependantBundles = $dependantBundles;
-    }
-
-
     protected function configure(): void
     {
         $this
@@ -54,26 +41,9 @@ EOT
         $application->setCatchExceptions(false);
 
         $commandExecutor = new CommandExecutor($input, $output, $application);
-        $commandExecutor->runCommand('pimcore:migrations:migrate', ['--bundle' => 'CoreShopCoreBundle'], $output);
-
-        $phpCli = Console::getPhpCli();
+        $commandExecutor->runCommand('doctrine:migrations:migrate', ['--prefix' => 'CoreShop\\Bundle\\CoreBundle\\Migrations'], $output);
 
         $output->writeln('');
-
-        foreach ($this->dependantBundles as $bundle) {
-            $process = new Process(
-                 array_merge(
-                    [$phpCli],
-                    [
-                        'bin/console',
-                        'pimcore:migrations:migrate',
-                        '--bundle='.$bundle,
-                    ]
-                )
-            );
-            $process->setTty(true);
-            $process->run();
-        }
 
         return 0;
     }

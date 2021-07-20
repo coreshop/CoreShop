@@ -42,4 +42,14 @@ interface ClassUpdateInterface
     public function replaceFieldProperties(string $fieldName, array $keyValues): void;
 
     public function removeField(string $fieldName): void;
+
+    public function insertLayoutBefore(string $fieldName, array $jsonFieldDefinition): void;
+
+    public function insertLayoutAfter(string $fieldName, array $jsonFieldDefinition): void;
+
+    public function replaceLayout(string $fieldName, array $jsonFieldDefinition): void;
+
+    public function replaceLayoutProperties(string $fieldName, array $keyValues): void;
+
+    public function removeLayout(string $fieldName): void;
 }
