@@ -20,16 +20,19 @@ use Pimcore\Model\DataObject\AbstractObject;
 
 class ObjectPropertyInterpreter implements InterpreterInterface
 {
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpret(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): mixed
     {
-        if ($value instanceof AbstractObject) {
-            if (array_key_exists('property', $interpreterConfig)) {
-                $name = $interpreterConfig['property'];
-                $getter = 'get' . ucfirst($name);
+        if (($value instanceof AbstractObject) && array_key_exists('property', $interpreterConfig)) {
+            $name = $interpreterConfig['property'];
+            $getter = 'get' . ucfirst($name);
 
-                if (method_exists($value, $getter)) {
-                    return $value->$getter();
-                }
+            if (method_exists($value, $getter)) {
+                return $value->$getter();
             }
         }
 

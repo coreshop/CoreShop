@@ -16,6 +16,10 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderShipmentInterface;
+use CoreShop\Component\Order\Model\OrderInvoiceInterface;
+use CoreShop\Component\Order\Model\OrderPaymentInterface;
 
 final class OrderContext implements Context
 {
@@ -30,7 +34,7 @@ final class OrderContext implements Context
      * @Transform /^the order/
      * @Transform /^my order/
      */
-    public function order()
+    public function order(): OrderInterface
     {
         return $this->sharedStorage->get('order');
     }
@@ -38,7 +42,7 @@ final class OrderContext implements Context
     /**
      * @Transform /^latest order invoice/
      */
-    public function latestOrderInvoice()
+    public function latestOrderInvoice(): OrderInvoiceInterface
     {
         return $this->sharedStorage->get('orderInvoice');
     }
@@ -46,7 +50,7 @@ final class OrderContext implements Context
     /**
      * @Transform /^latest order shipment/
      */
-    public function latestOrderShipment()
+    public function latestOrderShipment(): OrderShipmentInterface
     {
         return $this->sharedStorage->get('orderShipment');
     }
@@ -54,7 +58,7 @@ final class OrderContext implements Context
     /**
      * @Transform /^latest order payment/
      */
-    public function latestOrderPayment()
+    public function latestOrderPayment(): OrderPaymentInterface
     {
         return $this->sharedStorage->get('orderPayment');
     }

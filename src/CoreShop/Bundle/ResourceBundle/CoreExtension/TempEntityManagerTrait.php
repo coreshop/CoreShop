@@ -19,7 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 trait TempEntityManagerTrait
 {
-    protected function createTempEntityManager(EntityManagerInterface $entityManager)
+    protected function createTempEntityManager(EntityManagerInterface $entityManager): EntityManager
     {
         return EntityManager::create($entityManager->getConnection(), $entityManager->getConfiguration(), $entityManager->getEventManager());
     }

@@ -34,24 +34,16 @@ class EntityRepository extends BaseEntityRepository implements RepositoryInterfa
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getAll()
+    public function getAll(): array
     {
         return $this->createQueryBuilder('o')
             ->getQuery()
             ->getResult();
     }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function getPropertyName($name)
+    protected function getPropertyName(string $name): string
     {
-        if (false === strpos($name, '.')) {
+        if (!str_contains($name, '.')) {
             return 'o' . '.' . $name;
         }
 

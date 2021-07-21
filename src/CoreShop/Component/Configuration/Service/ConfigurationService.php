@@ -36,7 +36,7 @@ class ConfigurationService implements ConfigurationServiceInterface
         $this->configurationFactory = $configurationFactory;
     }
 
-    public function get(string $key, bool $returnObject = false)
+    public function get(string $key, bool $returnObject = false): mixed
     {
         $config = $this->configurationRepository->findByKey($key);
 

@@ -16,34 +16,13 @@ namespace CoreShop\Component\Resource\Storage;
 
 interface StorageInterface
 {
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     public function has(string $name): bool;
 
-    /**
-     * @param string $name
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    public function get(string $name, $default = null);
+    public function get(string $name, mixed $default = null): mixed;
 
-    /**
-     * @param string $name
-     * @param mixed  $value
-     */
-    public function set(string $name, $value): void;
+    public function set(string $name, mixed $value): void;
 
-    /**
-     * @param string $name
-     */
     public function remove(string $name): void;
 
-    /**
-     * @return array
-     */
     public function all(): array;
 }

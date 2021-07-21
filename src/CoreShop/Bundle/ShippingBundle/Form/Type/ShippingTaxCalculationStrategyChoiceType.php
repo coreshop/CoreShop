@@ -27,19 +27,19 @@ class ShippingTaxCalculationStrategyChoiceType extends AbstractType
         $this->strategies = $strategies;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => array_flip($this->strategies),
         ]);
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_tax_calculation_strategy';
     }

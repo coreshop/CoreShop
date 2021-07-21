@@ -36,7 +36,13 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function transform(OrderDocumentInterface $invoice, OrderItemInterface $orderItem, OrderDocumentItemInterface $invoiceItem, $quantity, $options = [])
+    public function transform(
+        OrderDocumentInterface $invoice,
+        OrderItemInterface $orderItem,
+        OrderDocumentItemInterface $invoiceItem,
+        int $quantity,
+        array $options = []
+    ): OrderDocumentItemInterface
     {
         /**
          * @var OrderInvoiceInterface     $invoice

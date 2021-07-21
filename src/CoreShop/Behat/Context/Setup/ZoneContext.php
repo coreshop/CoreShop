@@ -43,7 +43,7 @@ final class ZoneContext implements Context
     /**
      * @Given /^the site has a zone "([^"]+)"$/
      */
-    public function theSiteHasAZone($name)
+    public function theSiteHasAZone($name): void
     {
         $this->createZone($name);
     }
@@ -51,7 +51,7 @@ final class ZoneContext implements Context
     /**
      * @param string $name
      */
-    private function createZone($name)
+    private function createZone($name): void
     {
         $zone = $this->zoneRepository->findBy(['name' => $name]);
 
@@ -69,7 +69,7 @@ final class ZoneContext implements Context
     /**
      * @param ZoneInterface $zone
      */
-    private function saveZone(ZoneInterface $zone)
+    private function saveZone(ZoneInterface $zone): void
     {
         $this->objectManager->persist($zone);
         $this->objectManager->flush();

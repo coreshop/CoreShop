@@ -18,7 +18,6 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Doctrine\Persistence\ObjectManager;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 
@@ -38,7 +37,7 @@ final class ManufacturerContext implements Context
     /**
      * @Given /^the site has a manufacturer "([^"]+)"$/
      */
-    public function thereIsAManufacturer($name)
+    public function thereIsAManufacturer($name): void
     {
         /**
          * @var ManufacturerInterface $manufacturer

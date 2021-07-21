@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
  */
 final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         try {
             $resources = $container->getParameter('coreshop.resources');

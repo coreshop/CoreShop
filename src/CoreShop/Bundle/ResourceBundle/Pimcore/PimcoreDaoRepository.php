@@ -18,7 +18,6 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreDaoRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Pimcore\Model\AbstractModel;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface

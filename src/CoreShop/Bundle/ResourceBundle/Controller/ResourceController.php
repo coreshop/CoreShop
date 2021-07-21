@@ -82,7 +82,7 @@ class ResourceController extends AdminController
         return $this->viewHandler->handle($data, ['group' => 'List']);
     }
 
-    public function getAction(Request $request)
+    public function getAction(Request $request): JsonResponse
     {
         $this->isGrantedOr403();
 

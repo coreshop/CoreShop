@@ -21,7 +21,7 @@ use Pimcore\Model\Asset;
 
 class PimcoreAssetHandler
 {
-    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
+    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context): ?int
     {
         if ($relation instanceof Asset) {
             return $relation->getId();
@@ -30,7 +30,7 @@ class PimcoreAssetHandler
         return null;
     }
 
-    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
+    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context): Asset|array|null
     {
         $className = isset($type['params'][0]['name']) ? $type['params'][0]['name'] : null;
 

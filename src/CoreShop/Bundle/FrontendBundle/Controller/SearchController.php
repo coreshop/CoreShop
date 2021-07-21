@@ -17,11 +17,13 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Bundle\FrontendBundle\Form\Type\SearchType;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends FrontendController
 {
-    public function widgetAction(Request $request)
+    public function widgetAction(Request $request): Response
     {
         $form = $this->createSearchForm();
 
@@ -30,7 +32,7 @@ class SearchController extends FrontendController
         ]);
     }
 
-    public function searchAction(Request $request)
+    public function searchAction(Request $request): Response
     {
         $form = $this->createSearchForm();
         $form->handleRequest($request);
@@ -73,7 +75,7 @@ class SearchController extends FrontendController
         return $this->redirectToRoute('coreshop_index');
     }
 
-    protected function createSearchForm()
+    protected function createSearchForm(): FormInterface
     {
         return $this->get('form.factory')->createNamed('coreshop', SearchType::class, null, [
             'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
@@ -81,9 +83,6 @@ class SearchController extends FrontendController
         ]);
     }
 
-    /**
-     * @return PaginatorInterface
-     */
     protected function getPaginator(): PaginatorInterface
     {
         return $this->get(PaginatorInterface::class);

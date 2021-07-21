@@ -40,7 +40,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Transform /^class "([^"]+)"$/
      */
-    public function class($name)
+    public function class($name): ClassDefinition
     {
         Runtime::clear();
 
@@ -56,7 +56,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Transform /^behat-class "([^"]+)"$/
      */
-    public function behatClass($name)
+    public function behatClass($name): ClassDefinition
     {
         return $this->class($this->classStorage->get($name));
     }
@@ -64,7 +64,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Transform /^field-collection "([^"]+)"$/
      */
-    public function fieldCollection($name)
+    public function fieldCollection($name): Definition
     {
         $name = $this->classStorage->get($name);
 
@@ -78,7 +78,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Transform /^object-instance$/
      */
-    public function objectInstance()
+    public function objectInstance(): Concrete
     {
         return $this->sharedStorage->get('object-instance');
     }
@@ -87,7 +87,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Transform /^object-instance-2$/
      */
-    public function objectInstance2()
+    public function objectInstance2(): Concrete
     {
         return $this->sharedStorage->get('object-instance-2');
     }
@@ -95,7 +95,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Transform /^object-instance "([^"]+)"$/
      */
-    public function objectInstanceWithKey($key)
+    public function objectInstanceWithKey($key): Concrete
     {
         return Concrete::getByPath('/' . $key);
     }
@@ -104,7 +104,7 @@ final class PimcoreClassContext implements Context
      * @Transform /^definition/
      * @Transform /^definitions/
      */
-    public function definition()
+    public function definition(): ClassDefinition|Definition
     {
         Runtime::clear();
 

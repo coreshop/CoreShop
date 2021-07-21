@@ -35,12 +35,12 @@ final class DataObjectBatchListing implements Iterator, Countable
         $this->batchSize = $batchSize;
     }
 
-    public function current()
+    public function current(): DataObject
     {
         return $this->items[$this->index];
     }
 
-    public function next()
+    public function next(): void
     {
         $this->index++;
 
@@ -52,17 +52,17 @@ final class DataObjectBatchListing implements Iterator, Countable
         }
     }
 
-    public function key()
+    public function key(): int
     {
         return ($this->index + 1) * ($this->loop + 1);
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->items[$this->index]);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->index = 0;
         $this->loop = 0;
@@ -71,7 +71,7 @@ final class DataObjectBatchListing implements Iterator, Countable
         $this->load();
     }
 
-    public function count()
+    public function count(): int
     {
         if (!$this->total) {
             $dao = $this->list->getDao();
@@ -90,14 +90,18 @@ final class DataObjectBatchListing implements Iterator, Countable
     /**
      * Load all items based on current state.
      */
-    private function load()
+    private function load(): void
     {
         if (null === $this->ids) {
             $dao = $this->list->getDao();
 
             if (!method_exists($dao, 'loadIdList')) {
-                throw new \InvalidArgumentException(sprintf('%s listing class does not support loadIdList.',
-                    get_class($this->list)));
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        '%s listing class does not support loadIdList.',
+                        get_class($this->list)
+                    )
+                );
             }
 
             $this->ids = $dao->loadIdList();

@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Registry;
 
-use CoreShop\Component\Registry\PrioritizedServiceRegistry;
-use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -34,7 +32,7 @@ abstract class RegisterSimpleRegistryTypePass implements CompilerPassInterface
         $this->tag = $tag;
     }
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has($this->registry)) {
             return;

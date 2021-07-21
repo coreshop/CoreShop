@@ -106,7 +106,7 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
         $this->getElement('add_to_cart')->click();
     }
 
-    protected function processQuantityPriceRuleElement(string $selector)
+    protected function processQuantityPriceRuleElement(string $selector): array
     {
         $element = $this->getElement('product_quantity_price_rules');
 

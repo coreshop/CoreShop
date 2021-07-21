@@ -44,11 +44,7 @@ final class CoreShopTrackingExtension extends Extension
             ->addTag(TrackingExtractorPass::TRACKING_EXTRACTOR_TAG);
     }
 
-    /**
-     * @param array            $config
-     * @param ContainerBuilder $container
-     */
-    protected function configureTrackers(array $config, ContainerBuilder $container)
+    protected function configureTrackers(array $config, ContainerBuilder $container): void
     {
         foreach ($container->findTaggedServiceIds(TrackerPass::TRACKER_TAG) as $id => $attributes) {
             foreach ($attributes as $tag) {

@@ -23,27 +23,24 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopSEOBundle extends AbstractPimcoreBundle
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
         $container->addCompilerPass(new ExtractorRegistryServicePass());
     }
 
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - SEO';
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - SEO Bundle';
     }
 
-/**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         $bundleName = 'coreshop/pimcore-bundle';
 

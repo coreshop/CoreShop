@@ -15,11 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Command;
 
 use CoreShop\Bundle\CoreBundle\Installer\Executor\CommandExecutor;
-use Pimcore\Tool\Console;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 final class MigrateCommand extends Command
 {

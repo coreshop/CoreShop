@@ -36,10 +36,7 @@ final class ProductStoreValuesType extends AbstractResourceType
             ->add('productUnitDefinitionPrices', ProductUnitDefinitionPriceCollectionType::class);
     }
 
-    /**
-     * @param FormEvent $event
-     */
-    public function onPostSubmit(FormEvent $event)
+    public function onPostSubmit(FormEvent $event): void
     {
         /** @var ProductStoreValuesInterface $data */
         $data = $event->getData();

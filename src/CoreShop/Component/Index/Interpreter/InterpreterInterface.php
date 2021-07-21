@@ -19,18 +19,10 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 interface InterpreterInterface
 {
-    /**
-     * @param mixed                $value
-     * @param IndexableInterface   $indexable
-     * @param IndexColumnInterface $config
-     * @param array                $interpreterConfig
-     *
-     * @return mixed
-     */
     public function interpret(
-        $value,
+        mixed $value,
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    );
+    ): mixed;
 }

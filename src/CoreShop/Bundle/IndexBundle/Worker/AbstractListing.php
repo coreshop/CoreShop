@@ -20,9 +20,7 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Doctrine\DBAL\Connection;
-use Exception;
 use Pimcore\Tool;
-use Traversable;
 
 abstract class AbstractListing implements ListingInterface
 {
@@ -91,17 +89,17 @@ abstract class AbstractListing implements ListingInterface
 
     abstract public function buildSimilarityOrderBy($fields, $objectId);
 
-    public function getIndex()
+    public function getIndex(): IndexInterface
     {
         return $this->index;
     }
 
-    public function setIndex(IndexInterface $index)
+    public function setIndex(IndexInterface $index): void
     {
         $this->index = $index;
     }
 
-    public function getLocale()
+    public function getLocale(): ?string
     {
         //TODO: Use Locale Services
         if (is_null($this->locale)) {
@@ -117,10 +115,7 @@ abstract class AbstractListing implements ListingInterface
         return $this->locale;
     }
 
-    /**
-     * @param string $locale
-     */
-    public function setLocale($locale)
+    public function setLocale(string $locale): void
     {
         $this->locale = $locale;
     }

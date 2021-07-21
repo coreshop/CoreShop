@@ -18,7 +18,6 @@ use CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\PriceFormatter
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use Pimcore\DataObject\GridColumnConfig\Operator\Factory\OperatorFactoryInterface;
-use Pimcore\DataObject\GridColumnConfig\Operator\OperatorInterface;
 
 class PriceFormatterFactory implements OperatorFactoryInterface
 {
@@ -33,7 +32,7 @@ class PriceFormatterFactory implements OperatorFactoryInterface
         $this->localeService = $localeService;
     }
 
-    public function build(\stdClass $configElement, array $context = [])
+    public function build(\stdClass $configElement, array $context = []): PriceFormatter
     {
         return new PriceFormatter($this->moneyFormatter, $this->localeService, $configElement, $context);
     }

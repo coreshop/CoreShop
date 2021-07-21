@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class CoreShopThemeExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 

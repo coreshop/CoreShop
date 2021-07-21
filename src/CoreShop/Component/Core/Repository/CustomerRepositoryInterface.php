@@ -19,9 +19,5 @@ use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface as BaseCu
 
 interface CustomerRepositoryInterface extends BaseCustomerRepositoryInterface
 {
-    /**
-     * @param string $email
-     * @return CustomerInterface|null
-     */
-    public function findOneByEmailWithoutUser(string $email);
+    public function findOneByEmailWithoutUser(string $email): ?CustomerInterface;
 }

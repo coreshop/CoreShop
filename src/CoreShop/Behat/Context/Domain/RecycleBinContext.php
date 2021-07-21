@@ -32,7 +32,7 @@ final class RecycleBinContext implements Context
     /**
      * @Then /^the recycled (product) does not exist anymore$/
      */
-    public function theRecycledProductDoesNotExistAnymore(Concrete $concrete)
+    public function theRecycledProductDoesNotExistAnymore(Concrete $concrete): void
     {
         Assert::null(DataObject::getById($concrete->getId(), true));
     }

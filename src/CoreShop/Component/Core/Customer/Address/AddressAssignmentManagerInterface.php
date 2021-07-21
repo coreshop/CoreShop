@@ -19,38 +19,11 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 
 interface AddressAssignmentManagerInterface
 {
-    /**
-     * @param CustomerInterface $customer
-     * @param bool              $useTranslationKeys
-     *
-     * @return array|null
-     */
-    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true);
+    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true): ?array;
 
-    /**
-     * @param CustomerInterface $customer
-     * @param AddressInterface  $address
-     *
-     * @return string|null
-     * @throws \InvalidArgumentException
-     */
-    public function detectAddressAffiliationForCustomer(CustomerInterface $customer, AddressInterface $address);
+    public function detectAddressAffiliationForCustomer(CustomerInterface $customer, AddressInterface $address): ?string;
 
-    /**
-     * @param CustomerInterface $customer
-     * @param AddressInterface  $address
-     *
-     * @return bool
-     */
-    public function checkAddressAffiliationPermissionForCustomer(CustomerInterface $customer, AddressInterface $address);
+    public function checkAddressAffiliationPermissionForCustomer(CustomerInterface $customer, AddressInterface $address): bool;
 
-    /**
-     * @param CustomerInterface $customer
-     * @param AddressInterface  $address
-     * @param string|null       $affiliation
-     *
-     * @return AddressInterface
-     * @throws \InvalidArgumentException
-     */
-    public function allocateAddressByAffiliation(CustomerInterface $customer, AddressInterface $address, ?string $affiliation);
+    public function allocateAddressByAffiliation(CustomerInterface $customer, AddressInterface $address, ?string $affiliation): AddressInterface;
 }

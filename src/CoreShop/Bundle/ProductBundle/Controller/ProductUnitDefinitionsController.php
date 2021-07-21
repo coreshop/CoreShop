@@ -22,7 +22,6 @@ use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\DataObject\Concrete;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -43,19 +43,19 @@ final class UniqueTokenGenerator
         $token = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $randomKey = $this->getRandomInteger(0, $this->keyLength);
+            $randomKey = $this->getRandomInteger($this->keyLength);
             $token .= $this->keys[$randomKey];
         }
 
         return $token;
     }
 
-    private function getRandomInteger(int $min, int $max)
+    private function getRandomInteger(int $max): int
     {
-        $range = ($max - $min);
+        $range = ($max - 0);
 
         if ($range < 0) {
-            return $min;
+            return 0;
         }
 
         $log = log($range, 2);
@@ -68,6 +68,6 @@ final class UniqueTokenGenerator
             $rnd = $rnd & $filter;
         } while ($rnd >= $range);
 
-        return $min + $rnd;
+        return 0 + $rnd;
     }
 }

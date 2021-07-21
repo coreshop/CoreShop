@@ -20,7 +20,7 @@ use Payum\Core\Bridge\Symfony\ContainerAwareCoreGatewayFactory;
 
 class CoreGatewayFactory extends ContainerAwareCoreGatewayFactory
 {
-    public function createConfig(array $config = [])
+    public function createConfig(array $config = []): array
     {
         return parent::createConfig([
             'httplug.client'=>function (ArrayObject $config) {

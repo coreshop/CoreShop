@@ -22,7 +22,7 @@ use Pimcore\Model\DataObject\Concrete;
 
 class PimcoreObjectHandler
 {
-    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
+    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context): ?int
     {
         if ($relation instanceof Concrete) {
             return $relation->getId();

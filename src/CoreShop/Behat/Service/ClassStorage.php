@@ -42,7 +42,7 @@ class ClassStorage implements ClassStorageInterface
         return $this->storage[$className];
     }
 
-    private function getBehatClassName(string $className)
+    private function getBehatClassName(string $className): string
     {
         return sprintf('Behat%s%s', $className, uniqid());
     }

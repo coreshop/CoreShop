@@ -18,7 +18,6 @@ use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\UserInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Concrete;

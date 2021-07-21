@@ -22,7 +22,6 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Customer\Context\FixedCustomerContext;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
-use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
@@ -52,7 +51,7 @@ final class CustomerContext implements Context
     /**
      * @Given /^the site has a customer "([^"]+)"$/
      */
-    public function theSiteHasACustomer(string $email)
+    public function theSiteHasACustomer(string $email): void
     {
         $category = $this->createCustomer($email);
 
@@ -63,7 +62,7 @@ final class CustomerContext implements Context
      * @Given /^the site has a customer "([^"]+)" with password "([^"]+)"$/
      * @Given /^the site has a customer "([^"]+)" with password "([^"]+)" and name "([^"]+)" "([^"]+)"$/
      */
-    public function theSiteHasACustomerWithPassword(string $email, string $password, ?string $firstname = null, ?string $lastname = null)
+    public function theSiteHasACustomerWithPassword(string $email, string $password, ?string $firstname = null, ?string $lastname = null): void
     {
         $customer = $this->createCustomer($email);
 
@@ -83,7 +82,7 @@ final class CustomerContext implements Context
     /**
      * @Then /^the (customer "[^"]+") was deleted$/
      */
-    public function accountWasDeleted(CustomerInterface $customer)
+    public function accountWasDeleted(CustomerInterface $customer): void
     {
         $customer->delete();
     }
@@ -92,7 +91,7 @@ final class CustomerContext implements Context
      * @Then /^the (customer "[^"]+") is in (customer-group "[^"]+")$/
      * @Then /^([^"]+) is in (customer-group "[^"]+")$/
      */
-    public function theCustomerIsInGroup(CustomerInterface $customer, CustomerGroupInterface $group)
+    public function theCustomerIsInGroup(CustomerInterface $customer, CustomerGroupInterface $group): void
     {
         $customer->setCustomerGroups([$group]);
 
@@ -102,7 +101,7 @@ final class CustomerContext implements Context
     /**
      * @Given /^I am (customer "[^"]+")$/
      */
-    public function iAmCustomer(CustomerInterface $customer)
+    public function iAmCustomer(CustomerInterface $customer): void
     {
         $this->fixedCustomerContext->setCustomer($customer);
     }
@@ -118,7 +117,7 @@ final class CustomerContext implements Context
         $city,
         $street,
         $nr
-    ) {
+    ): void {
         /**
          * @var AddressInterface $address
          */
@@ -139,17 +138,12 @@ final class CustomerContext implements Context
         $this->sharedStorage->set('address', $address);
     }
 
-    /**
-     * @param string $email
-     *
-     * @return CustomerInterface
-     */
-    private function createCustomer(string $email)
+    private function createCustomer(string $email): CustomerInterface
     {
         /** @var CustomerInterface $customer */
         $customer = $this->customerFactory->createNew();
 
-        list ($firstname, $lastname) = explode('@', $email);
+        [$firstname, $lastname] = explode('@', $email);
 
         $customer->setPublished(true);
         $customer->setKey(File::getValidFilename($email));
@@ -173,10 +167,7 @@ final class CustomerContext implements Context
         return $customer;
     }
 
-    /**
-     * @param CustomerInterface $customer
-     */
-    private function saveCustomer(CustomerInterface $customer)
+    private function saveCustomer(CustomerInterface $customer): void
     {
         $user = $customer->getUser();
         $customer->setUser(null);

@@ -17,25 +17,16 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Component\Core\Model\OrderInterface;
 use Pimcore\Http\Request\Resolver\EditmodeResolver;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class MailController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function mailAction(Request $request)
+    public function mailAction(Request $request): Response
     {
         return $this->render($this->templateConfigurator->findTemplate('Mail/mail.html'));
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function orderConfirmationAction(Request $request)
+    public function orderConfirmationAction(Request $request): Response
     {
         $order = $request->get('object');
         $viewParameters = [];

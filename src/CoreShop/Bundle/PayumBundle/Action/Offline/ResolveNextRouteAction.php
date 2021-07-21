@@ -26,7 +26,7 @@ final class ResolveNextRouteAction implements ActionInterface
      *
      * @param ResolveNextRoute $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         $payment = $request->getFirstModel();
         $order = $payment->getOrder();
@@ -43,7 +43,7 @@ final class ResolveNextRouteAction implements ActionInterface
         $request->setRouteName('coreshop_checkout_error');
     }
 
-    public function supports($request)
+    public function supports($request): bool
     {
         return
             $request instanceof ResolveNextRoute &&

@@ -25,7 +25,7 @@ final class StoreContextSetter implements StoreContextSetterInterface
         $this->cookieSetter = $cookieSetter;
     }
 
-    public function setStore(StoreInterface $store)
+    public function setStore(StoreInterface $store): void
     {
         $this->cookieSetter->setCookie('_store_id', (string)$store->getId());
     }

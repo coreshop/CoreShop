@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -30,8 +31,11 @@ final class ZoneContext implements Context
     /**
      * @Transform /^zone(?:|s) "([^"]+)"$/
      */
-    public function getZoneByName($name)
+    public function getZoneByName(string $name): ZoneInterface
     {
+        /**
+         * @var ZoneInterface[] $zones
+         */
         $zones = $this->zoneRepository->findBy(['name' => $name]);
 
         Assert::eq(

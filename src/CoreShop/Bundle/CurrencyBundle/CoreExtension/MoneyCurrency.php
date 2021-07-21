@@ -16,9 +16,6 @@ namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\Money;
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\Concrete;
 

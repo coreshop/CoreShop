@@ -22,15 +22,17 @@ class RelationalNestedInterpreter implements RelationInterpreterInterface
 {
     use NestedTrait;
 
-    /**
-     * @param ServiceRegistryInterface $interpreterRegistry
-     */
     public function __construct(ServiceRegistryInterface $interpreterRegistry)
     {
         $this->interpreterRegistry = $interpreterRegistry;
     }
 
-    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpretRelational(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): array
     {
         $this->assert($interpreterConfig);
 
@@ -43,7 +45,12 @@ class RelationalNestedInterpreter implements RelationInterpreterInterface
         });
     }
 
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpret(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): mixed
     {
         $this->assert($interpreterConfig);
 

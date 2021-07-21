@@ -23,23 +23,11 @@ use Pimcore\Model\DataObject\Objectbrick;
  */
 interface DefinitionFieldReNamerInterface
 {
-    /**
-     * Executes the renaming.
-     */
     public function rename(): void;
 
-    /**
-     * @return string
-     */
     public function getOldFieldName(): string;
 
-    /**
-     * @return string
-     */
     public function getNewFieldName(): string;
 
-    /**
-     * @return ClassDefinition|Fieldcollection\Definition|Objectbrick\Definition
-     */
-    public function getDefinition();
+    public function getDefinition(): ClassDefinition|Fieldcollection\Definition|Objectbrick\Definition;
 }

@@ -30,7 +30,7 @@ final class ConfirmOrderAction implements ActionInterface
         $this->stateMachineApplier = $stateMachineApplier;
     }
 
-    public function execute($request)
+    public function execute($request): void
     {
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();
@@ -49,7 +49,7 @@ final class ConfirmOrderAction implements ActionInterface
         }
     }
 
-    public function supports($request)
+    public function supports($request): bool
     {
         return
             $request instanceof ConfirmOrder &&

@@ -17,9 +17,7 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore\Repository;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Doctrine\DBAL\Connection;
-use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\DataObject\Listing;
 
 class StackRepository extends PimcoreRepository
 {

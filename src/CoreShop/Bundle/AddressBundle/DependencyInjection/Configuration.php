@@ -38,8 +38,6 @@ use CoreShop\Component\Address\Model\StateTranslation;
 use CoreShop\Component\Address\Model\StateTranslationInterface;
 use CoreShop\Component\Address\Model\Zone;
 use CoreShop\Component\Address\Model\ZoneInterface;
-use CoreShop\Component\Customer\Model\CustomerGroupInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use CoreShop\Component\Resource\Factory\TranslatableFactory;

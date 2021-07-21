@@ -36,7 +36,7 @@ final class ProductPriceRuleContext implements Context
     /**
      * @Transform /^price rule "([^"]+)"$/
      */
-    public function getPriceRuleByProductAndName($ruleName)
+    public function getPriceRuleByProductAndName($ruleName): ProductPriceRuleInterface
     {
         $rule = $this->productPriceRuleRepository->findOneBy(['name' => $ruleName]);
 
@@ -48,7 +48,7 @@ final class ProductPriceRuleContext implements Context
     /**
      * @Transform /^(price rule)$/
      */
-    public function getLatestPriceRule()
+    public function getLatestPriceRule(): ProductPriceRuleInterface
     {
         $resource = $this->sharedStorage->getLatestResource();
 

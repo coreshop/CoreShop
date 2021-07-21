@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Pimcore;
 
-use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
-
 interface LoginPageInterface extends PimcorePageInterface
 {
     public function logIn(): void;

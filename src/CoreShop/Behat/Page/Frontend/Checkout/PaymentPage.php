@@ -24,7 +24,7 @@ class PaymentPage extends AbstractFrontendPage implements PaymentPageInterface
         return 'coreshop_checkout';
     }
 
-    public function selectPaymentProvider(PaymentProviderInterface $paymentProvider)
+    public function selectPaymentProvider(PaymentProviderInterface $paymentProvider): void
     {
         $this->getElement('payment_provider')->selectOption($paymentProvider->getId());
     }

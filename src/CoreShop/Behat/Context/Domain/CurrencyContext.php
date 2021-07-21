@@ -45,7 +45,7 @@ final class CurrencyContext implements Context
     /**
      * @Then /^the site should be using (currency "[^"]+")$/
      */
-    public function theSiteShouldBeUsingCurrency(CurrencyInterface $currency)
+    public function theSiteShouldBeUsingCurrency(CurrencyInterface $currency): void
     {
         Assert::same(
             $currency->getId(),
@@ -61,7 +61,7 @@ final class CurrencyContext implements Context
     /**
      * @Then /^the (store "[^"]+") should have "([^"]+)" currencies$/
      */
-    public function theStoreShouldHaveXCurrencies(StoreInterface $store, $countOfCurrencies)
+    public function theStoreShouldHaveXCurrencies(StoreInterface $store, $countOfCurrencies): void
     {
         $validCurrencies = $this->currencyRepository->findActiveForStore($store);
 
@@ -79,7 +79,7 @@ final class CurrencyContext implements Context
     /**
      * @Then /^the amount "([^"]+)" of (currency "[^"]+") in language "([^"]+)" should be formatted "([^"]+)"$/
      */
-    public function currencyShouldBeFormatted($amount, CurrencyInterface $currency, $locale, $shouldBeFormat)
+    public function currencyShouldBeFormatted($amount, CurrencyInterface $currency, $locale, $shouldBeFormat): void
     {
         $format = $this->moneyFormatter->format((int) $amount, $currency->getIsoCode(), $locale);
 

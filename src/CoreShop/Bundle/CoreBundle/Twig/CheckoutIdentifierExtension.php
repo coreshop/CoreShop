@@ -99,7 +99,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         return $shopSteps;
     }
 
-    public function getStep(string $type = '')
+    public function getStep(string $type = ''): ?string
     {
         $validGuesser = ['get_first', 'get_previous', 'get_current', 'get_next', 'get_last'];
 
@@ -132,7 +132,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         OrderInterface $cart,
         ?string $stepIdentifier,
         CheckoutManagerInterface $checkoutManager
-    ) {
+    ): ?string {
         $identifier = null;
         $request = $this->requestStack->getMasterRequest();
         $previousIdentifier = $request->get('stepIdentifier');
@@ -153,7 +153,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         OrderInterface $cart,
         ?string $stepIdentifier,
         CheckoutManagerInterface $checkoutManager
-    ) {
+    ): ?string {
         return $stepIdentifier;
     }
 
@@ -161,7 +161,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         OrderInterface $cart,
         ?string $stepIdentifier,
         CheckoutManagerInterface $checkoutManager
-    ) {
+    ): string {
         $steps = $checkoutManager->getSteps();
 
         return reset($steps);
@@ -171,7 +171,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         OrderInterface $cart,
         ?string $stepIdentifier,
         CheckoutManagerInterface $checkoutManager
-    ) {
+    ): string {
         $steps = $checkoutManager->getSteps();
 
         return end($steps);
@@ -181,7 +181,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         OrderInterface $cart,
         ?string $stepIdentifier,
         CheckoutManagerInterface $checkoutManager
-    ) {
+    ): ?string {
         $identifier = null;
 
         if (null !== $stepIdentifier && $checkoutManager->hasNextStep($stepIdentifier)) {

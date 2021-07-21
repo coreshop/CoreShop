@@ -76,7 +76,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^adding a product specific price rule to (product "[^"]+") named "([^"]+)"$/
      * @Given /^adding a product specific price rule to this (product) named "([^"]+)"$/
      */
-    public function addingAProductSpecificPriceRuleToProduct(ProductInterface $product, $ruleName)
+    public function addingAProductSpecificPriceRuleToProduct(ProductInterface $product, $ruleName): void
     {
         /**
          * @var ProductSpecificPriceRuleInterface $rule
@@ -95,7 +95,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") is active$/
      * @Given /^the (specific price rule) is active$/
      */
-    public function theProductsSpecificPriceRuleIsActive(ProductSpecificPriceRuleInterface $rule)
+    public function theProductsSpecificPriceRuleIsActive(ProductSpecificPriceRuleInterface $rule): void
     {
         $rule->setActive(true);
 
@@ -107,7 +107,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") is inactive$/
      * @Given /^the (specific price rule) is inactive$/
      */
-    public function theProductsSpecificPriceRuleIsInActive(ProductSpecificPriceRuleInterface $rule)
+    public function theProductsSpecificPriceRuleIsInActive(ProductSpecificPriceRuleInterface $rule): void
     {
         $rule->setActive(false);
 
@@ -119,7 +119,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition countries with (country "[^"]+")$/
      * @Given /^the (specific price rule) has a condition countries with (country "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasACountriesCondition(ProductSpecificPriceRuleInterface $rule, CountryInterface $country)
+    public function theProductsSpecificPriceRuleHasACountriesCondition(ProductSpecificPriceRuleInterface $rule, CountryInterface $country): void
     {
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
 
@@ -134,7 +134,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition customers with (customer "[^"]+")$/
      * @Given /^the (specific price rule) has a condition customers with (customer "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasACustomerCondition(ProductSpecificPriceRuleInterface $rule, CustomerInterface $customer)
+    public function theProductsSpecificPriceRuleHasACustomerCondition(ProductSpecificPriceRuleInterface $rule, CustomerInterface $customer): void
     {
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
 
@@ -149,7 +149,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/
      * @Given /^the (specific price rule) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/
      */
-    public function theProductsSpecificPriceRuleHasATimeSpanCondition(ProductSpecificPriceRuleInterface $rule, $from, $to)
+    public function theProductsSpecificPriceRuleHasATimeSpanCondition(ProductSpecificPriceRuleInterface $rule, $from, $to): void
     {
         $this->assertConditionForm(TimespanConfigurationType::class, 'timespan');
 
@@ -166,7 +166,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
      * @Given /^the (specific price rule) has a condition customer-groups with (customer-group "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasACustomerGroupCondition(ProductSpecificPriceRuleInterface $rule, CustomerGroupInterface $group)
+    public function theProductsSpecificPriceRuleHasACustomerGroupCondition(ProductSpecificPriceRuleInterface $rule, CustomerGroupInterface $group): void
     {
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
 
@@ -181,7 +181,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition stores with (store "[^"]+")$/
      * @Given /^the (specific price rule) has a condition stores with (store "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasAStoreCondition(ProductSpecificPriceRuleInterface $rule, StoreInterface $store)
+    public function theProductsSpecificPriceRuleHasAStoreCondition(ProductSpecificPriceRuleInterface $rule, StoreInterface $store): void
     {
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
 
@@ -196,7 +196,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition zones with (zone "[^"]+")$/
      * @Given /^the (specific price rule) has a condition zones with (zone "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasAZoneCondition(ProductSpecificPriceRuleInterface $rule, ZoneInterface $zone)
+    public function theProductsSpecificPriceRuleHasAZoneCondition(ProductSpecificPriceRuleInterface $rule, ZoneInterface $zone): void
     {
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
 
@@ -211,7 +211,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
      * @Given /^the (specific price rule) has a condition currencies with (currency "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasACurrencyCondition(ProductSpecificPriceRuleInterface $rule, CurrencyInterface $currency)
+    public function theProductsSpecificPriceRuleHasACurrencyCondition(ProductSpecificPriceRuleInterface $rule, CurrencyInterface $currency): void
     {
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
 
@@ -226,7 +226,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a action discount-percent with ([^"]+)% discount$/
      * @Given /^the (specific price rule) has a action discount-percent with ([^"]+)% discount$/
      */
-    public function theProductSpecificPriceRuleHasADiscountPercentAction(ProductSpecificPriceRuleInterface $rule, $discount)
+    public function theProductSpecificPriceRuleHasADiscountPercentAction(ProductSpecificPriceRuleInterface $rule, $discount): void
     {
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
@@ -239,7 +239,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off$/
      * @Given /^the (specific price rule) has a action discount with ([^"]+) in (currency "[^"]+") off$/
      */
-    public function theProductSpecificPriceRuleHasADiscountAmountAction(ProductSpecificPriceRuleInterface $rule, $amount, CurrencyInterface $currency)
+    public function theProductSpecificPriceRuleHasADiscountAmountAction(ProductSpecificPriceRuleInterface $rule, $amount, CurrencyInterface $currency): void
     {
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
@@ -253,7 +253,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a action discount-price of ([^"]+) in (currency "[^"]+")$/
      * @Given /^the (specific price rule) has a action discount-price of ([^"]+) in (currency "[^"]+")$/
      */
-    public function theProductSpecificPriceRuleHasADiscountPriceAction(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
+    public function theProductSpecificPriceRuleHasADiscountPriceAction(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency): void
     {
         $this->assertActionForm(PriceConfigurationType::class, 'discountPrice');
 
@@ -267,7 +267,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/
      * @Given /^the (specific price rule) has a action price of ([^"]+) in (currency "[^"]+")$/
      */
-    public function theProductSpecificPriceRuleHasAPriceAction(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
+    public function theProductSpecificPriceRuleHasAPriceAction(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency): void
     {
         $this->assertActionForm(PriceConfigurationType::class, 'price');
 
@@ -281,7 +281,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition nested with operator "([^"]+)" for (store "[^"]+") and (store "[^"]+")$/
      * @Given /^the (specific price rule) has a condition nested with operator "([^"]+)" for (store "[^"]+") and (store "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasANestedConditionWithStores(ProductSpecificPriceRuleInterface $rule, $operator, StoreInterface $store1, StoreInterface $store2)
+    public function theProductsSpecificPriceRuleHasANestedConditionWithStores(ProductSpecificPriceRuleInterface $rule, $operator, StoreInterface $store1, StoreInterface $store2): void
     {
         $this->assertConditionForm(ProductSpecificPriceNestedConfigurationType::class, 'nested');
 
@@ -312,7 +312,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition nested with operator "([^"]+)" for (store "[^"]+") and (country "[^"]+")$/
      * @Given /^the (specific price rule) has a condition nested with operator "([^"]+)" for (store "[^"]+") and (country "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasANestedConditionWithStoreAndCountry(ProductSpecificPriceRuleInterface $rule, $operator, StoreInterface $store, CountryInterface $country)
+    public function theProductsSpecificPriceRuleHasANestedConditionWithStoreAndCountry(ProductSpecificPriceRuleInterface $rule, $operator, StoreInterface $store, CountryInterface $country): void
     {
         $this->assertConditionForm(ProductSpecificPriceNestedConfigurationType::class, 'nested');
 
@@ -343,7 +343,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @param ProductSpecificPriceRuleInterface $rule
      * @param ConditionInterface                $condition
      */
-    private function addCondition(ProductSpecificPriceRuleInterface $rule, ConditionInterface $condition)
+    private function addCondition(ProductSpecificPriceRuleInterface $rule, ConditionInterface $condition): void
     {
         $rule->addCondition($condition);
 
@@ -355,7 +355,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @param ProductSpecificPriceRuleInterface $rule
      * @param ActionInterface                   $action
      */
-    private function addAction(ProductSpecificPriceRuleInterface $rule, ActionInterface $action)
+    private function addAction(ProductSpecificPriceRuleInterface $rule, ActionInterface $action): void
     {
         $rule->addAction($action);
 
@@ -363,27 +363,27 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    protected function getConditionFormRegistry()
+    protected function getConditionFormRegistry(): FormTypeRegistryInterface
     {
         return $this->conditionFormTypeRegistry;
     }
 
-    protected function getConditionFormClass()
+    protected function getConditionFormClass(): string
     {
         return ProductSpecificPriceRuleConditionType::class;
     }
 
-    protected function getActionFormRegistry()
+    protected function getActionFormRegistry(): FormTypeRegistryInterface
     {
         return $this->actionFormTypeRegistry;
     }
 
-    protected function getActionFormClass()
+    protected function getActionFormClass(): string
     {
         return ProductSpecificPriceRuleActionType::class;
     }
 
-    protected function getFormFactory()
+    protected function getFormFactory(): FormFactoryInterface
     {
         return $this->formFactory;
     }

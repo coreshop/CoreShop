@@ -20,30 +20,24 @@ use Pimcore\Model\DataObject\AbstractObject;
 
 class ObjectInterpreter implements RelationInterpreterInterface
 {
-    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpretRelational(mixed $value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = []): array
     {
         $result = [];
 
         if (is_array($value)) {
             foreach ($value as $v) {
                 if ($v instanceof AbstractObject) {
-                    $result[] = [
-                        'dest' => $v->getId(),
-                        'type' => 'object',
-                    ];
+                    $result[] = new RelationalValue($v->getId(), 'object');
                 }
             }
         } elseif ($value instanceof AbstractObject) {
-            $result[] = [
-                'dest' => $value->getId(),
-                'type' => 'object',
-            ];
+            $result[] = new RelationalValue($value->getId(), 'object');
         }
 
         return $result;
     }
 
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpret(mixed $value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = []): mixed
     {
         $result = [];
 

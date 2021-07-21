@@ -28,7 +28,7 @@ final class InventoryExtension extends AbstractExtension
         $this->checker = $checker;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('coreshop_inventory_is_available', [$this->checker, 'isStockAvailable']),
@@ -36,7 +36,7 @@ final class InventoryExtension extends AbstractExtension
         ];
     }
 
-    public function isStockSufficient(StockableInterface $stockable, $quantity = 1)
+    public function isStockSufficient(StockableInterface $stockable, float $quantity = 1): bool
     {
         return $this->checker->isStockSufficient($stockable, $quantity);
     }

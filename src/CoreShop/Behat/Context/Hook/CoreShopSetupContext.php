@@ -35,7 +35,7 @@ final class CoreShopSetupContext implements Context
     /**
      * @BeforeSuite
      */
-    public static function setupPimcore()
+    public static function setupPimcore(): void
     {
         if (getenv('CORESHOP_SKIP_DB_SETUP')) {
             return;
@@ -47,7 +47,7 @@ final class CoreShopSetupContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeIndexTables()
+    public function purgeIndexTables(): void
     {
         $connection = $this->entityManager->getConnection();
         $schemaManager = $connection->getSchemaManager();
@@ -71,7 +71,7 @@ final class CoreShopSetupContext implements Context
     /**
      * @BeforeScenario
      */
-    public function clearNotificationRuleListener()
+    public function clearNotificationRuleListener(): void
     {
         $this->notificationRuleListener->clear();
     }

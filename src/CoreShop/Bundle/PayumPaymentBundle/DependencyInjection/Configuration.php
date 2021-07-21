@@ -25,7 +25,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('coreshop_payum_payment');
         $rootNode = $treeBuilder->getRootNode();
@@ -40,7 +40,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addResourcesSection(ArrayNodeDefinition $node)
+    private function addResourcesSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()

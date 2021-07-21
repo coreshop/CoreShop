@@ -15,14 +15,12 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\CustomerBundle\Pimcore\Repository\CustomerRepository as BaseCustomerRepository;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Repository\CustomerRepositoryInterface;
 
 class CustomerRepository extends BaseCustomerRepository implements CustomerRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByEmailWithoutUser(string $email)
+    public function findOneByEmailWithoutUser(string $email): ?CustomerInterface
     {
         $list = $this->getList();
 

@@ -20,7 +20,7 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 class FieldCollectionGetter implements GetterInterface
 {
-    public function get(IndexableInterface $object, IndexColumnInterface $config)
+    public function get(IndexableInterface $object, IndexColumnInterface $config): mixed
     {
         $columnConfig = $config->getConfiguration();
         $fieldValues = [];

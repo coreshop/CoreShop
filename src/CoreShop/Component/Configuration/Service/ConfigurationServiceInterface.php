@@ -19,23 +19,11 @@ use CoreShop\Component\Configuration\Model\ConfigurationInterface;
 interface ConfigurationServiceInterface
 {
     /**
-     * @param string $key
-     * @param bool   $returnObject
-     *
-     * @return ConfigurationInterface|null
+     * @return ConfigurationInterface|mixed|null
      */
-    public function get(string $key, bool $returnObject = false);
+    public function get(string $key, bool $returnObject = false): mixed;
 
-    /**
-     * @param string $key
-     * @param mixed  $data
-     *
-     * @return ConfigurationInterface
-     */
     public function set(string $key, mixed $data): ConfigurationInterface;
 
-    /**
-     * @param string $key
-     */
     public function remove(string $key): void;
 }

@@ -52,7 +52,7 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
         return true;
     }
 
-    protected function getDiscount(OrderInterface $cart, array $configuration, $withTax = false)
+    protected function getDiscount(OrderInterface $cart, array $configuration, $withTax = false): int
     {
         $total = $cart->getSubtotal($withTax);
 

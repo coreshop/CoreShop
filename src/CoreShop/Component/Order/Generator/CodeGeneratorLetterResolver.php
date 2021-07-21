@@ -18,25 +18,12 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherGeneratorInterface;
 
 class CodeGeneratorLetterResolver
 {
-    public function findLetters(CartPriceRuleVoucherGeneratorInterface $generator)
+    public function findLetters(CartPriceRuleVoucherGeneratorInterface $generator): string
     {
-        switch ($generator->getFormat()) {
-            case CartPriceRuleVoucherCodeGenerator::FORMAT_ALPHABETIC:
-                $lettersToUse = implode('', range(chr(65), chr(90)));
-
-                break;
-            case CartPriceRuleVoucherCodeGenerator::FORMAT_NUMERIC:
-                $lettersToUse = implode('', range(chr(48), chr(57)));
-
-                break;
-
-            case CartPriceRuleVoucherCodeGenerator::FORMAT_ALPHANUMERIC:
-            default:
-                $lettersToUse = implode('', range(chr(65), chr(90))).implode('', range(chr(48), chr(57)));
-
-                break;
-        }
-
-        return $lettersToUse;
+        return match ($generator->getFormat()) {
+            CartPriceRuleVoucherCodeGenerator::FORMAT_ALPHABETIC => implode('', range(chr(65), chr(90))),
+            CartPriceRuleVoucherCodeGenerator::FORMAT_NUMERIC => implode('', range(chr(48), chr(57))),
+            default => implode('', range(chr(65), chr(90))).implode('', range(chr(48), chr(57))),
+        };
     }
 }

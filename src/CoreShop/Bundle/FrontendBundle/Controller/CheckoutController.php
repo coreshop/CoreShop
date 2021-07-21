@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
-use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
@@ -30,7 +29,6 @@ use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
@@ -303,11 +301,13 @@ class CheckoutController extends FrontendController
             return;
         }
 
+        $actualMessage = $message;
+
         if (!empty($parameters)) {
-            $message = $this->prepareMessage($message, $parameters);
+            $actualMessage = $this->prepareMessage($message, $parameters);
         }
 
-        $this->addFlash($type, $message);
+        $this->addFlash($type, $actualMessage);
     }
 
     private function prepareMessage(string $message, array $parameters): array
@@ -318,26 +318,22 @@ class CheckoutController extends FrontendController
         ];
     }
 
-    /**
-     * @return \CoreShop\Component\Order\Model\OrderInterface
-     */
-    protected function getCart()
+    protected function getCart(): OrderInterface
     {
-        return $this->getCartContext()->getCart();
+        /**
+         * @var OrderInterface $cart
+         */
+        $cart = $this->getCartContext()->getCart();
+
+        return $cart;
     }
 
-    /**
-     * @return CartContextInterface
-     */
-    protected function getCartContext()
+    protected function getCartContext(): CartContextInterface
     {
         return $this->get(CartContextInterface::class);
     }
 
-    /**
-     * @return Payum
-     */
-    protected function getPayum()
+    protected function getPayum(): Payum
     {
         return $this->get('payum');
     }

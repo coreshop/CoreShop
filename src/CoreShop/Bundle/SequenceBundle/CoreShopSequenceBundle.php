@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopSequenceBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
@@ -32,7 +32,7 @@ final class CoreShopSequenceBundle extends AbstractResourceBundle
         parent::build($container);
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Sequence\Model';
     }

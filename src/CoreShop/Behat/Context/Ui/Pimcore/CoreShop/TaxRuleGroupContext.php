@@ -15,10 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Pimcore\CoreShop;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Page\Pimcore\CoreShop\CountryPageInterface;
-use CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPageInterface;
-use CoreShop\Behat\Page\Pimcore\CoreShop\ExchangeRatePageInterface;
-use CoreShop\Behat\Page\Pimcore\CoreShop\StatePageInterface;
 use CoreShop\Behat\Page\Pimcore\CoreShop\TaxRuleGroupPageInterface;
 use CoreShop\Behat\Page\Pimcore\PWAPageInterface;
 use Webmozart\Assert\Assert;

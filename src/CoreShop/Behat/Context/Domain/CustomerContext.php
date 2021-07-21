@@ -36,7 +36,7 @@ final class CustomerContext implements Context
     /**
      * @Then /^I should be logged in with (email "[^"]+")$/
      */
-    public function iShouldBeLoggedInWithEmail(CustomerInterface $customer)
+    public function iShouldBeLoggedInWithEmail(CustomerInterface $customer): void
     {
         Assert::same(
             $customer->getId(),
@@ -52,7 +52,7 @@ final class CustomerContext implements Context
     /**
      * @Then /^It should throw an error deleting the (customer "[^"]+")$/
      */
-    public function itShouldThrowAnErrorDeletingCustomer(CustomerInterface $customer)
+    public function itShouldThrowAnErrorDeletingCustomer(CustomerInterface $customer): void
     {
         Assert::throws(function () use ($customer) {
             $customer->delete();
@@ -62,7 +62,7 @@ final class CustomerContext implements Context
     /**
      * @Then /^It should not throw an error deleting the (customer "[^"]+")$/
      */
-    public function itShouldNotThrowAnErrorDeletingTheCustomer(CustomerInterface $customer)
+    public function itShouldNotThrowAnErrorDeletingTheCustomer(CustomerInterface $customer): void
     {
         $customer->delete();
     }

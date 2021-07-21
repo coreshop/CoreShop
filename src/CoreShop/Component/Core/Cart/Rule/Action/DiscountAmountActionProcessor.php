@@ -64,7 +64,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         return true;
     }
 
-    protected function getDiscount(OrderInterface $cart, array $configuration)
+    protected function getDiscount(OrderInterface $cart, array $configuration): int
     {
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
@@ -88,13 +88,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         );
     }
 
-    /**
-     * @param int $cartAmount
-     * @param int $ruleAmount
-     *
-     * @return int
-     */
-    protected function getApplicableAmount($cartAmount, $ruleAmount)
+    protected function getApplicableAmount(int $cartAmount, int $ruleAmount): int
     {
         return min($cartAmount, $ruleAmount);
     }

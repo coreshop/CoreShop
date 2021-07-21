@@ -23,6 +23,7 @@ use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
@@ -87,7 +88,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
         ];
     }
 
-    private function createForm(Request $request, OrderInterface $cart)
+    private function createForm(Request $request, OrderInterface $cart): FormInterface
     {
         $form = $this->formFactory->createNamed('guest', GuestRegistrationType::class, $cart->getCustomer());
 

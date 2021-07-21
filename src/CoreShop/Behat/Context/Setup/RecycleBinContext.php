@@ -16,17 +16,10 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Element\Recyclebin\Item;
-use Pimcore\Model\User;
-use Pimcore\Model\Version;
 use Webmozart\Assert\Assert;
 
 final class RecycleBinContext implements Context
@@ -42,7 +35,7 @@ final class RecycleBinContext implements Context
      * @Then /^I recycle the (product "[^"]+")$/
      * @Then /^I recycle the (product)$/
      */
-    public function IAddTheObjectToTheBin(Concrete $concrete)
+    public function IAddTheObjectToTheBin(Concrete $concrete): void
     {
         /**
          * @var Item $item
@@ -63,7 +56,7 @@ final class RecycleBinContext implements Context
      * @Then /^I restore the recycled (product "[^"]+")$/
      * @Then /^I restore the recycled (product)$/
      */
-    public function iRestoreTheRecycledProduct(Concrete $concrete)
+    public function iRestoreTheRecycledProduct(Concrete $concrete): void
     {
         $key = 'data_object_recycle_' . $concrete->getId();
 

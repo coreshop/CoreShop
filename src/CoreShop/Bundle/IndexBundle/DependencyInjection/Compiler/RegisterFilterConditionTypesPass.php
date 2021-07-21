@@ -21,7 +21,7 @@ class RegisterFilterConditionTypesPass implements CompilerPassInterface
 {
     public const INDEX_FILTER_CONDITION_TAG = 'coreshop.filter.condition_type';
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->findTaggedServiceIds(self::INDEX_FILTER_CONDITION_TAG) as $id => $attributes) {
             $definition = $container->findDefinition($id);

@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\ConfigurationBundle\DependencyInjection;
 use CoreShop\Bundle\ConfigurationBundle\Controller\ConfigurationController;
 use CoreShop\Bundle\ConfigurationBundle\Doctrine\ORM\ConfigurationRepository;
 use CoreShop\Bundle\ConfigurationBundle\Form\Type\ConfigurationType;
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;

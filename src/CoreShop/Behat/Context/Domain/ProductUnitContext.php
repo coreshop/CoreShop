@@ -35,7 +35,7 @@ final class ProductUnitContext implements Context
     /**
      * @Then /^there should be a unit "([^"]+)"$/
      */
-    public function thereShouldBeAUnit($name)
+    public function thereShouldBeAUnit($name): void
     {
         $unit = $this->unitRepository->findByName($name);
 

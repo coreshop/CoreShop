@@ -27,12 +27,12 @@ final class StateMachineManager implements StateMachineManagerInterface
         $this->registry = $registry;
     }
 
-    public function get($subject, string $workflowName = null): Workflow
+    public function get(object $subject, string $workflowName = null): Workflow
     {
         return $this->registry->get($subject, $workflowName);
     }
 
-    public function getTransitionFromState(Workflow $workflow, $subject, string $fromState): ?string
+    public function getTransitionFromState(Workflow $workflow, object $subject, string $fromState): ?string
     {
         /** @var Transition $transition */
         foreach ($workflow->getEnabledTransitions($subject) as $transition) {
@@ -44,7 +44,7 @@ final class StateMachineManager implements StateMachineManagerInterface
         return null;
     }
 
-    public function getTransitionToState(Workflow $workflow, $subject, string $toState): ?string
+    public function getTransitionToState(Workflow $workflow, object $subject, string $toState): ?string
     {
         /** @var Transition $transition */
         foreach ($workflow->getEnabledTransitions($subject) as $transition) {

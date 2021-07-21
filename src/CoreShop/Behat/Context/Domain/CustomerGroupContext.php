@@ -32,7 +32,7 @@ final class CustomerGroupContext implements Context
     /**
      * @Then /^the (customer "[^"]+") should be in (customer-group "[^"]+")$/
      */
-    public function theCustomerShouldBeInCustomerGroup(ProductInterface $product, CategoryInterface $category)
+    public function theCustomerShouldBeInCustomerGroup(ProductInterface $product, CategoryInterface $category): void
     {
         Assert::oneOf($category, $product->getCategories());
     }

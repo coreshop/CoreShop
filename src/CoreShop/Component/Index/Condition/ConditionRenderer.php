@@ -26,7 +26,7 @@ final class ConditionRenderer implements ConditionRendererInterface
         $this->registry = $registry;
     }
 
-    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): mixed
     {
         /**
          * @var DynamicRendererInterface $renderer

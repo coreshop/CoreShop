@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Exception\ElementNotFoundException;
-use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 
 class CartPage extends AbstractFrontendPage implements CartPageInterface

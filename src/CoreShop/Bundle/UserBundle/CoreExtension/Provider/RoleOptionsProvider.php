@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\UserBundle\CoreExtension\Provider;
 
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\ClassDefinition\DynamicOptionsProvider\MultiSelectOptionsProviderInterface;
-use Psr\Container\ContainerInterface;
 
 class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
 {
@@ -37,7 +36,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
      *
      * @return array
      */
-    public function getOptions($context, $fieldDefinition)
+    public function getOptions($context, $fieldDefinition): array
     {
         $roles = [];
 
@@ -67,7 +66,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
      *
      * @return bool
      */
-    public function hasStaticOptions($context, $fieldDefinition)
+    public function hasStaticOptions($context, $fieldDefinition): bool
     {
         return false;
     }
@@ -76,9 +75,9 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
      * @param array $context
      * @param Data  $fieldDefinition
      *
-     * @return mixed
+     * @return string
      */
-    public function getDefaultValue($context, $fieldDefinition)
+    public function getDefaultValue($context, $fieldDefinition): string
     {
         return 'ROLE_USER';
     }

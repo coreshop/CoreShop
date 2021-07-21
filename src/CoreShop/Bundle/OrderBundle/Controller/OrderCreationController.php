@@ -297,7 +297,7 @@ class OrderCreationController extends PimcoreController
         $this->addressFormatter = $addressFormatter;
     }
 
-    protected function getPermission()
+    protected function getPermission(): string
     {
         return 'coreshop_permission_order_create';
     }

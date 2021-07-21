@@ -25,7 +25,7 @@ class TemplateConfigurator implements TemplateConfiguratorInterface
         $this->templateSuffix = $templateSuffix;
     }
 
-    public function findTemplate($templateName)
+    public function findTemplate($templateName): string
     {
         return sprintf('@%s/%s.%s', $this->bundleName, $templateName, $this->templateSuffix);
     }

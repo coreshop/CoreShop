@@ -20,13 +20,18 @@ use Pimcore\Model\Element\ElementInterface;
 
 class ObjectIdSumInterpreter implements InterpreterInterface
 {
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpret(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): mixed
     {
         $sum = 0;
         if (is_array($value)) {
-            foreach ($value as $indexable) {
-                if ($indexable instanceof ElementInterface) {
-                    $sum += $indexable->getId();
+            foreach ($value as $v) {
+                if ($v instanceof ElementInterface) {
+                    $sum += $v->getId();
                 }
             }
         }

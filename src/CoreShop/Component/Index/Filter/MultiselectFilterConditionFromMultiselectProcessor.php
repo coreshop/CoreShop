@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Component\Index\Filter;
 
 use CoreShop\Component\Index\Condition\ConcatCondition;
-use CoreShop\Component\Index\Condition\InCondition;
 use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;

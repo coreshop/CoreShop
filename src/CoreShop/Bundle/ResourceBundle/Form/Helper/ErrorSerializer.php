@@ -27,7 +27,7 @@ final class ErrorSerializer
         $this->trans = $trans;
     }
 
-    public function serializeErrorFromHandledForm(FormInterface $handledForm)
+    public function serializeErrorFromHandledForm(FormInterface $handledForm): array
     {
         $errors = [];
 

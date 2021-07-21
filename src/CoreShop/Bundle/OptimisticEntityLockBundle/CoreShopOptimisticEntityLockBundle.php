@@ -21,26 +21,17 @@ use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
 class CoreShopOptimisticEntityLockBundle extends AbstractPimcoreBundle
 {
-    /**
-     * @return string
-     */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Optimistic Entity Lock';
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Optimistic Entity Lock Bundle';
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         $bundleName = 'coreshop/optimistic-entity-lock-bundle';
 
@@ -71,22 +62,22 @@ class CoreShopOptimisticEntityLockBundle extends AbstractPimcoreBundle
         return '';
     }
 
-    public function getJsPaths()
+    public function getJsPaths(): array
     {
         return [];
     }
 
-    public function getCssPaths()
+    public function getCssPaths(): array
     {
         return [];
     }
 
-    public function getEditmodeJsPaths()
+    public function getEditmodeJsPaths(): array
     {
         return [];
     }
 
-    public function getEditmodeCssPaths()
+    public function getEditmodeCssPaths(): array
     {
         return [];
     }

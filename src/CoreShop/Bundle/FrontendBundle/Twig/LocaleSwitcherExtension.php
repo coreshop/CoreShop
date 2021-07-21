@@ -34,19 +34,14 @@ final class LocaleSwitcherExtension extends AbstractExtension
         $this->shopperContext = $shopperContext;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('coreshop_locale_switcher', [$this, 'getLocalizedLinks']),
         ];
     }
 
-    /**
-     * @param Document $document
-     *
-     * @return array
-     */
-    public function getLocalizedLinks(Document $document)
+    public function getLocalizedLinks(Document $document): array
     {
         $translations = $this->documentService->getTranslations($document);
         $links = [];

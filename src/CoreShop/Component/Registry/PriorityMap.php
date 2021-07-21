@@ -30,9 +30,9 @@ class PriorityMap implements \Iterator, \Countable
     {
         if (is_object($key)) {
             return spl_object_hash($key);
-        } else {
-            return $key;
         }
+
+        return $key;
     }
 
     /**

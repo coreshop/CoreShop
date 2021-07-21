@@ -28,7 +28,12 @@ final class IteratorInterpreter implements InterpreterInterface
         $this->interpreterRegistry = $interpreterRegistry;
     }
 
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpret(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): mixed
     {
         Assert::isArray($value, 'IteratorInterpreter can only be used with array values');
 

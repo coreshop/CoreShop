@@ -63,12 +63,7 @@ class OrderExtractor implements TrackingExtractorInterface
         );
     }
 
-    /**
-     * @param int $amount
-     *
-     * @return int
-     */
-    protected function parseAmount($amount)
+    protected function parseAmount(int $amount): int
     {
         return (int)round((round($amount / $this->decimalFactor, $this->decimalPrecision)), 0);
     }

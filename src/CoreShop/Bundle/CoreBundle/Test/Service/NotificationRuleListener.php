@@ -21,14 +21,13 @@ use Symfony\Component\Finder\Finder;
 final class NotificationRuleListener implements NotificationRuleListenerInterface
 {
     private string $cacheDir;
-    private array $firedEvents = [];
 
     public function __construct(string $cacheDir)
     {
         $this->cacheDir = $cacheDir;
     }
 
-    public function hasBeenFired($type)
+    public function hasBeenFired(string $type): bool
     {
         $finder = new Finder();
         $finder->files()->name(sprintf('*.%s.notification', $type))->in($this->cacheDir);
@@ -36,7 +35,7 @@ final class NotificationRuleListener implements NotificationRuleListenerInterfac
         return $finder->count() > 0;
     }
 
-    public function clear()
+    public function clear(): void
     {
         if (!is_dir($this->cacheDir)) {
             return;
@@ -52,7 +51,7 @@ final class NotificationRuleListener implements NotificationRuleListenerInterfac
         }
     }
 
-    public function applyNewFired(GenericEvent $type)
+    public function applyNewFired(GenericEvent $type): void
     {
         $data = [
             'subject' => $type->getSubject(),

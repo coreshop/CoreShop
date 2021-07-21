@@ -18,7 +18,6 @@ use CoreShop\Bundle\OptimisticEntityLockBundle\Exception\OptimisticLockException
 use CoreShop\Bundle\OptimisticEntityLockBundle\Manager\EntityLockManager;
 use CoreShop\Bundle\OptimisticEntityLockBundle\Model\OptimisticLockedInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\LockMode;
 use Pimcore\Event\DataObjectEvents;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Model\DataObject\Concrete;
@@ -35,7 +34,7 @@ class LockListener implements EventSubscriberInterface
         $this->connection = $connection;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             DataObjectEvents::PRE_ADD => 'preAddLock',
@@ -44,7 +43,7 @@ class LockListener implements EventSubscriberInterface
         ];
     }
 
-    public function preAddLock(DataObjectEvent $dataObjectEvent)
+    public function preAddLock(DataObjectEvent $dataObjectEvent): void
     {
         $object = $dataObjectEvent->getObject();
 
@@ -59,7 +58,7 @@ class LockListener implements EventSubscriberInterface
         $object->setOptimisticLockVersion(1);
     }
 
-    public function postUpdateLock(DataObjectEvent $dataObjectEvent)
+    public function postUpdateLock(DataObjectEvent $dataObjectEvent): void
     {
         $object = $dataObjectEvent->getObject();
 
@@ -74,7 +73,7 @@ class LockListener implements EventSubscriberInterface
         $this->lockManager->updateLock($object);
     }
 
-    public function checkLock(DataObjectEvent $dataObjectEvent)
+    public function checkLock(DataObjectEvent $dataObjectEvent): void
     {
         $object = $dataObjectEvent->getObject();
 
@@ -90,7 +89,7 @@ class LockListener implements EventSubscriberInterface
         $object->setOptimisticLockVersion(($object->getOptimisticLockVersion() ?? 1) + 1);
     }
 
-    private function ensureVersionMatch(Concrete $object)
+    private function ensureVersionMatch(Concrete $object): void
     {
         if (!$object instanceof OptimisticLockedInterface) {
             return;

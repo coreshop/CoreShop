@@ -19,7 +19,12 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 class SoundexInterpreter implements InterpreterInterface
 {
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpret(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): mixed
     {
         if (null === $value) {
             return null;
@@ -34,6 +39,6 @@ class SoundexInterpreter implements InterpreterInterface
 
         $soundEx = soundex($string);
 
-        return (int) ord(substr($soundEx, 0, 1)) . substr($soundEx, 1);
+        return (int) ord($soundEx[0]) . substr($soundEx, 1);
     }
 }

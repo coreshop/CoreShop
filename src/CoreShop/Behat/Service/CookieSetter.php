@@ -17,25 +17,16 @@ namespace CoreShop\Behat\Service;
 use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Session;
-use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 
 class CookieSetter implements CookieSetterInterface
 {
     protected Session $minkSession;
-    protected mixed $minkParameters;
+    protected array|\ArrayAccess $minkParameters;
 
-    public function __construct(Session $minkSession, mixed $minkParameters)
+    public function __construct(Session $minkSession, array|\ArrayAccess $minkParameters)
     {
-        if (!is_array($minkParameters) && !$minkParameters instanceof \ArrayAccess) {
-            throw new \InvalidArgumentException(sprintf(
-                '"$minkParameters" passed to "%s" has to be an array or implement "%s".',
-                self::class,
-                \ArrayAccess::class
-            ));
-        }
-
         $this->minkSession = $minkSession;
-        $this->minkParameters = $minkParameters ?? [];
+        $this->minkParameters = $minkParameters;
     }
 
     public function setCookie(string $name, string $value): void

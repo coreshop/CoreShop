@@ -20,7 +20,6 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
-use CoreShop\Component\Order\Cart\CartItemResolver;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use Symfony\Component\Validator\Constraint;

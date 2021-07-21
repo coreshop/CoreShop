@@ -30,7 +30,12 @@ class ExpressionInterpreter implements InterpreterInterface
         $this->container = $container;
     }
 
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpret(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): mixed
     {
         $expression = $interpreterConfig['expression'];
 

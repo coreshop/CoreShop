@@ -19,12 +19,5 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 interface CompanyRepositoryInterface extends PimcoreRepositoryInterface
 {
-    /**
-     * Find Company by Name.
-     *
-     * @param string $name
-     *
-     * @return CompanyInterface|null
-     */
-    public function findCompanyByName($name);
+    public function findCompanyByName(string $name): ?CompanyInterface;
 }

@@ -39,7 +39,7 @@ final class ProductUnitContext implements Context
     /**
      * @Given /^the site has a product-unit "([^"]+)"$/
      */
-    public function thereIsAProductUnit($name)
+    public function thereIsAProductUnit($name): void
     {
         /**
          * @var ProductUnitInterface $unit

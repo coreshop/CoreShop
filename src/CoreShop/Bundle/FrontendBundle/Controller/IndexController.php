@@ -15,10 +15,11 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IndexController extends FrontendController
 {
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         return $this->render($this->templateConfigurator->findTemplate('Index/index.html'));
     }

@@ -28,7 +28,7 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
      *
      * @return array
      */
-    public function getOptions($context, $fieldDefinition)
+    public function getOptions($context, $fieldDefinition): array
     {
         if (!isset($context['object'])) {
             return [];
@@ -64,26 +64,13 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
         return $types;
     }
 
-    /**
-     * @param array $context
-     * @param Data  $fieldDefinition
-     *
-     * @return mixed
-     */
-    public function getDefaultValue($context, $fieldDefinition)
+    public function getDefaultValue($context, $fieldDefinition): string
     {
         return CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY;
     }
 
-    /**
-     * @param array $context
-     * @param Data $fieldDefinition
-     *
-     * @return bool
-     */
-    public function hasStaticOptions($context, $fieldDefinition)
+    public function hasStaticOptions($context, $fieldDefinition): bool
     {
         return false;
     }
-
 }

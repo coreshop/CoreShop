@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -35,8 +36,11 @@ final class CurrencyContext implements Context
     /**
      * @Transform /^currency "([^"]+)"$/
      */
-    public function getCurrencyByIso($iso)
+    public function getCurrencyByIso($iso): CurrencyInterface
     {
+        /**
+         * @var CurrencyInterface[] $currencies
+         */
         $currencies = $this->currencyRepository->findBy(['isoCode' => $iso]);
 
         Assert::eq(
@@ -51,7 +55,7 @@ final class CurrencyContext implements Context
     /**
      * @Transform /^currency$/
      */
-    public function latestCurrency()
+    public function latestCurrency(): CurrencyInterface
     {
         return $this->sharedStorage->get('currency');
     }

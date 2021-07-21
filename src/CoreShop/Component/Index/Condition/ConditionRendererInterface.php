@@ -18,14 +18,5 @@ use CoreShop\Component\Index\Worker\WorkerInterface;
 
 interface ConditionRendererInterface
 {
-    /**
-     * Renders the condition.
-     *
-     * @param WorkerInterface    $worker
-     * @param ConditionInterface $condition
-     * @param string             $prefix
-     *
-     * @return mixed
-     */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null);
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): mixed;
 }

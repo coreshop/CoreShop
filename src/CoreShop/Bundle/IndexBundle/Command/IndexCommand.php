@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\IndexBundle\Command;
 
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
-use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
+use CoreShop\Component\Pimcore\BatchProcessing\DataObjectBatchListing;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
@@ -125,7 +125,7 @@ final class IndexCommand extends Command
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
             $perLoop = 10;
 
-            $batchList = new BatchListing($list, $perLoop);
+            $batchList = new DataObjectBatchListing($list, $perLoop);
 
             $batchLists[$class] = $batchList;
 
@@ -135,7 +135,7 @@ final class IndexCommand extends Command
         $this->dispatchInfo('start', $total);
 
         /**
-         * @var BatchListing $batchList
+         * @var DataObjectBatchListing $batchList
          */
         foreach ($batchLists as $class => $batchList) {
             $total = $batchList->count();

@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Extension;
 
-use CoreShop\Component\Index\Model\IndexInterface;
-
 interface IndexRelationalColumnsExtensionInterface extends IndexExtensionInterface
 {
     public function getRelationalColumns(): array;

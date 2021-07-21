@@ -30,7 +30,7 @@ class CheckoutEvent extends GenericEvent
     private int $errorCode = 500;
     private Response $response;
 
-    public function stop(string $message, string $type = self::TYPE_ERROR, array $parameters = [], int $errorCode = 500)
+    public function stop(string $message, string $type = self::TYPE_ERROR, array $parameters = [], int $errorCode = 500): void
     {
         $this->messageType = $type;
         $this->message = $message;

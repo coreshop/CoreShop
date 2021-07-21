@@ -17,11 +17,8 @@ namespace CoreShop\Component\Core\Customer;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
-use Exception;
-use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Folder;
 use Pimcore\Model\Element\ElementInterface;
-use Pimcore\Model\Element\ValidationException;
 
 interface CustomerTransformHelperInterface
 {

@@ -136,7 +136,7 @@ final class CartShippingProcessor implements CartProcessorInterface
      * @param OrderInterface   $cart
      * @param AddressInterface $address
      */
-    private function resolveDefaultCarrier(OrderInterface $cart, AddressInterface $address)
+    private function resolveDefaultCarrier(OrderInterface $cart, AddressInterface $address): void
     {
         if (!$cart instanceof CoreOrderInterface) {
             return;

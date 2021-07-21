@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\User\Model;
 
-use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Pimcore\Model\DataObject\ClassDefinition\Data\Password;
 

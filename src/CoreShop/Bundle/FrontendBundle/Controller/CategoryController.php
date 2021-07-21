@@ -69,7 +69,7 @@ class CategoryController extends FrontendController
         ]);
     }
 
-    public function detailSlugAction(Request $request, CategoryInterface $object, UrlSlug $urlSlug)
+    public function detailSlugAction(Request $request, CategoryInterface $object, UrlSlug $urlSlug): Response
     {
         return $this->detail($request, $object);
     }
@@ -190,7 +190,7 @@ class CategoryController extends FrontendController
         return $this->render($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
 
-    protected function validateCategory(Request $request, CategoryInterface $category)
+    protected function validateCategory(Request $request, CategoryInterface $category): void
     {
         $isFrontendRequestByAdmin = false;
 
@@ -233,41 +233,26 @@ class CategoryController extends FrontendController
         return $sort;
     }
 
-    /**
-     * @return CategoryRepositoryInterface
-     */
-    protected function getRepository()
+    protected function getRepository(): CategoryRepositoryInterface
     {
         return $this->get('coreshop.repository.category');
     }
 
-    /**
-     * @return ProductRepositoryInterface
-     */
-    protected function getProductRepository()
+    protected function getProductRepository(): ProductRepositoryInterface
     {
         return $this->get('coreshop.repository.product');
     }
 
-    /**
-     * @return \CoreShop\Component\Core\Configuration\ConfigurationService
-     */
     protected function getConfigurationService(): ConfigurationServiceInterface
     {
         return $this->get(ConfigurationServiceInterface::class);
     }
 
-    /**
-     * @return ShopperContextInterface
-     */
     protected function getContext(): ShopperContextInterface
     {
         return $this->get(ShopperContextInterface::class);
     }
 
-    /**
-     * @return PaginatorInterface
-     */
     protected function getPaginator(): PaginatorInterface
     {
         return $this->get(PaginatorInterface::class);

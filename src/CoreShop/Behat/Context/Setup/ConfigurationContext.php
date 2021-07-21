@@ -36,7 +36,7 @@ final class ConfigurationContext implements Context
      * @Given configuration guest checkout is enabled
      * @Given /^configuration guest checkout is enabled for (store "[^"]+")$/
      */
-    public function configurationGuestCheckoutIsEnabled(?StoreInterface $store = null)
+    public function configurationGuestCheckoutIsEnabled(?StoreInterface $store = null): void
     {
         if ($store !== null) {
             $this->configurationService->setForStore('system.guest.checkout', true, $store);

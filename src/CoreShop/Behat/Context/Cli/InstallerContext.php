@@ -15,8 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Cli;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand;
-use CoreShop\Bundle\CoreBundle\Command\InstallCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand;
 use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
@@ -41,7 +39,7 @@ final class InstallerContext implements Context
     /**
      * @Given I run CoreShop Install Fixtures Data command
      */
-    public function iRunCoreShopInstallFixturesCommand()
+    public function iRunCoreShopInstallFixturesCommand(): void
     {
         $installCommand = new InstallFixturesCommand(
             $this->kernel,
@@ -61,7 +59,7 @@ final class InstallerContext implements Context
     /**
      * @Given I run CoreShop Install Demo Data command
      */
-    public function iRunCoreShopInstallSampleDataCommand()
+    public function iRunCoreShopInstallSampleDataCommand(): void
     {
         $installCommand = new InstallDemoCommand(
             $this->kernel,
@@ -81,7 +79,7 @@ final class InstallerContext implements Context
     /**
      * @Given I confirm loading Fixtures Data command
      */
-    public function iConfirmLoadingFixtures()
+    public function iConfirmLoadingFixtures(): void
     {
         $this->iExecuteCommandAndConfirm('coreshop:install:fixtures');
     }
@@ -89,7 +87,7 @@ final class InstallerContext implements Context
     /**
      * @Given I confirm loading Demo Data command
      */
-    public function iConfirmLoadingDemo()
+    public function iConfirmLoadingDemo(): void
     {
         $this->iExecuteCommandAndConfirm('coreshop:install:demo');
     }
@@ -97,7 +95,7 @@ final class InstallerContext implements Context
     /**
      * @Then the command should finish successfully
      */
-    public function commandSuccess()
+    public function commandSuccess(): void
     {
         Assert::same($this->tester->getStatusCode(), 0);
     }
@@ -105,7 +103,7 @@ final class InstallerContext implements Context
     /**
      * @param string $name
      */
-    private function iExecuteCommandAndConfirm($name)
+    private function iExecuteCommandAndConfirm($name): void
     {
         $this->tester->setInputs(['y']);
         $this->tester->execute(['command' => $name]);

@@ -20,7 +20,7 @@ use CoreShop\Component\Customer\Repository\CompanyRepositoryInterface;
 
 class CompanyRepository extends PimcoreRepository implements CompanyRepositoryInterface
 {
-    public function findCompanyByName($name)
+    public function findCompanyByName(string $name): ?CompanyInterface
     {
         $list = $this->getList();
         $list->setCondition('name = ?', [$name]);

@@ -35,7 +35,7 @@ final class TaxRateContext implements Context
     /**
      * @Then /^there should be a tax rate "([^"]+)" with "([^"]+)%" rate$/
      */
-    public function thereShouldBeATaxRate($name, $rate)
+    public function thereShouldBeATaxRate($name, $rate): void
     {
         $rates = $this->taxRateRepository->findByName($name, 'en');
 

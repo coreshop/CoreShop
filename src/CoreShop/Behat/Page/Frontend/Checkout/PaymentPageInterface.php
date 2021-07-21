@@ -21,5 +21,5 @@ interface PaymentPageInterface extends FrontendPageInterface
 {
     public function submitStep(): void;
 
-    public function selectPaymentProvider(PaymentProviderInterface $paymentProvider);
+    public function selectPaymentProvider(PaymentProviderInterface $paymentProvider): void;
 }

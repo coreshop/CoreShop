@@ -21,7 +21,7 @@ use Payum\Core\Request\GetStatusInterface;
 
 class StatusAction implements ActionInterface
 {
-    public function execute($request)
+    public function execute($request): void
     {
         /** @var $request GetStatusInterface */
         RequestNotSupportedException::assertSupports($this, $request);
@@ -49,7 +49,7 @@ class StatusAction implements ActionInterface
         $request->markUnknown();
     }
 
-    public function supports($request)
+    public function supports($request): bool
     {
         return
             $request instanceof GetStatusInterface &&

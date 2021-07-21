@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Tool\Admin;
-
 /**
  * @deprecated Class is deprecated since 3.0 and will be removed with 3.1, no alternative provided!
  */

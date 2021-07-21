@@ -15,8 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
-use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 
 class HomePage extends AbstractFrontendPage implements HomePageInterface
 {

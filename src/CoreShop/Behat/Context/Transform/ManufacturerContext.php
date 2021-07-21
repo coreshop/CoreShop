@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -33,8 +34,11 @@ final class ManufacturerContext implements Context
     /**
      * @Transform /^manufacturer "([^"]+)"$/
      */
-    public function getManufacturerByName($name)
+    public function getManufacturerByName($name): ManufacturerInterface
     {
+        /**
+         * @var ManufacturerInterface[] $manufacturers
+         */
         $manufacturers = $this->manufacturerRepository->findBy(['name' => $name]);
 
         Assert::eq(

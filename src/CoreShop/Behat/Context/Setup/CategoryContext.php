@@ -18,7 +18,6 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
@@ -40,7 +39,7 @@ final class CategoryContext implements Context
     /**
      * @Given /^the site has a category "([^"]+)"$/
      */
-    public function theSiteHasACategory(string $categoryName)
+    public function theSiteHasACategory(string $categoryName): void
     {
         $category = $this->createCategory($categoryName);
 
@@ -50,7 +49,7 @@ final class CategoryContext implements Context
     /**
      * @Given /^the site has two categories "([^"]+)" and "([^"]+)"$/
      */
-    public function theSiteHasTwoCategories(string $categoryName, string $categoryName2)
+    public function theSiteHasTwoCategories(string $categoryName, string $categoryName2): void
     {
         $category = $this->createCategory($categoryName);
         $category2 = $this->createCategory($categoryName2);
@@ -63,20 +62,14 @@ final class CategoryContext implements Context
      * @Given /^the (category) is child of (category "[^"]+")$/
      * @Given /^the (category "[^"]+") is child of (category "[^"]+")$/
      */
-    public function categoryIsChildOfAnotherCategory(CategoryInterface $child, CategoryInterface $parent)
+    public function categoryIsChildOfAnotherCategory(CategoryInterface $child, CategoryInterface $parent): void
     {
         $child->setParent($parent);
 
         $this->saveCategory($child);
     }
 
-    /**
-     * @param string              $categoryName
-     * @param StoreInterface|null $store
-     *
-     * @return CategoryInterface
-     */
-    private function createCategory(string $categoryName, StoreInterface $store = null)
+    private function createCategory(string $categoryName, StoreInterface $store = null): CategoryInterface
     {
         if (null === $store && $this->sharedStorage->has('store')) {
             $store = $this->sharedStorage->get('store');
@@ -96,10 +89,7 @@ final class CategoryContext implements Context
         return $category;
     }
 
-    /**
-     * @param CategoryInterface $category
-     */
-    private function saveCategory(CategoryInterface $category)
+    private function saveCategory(CategoryInterface $category): void
     {
         $category->save();
         $this->sharedStorage->set('category', $category);

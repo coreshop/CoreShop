@@ -20,7 +20,7 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\ForwardCompatibility\Result;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -71,7 +71,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $variantIds = [];
 
         /**
-         * @var ResultStatement $result
+         * @var Result $result
          */
         $result = $query->execute();
 

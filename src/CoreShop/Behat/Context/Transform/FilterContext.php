@@ -16,7 +16,6 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 final class FilterContext implements Context
 {

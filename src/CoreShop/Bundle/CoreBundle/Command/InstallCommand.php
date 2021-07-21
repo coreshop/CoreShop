@@ -14,13 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Command;
 
-use CoreShop\Bundle\CoreBundle\Installer;
-use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Exception\RuntimeException;
 
 final class InstallCommand extends AbstractInstallCommand

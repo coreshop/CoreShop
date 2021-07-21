@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Bundle\ShippingBundle\Controller\CarrierController;
 use CoreShop\Bundle\ShippingBundle\Controller\ShippingRuleController;
@@ -31,14 +30,13 @@ use CoreShop\Component\Shipping\Model\ShippingRule;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroup;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
-use CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_shipping');
         $rootNode = $treeBuilder->getRootNode();
@@ -55,10 +53,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -138,10 +133,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')

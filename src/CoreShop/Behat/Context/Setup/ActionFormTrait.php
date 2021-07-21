@@ -22,13 +22,7 @@ use Webmozart\Assert\Assert;
 
 trait ActionFormTrait
 {
-    /**
-     * @param string $class
-     * @param string $type
-     *
-     * @throws \Exception
-     */
-    protected function assertActionForm($class, $type)
+    protected function assertActionForm(string $class, string $type): void
     {
         $conditionForm = $this->getActionForm($type);
 
@@ -57,14 +51,7 @@ trait ActionFormTrait
         return $action;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return FormInterface
-     *
-     * @throws \Exception
-     */
-    protected function getActionForm($type)
+    protected function getActionForm(string $type): FormInterface
     {
         if (!$this->getActionFormRegistry()->has($type, 'default')) {
             throw new \Exception("Form not found for $type");
@@ -73,18 +60,9 @@ trait ActionFormTrait
         return $this->getFormFactory()->createNamed('', $this->getActionFormRegistry()->get($type, 'default'));
     }
 
-    /**
-     * @return FormTypeRegistryInterface
-     */
-    abstract protected function getActionFormRegistry();
+    abstract protected function getActionFormRegistry(): FormTypeRegistryInterface;
 
-    /**
-     * @return FormFactoryInterface
-     */
-    abstract protected function getFormFactory();
+    abstract protected function getFormFactory(): FormFactoryInterface;
 
-    /**
-     * @return string
-     */
-    abstract protected function getActionFormClass();
+    abstract protected function getActionFormClass(): string;
 }

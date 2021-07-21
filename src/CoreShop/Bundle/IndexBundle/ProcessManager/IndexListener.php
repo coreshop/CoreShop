@@ -36,7 +36,7 @@ final class IndexListener
     /**
      * @param GenericEvent $event
      */
-    public function onClasssesEvent(GenericEvent $event)
+    public function onClasssesEvent(GenericEvent $event): void
     {
         if (null === $this->process) {
             $date = Carbon::now();
@@ -60,7 +60,7 @@ final class IndexListener
     /**
      * @param GenericEvent $event
      */
-    public function onStartEvent(GenericEvent $event)
+    public function onStartEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->setTotal($event->getSubject());
@@ -73,7 +73,7 @@ final class IndexListener
     /**
      * @param GenericEvent $event
      */
-    public function onProgressEvent(GenericEvent $event)
+    public function onProgressEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->progress();
@@ -86,7 +86,7 @@ final class IndexListener
     /**
      * @param GenericEvent $event
      */
-    public function onStatusEvent(GenericEvent $event)
+    public function onStatusEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->setMessage($event->getSubject());
@@ -99,7 +99,7 @@ final class IndexListener
     /**
      * @param GenericEvent $event
      */
-    public function onFinishedEvent(GenericEvent $event)
+    public function onFinishedEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->setProgress($this->process->getTotal());

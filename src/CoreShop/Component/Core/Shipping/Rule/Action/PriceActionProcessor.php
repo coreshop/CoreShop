@@ -16,7 +16,6 @@ namespace CoreShop\Component\Core\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
-use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;

@@ -14,10 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Fetcher;
 
-use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
-use CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidRulesFetcherInterface;
 
 interface QuantityRuleFetcherInterface
 {

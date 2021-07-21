@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StoreBundle\DependencyInjection;
 
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\StoreBundle\Controller\StoreController;
 use CoreShop\Bundle\StoreBundle\Doctrine\ORM\StoreRepository;
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreType;
@@ -27,7 +26,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_store');
         $rootNode = $treeBuilder->getRootNode();
@@ -38,10 +37,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -71,10 +67,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')

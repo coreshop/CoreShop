@@ -19,11 +19,5 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 interface GetterInterface
 {
-    /**
-     * @param IndexableInterface   $object
-     * @param IndexColumnInterface $column
-     *
-     * @return mixed
-     */
-    public function get(IndexableInterface $object, IndexColumnInterface $column);
+    public function get(IndexableInterface $object, IndexColumnInterface $config): mixed;
 }

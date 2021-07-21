@@ -45,7 +45,7 @@ final class IndexConditionContext implements Context
     /**
      * @Transform /^conditions "([^"]+)"$/
      */
-    public function conditionsWithIdentifiers($identifiers)
+    public function conditionsWithIdentifiers($identifiers): array
     {
         $conditions = [];
 

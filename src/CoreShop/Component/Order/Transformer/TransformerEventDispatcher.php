@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Transformer;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -26,7 +27,7 @@ final class TransformerEventDispatcher implements TransformerEventDispatcherInte
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function dispatchPreEvent($modelName, $model, $params = [])
+    public function dispatchPreEvent(string $modelName, ResourceInterface $model, array $params = []): void
     {
         $event = $this->getEvent($model, $params);
 
@@ -36,7 +37,7 @@ final class TransformerEventDispatcher implements TransformerEventDispatcherInte
         );
     }
 
-    public function dispatchPostEvent($modelName, $model, $params = [])
+    public function dispatchPostEvent(string $modelName, ResourceInterface $model, array $params = []): void
     {
         $event = $this->getEvent($model, $params);
 
@@ -46,13 +47,7 @@ final class TransformerEventDispatcher implements TransformerEventDispatcherInte
         );
     }
 
-    /**
-     * @param mixed $model
-     * @param array $params
-     *
-     * @return GenericEvent
-     */
-    private function getEvent($model, $params)
+    private function getEvent(ResourceInterface $model, array $params)
     {
         return new GenericEvent($model, $params);
     }

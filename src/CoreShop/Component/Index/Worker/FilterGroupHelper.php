@@ -30,7 +30,7 @@ class FilterGroupHelper implements FilterGroupHelperInterface
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
     }
 
-    public function getGroupByValuesForFilterGroup(IndexColumnInterface $column, ListingInterface $list, $field)
+    public function getGroupByValuesForFilterGroup(IndexColumnInterface $column, ListingInterface $list, string $field): array
     {
         $type = 'field';
         $returnValues = [];

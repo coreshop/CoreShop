@@ -16,7 +16,6 @@ namespace CoreShop\Behat\Page\Frontend\Account;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use CoreShop\Behat\Page\Frontend\AbstractFrontendPage;
-use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 
 class ChangePasswordPage extends AbstractFrontendPage implements ChangePasswordPageInterface
 {

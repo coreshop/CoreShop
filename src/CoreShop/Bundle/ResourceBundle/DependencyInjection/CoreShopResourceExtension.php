@@ -74,7 +74,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension
             ->addTag(RegisterInstallersPass::INSTALLER_TAG);
     }
 
-    private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader)
+    private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader): void
     {
         foreach ($resources as $alias => $resource) {
             if (!in_array($resource['driver'], $drivers, true)) {

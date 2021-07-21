@@ -14,9 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Pimcore\CoreShop;
 
-use CoreShop\Behat\Page\Pimcore\AbstractPimcorePage;
 use CoreShop\Behat\Page\Pimcore\PimcoreTabPageInterface;
-use FriendsOfBehat\PageObjectExtension\Page\UnexpectedPageException;
 
 interface CountryPageInterface extends PimcoreTabPageInterface
 {

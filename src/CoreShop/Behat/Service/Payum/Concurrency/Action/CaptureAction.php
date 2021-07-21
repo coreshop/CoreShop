@@ -21,7 +21,7 @@ use Payum\Core\Request\Capture;
 
 class CaptureAction implements ActionInterface
 {
-    public function execute($request)
+    public function execute($request): void
     {
         sleep(1);
 
@@ -33,7 +33,7 @@ class CaptureAction implements ActionInterface
         $model['STATUS'] = 'captured';
     }
 
-    public function supports($request)
+    public function supports($request): bool
     {
         return
             $request instanceof Capture &&

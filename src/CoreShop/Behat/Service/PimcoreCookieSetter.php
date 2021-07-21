@@ -14,9 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Service;
 
-use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Session;
-use Symfony\Component\BrowserKit\Cookie;
 
 final class PimcoreCookieSetter extends CookieSetter
 {

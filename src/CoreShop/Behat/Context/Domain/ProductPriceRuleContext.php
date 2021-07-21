@@ -42,7 +42,7 @@ final class ProductPriceRuleContext implements Context
      * @Then /^the (price rule "[^"]+") for (product "[^"]+") should be valid$/
      * @Then /^the (price rule) should be valid for (product "[^"]+")$/
      */
-    public function theSpecificPriceRuleForProductShouldBeValid(ProductPriceRuleInterface $productPriceRule, ProductInterface $product)
+    public function theSpecificPriceRuleForProductShouldBeValid(ProductPriceRuleInterface $productPriceRule, ProductInterface $product): void
     {
         Assert::true($this->ruleValidationProcessor->isValid($product, $productPriceRule, $this->shopperContext->getContext()));
     }
@@ -51,7 +51,7 @@ final class ProductPriceRuleContext implements Context
      * @Then /^the (price rule "[^"]+") for (product "[^"]+") should be invalid$/
      * @Then /^the (price rule) should be invalid for (product "[^"]+")$/
      */
-    public function theSpecificPriceRuleForProductShouldBeInvalid(ProductPriceRuleInterface $productPriceRule, ProductInterface $product)
+    public function theSpecificPriceRuleForProductShouldBeInvalid(ProductPriceRuleInterface $productPriceRule, ProductInterface $product): void
     {
         Assert::false($this->ruleValidationProcessor->isValid($product, $productPriceRule, $this->shopperContext->getContext()));
     }

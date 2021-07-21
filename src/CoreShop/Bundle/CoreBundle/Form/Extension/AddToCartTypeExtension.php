@@ -18,7 +18,6 @@ use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartItemType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Valid;
 
 final class AddToCartTypeExtension extends AbstractTypeExtension
 {

@@ -31,7 +31,7 @@ class TransactionListener implements EventSubscriberInterface
         $this->connection = $connection;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER => 'onKernelController',
@@ -39,7 +39,7 @@ class TransactionListener implements EventSubscriberInterface
         ];
     }
 
-    public function onKernelController(ControllerEvent $event)
+    public function onKernelController(ControllerEvent $event): void
     {
         $controller = $event->getController();
 
@@ -59,7 +59,7 @@ class TransactionListener implements EventSubscriberInterface
         $this->connection->beginTransaction();
     }
 
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->getRequest()->attributes->get('PAYUM_TRANSACTION_ACTIVE')) {
             return;

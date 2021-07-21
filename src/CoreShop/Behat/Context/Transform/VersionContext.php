@@ -16,10 +16,6 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
-use Pimcore\Model\DataObject\AbstractObject;
-use Webmozart\Assert\Assert;
 
 final class VersionContext implements Context
 {

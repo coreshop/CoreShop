@@ -35,7 +35,7 @@ final class ThemeContext implements Context
     /**
      * @Then /^the current theme name should be "([^"]+)"$/
      */
-    public function currentThemeNameIs(string $currentThemeName)
+    public function currentThemeNameIs(string $currentThemeName): void
     {
         $theme = $this->themeResolver->resolveTheme();
 

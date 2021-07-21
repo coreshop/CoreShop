@@ -26,24 +26,24 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopMenuBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         $collection->addBundle(new KnpMenuBundle());
     }
 
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
         $container->addCompilerPass(new MenuBuilderPass());
     }
 
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Menu';
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Menu Bundle';
     }
@@ -51,7 +51,7 @@ final class CoreShopMenuBundle extends AbstractPimcoreBundle implements Dependen
     /**
      * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         $bundleName = 'coreshop/pimcore-bundle';
 

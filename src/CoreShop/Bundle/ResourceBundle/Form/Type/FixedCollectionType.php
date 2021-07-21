@@ -59,10 +59,7 @@ final class FixedCollectionType extends AbstractType
         return 'coreshop_fixed_collection';
     }
 
-    /**
-     * @return callable
-     */
-    private function optionalCallableNormalizer()
+    private function optionalCallableNormalizer(): callable
     {
         return function (Options $options, $value) {
             if (is_callable($value)) {

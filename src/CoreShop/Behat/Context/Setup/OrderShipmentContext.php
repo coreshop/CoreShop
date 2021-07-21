@@ -19,7 +19,6 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderShipmentInterface;
-use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentTransitions;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -47,7 +46,7 @@ final class OrderShipmentContext implements Context
      * @Given /^I create a shipment for (my order)$/
      * @Given /^I create another shipment for (my order)$/
      */
-    public function iCreateAFullShipmentForOrder(OrderInterface $order)
+    public function iCreateAFullShipmentForOrder(OrderInterface $order): void
     {
         $items = $order->getItems();
         $orderItem = reset($items);
@@ -66,7 +65,7 @@ final class OrderShipmentContext implements Context
     /**
      * @Given /^I apply shipment transition "([^"]+)" to (latest order shipment)$/
      */
-    public function iApplyShipmentTransitionToShipment($shipmentTransition, OrderShipmentInterface $shipment)
+    public function iApplyShipmentTransitionToShipment($shipmentTransition, OrderShipmentInterface $shipment): void
     {
         $this->stateMachineApplier->apply($shipment, ShipmentTransitions::IDENTIFIER, $shipmentTransition);
     }

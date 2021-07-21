@@ -17,7 +17,9 @@ namespace CoreShop\Behat\Context\Transform;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 final class CartContext implements Context
 {
@@ -39,7 +41,7 @@ final class CartContext implements Context
      * @Transform /^my cart/
      * @Transform /^cart(?:s)/
      */
-    public function cart()
+    public function cart(): OrderInterface
     {
         return $this->cartContext->getCart();
     }
@@ -48,7 +50,7 @@ final class CartContext implements Context
      * @Transform /^my add-to-cart-form/
      * @Transform /^add-to-cart-form(?:|s)/
      */
-    public function addToCartForm()
+    public function addToCartForm(): FormInterface
     {
         return $this->sharedStorage->get('add_to_cart_form');
     }
@@ -56,7 +58,7 @@ final class CartContext implements Context
     /**
      * @Transform /^loaded cart(?:|s)/
      */
-    public function loadedCart()
+    public function loadedCart(): OrderInterface
     {
         return $this->cartRepository->forceFind($this->cartContext->getCart()->getId());
     }

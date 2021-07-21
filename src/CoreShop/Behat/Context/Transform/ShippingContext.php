@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
@@ -40,8 +41,11 @@ final class ShippingContext implements Context
     /**
      * @Transform /^carrier "([^"]+)"$/
      */
-    public function getCarrierByName($name)
+    public function getCarrierByName(string $name): CarrierInterface
     {
+        /**
+         * @var CarrierInterface[] $carriers
+         */
         $carriers = $this->carrierRepository->findBy(['identifier' => $name]);
 
         Assert::eq(
@@ -56,7 +60,7 @@ final class ShippingContext implements Context
     /**
      * @Transform /^carrier$/
      */
-    public function getLatestCarrier()
+    public function getLatestCarrier(): CarrierInterface
     {
         return $this->sharedStorage->get('carrier');
     }
@@ -64,7 +68,7 @@ final class ShippingContext implements Context
     /**
      * @Transform /^shipping rule "([^"]+)"$/
      */
-    public function getShippingRuleByName($ruleName)
+    public function getShippingRuleByName(string $ruleName): ShippingRuleInterface
     {
         $rule = $this->shippingRuleRepository->findOneBy(['name' => $ruleName]);
 
@@ -76,7 +80,7 @@ final class ShippingContext implements Context
     /**
      * @Transform /^(shipping rule)$/
      */
-    public function getLatestShippingRule()
+    public function getLatestShippingRule(): ShippingRuleInterface
     {
         $resource = $this->sharedStorage->get('shipping-rule');
 

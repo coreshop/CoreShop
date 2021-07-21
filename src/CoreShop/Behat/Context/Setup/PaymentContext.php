@@ -51,7 +51,7 @@ final class PaymentContext implements Context
      * @Given /^There is a payment provider "([^"]+)" using factory "([^"]+)"$/
      * @Given /^the site has a payment provider "([^"]+)" using factory "([^"]+)"$/
      */
-    public function thereIsAPaymentProviderUsingFactory($name, $factory)
+    public function thereIsAPaymentProviderUsingFactory($name, $factory): void
     {
         /**
          * @var PaymentProviderInterface $paymentProvider
@@ -84,7 +84,7 @@ final class PaymentContext implements Context
      * @Given /^I create a payment for (my order) with (payment provider "[^"]+") and amount ([^"]+)$/
      * @Given /^I create a payment for (my order) with (payment provider "[^"]+")$/
      */
-    public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount = null)
+    public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount = null): void
     {
         /**
          * @var PaymentInterface $payment

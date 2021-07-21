@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
-use CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 interface ClassUpdateInterface

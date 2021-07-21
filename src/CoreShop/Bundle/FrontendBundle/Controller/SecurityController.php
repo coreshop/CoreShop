@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
-use CoreShop\Component\Core\Model\CustomerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,12 +62,12 @@ class SecurityController extends FrontendController
         ]);
     }
 
-    public function checkAction(Request $request)
+    public function checkAction(Request $request): void
     {
         throw new \RuntimeException('You must configure the check path to be handled by the firewall.');
     }
 
-    public function logoutAction(Request $request)
+    public function logoutAction(Request $request): void
     {
         throw new \RuntimeException('You must configure the logout path to be handled by the firewall.');
     }

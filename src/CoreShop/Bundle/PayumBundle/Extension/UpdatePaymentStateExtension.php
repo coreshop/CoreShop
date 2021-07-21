@@ -33,15 +33,15 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
         $this->stateMachineManager = $stateMachineManager;
     }
 
-    public function onPreExecute(Context $context)
+    public function onPreExecute(Context $context): void
     {
     }
 
-    public function onExecute(Context $context)
+    public function onExecute(Context $context): void
     {
     }
 
-    public function onPostExecute(Context $context)
+    public function onPostExecute(Context $context): void
     {
         if ($context->getException()) {
             return;

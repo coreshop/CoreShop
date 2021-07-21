@@ -21,21 +21,21 @@ use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 
 final class CoreShopTaxationBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
     }
 
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
         $collection->addBundle(new CoreShopMoneyBundle(), 3600);
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Taxation\Model';
     }

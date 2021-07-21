@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerSelectionType;
-use CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreResourceSelectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,7 +24,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 class AdminAddressCreationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('customer', CustomerSelectionType::class, [
@@ -40,7 +39,7 @@ class AdminAddressCreationType extends AbstractType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 

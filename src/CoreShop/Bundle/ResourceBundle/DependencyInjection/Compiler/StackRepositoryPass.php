@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class StackRepositoryPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasParameter('coreshop.all.stack.pimcore_class_names') ||
             !$container->hasParameter('coreshop.all.stack')) {

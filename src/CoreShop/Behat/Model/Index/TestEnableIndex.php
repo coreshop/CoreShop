@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection ALL */
+/** @noinspection ALL */
 /**
  * CoreShop.
  *

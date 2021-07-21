@@ -31,12 +31,12 @@ final class SessionStorage implements StorageInterface
         return $this->session->has($name);
     }
 
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         return $this->session->get($name, $default);
     }
 
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $this->session->set($name, $value);
     }

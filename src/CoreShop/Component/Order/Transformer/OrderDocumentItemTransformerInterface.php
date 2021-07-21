@@ -20,14 +20,11 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 
 interface OrderDocumentItemTransformerInterface
 {
-    /**
-     * @param OrderDocumentInterface     $orderDocument
-     * @param OrderItemInterface         $orderItem
-     * @param OrderDocumentItemInterface $documentItem
-     * @param int                        $quantity
-     * @param array                      $options
-     *
-     * @return OrderDocumentItemInterface
-     */
-    public function transform(OrderDocumentInterface $orderDocument, OrderItemInterface $orderItem, OrderDocumentItemInterface $documentItem, $quantity, $options = []);
+    public function transform(
+        OrderDocumentInterface $orderDocument,
+        OrderItemInterface $orderItem,
+        OrderDocumentItemInterface $documentItem,
+        int $quantity,
+        array $options = []
+    ): OrderDocumentItemInterface;
 }

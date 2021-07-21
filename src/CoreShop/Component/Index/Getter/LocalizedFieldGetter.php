@@ -28,7 +28,7 @@ class LocalizedFieldGetter implements GetterInterface
         $this->localeProvider = $localeProvider;
     }
 
-    public function get(IndexableInterface $object, IndexColumnInterface $config)
+    public function get(IndexableInterface $object, IndexColumnInterface $config): array
     {
         $getter = 'get' . ucfirst($config->getObjectKey());
 

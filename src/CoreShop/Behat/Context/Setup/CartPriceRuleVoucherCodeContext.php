@@ -16,13 +16,9 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator;
 use CoreShop\Component\Order\Generator\CodeGeneratorCheckerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherGenerator;
-use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Doctrine\Persistence\ObjectManager;
 
 final class CartPriceRuleVoucherCodeContext implements Context
 {
@@ -43,7 +39,7 @@ final class CartPriceRuleVoucherCodeContext implements Context
      * @Given /^I want to generate ([^"]+) codes with a length of ([^"]+) in ([^"]+) characters for (cart rule "[^"]+")$/
      * @Given /^I want to generate ([^"]+) codes with a length of ([^"]+) in ([^"]+) characters for the (cart rule)$/
      */
-    public function iWantToGenerateCodes(int $numberOfCodes, int $lenghtPerCode, string $chars, CartPriceRuleInterface $cartPriceRule, ?string $prefix = null, ?string $suffix = null)
+    public function iWantToGenerateCodes(int $numberOfCodes, int $lenghtPerCode, string $chars, CartPriceRuleInterface $cartPriceRule, ?string $prefix = null, ?string $suffix = null): void
     {
         $generator = new CartPriceRuleVoucherGenerator();
         $generator->setAmount($numberOfCodes);

@@ -476,7 +476,7 @@ class OrderController extends PimcoreController
         return $invoiceArray;
     }
 
-    protected function getShipments($order)
+    protected function getShipments(OrderInterface $order): array
     {
         $shipments = $this->orderShipmentRepository->getDocuments($order);
         $shipmentArray = [];
@@ -571,7 +571,7 @@ class OrderController extends PimcoreController
         ];
     }
 
-    protected function getStatesHistory(OrderInterface $order)
+    protected function getStatesHistory(OrderInterface $order): array
     {
         //Get History
         $history = $this->workflowStateManager->getStateHistory($order);
@@ -599,7 +599,7 @@ class OrderController extends PimcoreController
         return $statesHistory;
     }
 
-    protected function getPayments(OrderInterface $order)
+    protected function getPayments(OrderInterface $order): array
     {
         $payments = $this->paymentRepository->findForPayable($order);
         $return = [];

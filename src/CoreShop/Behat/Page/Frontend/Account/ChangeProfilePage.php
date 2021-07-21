@@ -14,10 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend\Account;
 
-use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use CoreShop\Behat\Page\Frontend\AbstractFrontendPage;
-use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 
 class ChangeProfilePage extends AbstractFrontendPage implements ChangeProfilePageInterface
 {

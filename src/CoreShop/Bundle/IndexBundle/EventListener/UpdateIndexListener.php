@@ -29,7 +29,7 @@ final class UpdateIndexListener
         $this->workerServiceRegistry = $workerServiceRegistry;
     }
 
-    public function onPreUpdate(IndexInterface $index, PreUpdateEventArgs $event)
+    public function onPreUpdate(IndexInterface $index, PreUpdateEventArgs $event): void
     {
         if (!$event->hasChangedField('name')) {
             return;

@@ -22,14 +22,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopAddressBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
     }
 
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -37,7 +37,7 @@ final class CoreShopAddressBundle extends AbstractResourceBundle
         $container->addCompilerPass(new CompositeRequestResolverPass());
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Address\Model';
     }

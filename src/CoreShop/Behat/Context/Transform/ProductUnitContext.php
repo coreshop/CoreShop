@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -36,11 +37,11 @@ final class ProductUnitContext implements Context
      * @Transform /^unit "([^"]+)"$/
      * @Transform /^product-unit "([^"]+)"$/
      */
-    public function getUnitByName($name)
+    public function getUnitByName(string $name): ProductUnitInterface
     {
         $unit = $this->unitRepository->findByName($name);
 
-        Assert::notNull($unit, sprintf('No unit with name %s found', $name));
+        Assert::isInstanceOf($unit, ProductUnitInterface::class);
 
         return $unit;
     }
@@ -49,7 +50,7 @@ final class ProductUnitContext implements Context
      * @Transform /^unit/
      * @Transform /^product-unit/
      */
-    public function unit()
+    public function unit(): ProductUnitInterface
     {
         return $this->sharedStorage->get('product-unit');
     }

@@ -22,15 +22,17 @@ class NestedInterpreter implements InterpreterInterface
 {
     use NestedTrait;
 
-    /**
-     * @param ServiceRegistryInterface $interpreterRegistry
-     */
     public function __construct(ServiceRegistryInterface $interpreterRegistry)
     {
         $this->interpreterRegistry = $interpreterRegistry;
     }
 
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpret(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): mixed
     {
         $this->assert($interpreterConfig);
 

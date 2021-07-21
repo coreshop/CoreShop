@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPayumBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
@@ -39,7 +39,7 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
         $container->addCompilerPass(new PayumReplyToSymfonyPass());
     }
 
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
@@ -48,7 +48,7 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
         $collection->addBundle(new PayumBundle(), 1300);
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\PayumPayment\Model';
     }

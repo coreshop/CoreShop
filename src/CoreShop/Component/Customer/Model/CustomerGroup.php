@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Customer\Model;
 
-use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class CustomerGroup extends AbstractPimcoreModel implements CustomerGroupInterface

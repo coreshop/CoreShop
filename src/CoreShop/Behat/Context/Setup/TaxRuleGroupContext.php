@@ -20,7 +20,6 @@ use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -47,7 +46,7 @@ final class TaxRuleGroupContext implements Context
     /**
      * @Given /^the site has a tax rule group "([^"]+)"$/
      */
-    public function theSiteHasATaxRuleGroup($name)
+    public function theSiteHasATaxRuleGroup($name): void
     {
         $this->createTaxRuleGroup($name);
     }
@@ -56,7 +55,7 @@ final class TaxRuleGroupContext implements Context
      * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/
      * @Given /^the ([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/
      */
-    public function theTaxRuleGroupHasATaxRuleForCountryWithTax(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
+    public function theTaxRuleGroupHasATaxRuleForCountryWithTax(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate): void
     {
         /**
          * @var TaxRuleInterface $taxRule
@@ -75,7 +74,7 @@ final class TaxRuleGroupContext implements Context
      * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it combines all rules$/
      * @Given /^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it combines all rules$/
      */
-    public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndCombination(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
+    public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndCombination(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate): void
     {
         /**
          * @var TaxRuleInterface $taxRule
@@ -94,7 +93,7 @@ final class TaxRuleGroupContext implements Context
      * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it calculates them one after another$/
      * @Given /^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it calculates them one after another$/
      */
-    public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndOneAfterAnother(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
+    public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndOneAfterAnother(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate): void
     {
         /**
          * @var TaxRuleInterface $taxRule
@@ -112,7 +111,7 @@ final class TaxRuleGroupContext implements Context
     /**
      * @param string $name
      */
-    private function createTaxRuleGroup($name)
+    private function createTaxRuleGroup($name): void
     {
         /**
          * @var TaxRuleGroupInterface $taxRule
@@ -126,7 +125,7 @@ final class TaxRuleGroupContext implements Context
     /**
      * @param TaxRuleGroupInterface $taxRuleGroup
      */
-    private function saveTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup)
+    private function saveTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup): void
     {
         $this->objectManager->persist($taxRuleGroup);
         $this->objectManager->flush();

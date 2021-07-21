@@ -35,7 +35,7 @@ class CodeGeneratorChecker implements CodeGeneratorCheckerInterface
         $this->ratio = $ratio;
     }
 
-    public function isGenerationPossible(CartPriceRuleVoucherGeneratorInterface $generator)
+    public function isGenerationPossible(CartPriceRuleVoucherGeneratorInterface $generator): bool
     {
         $amountToBeCreated = $generator->getAmount();
         $possibleAmount = $this->calculatePossibleGenerationAmount($generator);
@@ -43,12 +43,12 @@ class CodeGeneratorChecker implements CodeGeneratorCheckerInterface
         return $possibleAmount >= $amountToBeCreated;
     }
 
-    public function getPossibleGenerationAmount(CartPriceRuleVoucherGeneratorInterface $generator)
+    public function getPossibleGenerationAmount(CartPriceRuleVoucherGeneratorInterface $generator): int
     {
         return $this->calculatePossibleGenerationAmount($generator);
     }
 
-    private function calculatePossibleGenerationAmount(CartPriceRuleVoucherGeneratorInterface $generator)
+    private function calculatePossibleGenerationAmount(CartPriceRuleVoucherGeneratorInterface $generator): int
     {
         $amountToBeCreated = $generator->getAmount();
         $length = $generator->getLength();

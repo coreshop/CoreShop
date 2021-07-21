@@ -29,7 +29,7 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
         $this->customerTransformHelper = $customerTransformHelper;
     }
 
-    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true)
+    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true): ?array
     {
         if ($customer->getAddressAccessType() !== CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY) {
             return null;
@@ -44,7 +44,7 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
         ];
     }
 
-    public function detectAddressAffiliationForCustomer(CustomerInterface $customer, AddressInterface $address)
+    public function detectAddressAffiliationForCustomer(CustomerInterface $customer, AddressInterface $address): ?string
     {
         if ($address->getId() === 0) {
             return null;
@@ -65,7 +65,7 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
 
     }
 
-    public function checkAddressAffiliationPermissionForCustomer(CustomerInterface $customer, AddressInterface $address)
+    public function checkAddressAffiliationPermissionForCustomer(CustomerInterface $customer, AddressInterface $address): bool
     {
         if ($address->getId() === 0) {
             return true;
@@ -85,13 +85,13 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
         }
 
         if ($customer->getAddressAccessType() === CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY) {
-            return $customer->hasAddress($address) || $company instanceof CompanyInterface && $company->hasAddress($address);
+            return $customer->hasAddress($address) || ($company instanceof CompanyInterface && $company->hasAddress($address));
         }
 
         return false;
     }
 
-    public function allocateAddressByAffiliation(CustomerInterface $customer, AddressInterface $address, ?string $affiliation)
+    public function allocateAddressByAffiliation(CustomerInterface $customer, AddressInterface $address, ?string $affiliation): AddressInterface
     {
         $company = $customer->getCompany();
 
@@ -118,8 +118,6 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
             $customer->setDefaultAddress($address);
         }
 
-        $address = $this->customerTransformHelper->moveAddressToNewAddressStack($address, $relationEntity);
-
-        return $address;
+        return $this->customerTransformHelper->moveAddressToNewAddressStack($address, $relationEntity);
     }
 }

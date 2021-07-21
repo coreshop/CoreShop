@@ -36,7 +36,7 @@ final class ExchangeRateContext implements Context
     /**
      * @Then /^price "([^"]+)" of (currency "[^"]+") should exchange to price "([^"]+)" in (currency "[^"]+")$/
      */
-    public function priceOfCurrencyShouldExchangeToPriceInCurrency($fromPrice, CurrencyInterface $fromCurrency, $toPrice, CurrencyInterface $toCurrency)
+    public function priceOfCurrencyShouldExchangeToPriceInCurrency($fromPrice, CurrencyInterface $fromCurrency, $toPrice, CurrencyInterface $toCurrency): void
     {
         Assert::same(
             $this->currencyConverter->convert((int) $fromPrice, $fromCurrency->getIsoCode(), $toCurrency->getIsoCode()),

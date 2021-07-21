@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
-use Doctrine\Common\Collections\Collection;
 
 class ProductUnitDefinition extends AbstractResource implements ProductUnitDefinitionInterface
 {

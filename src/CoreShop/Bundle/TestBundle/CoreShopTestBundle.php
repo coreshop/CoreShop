@@ -31,10 +31,7 @@ class CoreShopTestBundle extends AbstractPimcoreBundle
         return 'CoreShop - Test Bundle';
     }
 
-     /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         $bundleName = 'coreshop/test-bundle';
 
@@ -65,7 +62,7 @@ class CoreShopTestBundle extends AbstractPimcoreBundle
         return '';
     }
 
-    public function getJsPaths()
+    public function getJsPaths(): array
     {
         return [
             '/bundles/coreshoptest/pimcore/js/plugin.js',

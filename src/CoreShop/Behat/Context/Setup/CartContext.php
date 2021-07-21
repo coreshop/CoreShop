@@ -70,7 +70,7 @@ final class CartContext implements Context
      * @Given /^I add the (product "[^"]+") x (\d+) to my cart$/
      * @Given /^I add another (product "[^"]+") to my cart$/
      */
-    public function addProductToCart(ProductInterface $product, int $quantity = 1)
+    public function addProductToCart(ProductInterface $product, int $quantity = 1): void
     {
         $cart = $this->cartContext->getCart();
 
@@ -86,7 +86,7 @@ final class CartContext implements Context
      * @Given /^I add the (product "[^"]+") to my cart from add-to-cart-form/
      * @Given /^I add another (product "[^"]+") to my cart from add-to-cart-form/
      */
-    public function addProductToCartFromAddToCartFormForm(ProductInterface $product)
+    public function addProductToCartFromAddToCartFormForm(ProductInterface $product): void
     {
         $cart = $this->cartContext->getCart();
         $cartItem = $this->factory->createWithPurchasable($product);
@@ -111,7 +111,7 @@ final class CartContext implements Context
      * @Given /^I add another (product "[^"]+" with unit "[^"]+") to my cart$/
      * @Given /^I add another (product "[^"]+" with unit "[^"]+") in quantity ([^"]+) to my cart$/
      */
-    public function addProductInUnitToCart(array $productAndUnit, float $quantity = 1.0)
+    public function addProductInUnitToCart(array $productAndUnit, float $quantity = 1.0): void
     {
         $cart = $this->cartContext->getCart();
 
@@ -131,7 +131,7 @@ final class CartContext implements Context
      * @Given /^I remove the (product "[^"]+") from my cart$/
      * @Given /^I remove another (product "[^"]+") from my cart$/
      */
-    public function removeProductFromCart(ProductInterface $product)
+    public function removeProductFromCart(ProductInterface $product): void
     {
         $cart = $this->cartContext->getCart();
 
@@ -147,7 +147,7 @@ final class CartContext implements Context
     /**
      * @Given /^the cart belongs to (customer "[^"]+")$/
      */
-    public function theCartBelongsToCustomer(CustomerInterface $customer)
+    public function theCartBelongsToCustomer(CustomerInterface $customer): void
     {
         $this->cartContext->getCart()->setCustomer($customer);
 
@@ -157,7 +157,7 @@ final class CartContext implements Context
     /**
      * @Given /^the cart ships to (customer "[^"]+") first address$/
      */
-    public function theCartShipsToCustomersFirstAddress(CustomerInterface $customer)
+    public function theCartShipsToCustomersFirstAddress(CustomerInterface $customer): void
     {
         Assert::greaterThan(count($customer->getAddresses()), 0);
 
@@ -170,7 +170,7 @@ final class CartContext implements Context
     /**
      * @Given /^the cart ships to (customer "[^"]+") address with postcode "([^"]+)"$/
      */
-    public function theCartShipsToCustomersAddressWithPostcode(CustomerInterface $customer, $postcode)
+    public function theCartShipsToCustomersAddressWithPostcode(CustomerInterface $customer, $postcode): void
     {
         Assert::greaterThan(count($customer->getAddresses()), 0);
 
@@ -187,7 +187,7 @@ final class CartContext implements Context
     /**
      * @Given /^the cart invoices to (customer "[^"]+") address with postcode "([^"]+)"$/
      */
-    public function theCartInvoicesToCustomersAddressWithPostcode(CustomerInterface $customer, $postcode)
+    public function theCartInvoicesToCustomersAddressWithPostcode(CustomerInterface $customer, $postcode): void
     {
         Assert::greaterThan(count($customer->getAddresses()), 0);
 
@@ -204,7 +204,7 @@ final class CartContext implements Context
     /**
      * @Given /^(my cart) uses (currency "[^"]+")$/
      */
-    public function myCartIsUsingCurrency(OrderInterface $cart, CurrencyInterface $currency)
+    public function myCartIsUsingCurrency(OrderInterface $cart, CurrencyInterface $currency): void
     {
         $cart->setCurrency($currency);
 
@@ -214,7 +214,7 @@ final class CartContext implements Context
     /**
      * @Given /^(my cart) uses (store "[^"]+")$/
      */
-    public function myCartIsUsingStore(OrderInterface $cart, StoreInterface $store)
+    public function myCartIsUsingStore(OrderInterface $cart, StoreInterface $store): void
     {
         $cart->setStore($store);
 
@@ -224,18 +224,12 @@ final class CartContext implements Context
     /**
      * @Given /^I refresh (my cart)$/
      */
-    public function iRefreshMyCart(OrderInterface $cart)
+    public function iRefreshMyCart(OrderInterface $cart): void
     {
         $this->cartManager->persistCart($cart);
     }
 
-    /**
-     * @param OrderInterface     $cart
-     * @param OrderItemInterface $cartItem
-     *
-     * @return AddToCartInterface
-     */
-    private function createAddToCart(\CoreShop\Component\Order\Model\OrderInterface $cart, \CoreShop\Component\Order\Model\OrderItemInterface $cartItem)
+    private function createAddToCart(\CoreShop\Component\Order\Model\OrderInterface $cart, \CoreShop\Component\Order\Model\OrderItemInterface $cartItem): AddToCartInterface
     {
         return $this->addToCartFactory->createWithCartAndCartItem($cart, $cartItem);
     }

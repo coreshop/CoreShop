@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\TaxationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Taxation\Repository\TaxRuleRepositoryInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

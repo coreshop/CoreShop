@@ -20,22 +20,6 @@ use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 
 class CustomerRepository extends PimcoreRepository implements CustomerRepositoryInterface
 {
-    public function findOneByEmail($email)
-    {
-        $list = $this->getList();
-
-        $list->setCondition('email = ?', [$email]);
-        $list->load();
-
-        $users = $list->getObjects();
-
-        if (count($users) > 0 && $users[0] instanceof CustomerInterface) {
-            return $users[0];
-        }
-
-        return null;
-    }
-
     public function findByNewsletterToken(string $newsletterToken): ?CustomerInterface
     {
         $list = $this->getList();

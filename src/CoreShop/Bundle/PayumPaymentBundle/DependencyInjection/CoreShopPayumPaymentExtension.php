@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class CoreShopPayumPaymentExtension extends AbstractModelExtension
 {
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

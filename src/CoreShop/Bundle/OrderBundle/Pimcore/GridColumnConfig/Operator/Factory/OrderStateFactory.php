@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory;
 use CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\OrderState;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use Pimcore\DataObject\GridColumnConfig\Operator\Factory\OperatorFactoryInterface;
-use Pimcore\DataObject\GridColumnConfig\Operator\OperatorInterface;
 
 class OrderStateFactory implements OperatorFactoryInterface
 {
@@ -28,7 +27,7 @@ class OrderStateFactory implements OperatorFactoryInterface
         $this->workflowManager = $workflowManager;
     }
 
-    public function build(\stdClass $configElement, array $context = [])
+    public function build(\stdClass $configElement, array $context = []): OrderState
     {
         return new OrderState($this->workflowManager, $configElement, $context);
     }

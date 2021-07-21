@@ -35,7 +35,7 @@ final class NotificationContext implements Context
     /**
      * @Then /^the notification rule for "([^"]+)" should have been fired$/
      */
-    public function thereShouldBeOneProductInTheOrder($type)
+    public function thereShouldBeOneProductInTheOrder($type): void
     {
         Assert::true(
             $this->notificationRuleListener->hasBeenFired($type),

@@ -43,7 +43,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function setKernel()
+    public function setKernel(): void
     {
         \Pimcore::setKernel($this->kernel);
     }
@@ -51,7 +51,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeObjects()
+    public function purgeObjects(): void
     {
         Cache::clearAll();
         Cache\Runtime::clear();
@@ -85,7 +85,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeBricks()
+    public function purgeBricks(): void
     {
         $list = new Objectbrick\Definition\Listing();
         $list->load();
@@ -104,7 +104,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function clearRuntimeCacheScenario()
+    public function clearRuntimeCacheScenario(): void
     {
         //Clearing it here is totally fine, since each scenario has its own separated context of objects
         \Pimcore\Cache\Runtime::clear();
@@ -113,7 +113,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeStep
      */
-    public function clearRuntimeCacheStep()
+    public function clearRuntimeCacheStep(): void
     {
         //We should not clear Pimcore Objects here, otherwise we lose the reference to it
         //and end up having the same object twice
@@ -132,7 +132,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeClasses()
+    public function purgeClasses(): void
     {
         $list = new ClassDefinition\Listing();
         $list->setCondition('name LIKE ?', ['Behat%']);
@@ -150,7 +150,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function clearBehatAdminUser()
+    public function clearBehatAdminUser(): void
     {
         $user = User::getByName('behat-admin');
 
@@ -162,7 +162,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function disableGlobalInheritance()
+    public function disableGlobalInheritance(): void
     {
         AbstractObject::setGetInheritedValues(false);
     }
@@ -170,7 +170,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeFieldCollections()
+    public function purgeFieldCollections(): void
     {
         $list = new Fieldcollection\Definition\Listing();
         $list->load();

@@ -21,7 +21,7 @@ use JMS\Serializer\JsonSerializationVisitor;
 
 class CarbonHandler
 {
-    public function serializeRelation(JsonSerializationVisitor $visitor, $value, array $type, Context $context)
+    public function serializeRelation(JsonSerializationVisitor $visitor, $value, array $type, Context $context): int
     {
         if ($value instanceof Carbon) {
             return $value->getTimestamp();
@@ -30,7 +30,7 @@ class CarbonHandler
         return $value;
     }
 
-    public function deserializeRelation(JsonDeserializationVisitor $visitor, $value, array $type, Context $context)
+    public function deserializeRelation(JsonDeserializationVisitor $visitor, $value, array $type, Context $context): Carbon
     {
         return Carbon::createFromTimestamp($value);
     }

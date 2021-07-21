@@ -30,7 +30,7 @@ final class CartPriceRuleVoucherCodeContext implements Context
     /**
      * @Then /^the generation of the codes failed$/
      */
-    public function theGenerationOfTheCodesFailed()
+    public function theGenerationOfTheCodesFailed(): void
     {
         Assert::false($this->sharedStorage->get('code-generation-possible'));
     }
@@ -38,7 +38,7 @@ final class CartPriceRuleVoucherCodeContext implements Context
     /**
      * @Then /^the generation of the codes succeeded/
      */
-    public function theGenerationOfTheCodesSucceeded()
+    public function theGenerationOfTheCodesSucceeded(): void
     {
         Assert::true($this->sharedStorage->get('code-generation-possible'));
     }

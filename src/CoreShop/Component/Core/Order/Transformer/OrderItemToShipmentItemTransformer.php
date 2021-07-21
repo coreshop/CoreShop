@@ -33,9 +33,9 @@ final class OrderItemToShipmentItemTransformer implements OrderDocumentItemTrans
         OrderDocumentInterface $orderDocument,
         OrderItemInterface $orderItem,
         OrderDocumentItemInterface $documentItem,
-        $quantity,
-        $options = []
-    ) {
+        int $quantity,
+        array $options = []
+    ): OrderDocumentItemInterface {
         if ($documentItem instanceof OrderShipmentItemInterface && $orderItem instanceof \CoreShop\Component\Core\Model\OrderItemInterface) {
             $documentItem->setWeight($orderItem->getItemWeight() * $quantity);
         }

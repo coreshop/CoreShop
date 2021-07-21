@@ -23,7 +23,7 @@ class RegisterWorkflowValidatorPass implements CompilerPassInterface
 {
     public const WORKFLOW_VALIDATOR_TAG = 'coreshop.workflow.validator';
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->findTaggedServiceIds(self::WORKFLOW_VALIDATOR_TAG) as $id => $attributes) {
             $definition = $container->findDefinition($id);

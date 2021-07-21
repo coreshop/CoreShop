@@ -23,14 +23,14 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class DeepCopyListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             SystemEvents::SERVICE_PRE_GET_DEEP_COPY => 'addDoctrineCollectionFilter',
         ];
     }
 
-    public function addDoctrineCollectionFilter(GenericEvent $event)
+    public function addDoctrineCollectionFilter(GenericEvent $event): void
     {
         /**
          * @var DeepCopy $copier

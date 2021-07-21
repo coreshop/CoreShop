@@ -21,7 +21,7 @@ trait NestedTrait
 {
     protected ServiceRegistryInterface $interpreterRegistry;
 
-    protected function loop($value, array $interpreterConfig, callable $callback)
+    protected function loop(mixed $value, array $interpreterConfig, callable $callback): mixed
     {
         foreach ($interpreterConfig['interpreters'] as $interpreter) {
             $interpreterObject = $this->interpreterRegistry->get($interpreter['type']);
@@ -32,7 +32,7 @@ trait NestedTrait
         return $value;
     }
 
-    protected function assert(array $interpreterConfig)
+    protected function assert(array $interpreterConfig): void
     {
         Assert::keyExists($interpreterConfig, 'interpreters');
         Assert::isArray($interpreterConfig['interpreters'], 'Interpreter Config needs to be array');

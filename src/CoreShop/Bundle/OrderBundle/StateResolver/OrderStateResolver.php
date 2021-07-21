@@ -21,7 +21,6 @@ use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
-use Webmozart\Assert\Assert;
 
 final class OrderStateResolver implements StateResolverInterface
 {

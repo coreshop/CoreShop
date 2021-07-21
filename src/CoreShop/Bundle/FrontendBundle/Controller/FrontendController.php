@@ -27,7 +27,7 @@ class FrontendController extends AbstractController
 {
     protected TemplateConfiguratorInterface $templateConfigurator;
 
-    public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator)
+    public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator): void
     {
         $this->templateConfigurator = $templateConfigurator;
     }

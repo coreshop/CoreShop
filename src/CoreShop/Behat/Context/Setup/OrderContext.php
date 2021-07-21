@@ -18,7 +18,6 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\OrderShipmentTransitions;
@@ -46,7 +45,7 @@ final class OrderContext implements Context
     /**
      * @Given /^I create an order from (my cart)$/
      */
-    public function transformCartToOrder(OrderInterface $cart)
+    public function transformCartToOrder(OrderInterface $cart): void
     {
         $cart->setStore($this->storeContext->getStore());
 
@@ -58,7 +57,7 @@ final class OrderContext implements Context
     /**
      * @Given /^I apply payment transition "([^"]+)" to (latest order payment)$/
      */
-    public function iApplyPaymentStateToLatestOrderPayment($paymentTransition, PaymentInterface $payment)
+    public function iApplyPaymentStateToLatestOrderPayment($paymentTransition, PaymentInterface $payment): void
     {
         $this->stateMachineApplier->apply($payment, PaymentTransitions::IDENTIFIER, $paymentTransition);
     }
@@ -66,7 +65,7 @@ final class OrderContext implements Context
     /**
      * @Given /^I apply transition "([^"]+)" to (my order)$/
      */
-    public function iApplyTransitionToOrder($transition, OrderInterface $order)
+    public function iApplyTransitionToOrder($transition, OrderInterface $order): void
     {
         $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, $transition);
     }
@@ -74,7 +73,7 @@ final class OrderContext implements Context
     /**
      * @Given /^I apply order invoice transition "([^"]+)" to (my order)$/
      */
-    public function iApplyTransitionToOrderInvoice($transition, OrderInterface $order)
+    public function iApplyTransitionToOrderInvoice($transition, OrderInterface $order): void
     {
         $this->stateMachineApplier->apply($order, OrderInvoiceTransitions::IDENTIFIER, $transition);
     }
@@ -82,7 +81,7 @@ final class OrderContext implements Context
     /**
      * @Given /^I apply order shipment transition "([^"]+)" to (my order)$/
      */
-    public function iApplyTransitionToOrderShipment($transition, OrderInterface $order)
+    public function iApplyTransitionToOrderShipment($transition, OrderInterface $order): void
     {
         $this->stateMachineApplier->apply($order, OrderShipmentTransitions::IDENTIFIER, $transition);
     }

@@ -26,6 +26,7 @@ use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
 use Payum\Core\Request\Generic;
 use Payum\Core\Request\GetStatusInterface;
+use Payum\Core\Security\TokenInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,7 +111,7 @@ class PaymentController extends AbstractController
         return $this->get('payum');
     }
 
-    private function provideTokenBasedOnPayment(PaymentInterface $payment)
+    private function provideTokenBasedOnPayment(PaymentInterface $payment): TokenInterface
     {
         /** @var PaymentProviderInterface $paymentMethod */
         $paymentMethod = $payment->getPaymentProvider();

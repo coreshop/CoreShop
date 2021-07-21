@@ -68,11 +68,6 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         return $this->newFieldName;
     }
 
-    /**
-     * @return array
-     *
-     * @throws \Exception
-     */
     protected function getRenameQueries(): array
     {
         $fieldDefinition = $this->definition->getFieldDefinition($this->oldFieldName);

@@ -18,7 +18,6 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Behat\Service\StoreContextSetterInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 
 final class StoreContext implements Context
 {

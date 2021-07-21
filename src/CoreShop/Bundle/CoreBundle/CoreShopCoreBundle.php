@@ -31,9 +31,7 @@ use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
 use CoreShop\Bundle\NotificationBundle\CoreShopNotificationBundle;
 use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
-use CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle;
 use CoreShop\Bundle\PayumBundle\CoreShopPayumBundle;
-use CoreShop\Bundle\PayumPaymentBundle\CoreShopPayumPaymentBundle;
 use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -52,7 +50,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopCoreBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
@@ -69,7 +67,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $container->addCompilerPass(new RegisterPortletsPass());
     }
 
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
@@ -97,7 +95,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Core\Model';
     }
@@ -117,42 +115,37 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         return Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
     }
 
-    /**
-     * @return string
-     */
     public function getComposerVersion(): string
     {
-        $version = Versions::getVersion('coreshop/core-shop');
-
-        return $version;
+        return Versions::getVersion('coreshop/core-shop');
     }
 
-    public function getInstaller()
+    public function getInstaller(): Installer
     {
         return $this->container->get(Installer::class);
     }
 
-    public function getAdminIframePath()
+    public function getAdminIframePath(): ?string
     {
         return null;
     }
 
-    public function getJsPaths()
+    public function getJsPaths(): array
     {
         return [];
     }
 
-    public function getCssPaths()
+    public function getCssPaths(): array
     {
         return [];
     }
 
-    public function getEditmodeJsPaths()
+    public function getEditmodeJsPaths(): array
     {
         return [];
     }
 
-    public function getEditmodeCssPaths()
+    public function getEditmodeCssPaths(): array
     {
         return [];
     }

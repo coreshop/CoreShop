@@ -31,7 +31,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopProductBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
@@ -53,7 +53,7 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ProductDiscountCalculatorsPass());
     }
 
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
@@ -61,7 +61,7 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopRuleBundle(), 3500);
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Product\Model';
     }

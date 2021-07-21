@@ -41,7 +41,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -71,7 +71,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addStack(ArrayNodeDefinition $node)
+    private function addStack(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('stack')

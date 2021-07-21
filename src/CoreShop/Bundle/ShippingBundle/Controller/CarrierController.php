@@ -15,10 +15,11 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ShippingBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CarrierController extends ResourceController
 {
-    public function getConfigAction()
+    public function getConfigAction(): JsonResponse
     {
         $strategies = $this->container->getParameter('coreshop.shipping.tax_calculation_strategies');
 

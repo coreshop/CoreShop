@@ -14,15 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Service;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
-use Pimcore\Bundle\AdminBundle\Session\Handler\AdminSessionHandler;
 use Pimcore\Model\User;
 use Pimcore\Tool\Session;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
 
 final class PimcoreSecurityService implements PimcoreSecurityServiceInterface
 {

@@ -18,7 +18,6 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
-use CoreShop\Component\Resource\Model\TranslationInterface;
 use Doctrine\Common\Collections\Collection;
 
 class Country extends AbstractResource implements CountryInterface

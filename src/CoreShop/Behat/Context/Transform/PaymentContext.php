@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Core\Repository\PaymentProviderRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -35,8 +36,11 @@ final class PaymentContext implements Context
     /**
      * @Transform /^payment provider "([^"]+)"$/
      */
-    public function getPaymentProviderByTitle($title)
+    public function getPaymentProviderByTitle($title): PaymentProviderInterface
     {
+        /**
+         * @var PaymentProviderInterface[] $paymentProviders
+         */
         $paymentProviders = $this->paymentProviderRepository->findByTitle($title, 'en');
 
         Assert::eq(
@@ -51,7 +55,7 @@ final class PaymentContext implements Context
     /**
      * @Transform /^payment provider/
      */
-    public function country()
+    public function paymentProvider(): PaymentProviderInterface
     {
         return $this->sharedStorage->get('payment-provider');
     }

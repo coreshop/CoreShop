@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
@@ -25,10 +26,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
     private array $modelsToInsert = [];
     private array $modelsToRemove = [];
 
-    /**
-     * @return Concrete|null
-     */
-    public function find($className, $id)
+    public function find($className, $id): ?Concrete
     {
         /**
          * @var Concrete $className
@@ -36,7 +34,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         return $className::getById($id);
     }
 
-    public function persist($resource)
+    public function persist($resource): void
     {
         /**
          * @var $resource AbstractModel
@@ -53,7 +51,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         }
     }
 
-    public function remove($resource)
+    public function remove($resource): void
     {
         $id = $this->getResourceId($resource);
         $className = $this->getResourceClassName($resource);
@@ -67,12 +65,12 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         }
     }
 
-    public function merge($object)
+    public function merge($object): object
     {
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    public function clear($objectName = null)
+    public function clear($objectName = null): void
     {
         if (null === $objectName) {
             $this->modelsToRemove = [];
@@ -93,17 +91,17 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         }
     }
 
-    public function detach($object)
+    public function detach($object): void
     {
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    public function refresh($object)
+    public function refresh($object): void
     {
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    public function flush()
+    public function flush(): void
     {
         foreach ($this->modelsToRemove as $className => $classTypeModels) {
             foreach ($classTypeModels as $model) {
@@ -130,7 +128,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         $this->modelsToRemove = [];
     }
 
-    public function getRepository($className)
+    public function getRepository($className): PimcoreRepositoryInterface
     {
         if (!array_key_exists($className, $this->repositories)) {
             throw new \InvalidArgumentException(sprintf('Repository for class %s not found', $className));
@@ -149,7 +147,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    public function initializeObject($obj)
+    public function initializeObject($obj): void
     {
         throw new \InvalidArgumentException('Not implemented');
     }
@@ -159,21 +157,12 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    /**
-     * @param string $className
-     * @param string $repository
-     */
-    public function registerRepository($className, $repository)
+    public function registerRepository(string $className, string $repository): void
     {
         $this->repositories[$className] = $repository;
     }
 
-    /**
-     * @param object $resource
-     *
-     * @return int
-     */
-    private function getResourceId($resource)
+    private function getResourceId(object $resource): int|string
     {
         $id = spl_object_hash($resource);
 
@@ -184,13 +173,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         return $id;
     }
 
-
-    /**
-     * @param object $resource
-     *
-     * @return string
-     */
-    private function getResourceClassName($resource)
+    private function getResourceClassName(object $resource): string
     {
         $className = get_class($resource);
 

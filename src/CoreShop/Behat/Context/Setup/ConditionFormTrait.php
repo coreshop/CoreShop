@@ -22,13 +22,7 @@ use Webmozart\Assert\Assert;
 
 trait ConditionFormTrait
 {
-    /**
-     * @param string $class
-     * @param string $type
-     *
-     * @throws \Exception
-     */
-    protected function assertConditionForm($class, $type)
+    protected function assertConditionForm(string $class, string $type): void
     {
         $conditionForm = $this->getConditionForm($type);
 
@@ -57,14 +51,8 @@ trait ConditionFormTrait
         return $condition;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return FormInterface
-     *
-     * @throws \Exception
-     */
-    protected function getConditionForm($type)
+
+    protected function getConditionForm(string $type): FormInterface
     {
         if (!$this->getConditionFormRegistry()->has($type, 'default')) {
             throw new \Exception("Form not found for $type");
@@ -73,18 +61,9 @@ trait ConditionFormTrait
         return $this->getFormFactory()->createNamed('', $this->getConditionFormRegistry()->get($type, 'default'));
     }
 
-    /**
-     * @return FormTypeRegistryInterface
-     */
-    abstract protected function getConditionFormRegistry();
+    abstract protected function getConditionFormRegistry(): FormTypeRegistryInterface;
 
-    /**
-     * @return FormFactoryInterface
-     */
-    abstract protected function getFormFactory();
+    abstract protected function getFormFactory(): FormFactoryInterface;
 
-    /**
-     * @return string
-     */
-    abstract protected function getConditionFormClass();
+    abstract protected function getConditionFormClass(): string;
 }

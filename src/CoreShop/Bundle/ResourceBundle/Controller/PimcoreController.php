@@ -54,10 +54,7 @@ class PimcoreController extends AdminController
         }
     }
 
-    /**
-     * @return string
-     */
-    protected function getPermission()
+    protected function getPermission(): string
     {
         return '';
     }

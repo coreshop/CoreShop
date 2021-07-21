@@ -22,23 +22,12 @@ use Behat\Mink\Session;
 abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
 {
     protected Session $session;
-    protected array $parameters;
+    protected array|\ArrayAccess $parameters;
     protected ?DocumentElement $document = null;
     protected ?NodeElement $tabElement = null;
 
-    /**
-     * @param array|\ArrayAccess $minkParameters
-     */
-    public function __construct(Session $session, $minkParameters = [])
+    public function __construct(Session $session, array|\ArrayAccess $minkParameters = [])
     {
-        if (!is_array($minkParameters) && !$minkParameters instanceof \ArrayAccess) {
-            throw new \InvalidArgumentException(sprintf(
-                '"$parameters" passed to "%s" has to be an array or implement "%s".',
-                self::class,
-                \ArrayAccess::class
-            ));
-        }
-
         $this->session = $session;
         $this->parameters = $minkParameters;
     }

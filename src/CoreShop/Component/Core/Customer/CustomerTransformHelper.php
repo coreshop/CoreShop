@@ -19,7 +19,6 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface;
 use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;

@@ -21,7 +21,7 @@ use Pimcore\Model\Document;
 
 class PimcoreDocumentHandler
 {
-    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
+    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context): ?int
     {
         if ($relation instanceof Document) {
             return $relation->getId();

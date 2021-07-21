@@ -62,7 +62,11 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->adjustmentFactory = $adjustmentFactory;
     }
 
-    public function transform(OrderInterface $order, OrderDocumentInterface $invoice, $itemsToTransform)
+    public function transform(
+        OrderInterface $order,
+        OrderDocumentInterface $invoice,
+        array $itemsToTransform
+    ): OrderDocumentInterface
     {
         /**
          * @var OrderInterface $order
@@ -128,10 +132,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         return $invoice;
     }
 
-    /**
-     * @param OrderInvoiceInterface $invoice
-     */
-    private function calculateInvoice(OrderInvoiceInterface $invoice)
+    private function calculateInvoice(OrderInvoiceInterface $invoice): void
     {
         $this->calculateSubtotal($invoice, true);
         $this->calculateSubtotal($invoice, false);
@@ -145,11 +146,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         }, false);
     }
 
-    /**
-     * @param OrderInvoiceInterface $invoice
-     * @param bool                  $converted    Calculate Subtotal for Base Values
-     */
-    private function calculateSubtotal(OrderInvoiceInterface $invoice, $converted = true)
+    private function calculateSubtotal(OrderInvoiceInterface $invoice, bool $converted = true): void
     {
         $subtotalWithTax = 0;
         $subtotalWithoutTax = 0;
@@ -176,13 +173,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         }
     }
 
-    /**
-     * Calculate all Adjustments for Invoice.
-     *
-     * @param OrderInvoiceInterface $invoice
-     * @param bool                  $converted
-     */
-    private function calculateAdjustments(OrderInvoiceInterface $invoice, $converted = true)
+    private function calculateAdjustments(OrderInvoiceInterface $invoice, bool $converted = true): void
     {
         $order = $invoice->getOrder();
 
@@ -201,13 +192,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         }
     }
 
-    /**
-     * Calculate Total for invoice.
-     *
-     * @param OrderInvoiceInterface $invoice
-     * @param bool                  $converted    Calculate Totals for Base Values
-     */
-    private function calculateTotal(OrderInvoiceInterface $invoice, $converted = true)
+    private function calculateTotal(OrderInvoiceInterface $invoice, bool $converted = true): void
     {
         if ($converted) {
             $subtotalWithTax = $invoice->getConvertedSubtotal();
@@ -235,15 +220,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param string         $adjustmentIdentifier
-     * @param bool           $withTax
-     * @param bool           $converted
-     *
-     * @return int
-     */
-    private function getProcessedAdjustmentValue(OrderInterface $order, $adjustmentIdentifier, bool $withTax, bool $converted)
+    private function getProcessedAdjustmentValue(OrderInterface $order, string $adjustmentIdentifier, bool $withTax, bool $converted): int
     {
         $invoices = $this->invoiceRepository->getDocumentsNotInState($order, OrderInvoiceStates::STATE_CANCELLED);
         $processedValue = 0;

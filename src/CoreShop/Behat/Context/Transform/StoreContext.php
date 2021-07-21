@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -34,8 +35,11 @@ final class StoreContext implements Context
      * @Transform /^store(?:|s) "([^"]+)"$/
      * @Transform /^store to "([^"]+)"$/
      */
-    public function getStoreByName($name)
+    public function getStoreByName($name): StoreInterface
     {
+        /**
+         * @var StoreInterface[] $stores
+         */
         $stores = $this->storeRepository->findBy(['name' => $name]);
 
         Assert::eq(

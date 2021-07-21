@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopNotificationBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
@@ -39,7 +39,7 @@ final class CoreShopNotificationBundle extends AbstractResourceBundle
         $container->addCompilerPass(new NotificationRuleConditionPass());
     }
 
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
@@ -48,7 +48,7 @@ final class CoreShopNotificationBundle extends AbstractResourceBundle
         ], 3500);
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Notification\Model';
     }

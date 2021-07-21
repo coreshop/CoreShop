@@ -23,7 +23,7 @@ use Payum\Core\Request\Capture;
 
 class NotifyAction implements ActionInterface
 {
-    public function execute($request)
+    public function execute($request): void
     {
         /** @var $request Capture */
         RequestNotSupportedException::assertSupports($this, $request);
@@ -34,7 +34,7 @@ class NotifyAction implements ActionInterface
         throw new HttpResponse(microtime() . ' NOTIFY - OK', 200);
     }
 
-    public function supports($request)
+    public function supports($request): bool
     {
         return
             $request instanceof Notify &&

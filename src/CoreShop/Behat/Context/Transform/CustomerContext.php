@@ -37,7 +37,7 @@ final class CustomerContext implements Context
      * @Transform /^customer "([^"]+)"$/
      * @Transform /^email "([^"]+)"$/
      */
-    public function getCustomerByEmail($email)
+    public function getCustomerByEmail($email): CustomerInterface
     {
         $customer = $this->customerRepository->findCustomerByEmail($email);
 
@@ -49,7 +49,7 @@ final class CustomerContext implements Context
     /**
      * @Transform /^customer$/
      */
-    public function customer()
+    public function customer(): CustomerInterface
     {
         $customer = $this->sharedStorage->get('customer');
 

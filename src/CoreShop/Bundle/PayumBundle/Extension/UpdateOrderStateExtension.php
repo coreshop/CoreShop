@@ -33,15 +33,15 @@ final class UpdateOrderStateExtension implements ExtensionInterface
         $this->stateMachineManager = $stateMachineManager;
     }
 
-    public function onPreExecute(Context $context)
+    public function onPreExecute(Context $context): void
     {
     }
 
-    public function onExecute(Context $context)
+    public function onExecute(Context $context): void
     {
     }
 
-    public function onPostExecute(Context $context)
+    public function onPostExecute(Context $context): void
     {
         if ($context->getException()) {
             return;
@@ -94,7 +94,7 @@ final class UpdateOrderStateExtension implements ExtensionInterface
         }
     }
 
-    private function confirmOrderState(OrderInterface $order)
+    private function confirmOrderState(OrderInterface $order): void
     {
         $stateMachine = $this->stateMachineManager->get($order, 'coreshop_order');
         if ($stateMachine->can($order, OrderTransitions::TRANSITION_CONFIRM)) {

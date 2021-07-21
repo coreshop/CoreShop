@@ -20,7 +20,6 @@ use CoreShop\Bundle\CurrencyBundle\Doctrine\ORM\CurrencyRepository;
 use CoreShop\Bundle\CurrencyBundle\Doctrine\ORM\ExchangeRateRepository;
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyType;
 use CoreShop\Bundle\CurrencyBundle\Form\Type\ExchangeRateType;
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Currency\Model\Currency;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\ExchangeRate;
@@ -32,7 +31,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_currency');
         $rootNode = $treeBuilder->getRootNode();
@@ -48,10 +47,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -99,10 +95,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')

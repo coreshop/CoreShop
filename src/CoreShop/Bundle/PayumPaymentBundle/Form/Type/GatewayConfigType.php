@@ -36,7 +36,7 @@ final class GatewayConfigType extends AbstractResourceType
         $this->gatewayConfigurationTypeRegistry = $gatewayConfigurationTypeRegistry;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('factoryName', TextType::class)

@@ -34,7 +34,7 @@ final class LinkGeneratorContext implements Context
     /**
      * @Then /^the generated url for (object) should be "([^"]+)"/
      */
-    public function theGeneratedUrlForObjectShouldBe(Concrete $object, $url)
+    public function theGeneratedUrlForObjectShouldBe(Concrete $object, $url): void
     {
         $generatedUrl = $this->linkGenerator->generate($object, null, ['_locale' => 'en']);
 
@@ -52,7 +52,7 @@ final class LinkGeneratorContext implements Context
     /**
      * @Then /^the generated url for (object) with route "([^"]+)" should be "([^"]+)"/
      */
-    public function theGeneratedUrlForObjectWithRouteShouldBe(Concrete $object, $routeName, $url)
+    public function theGeneratedUrlForObjectWithRouteShouldBe(Concrete $object, $routeName, $url): void
     {
         $generatedUrl = $this->linkGenerator->generate($object, $routeName, ['_locale' => 'en']);
 
@@ -70,7 +70,7 @@ final class LinkGeneratorContext implements Context
     /**
      * @Then /^the generated url for route "([^"]+)" should be "([^"]+)"/
      */
-    public function theGeneratedUrlForRouteShouldBe($route, $url)
+    public function theGeneratedUrlForRouteShouldBe($route, $url): void
     {
         $generatedUrl = $this->linkGenerator->generate(null, $route, ['_locale' => 'en']);
 

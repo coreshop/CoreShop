@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\RuleBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Rule\Model\Action;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -27,7 +26,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_rule');
         $rootNode = $treeBuilder->getRootNode();
@@ -38,10 +37,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -87,10 +83,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')

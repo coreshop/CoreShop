@@ -46,7 +46,7 @@ final class PimcoreContext implements Context
     /**
      * @Then /^all admin js resources should exist$/
      */
-    public function allAdminJsResourceShouldExist()
+    public function allAdminJsResourceShouldExist(): void
     {
         $this->checkFilesExist($this->adminJs, 'Admin JS');
     }
@@ -54,7 +54,7 @@ final class PimcoreContext implements Context
     /**
      * @Then /^all admin css resources should exist$/
      */
-    public function allAdminCssResourceShouldExist()
+    public function allAdminCssResourceShouldExist(): void
     {
         $this->checkFilesExist($this->adminCss, 'Admin CSS');
     }
@@ -62,7 +62,7 @@ final class PimcoreContext implements Context
     /**
      * @Then /^all editmode js resources should exist$/
      */
-    public function allEditmodeJsResourceShouldExist()
+    public function allEditmodeJsResourceShouldExist(): void
     {
         $this->checkFilesExist($this->editmodeJs, 'Editmode JS');
     }
@@ -70,28 +70,19 @@ final class PimcoreContext implements Context
     /**
      * @Then /^all editmode css resources should exist$/
      */
-    public function allEditmodeCssResourceShouldExist()
+    public function allEditmodeCssResourceShouldExist(): void
     {
         $this->checkFilesExist($this->editmodeCss, 'Editmode CSS');
     }
 
-    /**
-     * @param array  $files
-     * @param string $type
-     */
-    private function checkFilesExist(array $files, string $type)
+    private function checkFilesExist(array $files, string $type): void
     {
         foreach ($files as $file) {
             Assert::true($this->checkFileExists($file), sprintf('File "%s" for type %s not found', $file, $type));
         }
     }
 
-    /**
-     * @param string $file
-     *
-     * @return bool
-     */
-    private function checkFileExists($file)
+    private function checkFileExists(string $file): bool
     {
         return file_exists(sprintf('%s%s', $this->webRoot, $file));
     }

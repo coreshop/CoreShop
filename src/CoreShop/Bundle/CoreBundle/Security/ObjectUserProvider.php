@@ -34,23 +34,23 @@ class ObjectUserProvider implements UserProviderInterface
         $this->className = $className;
     }
 
-    public function loadUserByUsername(string $username)
+    public function loadUserByUsername(string $username): ?UserInterface
     {
         return $this->loadUserByIdentifier($username);
     }
 
-    public function loadUserByIdentifier(string $identifier)
+    public function loadUserByIdentifier(string $identifier): ?UserInterface
     {
         $user = $this->userRepository->findByLoginIdentifier($identifier);
 
-        if ($user instanceof \CoreShop\Component\Core\Model\UserInterface) {
+        if ($user instanceof UserInterface) {
             return $user;
         }
 
         throw new UsernameNotFoundException(sprintf('User with email address or username "%s" was not found', $identifier));
     }
 
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): ?UserInterface
     {
         if (!$user instanceof \CoreShop\Component\Core\Model\UserInterface) {
             throw new UnsupportedUserException();
@@ -59,7 +59,7 @@ class ObjectUserProvider implements UserProviderInterface
         return $this->userRepository->find($user->getId());
     }
 
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return $class === $this->className;
     }

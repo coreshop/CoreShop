@@ -51,7 +51,7 @@ class CustomerDataMapper implements DataMapperInterface
         }
     }
 
-    public function mapFormsToData($forms, &$data)
+    public function mapFormsToData($forms, &$data): void
     {
         $formsOtherThanAddress = [];
 

@@ -14,10 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Service;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
 use Pimcore\Model\User;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
 
 interface PimcoreSecurityServiceInterface
 {

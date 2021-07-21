@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Component\ProductQuantityPriceRules\Fetcher;
 
 use CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface;
-use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;

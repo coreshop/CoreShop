@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -30,7 +31,7 @@ final class CustomerGroupContext implements Context
     /**
      * @Transform /^customer-group "([^"]+)"$/
      */
-    public function getCustomerGroupBName($name)
+    public function getCustomerGroupBName($name): CustomerGroupInterface
     {
         $group = $this->customerGroupRepository->findBy(['name' => $name]);
 

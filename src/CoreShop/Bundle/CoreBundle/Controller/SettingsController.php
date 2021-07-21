@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
-use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

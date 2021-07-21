@@ -245,23 +245,11 @@ interface ListingInterface extends \Countable, \IteratorAggregate
      */
     public function buildSimilarityOrderBy($fields, $objectId);
 
-    /**
-     * @return IndexInterface
-     */
-    public function getIndex();
+    public function getIndex(): IndexInterface;
 
-    /**
-     * @param IndexInterface $index
-     */
-    public function setIndex(IndexInterface $index);
+    public function setIndex(IndexInterface $index): void;
 
-    /**
-     * @return string
-     */
-    public function getLocale();
+    public function getLocale(): ?string;
 
-    /**
-     * @param string $locale
-     */
-    public function setLocale($locale);
+    public function setLocale(string $locale): void;
 }

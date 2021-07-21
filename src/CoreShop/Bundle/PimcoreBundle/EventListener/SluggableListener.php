@@ -32,7 +32,7 @@ final class SluggableListener implements EventSubscriberInterface
         $this->slugger = $slugger;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             DataObjectEvents::PRE_UPDATE => 'preUpdate',
@@ -40,7 +40,7 @@ final class SluggableListener implements EventSubscriberInterface
         ];
     }
 
-    public function preUpdate(DataObjectEvent $dataObjectEvent)
+    public function preUpdate(DataObjectEvent $dataObjectEvent): void
     {
         $object = $dataObjectEvent->getObject();
 

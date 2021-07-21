@@ -25,6 +25,7 @@ class OptimisticLock extends AbstractPimcoreModel implements OptimisticLockedInt
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /** @noinspection ReturnTypeCanBeDeclaredInspection */
     public function setOptimisticLockVersion(?int $optimisticLockVersion)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -33,7 +34,7 @@ class OptimisticLock extends AbstractPimcoreModel implements OptimisticLockedInt
     /**
      * {@inheritdoc}
      */
-    public function getUser()
+    public function getUser(): void
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -41,7 +42,7 @@ class OptimisticLock extends AbstractPimcoreModel implements OptimisticLockedInt
     /**
      * {@inheritdoc}
      */
-    public function setUser($user)
+    public function setUser($user): void
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

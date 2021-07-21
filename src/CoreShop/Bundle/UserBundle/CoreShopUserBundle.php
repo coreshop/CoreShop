@@ -19,20 +19,14 @@ use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 
 final class CoreShopUserBundle extends AbstractResourceBundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\User\Model';
     }

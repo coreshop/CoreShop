@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Address\Context\RequestBased;
 
-use CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
 use Symfony\Component\HttpFoundation\Request;
 

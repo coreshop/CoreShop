@@ -16,10 +16,5 @@ namespace CoreShop\Bundle\FrontendBundle\TemplateConfigurator;
 
 interface TemplateConfiguratorInterface
 {
-    /**
-     * @param string $templateName
-     *
-     * @return string
-     */
-    public function findTemplate($templateName);
+    public function findTemplate(string $templateName): string;
 }

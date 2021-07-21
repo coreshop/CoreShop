@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Element\Pimcore;
 
-use Behat\Mink\Exception\ElementNotFoundException;
-
 interface MenuElementInterface
 {
     public function hasMenuWithIdentifier(string $id): bool;

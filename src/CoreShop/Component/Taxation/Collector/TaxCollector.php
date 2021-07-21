@@ -72,12 +72,7 @@ class TaxCollector implements TaxCollectorInterface
         return $taxes2;
     }
 
-    /**
-     * @param int   $taxId
-     * @param int   $amount
-     * @param array $usedTaxes
-     */
-    private function addTaxToArray($taxId, $amount, &$usedTaxes)
+    private function addTaxToArray(int $taxId, int $amount, array &$usedTaxes): void
     {
         /**
          * @var TaxRateInterface $tax

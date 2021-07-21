@@ -57,7 +57,7 @@ final class CookieStorage implements StorageInterface, EventSubscriberInterface
     /**
      * @param ResponseEvent $event
      */
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -77,12 +77,12 @@ final class CookieStorage implements StorageInterface, EventSubscriberInterface
         return !in_array($this->get($name), ['', null], true);
     }
 
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         return $this->responseCookies->get($name, $this->requestCookies->get($name, $default));
     }
 
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $this->responseCookies->set($name, $value);
     }

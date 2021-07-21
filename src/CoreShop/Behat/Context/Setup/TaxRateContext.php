@@ -17,7 +17,6 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -40,7 +39,7 @@ final class TaxRateContext implements Context
     /**
      * @Given /^the site has a tax rate "([^"]+)" with "([^"]+)%" rate$/
      */
-    public function theSiteHasATaxRate($name, float $rate)
+    public function theSiteHasATaxRate($name, float $rate): void
     {
         $this->createTaxRate($name, $rate);
     }
@@ -48,7 +47,7 @@ final class TaxRateContext implements Context
     /**
      * @Given /^the (tax rate "[^"]+") is active$/
      */
-    public function theTaxRateIsActive(TaxRateInterface $taxRate)
+    public function theTaxRateIsActive(TaxRateInterface $taxRate): void
     {
         $taxRate->setActive(true);
 
@@ -59,7 +58,7 @@ final class TaxRateContext implements Context
      * @param string $name
      * @param float  $rate
      */
-    private function createTaxRate(string $name, float $rate)
+    private function createTaxRate(string $name, float $rate): void
     {
         /**
          * @var TaxRateInterface $taxRate
@@ -74,7 +73,7 @@ final class TaxRateContext implements Context
     /**
      * @param TaxRateInterface $taxRate
      */
-    private function saveTaxRate(TaxRateInterface $taxRate)
+    private function saveTaxRate(TaxRateInterface $taxRate): void
     {
         $this->objectManager->persist($taxRate);
         $this->objectManager->flush();

@@ -14,11 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Pimcore;
 
-use Behat\Mink\Element\DocumentElement;
-use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Exception\ElementNotFoundException;
-use Behat\Mink\Session;
-
 abstract class AbstractCoreShopResourcePage extends AbstractPimcoreTabPage
 {
     public function create(string $name): void

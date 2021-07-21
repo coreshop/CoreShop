@@ -20,17 +20,12 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 interface RelationInterpreterInterface extends InterpreterInterface
 {
     /**
-     * @param mixed                $value
-     * @param IndexableInterface   $indexable
-     * @param IndexColumnInterface $config
-     * @param array                $interpreterConfig
-     *
-     * @return array<int, array<string, int|string>>|RelationalValueInterface[]
+     * @return RelationalValueInterface[]
      */
     public function interpretRelational(
-        $value,
+        mixed $value,
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    );
+    ): array;
 }

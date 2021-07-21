@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\Repository;
 
-use Pimcore\Model\AbstractModel;
-
 interface PimcoreDaoRepositoryInterface extends RepositoryInterface
 {
     public function getList();

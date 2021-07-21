@@ -21,7 +21,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_workflow');
         $rootNode = $treeBuilder->getRootNode();
@@ -42,10 +42,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param NodeBuilder $node
-     */
-    private function addStateMachineSection(NodeBuilder $node)
+    private function addStateMachineSection(NodeBuilder $node): void
     {
         $node
             ->arrayNode('places')
@@ -120,10 +117,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param NodeBuilder $node
-     */
-    private function addColorSection(NodeBuilder $node)
+    private function addColorSection(NodeBuilder $node): void
     {
         $node
             ->arrayNode('place_colors')
@@ -138,10 +132,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param NodeBuilder $node
-     */
-    private function addCallBackSection(NodeBuilder $node)
+    private function addCallBackSection(NodeBuilder $node): void
     {
         $callbacks = $node
             ->arrayNode('callbacks');
@@ -153,11 +144,7 @@ final class Configuration implements ConfigurationInterface
         $callbacks->end()->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $callbacks
-     * @param string              $type
-     */
-    private function addSubCallbackSection(ArrayNodeDefinition $callbacks, $type)
+    private function addSubCallbackSection(ArrayNodeDefinition $callbacks, string $type): void
     {
         $callbacks
             ->children()

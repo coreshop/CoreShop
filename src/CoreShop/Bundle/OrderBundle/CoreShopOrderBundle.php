@@ -39,7 +39,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopOrderBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
@@ -62,7 +62,7 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $container->addCompilerPass(new PurchasableWholesalePriceCalculatorsPass());
     }
 
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
@@ -76,7 +76,7 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopMoneyBundle(), 1550);
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Order\Model';
     }

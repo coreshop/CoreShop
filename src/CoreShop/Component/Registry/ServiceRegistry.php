@@ -26,19 +26,15 @@ class ServiceRegistry implements ServiceRegistryInterface
         $this->context = $context;
     }
 
-    public function all()
+    public function all(): array
     {
         return $this->services;
     }
 
-    public function register($identifier, $service)
+    public function register(string $identifier, object $service): void
     {
         if ($this->has($identifier)) {
             throw new ExistingServiceException($this->context, $identifier);
-        }
-
-        if (!is_object($service)) {
-            throw new \InvalidArgumentException(sprintf('%s needs to be an object, %s given.', ucfirst($this->context), gettype($service)));
         }
 
         if (!in_array($this->interface, class_implements($service), true)) {
@@ -50,7 +46,7 @@ class ServiceRegistry implements ServiceRegistryInterface
         $this->services[$identifier] = $service;
     }
 
-    public function unregister($identifier)
+    public function unregister(string $identifier): void
     {
         if (!$this->has($identifier)) {
             throw new NonExistingServiceException($this->context, $identifier, array_keys($this->services));
@@ -59,12 +55,12 @@ class ServiceRegistry implements ServiceRegistryInterface
         unset($this->services[$identifier]);
     }
 
-    public function has($identifier)
+    public function has(string $identifier): bool
     {
         return isset($this->services[$identifier]);
     }
 
-    public function get($identifier)
+    public function get(string $identifier): object
     {
         if (!$this->has($identifier)) {
             throw new NonExistingServiceException($this->context, $identifier, array_keys($this->services));

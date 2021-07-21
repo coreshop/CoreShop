@@ -21,7 +21,7 @@ use Pimcore\Model\Site;
 
 class PimcoreSiteHandler
 {
-    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
+    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context): ?int
     {
         if ($relation instanceof Site) {
             return $relation->getId();

@@ -17,6 +17,7 @@ namespace CoreShop\Component\Pimcore\BatchProcessing;
 use Iterator;
 use Countable;
 use Pimcore\Model\Listing\AbstractListing;
+use Pimcore\Model\ModelInterface;
 
 final class BatchListing implements Iterator, Countable
 {
@@ -35,12 +36,12 @@ final class BatchListing implements Iterator, Countable
         $this->list->setLimit($batchSize);
     }
 
-    public function current()
+    public function current(): ModelInterface
     {
         return $this->items[$this->index];
     }
 
-    public function next()
+    public function next(): void
     {
         $this->index++;
 
@@ -52,17 +53,17 @@ final class BatchListing implements Iterator, Countable
         }
     }
 
-    public function key()
+    public function key(): int
     {
         return ($this->index + 1) * ($this->loop + 1);
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->items[$this->index]);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->index = 0;
         $this->loop = 0;
@@ -70,7 +71,7 @@ final class BatchListing implements Iterator, Countable
         $this->load();
     }
 
-    public function count()
+    public function count(): int
     {
         if (!$this->total) {
             $dao = $this->list->getDao();
@@ -88,7 +89,7 @@ final class BatchListing implements Iterator, Countable
     /**
      * Load all items based on current state.
      */
-    private function load()
+    private function load(): void
     {
         $this->list->setOffset($this->loop * $this->batchSize);
 

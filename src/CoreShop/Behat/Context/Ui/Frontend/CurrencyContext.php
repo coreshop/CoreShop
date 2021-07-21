@@ -35,7 +35,7 @@ final class CurrencyContext implements Context
      * @When I switch to currency :currencyCode
      * @Given I changed my currency to :currencyCode
      */
-    public function iSwitchTheCurrencyToTheCurrency($currencyCode)
+    public function iSwitchTheCurrencyToTheCurrency($currencyCode): void
     {
         $this->homePage->open();
         $this->homePage->switchCurrency($currencyCode);

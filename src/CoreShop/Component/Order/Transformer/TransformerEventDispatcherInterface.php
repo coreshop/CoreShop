@@ -14,19 +14,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Transformer;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
+
 interface TransformerEventDispatcherInterface
 {
-    /**
-     * @param string $modelName
-     * @param mixed  $model
-     * @param array  $params
-     */
-    public function dispatchPreEvent($modelName, $model, $params = []);
+    public function dispatchPreEvent(string $modelName, ResourceInterface $model, array $params = []);
 
-    /**
-     * @param string $modelName
-     * @param mixed  $model
-     * @param array  $params
-     */
-    public function dispatchPostEvent($modelName, $model, $params = []);
+    public function dispatchPostEvent(string $modelName, ResourceInterface $model, array $params = []);
 }

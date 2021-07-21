@@ -22,7 +22,7 @@ final class PimcoreSetupContext implements Context
     /**
      * @BeforeSuite
      */
-    public static function setupPimcore()
+    public static function setupPimcore(): void
     {
         if (getenv('CORESHOP_SKIP_DB_SETUP')) {
             return;

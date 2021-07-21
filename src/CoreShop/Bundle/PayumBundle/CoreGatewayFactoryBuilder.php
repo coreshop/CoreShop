@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\PayumBundle;
 
 class CoreGatewayFactoryBuilder extends \Payum\Core\Bridge\Symfony\Builder\CoreGatewayFactoryBuilder
 {
-    public function build(array $defaultConfig)
+    public function build(array $defaultConfig): CoreGatewayFactory
     {
         $coreGatewayFactory = new CoreGatewayFactory($defaultConfig);
         $coreGatewayFactory->setContainer($this->container);

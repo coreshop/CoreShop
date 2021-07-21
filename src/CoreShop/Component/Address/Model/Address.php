@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Address\Model;
 
-use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class Address extends AbstractPimcoreModel implements AddressInterface

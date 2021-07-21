@@ -34,14 +34,12 @@ class PimcorePersistentMarkingStore implements MarkingStoreInterface
         return $this->originMarkingStore->getMarking($subject);
     }
 
-    public function setMarking(object $subject, Marking $marking, array $context = [])
+    public function setMarking(object $subject, Marking $marking, array $context = []): void
     {
         $this->originMarkingStore->setMarking($subject, $marking);
 
-        if ($this->persistDirectly) {
-            if ($subject instanceof Concrete) {
-                $subject->save();
-            }
+        if ($this->persistDirectly && $subject instanceof Concrete) {
+            $subject->save();
         }
     }
 }

@@ -21,12 +21,10 @@ interface OrderDocumentTransformerInterface
 {
     /**
      * Transforms an order to an invoice.
-     *
-     * @param OrderInterface         $order
-     * @param OrderDocumentInterface $document
-     * @param array                  $items
-     *
-     * @return OrderDocumentInterface
      */
-    public function transform(OrderInterface $order, OrderDocumentInterface $document, $items);
+    public function transform(
+        OrderInterface $order,
+        OrderDocumentInterface $document,
+        array $items
+    ): OrderDocumentInterface;
 }

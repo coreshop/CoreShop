@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Service;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -70,7 +69,7 @@ final class SecurityService implements SecurityServiceInterface
         $this->setToken($token);
     }
 
-    private function setToken(TokenInterface $token)
+    private function setToken(TokenInterface $token): void
     {
         $serializedToken = serialize($token);
         $this->session->set($this->sessionTokenVariable, $serializedToken);

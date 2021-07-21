@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Listing;
 

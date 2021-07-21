@@ -335,7 +335,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
             if (method_exists($owner, $getter)) {
                 $currentData = $owner->$getter();
                 if (is_array($currentData)) {
-                    for ($i = 0; $i < count($currentData); $i++) {
+                    for ($i = 0, $iMax = count($currentData); $i < $iMax; $i++) {
                         if ($currentData[$i]->getId() == $object->getId()) {
                             unset($currentData[$i]);
                             $owner->$setter($currentData);

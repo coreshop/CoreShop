@@ -81,7 +81,7 @@ final class ProductQuantityPriceRuleContext implements Context
         ProductInterface $product,
         $ruleName,
         $calculationBehaviourName
-    ) {
+    ): void {
         /**
          * @var ProductQuantityPriceRuleInterface $rule
          */
@@ -100,7 +100,7 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^the (quantity price rule "[^"]+") is active$/
      * @Given /^the (quantity price rule) is active$/
      */
-    public function theProductQuantityPriceRuleIsActive(ProductQuantityPriceRuleInterface $rule)
+    public function theProductQuantityPriceRuleIsActive(ProductQuantityPriceRuleInterface $rule): void
     {
         $rule->setActive(true);
 
@@ -112,7 +112,7 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^the (quantity price rule "[^"]+") is inactive$/
      * @Given /^the (quantity price rule) is inactive$/
      */
-    public function theProductQuantityPriceRuleIsInActive(ProductQuantityPriceRuleInterface $rule)
+    public function theProductQuantityPriceRuleIsInActive(ProductQuantityPriceRuleInterface $rule): void
     {
         $rule->setActive(false);
 
@@ -128,7 +128,7 @@ final class ProductQuantityPriceRuleContext implements Context
         ProductQuantityPriceRuleInterface $rule,
         int $from,
         float $percentage
-    ) {
+    ): void {
         /**
          * @var QuantityRangeInterface $range
          */
@@ -150,7 +150,7 @@ final class ProductQuantityPriceRuleContext implements Context
         ProductQuantityPriceRuleInterface $rule,
         int $from,
         float $percentage
-    ) {
+    ): void {
         /**
          * @var QuantityRangeInterface $range
          */
@@ -173,7 +173,7 @@ final class ProductQuantityPriceRuleContext implements Context
         int $from,
         int $amount,
         CurrencyInterface $currency
-    ) {
+    ): void {
         /**
          * @var QuantityRangeInterface $range
          */
@@ -197,7 +197,7 @@ final class ProductQuantityPriceRuleContext implements Context
         int $from,
         int $amount,
         CurrencyInterface $currency
-    ) {
+    ): void {
         /**
          * @var QuantityRangeInterface $range
          */
@@ -221,7 +221,7 @@ final class ProductQuantityPriceRuleContext implements Context
         int $from,
         int $amount,
         CurrencyInterface $currency
-    ) {
+    ): void {
         /**
          * @var QuantityRangeInterface $range
          */
@@ -243,7 +243,7 @@ final class ProductQuantityPriceRuleContext implements Context
         int $from,
         $percentage,
         ProductUnitInterface $unit
-    ) {
+    ): void {
         $unitDefinition = $this->getUnitDefinitionFromProduct($rule->getProduct(), $unit);
 
         /**
@@ -267,7 +267,7 @@ final class ProductQuantityPriceRuleContext implements Context
         int $from,
         $percentage,
         ProductUnitInterface $unit
-    ) {
+    ): void {
         $unitDefinition = $this->getUnitDefinitionFromProduct($rule->getProduct(), $unit);
 
         /**
@@ -292,7 +292,7 @@ final class ProductQuantityPriceRuleContext implements Context
         $amount,
         CurrencyInterface $currency,
         ProductUnitInterface $unit
-    ) {
+    ): void {
         $unitDefinition = $this->getUnitDefinitionFromProduct($rule->getProduct(), $unit);
 
         /**
@@ -318,7 +318,7 @@ final class ProductQuantityPriceRuleContext implements Context
         $amount,
         CurrencyInterface $currency,
         ProductUnitInterface $unit
-    ) {
+    ): void {
         $unitDefinition = $this->getUnitDefinitionFromProduct($rule->getProduct(), $unit);
 
         /**
@@ -344,7 +344,7 @@ final class ProductQuantityPriceRuleContext implements Context
         $amount,
         CurrencyInterface $currency,
         ProductUnitInterface $unit
-    ) {
+    ): void {
         $unitDefinition = $this->getUnitDefinitionFromProduct($rule->getProduct(), $unit);
 
         /**
@@ -365,7 +365,7 @@ final class ProductQuantityPriceRuleContext implements Context
     /**
      * @Given /^the (price range) is only valid for (unit "[^"]+")$/
      */
-    public function theQuantityPriceRangeIsValidForUnit(QuantityRangeInterface $range, ProductUnitInterface $unit)
+    public function theQuantityPriceRangeIsValidForUnit(QuantityRangeInterface $range, ProductUnitInterface $unit): void
     {
         $productId = $range->getRule()->getProduct();
         /**
@@ -390,7 +390,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductQuantityPriceRuleHasACountriesCondition(
         ProductQuantityPriceRuleInterface $rule,
         CountryInterface $country
-    ) {
+    ): void {
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
 
         $this->addCondition($rule, $this->createConditionWithForm('countries', [
@@ -407,7 +407,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductQuantityPriceRuleHasACustomerCondition(
         ProductQuantityPriceRuleInterface $rule,
         CustomerInterface $customer
-    ) {
+    ): void {
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
 
         $this->addCondition($rule, $this->createConditionWithForm('customers', [
@@ -425,7 +425,7 @@ final class ProductQuantityPriceRuleContext implements Context
         ProductQuantityPriceRuleInterface $rule,
         $from,
         $to
-    ) {
+    ): void {
         $this->assertConditionForm(TimespanConfigurationType::class, 'timespan');
 
         $from = new \DateTime($from);
@@ -444,7 +444,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductQuantityPriceRuleHasACustomerGroupCondition(
         ProductQuantityPriceRuleInterface $rule,
         CustomerGroupInterface $group
-    ) {
+    ): void {
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
 
         $this->addCondition($rule, $this->createConditionWithForm('customerGroups', [
@@ -461,7 +461,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductQuantityPriceRuleHasAStoreCondition(
         ProductQuantityPriceRuleInterface $rule,
         StoreInterface $store
-    ) {
+    ): void {
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
 
         $this->addCondition($rule, $this->createConditionWithForm('stores', [
@@ -478,7 +478,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductQuantityPriceRuleHasAZoneCondition(
         ProductQuantityPriceRuleInterface $rule,
         ZoneInterface $zone
-    ) {
+    ): void {
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
 
         $this->addCondition($rule, $this->createConditionWithForm('zones', [
@@ -495,7 +495,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductsQuantityPriceRuleHasACurrencyCondition(
         ProductQuantityPriceRuleInterface $rule,
         CurrencyInterface $currency
-    ) {
+    ): void {
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
 
         $this->addCondition($rule, $this->createConditionWithForm('currencies', [
@@ -514,7 +514,7 @@ final class ProductQuantityPriceRuleContext implements Context
         $operator,
         StoreInterface $store1,
         StoreInterface $store2
-    ) {
+    ): void {
         $this->assertConditionForm(ProductSpecificPriceNestedConfigurationType::class, 'nested');
 
         $this->addCondition($rule, $this->createConditionWithForm('nested', [
@@ -549,7 +549,7 @@ final class ProductQuantityPriceRuleContext implements Context
         $operator,
         StoreInterface $store,
         CountryInterface $country
-    ) {
+    ): void {
         $this->assertConditionForm(ProductSpecificPriceNestedConfigurationType::class, 'nested');
 
         $this->addCondition($rule, $this->createConditionWithForm('nested', [
@@ -595,7 +595,7 @@ final class ProductQuantityPriceRuleContext implements Context
      * @param ProductQuantityPriceRuleInterface $rule
      * @param ConditionInterface                $condition
      */
-    private function addCondition(ProductQuantityPriceRuleInterface $rule, ConditionInterface $condition)
+    private function addCondition(ProductQuantityPriceRuleInterface $rule, ConditionInterface $condition): void
     {
         $rule->addCondition($condition);
 
@@ -607,7 +607,7 @@ final class ProductQuantityPriceRuleContext implements Context
      * @param ProductQuantityPriceRuleInterface $rule
      * @param QuantityRangeInterface            $range
      */
-    private function addRange(ProductQuantityPriceRuleInterface $rule, QuantityRangeInterface $range)
+    private function addRange(ProductQuantityPriceRuleInterface $rule, QuantityRangeInterface $range): void
     {
         $rule->addRange($range);
 
@@ -633,17 +633,17 @@ final class ProductQuantityPriceRuleContext implements Context
         return $unitDefinition;
     }
 
-    protected function getConditionFormRegistry()
+    protected function getConditionFormRegistry(): FormTypeRegistryInterface
     {
         return $this->conditionFormTypeRegistry;
     }
 
-    protected function getConditionFormClass()
+    protected function getConditionFormClass(): string
     {
         return ProductSpecificPriceRuleConditionType::class;
     }
 
-    protected function getFormFactory()
+    protected function getFormFactory(): FormFactoryInterface
     {
         return $this->formFactory;
     }

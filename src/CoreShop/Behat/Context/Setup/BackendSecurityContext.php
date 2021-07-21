@@ -35,7 +35,7 @@ final class BackendSecurityContext implements Context
     /**
      * @Given I am a logged in admin
      */
-    public function iAmLoggedInAdmin()
+    public function iAmLoggedInAdmin(): void
     {
         $user = new User();
         $user

@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\AddressesAwareInterface;
 use CoreShop\Component\Address\Model\DefaultAddressAwareInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface as BaseCustomerInterface;

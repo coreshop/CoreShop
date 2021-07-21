@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopRuleBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
@@ -37,7 +37,7 @@ final class CoreShopRuleBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RuleAvailabilityAssessorPass());
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Rule\Model';
     }

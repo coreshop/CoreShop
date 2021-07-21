@@ -41,21 +41,12 @@ final class AddressContext implements Context
     /**
      * @Given /^there is an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
      */
-    public function thereIsAnAddress(CountryInterface $country, $postcode, $city, $street, $nr)
+    public function thereIsAnAddress(CountryInterface $country, $postcode, $city, $street, $nr): void
     {
         $this->createAddress($country, $postcode, $city, $street, $nr);
     }
 
-    /**
-     * @param CountryInterface $country
-     * @param string           $postcode
-     * @param string           $city
-     * @param string           $street
-     * @param string           $nr
-     *
-     * @return AddressInterface
-     */
-    private function createAddress(CountryInterface $country, $postcode, $city, $street, $nr)
+    private function createAddress(CountryInterface $country, string $postcode, string $city, string $street, string $nr): AddressInterface
     {
         /**
          * @var AddressInterface $address
@@ -76,10 +67,7 @@ final class AddressContext implements Context
         return $address;
     }
 
-    /**
-     * @param AddressInterface $address
-     */
-    private function saveAddress(AddressInterface $address)
+    private function saveAddress(AddressInterface $address): void
     {
         $address->save();
 

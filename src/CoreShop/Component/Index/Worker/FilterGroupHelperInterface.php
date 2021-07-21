@@ -19,12 +19,5 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 interface FilterGroupHelperInterface
 {
-    /**
-     * @param IndexColumnInterface $column
-     * @param ListingInterface     $list
-     * @param string               $field
-     *
-     * @return mixed
-     */
-    public function getGroupByValuesForFilterGroup(IndexColumnInterface $column, ListingInterface $list, $field);
+    public function getGroupByValuesForFilterGroup(IndexColumnInterface $column, ListingInterface $list, string $field): array;
 }

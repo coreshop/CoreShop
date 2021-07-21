@@ -16,8 +16,5 @@ namespace CoreShop\Bundle\ResourceBundle;
 
 interface ComposerPackageBundleInterface
 {
-    /**
-     * @return string
-     */
-    public function getPackageName();
+    public function getPackageName(): string;
 }

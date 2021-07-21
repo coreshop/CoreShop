@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Pimcore;
 
 use Behat\Mink\Driver\PantherDriver;
-use Behat\Mink\Element\DocumentElement;
 
 class LoginPage extends AbstractPimcorePage implements LoginPageInterface
 {

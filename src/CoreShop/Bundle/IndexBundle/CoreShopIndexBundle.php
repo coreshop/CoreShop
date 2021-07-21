@@ -36,21 +36,21 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopIndexBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
         $collection->addBundle(new CoreShopMenuBundle(), 4000);
     }
 
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
     }
 
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -66,17 +66,17 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         $container->addCompilerPass(new RegisterFilterUserConditionTypesPass());
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Index\Model';
     }
 
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Index';
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Index Bundle';
     }
@@ -84,7 +84,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
     /**
      * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         $bundleName = 'coreshop/pimcore-bundle';
 
@@ -115,7 +115,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         return '';
     }
 
-    public function getInstaller()
+    public function getInstaller(): ?Installer
     {
         if ($this->container->has(Installer::class)) {
             /**
@@ -129,27 +129,27 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         return null;
     }
 
-    public function getAdminIframePath()
+    public function getAdminIframePath(): ?string
     {
         return null;
     }
 
-    public function getJsPaths()
+    public function getJsPaths(): array
     {
         return [];
     }
 
-    public function getCssPaths()
+    public function getCssPaths(): array
     {
         return [];
     }
 
-    public function getEditmodeJsPaths()
+    public function getEditmodeJsPaths(): array
     {
         return [];
     }
 
-    public function getEditmodeCssPaths()
+    public function getEditmodeCssPaths(): array
     {
         return [];
     }

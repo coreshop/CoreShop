@@ -20,7 +20,7 @@ final class FixedCustomerContext implements CustomerContextInterface
 {
     private ?CustomerInterface $customer = null;
 
-    public function setCustomer(CustomerInterface $customer)
+    public function setCustomer(CustomerInterface $customer): void
     {
         $this->customer = $customer;
     }

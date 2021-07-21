@@ -16,20 +16,12 @@ namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Pimcore\Model\Element\Note;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
 final class OrderCommentsListener extends AbstractNotificationRuleListener
 {
-    private OrderRepositoryInterface $orderRepository;
-
-    public function setOrderRepository(OrderRepositoryInterface $orderRepository)
-    {
-        $this->orderRepository = $orderRepository;
-    }
-
     public function applyOrderCommentAddedNotifications(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), Note::class);

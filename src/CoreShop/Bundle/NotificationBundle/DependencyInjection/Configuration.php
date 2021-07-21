@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\NotificationBundle\DependencyInjection;
 use CoreShop\Bundle\NotificationBundle\Controller\NotificationRuleController;
 use CoreShop\Bundle\NotificationBundle\Doctrine\ORM\NotificationRuleRepository;
 use CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleType;
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Notification\Model\NotificationRule;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Resource\Factory\Factory;
@@ -27,7 +26,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_notification');
         $rootNode = $treeBuilder->getRootNode();
@@ -38,10 +37,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -71,10 +67,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')

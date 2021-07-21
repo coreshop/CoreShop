@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\SequenceBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\SequenceBundle\Doctrine\ORM\SequenceRepository;
 use CoreShop\Component\Sequence\Factory\SequenceFactory;
 use CoreShop\Component\Sequence\Model\Sequence;
@@ -26,7 +25,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_sequence');
         $rootNode = $treeBuilder->getRootNode();
@@ -36,10 +35,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()

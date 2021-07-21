@@ -14,36 +14,32 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Service;
 
-use CoreShop\Component\Index\Extension\IndexRelationalColumnsExtensionInterface;
 use CoreShop\Component\Index\Interpreter\RelationalValue;
-use CoreShop\Component\Index\Interpreter\RelationalValueInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use CoreShop\Component\Index\Model\IndexInterface;
 
 class CustomRelationalIndexInterpreter implements RelationInterpreterInterface
 {
     public function interpret(
-        $value,
+        mixed $value,
         IndexableInterface $indexable,
         IndexColumnInterface $config,
-        $interpreterConfig = []
-    ) {
+        array $interpreterConfig = []
+    ): mixed {
         return $value;
     }
 
     public function interpretRelational(
-        $value,
+        mixed $value,
         IndexableInterface $indexable,
         IndexColumnInterface $config,
-        $interpreterConfig = []
-    ) {
+        array $interpreterConfig = []
+    ): array {
         return [
             new RelationalValue($indexable->getId(), 'test', ['custom_col' => 'blub'])
         ];
     }
-
 
     public function getRelationalColumns(): array
     {

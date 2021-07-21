@@ -21,13 +21,8 @@ class InheritanceHelper
     /**
      * This function enables usage of inherited values in Pimcore and resets the state of inheritance automatically
      * after your functions is finished.
-     *
-     * @param \Closure $function
-     * @param bool     $inheritValues
-     *
-     * @return mixed
      */
-    public static function useInheritedValues(\Closure $function, bool $inheritValues = true)
+    public static function useInheritedValues(\Closure $function, bool $inheritValues = true): mixed
     {
         $backup = DataObject\AbstractObject::getGetInheritedValues();
         DataObject\AbstractObject::setGetInheritedValues($inheritValues);

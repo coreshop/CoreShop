@@ -18,7 +18,6 @@ use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use Pimcore\Db;
 
 class Dao
 {

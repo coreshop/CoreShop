@@ -15,20 +15,10 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Generator;
 
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherGeneratorInterface;
-use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
-use Webmozart\Assert\Assert;
 
 interface CodeGeneratorCheckerInterface
 {
-    /**
-     * @param CartPriceRuleVoucherGeneratorInterface $generator
-     * @return bool
-     */
-    public function isGenerationPossible(CartPriceRuleVoucherGeneratorInterface $generator);
+    public function isGenerationPossible(CartPriceRuleVoucherGeneratorInterface $generator): bool;
 
-    /**
-     * @param CartPriceRuleVoucherGeneratorInterface $generator
-     * @return int
-     */
-    public function getPossibleGenerationAmount(CartPriceRuleVoucherGeneratorInterface $generator);
+    public function getPossibleGenerationAmount(CartPriceRuleVoucherGeneratorInterface $generator): int;
 }

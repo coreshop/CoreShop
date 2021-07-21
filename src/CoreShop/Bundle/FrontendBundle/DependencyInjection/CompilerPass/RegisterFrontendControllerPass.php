@@ -27,7 +27,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterFrontendControllerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $controllers = $container->getParameter('coreshop.frontend.controllers');
 

@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
@@ -49,7 +49,7 @@ class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
         return 'CoreShop - Product Quantity Price Rules Bundle';
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\ProductQuantityPriceRules\Model';
     }

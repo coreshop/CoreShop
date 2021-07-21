@@ -20,7 +20,7 @@ use Pimcore\Model\DataObject\Classificationstore;
 
 class ClassificationStoreGetter implements GetterInterface
 {
-    public function get(IndexableInterface $object, IndexColumnInterface $config)
+    public function get(IndexableInterface $object, IndexColumnInterface $config): mixed
     {
         $columnConfig = $config->getConfiguration();
 

@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Service;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\User\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\TokenNotFoundException;

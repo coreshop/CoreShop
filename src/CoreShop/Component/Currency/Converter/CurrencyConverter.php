@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Currency\Converter;
 
-use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\ExchangeRateInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Currency\Repository\ExchangeRateRepositoryInterface;

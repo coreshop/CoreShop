@@ -37,19 +37,14 @@ final class CustomerGroupContext implements Context
     /**
      * @Given /^the site has a customer-group "([^"]+)"$/
      */
-    public function theSiteHasACustomerGroup(string $name)
+    public function theSiteHasACustomerGroup(string $name): void
     {
         $group = $this->createCustomerGroup($name);
 
         $this->saveCustomerGroup($group);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return CustomerGroupInterface
-     */
-    private function createCustomerGroup(string $name)
+    private function createCustomerGroup(string $name): CustomerGroupInterface
     {
         /** @var CustomerGroupInterface $group */
         $group = $this->customerGroupFactory->createNew();
@@ -61,10 +56,7 @@ final class CustomerGroupContext implements Context
         return $group;
     }
 
-    /**
-     * @param CustomerGroupInterface $group
-     */
-    private function saveCustomerGroup(CustomerGroupInterface $group)
+    private function saveCustomerGroup(CustomerGroupInterface $group): void
     {
         $group->save();
 

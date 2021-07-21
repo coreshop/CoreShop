@@ -16,10 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Core\Model\PimcoreStoresAwareInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use CoreShop\Component\Store\Model\StoresAwareInterface;
 use Pimcore\Model\Site;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

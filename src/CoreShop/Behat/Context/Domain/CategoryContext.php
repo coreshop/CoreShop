@@ -35,7 +35,7 @@ final class CategoryContext implements Context
     /**
      * @Then /^there should be a category "([^"]+)"$/
      */
-    public function thereShouldBeACategoryNamed($name)
+    public function thereShouldBeACategoryNamed($name): void
     {
         $categories = $this->categoryRepository->findBy(['name' => $name]);
 
@@ -49,7 +49,7 @@ final class CategoryContext implements Context
     /**
      * @Then /^the (category "[^"]+") should be child of (category "[^"]+")$/
      */
-    public function theCategoryShouldBeChildOfCategory(CategoryInterface $child, CategoryInterface $parent)
+    public function theCategoryShouldBeChildOfCategory(CategoryInterface $child, CategoryInterface $parent): void
     {
         Assert::eq(
             $child->getParent()->getId(),
@@ -61,7 +61,7 @@ final class CategoryContext implements Context
     /**
      * @Then /^the (product "[^"]+") should be in (category "[^"]+")$/
      */
-    public function theProductShouldBeInCategory(ProductInterface $product, CategoryInterface $category)
+    public function theProductShouldBeInCategory(ProductInterface $product, CategoryInterface $category): void
     {
         Assert::oneOf($category, $product->getCategories());
     }

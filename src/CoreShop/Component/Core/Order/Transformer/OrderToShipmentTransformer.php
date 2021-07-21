@@ -28,7 +28,11 @@ final class OrderToShipmentTransformer implements OrderDocumentTransformerInterf
         $this->inner = $inner;
     }
 
-    public function transform(OrderInterface $order, OrderDocumentInterface $document, $items)
+    public function transform(
+        OrderInterface $order,
+        OrderDocumentInterface $document,
+        array $items
+    ): OrderDocumentInterface
     {
         if ($document instanceof OrderShipmentInterface && $order instanceof \CoreShop\Component\Core\Model\OrderInterface) {
             $document->setWeight($order->getWeight());

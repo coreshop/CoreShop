@@ -30,7 +30,7 @@ class Installer implements InstallerInterface
         $this->kernel = $kernel;
     }
 
-    public function install()
+    public function install(): void
     {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
@@ -39,27 +39,27 @@ class Installer implements InstallerInterface
         $application->run(new ArrayInput($options));
     }
 
-    public function uninstall()
+    public function uninstall(): bool
     {
         return false;
     }
 
-    public function isInstalled()
+    public function isInstalled(): bool
     {
         return false;
     }
 
-    public function canBeInstalled()
+    public function canBeInstalled(): bool
     {
         return true;
     }
 
-    public function canBeUninstalled()
+    public function canBeUninstalled(): bool
     {
         return false;
     }
 
-    public function needsReloadAfterInstall()
+    public function needsReloadAfterInstall(): bool
     {
         return true;
     }

@@ -34,7 +34,7 @@ final class LocaleContext implements Context
     /**
      * @Given /^the site operates on locale "([^"]+)"$/
      */
-    public function setLocale($locale)
+    public function setLocale($locale): void
     {
         $this->fixedLocaleContext->setLocale($locale);
     }

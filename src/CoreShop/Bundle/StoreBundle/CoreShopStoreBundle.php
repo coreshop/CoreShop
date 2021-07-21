@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopStoreBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
@@ -40,7 +40,7 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
         $container->addCompilerPass(new CompositeRequestResolverPass());
     }
 
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
@@ -48,7 +48,7 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopThemeBundle(), 2800);
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Store\Model';
     }

@@ -105,7 +105,7 @@ final class ResourceLoader implements LoaderInterface
         // Intentionally left blank.
     }
 
-    public function setResolver(LoaderResolverInterface $resolver)
+    public function setResolver(LoaderResolverInterface $resolver): void
     {
         // Intentionally left blank.
     }

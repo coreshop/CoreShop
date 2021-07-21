@@ -63,7 +63,7 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
         return true;
     }
 
-    protected function getDiscount(OrderInterface $cart, array $configuration)
+    protected function getDiscount(OrderInterface $cart, array $configuration): int
     {
         /**
          * @var CurrencyInterface $currency

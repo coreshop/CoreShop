@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -33,8 +34,11 @@ final class IndexContext implements Context
     /**
      * @Transform /^index "([^"]+)"$/
      */
-    public function getIndexByName($name)
+    public function getIndexByName($name): IndexInterface
     {
+        /**
+         * @var IndexInterface[] $indexes
+         */
         $indexes = $this->indexRepository->findBy(['name' => $name]);
 
         Assert::eq(
@@ -49,7 +53,7 @@ final class IndexContext implements Context
     /**
      * @Transform /^index$/
      */
-    public function index()
+    public function index(): IndexInterface
     {
         return $this->sharedStorage->get('index');
     }

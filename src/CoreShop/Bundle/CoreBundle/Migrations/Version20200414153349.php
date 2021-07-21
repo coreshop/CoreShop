@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitionUpdate;
-use CoreShop\Component\Pimcore\Migration\SharedTranslation;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Pimcore\Model\DataObject\ClassDefinition;

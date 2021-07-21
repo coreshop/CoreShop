@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OptimisticEntityLockBundle\Manager;
 
-use CoreShop\Bundle\OptimisticEntityLockBundle\Exception\OptimisticLockException;
-use CoreShop\Bundle\OptimisticEntityLockBundle\Model\OptimisticLockedInterface;
 use Pimcore\Model\DataObject\Concrete;
 
 interface EntityLockManagerInterface

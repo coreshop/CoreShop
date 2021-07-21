@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class ExpressionLanguageServicePass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if ($container->has('coreshop.expression_language')) {
             $definition = $container->findDefinition('coreshop.expression_language');

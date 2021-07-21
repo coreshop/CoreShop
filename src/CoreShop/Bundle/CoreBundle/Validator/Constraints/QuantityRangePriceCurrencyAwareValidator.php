@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class QuantityRangePriceCurrencyAwareValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof QuantityRangePriceCurrencyAware) {
             throw new UnexpectedTypeException($constraint, QuantityRangePriceCurrencyAware::class);

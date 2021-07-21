@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 final class RegisterPimcoreResourcesPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         try {
             $resources = $container->getParameter('coreshop.all.pimcore_classes');

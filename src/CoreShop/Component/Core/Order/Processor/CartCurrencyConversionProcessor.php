@@ -151,7 +151,7 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
         $cart->setConvertedTaxes($convertedTaxesFieldCollection);
     }
 
-    protected function convert(?int $value, OrderInterface $cart)
+    protected function convert(?int $value, OrderInterface $cart): int
     {
         if (null === $value) {
             return 0;

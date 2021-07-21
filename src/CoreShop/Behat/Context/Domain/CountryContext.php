@@ -51,7 +51,7 @@ final class CountryContext implements Context
     /**
      * @Then /^there should be a country "([^"]+)"$/
      */
-    public function thereShouldBeACountryCalled($name)
+    public function thereShouldBeACountryCalled($name): void
     {
         $countries = $this->countryRepository->findByName($name, 'en');
 
@@ -65,7 +65,7 @@ final class CountryContext implements Context
     /**
      * @Then /^the (country "[^"]+") should use (currency "[^"]+")$/
      */
-    public function theCountryShouldUseCurrency(CountryInterface $country, CurrencyInterface $currency)
+    public function theCountryShouldUseCurrency(CountryInterface $country, CurrencyInterface $currency): void
     {
         Assert::eq(
             $country->getCurrency()->getId(),
@@ -78,7 +78,7 @@ final class CountryContext implements Context
     /**
      * @Then /^I (?:|still )should be in (country "[^"]+")$/
      */
-    public function iShouldBeInCountry(CountryInterface $country)
+    public function iShouldBeInCountry(CountryInterface $country): void
     {
         $actualCountry = $this->countryContext->getCountry();
 
@@ -98,7 +98,7 @@ final class CountryContext implements Context
     /**
      * @Then /^the (address) should format to "([^"]+)"$/
      */
-    public function theAddressShouldFormatTo(AddressInterface $address, $formattedAddress)
+    public function theAddressShouldFormatTo(AddressInterface $address, $formattedAddress): void
     {
         $actualFormattedAddress = $this->addressFormatter->formatAddress($address);
 
@@ -117,7 +117,7 @@ final class CountryContext implements Context
      * @Then /^when I check the geo-lite resolver with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
      * @Then /^when I check the geo-lite resolver again with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
      */
-    public function whenIcheckTheGeoLiteResolver($ipAddress, $countryIso)
+    public function whenIcheckTheGeoLiteResolver($ipAddress, $countryIso): void
     {
         $request = Request::create(
             'localhost',

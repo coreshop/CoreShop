@@ -27,7 +27,7 @@ final class DisplayFractionExtension extends AbstractExtension
         $this->displayFractionProvider = $displayFractionProvider;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('coreshop_currency_display_fraction', [$this, 'getDisplayFraction']),

@@ -20,7 +20,6 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
@@ -53,7 +52,11 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function transform(OrderInterface $order, OrderDocumentInterface $shipment, $itemsToTransform)
+    public function transform(
+        OrderInterface $order,
+        OrderDocumentInterface $shipment,
+        array $itemsToTransform
+    ): OrderDocumentInterface
     {
         /**
          * @var $cart OrderInterface

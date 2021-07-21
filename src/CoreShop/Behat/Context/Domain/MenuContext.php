@@ -36,7 +36,7 @@ final class MenuContext implements Context
     /**
      * @Then /^the menu "([^"]+)" should have a child with ID "([^"]+)"$/
      */
-    public function menuHasAChild(string $menu, string $childId)
+    public function menuHasAChild(string $menu, string $childId): void
     {
         Assert::isInstanceOf($this->menuProvider->get($menu)->getChild($childId), ItemInterface::class);
     }
@@ -44,7 +44,7 @@ final class MenuContext implements Context
     /**
      * @Then /^the menu "([^"]+)" child with id "([^"]+)" should have a child with ID "([^"]+)"$/
      */
-    public function menuChildHasAChild(string $menu, string $parentId, string $childId)
+    public function menuChildHasAChild(string $menu, string $parentId, string $childId): void
     {
         $this->menuHasAChild($menu, $parentId);
 

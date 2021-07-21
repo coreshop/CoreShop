@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormEvents;
 
 final class PaymentProviderTypeExtension extends AbstractTypeExtension
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('gatewayConfig', GatewayConfigType::class)
@@ -42,7 +42,7 @@ final class PaymentProviderTypeExtension extends AbstractTypeExtension
             });
     }
 
-    public function getExtendedType()
+    public function getExtendedType(): string
     {
         return PaymentProviderType::class;
     }

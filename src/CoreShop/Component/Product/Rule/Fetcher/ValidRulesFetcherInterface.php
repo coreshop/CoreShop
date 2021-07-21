@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Component\Product\Rule\Fetcher;
 
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface ValidRulesFetcherInterface
 {

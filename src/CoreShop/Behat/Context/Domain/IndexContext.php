@@ -42,7 +42,7 @@ final class IndexContext implements Context
     /**
      * @Then /^there should be a index "([^"]+)"$/
      */
-    public function thereShouldBeAIndex($name)
+    public function thereShouldBeAIndex($name): void
     {
         $rates = $this->indexRepository->findBy(['name' => $name]);
 
@@ -56,7 +56,7 @@ final class IndexContext implements Context
     /**
      * @Then /^the (index) should have columns "([^"]+)"$/
      */
-    public function theIndexShouldHaveColumns(IndexInterface $index, $columns)
+    public function theIndexShouldHaveColumns(IndexInterface $index, $columns): void
     {
         $columns = explode(', ', $columns);
         $tableName = sprintf('coreshop_index_mysql_%s', $index->getName());
@@ -67,7 +67,7 @@ final class IndexContext implements Context
     /**
      * @Then /^the (index) should have relational columns "([^"]+)"$/
      */
-    public function theIndexShouldHaveRelationalColumns(IndexInterface $index, $columns)
+    public function theIndexShouldHaveRelationalColumns(IndexInterface $index, $columns): void
     {
         $columns = explode(', ', $columns);
         $tableName = sprintf('coreshop_index_mysql_relations_%s', $index->getName());
@@ -78,7 +78,7 @@ final class IndexContext implements Context
     /**
      * @Then /^the (index) should have localized columns "([^"]+)"$/
      */
-    public function theIndexShouldHaveLocalizedColumns(IndexInterface $index, $columns)
+    public function theIndexShouldHaveLocalizedColumns(IndexInterface $index, $columns): void
     {
         $columns = explode(', ', $columns);
         $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());
@@ -89,7 +89,7 @@ final class IndexContext implements Context
     /**
      * @Then /^the (index) should have a column "([^"]+)" of type "([^"]+)"$/
      */
-    public function theIndexShouldHaveAColumnOfType(IndexInterface $index, $column, $type)
+    public function theIndexShouldHaveAColumnOfType(IndexInterface $index, $column, $type): void
     {
         $tableName = sprintf('coreshop_index_mysql_%s', $index->getName());
 
@@ -100,7 +100,7 @@ final class IndexContext implements Context
      * @Then /^the (index) should have indexed the (product "[^"]+")$/
      * @Then /^the (index) should have indexed the (object)$/
      */
-    public function theIndexShouldHaveIndexedProduct(IndexInterface $index, IndexableInterface $object)
+    public function theIndexShouldHaveIndexedProduct(IndexInterface $index, IndexableInterface $object): void
     {
         $productEntry = $this->fetchAllFromIndex($index, $object);
 
@@ -121,7 +121,7 @@ final class IndexContext implements Context
      * @Then /^the (index) should not have indexed the (object)$/
      * @Then /^the (index) should not have indexed the (product "[^"]+")$/
      */
-    public function theIndexShouldNotHaveIndexedTheObject(IndexInterface $index, IndexableInterface $object)
+    public function theIndexShouldNotHaveIndexedTheObject(IndexInterface $index, IndexableInterface $object): void
     {
         $productEntry = $this->fetchAllFromIndex($index, $object);
 
@@ -133,7 +133,7 @@ final class IndexContext implements Context
      * @Then /^the (index) column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
      * @Then /^the (index) column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/
      */
-    public function theIndexColumnForProductShouldHaveValue(IndexInterface $index, $column, IndexableInterface $object, $value)
+    public function theIndexColumnForProductShouldHaveValue(IndexInterface $index, $column, IndexableInterface $object, $value): void
     {
         $this->indexEntryShouldHaveValue($index, $object, $column, $value);
     }
@@ -143,7 +143,7 @@ final class IndexContext implements Context
      * @Then /^the (index) localized column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
      * @Then /^the (index) localized column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/
      */
-    public function theIndexLocalizedColumnForProductShouldHaveValue(IndexInterface $index, $column, IndexableInterface $object, $value)
+    public function theIndexLocalizedColumnForProductShouldHaveValue(IndexInterface $index, $column, IndexableInterface $object, $value): void
     {
         $this->indexEntryShouldHaveValue($index, $object, $column, $value, true);
     }
@@ -153,7 +153,7 @@ final class IndexContext implements Context
      * @Then /^the (index) relational column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
      * @Then /^the (index) relational column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/
      */
-    public function theIndexRelatioanlColumnForProductShouldHaveValue(IndexInterface $index, $column, IndexableInterface $object, $value)
+    public function theIndexRelatioanlColumnForProductShouldHaveValue(IndexInterface $index, $column, IndexableInterface $object, $value): void
     {
         $this->indexEntryShouldHaveValue($index, $object, $column, $value, false, true);
     }
@@ -161,7 +161,7 @@ final class IndexContext implements Context
     /**
      * @Then /^the (index) should have an index for "([^"]+)"$/
      */
-    public function theIndexShouldHaveAnIndexFor(IndexInterface $index, $columns)
+    public function theIndexShouldHaveAnIndexFor(IndexInterface $index, $columns): void
     {
         $columns = explode(', ', $columns);
         $tableName = sprintf('coreshop_index_mysql_%s', $index->getName());
@@ -172,7 +172,7 @@ final class IndexContext implements Context
     /**
      * @Then /^the (index) should have an localized index for "([^"]+)"$/
      */
-    public function theIndexShouldHaveAnLocalizedIndexFor(IndexInterface $index, $columns)
+    public function theIndexShouldHaveAnLocalizedIndexFor(IndexInterface $index, $columns): void
     {
         $columns = explode(', ', $columns);
         $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());
@@ -180,7 +180,7 @@ final class IndexContext implements Context
         $this->indexShouldHaveIndexInTable($tableName, $columns);
     }
 
-    private function indexEntryShouldHaveValue(IndexInterface $index, IndexableInterface $object, string $column, mixed $value, bool $localized = false, bool $relational = false)
+    private function indexEntryShouldHaveValue(IndexInterface $index, IndexableInterface $object, string $column, mixed $value, bool $localized = false, bool $relational = false): void
     {
         $productEntry = $this->fetchAllFromIndex($index, $object, $localized, $relational);
 
@@ -198,15 +198,7 @@ final class IndexContext implements Context
         );
     }
 
-    /**
-     * @param IndexInterface          $index
-     * @param IndexableInterface|null $object
-     * @param bool                    $localized
-     * @param bool                    $relational
-     *
-     * @return array
-     */
-    private function fetchAllFromIndex(IndexInterface $index, IndexableInterface $object = null, $localized = false, $relational = false)
+    private function fetchAllFromIndex(IndexInterface $index, IndexableInterface $object = null, bool $localized = false, bool $relational = false): array
     {
         if ($localized) {
             $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());
@@ -235,7 +227,7 @@ final class IndexContext implements Context
      * @param string $tableName
      * @param array  $columns
      */
-    private function indexShouldHaveColumnsInTable(string $tableName, array $columns)
+    private function indexShouldHaveColumnsInTable(string $tableName, array $columns): void
     {
         $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
 
@@ -263,7 +255,7 @@ final class IndexContext implements Context
      * @param string $column
      * @param string $type
      */
-    private function indexShouldHaveColumnOfType(string $tableName, string $column, string $type)
+    private function indexShouldHaveColumnOfType(string $tableName, string $column, string $type): void
     {
         $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
 
@@ -279,7 +271,7 @@ final class IndexContext implements Context
      * @param string $tableName
      * @param array  $columns
      */
-    private function indexShouldHaveIndexInTable(string $tableName, array $columns)
+    private function indexShouldHaveIndexInTable(string $tableName, array $columns): void
     {
         $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
 

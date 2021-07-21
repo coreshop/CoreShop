@@ -24,112 +24,112 @@ class GetStatus extends BaseGetStatus
      */
     protected $status;
 
-    public function markNew()
+    public function markNew(): void
     {
         $this->status = PaymentInterface::STATE_NEW;
     }
 
-    public function isNew()
+    public function isNew(): bool
     {
         return $this->status === PaymentInterface::STATE_NEW;
     }
 
-    public function markSuspended()
+    public function markSuspended(): void
     {
         $this->status = PaymentInterface::STATE_PROCESSING;
     }
 
-    public function isSuspended()
+    public function isSuspended(): bool
     {
         return $this->status === PaymentInterface::STATE_PROCESSING;
     }
 
-    public function markExpired()
+    public function markExpired(): void
     {
         $this->status = PaymentInterface::STATE_FAILED;
     }
 
-    public function isExpired()
+    public function isExpired(): bool
     {
         return $this->status === PaymentInterface::STATE_FAILED;
     }
 
-    public function markCanceled()
+    public function markCanceled(): void
     {
         $this->status = PaymentInterface::STATE_CANCELLED;
     }
 
-    public function isCanceled()
+    public function isCanceled(): bool
     {
         return $this->status === PaymentInterface::STATE_CANCELLED;
     }
 
-    public function markPending()
+    public function markPending(): void
     {
         $this->status = PaymentInterface::STATE_PROCESSING;
     }
 
-    public function isPending()
+    public function isPending(): bool
     {
         return $this->status === PaymentInterface::STATE_PROCESSING;
     }
 
-    public function markFailed()
+    public function markFailed(): void
     {
         $this->status = PaymentInterface::STATE_FAILED;
     }
 
-    public function isFailed()
+    public function isFailed(): bool
     {
         return $this->status === PaymentInterface::STATE_FAILED;
     }
 
-    public function markUnknown()
+    public function markUnknown(): void
     {
         $this->status = PaymentInterface::STATE_UNKNOWN;
     }
 
-    public function isUnknown()
+    public function isUnknown(): bool
     {
         return $this->status === PaymentInterface::STATE_UNKNOWN;
     }
 
-    public function markCaptured()
+    public function markCaptured(): void
     {
         $this->status = PaymentInterface::STATE_COMPLETED;
     }
 
-    public function isCaptured()
+    public function isCaptured(): bool
     {
         return $this->status === PaymentInterface::STATE_COMPLETED;
     }
 
-    public function isAuthorized()
+    public function isAuthorized(): bool
     {
         return $this->status === PaymentInterface::STATE_AUTHORIZED;
     }
 
-    public function markAuthorized()
+    public function markAuthorized(): void
     {
         $this->status = PaymentInterface::STATE_AUTHORIZED;
     }
 
-    public function isRefunded()
+    public function isRefunded(): bool
     {
         return $this->status === PaymentInterface::STATE_REFUNDED;
     }
 
-    public function markRefunded()
+    public function markRefunded(): void
     {
         $this->status = PaymentInterface::STATE_REFUNDED;
     }
 
-    public function isPayedout()
+    public function isPayedout(): bool
     {
         return $this->status === PaymentInterface::STATE_REFUNDED;
     }
 
-    public function markPayedout()
+    public function markPayedout(): void
     {
         $this->status = PaymentInterface::STATE_REFUNDED;
     }

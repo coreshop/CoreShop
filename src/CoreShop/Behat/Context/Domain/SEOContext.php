@@ -46,7 +46,7 @@ final class SEOContext implements Context
      * @Then /^the (product "[^"]+") should have meta title "([^"]+)"$/
      * @Then /^the (product) should have meta title "([^"]+)"$/
      */
-    public function productShouldHaveMetaTitle(ProductInterface $product, string $title)
+    public function productShouldHaveMetaTitle(ProductInterface $product, string $title): void
     {
         $this->seoPresentation->updateSeoMetadata($product);
 
@@ -58,7 +58,7 @@ final class SEOContext implements Context
      * @Then /^the (product "[^"]+") should have meta description "([^"]+)"$/
      * @Then /^the (product) should have meta description "([^"]+)"$/
      */
-    public function productShouldHaveMetaDescription(ProductInterface $product, string $description)
+    public function productShouldHaveMetaDescription(ProductInterface $product, string $description): void
     {
         $this->seoPresentation->updateSeoMetadata($product);
 

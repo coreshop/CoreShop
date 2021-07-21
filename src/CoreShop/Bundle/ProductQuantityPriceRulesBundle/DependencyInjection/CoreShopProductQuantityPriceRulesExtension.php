@@ -28,7 +28,7 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelEx
 
 class CoreShopProductQuantityPriceRulesExtension extends AbstractModelExtension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

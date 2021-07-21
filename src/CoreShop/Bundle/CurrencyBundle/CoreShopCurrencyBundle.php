@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopCurrencyBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
@@ -35,7 +35,7 @@ final class CoreShopCurrencyBundle extends AbstractResourceBundle
         $container->addCompilerPass(new CompositeCurrencyContextPass());
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Currency\Model';
     }

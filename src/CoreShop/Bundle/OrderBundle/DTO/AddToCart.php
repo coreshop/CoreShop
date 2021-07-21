@@ -33,7 +33,7 @@ class AddToCart implements AddToCartInterface
         return $this->cart;
     }
 
-    public function setCart(OrderInterface $cart)
+    public function setCart(OrderInterface $cart): void
     {
         $this->cart = $cart;
     }
@@ -43,7 +43,7 @@ class AddToCart implements AddToCartInterface
         return $this->cartItem;
     }
 
-    public function setCartItem(OrderItemInterface $cartItem)
+    public function setCartItem(OrderItemInterface $cartItem): void
     {
         $this->cartItem = $cartItem;
     }

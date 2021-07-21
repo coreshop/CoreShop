@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\Repository;
 
-use Pimcore\Model\AbstractModel;
-
 interface PimcoreRepositoryInterface extends RepositoryInterface
 {
     public function getClassId(): string;

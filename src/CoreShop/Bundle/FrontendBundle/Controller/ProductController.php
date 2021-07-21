@@ -35,7 +35,7 @@ class ProductController extends FrontendController
         ]);
     }
 
-    public function detailSlugAction(Request $request, ProductInterface $object)
+    public function detailSlugAction(Request $request, ProductInterface $object): Response
     {
         $this->validateProduct($request, $object);
 

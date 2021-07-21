@@ -16,12 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\Test\Service;
 
 interface NotificationRuleListenerInterface
 {
-    /**
-     * @param string $type
-     *
-     * @return bool
-     */
-    public function hasBeenFired($type);
+    public function hasBeenFired(string $type): bool;
 
     public function clear();
 }

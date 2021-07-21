@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Frontend\Checkout;
 
 use CoreShop\Behat\Page\Frontend\AbstractFrontendPage;
-use CoreShop\Component\Core\Model\CountryInterface;
 
 class CustomerPage extends AbstractFrontendPage implements CustomerPageInterface
 {

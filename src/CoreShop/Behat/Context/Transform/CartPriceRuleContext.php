@@ -36,7 +36,7 @@ final class CartPriceRuleContext implements Context
     /**
      * @Transform /^cart rule "([^"]+)"$/
      */
-    public function getCartPriceRuleByProductAndName($ruleName)
+    public function getCartPriceRuleByProductAndName($ruleName): CartPriceRuleInterface
     {
         $rule = $this->cartPriceRuleRepository->findOneBy(['name' => $ruleName]);
 
@@ -48,7 +48,7 @@ final class CartPriceRuleContext implements Context
     /**
      * @Transform /^(cart rule)$/
      */
-    public function getLatestCartPriceRule()
+    public function getLatestCartPriceRule(): CartPriceRuleInterface
     {
         $resource = $this->sharedStorage->getLatestResource();
 

@@ -19,5 +19,5 @@ interface AddMultipleToCartInterface
     /**
      * @return AddToCartInterface[]
      */
-    public function getItems();
+    public function getItems(): array;
 }

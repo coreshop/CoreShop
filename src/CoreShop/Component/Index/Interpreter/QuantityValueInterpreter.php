@@ -20,7 +20,12 @@ use Pimcore\Model\DataObject\Data\QuantityValue;
 
 class QuantityValueInterpreter implements InterpreterInterface
 {
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpret(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): mixed
     {
         if ($value instanceof QuantityValue) {
             return $value->getValue();

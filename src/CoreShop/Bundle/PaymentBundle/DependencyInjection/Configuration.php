@@ -34,7 +34,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_payment');
         $rootNode = $treeBuilder->getRootNode();
@@ -49,7 +49,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -111,7 +111,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')

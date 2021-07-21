@@ -48,7 +48,7 @@ final class CurrencyContext implements Context
     /**
      * @Given /^the site has a currency "([^"]+)" with iso "([^"]+)"$/
      */
-    public function theSiteHasACurrency($name, $iso)
+    public function theSiteHasACurrency($name, $iso): void
     {
         $this->createCurrency($name, $iso);
     }
@@ -56,7 +56,7 @@ final class CurrencyContext implements Context
     /**
      * @Given /^I am using (currency "[^"]+")$/
      */
-    public function iAmUsingCurrency(CurrencyInterface $currency)
+    public function iAmUsingCurrency(CurrencyInterface $currency): void
     {
         $this->fixedCurrencyContext->setCurrency($currency);
     }
@@ -65,7 +65,7 @@ final class CurrencyContext implements Context
      * @Given /^the (currency "[^"]+") is valid for (store "[^"]+")$/
      * @Given /^the (currency) is valid for (store "[^"]+")$/
      */
-    public function currencyIsValidForStore(CurrencyInterface $currency, StoreInterface $store)
+    public function currencyIsValidForStore(CurrencyInterface $currency, StoreInterface $store): void
     {
         foreach ($currency->getCountries() as $country) {
             $store->addCountry($country);
@@ -79,7 +79,7 @@ final class CurrencyContext implements Context
      * @param string $name
      * @param string $iso
      */
-    private function createCurrency($name, $iso)
+    private function createCurrency($name, $iso): void
     {
         $currency = $this->currencyRepository->findOneBy(['isoCode' => $iso]);
 
@@ -98,7 +98,7 @@ final class CurrencyContext implements Context
     /**
      * @param CurrencyInterface $currency
      */
-    private function saveCurrency(CurrencyInterface $currency)
+    private function saveCurrency(CurrencyInterface $currency): void
     {
         $this->objectManager->persist($currency);
         $this->objectManager->flush();

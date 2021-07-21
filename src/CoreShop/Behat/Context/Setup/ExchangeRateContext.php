@@ -18,7 +18,6 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\ExchangeRateInterface;
-use CoreShop\Component\Currency\Repository\ExchangeRateRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -42,7 +41,7 @@ final class ExchangeRateContext implements Context
      * @Given /^the (currency "[^"]+") has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/
      * @Given /^the (currency) has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/
      */
-    public function currencyHasExchangeRateTo(CurrencyInterface $fromCurrency, CurrencyInterface $toCurrency, float $rate)
+    public function currencyHasExchangeRateTo(CurrencyInterface $fromCurrency, CurrencyInterface $toCurrency, float $rate): void
     {
         /**
          * @var ExchangeRateInterface $exchangeRate

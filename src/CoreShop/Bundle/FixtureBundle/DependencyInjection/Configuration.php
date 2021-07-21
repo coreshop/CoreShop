@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\FixtureBundle\DependencyInjection;
 use CoreShop\Bundle\FixtureBundle\Model\DataFixture;
 use CoreShop\Bundle\FixtureBundle\Model\DataFixtureInterface;
 use CoreShop\Bundle\FixtureBundle\Repository\DataFixtureRepository;
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -25,7 +24,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_fixture');
         $rootNode = $treeBuilder->getRootNode();
@@ -35,10 +34,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()

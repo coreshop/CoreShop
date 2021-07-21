@@ -30,7 +30,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopShippingBundle extends AbstractResourceBundle
 {
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
@@ -48,7 +48,7 @@ final class CoreShopShippingBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ShippingTaxCalculationStrategyPass());
     }
 
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
@@ -58,7 +58,7 @@ final class CoreShopShippingBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Shipping\Model';
     }

@@ -49,7 +49,7 @@ final class FrontendSecurityContext implements Context
     /**
      * @Given I am logged in as :email
      */
-    public function iAmLoggedInAs($email)
+    public function iAmLoggedInAs($email): void
     {
         $user = $this->userRepository->findByLoginIdentifier($email);
         Assert::notNull($user);
@@ -60,7 +60,7 @@ final class FrontendSecurityContext implements Context
     /**
      * @Given I am a logged in customer
      */
-    public function iAmLoggedInCustomer()
+    public function iAmLoggedInCustomer(): void
     {
         $customer = $this->customerFactory->createNew();
         $customer->setKey(File::getValidFilename('coreshop@pimcore.org'));

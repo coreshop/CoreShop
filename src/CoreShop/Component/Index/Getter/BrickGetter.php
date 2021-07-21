@@ -19,7 +19,7 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 class BrickGetter implements GetterInterface
 {
-    public function get(IndexableInterface $object, IndexColumnInterface $config)
+    public function get(IndexableInterface $object, IndexColumnInterface $config): mixed
     {
         $columnConfig = $config->getConfiguration();
         $getterConfig = $config->getGetterConfig();

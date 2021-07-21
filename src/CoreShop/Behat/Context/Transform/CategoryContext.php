@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -35,7 +36,7 @@ final class CategoryContext implements Context
     /**
      * @Transform /^category(?:|s) "([^"]+)"$/
      */
-    public function getCategoryByName($categoryName)
+    public function getCategoryByName($categoryName): CategoryInterface
     {
         /**
          * @var \Pimcore\Model\DataObject\Listing\Concrete $list
@@ -59,7 +60,7 @@ final class CategoryContext implements Context
     /**
      * @Transform /^categories "([^"]+)", "([^"]+)"$/
      */
-    public function getCategoriesByName($category1, $category2)
+    public function getCategoriesByName($category1, $category2): array
     {
         $categories = [];
 
@@ -73,7 +74,7 @@ final class CategoryContext implements Context
     /**
      * @Transform /^category$/
      */
-    public function category()
+    public function category(): CategoryInterface
     {
         return $this->sharedStorage->get('category');
     }

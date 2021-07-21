@@ -41,7 +41,7 @@ final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocum
         $this->transition = $transition;
     }
 
-    public function transform(OrderInterface $order, OrderDocumentInterface $document, $items)
+    public function transform(OrderInterface $order, OrderDocumentInterface $document, array $items): OrderDocumentInterface
     {
         $document->setState($this->initialState);
         $document = $this->innerTransformer->transform($order, $document, $items);
