@@ -56,4 +56,14 @@ interface FilterConditionInterface extends ResourceInterface, TimestampableInter
      * @param array $configuration
      */
     public function setConfiguration($configuration);
+
+    /**
+     * @return int
+     */
+    public function getSort();
+
+    /**
+     * @param int $sort
+     */
+    public function setSort($sort);
 }

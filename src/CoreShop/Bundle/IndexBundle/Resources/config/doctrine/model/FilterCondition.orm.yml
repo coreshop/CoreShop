@@ -24,6 +24,10 @@ CoreShop\Component\Index\Model\FilterCondition:
             column: configuration
             type: array
             nullable: true
+        sort:
+            column: sort
+            type: integer
+            nullable: true
         creationDate:
             type: datetime
             gedmo:
