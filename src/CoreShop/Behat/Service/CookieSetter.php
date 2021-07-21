@@ -22,9 +22,9 @@ use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 class CookieSetter implements CookieSetterInterface
 {
     protected Session $minkSession;
-    protected array $minkParameters;
+    protected mixed $minkParameters;
 
-    public function __construct(Session $minkSession, $minkParameters)
+    public function __construct(Session $minkSession, mixed $minkParameters)
     {
         if (!is_array($minkParameters) && !$minkParameters instanceof \ArrayAccess) {
             throw new \InvalidArgumentException(sprintf(
