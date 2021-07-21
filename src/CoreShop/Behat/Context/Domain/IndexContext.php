@@ -198,7 +198,7 @@ final class IndexContext implements Context
         );
     }
 
-    private function fetchAllFromIndex(IndexInterface $index, IndexableInterface $object = null, bool $localized = false, bool $relational = false): array
+    private function fetchAllFromIndex(IndexInterface $index, IndexableInterface $object = null, bool $localized = false, bool $relational = false): array|bool
     {
         if ($localized) {
             $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());
