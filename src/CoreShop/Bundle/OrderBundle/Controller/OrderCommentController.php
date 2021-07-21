@@ -21,16 +21,12 @@ use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\User;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class OrderCommentController extends PimcoreController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         $orderId = $request->get('id');
         $order = $this->getOrderRepository()->find($orderId);
@@ -55,12 +51,7 @@ class OrderCommentController extends PimcoreController
         return $this->viewHandler->handle(['success' => true, 'comments' => $parsedData]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function addAction(Request $request)
+    public function addAction(Request $request): JsonResponse
     {
         $comment = $request->get('comment');
         $submitAsEmail = $request->get('submitAsEmail') === 'true';
@@ -86,12 +77,7 @@ class OrderCommentController extends PimcoreController
         }
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed
-     */
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request): JsonResponse
     {
         $commentId = $request->get('id');
         $objectNoteService = $this->get(NoteServiceInterface::class);
@@ -104,10 +90,7 @@ class OrderCommentController extends PimcoreController
         return $this->viewHandler->handle(['success' => true]);
     }
 
-    /**
-     * @return PimcoreRepositoryInterface
-     */
-    private function getOrderRepository()
+    private function getOrderRepository(): PimcoreRepositoryInterface
     {
         return $this->get('coreshop.repository.order');
     }
