@@ -25,6 +25,7 @@ class CarrierRepository extends EntityRepository implements CarrierRepositoryInt
         return $this->createQueryBuilder('o')
             ->innerJoin('o.stores', 's')
             ->andWhere('s.id = :store')
+            ->andWhere('o.hideFromCheckout = 0')
             ->setParameter('store', [$store])
             ->getQuery()
             ->getResult();

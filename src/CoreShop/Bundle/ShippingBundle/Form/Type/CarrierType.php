@@ -28,6 +28,7 @@ class CarrierType extends AbstractResourceType
         $builder
             ->add('identifier', TextType::class)
             ->add('trackingUrl', TextType::class)
+            ->add('hideFromCheckout', CheckboxType::class)
             ->add('isFree', CheckboxType::class)
             ->add('logo', PimcoreAssetChoiceType::class)
             ->add('taxCalculationStrategy', ShippingTaxCalculationStrategyChoiceType::class)

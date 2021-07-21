@@ -136,6 +136,12 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                         valueField: 'value',
                         displayField: 'label',
                         store: pimcore.globalmanager.get('coreshop_shipping_tax_calculation_strategies')
+                    },
+                    {
+                        xtype: 'checkbox',
+                        name: 'hideFromCheckout',
+                        fieldLabel: t('coreshop_carrier_hideFromCheckout'),
+                        value: this.data.hideFromCheckout
                     }
                 ]
             }]
