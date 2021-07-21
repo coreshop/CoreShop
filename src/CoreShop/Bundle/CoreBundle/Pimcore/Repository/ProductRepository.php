@@ -20,7 +20,6 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use Doctrine\DBAL\ForwardCompatibility\Result;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -70,12 +69,9 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         $variantIds = [];
 
-        /**
-         * @var Result $result
-         */
         $result = $query->execute();
 
-        foreach ($result->fetchAllAssociative() as $column) {
+        foreach ($result->fetchAll() as $column) {
             $variantIds[] = $column['oo_id'];
         }
 

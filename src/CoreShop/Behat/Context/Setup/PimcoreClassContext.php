@@ -827,7 +827,7 @@ final class PimcoreClassContext implements Context
     }
 
     private function addFieldDefinitionToDefinition(
-        BrickDefinitionUpdate|ClassUpdate|FieldCollectionDefinitionUpdate $definition,
+        ClassDefinition|Objectbrick\Definition|Fieldcollection\Definition $definition,
         string $fieldDefinition
     ): void {
         $definitionUpdater = $this->getUpdater($definition);

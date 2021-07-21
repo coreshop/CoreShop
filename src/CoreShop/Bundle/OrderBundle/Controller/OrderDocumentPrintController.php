@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
-use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use Pimcore\Controller\FrontendController;
 use Symfony\Component\HttpFoundation\Request;

@@ -18,7 +18,6 @@ use CoreShop\Bundle\ProductBundle\Pimcore\Repository\CategoryRepository as BaseC
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use Doctrine\DBAL\ForwardCompatibility\Result;
 use Pimcore\Model\DataObject\Listing;
 
 class CategoryRepository extends BaseCategoryRepository implements CategoryRepositoryInterface
@@ -69,12 +68,9 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $childIds = [];
 
-        /**
-         * @var Result $result
-         */
         $result = $qb->execute();
 
-        foreach ($result->fetchAllAssociative() as $column) {
+        foreach ($result->fetchAll() as $column) {
             $childIds[] = $column['oo_id'];
         }
 
