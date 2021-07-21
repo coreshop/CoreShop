@@ -19,8 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractResourceType extends AbstractType
 {
-    protected $dataClass;
-    protected $validationGroups = [];
+    protected string $dataClass;
+    protected array $validationGroups = [];
 
     public function __construct(string $dataClass, array $validationGroups = [])
     {

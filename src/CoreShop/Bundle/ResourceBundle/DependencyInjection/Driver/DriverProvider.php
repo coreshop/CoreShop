@@ -25,7 +25,7 @@ final class DriverProvider
     /**
      * @var DriverInterface[]
      */
-    private static $drivers = [];
+    private static array $drivers = [];
 
     public static function get(MetadataInterface $metadata): DriverInterface
     {

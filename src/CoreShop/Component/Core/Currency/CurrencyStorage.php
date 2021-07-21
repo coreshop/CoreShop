@@ -22,8 +22,8 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 final class CurrencyStorage implements CurrencyStorageInterface
 {
-    private $storage;
-    private $currencyRepository;
+    private StorageInterface $storage;
+    private CurrencyRepositoryInterface $currencyRepository;
 
     public function __construct(StorageInterface $storage, CurrencyRepositoryInterface $currencyRepository)
     {

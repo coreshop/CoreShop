@@ -24,10 +24,10 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class SaleNumberGenerator implements NumberGeneratorInterface
 {
-    private $numberGenerator;
-    private $configurationService;
-    private $prefixConfigurationKey;
-    private $suffixConfigurationKey;
+    private NumberGeneratorInterface $numberGenerator;
+    private ConfigurationServiceInterface $configurationService;
+    private string $prefixConfigurationKey;
+    private string $suffixConfigurationKey;
 
     public function __construct(
         NumberGeneratorInterface $numberGenerator,

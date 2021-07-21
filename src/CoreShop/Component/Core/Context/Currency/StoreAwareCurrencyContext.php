@@ -23,9 +23,9 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class StoreAwareCurrencyContext implements CurrencyContextInterface
 {
-    private $currencyContext;
-    private $storeContext;
-    private $currencyRepository;
+    private CurrencyContextInterface $currencyContext;
+    private StoreContextInterface $storeContext;
+    private CurrencyRepositoryInterface $currencyRepository;
 
     public function __construct(
         CurrencyContextInterface $currencyContext,

@@ -22,7 +22,7 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 
 final class CountryAwareCurrencyContext implements CurrencyContextInterface
 {
-    private $countryContext;
+    private CountryContextInterface $countryContext;
 
     public function __construct(CountryContextInterface $countryContext)
     {

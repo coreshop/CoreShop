@@ -27,9 +27,9 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartTaxProcessor implements CartProcessorInterface
 {
-    private $taxCollector;
-    private $defaultAddressProvider;
-    private $registry;
+    private TaxCollectorInterface $taxCollector;
+    private AddressProviderInterface $defaultAddressProvider;
+    private ServiceRegistry $registry;
 
     public function __construct(
         TaxCollectorInterface $taxCollector,

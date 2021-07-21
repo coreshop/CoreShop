@@ -23,8 +23,8 @@ use CoreShop\Component\Order\Processor\CartProcessorInterface;
 
 final class CartItemsWholesaleProcessor implements CartProcessorInterface
 {
-    private $cartContextResolver;
-    private $wholesalePriceCalculator;
+    private PurchasableWholesalePriceCalculatorInterface $wholesalePriceCalculator;
+    private CartContextResolverInterface $cartContextResolver;
 
     public function __construct(
         PurchasableWholesalePriceCalculatorInterface $wholesalePriceCalculator,

@@ -22,7 +22,7 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    private $adjustmentFactory;
+    private AdjustmentFactoryInterface $adjustmentFactory;
 
     public function __construct(AdjustmentFactoryInterface $adjustmentFactory)
     {

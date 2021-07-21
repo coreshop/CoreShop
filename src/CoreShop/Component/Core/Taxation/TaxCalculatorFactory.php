@@ -22,7 +22,7 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {
-    private $taxRuleRepository;
+    private TaxRuleRepositoryInterface $taxRuleRepository;
 
     public function __construct(TaxRuleRepositoryInterface $taxRuleRepository)
     {

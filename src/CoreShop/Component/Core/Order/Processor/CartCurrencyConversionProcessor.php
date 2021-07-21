@@ -23,7 +23,7 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartCurrencyConversionProcessor implements CartProcessorInterface
 {
-    protected $currencyConverter;
+    protected CurrencyConverterInterface $currencyConverter;
 
     public function __construct(CurrencyConverterInterface $currencyConverter)
     {

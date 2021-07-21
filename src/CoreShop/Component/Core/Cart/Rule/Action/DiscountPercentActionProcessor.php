@@ -22,7 +22,7 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    protected $cartRuleApplier;
+    protected CartRuleApplierInterface $cartRuleApplier;
 
     public function __construct(CartRuleApplierInterface $cartRuleApplier)
     {

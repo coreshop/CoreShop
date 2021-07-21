@@ -20,7 +20,7 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 trait ProductVariantsCheckerTrait
 {
-    private $productRepository;
+    private ProductVariantRepositoryInterface $productRepository;
 
     public function __construct(ProductVariantRepositoryInterface $productRepository)
     {

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\BatchProcessing;
 
 use Countable;
@@ -18,45 +20,14 @@ use Pimcore\Model\DataObject;
 
 final class DataObjectBatchListing implements Iterator, Countable
 {
-    /**
-     * @var DataObject\Listing
-     */
-    private $list;
-
-    /**
-     * @var int
-     */
-    private $batchSize;
-
-    /**
-     * @var int
-     */
-    private $index = 0;
-
-    /**
-     * @var int
-     */
-    private $loop = 0;
-
-    /**
-     * @var int
-     */
-    private $currentLoopLoaded = -1;
-
-    /**
-     * @var int
-     */
-    private $total = 0;
-
-    /**
-     * @var array
-     */
-    private $items = [];
-
-    /**
-     * @var array
-     */
-    private $ids = [];
+    private DataObject\Listing $list;
+    private int $batchSize;
+    private int $index = 0;
+    private int $loop = 0;
+    private int $currentLoopLoaded = -1;
+    private int $total = 0;
+    private array $items = [];
+    private array $ids = [];
 
     public function __construct(DataObject\Listing $list, int $batchSize)
     {

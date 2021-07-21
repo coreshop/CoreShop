@@ -25,9 +25,9 @@ use CoreShop\Component\Store\Context\StoreNotFoundException;
 
 final class StoreBasedCartContext implements CartContextInterface
 {
-    private $cartContext;
-    private $shopperContext;
-    private $cart;
+    private CartContextInterface $cartContext;
+    private ShopperContextInterface $shopperContext;
+    private ?OrderInterface $cart = null;
 
     public function __construct(CartContextInterface $cartContext, ShopperContextInterface $shopperContext)
     {

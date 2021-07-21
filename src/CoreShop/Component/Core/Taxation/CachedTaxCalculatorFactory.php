@@ -22,8 +22,8 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {
-    private $taxCalculatorFactory;
-    private $cache = [];
+    private TaxCalculatorFactoryInterface $taxCalculatorFactory;
+    private array $cache = [];
 
     public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory)
     {

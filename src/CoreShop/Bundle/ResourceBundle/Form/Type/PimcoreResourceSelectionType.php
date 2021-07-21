@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PimcoreResourceSelectionType extends AbstractType
 {
-    protected $repository;
+    protected RepositoryInterface $repository;
 
     public function __construct(RepositoryInterface $repository)
     {

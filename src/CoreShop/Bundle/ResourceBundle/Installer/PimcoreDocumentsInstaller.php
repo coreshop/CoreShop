@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\DocumentConfiguration;
@@ -26,7 +28,7 @@ use Symfony\Component\Yaml\Yaml;
 final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 {
     private KernelInterface $kernel;
-    
+
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;

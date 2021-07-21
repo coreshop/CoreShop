@@ -26,9 +26,9 @@ use CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface;
 
 final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInterface
 {
-    private $carriersResolver;
-    private $carrierPriceCalculator;
-    private $cartContextResolver;
+    private CarriersResolverInterface $carriersResolver;
+    private CarrierPriceCalculatorInterface $carrierPriceCalculator;
+    private CartContextResolverInterface $cartContextResolver;
 
     public function __construct(
         CarriersResolverInterface $carriersResolver,

@@ -23,9 +23,9 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInterface
 {
-    private $inner;
-    private $carrierRepository;
-    private $shippableCarrierValidator;
+    private CarriersResolverInterface $inner;
+    private CarrierRepositoryInterface $carrierRepository;
+    private ShippableCarrierValidatorInterface $shippableCarrierValidator;
 
     public function __construct(
         CarriersResolverInterface $inner,

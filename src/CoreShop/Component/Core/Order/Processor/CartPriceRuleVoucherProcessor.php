@@ -26,10 +26,10 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
 {
-    private $proposalCartPriceRuleCalculator;
-    private $voucherCodeRepository;
-    private $cartPriceRuleValidator;
-    private $cartPriceRuleUnProcessor;
+    private ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator;
+    private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
+    private CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator;
+    private CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor;
 
     public function __construct(
         ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator,

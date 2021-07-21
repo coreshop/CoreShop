@@ -22,14 +22,8 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 
 final class AddressAssignmentManager implements AddressAssignmentManagerInterface
 {
-    /**
-     * @var CustomerTransformHelperInterface
-     */
-    protected $customerTransformHelper;
+    protected CustomerTransformHelperInterface $customerTransformHelper;
 
-    /**
-     * @param CustomerTransformHelperInterface $customerTransformHelper
-     */
     public function __construct(CustomerTransformHelperInterface $customerTransformHelper)
     {
         $this->customerTransformHelper = $customerTransformHelper;

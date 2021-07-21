@@ -26,8 +26,8 @@ use Webmozart\Assert\Assert;
 
 class PriceActionProcessor implements CarrierPriceActionProcessorInterface
 {
-    protected $moneyConverter;
-    protected $currencyRepository;
+    protected CurrencyRepositoryInterface $currencyRepository;
+    protected CurrencyConverterInterface $moneyConverter;
 
     public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {

@@ -241,13 +241,13 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
                 );
             }
 
-            if (strlen($this->getMinValue()) && $this->getMinValue() > $data->getValue()) {
+            if ((string)$this->getMinValue() !== '' && $this->getMinValue() > $data->getValue()) {
                 throw new Model\Element\ValidationException(
                     'Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue()
                 );
             }
 
-            if (strlen($this->getMaxValue()) && $data->getValue() > $this->getMaxValue()) {
+            if ((string)$this->getMaxValue() !== '' && $data->getValue() > $this->getMaxValue()) {
                 throw new Model\Element\ValidationException(
                     'Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue()
                 );

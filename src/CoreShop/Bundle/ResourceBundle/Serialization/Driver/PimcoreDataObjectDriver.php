@@ -19,7 +19,7 @@ use Metadata\Driver\DriverInterface;
 
 class PimcoreDataObjectDriver implements DriverInterface
 {
-    protected $decorated;
+    protected DriverInterface $decorated;
 
     public function __construct(DriverInterface $decorated)
     {

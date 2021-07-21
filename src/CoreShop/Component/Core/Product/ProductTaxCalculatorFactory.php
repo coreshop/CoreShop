@@ -23,7 +23,7 @@ use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 
 class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterface
 {
-    private $taxCalculatorFactory;
+    private TaxCalculatorFactoryInterface $taxCalculatorFactory;
 
     public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory)
     {

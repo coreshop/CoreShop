@@ -29,13 +29,9 @@ use Webmozart\Assert\Assert;
 
 class TaxCalculationStrategyTaxRule implements TaxCalculationStrategyInterface
 {
-    private $taxCollector;
-    private $taxCalculationFactory;
+    private TaxCollectorInterface $taxCollector;
+    private TaxCalculatorFactoryInterface $taxCalculationFactory;
 
-    /**
-     * @param TaxCollectorInterface $taxCollector
-     * @param TaxCalculatorFactoryInterface $taxCalculationFactory
-     */
     public function __construct(
         TaxCollectorInterface $taxCollector,
         TaxCalculatorFactoryInterface $taxCalculationFactory
@@ -48,7 +44,7 @@ class TaxCalculationStrategyTaxRule implements TaxCalculationStrategyInterface
         ShippableInterface $shippable,
         CarrierInterface $carrier,
         AddressInterface $address,
-        int $shippingAmountNet
+        int $shippingAmount
     ): array {
         /**
          * @var StoreAwareInterface $shippable
@@ -76,10 +72,10 @@ class TaxCalculationStrategyTaxRule implements TaxCalculationStrategyInterface
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             if ($store->getUseGrossPrice()) {
-                return $this->taxCollector->collectTaxesFromGross($taxCalculator, $shippingAmountNet);
+                return $this->taxCollector->collectTaxesFromGross($taxCalculator, $shippingAmount);
             }
 
-            return $this->taxCollector->collectTaxes($taxCalculator, $shippingAmountNet);
+            return $this->taxCollector->collectTaxes($taxCalculator, $shippingAmount);
         }
 
         return [];

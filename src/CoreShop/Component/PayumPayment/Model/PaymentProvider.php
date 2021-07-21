@@ -10,42 +10,27 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\PayumPayment\Model;
 
 use CoreShop\Component\Payment\Model\PaymentProvider as BasePaymentProvider;
 
 class PaymentProvider extends BasePaymentProvider implements PaymentProviderInterface
 {
-    /**
-     * @var GatewayConfig
-     */
-    protected $gatewayConfig;
+    protected ?GatewayConfig $gatewayConfig = null;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setGatewayConfig(GatewayConfig $gatewayConfig)
+    public function setGatewayConfig(GatewayConfig $gatewayConfig): void
     {
         $this->gatewayConfig = $gatewayConfig;
     }
 
-    /**
-     * @return GatewayConfig
-     */
-    public function getGatewayConfig()
+    public function getGatewayConfig(): ?GatewayConfig
     {
         return $this->gatewayConfig;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s', $this->getIdentifier());
     }

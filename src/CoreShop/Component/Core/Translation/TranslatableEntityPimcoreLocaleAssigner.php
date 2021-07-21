@@ -22,8 +22,8 @@ use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInte
 
 final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntityLocaleAssignerInterface
 {
-    private $localeContext;
-    private $translationLocaleProvider;
+    private LocaleContextInterface $localeContext;
+    private TranslationLocaleProviderInterface $translationLocaleProvider;
 
     public function __construct(
         LocaleContextInterface $localeContext,

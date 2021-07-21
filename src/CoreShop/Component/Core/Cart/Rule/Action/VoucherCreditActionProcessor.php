@@ -24,9 +24,9 @@ use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 
 class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    protected $moneyConverter;
-    protected $cartRuleApplier;
-    protected $voucherCodeRepository;
+    protected CurrencyConverterInterface $moneyConverter;
+    protected CartRuleApplierInterface $cartRuleApplier;
+    protected CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
 
     public function __construct(
         CurrencyConverterInterface $moneyConverter,

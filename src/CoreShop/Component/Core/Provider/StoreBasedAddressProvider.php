@@ -24,8 +24,8 @@ use CoreShop\Component\Store\Context\StoreNotFoundException;
 
 class StoreBasedAddressProvider implements AddressProviderInterface
 {
-    private $addressFactory;
-    private $shopperContext;
+    private FactoryInterface $addressFactory;
+    private ShopperContextInterface $shopperContext;
 
     public function __construct(FactoryInterface $addressFactory, ShopperContextInterface $shopperContext)
     {

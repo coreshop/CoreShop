@@ -19,8 +19,8 @@ use Webmozart\Assert\Assert;
 
 final class StateTransitionChecker extends AbstractConditionChecker
 {
-    private $interface;
-    private $workflowName;
+    private string $interface;
+    private string $workflowName;
 
     public function __construct(string $interface, string $workflowName)
     {

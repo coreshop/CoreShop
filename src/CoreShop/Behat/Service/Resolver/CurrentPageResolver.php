@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class CurrentPageResolver implements CurrentPageResolverInterface
 {
-    private $session;
-    private $urlMatcher;
+    private Session $session;
+    private UrlMatcherInterface $urlMatcher;
 
     public function __construct(Session $session, UrlMatcherInterface $urlMatcher)
     {

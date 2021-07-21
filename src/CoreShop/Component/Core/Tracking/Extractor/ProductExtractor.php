@@ -23,9 +23,9 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class ProductExtractor implements TrackingExtractorInterface
 {
-    private $taxedPurchasablePriceCalculator;
-    private $shopperContext;
-    private $decimalFactor;
+    private TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator;
+    private ShopperContextInterface $shopperContext;
+    private int $decimalFactor;
 
     public function __construct(
         TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator,

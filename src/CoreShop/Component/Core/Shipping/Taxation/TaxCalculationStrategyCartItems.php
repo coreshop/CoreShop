@@ -29,9 +29,9 @@ use Webmozart\Assert\Assert;
 
 class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
 {
-    private $taxCollector;
-    private $taxCalculationFactory;
-    private $distributor;
+    private TaxCollectorInterface $taxCollector;
+    private TaxCalculatorFactoryInterface $taxCalculationFactory;
+    private ProportionalIntegerDistributorInterface $distributor;
 
     public function __construct(
         TaxCollectorInterface $taxCollector,
@@ -47,7 +47,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
         ShippableInterface $shippable,
         CarrierInterface $carrier,
         AddressInterface $address,
-        int $shippingAmountNet
+        int $shippingAmount
     ): array {
         /**
          * @var StoreAwareInterface $shippable
@@ -67,7 +67,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
             return [];
         }
 
-        $distributedAmount = $this->distributor->distribute(\array_values($totalAmount), $shippingAmountNet);
+        $distributedAmount = $this->distributor->distribute(\array_values($totalAmount), $shippingAmount);
 
         return $this->collectTaxes($address, $taxRules, $distributedAmount, $store->getUseGrossPrice());
     }

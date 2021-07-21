@@ -21,14 +21,8 @@ use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 
 final class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 {
-    /**
-     * @var OrderDocumentTransformerInterface
-     */
-    private $inner;
+    private OrderDocumentTransformerInterface $inner;
 
-    /**
-     * @param OrderDocumentTransformerInterface $inner
-     */
     public function __construct(OrderDocumentTransformerInterface $inner)
     {
         $this->inner = $inner;

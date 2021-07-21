@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumBundle\EventListener;
 
 use CoreShop\Bundle\PayumBundle\Controller\PaymentController;
@@ -22,7 +24,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class TransactionListener implements EventSubscriberInterface
 {
-    protected $connection;
+    protected Connection $connection;
 
     public function __construct(Connection $connection)
     {

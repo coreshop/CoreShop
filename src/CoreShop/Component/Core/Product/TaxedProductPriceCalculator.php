@@ -23,10 +23,10 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterface
 {
-    private $purchasableCalculator;
-    private $defaultTaxAddressProvider;
-    private $taxCalculatorFactory;
-    private $taxApplicator;
+    private PurchasableCalculatorInterface $purchasableCalculator;
+    private DefaultTaxAddressProviderInterface $defaultTaxAddressProvider;
+    private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
+    private TaxApplicatorInterface $taxApplicator;
 
     public function __construct(
         PurchasableCalculatorInterface $purchasableCalculator,

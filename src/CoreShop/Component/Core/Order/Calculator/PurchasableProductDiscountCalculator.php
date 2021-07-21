@@ -21,7 +21,7 @@ use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 
 final class PurchasableProductDiscountCalculator implements PurchasableDiscountCalculatorInterface
 {
-    private $productPriceCalculator;
+    private ProductPriceCalculatorInterface $productPriceCalculator;
 
     public function __construct(ProductPriceCalculatorInterface $productPriceCalculator)
     {

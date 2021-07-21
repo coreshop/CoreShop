@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NotificationRuleTypeChoiceType extends AbstractType
 {
-    private $types;
+    private array $types;
 
     public function __construct(array $types)
     {

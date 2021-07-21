@@ -20,9 +20,9 @@ use Webmozart\Assert\Assert;
 
 final class SimpleStateChecker extends AbstractConditionChecker
 {
-    private $interface;
-    private $stateField;
-    private $configurationField;
+    private string $interface;
+    private string $stateField;
+    private string $configurationField;
 
     public function __construct(string $interface, string $stateField, string $configurationField)
     {

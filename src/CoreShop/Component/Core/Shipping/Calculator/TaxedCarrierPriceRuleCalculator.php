@@ -28,8 +28,8 @@ use Webmozart\Assert\Assert;
 
 final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorInterface
 {
-    private $carrierPriceCalculator;
-    private $taxCalculatorStrategyRegistry;
+    private CarrierPriceCalculatorInterface $carrierPriceCalculator;
+    private ServiceRegistryInterface $taxCalculatorStrategyRegistry;
 
     public function __construct(
         CarrierPriceCalculatorInterface $carrierPriceCalculator,

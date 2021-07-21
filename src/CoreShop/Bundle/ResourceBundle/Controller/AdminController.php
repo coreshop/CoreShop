@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
 {
-    protected $viewHandler;
+    protected ViewHandlerInterface $viewHandler;
 
     public function __construct(ViewHandlerInterface $viewHandler)
     {

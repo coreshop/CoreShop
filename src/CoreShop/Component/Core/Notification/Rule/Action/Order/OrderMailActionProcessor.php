@@ -22,7 +22,7 @@ use Pimcore\Model\Document;
 
 class OrderMailActionProcessor implements NotificationRuleProcessorInterface
 {
-    private $orderMailProcessor;
+    private OrderMailProcessorInterface $orderMailProcessor;
 
     public function __construct(OrderMailProcessorInterface $orderMailProcessor)
     {

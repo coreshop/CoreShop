@@ -22,7 +22,7 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class StoreMailActionProcessor implements NotificationRuleProcessorInterface
 {
-    protected $mailActionProcessor;
+    protected MailActionProcessor $mailActionProcessor;
 
     public function __construct(MailActionProcessor $mailActionProcessor)
     {

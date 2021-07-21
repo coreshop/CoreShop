@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CompositeResourceInstaller implements ResourceInstallerInterface
 {
-    protected $serviceRegistry;
+    protected PrioritizedServiceRegistryInterface $serviceRegistry;
 
     public function __construct(PrioritizedServiceRegistryInterface $serviceRegistry)
     {

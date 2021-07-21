@@ -21,12 +21,8 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
     /**
      * @var TaxRateInterface[]
      */
-    public $taxRates;
-
-    /**
-     * @var int
-     */
-    public $computationMethod;
+    public array $taxRates;
+    public int $computationMethod;
 
     public function __construct(array $taxRates = [], $computationMethod = self::COMBINE_METHOD)
     {

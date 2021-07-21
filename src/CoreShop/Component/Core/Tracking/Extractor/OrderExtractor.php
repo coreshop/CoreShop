@@ -20,9 +20,9 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class OrderExtractor implements TrackingExtractorInterface
 {
-    private $extractor;
-    protected $decimalFactor;
-    protected $decimalPrecision;
+    protected TrackingExtractorInterface $extractor;
+    protected int $decimalFactor;
+    protected int $decimalPrecision;
 
     public function __construct(TrackingExtractorInterface $extractor, int $decimalFactor, int $decimalPrecision)
     {

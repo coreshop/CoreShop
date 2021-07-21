@@ -21,7 +21,7 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class OrderItemExtractor implements TrackingExtractorInterface
 {
-    protected $decimalFactor;
+    protected int $decimalFactor;
 
     public function __construct(int $decimalFactor)
     {

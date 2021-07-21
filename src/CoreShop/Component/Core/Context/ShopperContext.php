@@ -33,12 +33,12 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class ShopperContext implements ShopperContextInterface
 {
-    private $storeContext;
-    private $currencyContext;
-    private $localeContext;
-    private $countryContext;
-    private $customerContext;
-    private $cartContext;
+    protected StoreContextInterface $storeContext;
+    protected CurrencyContextInterface $currencyContext;
+    protected LocaleContextInterface $localeContext;
+    protected CountryContextInterface $countryContext;
+    protected CustomerContextInterface $customerContext;
+    protected CartContextInterface $cartContext;
 
     public function __construct(
         StoreContextInterface $storeContext,

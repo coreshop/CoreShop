@@ -32,12 +32,12 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CartShippingProcessor implements CartProcessorInterface
 {
-    private $carrierPriceCalculator;
-    private $carrierValidator;
-    private $defaultCarrierResolver;
-    private $defaultAddressProvider;
-    private $adjustmentFactory;
-    private $cartContextResolver;
+    private TaxedShippingCalculatorInterface $carrierPriceCalculator;
+    private ShippableCarrierValidatorInterface $carrierValidator;
+    private DefaultCarrierResolverInterface $defaultCarrierResolver;
+    private AddressProviderInterface $defaultAddressProvider;
+    private AdjustmentFactoryInterface $adjustmentFactory;
+    private CartContextResolverInterface $cartContextResolver;
 
     public function __construct(
         TaxedShippingCalculatorInterface $carrierPriceCalculator,

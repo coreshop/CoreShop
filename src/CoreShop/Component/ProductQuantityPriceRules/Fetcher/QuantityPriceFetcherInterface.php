@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Fetcher;
 
 use CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface;
@@ -21,39 +23,18 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 
 interface QuantityPriceFetcherInterface
 {
-    /**
-     * @param ProductQuantityPriceRuleInterface $rule
-     * @param QuantityRangePriceAwareInterface  $subject
-     * @param float                             $quantity
-     * @param int                               $originalPrice
-     * @param array                             $context
-     *
-     * @throws NoPriceFoundException
-     *
-     * @return int
-     */
     public function fetchQuantityPrice(
         ProductQuantityPriceRuleInterface $rule,
         QuantityRangePriceAwareInterface $subject,
         float $quantity,
         int $originalPrice,
         array $context
-    );
+    ): int;
 
-    /**
-     * @param QuantityRangeInterface           $range
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param int                              $originalPrice
-     * @param array                            $context
-     *
-     * @throws NoPriceFoundException
-     *
-     * @return int
-     */
     public function fetchRangePrice(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,
         int $originalPrice,
         array $context
-    );
+    ): int;
 }

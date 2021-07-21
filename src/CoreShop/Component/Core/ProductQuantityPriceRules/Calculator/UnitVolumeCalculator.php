@@ -28,8 +28,8 @@ use Doctrine\Common\Collections\Collection;
 
 class UnitVolumeCalculator implements CalculatorInterface
 {
-    protected $inner;
-    protected $actionRegistry;
+    protected VolumeCalculator $inner;
+    protected ServiceRegistryInterface $actionRegistry;
 
     public function __construct(VolumeCalculator $inner, ServiceRegistryInterface $actionRegistry)
     {

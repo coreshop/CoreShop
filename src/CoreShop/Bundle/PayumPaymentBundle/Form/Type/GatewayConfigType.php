@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PayumPaymentBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
@@ -22,18 +24,10 @@ use Symfony\Component\Form\FormEvents;
 
 final class GatewayConfigType extends AbstractResourceType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $gatewayConfigurationTypeRegistry;
+    private FormTypeRegistryInterface $gatewayConfigurationTypeRegistry;
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param FormTypeRegistryInterface $gatewayConfigurationTypeRegistry
-     */
     public function __construct(
-        $dataClass,
+        string $dataClass,
         array $validationGroups,
         FormTypeRegistryInterface $gatewayConfigurationTypeRegistry
     ) {
@@ -42,9 +36,6 @@ final class GatewayConfigType extends AbstractResourceType
         $this->gatewayConfigurationTypeRegistry = $gatewayConfigurationTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

@@ -22,8 +22,8 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class StoreAwareCountryContext implements CountryContextInterface
 {
-    private $countryContext;
-    private $storeContext;
+    private CountryContextInterface $countryContext;
+    private StoreContextInterface $storeContext;
 
     public function __construct(CountryContextInterface $countryContext, StoreContextInterface $storeContext)
     {

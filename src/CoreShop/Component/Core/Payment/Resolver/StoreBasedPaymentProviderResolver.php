@@ -21,8 +21,8 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 class StoreBasedPaymentProviderResolver implements PaymentProviderResolverInterface
 {
-    private $paymentProviderRepository;
-    private $storeContext;
+    private PaymentProviderRepositoryInterface $paymentProviderRepository;
+    private StoreContextInterface $storeContext;
 
     public function __construct(
         PaymentProviderRepositoryInterface $paymentProviderRepository,

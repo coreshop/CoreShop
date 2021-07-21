@@ -27,9 +27,9 @@ use CoreShop\Component\Rule\Model\ActionInterface;
 
 final class GiftProductActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    private $productRepository;
-    private $cartItemFactory;
-    private $adjustmentFactory;
+    private ProductRepositoryInterface $productRepository;
+    private OrderItemFactoryInterface $cartItemFactory;
+    private AdjustmentFactoryInterface $adjustmentFactory;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,

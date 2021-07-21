@@ -20,7 +20,7 @@ use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterfa
 
 class NotificationRuleEventListener
 {
-    private $repository;
+    private NotificationRuleRepositoryInterface $repository;
 
     public function __construct(NotificationRuleRepositoryInterface $repository)
     {

@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 
 class AmountIncreaseAction implements ProductQuantityPriceRuleActionInterface
 {
-    private $currencyConverter;
+    private CurrencyConverterInterface $currencyConverter;
 
     public function __construct(CurrencyConverterInterface $currencyConverter)
     {

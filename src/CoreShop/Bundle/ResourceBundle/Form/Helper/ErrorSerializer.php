@@ -20,7 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ErrorSerializer
 {
-    protected $trans;
+    protected TranslatorInterface $trans;
 
     public function __construct(TranslatorInterface $trans)
     {

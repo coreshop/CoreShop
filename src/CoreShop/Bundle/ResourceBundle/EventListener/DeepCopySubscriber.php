@@ -10,11 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
 use DeepCopy\DeepCopy;
 use DeepCopy\Filter\Doctrine\DoctrineCollectionFilter;
 use DeepCopy\Matcher\PropertyTypeMatcher;
+use Pimcore\Event\SystemEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -22,10 +25,8 @@ class DeepCopySubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        //TODO: Change to Pimcore\Event\SystemEvents::SERVICE_PRE_GET_DEEP_COPY later
-        //TODO: Event has been added with 6.8.5, min requirement is 6.6 for now.
         return [
-            'pimcore.system.service.preGetDeepCopy' => 'addDoctrineCollectionFilter',
+            SystemEvents::SERVICE_PRE_GET_DEEP_COPY => 'addDoctrineCollectionFilter',
         ];
     }
 

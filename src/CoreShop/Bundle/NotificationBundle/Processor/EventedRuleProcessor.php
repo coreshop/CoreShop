@@ -21,8 +21,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class EventedRuleProcessor implements RulesProcessorInterface
 {
-    private $rulesProcessor;
-    private $eventDispatcher;
+    private RulesProcessorInterface $rulesProcessor;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         RulesProcessorInterface $rulesProcessor,

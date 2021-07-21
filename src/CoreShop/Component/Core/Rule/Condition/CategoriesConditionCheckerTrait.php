@@ -20,7 +20,7 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 trait CategoriesConditionCheckerTrait
 {
-    private $categoryRepository;
+    private CategoryRepositoryInterface $categoryRepository;
 
     public function __construct(CategoryRepositoryInterface $categoryRepository)
     {

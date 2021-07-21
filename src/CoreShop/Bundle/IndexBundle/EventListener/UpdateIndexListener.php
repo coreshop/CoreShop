@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\EventListener;
 
 use CoreShop\Component\Index\Model\IndexInterface;
@@ -20,7 +22,7 @@ use Symfony\Component\Intl\Exception\InvalidArgumentException;
 
 final class UpdateIndexListener
 {
-    private $workerServiceRegistry;
+    private ServiceRegistryInterface $workerServiceRegistry;
 
     public function __construct(ServiceRegistryInterface $workerServiceRegistry)
     {

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\DataMapper;
 
 use CoreShop\Component\Index\Model\FilterConditionInterface;
@@ -22,7 +24,7 @@ use Symfony\Component\Form\DataMapperInterface;
  */
 class ConditionsFormMapper implements DataMapperInterface
 {
-    private $propertyMapper;
+    private DataMapperInterface $propertyMapper;
 
     public function __construct(DataMapperInterface $propertyMapper)
     {

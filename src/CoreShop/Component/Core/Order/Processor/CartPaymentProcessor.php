@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -17,8 +19,8 @@ use CoreShop\Component\Order\Processor\CartProcessorInterface;
 
 final class CartPaymentProcessor implements CartProcessorInterface
 {
-    private $decimalFactor;
-    private $decimalPrecision;
+    private int $decimalFactor;
+    private int $decimalPrecision;
 
     public function __construct(int $decimalFactor, int $decimalPrecision)
     {

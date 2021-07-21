@@ -22,7 +22,7 @@ use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 class CookieSetter implements CookieSetterInterface
 {
     protected Session $minkSession;
-    protected $minkParameters;
+    protected array $minkParameters;
 
     public function __construct(Session $minkSession, $minkParameters)
     {
@@ -35,7 +35,7 @@ class CookieSetter implements CookieSetterInterface
         }
 
         $this->minkSession = $minkSession;
-        $this->minkParameters = $minkParameters;
+        $this->minkParameters = $minkParameters ?? [];
     }
 
     public function setCookie(string $name, string $value): void

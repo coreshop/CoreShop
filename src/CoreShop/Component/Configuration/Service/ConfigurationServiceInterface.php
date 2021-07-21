@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Configuration\Service;
 
 use CoreShop\Component\Configuration\Model\ConfigurationInterface;
@@ -30,7 +32,7 @@ interface ConfigurationServiceInterface
      *
      * @return ConfigurationInterface
      */
-    public function set(string $key, $data): ConfigurationInterface;
+    public function set(string $key, mixed $data): ConfigurationInterface;
 
     /**
      * @param string $key

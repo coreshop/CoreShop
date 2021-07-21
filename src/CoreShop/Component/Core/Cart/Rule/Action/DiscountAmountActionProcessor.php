@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
 use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
@@ -24,9 +26,9 @@ use Webmozart\Assert\Assert;
 
 class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    protected $moneyConverter;
-    protected $currencyRepository;
-    protected $cartRuleApplier;
+    protected CurrencyConverterInterface $moneyConverter;
+    protected CurrencyRepositoryInterface $currencyRepository;
+    protected CartRuleApplierInterface $cartRuleApplier;
 
     public function __construct(
         CurrencyConverterInterface $moneyConverter,

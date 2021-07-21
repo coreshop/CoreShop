@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 
 final class OrderInventoryOperator implements OrderInventoryOperatorInterface
 {
-    private $productEntityManager;
+    private ObjectManager $productEntityManager;
 
     public function __construct(ObjectManager $productEntityManager)
     {

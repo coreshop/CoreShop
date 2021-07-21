@@ -47,7 +47,7 @@ class ConfigurationService implements ConfigurationServiceInterface
         return null;
     }
 
-    public function set(string $key, $data): ConfigurationInterface
+    public function set(string $key, mixed $data): ConfigurationInterface
     {
         $config = $this->get($key, true);
 

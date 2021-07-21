@@ -24,8 +24,8 @@ use Symfony\Component\Yaml\Yaml;
 
 abstract class AbstractTranslationInstaller implements ResourceInstallerInterface
 {
-    protected $kernel;
-    protected $translationType;
+    protected KernelInterface $kernel;
+    protected string $translationType;
 
     public function __construct(KernelInterface $kernel, string $translationType = Translation::DOMAIN_DEFAULT)
     {

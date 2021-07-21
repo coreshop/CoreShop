@@ -21,7 +21,7 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class StoreOrderMailActionProcessor implements NotificationRuleProcessorInterface
 {
-    protected $orderMailActionProcessor;
+    protected OrderMailActionProcessor $orderMailActionProcessor;
 
     public function __construct(OrderMailActionProcessor $orderMailActionProcessor)
     {

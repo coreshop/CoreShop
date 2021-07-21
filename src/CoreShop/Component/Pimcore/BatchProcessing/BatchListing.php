@@ -20,35 +20,12 @@ use Pimcore\Model\Listing\AbstractListing;
 
 final class BatchListing implements Iterator, Countable
 {
-    /**
-     * @var AbstractListing
-     */
-    private $list;
-
-    /**
-     * @var int
-     */
-    private $batchSize;
-
-    /**
-     * @var int
-     */
-    private $index = 0;
-
-    /**
-     * @var int
-     */
-    private $loop = 0;
-
-    /**
-     * @var int
-     */
-    private $total = 0;
-
-    /**
-     * @var array
-     */
-    private $items = [];
+    private AbstractListing $list;
+    private int $batchSize;
+    private int $index = 0;
+    private int $loop = 0;
+    private int $total = 0;
+    private array $items = [];
 
     public function __construct(AbstractListing $list, int $batchSize)
     {

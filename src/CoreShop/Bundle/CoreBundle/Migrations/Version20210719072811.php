@@ -12,28 +12,34 @@
 
 declare(strict_types=1);
 
-namespace C0oreShop\Bundle\CoreBundle\Migrations;
+namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Version20200715071804 extends AbstractMigration implements ContainerAwareInterface
+final class Version20210719072811 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
     public function up(Schema $schema): void
     {
-        //update translations
-        $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
+        $class = $this->container->getParameter('coreshop.model.order_item_unit.class');
+
+        if (class_exists($class)) {
+            return;
+        }
+
+        $classUpdater = new ClassUpdate($this->container->getParameter());
+
+        $this->write('Create OrderItemUnit Class');
+        $jsonFile = $this->container->get('kernel')->locateResource('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopOrderItemUnit.json');
+        $this->container->get('coreshop.class_installer')->createClass($jsonFile, 'CoreShopOrderItemUnit');
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void
     {
+
     }
 }
