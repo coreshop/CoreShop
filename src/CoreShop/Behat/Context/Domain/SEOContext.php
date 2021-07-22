@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -46,7 +46,7 @@ final class SEOContext implements Context
      * @Then /^the (product "[^"]+") should have meta title "([^"]+)"$/
      * @Then /^the (product) should have meta title "([^"]+)"$/
      */
-    public function productShouldHaveMetaTitle(ProductInterface $product, string $title)
+    public function productShouldHaveMetaTitle(ProductInterface $product, string $title): void
     {
         $this->seoPresentation->updateSeoMetadata($product);
 
@@ -58,7 +58,7 @@ final class SEOContext implements Context
      * @Then /^the (product "[^"]+") should have meta description "([^"]+)"$/
      * @Then /^the (product) should have meta description "([^"]+)"$/
      */
-    public function productShouldHaveMetaDescription(ProductInterface $product, string $description)
+    public function productShouldHaveMetaDescription(ProductInterface $product, string $description): void
     {
         $this->seoPresentation->updateSeoMetadata($product);
 

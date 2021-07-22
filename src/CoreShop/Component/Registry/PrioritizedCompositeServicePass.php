@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Registry;
 
@@ -32,7 +34,7 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
         $this->methodName = $methodName;
     }
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition($this->compositeId) && !$container->hasAlias($this->compositeId)) {
             return;
@@ -42,10 +44,7 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
         $this->addAliasForCompositeIfServiceDoesNotExist($container);
     }
 
-    /**
-     * @param ContainerBuilder $container
-     */
-    private function injectTaggedServicesIntoComposite(ContainerBuilder $container)
+    private function injectTaggedServicesIntoComposite(ContainerBuilder $container): void
     {
         $channelContextDefinition = $container->findDefinition($this->compositeId);
 
@@ -55,10 +54,7 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
         }
     }
 
-    /**
-     * @param ContainerBuilder $container
-     */
-    private function addAliasForCompositeIfServiceDoesNotExist(ContainerBuilder $container)
+    private function addAliasForCompositeIfServiceDoesNotExist(ContainerBuilder $container): void
     {
         if ($container->has($this->serviceId)) {
             return;
@@ -67,24 +63,14 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
         $container->setAlias($this->serviceId, $this->compositeId)->setPublic(true);
     }
 
-    /**
-     * @param Definition $channelContextDefinition
-     * @param string     $id
-     * @param array      $tags
-     */
-    private function addMethodCalls(Definition $channelContextDefinition, $id, $tags)
+    private function addMethodCalls(Definition $channelContextDefinition, string $id, array $tags): void
     {
         foreach ($tags as $attributes) {
             $this->addMethodCall($channelContextDefinition, $id, $attributes);
         }
     }
 
-    /**
-     * @param Definition $channelContextDefinition
-     * @param string     $id
-     * @param array      $attributes
-     */
-    private function addMethodCall(Definition $channelContextDefinition, $id, $attributes)
+    private function addMethodCall(Definition $channelContextDefinition, string $id, array $attributes): void
     {
         $arguments = [new Reference($id)];
 

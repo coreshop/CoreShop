@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OptimisticEntityLockBundle\Manager;
 
@@ -20,7 +22,7 @@ final class EntityLockManager implements EntityLockManagerInterface
 {
     private array $lockedVersions = [];
 
-    public function lock(Concrete $dataObject, $lockVersion = null)
+    public function lock(Concrete $dataObject, $lockVersion = null): void
     {
         if (!$dataObject instanceof OptimisticLockedInterface) {
             throw OptimisticLockException::notVersioned(get_class($dataObject));
@@ -56,7 +58,7 @@ final class EntityLockManager implements EntityLockManagerInterface
     /**
      * @internal
      */
-    public function updateLock(Concrete $concrete)
+    public function updateLock(Concrete $concrete): void
     {
         $this->lockedVersions[$concrete->getId()] = $concrete;
     }

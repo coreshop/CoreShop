@@ -1,4 +1,16 @@
 <?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
@@ -23,7 +35,7 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
     {
         $this->write('Create User Class');
 
-        $jsonFile = $this->container->get('kernel')->locateResource('@CoreShopUserBundle/Resources/install/pimcore/classes/CoreShopUser.json');
+        $jsonFile = $this->container->get('kernel')->locateResource('@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopUserBundle/CoreShopUser.json');
         $this->container->get('coreshop.class_installer')->createClass($jsonFile, 'CoreShopUser');
 
         $userField = [

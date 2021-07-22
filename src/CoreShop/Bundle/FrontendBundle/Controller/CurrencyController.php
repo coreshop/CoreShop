@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,15 +22,11 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CurrencyController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function widgetAction(Request $request)
+    public function widgetAction(Request $request): Response
     {
         $currencies = $this->get('coreshop.repository.currency')->findActiveForStore($this->get(ShopperContextInterface::class)->getStore());
 
@@ -39,12 +35,7 @@ class CurrencyController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     */
-    public function switchAction(Request $request)
+    public function switchAction(Request $request): Response
     {
         $currencyCode = $request->get('currencyCode');
         $currency = $this->getCurrencyRepository()->getByCode($currencyCode);
@@ -64,16 +55,8 @@ class CurrencyController extends FrontendController
         return new RedirectResponse($request->headers->get('referer', $request->getSchemeAndHttpHost()));
     }
 
-    /**
-     * @return CurrencyRepositoryInterface
-     */
-    protected function getCurrencyRepository()
+    protected function getCurrencyRepository(): CurrencyRepositoryInterface
     {
-        /**
-         * @var CurrencyRepositoryInterface
-         */
-        $repo = $this->get('coreshop.repository.currency');
-
-        return $repo;
+        return $this->get('coreshop.repository.currency');
     }
 }

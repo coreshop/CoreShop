@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,7 +30,7 @@ class Installer implements InstallerInterface
         $this->kernel = $kernel;
     }
 
-    public function install()
+    public function install(): void
     {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
@@ -39,27 +39,27 @@ class Installer implements InstallerInterface
         $application->run(new ArrayInput($options));
     }
 
-    public function uninstall()
+    public function uninstall(): bool
     {
         return false;
     }
 
-    public function isInstalled()
+    public function isInstalled(): bool
     {
         return false;
     }
 
-    public function canBeInstalled()
+    public function canBeInstalled(): bool
     {
         return true;
     }
 
-    public function canBeUninstalled()
+    public function canBeUninstalled(): bool
     {
         return false;
     }
 
-    public function needsReloadAfterInstall()
+    public function needsReloadAfterInstall(): bool
     {
         return true;
     }

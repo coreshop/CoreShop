@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,7 +21,7 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 
 final class CustomerAddressAllocator implements CustomerAddressAllocatorInterface
 {
-    public function allocateForCustomer(CustomerInterface $customer)
+    public function allocateForCustomer(CustomerInterface $customer): array
     {
         $addressAccessType = $customer->getAddressAccessType();
 
@@ -46,7 +46,7 @@ final class CustomerAddressAllocator implements CustomerAddressAllocatorInterfac
         throw new \Exception(sprintf('Cannot allocate addresses for customer %d with access type "%s"', $customer->getId(), $addressAccessType));
     }
 
-    public function isOwnerOfAddress(CustomerInterface $customer, AddressInterface $address)
+    public function isOwnerOfAddress(CustomerInterface $customer, AddressInterface $address): bool
     {
         if (!$customer instanceof AddressesAwareInterface) {
             return false;

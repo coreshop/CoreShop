@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -44,11 +44,7 @@ final class CoreShopTrackingExtension extends Extension
             ->addTag(TrackingExtractorPass::TRACKING_EXTRACTOR_TAG);
     }
 
-    /**
-     * @param array            $config
-     * @param ContainerBuilder $container
-     */
-    protected function configureTrackers(array $config, ContainerBuilder $container)
+    protected function configureTrackers(array $config, ContainerBuilder $container): void
     {
         foreach ($container->findTaggedServiceIds(TrackerPass::TRACKER_TAG) as $id => $attributes) {
             foreach ($attributes as $tag) {

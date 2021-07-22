@@ -6,9 +6,9 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 declare(strict_types=1);
 
@@ -21,7 +21,7 @@ use Payum\Core\Request\GetStatusInterface;
 
 class StatusAction implements ActionInterface
 {
-    public function execute($request)
+    public function execute($request): void
     {
         /** @var $request GetStatusInterface */
         RequestNotSupportedException::assertSupports($this, $request);
@@ -49,7 +49,7 @@ class StatusAction implements ActionInterface
         $request->markUnknown();
     }
 
-    public function supports($request)
+    public function supports($request): bool
     {
         return
             $request instanceof GetStatusInterface &&

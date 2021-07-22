@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 final class RegisterResourcesPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         try {
             $resources = $container->getParameter('coreshop.resources');
@@ -37,10 +37,7 @@ final class RegisterResourcesPass implements CompilerPassInterface
         }
     }
 
-    /**
-     * @param string $class
-     */
-    private function validateCoreShopModel($class)
+    private function validateCoreShopModel(string $class): void
     {
         if (!in_array(ResourceInterface::class, class_implements($class), true)) {
             throw new InvalidArgumentException(sprintf(

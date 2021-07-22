@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -36,7 +36,7 @@ final class CustomerContext implements Context
     /**
      * @Then /^I should be logged in with (email "[^"]+")$/
      */
-    public function iShouldBeLoggedInWithEmail(CustomerInterface $customer)
+    public function iShouldBeLoggedInWithEmail(CustomerInterface $customer): void
     {
         Assert::same(
             $customer->getId(),
@@ -52,7 +52,7 @@ final class CustomerContext implements Context
     /**
      * @Then /^It should throw an error deleting the (customer "[^"]+")$/
      */
-    public function itShouldThrowAnErrorDeletingCustomer(CustomerInterface $customer)
+    public function itShouldThrowAnErrorDeletingCustomer(CustomerInterface $customer): void
     {
         Assert::throws(function () use ($customer) {
             $customer->delete();
@@ -62,7 +62,7 @@ final class CustomerContext implements Context
     /**
      * @Then /^It should not throw an error deleting the (customer "[^"]+")$/
      */
-    public function itShouldNotThrowAnErrorDeletingTheCustomer(CustomerInterface $customer)
+    public function itShouldNotThrowAnErrorDeletingTheCustomer(CustomerInterface $customer): void
     {
         $customer->delete();
     }

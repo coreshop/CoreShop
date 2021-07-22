@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,38 +19,11 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 
 interface AddressAssignmentManagerInterface
 {
-    /**
-     * @param CustomerInterface $customer
-     * @param bool              $useTranslationKeys
-     *
-     * @return array|null
-     */
-    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true);
+    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true): ?array;
 
-    /**
-     * @param CustomerInterface $customer
-     * @param AddressInterface  $address
-     *
-     * @return string|null
-     * @throws \InvalidArgumentException
-     */
-    public function detectAddressAffiliationForCustomer(CustomerInterface $customer, AddressInterface $address);
+    public function detectAddressAffiliationForCustomer(CustomerInterface $customer, AddressInterface $address): ?string;
 
-    /**
-     * @param CustomerInterface $customer
-     * @param AddressInterface  $address
-     *
-     * @return bool
-     */
-    public function checkAddressAffiliationPermissionForCustomer(CustomerInterface $customer, AddressInterface $address);
+    public function checkAddressAffiliationPermissionForCustomer(CustomerInterface $customer, AddressInterface $address): bool;
 
-    /**
-     * @param CustomerInterface $customer
-     * @param AddressInterface  $address
-     * @param string|null       $affiliation
-     *
-     * @return AddressInterface
-     * @throws \InvalidArgumentException
-     */
-    public function allocateAddressByAffiliation(CustomerInterface $customer, AddressInterface $address, ?string $affiliation);
+    public function allocateAddressByAffiliation(CustomerInterface $customer, AddressInterface $address, ?string $affiliation): AddressInterface;
 }

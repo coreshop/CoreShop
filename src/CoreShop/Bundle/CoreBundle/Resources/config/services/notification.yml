@@ -221,15 +221,11 @@ services:
 
     CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\OrderCommentsListener:
         parent: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\AbstractNotificationRuleListener
-        calls:
-            - [setOrderRepository, ['@coreshop.repository.order']]
         tags:
             - { name: kernel.event_listener, event: coreshop.note.order_comment.post_add, method: applyOrderCommentAddedNotifications }
 
     CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\PaymentWorkflowListener:
         parent: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\AbstractNotificationRuleListener
-        calls:
-            - [setOrderRepository, ['@coreshop.repository.order']]
         tags:
             - { name: kernel.event_listener, event: workflow.coreshop_payment.completed, method: applyPaymentWorkflowTransitionCompleted }
 

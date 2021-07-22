@@ -6,15 +6,16 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\UserBundle\CoreExtension\Provider;
 
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\ClassDefinition\DynamicOptionsProvider\MultiSelectOptionsProviderInterface;
-use Psr\Container\ContainerInterface;
 
 class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
 {
@@ -35,7 +36,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
      *
      * @return array
      */
-    public function getOptions($context, $fieldDefinition)
+    public function getOptions($context, $fieldDefinition): array
     {
         $roles = [];
 
@@ -65,7 +66,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
      *
      * @return bool
      */
-    public function hasStaticOptions($context, $fieldDefinition)
+    public function hasStaticOptions($context, $fieldDefinition): bool
     {
         return false;
     }
@@ -74,9 +75,9 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
      * @param array $context
      * @param Data  $fieldDefinition
      *
-     * @return mixed
+     * @return string
      */
-    public function getDefaultValue($context, $fieldDefinition)
+    public function getDefaultValue($context, $fieldDefinition): string
     {
         return 'ROLE_USER';
     }

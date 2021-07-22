@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -48,7 +48,7 @@ class CustomerProfileContext implements Context
     /**
      * @Given /^I want to change my password$/
      */
-    public function iWantToChangeMyPassword()
+    public function iWantToChangeMyPassword(): void
     {
         $this->changePasswordPage->open();
     }
@@ -56,7 +56,7 @@ class CustomerProfileContext implements Context
     /**
      * @Given I change password from :oldPassword to :newPassword
      */
-    public function iChangePasswordTo($oldPassword, $newPassword)
+    public function iChangePasswordTo($oldPassword, $newPassword): void
     {
         $this->iSpecifyTheCurrentPasswordAs($oldPassword);
         $this->iSpecifyTheNewPasswordAs($newPassword);
@@ -66,7 +66,7 @@ class CustomerProfileContext implements Context
     /**
      * @Then I should be notified that my password has been successfully changed
      */
-    public function iShouldBeNotifiedThatMyPasswordHasBeenSuccessfullyChanged()
+    public function iShouldBeNotifiedThatMyPasswordHasBeenSuccessfullyChanged(): void
     {
         $this->notificationChecker->checkNotification('Password has been successfully changed', NotificationType::success());
     }
@@ -74,7 +74,7 @@ class CustomerProfileContext implements Context
     /**
      * @Given I specify the current password as :password
      */
-    public function iSpecifyTheCurrentPasswordAs($password)
+    public function iSpecifyTheCurrentPasswordAs($password): void
     {
         $this->changePasswordPage->specifyCurrentPassword($password);
     }
@@ -82,7 +82,7 @@ class CustomerProfileContext implements Context
     /**
      * @Given I specify the new password as :password
      */
-    public function iSpecifyTheNewPasswordAs($password)
+    public function iSpecifyTheNewPasswordAs($password): void
     {
         $this->changePasswordPage->specifyNewPassword($password);
     }
@@ -90,7 +90,7 @@ class CustomerProfileContext implements Context
     /**
      * @Given I confirm this password as :password
      */
-    public function iSpecifyTheConfirmationPasswordAs($password)
+    public function iSpecifyTheConfirmationPasswordAs($password): void
     {
         $this->changePasswordPage->specifyConfirmationPassword($password);
     }
@@ -98,7 +98,7 @@ class CustomerProfileContext implements Context
     /**
      * @When I save my new password
      */
-    public function iSaveMyChanges()
+    public function iSaveMyChanges(): void
     {
         $this->changePasswordPage->save();
     }
@@ -107,7 +107,7 @@ class CustomerProfileContext implements Context
     /**
      * @Then I should be notified that the entered passwords do not match
      */
-    public function iShouldBeNotifiedThatTheEnteredPasswordsDoNotMatch()
+    public function iShouldBeNotifiedThatTheEnteredPasswordsDoNotMatch(): void
     {
         Assert::true($this->changePasswordPage->checkValidationMessageFor(
             'new_password',
@@ -118,7 +118,7 @@ class CustomerProfileContext implements Context
     /**
      * @Then I should be notified that provided password is different than the current one
      */
-    public function iShouldBeNotifiedThatProvidedPasswordIsDifferentThanTheCurrentOne()
+    public function iShouldBeNotifiedThatProvidedPasswordIsDifferentThanTheCurrentOne(): void
     {
         Assert::true($this->changePasswordPage->checkValidationMessageFor(
             'current_password',
@@ -130,7 +130,7 @@ class CustomerProfileContext implements Context
      * @Then my name should be :name
      * @Then my name should still be :name
      */
-    public function myNameShouldBe($name)
+    public function myNameShouldBe($name): void
     {
         $this->profilePage->open();
 
@@ -141,7 +141,7 @@ class CustomerProfileContext implements Context
      * @Then my email should be :email
      * @Then my email should still be :email
      */
-    public function myEmailShouldBe($email)
+    public function myEmailShouldBe($email): void
     {
         $this->profilePage->open();
 
@@ -151,7 +151,7 @@ class CustomerProfileContext implements Context
     /**
      * @When /^I want to change my personal information$/
      */
-    public function iWantToChangeMyPersonalInformation()
+    public function iWantToChangeMyPersonalInformation(): void
     {
         $this->changeProfilePage->open();
     }
@@ -160,7 +160,7 @@ class CustomerProfileContext implements Context
      * @When I specify the new first name as :firstname
      * @When I remove the first name
      */
-    public function iSpecifyTheNewFirstnameAs(?string $firstname = null)
+    public function iSpecifyTheNewFirstnameAs(?string $firstname = null): void
     {
         $this->changeProfilePage->specifyFirstname($firstname);
     }
@@ -169,7 +169,7 @@ class CustomerProfileContext implements Context
      * @When I specify the new last name as :lastname
      * @When I remove the last name
      */
-    public function iSpecifyTheNewLastnameAs(?string $lastname = null)
+    public function iSpecifyTheNewLastnameAs(?string $lastname = null): void
     {
         $this->changeProfilePage->specifyLastname($lastname);
     }
@@ -178,7 +178,7 @@ class CustomerProfileContext implements Context
      * @When I specify the new email as :email
      * @When I remove the email
      */
-    public function iSpecifiyTheNewEmailAs(?string $email = null)
+    public function iSpecifiyTheNewEmailAs(?string $email = null): void
     {
         $this->changeProfilePage->specifyEmail($email);
 
@@ -198,7 +198,7 @@ class CustomerProfileContext implements Context
     /**
      * @Given I save my personal information
      */
-    public function iSaveMyPersonalInformation()
+    public function iSaveMyPersonalInformation(): void
     {
         $this->changeProfilePage->save();
     }

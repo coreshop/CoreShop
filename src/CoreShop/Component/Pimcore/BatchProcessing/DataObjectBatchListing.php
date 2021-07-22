@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\BatchProcessing;
 
@@ -18,45 +20,14 @@ use Pimcore\Model\DataObject;
 
 final class DataObjectBatchListing implements Iterator, Countable
 {
-    /**
-     * @var DataObject\Listing
-     */
-    private $list;
-
-    /**
-     * @var int
-     */
-    private $batchSize;
-
-    /**
-     * @var int
-     */
-    private $index = 0;
-
-    /**
-     * @var int
-     */
-    private $loop = 0;
-
-    /**
-     * @var int
-     */
-    private $currentLoopLoaded = -1;
-
-    /**
-     * @var int
-     */
-    private $total = 0;
-
-    /**
-     * @var array
-     */
-    private $items = [];
-
-    /**
-     * @var array
-     */
-    private $ids = [];
+    private DataObject\Listing $list;
+    private int $batchSize;
+    private int $index = 0;
+    private int $loop = 0;
+    private int $currentLoopLoaded = -1;
+    private int $total = 0;
+    private array $items = [];
+    private array $ids = [];
 
     public function __construct(DataObject\Listing $list, int $batchSize)
     {
@@ -64,12 +35,12 @@ final class DataObjectBatchListing implements Iterator, Countable
         $this->batchSize = $batchSize;
     }
 
-    public function current()
+    public function current(): DataObject
     {
         return $this->items[$this->index];
     }
 
-    public function next()
+    public function next(): void
     {
         $this->index++;
 
@@ -81,17 +52,17 @@ final class DataObjectBatchListing implements Iterator, Countable
         }
     }
 
-    public function key()
+    public function key(): int
     {
         return ($this->index + 1) * ($this->loop + 1);
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->items[$this->index]);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->index = 0;
         $this->loop = 0;
@@ -100,7 +71,7 @@ final class DataObjectBatchListing implements Iterator, Countable
         $this->load();
     }
 
-    public function count()
+    public function count(): int
     {
         if (!$this->total) {
             $dao = $this->list->getDao();
@@ -119,14 +90,18 @@ final class DataObjectBatchListing implements Iterator, Countable
     /**
      * Load all items based on current state.
      */
-    private function load()
+    private function load(): void
     {
         if (null === $this->ids) {
             $dao = $this->list->getDao();
 
             if (!method_exists($dao, 'loadIdList')) {
-                throw new \InvalidArgumentException(sprintf('%s listing class does not support loadIdList.',
-                    get_class($this->list)));
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        '%s listing class does not support loadIdList.',
+                        get_class($this->list)
+                    )
+                );
             }
 
             $this->ids = $dao->loadIdList();

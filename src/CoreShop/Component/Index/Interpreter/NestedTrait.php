@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,7 +21,7 @@ trait NestedTrait
 {
     protected ServiceRegistryInterface $interpreterRegistry;
 
-    protected function loop($value, array $interpreterConfig, callable $callback)
+    protected function loop(mixed $value, array $interpreterConfig, callable $callback): mixed
     {
         foreach ($interpreterConfig['interpreters'] as $interpreter) {
             $interpreterObject = $this->interpreterRegistry->get($interpreter['type']);
@@ -32,7 +32,7 @@ trait NestedTrait
         return $value;
     }
 
-    protected function assert(array $interpreterConfig)
+    protected function assert(array $interpreterConfig): void
     {
         Assert::keyExists($interpreterConfig, 'interpreters');
         Assert::isArray($interpreterConfig['interpreters'], 'Interpreter Config needs to be array');

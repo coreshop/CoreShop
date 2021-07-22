@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -36,7 +36,7 @@ final class MenuContext implements Context
     /**
      * @Then /^the menu "([^"]+)" should have a child with ID "([^"]+)"$/
      */
-    public function menuHasAChild(string $menu, string $childId)
+    public function menuHasAChild(string $menu, string $childId): void
     {
         Assert::isInstanceOf($this->menuProvider->get($menu)->getChild($childId), ItemInterface::class);
     }
@@ -44,7 +44,7 @@ final class MenuContext implements Context
     /**
      * @Then /^the menu "([^"]+)" child with id "([^"]+)" should have a child with ID "([^"]+)"$/
      */
-    public function menuChildHasAChild(string $menu, string $parentId, string $childId)
+    public function menuChildHasAChild(string $menu, string $parentId, string $childId): void
     {
         $this->menuHasAChild($menu, $parentId);
 

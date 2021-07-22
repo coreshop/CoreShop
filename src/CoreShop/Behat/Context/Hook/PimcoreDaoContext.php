@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -43,7 +43,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function setKernel()
+    public function setKernel(): void
     {
         \Pimcore::setKernel($this->kernel);
     }
@@ -51,7 +51,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeObjects()
+    public function purgeObjects(): void
     {
         Cache::clearAll();
         Cache\Runtime::clear();
@@ -85,7 +85,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeBricks()
+    public function purgeBricks(): void
     {
         $list = new Objectbrick\Definition\Listing();
         $list->load();
@@ -104,7 +104,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function clearRuntimeCacheScenario()
+    public function clearRuntimeCacheScenario(): void
     {
         //Clearing it here is totally fine, since each scenario has its own separated context of objects
         \Pimcore\Cache\Runtime::clear();
@@ -113,7 +113,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeStep
      */
-    public function clearRuntimeCacheStep()
+    public function clearRuntimeCacheStep(): void
     {
         //We should not clear Pimcore Objects here, otherwise we lose the reference to it
         //and end up having the same object twice
@@ -132,7 +132,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeClasses()
+    public function purgeClasses(): void
     {
         $list = new ClassDefinition\Listing();
         $list->setCondition('name LIKE ?', ['Behat%']);
@@ -150,7 +150,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function clearBehatAdminUser()
+    public function clearBehatAdminUser(): void
     {
         $user = User::getByName('behat-admin');
 
@@ -162,7 +162,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function disableGlobalInheritance()
+    public function disableGlobalInheritance(): void
     {
         AbstractObject::setGetInheritedValues(false);
     }
@@ -170,7 +170,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeFieldCollections()
+    public function purgeFieldCollections(): void
     {
         $list = new Fieldcollection\Definition\Listing();
         $list->load();

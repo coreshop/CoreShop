@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,19 +17,14 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItem;
-use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class WishlistController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function addItemAction(Request $request)
+    public function addItemAction(Request $request): Response
     {
         $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
@@ -61,12 +56,7 @@ class WishlistController extends FrontendController
         return $this->redirect($redirect);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function removeItemAction(Request $request)
+    public function removeItemAction(Request $request): Response
     {
         $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
@@ -87,38 +77,24 @@ class WishlistController extends FrontendController
         return $this->redirectToRoute('coreshop_wishlist_summary');
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function summaryAction(Request $request)
+    public function summaryAction(Request $request): Response
     {
         return $this->render($this->templateConfigurator->findTemplate('Wishlist/summary.html'), [
             'wishlist' => $this->getWishlist(),
         ]);
     }
 
-    /**
-     * @return StorageListModifierInterface
-     */
-    protected function getWishlistModifier()
+    protected function getWishlistModifier(): StorageListModifierInterface
     {
         return $this->get('coreshop.wishlist.modifier');
     }
 
-    /**
-     * @return StorageListInterface
-     */
-    protected function getWishlist()
+    protected function getWishlist(): StorageListInterface
     {
         return $this->getWishlistManager()->getStorageList();
     }
 
-    /**
-     * @return StorageListManagerInterface
-     */
-    protected function getWishlistManager()
+    protected function getWishlistManager(): StorageListManagerInterface
     {
         return $this->get('coreshop.wishlist.manager');
     }

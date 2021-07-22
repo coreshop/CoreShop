@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -37,7 +37,7 @@ final class ProductQuantityPriceRuleContext implements Context
     /**
      * @Transform /^quantity price rule "([^"]+)"$/
      */
-    public function getProductQuantityPriceRuleByProductAndName($ruleName)
+    public function getProductQuantityPriceRuleByProductAndName($ruleName): ProductQuantityPriceRuleInterface
     {
         $rule = $this->productQuantityPriceRuleRepository->findOneBy(['name' => $ruleName]);
 
@@ -49,7 +49,7 @@ final class ProductQuantityPriceRuleContext implements Context
     /**
      * @Transform /^(quantity price rule)$/
      */
-    public function getLatestSpecificProductQuantityPriceRule()
+    public function getLatestSpecificProductQuantityPriceRule(): ProductQuantityPriceRuleInterface
     {
         $resource = $this->sharedStorage->get('product-quantity-price-rule');
 
@@ -61,7 +61,7 @@ final class ProductQuantityPriceRuleContext implements Context
     /**
      * @Transform /^(price range)$/
      */
-    public function getPriceRange()
+    public function getPriceRange(): QuantityRangeInterface
     {
         $resource = $this->sharedStorage->get('quantity-price-rule-range');
 

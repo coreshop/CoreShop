@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -38,7 +38,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
         $this->editmodeCssResources = $editmodeCssResources;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             BundleManagerEvents::JS_PATHS => 'getAdminJavascript',
@@ -48,7 +48,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
         ];
     }
 
-    public function getAdminJavascript(PathsEvent $event)
+    public function getAdminJavascript(PathsEvent $event): void
     {
         if (count($this->jsResources) === 0) {
             return;
@@ -57,7 +57,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
         $event->setPaths(array_merge($event->getPaths(), $this->jsResources));
     }
 
-    public function getAdminCss(PathsEvent $event)
+    public function getAdminCss(PathsEvent $event): void
     {
         if (count($this->cssResources) === 0) {
             return;
@@ -66,7 +66,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
         $event->setPaths(array_merge($event->getPaths(), $this->cssResources));
     }
 
-    public function getEditmodeAdminJavascript(PathsEvent $event)
+    public function getEditmodeAdminJavascript(PathsEvent $event): void
     {
         if (count($this->editmodeJsResources) === 0) {
             return;
@@ -75,7 +75,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
         $event->setPaths(array_merge($event->getPaths(), $this->editmodeJsResources));
     }
 
-    public function getEditmodeAdminCSS(PathsEvent $event)
+    public function getEditmodeAdminCSS(PathsEvent $event): void
     {
         if (count($this->editmodeCssResources) === 0) {
             return;

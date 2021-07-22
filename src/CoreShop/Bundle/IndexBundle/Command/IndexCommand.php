@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\IndexBundle\Command;
 
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
-use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
+use CoreShop\Component\Pimcore\BatchProcessing\DataObjectBatchListing;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
@@ -125,7 +125,7 @@ final class IndexCommand extends Command
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
             $perLoop = 10;
 
-            $batchList = new BatchListing($list, $perLoop);
+            $batchList = new DataObjectBatchListing($list, $perLoop);
 
             $batchLists[$class] = $batchList;
 
@@ -135,7 +135,7 @@ final class IndexCommand extends Command
         $this->dispatchInfo('start', $total);
 
         /**
-         * @var BatchListing $batchList
+         * @var DataObjectBatchListing $batchList
          */
         foreach ($batchLists as $class => $batchList) {
             $total = $batchList->count();

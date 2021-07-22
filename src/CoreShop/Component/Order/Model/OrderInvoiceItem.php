@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -51,7 +51,7 @@ abstract class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInv
 
     public function setTotal(int $total, bool $withTax = true)
     {
-        return $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
+        $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
     }
 
     public function getConvertedTotal(bool $withTax = true): int
@@ -61,7 +61,7 @@ abstract class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInv
 
     public function setConvertedTotal(int $convertedTotal, bool $withTax = true)
     {
-        return $withTax ? $this->setConvertedTotalGross($convertedTotal) : $this->setConvertedTotalNet($convertedTotal);
+        $withTax ? $this->setConvertedTotalGross($convertedTotal) : $this->setConvertedTotalNet($convertedTotal);
     }
 
     public function getTotalNet(): int

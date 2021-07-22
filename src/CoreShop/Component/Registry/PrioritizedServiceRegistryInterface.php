@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,91 +16,25 @@ namespace CoreShop\Component\Registry;
 
 interface PrioritizedServiceRegistryInterface
 {
-    /**
-     * @return array
-     */
-    public function all();
+    public function all(): array;
 
-    /**
-     * @param string $identifier
-     * @param int    $priority
-     * @param object $service
-     *
-     * @throws ExistingServiceException
-     * @throws \InvalidArgumentException
-     */
-    public function register($identifier, $priority, $service);
+    public function register(string $identifier, int $priority, object $service): void;
 
-    /**
-     * @param string $identifier
-     *
-     * @throws NonExistingServiceException
-     */
-    public function unregister($identifier);
+    public function unregister(string $identifier): void;
 
-    /**
-     * @param string $identifier
-     *
-     * @return bool
-     */
-    public function has($identifier);
+    public function has(string $identifier): bool;
 
-    /**
-     * @param string $identifier
-     *
-     * @return object
-     *
-     * @throws NonExistingServiceException
-     */
-    public function get($identifier);
+    public function get(string $identifier): object;
 
-    /**
-     * get previous item to $identifier.
-     *
-     * @param string $identifier
-     *
-     * @return mixed
-     */
-    public function getPreviousTo($identifier);
+    public function getPreviousTo(string $identifier): ?object;
 
-    /**
-     * @param string $identifier
-     *
-     * @return bool
-     */
-    public function hasPreviousTo($identifier);
+    public function hasPreviousTo(string $identifier): bool;
 
-    /**
-     * get all previous items to $identifier.
-     *
-     * @param string $identifier
-     *
-     * @return array
-     */
-    public function getAllPreviousTo($identifier);
+    public function getAllPreviousTo(string $identifier): array;
 
-    /**
-     * get previous item to $identifier.
-     *
-     * @param string $identifier
-     *
-     * @return mixed
-     */
-    public function getNextTo($identifier);
+    public function getNextTo(string $identifier): ?object;
 
-    /**
-     * @param string $identifier
-     *
-     * @return bool
-     */
-    public function hasNextTo($identifier);
+    public function hasNextTo(string $identifier): bool;
 
-    /**
-     * get index for $identifier.
-     *
-     * @param string $identifier
-     *
-     * @return int
-     */
-    public function getIndex($identifier);
+    public function getIndex(string $identifier): int;
 }

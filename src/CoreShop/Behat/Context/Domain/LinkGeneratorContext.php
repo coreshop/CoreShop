@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -34,7 +34,7 @@ final class LinkGeneratorContext implements Context
     /**
      * @Then /^the generated url for (object) should be "([^"]+)"/
      */
-    public function theGeneratedUrlForObjectShouldBe(Concrete $object, $url)
+    public function theGeneratedUrlForObjectShouldBe(Concrete $object, $url): void
     {
         $generatedUrl = $this->linkGenerator->generate($object, null, ['_locale' => 'en']);
 
@@ -52,7 +52,7 @@ final class LinkGeneratorContext implements Context
     /**
      * @Then /^the generated url for (object) with route "([^"]+)" should be "([^"]+)"/
      */
-    public function theGeneratedUrlForObjectWithRouteShouldBe(Concrete $object, $routeName, $url)
+    public function theGeneratedUrlForObjectWithRouteShouldBe(Concrete $object, $routeName, $url): void
     {
         $generatedUrl = $this->linkGenerator->generate($object, $routeName, ['_locale' => 'en']);
 
@@ -70,7 +70,7 @@ final class LinkGeneratorContext implements Context
     /**
      * @Then /^the generated url for route "([^"]+)" should be "([^"]+)"/
      */
-    public function theGeneratedUrlForRouteShouldBe($route, $url)
+    public function theGeneratedUrlForRouteShouldBe($route, $url): void
     {
         $generatedUrl = $this->linkGenerator->generate(null, $route, ['_locale' => 'en']);
 

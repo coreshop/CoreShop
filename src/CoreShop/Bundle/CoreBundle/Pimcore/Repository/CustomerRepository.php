@@ -6,21 +6,21 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\CustomerBundle\Pimcore\Repository\CustomerRepository as BaseCustomerRepository;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Repository\CustomerRepositoryInterface;
 
 class CustomerRepository extends BaseCustomerRepository implements CustomerRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByEmailWithoutUser(string $email)
+    public function findOneByEmailWithoutUser(string $email): ?CustomerInterface
     {
         $list = $this->getList();
 

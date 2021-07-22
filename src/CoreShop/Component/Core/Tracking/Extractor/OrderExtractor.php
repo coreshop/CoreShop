@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,9 +20,9 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class OrderExtractor implements TrackingExtractorInterface
 {
-    private $extractor;
-    protected $decimalFactor;
-    protected $decimalPrecision;
+    protected TrackingExtractorInterface $extractor;
+    protected int $decimalFactor;
+    protected int $decimalPrecision;
 
     public function __construct(TrackingExtractorInterface $extractor, int $decimalFactor, int $decimalPrecision)
     {
@@ -63,12 +63,7 @@ class OrderExtractor implements TrackingExtractorInterface
         );
     }
 
-    /**
-     * @param int $amount
-     *
-     * @return int
-     */
-    protected function parseAmount($amount)
+    protected function parseAmount(int $amount): int
     {
         return (int)round((round($amount / $this->decimalFactor, $this->decimalPrecision)), 0);
     }

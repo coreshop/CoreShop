@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -29,9 +29,9 @@ use Webmozart\Assert\Assert;
 
 class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
 {
-    private $taxCollector;
-    private $taxCalculationFactory;
-    private $distributor;
+    private TaxCollectorInterface $taxCollector;
+    private TaxCalculatorFactoryInterface $taxCalculationFactory;
+    private ProportionalIntegerDistributorInterface $distributor;
 
     public function __construct(
         TaxCollectorInterface $taxCollector,
@@ -47,7 +47,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
         ShippableInterface $shippable,
         CarrierInterface $carrier,
         AddressInterface $address,
-        int $shippingAmountNet
+        int $shippingAmount
     ): array {
         /**
          * @var StoreAwareInterface $shippable
@@ -67,7 +67,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
             return [];
         }
 
-        $distributedAmount = $this->distributor->distribute(\array_values($totalAmount), $shippingAmountNet);
+        $distributedAmount = $this->distributor->distribute(\array_values($totalAmount), $shippingAmount);
 
         return $this->collectTaxes($address, $taxRules, $distributedAmount, $store->getUseGrossPrice());
     }

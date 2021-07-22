@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -33,15 +33,15 @@ final class UpdateOrderStateExtension implements ExtensionInterface
         $this->stateMachineManager = $stateMachineManager;
     }
 
-    public function onPreExecute(Context $context)
+    public function onPreExecute(Context $context): void
     {
     }
 
-    public function onExecute(Context $context)
+    public function onExecute(Context $context): void
     {
     }
 
-    public function onPostExecute(Context $context)
+    public function onPostExecute(Context $context): void
     {
         if ($context->getException()) {
             return;
@@ -94,7 +94,7 @@ final class UpdateOrderStateExtension implements ExtensionInterface
         }
     }
 
-    private function confirmOrderState(OrderInterface $order)
+    private function confirmOrderState(OrderInterface $order): void
     {
         $stateMachine = $this->stateMachineManager->get($order, 'coreshop_order');
         if ($stateMachine->can($order, OrderTransitions::TRANSITION_CONFIRM)) {

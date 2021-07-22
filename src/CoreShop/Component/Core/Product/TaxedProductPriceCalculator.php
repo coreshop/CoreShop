@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,10 +23,10 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterface
 {
-    private $purchasableCalculator;
-    private $defaultTaxAddressProvider;
-    private $taxCalculatorFactory;
-    private $taxApplicator;
+    private PurchasableCalculatorInterface $purchasableCalculator;
+    private DefaultTaxAddressProviderInterface $defaultTaxAddressProvider;
+    private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
+    private TaxApplicatorInterface $taxApplicator;
 
     public function __construct(
         PurchasableCalculatorInterface $purchasableCalculator,

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -36,7 +36,7 @@ final class IndexListener
     /**
      * @param GenericEvent $event
      */
-    public function onClasssesEvent(GenericEvent $event)
+    public function onClasssesEvent(GenericEvent $event): void
     {
         if (null === $this->process) {
             $date = Carbon::now();
@@ -60,7 +60,7 @@ final class IndexListener
     /**
      * @param GenericEvent $event
      */
-    public function onStartEvent(GenericEvent $event)
+    public function onStartEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->setTotal($event->getSubject());
@@ -73,7 +73,7 @@ final class IndexListener
     /**
      * @param GenericEvent $event
      */
-    public function onProgressEvent(GenericEvent $event)
+    public function onProgressEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->progress();
@@ -86,7 +86,7 @@ final class IndexListener
     /**
      * @param GenericEvent $event
      */
-    public function onStatusEvent(GenericEvent $event)
+    public function onStatusEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->setMessage($event->getSubject());
@@ -99,7 +99,7 @@ final class IndexListener
     /**
      * @param GenericEvent $event
      */
-    public function onFinishedEvent(GenericEvent $event)
+    public function onFinishedEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->setProgress($this->process->getTotal());

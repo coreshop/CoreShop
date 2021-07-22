@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -51,7 +51,7 @@ final class PaymentContext implements Context
      * @Given /^There is a payment provider "([^"]+)" using factory "([^"]+)"$/
      * @Given /^the site has a payment provider "([^"]+)" using factory "([^"]+)"$/
      */
-    public function thereIsAPaymentProviderUsingFactory($name, $factory)
+    public function thereIsAPaymentProviderUsingFactory($name, $factory): void
     {
         /**
          * @var PaymentProviderInterface $paymentProvider
@@ -84,7 +84,7 @@ final class PaymentContext implements Context
      * @Given /^I create a payment for (my order) with (payment provider "[^"]+") and amount ([^"]+)$/
      * @Given /^I create a payment for (my order) with (payment provider "[^"]+")$/
      */
-    public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount = null)
+    public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount = null): void
     {
         /**
          * @var PaymentInterface $payment

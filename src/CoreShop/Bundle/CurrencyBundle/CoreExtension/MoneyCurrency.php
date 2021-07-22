@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,9 +16,6 @@ namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\Money;
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\Concrete;
 
@@ -241,13 +238,13 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
                 );
             }
 
-            if (strlen($this->getMinValue()) && $this->getMinValue() > $data->getValue()) {
+            if ((string)$this->getMinValue() !== '' && $this->getMinValue() > $data->getValue()) {
                 throw new Model\Element\ValidationException(
                     'Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue()
                 );
             }
 
-            if (strlen($this->getMaxValue()) && $data->getValue() > $this->getMaxValue()) {
+            if ((string)$this->getMaxValue() !== '' && $data->getValue() > $this->getMaxValue()) {
                 throw new Model\Element\ValidationException(
                     'Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue()
                 );

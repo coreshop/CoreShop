@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,6 +16,10 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderShipmentInterface;
+use CoreShop\Component\Order\Model\OrderInvoiceInterface;
+use CoreShop\Component\Order\Model\OrderPaymentInterface;
 
 final class OrderContext implements Context
 {
@@ -30,7 +34,7 @@ final class OrderContext implements Context
      * @Transform /^the order/
      * @Transform /^my order/
      */
-    public function order()
+    public function order(): OrderInterface
     {
         return $this->sharedStorage->get('order');
     }
@@ -38,7 +42,7 @@ final class OrderContext implements Context
     /**
      * @Transform /^latest order invoice/
      */
-    public function latestOrderInvoice()
+    public function latestOrderInvoice(): OrderInvoiceInterface
     {
         return $this->sharedStorage->get('orderInvoice');
     }
@@ -46,7 +50,7 @@ final class OrderContext implements Context
     /**
      * @Transform /^latest order shipment/
      */
-    public function latestOrderShipment()
+    public function latestOrderShipment(): OrderShipmentInterface
     {
         return $this->sharedStorage->get('orderShipment');
     }
@@ -54,7 +58,7 @@ final class OrderContext implements Context
     /**
      * @Transform /^latest order payment/
      */
-    public function latestOrderPayment()
+    public function latestOrderPayment(): OrderPaymentInterface
     {
         return $this->sharedStorage->get('orderPayment');
     }

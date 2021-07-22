@@ -57,7 +57,7 @@ $listItem->setProduct($product);
 $listItem->setQuantity($quantity);
 
 //Lets add our Product
-$listItem = $wishlistModifier->addToList($list, $listItem);
+$wishlistModifier->addToList($list, $listItem);
 
 //If we now want to remove it, we can either use the $listItem, or the Product
 //To do that with our item, we simply call

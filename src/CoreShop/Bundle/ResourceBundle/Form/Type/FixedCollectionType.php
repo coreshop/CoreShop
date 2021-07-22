@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -59,10 +59,7 @@ final class FixedCollectionType extends AbstractType
         return 'coreshop_fixed_collection';
     }
 
-    /**
-     * @return callable
-     */
-    private function optionalCallableNormalizer()
+    private function optionalCallableNormalizer(): callable
     {
         return function (Options $options, $value) {
             if (is_callable($value)) {

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,10 +23,8 @@ use CoreShop\Behat\Page\Frontend\Checkout\SummaryPageInterface;
 use CoreShop\Behat\Page\Frontend\Checkout\ThankYouPageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Webmozart\Assert\Assert;
 
 final class CheckoutContext implements Context
@@ -62,7 +60,7 @@ final class CheckoutContext implements Context
      * @When I am at the address checkout step
      * @When I try to open the address checkout step
      */
-    public function IAmAtTheAddressCheckoutStep()
+    public function IAmAtTheAddressCheckoutStep(): void
     {
         $this->addressPage->tryToOpen();
     }
@@ -70,7 +68,7 @@ final class CheckoutContext implements Context
     /**
      * @When I should be on the address checkout step
      */
-    public function IShouldBeOnTheAddressCheckoutStep()
+    public function IShouldBeOnTheAddressCheckoutStep(): void
     {
         $this->addressPage->verify();
     }
@@ -78,7 +76,7 @@ final class CheckoutContext implements Context
     /**
      * @When /^I use the last (address) as invoice address$/
      */
-    public function IUseTheLastAddressAsInvoiceAddress(AddressInterface $address)
+    public function IUseTheLastAddressAsInvoiceAddress(AddressInterface $address): void
     {
         $this->addressPage->useInvoiceAddress($address);
     }
@@ -86,7 +84,7 @@ final class CheckoutContext implements Context
     /**
      * @When /^I submit the address step$/
      */
-    public function ISubmitTheAddressStep()
+    public function ISubmitTheAddressStep(): void
     {
         $this->addressPage->submitStep();
     }
@@ -95,7 +93,7 @@ final class CheckoutContext implements Context
      * @When I am at the customer checkout step
      * @When I try to open the customer checkout step
      */
-    public function IAmAtTheCustomerCheckoutStep()
+    public function IAmAtTheCustomerCheckoutStep(): void
     {
         $this->customerPage->tryToOpen();
     }
@@ -103,7 +101,7 @@ final class CheckoutContext implements Context
     /**
      * @When I should be on the customer checkout step
      */
-    public function IShouldBeOnTheCustomerCheckoutStep()
+    public function IShouldBeOnTheCustomerCheckoutStep(): void
     {
         $this->customerPage->tryToOpen();
     }
@@ -112,7 +110,7 @@ final class CheckoutContext implements Context
      * @When I am at the shipping checkout step
      * @When I try to open the shipping checkout step
      */
-    public function IAmAtTheShippingCheckoutStep()
+    public function IAmAtTheShippingCheckoutStep(): void
     {
         $this->shippingPage->tryToOpen();
     }
@@ -120,7 +118,7 @@ final class CheckoutContext implements Context
     /**
      * @When I should be on the shipping checkout step
      */
-    public function IShouldBeOnTheShippingCheckoutStep()
+    public function IShouldBeOnTheShippingCheckoutStep(): void
     {
         $this->shippingPage->verify();
     }
@@ -128,7 +126,7 @@ final class CheckoutContext implements Context
     /**
      * @When /^I should not see carrier "([^"]+)"$/
      */
-    public function IShouldNotSeeCarrier($carrier)
+    public function IShouldNotSeeCarrier($carrier): void
     {
         Assert::false(in_array($carrier, $this->shippingPage->getCarriers(), true));
     }
@@ -136,7 +134,7 @@ final class CheckoutContext implements Context
     /**
      * @When /^I submit the shipping step$/
      */
-    public function ISubmitTheShippingStep()
+    public function ISubmitTheShippingStep(): void
     {
         $this->shippingPage->submitStep();
     }
@@ -145,7 +143,7 @@ final class CheckoutContext implements Context
      * @When I am at the payment checkout step
      * @When I try to open the payment checkout step
      */
-    public function IAmAtThePaymentCheckoutStep()
+    public function IAmAtThePaymentCheckoutStep(): void
     {
         $this->paymentPage->tryToOpen();
     }
@@ -153,7 +151,7 @@ final class CheckoutContext implements Context
     /**
      * @When I should be on the payment checkout step
      */
-    public function IShouldBeOnThePaymentCheckoutStep()
+    public function IShouldBeOnThePaymentCheckoutStep(): void
     {
         $this->paymentPage->verify();
     }
@@ -161,7 +159,7 @@ final class CheckoutContext implements Context
     /**
      * @When /^I select the (payment provider "[^"]+")$/
      */
-    public function ISelectThePaymentProvider(PaymentProviderInterface $provider)
+    public function ISelectThePaymentProvider(PaymentProviderInterface $provider): void
     {
         $this->paymentPage->selectPaymentProvider($provider);
     }
@@ -169,7 +167,7 @@ final class CheckoutContext implements Context
     /**
      * @When /^I submit the payment step$/
      */
-    public function ISubmitThePaymentStep()
+    public function ISubmitThePaymentStep(): void
     {
         $this->paymentPage->submitStep();
     }
@@ -178,7 +176,7 @@ final class CheckoutContext implements Context
      * @When I am at the summary checkout step
      * @When I try to open the summary checkout step
      */
-    public function IAmAtTheSummaryCheckoutStep()
+    public function IAmAtTheSummaryCheckoutStep(): void
     {
         $this->summaryPage->tryToOpen();
     }
@@ -186,7 +184,7 @@ final class CheckoutContext implements Context
     /**
      * @When I should be on the summary checkout step
      */
-    public function IShouldBeOnTheSummaryCheckoutStep()
+    public function IShouldBeOnTheSummaryCheckoutStep(): void
     {
         $this->summaryPage->verify();
     }
@@ -194,7 +192,7 @@ final class CheckoutContext implements Context
     /**
      * @When I accept the checkout terms of service
      */
-    public function IAcceptTheTermsOfService()
+    public function IAcceptTheTermsOfService(): void
     {
         $this->summaryPage->acceptTermsOfService();
     }
@@ -202,7 +200,7 @@ final class CheckoutContext implements Context
     /**
      * @When I decline the checkout terms of service
      */
-    public function IDeclineTheTermsOfService()
+    public function IDeclineTheTermsOfService(): void
     {
         $this->summaryPage->declineTermsOfService();
     }
@@ -210,7 +208,7 @@ final class CheckoutContext implements Context
     /**
      * @When I submit the order
      */
-    public function ISubmitTheOrder()
+    public function ISubmitTheOrder(): void
     {
         $this->summaryPage->submitOrder();
     }
@@ -218,7 +216,7 @@ final class CheckoutContext implements Context
     /**
      * @When I submit the quote
      */
-    public function ISubmitTheQuote()
+    public function ISubmitTheQuote(): void
     {
         $this->summaryPage->submitQuote();
     }
@@ -226,7 +224,7 @@ final class CheckoutContext implements Context
     /**
      * @When I should be on the thank you page
      */
-    public function IShouldBeOnTheThankYouPage()
+    public function IShouldBeOnTheThankYouPage(): void
     {
         $this->thankYouPage->verify();
     }
@@ -331,7 +329,7 @@ final class CheckoutContext implements Context
     /**
      * @When I submit the guest checkout
      */
-    public function iSubmitTheGuestCheckout()
+    public function iSubmitTheGuestCheckout(): void
     {
         $this->customerPage->submitGuestCheckout();
     }

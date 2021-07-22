@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,7 +22,6 @@ use CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdateInterface;
 use CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitionUpdate;
-use CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
@@ -46,7 +45,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^I enable inheritance for class "([^"]+)"$/
      */
-    public function iEnableInheritanceForPimcoreClass($className)
+    public function iEnableInheritanceForPimcoreClass($className): void
     {
         $definitionUpdater = new ClassUpdate($className);
         $definitionUpdater->setProperty('allowInherit', true);
@@ -56,7 +55,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^I enable variants for class "([^"]+)"$/
      */
-    public function iEnableVariantsForPimcoreClass($className)
+    public function iEnableVariantsForPimcoreClass($className): void
     {
         $definitionUpdater = new ClassUpdate($className);
         $definitionUpdater->setProperty('allowVariants', true);
@@ -66,7 +65,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^I enable pimcore inheritance$/
      */
-    public function enableInheritance()
+    public function enableInheritance(): void
     {
         DataObject\AbstractObject::setGetInheritedValues(true);
     }
@@ -74,7 +73,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^I disable pimcore inheritance$/
      */
-    public function disableInheritance()
+    public function disableInheritance(): void
     {
         DataObject\AbstractObject::setGetInheritedValues(false);
     }
@@ -82,7 +81,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^there is a pimcore class "([^"]+)"$/
      */
-    public function createClassNamed($className)
+    public function createClassNamed($className): void
     {
         $name = $this->classStorage->set($className);
 
@@ -168,7 +167,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^there is a pimcore brick "([^"]+)"$/
      */
-    public function createBrickNamed($brickName)
+    public function createBrickNamed($brickName): void
     {
         $name = $this->classStorage->set($brickName);
 
@@ -228,7 +227,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^there is a pimcore field-collection "([^"]+)"$/
      */
-    public function createCollectionNamed($collection)
+    public function createCollectionNamed($collection): void
     {
         $name = $this->classStorage->set($collection);
 
@@ -286,7 +285,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (definitions) parent class is set to "([^"]+)"$/
      */
-    public function definitionsParentClassIsSetTo($definition, $parentClass)
+    public function definitionsParentClassIsSetTo($definition, $parentClass): void
     {
         $definitionUpdater = $this->getUpdater($definition);
         $definitionUpdater->setProperty('parentClass', $parentClass);
@@ -296,7 +295,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (definition) is allowed for (behat-class "[^"]+") in field "([^"]+)"$/
      */
-    public function theDefinitionIsAllowedForClass($definition, ClassDefinition $class, $field)
+    public function theDefinitionIsAllowedForClass($definition, ClassDefinition $class, $field): void
     {
         if (!$definition instanceof Objectbrick\Definition) {
             throw new \InvalidArgumentException('This call is only allowed for brick definitions');
@@ -315,7 +314,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (definition) has a input field "([^"]+)"$/
      */
-    public function definitionHasInputField($definition, $name)
+    public function definitionHasInputField($definition, $name): void
     {
         $jsonDefinition = sprintf('
             {
@@ -347,7 +346,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (definition) has a numeric field "([^"]+)"$/
      */
-    public function definitionHasNumberField($definition, $name)
+    public function definitionHasNumberField($definition, $name): void
     {
         $jsonDefinition = sprintf('
             {
@@ -388,7 +387,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (definition) has a numeric integer field "([^"]+)"$/
      */
-    public function definitionHasIntegerField($definition, $name)
+    public function definitionHasIntegerField($definition, $name): void
     {
         $jsonDefinition = sprintf('
             {
@@ -429,7 +428,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (definition) has a relation field "([^"]+)"$/
      */
-    public function definitionHasRelationField($definition, $name)
+    public function definitionHasRelationField($definition, $name): void
     {
         $jsonDefinition = sprintf('
             {
@@ -468,7 +467,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (definition) has a checkbox field "([^"]+)"$/
      */
-    public function definitionHasCheckboxField($definition, $name)
+    public function definitionHasCheckboxField($definition, $name): void
     {
         $jsonDefinition = sprintf('
             {
@@ -497,7 +496,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (definition) has a localized input field "([^"]+)"$/
      */
-    public function definitionHasLocalizedInputField($definition, $name)
+    public function definitionHasLocalizedInputField($definition, $name): void
     {
         $jsonDefinition = sprintf('
             {
@@ -557,7 +556,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (definition) has a localized textarea field "([^"]+)"$/
      */
-    public function definitionHasLocalizedTextareaField($definition, $name)
+    public function definitionHasLocalizedTextareaField($definition, $name): void
     {
         $jsonDefinition = sprintf('
             {
@@ -615,7 +614,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (definition) has a brick field "([^"]+)"$/
      */
-    public function definitionHasABrickField($definition, $name)
+    public function definitionHasABrickField($definition, $name): void
     {
         if (!$definition instanceof ClassDefinition) {
             throw new \InvalidArgumentException(sprintf('Bricks are only allowed in ClassDefinitions, given %s', null !== $definition ? get_class($definition) : 'null'));
@@ -650,7 +649,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (definition) has a field-collection field "([^"]+)" for (field-collection "[^"]+")$/
      */
-    public function definitionHasAFieldCollectionField($definition, $name, Fieldcollection\Definition $fieldCollectionDefinition)
+    public function definitionHasAFieldCollectionField($definition, $name, Fieldcollection\Definition $fieldCollectionDefinition): void
     {
         if (!$definition instanceof ClassDefinition) {
             throw new \InvalidArgumentException(sprintf('Fieldcollections are only allowed in ClassDefinitions, given %s', null !== $definition ? get_class($definition) : 'null'));
@@ -692,7 +691,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^there is an instance of (class|behat-class "[^"]+") with key "([^"]+)"$/
      */
-    public function thereIsAnInstanceofClassWithKey(ClassDefinition $definition, $key)
+    public function thereIsAnInstanceofClassWithKey(ClassDefinition $definition, $key): void
     {
         $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
         /**
@@ -708,7 +707,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^I reload the (object-instance) into object-instance-2$/
      */
-    public function iReloadTheObjectInstanceIntoObjectInstance2(Concrete $dataObject)
+    public function iReloadTheObjectInstanceIntoObjectInstance2(Concrete $dataObject): void
     {
         $newInstance = $dataObject::getById($dataObject->getId(), true);
 
@@ -718,7 +717,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (object-instance) is published$/
      */
-    public function theObjectInstanceIsPublished(Concrete $instance)
+    public function theObjectInstanceIsPublished(Concrete $instance): void
     {
         $instance->setPublished(true);
         $instance->save();
@@ -727,7 +726,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /^the (object-instance) is not published$/
      */
-    public function theObjectInstanceIsNotPublished(Concrete $instance)
+    public function theObjectInstanceIsNotPublished(Concrete $instance): void
     {
         $instance->setPublished(false);
         $instance->save();
@@ -738,7 +737,7 @@ final class PimcoreClassContext implements Context
      * @Given /I change the (object-instance) values:/
      * @Given /I change the (object-instance-2) values:/
      */
-    public function theObjectInstanceHasFollowingValues(Concrete $object, TableNode $table)
+    public function theObjectInstanceHasFollowingValues(Concrete $object, TableNode $table): void
     {
         $this->setObjectValuesFromTable($object, $table);
         $object->save();
@@ -747,13 +746,13 @@ final class PimcoreClassContext implements Context
     /**
      * @Given /the (object-instance) has following values as version:/
      */
-    public function theObjectInstanceHasFollowingValuesAsVersion(Concrete $object, TableNode $table)
+    public function theObjectInstanceHasFollowingValuesAsVersion(Concrete $object, TableNode $table): void
     {
         $this->setObjectValuesFromTable($object, $table);
         $object->saveVersion();
     }
 
-    private function setObjectValuesFromTable(Concrete $object, TableNode $table)
+    private function setObjectValuesFromTable(Concrete $object, TableNode $table): void
     {
         $hash = $table->getHash();
 
@@ -827,27 +826,16 @@ final class PimcoreClassContext implements Context
         }
     }
 
-    /**
-     * @param string $definition
-     * @param string $fieldDefinition
-     *
-     * @throws ClassDefinitionNotFoundException
-     */
-    private function addFieldDefinitionToDefinition($definition, $fieldDefinition)
-    {
+    private function addFieldDefinitionToDefinition(
+        ClassDefinition|Objectbrick\Definition|Fieldcollection\Definition $definition,
+        string $fieldDefinition
+    ): void {
         $definitionUpdater = $this->getUpdater($definition);
-        $definitionUpdater->insertField(json_decode(stripslashes($fieldDefinition), true));
+        $definitionUpdater->insertField(json_decode(stripslashes($fieldDefinition), true, 512, JSON_THROW_ON_ERROR));
         $definitionUpdater->save();
     }
 
-    /**
-     * @param string $definition
-     *
-     * @return BrickDefinitionUpdate|ClassUpdate|FieldCollectionDefinitionUpdate
-     *
-     * @throws ClassDefinitionNotFoundException
-     */
-    private function getUpdater($definition)
+    private function getUpdater(ClassDefinition|Objectbrick\Definition|Fieldcollection\Definition $definition): ClassUpdateInterface
     {
         $definitionUpdater = null;
 
@@ -857,8 +845,6 @@ final class PimcoreClassContext implements Context
             $definitionUpdater = new BrickDefinitionUpdate($definition->getKey());
         } elseif ($definition instanceof Fieldcollection\Definition) {
             $definitionUpdater = new FieldCollectionDefinitionUpdate($definition->getKey());
-        } else {
-            throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', null !== $definition ? get_class($definition) : 'null'));
         }
 
         if (!$definitionUpdater instanceof ClassUpdateInterface) {

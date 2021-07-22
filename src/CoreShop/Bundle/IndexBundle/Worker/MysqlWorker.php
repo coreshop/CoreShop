@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,6 +21,7 @@ use CoreShop\Component\Index\Extension\IndexColumnTypeConfigExtension;
 use CoreShop\Component\Index\Extension\IndexRelationalColumnsExtensionInterface;
 use CoreShop\Component\Index\Extension\IndexSystemColumnTypeConfigExtension;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
+use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
@@ -57,7 +58,7 @@ class MysqlWorker extends AbstractWorker
         $this->database = $connection;
     }
 
-    public function createOrUpdateIndexStructures(IndexInterface $index)
+    public function createOrUpdateIndexStructures(IndexInterface $index): void
     {
         $schemaManager = $this->database->getSchemaManager();
 
@@ -289,7 +290,7 @@ QUERY;
         }
     }
 
-    public function renameIndexStructures(IndexInterface $index, string $oldName, string $newName)
+    public function renameIndexStructures(IndexInterface $index, string $oldName, string $newName): void
     {
         try {
             $languages = Tool::getValidLanguages();
@@ -320,14 +321,14 @@ QUERY;
         }
     }
 
-    public function deleteFromIndex(IndexInterface $index, IndexableInterface $object)
+    public function deleteFromIndex(IndexInterface $index, IndexableInterface $object): void
     {
         $this->database->delete($this->getTablename($index->getName()), ['o_id' => $object->getId()]);
         $this->database->delete($this->getLocalizedTablename($index->getName()), ['oo_id' => $object->getId()]);
         $this->database->delete($this->getRelationTablename($index->getName()), ['src' => $object->getId()]);
     }
 
-    public function updateIndex(IndexInterface $index, IndexableInterface $object)
+    public function updateIndex(IndexInterface $index, IndexableInterface $object): void
     {
         $doIndex = $object->getIndexable($index);
 
@@ -360,7 +361,7 @@ QUERY;
         }
     }
 
-    protected function doInsertData(IndexInterface $index, array $data)
+    protected function doInsertData(IndexInterface $index, array $data): void
     {
         //insert index data
         $dataKeys = [];
@@ -401,14 +402,14 @@ QUERY;
         $this->database->executeQuery($insert, array_merge($updateData, $insertData));
     }
 
-    protected function doInsertRelationalData(IndexInterface $index, $data)
+    protected function doInsertRelationalData(IndexInterface $index, $data): void
     {
         foreach ($data as $rd) {
             $this->database->insert($this->getRelationTablename($index->getName()), $rd);
         }
     }
 
-    protected function doInsertLocalizedData(IndexInterface $index, array $data)
+    protected function doInsertLocalizedData(IndexInterface $index, array $data): void
     {
         $columns = $index->getColumns()->toArray();
         $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $columns);
@@ -512,7 +513,7 @@ QUERY;
         return $config;
     }
 
-    public function getList(IndexInterface $index)
+    public function getList(IndexInterface $index): ListingInterface
     {
         return new MysqlWorker\Listing($index, $this, $this->database);
     }

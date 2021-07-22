@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -28,5 +28,5 @@ interface WorkflowStateInfoManagerInterface
 
     public function getStateInfo(string $workflowName, string $value, bool $forFrontend = true): array;
 
-    public function parseTransitions($subject, string $workflowName, array $transitions = [], bool $forFrontend = true);
+    public function parseTransitions(object $subject, string $workflowName, array $transitions = [], bool $forFrontend = true);
 }

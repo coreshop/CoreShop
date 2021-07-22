@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,6 +23,7 @@ use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Interpreter\RelationalValueInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
+use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
@@ -64,7 +65,7 @@ abstract class AbstractWorker implements WorkerInterface
         $this->orderRenderer = $orderRenderer;
     }
 
-    public function getExtensions(IndexInterface $index)
+    public function getExtensions(IndexInterface $index): array
     {
         $extensions = $this->extensions->all();
         $eligibleExtensions = [];
@@ -88,7 +89,7 @@ abstract class AbstractWorker implements WorkerInterface
         return $this->orderRenderer->render($this, $condition, $prefix);
     }
 
-    protected function prepareData(IndexInterface $index, IndexableInterface $object)
+    protected function prepareData(IndexInterface $index, IndexableInterface $object): array
     {
         $inAdmin = \Pimcore::inAdmin();
         \Pimcore::unsetAdminMode();
@@ -202,7 +203,7 @@ abstract class AbstractWorker implements WorkerInterface
 
     abstract protected function handleArrayValues(IndexInterface $index, array $value);
 
-    protected function processRelationalData(IndexColumnInterface $column, IndexableInterface $object, $value, $virtualObjectId)
+    protected function processRelationalData(IndexColumnInterface $column, IndexableInterface $object, mixed $value, int $virtualObjectId): array
     {
         if (null === $value) {
             return [];
@@ -309,7 +310,7 @@ abstract class AbstractWorker implements WorkerInterface
 
     abstract public function updateIndex(IndexInterface $index, IndexableInterface $object);
 
-    abstract public function getList(IndexInterface $index);
+    abstract public function getList(IndexInterface $index): ListingInterface;
 
     abstract public function renderFieldType(string $type);
 

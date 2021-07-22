@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,8 +20,6 @@ use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterfac
 use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Core\Model\PaymentProvider;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Pool;
 use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -53,7 +51,7 @@ final class PaymentController implements Context
     /**
      * @Then /^I simulate the concurrent requests for notify and capture for the (latest order payment)$/
      */
-    public function iOpenCartSummaryPage(PaymentInterface $payment)
+    public function iOpenCartSummaryPage(PaymentInterface $payment): void
     {
         $context = RequestContext::fromUri(getenv('PANTHER_EXTERNAL_BASE_URI'));
         $originalContext = $this->router->getContext();

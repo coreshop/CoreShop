@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -33,35 +33,24 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
-use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
-use CoreShop\Component\StorageList\StorageListModifierInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class CartController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function widgetAction(Request $request)
+    public function widgetAction(Request $request): Response
     {
         return $this->render($this->templateConfigurator->findTemplate('Cart/_widget.html'), [
             'cart' => $this->getCart(),
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function summaryAction(Request $request)
+    public function summaryAction(Request $request): Response
     {
         $cart = $this->getCart();
         $form = $this->get('form.factory')->createNamed('coreshop', CartType::class, $cart);
@@ -109,12 +98,7 @@ class CartController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function shipmentCalculationAction(Request $request)
+    public function shipmentCalculationAction(Request $request): Response
     {
         $cart = $this->getCart();
         $form = $this->get('form.factory')->createNamed('coreshop', ShippingCalculatorType::class, null, [
@@ -159,12 +143,7 @@ class CartController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function addItemAction(Request $request)
+    public function addItemAction(Request $request): Response
     {
         $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
 
@@ -250,12 +229,7 @@ class CartController extends FrontendController
         );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function removeItemAction(Request $request)
+    public function removeItemAction(Request $request): Response
     {
         $cartItem = $this->get('coreshop.repository.order_item')->find($request->get('cartItem'));
 
@@ -277,12 +251,7 @@ class CartController extends FrontendController
         return $this->redirectToRoute('coreshop_cart_summary');
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function removePriceRuleAction(Request $request)
+    public function removePriceRuleAction(Request $request): Response
     {
         $code = $request->get('code');
         $cart = $this->getCart();
@@ -301,87 +270,52 @@ class CartController extends FrontendController
         return $this->redirectToRoute('coreshop_cart_summary');
     }
 
-    /**
-     * @param OrderInterface     $cart
-     * @param OrderItemInterface $cartItem
-     *
-     * @return AddToCartInterface
-     */
-    protected function createAddToCart(OrderInterface $cart, OrderItemInterface $cartItem)
+    protected function createAddToCart(OrderInterface $cart, OrderItemInterface $cartItem): AddToCartInterface
     {
         return $this->get(AddToCartFactoryInterface::class)->createWithCartAndCartItem($cart, $cartItem);
     }
 
-    /**
-     * @return CartPriceRuleProcessorInterface
-     */
-    protected function getCartPriceRuleProcessor()
+    protected function getCartPriceRuleProcessor(): CartPriceRuleProcessorInterface
     {
         return $this->get(CartPriceRuleProcessorInterface::class);
     }
 
-    /**
-     * @return CartPriceRuleUnProcessorInterface
-     */
-    protected function getCartPriceRuleUnProcessor()
+    protected function getCartPriceRuleUnProcessor(): CartPriceRuleUnProcessorInterface
     {
         return $this->get(CartPriceRuleUnProcessorInterface::class);
     }
 
-    /**
-     * @return StorageListModifierInterface
-     */
-    protected function getCartModifier()
+    protected function getCartModifier(): CartModifierInterface
     {
         return $this->get(CartModifierInterface::class);
     }
 
-    /**
-     * @return StorageListItemQuantityModifierInterface
-     */
-    protected function getQuantityModifer()
+    protected function getQuantityModifer(): CartItemQuantityModifier
     {
         return $this->get(CartItemQuantityModifier::class);
     }
 
-    /**
-     * @return CartPriceRuleVoucherRepositoryInterface
-     */
-    protected function getCartPriceRuleVoucherRepository()
+    protected function getCartPriceRuleVoucherRepository(): CartPriceRuleVoucherRepositoryInterface
     {
         return $this->get('coreshop.repository.cart_price_rule_voucher_code');
     }
 
-    /**
-     * @return \CoreShop\Component\Order\Model\OrderInterface
-     */
-    protected function getCart()
+    protected function getCart(): OrderInterface
     {
         return $this->getCartContext()->getCart();
     }
 
-    /**
-     * @return CartContextInterface
-     */
-    protected function getCartContext()
+    protected function getCartContext(): CartContextInterface
     {
         return $this->get(CartContextInterface::class);
     }
 
-    /**
-     * @return CartManagerInterface
-     */
-    protected function getCartManager()
+    protected function getCartManager(): CartManagerInterface
     {
         return $this->get(CartManagerInterface::class);
     }
 
-    /**
-     * @param OrderItemInterface $cartItem
-     *
-     * @return ConstraintViolationListInterface
-     */
-    private function getCartItemErrors(OrderItemInterface $cartItem)
+    private function getCartItemErrors(OrderItemInterface $cartItem): ConstraintViolationListInterface
     {
         return $this
             ->get('validator')

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,17 +16,10 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Element\Recyclebin\Item;
-use Pimcore\Model\User;
-use Pimcore\Model\Version;
 use Webmozart\Assert\Assert;
 
 final class RecycleBinContext implements Context
@@ -42,7 +35,7 @@ final class RecycleBinContext implements Context
      * @Then /^I recycle the (product "[^"]+")$/
      * @Then /^I recycle the (product)$/
      */
-    public function IAddTheObjectToTheBin(Concrete $concrete)
+    public function IAddTheObjectToTheBin(Concrete $concrete): void
     {
         /**
          * @var Item $item
@@ -63,7 +56,7 @@ final class RecycleBinContext implements Context
      * @Then /^I restore the recycled (product "[^"]+")$/
      * @Then /^I restore the recycled (product)$/
      */
-    public function iRestoreTheRecycledProduct(Concrete $concrete)
+    public function iRestoreTheRecycledProduct(Concrete $concrete): void
     {
         $key = 'data_object_recycle_' . $concrete->getId();
 

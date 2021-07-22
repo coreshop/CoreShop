@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -69,7 +69,7 @@ final class TrackingContext implements Context
     /**
      * @Then /^tracking (product) impression with tracker "([^"]+)" should generate:$/
      */
-    public function trackProductImpression(ProductInterface $product, $tracker, PyStringNode $code)
+    public function trackProductImpression(ProductInterface $product, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
 
@@ -83,7 +83,7 @@ final class TrackingContext implements Context
     /**
      * @Then /^tracking (product) with tracker "([^"]+)" should generate:$/
      */
-    public function trackProductView(ProductInterface $product, $tracker, PyStringNode $code)
+    public function trackProductView(ProductInterface $product, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
 
@@ -97,7 +97,7 @@ final class TrackingContext implements Context
     /**
      * @Then /^tracking cart-add for (my cart) with (product) with tracker "([^"]+)" should generate:$/
      */
-    public function trackCartAdd(OrderInterface $cart, ProductInterface $product, $tracker, PyStringNode $code)
+    public function trackCartAdd(OrderInterface $cart, ProductInterface $product, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
 
@@ -117,7 +117,7 @@ final class TrackingContext implements Context
     /**
      * @Then /^tracking cart-remove for (my cart) with (product) with tracker "([^"]+)" should generate:$/
      */
-    public function trackCartRemove(OrderInterface $cart, ProductInterface $product, $tracker, PyStringNode $code)
+    public function trackCartRemove(OrderInterface $cart, ProductInterface $product, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
 
@@ -131,7 +131,7 @@ final class TrackingContext implements Context
     /**
      * @Then /^tracking checkout step for (my cart) with tracker "([^"]+)" should generate:$/
      */
-    public function trackCheckoutStep(OrderInterface $cart, $tracker, PyStringNode $code)
+    public function trackCheckoutStep(OrderInterface $cart, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
 
@@ -146,7 +146,7 @@ final class TrackingContext implements Context
     /**
      * @Then /^tracking (my order) checkout complete with tracker "([^"]+)" should generate:$/
      */
-    public function trackCheckoutComplete(OrderInterface $order, $tracker, PyStringNode $code)
+    public function trackCheckoutComplete(OrderInterface $order, $tracker, PyStringNode $code): void
     {
         $tracker = $this->getTracker($tracker);
 
@@ -158,12 +158,7 @@ final class TrackingContext implements Context
         Assert::eq($this->getRenderedPartForTracker($tracker), $code);
     }
 
-    /**
-     * @param TrackerInterface $tracker
-     *
-     * @return null|string
-     */
-    private function getRenderedPartForTracker(TrackerInterface $tracker)
+    private function getRenderedPartForTracker(TrackerInterface $tracker): string
     {
         $code = '';
 
@@ -210,12 +205,7 @@ final class TrackingContext implements Context
         return trim($code);
     }
 
-    /**
-     * @param string $trackerIdentifier
-     *
-     * @return TrackerInterface
-     */
-    private function getTracker(string $trackerIdentifier)
+    private function getTracker(string $trackerIdentifier): TrackerInterface
     {
         $tracker = $this->trackerRegistry->get($trackerIdentifier);
 

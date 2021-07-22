@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
@@ -333,7 +335,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
             if (method_exists($owner, $getter)) {
                 $currentData = $owner->$getter();
                 if (is_array($currentData)) {
-                    for ($i = 0; $i < count($currentData); $i++) {
+                    for ($i = 0, $iMax = count($currentData); $i < $iMax; $i++) {
                         if ($currentData[$i]->getId() == $object->getId()) {
                             unset($currentData[$i]);
                             $owner->$setter($currentData);

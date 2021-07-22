@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\WorkflowBundle\StateManager;
 use CoreShop\Bundle\WorkflowBundle\Event\WorkflowTransitionEvent;
 use CoreShop\Bundle\WorkflowBundle\History\HistoryRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -58,7 +59,7 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
         return $data;
     }
 
-    public function parseTransitions($subject, string $workflowName, array $transitions = [], bool $forFrontend = true): array
+    public function parseTransitions(object $subject, string $workflowName, array $transitions = [], bool $forFrontend = true): array
     {
         $event = new WorkflowTransitionEvent($transitions, $workflowName);
         $this->eventDispatcher->dispatch($event, 'coreshop.workflow.valid_transitions');
@@ -74,22 +75,20 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
         return $valid;
     }
 
-    public function getTransitionInfo($workflowName, $transition, $forFrontend = true)
+    public function getTransitionInfo(string $workflowName, string $transition, bool $forFrontend = true): array
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.transition.' : 'coreshop_workflow_transition_';
         $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $transition;
-        $color = isset($this->stateColors[$workflowName]['transition_colors'][$transition]) ? $this->stateColors[$workflowName]['transition_colors'][$transition] : '#999999';
+        $color = $this->stateColors[$workflowName]['transition_colors'][$transition] ?? '#999999';
 
-        $data = [
+        return [
             'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
             'transition' => $transition,
             'color' => $color,
         ];
-
-        return $data;
     }
 
-    public function getStateHistory($order): array
+    public function getStateHistory(Concrete $order): array
     {
         return $this->historyRepository->getHistory($order);
     }

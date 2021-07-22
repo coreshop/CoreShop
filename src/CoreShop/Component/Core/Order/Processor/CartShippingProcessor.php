@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -32,12 +32,12 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CartShippingProcessor implements CartProcessorInterface
 {
-    private $carrierPriceCalculator;
-    private $carrierValidator;
-    private $defaultCarrierResolver;
-    private $defaultAddressProvider;
-    private $adjustmentFactory;
-    private $cartContextResolver;
+    private TaxedShippingCalculatorInterface $carrierPriceCalculator;
+    private ShippableCarrierValidatorInterface $carrierValidator;
+    private DefaultCarrierResolverInterface $defaultCarrierResolver;
+    private AddressProviderInterface $defaultAddressProvider;
+    private AdjustmentFactoryInterface $adjustmentFactory;
+    private CartContextResolverInterface $cartContextResolver;
 
     public function __construct(
         TaxedShippingCalculatorInterface $carrierPriceCalculator,
@@ -136,7 +136,7 @@ final class CartShippingProcessor implements CartProcessorInterface
      * @param OrderInterface   $cart
      * @param AddressInterface $address
      */
-    private function resolveDefaultCarrier(OrderInterface $cart, AddressInterface $address)
+    private function resolveDefaultCarrier(OrderInterface $cart, AddressInterface $address): void
     {
         if (!$cart instanceof CoreOrderInterface) {
             return;

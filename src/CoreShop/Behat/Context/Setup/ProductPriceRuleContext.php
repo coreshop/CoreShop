@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -41,7 +41,6 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
-use CoreShop\Component\Product\Repository\ProductPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
@@ -79,7 +78,7 @@ final class ProductPriceRuleContext implements Context
     /**
      * @Given /^adding a product price rule named "([^"]+)"$/
      */
-    public function addingAProductPriceRule($ruleName)
+    public function addingAProductPriceRule($ruleName): void
     {
         /**
          * @var ProductPriceRuleInterface $rule
@@ -97,7 +96,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") is active$/
      * @Given /^the (price rule) is active$/
      */
-    public function theProductPriceRuleIsActive(ProductPriceRuleInterface $rule)
+    public function theProductPriceRuleIsActive(ProductPriceRuleInterface $rule): void
     {
         $rule->setActive(true);
 
@@ -109,7 +108,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") is inactive$/
      * @Given /^the (price rule) is inactive$/
      */
-    public function theProductPriceRuleIsInActive(ProductPriceRuleInterface $rule)
+    public function theProductPriceRuleIsInActive(ProductPriceRuleInterface $rule): void
     {
         $rule->setActive(false);
 
@@ -121,7 +120,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") is stop propagation$/
      * @Given /^the (price rule) is stop propagation$/
      */
-    public function theProductPriceRuleIsStopPropagation(ProductPriceRuleInterface $rule)
+    public function theProductPriceRuleIsStopPropagation(ProductPriceRuleInterface $rule): void
     {
         $rule->setStopPropagation(true);
 
@@ -133,7 +132,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") is not stop propagation$/
      * @Given /^the (price rule) is not stop propagation$/
      */
-    public function theProductPriceRuleIsNotStopPropagation(ProductPriceRuleInterface $rule)
+    public function theProductPriceRuleIsNotStopPropagation(ProductPriceRuleInterface $rule): void
     {
         $rule->setStopPropagation(false);
 
@@ -145,7 +144,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") has priority "([\d]+)"$/
      * @Given /^the (price rule) has priority "([\d]+)"$/
      */
-    public function theProductPriceRuleHasPriority(ProductPriceRuleInterface $rule, int $priority)
+    public function theProductPriceRuleHasPriority(ProductPriceRuleInterface $rule, int $priority): void
     {
         $rule->setPriority($priority);
 
@@ -160,7 +159,7 @@ final class ProductPriceRuleContext implements Context
     public function theProductPriceRuleHasACountriesCondition(
         ProductPriceRuleInterface $rule,
         CountryInterface $country
-    ) {
+    ): void {
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
 
         $this->addCondition($rule, $this->createConditionWithForm('countries', [
@@ -177,7 +176,7 @@ final class ProductPriceRuleContext implements Context
     public function theProductPriceRuleHasACustomerCondition(
         ProductPriceRuleInterface $rule,
         CustomerInterface $customer
-    ) {
+    ): void {
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
 
         $this->addCondition($rule, $this->createConditionWithForm('customers', [
@@ -191,7 +190,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/
      * @Given /^the (price rule) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/
      */
-    public function theProductPriceRuleHasATimeSpanCondition(ProductPriceRuleInterface $rule, $from, $to)
+    public function theProductPriceRuleHasATimeSpanCondition(ProductPriceRuleInterface $rule, $from, $to): void
     {
         $this->assertConditionForm(TimespanConfigurationType::class, 'timespan');
 
@@ -211,7 +210,7 @@ final class ProductPriceRuleContext implements Context
     public function theProductPriceRuleHasACustomerGroupCondition(
         ProductPriceRuleInterface $rule,
         CustomerGroupInterface $group
-    ) {
+    ): void {
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
 
         $this->addCondition($rule, $this->createConditionWithForm('customerGroups', [
@@ -225,7 +224,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") has a condition stores with (store "[^"]+")$/
      * @Given /^the (price rule) has a condition stores with (store "[^"]+")$/
      */
-    public function theProductPriceRuleHasAStoreCondition(ProductPriceRuleInterface $rule, StoreInterface $store)
+    public function theProductPriceRuleHasAStoreCondition(ProductPriceRuleInterface $rule, StoreInterface $store): void
     {
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
 
@@ -240,7 +239,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") has a condition zones with (zone "[^"]+")$/
      * @Given /^the (price rule) has a condition zones with (zone "[^"]+")$/
      */
-    public function theProductPriceRuleHasAZoneCondition(ProductPriceRuleInterface $rule, ZoneInterface $zone)
+    public function theProductPriceRuleHasAZoneCondition(ProductPriceRuleInterface $rule, ZoneInterface $zone): void
     {
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
 
@@ -258,7 +257,7 @@ final class ProductPriceRuleContext implements Context
     public function theProductPriceRuleHasACurrencyCondition(
         ProductPriceRuleInterface $rule,
         CurrencyInterface $currency
-    ) {
+    ): void {
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
 
         $this->addCondition($rule, $this->createConditionWithForm('currencies', [
@@ -275,7 +274,7 @@ final class ProductPriceRuleContext implements Context
     public function theProductPriceRuleHasACategoriesCondition(
         ProductPriceRuleInterface $rule,
         CategoryInterface $category
-    ) {
+    ): void {
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
@@ -290,7 +289,7 @@ final class ProductPriceRuleContext implements Context
     public function theProductPriceRuleHasACategoriesConditionAndItIsRecursive(
         ProductPriceRuleInterface $rule,
         CategoryInterface $category
-    ) {
+    ): void {
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
@@ -308,7 +307,7 @@ final class ProductPriceRuleContext implements Context
         ProductPriceRuleInterface $rule,
         ProductInterface $product,
         ProductInterface $product2 = null
-    ) {
+    ): void {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
 
         $configuration = [
@@ -334,7 +333,7 @@ final class ProductPriceRuleContext implements Context
         ProductPriceRuleInterface $rule,
         ProductInterface $product,
         ProductInterface $product2 = null
-    ) {
+    ): void {
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
 
         $configuration = [
@@ -355,7 +354,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") has a action discount-percent with ([^"]+)% discount$/
      * @Given /^the (price rule) has a action discount-percent with ([^"]+)% discount$/
      */
-    public function theProductPriceRuleHasADiscountPercentAction(ProductPriceRuleInterface $rule, $discount)
+    public function theProductPriceRuleHasADiscountPercentAction(ProductPriceRuleInterface $rule, $discount): void
     {
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
@@ -372,7 +371,7 @@ final class ProductPriceRuleContext implements Context
         ProductPriceRuleInterface $rule,
         $amount,
         CurrencyInterface $currency
-    ) {
+    ): void {
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
@@ -389,7 +388,7 @@ final class ProductPriceRuleContext implements Context
         ProductPriceRuleInterface $rule,
         $price,
         CurrencyInterface $currency
-    ) {
+    ): void {
         $this->assertActionForm(PriceConfigurationType::class, 'discountPrice');
 
         $this->addAction($rule, $this->createActionWithForm('discountPrice', [
@@ -402,7 +401,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/
      * @Given /^the (price rule) has a action price of ([^"]+) in (currency "[^"]+")$/
      */
-    public function theProductPriceRuleHasAPrice(ProductPriceRuleInterface $rule, $price, CurrencyInterface $currency)
+    public function theProductPriceRuleHasAPrice(ProductPriceRuleInterface $rule, $price, CurrencyInterface $currency): void
     {
         $this->assertActionForm(PriceConfigurationType::class, 'price');
 
@@ -420,7 +419,7 @@ final class ProductPriceRuleContext implements Context
         ProductPriceRuleInterface $rule,
         int $min,
         int $max
-    ) {
+    ): void {
         $this->assertConditionForm(QuantityConfigurationType::class, 'quantity');
 
         $configuration = [
@@ -435,7 +434,7 @@ final class ProductPriceRuleContext implements Context
      * @param ProductPriceRuleInterface $rule
      * @param ConditionInterface        $condition
      */
-    private function addCondition(ProductPriceRuleInterface $rule, ConditionInterface $condition)
+    private function addCondition(ProductPriceRuleInterface $rule, ConditionInterface $condition): void
     {
         $rule->addCondition($condition);
 
@@ -447,7 +446,7 @@ final class ProductPriceRuleContext implements Context
      * @param ProductPriceRuleInterface $rule
      * @param ActionInterface           $action
      */
-    private function addAction(ProductPriceRuleInterface $rule, ActionInterface $action)
+    private function addAction(ProductPriceRuleInterface $rule, ActionInterface $action): void
     {
         $rule->addAction($action);
 
@@ -455,27 +454,27 @@ final class ProductPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    protected function getConditionFormRegistry()
+    protected function getConditionFormRegistry(): FormTypeRegistryInterface
     {
         return $this->conditionFormTypeRegistry;
     }
 
-    protected function getConditionFormClass()
+    protected function getConditionFormClass(): string
     {
         return ProductPriceRuleConditionType::class;
     }
 
-    protected function getActionFormRegistry()
+    protected function getActionFormRegistry(): FormTypeRegistryInterface
     {
         return $this->actionFormTypeRegistry;
     }
 
-    protected function getActionFormClass()
+    protected function getActionFormClass(): string
     {
         return ProductPriceRuleActionType::class;
     }
 
-    protected function getFormFactory()
+    protected function getFormFactory(): FormFactoryInterface
     {
         return $this->formFactory;
     }

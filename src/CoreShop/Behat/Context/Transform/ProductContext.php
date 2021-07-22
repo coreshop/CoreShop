@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -65,7 +65,7 @@ final class ProductContext implements Context
     /**
      * @Transform /^product(?:|s) "([^"]+)" with unit "([^"]+)"$/
      */
-    public function getProductWithUnitName($productName, $productUnit)
+    public function getProductWithUnitName($productName, $productUnit): array
     {
         /**
          * @var ProductInterface $product
@@ -87,7 +87,7 @@ final class ProductContext implements Context
     /**
      * @Transform /^products "([^"]+)", "([^"]+)"$/
      */
-    public function getProductsByName($product1, $product2)
+    public function getProductsByName(string $product1, string $product2): array
     {
         $products = [];
 
@@ -101,7 +101,7 @@ final class ProductContext implements Context
     /**
      * @Transform /^product/
      */
-    public function product()
+    public function product(): ProductInterface
     {
         return $this->sharedStorage->get('product');
     }
@@ -110,7 +110,7 @@ final class ProductContext implements Context
      * @Transform /^variant(?:|s)/
      * @Transform /^variant(?:|s)/
      */
-    public function variant()
+    public function variant(): ProductInterface
     {
         return $this->sharedStorage->get('variant');
     }

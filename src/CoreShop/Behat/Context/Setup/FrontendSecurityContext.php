@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -49,7 +49,7 @@ final class FrontendSecurityContext implements Context
     /**
      * @Given I am logged in as :email
      */
-    public function iAmLoggedInAs($email)
+    public function iAmLoggedInAs($email): void
     {
         $user = $this->userRepository->findByLoginIdentifier($email);
         Assert::notNull($user);
@@ -60,7 +60,7 @@ final class FrontendSecurityContext implements Context
     /**
      * @Given I am a logged in customer
      */
-    public function iAmLoggedInCustomer()
+    public function iAmLoggedInCustomer(): void
     {
         $customer = $this->customerFactory->createNew();
         $customer->setKey(File::getValidFilename('coreshop@pimcore.org'));

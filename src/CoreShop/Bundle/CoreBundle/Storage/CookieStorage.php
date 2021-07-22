@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -57,7 +57,7 @@ final class CookieStorage implements StorageInterface, EventSubscriberInterface
     /**
      * @param ResponseEvent $event
      */
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -77,12 +77,12 @@ final class CookieStorage implements StorageInterface, EventSubscriberInterface
         return !in_array($this->get($name), ['', null], true);
     }
 
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         return $this->responseCookies->get($name, $this->requestCookies->get($name, $default));
     }
 
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $this->responseCookies->set($name, $value);
     }

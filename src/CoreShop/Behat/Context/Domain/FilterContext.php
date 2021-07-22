@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -52,7 +52,7 @@ final class FilterContext implements Context
     /**
      * @Then /^there should be a filter with name "([^"]+)"$/
      */
-    public function thereShouldBeAFilter($name)
+    public function thereShouldBeAFilter($name): void
     {
         $filters = $this->filterRepository->findBy(['name' => $name]);
 
@@ -66,7 +66,7 @@ final class FilterContext implements Context
     /**
      * @Then /^the (filter) should have (\d+) conditions$/
      */
-    public function theFilterShouldHaveXConditions(FilterInterface $filter, $count)
+    public function theFilterShouldHaveXConditions(FilterInterface $filter, $count): void
     {
         Assert::eq(
             count($filter->getConditions()),
@@ -84,7 +84,7 @@ final class FilterContext implements Context
         $conditionType,
         $field,
         TableNode $values
-    ) {
+    ): void {
         $conditions = $this->prepareFilter($filter);
         $shouldHaveConditions = [];
 
@@ -128,7 +128,7 @@ final class FilterContext implements Context
         $countPerValue,
         $conditionType,
         $field
-    ) {
+    ): void {
         $conditions = $this->prepareFilter($filter);
 
         $filtered = array_filter(
@@ -158,7 +158,7 @@ final class FilterContext implements Context
     /**
      * @Then /the (filter) should have (\d+) item(?:|s)$/
      */
-    public function theFilterShouldHaveXItemsForCategoryCondition(FilterInterface $filter, $countOfValues)
+    public function theFilterShouldHaveXItemsForCategoryCondition(FilterInterface $filter, $countOfValues): void
     {
         $listing = $this->getFilterListing($filter);
 
@@ -168,7 +168,7 @@ final class FilterContext implements Context
     /**
      * @Then /the (filter) should have (\d+) item(?:|s) with params:$/
      */
-    public function theFilterShouldHaveXItemsForCategoryConditionWithParams(FilterInterface $filter, $countOfValues, TableNode $node)
+    public function theFilterShouldHaveXItemsForCategoryConditionWithParams(FilterInterface $filter, $countOfValues, TableNode $node): void
     {
         $params = [];
 
@@ -185,7 +185,7 @@ final class FilterContext implements Context
      * @Then /the (filter) should have (\d+) item(?:|s) for (manufacturer "[^"]+") in field "([^"]+)"$/
      * @Then /the (filter) should have (\d+) item(?:|s) for value "([^"]+)" in field "([^"]+)"$/
      */
-    public function theFilterShouldHaveXItemsForCategoryWithObjectCondition(FilterInterface $filter, $countOfValues, $value, string $field)
+    public function theFilterShouldHaveXItemsForCategoryWithObjectCondition(FilterInterface $filter, $countOfValues, $value, string $field): void
     {
         if ($value instanceof ResourceInterface) {
             $value = $value->getId();
@@ -213,7 +213,7 @@ final class FilterContext implements Context
     /**
      * @Then /^if I query the (filter) with a simple order for field "([^"]+)" and direction "([^"]+)" I should get two products "([^"]+)" and "([^"]+)"$/
      */
-    public function ifIQueryWithASimpleOrder(FilterInterface $filter, $orderKey, $orderDir, $firstResult, $secondResult)
+    public function ifIQueryWithASimpleOrder(FilterInterface $filter, $orderKey, $orderDir, $firstResult, $secondResult): void
     {
         $filteredList = $this->filterListFactory->createList($filter, new ParameterBag());
         $filteredList->setLocale('en');
@@ -236,13 +236,7 @@ final class FilterContext implements Context
         Assert::eq([$firstResult, $secondResult], $result);
     }
 
-    /**
-     * @param FilterInterface $filter
-     * @param array           $filterParams
-     *
-     * @return array
-     */
-    private function prepareFilter(FilterInterface $filter, $filterParams = [])
+    private function prepareFilter(FilterInterface $filter, array $filterParams = []): array
     {
         $parameterBag = new ParameterBag($filterParams);
 
@@ -255,13 +249,7 @@ final class FilterContext implements Context
         return $this->filterProcessor->prepareConditionsForRendering($filter, $filteredList, $currentFilter);
     }
 
-    /**
-     * @param FilterInterface $filter
-     * @param array           $filterParams
-     *
-     * @return ListingInterface
-     */
-    private function getFilterListing(FilterInterface $filter, $filterParams = [])
+    private function getFilterListing(FilterInterface $filter, array $filterParams = []): ListingInterface
     {
         $parameterBag = new ParameterBag($filterParams);
 

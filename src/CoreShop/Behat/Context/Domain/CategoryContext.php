@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -35,7 +35,7 @@ final class CategoryContext implements Context
     /**
      * @Then /^there should be a category "([^"]+)"$/
      */
-    public function thereShouldBeACategoryNamed($name)
+    public function thereShouldBeACategoryNamed($name): void
     {
         $categories = $this->categoryRepository->findBy(['name' => $name]);
 
@@ -49,7 +49,7 @@ final class CategoryContext implements Context
     /**
      * @Then /^the (category "[^"]+") should be child of (category "[^"]+")$/
      */
-    public function theCategoryShouldBeChildOfCategory(CategoryInterface $child, CategoryInterface $parent)
+    public function theCategoryShouldBeChildOfCategory(CategoryInterface $child, CategoryInterface $parent): void
     {
         Assert::eq(
             $child->getParent()->getId(),
@@ -61,7 +61,7 @@ final class CategoryContext implements Context
     /**
      * @Then /^the (product "[^"]+") should be in (category "[^"]+")$/
      */
-    public function theProductShouldBeInCategory(ProductInterface $product, CategoryInterface $category)
+    public function theProductShouldBeInCategory(ProductInterface $product, CategoryInterface $category): void
     {
         Assert::oneOf($category, $product->getCategories());
     }

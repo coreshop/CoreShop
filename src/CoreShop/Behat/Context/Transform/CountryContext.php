@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -36,8 +37,11 @@ final class CountryContext implements Context
      * @Transform /^country "([^"]+)"$/
      * @Transform /^countries "([^"]+)"$/
      */
-    public function getCountryByName($name)
+    public function getCountryByName($name): CountryInterface
     {
+        /**
+         * @var CountryInterface[] $countries
+         */
         $countries = $this->countryRepository->findByName($name, 'en');
 
         Assert::eq(
@@ -53,7 +57,7 @@ final class CountryContext implements Context
      * @Transform /^country$/
      * @Transform /^countries$/
      */
-    public function country()
+    public function country(): CountryInterface
     {
         return $this->sharedStorage->get('country');
     }

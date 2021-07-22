@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -31,10 +31,7 @@ class CoreShopTestBundle extends AbstractPimcoreBundle
         return 'CoreShop - Test Bundle';
     }
 
-     /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         $bundleName = 'coreshop/test-bundle';
 
@@ -65,7 +62,7 @@ class CoreShopTestBundle extends AbstractPimcoreBundle
         return '';
     }
 
-    public function getJsPaths()
+    public function getJsPaths(): array
     {
         return [
             '/bundles/coreshoptest/pimcore/js/plugin.js',

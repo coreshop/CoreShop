@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -38,7 +38,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Then /^there should be a pimcore class "([^"]+)"$/
      */
-    public function thereShouldBeAPimcoreClass($name)
+    public function thereShouldBeAPimcoreClass($name): void
     {
         $definition = ClassDefinition::getByName($this->classStorage->get($name));
 
@@ -51,7 +51,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Then /^there should be a pimcore brick "([^"]+)"$/
      */
-    public function thereShouldBeAPimcoreBrick($name)
+    public function thereShouldBeAPimcoreBrick($name): void
     {
         $definition = Objectbrick\Definition::getByKey($this->classStorage->get($name));
 
@@ -64,7 +64,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Then /^there should be a pimcore field-collection "([^"]+)"$/
      */
-    public function thereShouldBeAPimcoreCollection($name)
+    public function thereShouldBeAPimcoreCollection($name): void
     {
         $definition = Fieldcollection\Definition::getByKey($this->classStorage->get($name));
 
@@ -77,7 +77,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Then /^the (definition) should have a field named "([^"]+)"$/
      */
-    public function theDefinitionShouldHaveAField($definition, $name)
+    public function theDefinitionShouldHaveAField($definition, $name): void
     {
         if ($definition instanceof Objectbrick\Definition) {
             $field = $definition->getFieldDefinition($name);
@@ -99,7 +99,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Then /^an instance of (definition) should implement "([^"]+)"$/
      */
-    public function anInstanceofDefinitionShouldImplement($definition, $class)
+    public function anInstanceofDefinitionShouldImplement($definition, $class): void
     {
         if ($definition instanceof ClassDefinition) {
             $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());

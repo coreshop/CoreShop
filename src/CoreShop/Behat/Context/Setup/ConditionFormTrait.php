@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,13 +22,7 @@ use Webmozart\Assert\Assert;
 
 trait ConditionFormTrait
 {
-    /**
-     * @param string $class
-     * @param string $type
-     *
-     * @throws \Exception
-     */
-    protected function assertConditionForm($class, $type)
+    protected function assertConditionForm(string $class, string $type): void
     {
         $conditionForm = $this->getConditionForm($type);
 
@@ -57,14 +51,8 @@ trait ConditionFormTrait
         return $condition;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return FormInterface
-     *
-     * @throws \Exception
-     */
-    protected function getConditionForm($type)
+
+    protected function getConditionForm(string $type): FormInterface
     {
         if (!$this->getConditionFormRegistry()->has($type, 'default')) {
             throw new \Exception("Form not found for $type");
@@ -73,18 +61,9 @@ trait ConditionFormTrait
         return $this->getFormFactory()->createNamed('', $this->getConditionFormRegistry()->get($type, 'default'));
     }
 
-    /**
-     * @return FormTypeRegistryInterface
-     */
-    abstract protected function getConditionFormRegistry();
+    abstract protected function getConditionFormRegistry(): FormTypeRegistryInterface;
 
-    /**
-     * @return FormFactoryInterface
-     */
-    abstract protected function getFormFactory();
+    abstract protected function getFormFactory(): FormFactoryInterface;
 
-    /**
-     * @return string
-     */
-    abstract protected function getConditionFormClass();
+    abstract protected function getConditionFormClass(): string;
 }

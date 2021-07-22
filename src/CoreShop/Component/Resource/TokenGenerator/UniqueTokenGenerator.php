@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -43,19 +43,19 @@ final class UniqueTokenGenerator
         $token = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $randomKey = $this->getRandomInteger(0, $this->keyLength);
+            $randomKey = $this->getRandomInteger($this->keyLength);
             $token .= $this->keys[$randomKey];
         }
 
         return $token;
     }
 
-    private function getRandomInteger(int $min, int $max)
+    private function getRandomInteger(int $max): int
     {
-        $range = ($max - $min);
+        $range = ($max - 0);
 
         if ($range < 0) {
-            return $min;
+            return 0;
         }
 
         $log = log($range, 2);
@@ -68,6 +68,6 @@ final class UniqueTokenGenerator
             $rnd = $rnd & $filter;
         } while ($rnd >= $range);
 
-        return $min + $rnd;
+        return 0 + $rnd;
     }
 }

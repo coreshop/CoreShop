@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Page\Frontend\HomePageInterface;
 use CoreShop\Behat\Page\Frontend\ProductPageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -43,7 +42,7 @@ final class ProductContext implements Context
     /**
      * @When /^I open the page "([^"]+)" for this (product)$/
      */
-    public function iOpenPage($url, ProductInterface $product)
+    public function iOpenPage($url, ProductInterface $product): void
     {
         $this->productPage->tryToOpenWithUri($url);
     }
@@ -51,7 +50,7 @@ final class ProductContext implements Context
     /**
      * @Then /^I should be on the (product's) detail page$/
      */
-    public function iShouldBeOnProductDetailedPage(ProductInterface $product)
+    public function iShouldBeOnProductDetailedPage(ProductInterface $product): void
     {
         Assert::true($this->productPage->isOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en'])));
     }
@@ -67,7 +66,7 @@ final class ProductContext implements Context
     /**
      * @Then I should see the product name :name
      */
-    public function iShouldSeeProductName($name)
+    public function iShouldSeeProductName($name): void
     {
         Assert::same($this->productPage->getName(), $name);
     }
@@ -75,7 +74,7 @@ final class ProductContext implements Context
     /**
      * @Then I should see the price :price
      */
-    public function iShouldSeeThePrice($price)
+    public function iShouldSeeThePrice($price): void
     {
         Assert::same($this->productPage->getPrice(), $price);
     }
@@ -83,7 +82,7 @@ final class ProductContext implements Context
     /**
      * @Then I should see the original price :price
      */
-    public function iShouldSeeTheOriginalPrice($price)
+    public function iShouldSeeTheOriginalPrice($price): void
     {
         Assert::same($this->productPage->getOriginalPrice(), $price);
     }
@@ -91,7 +90,7 @@ final class ProductContext implements Context
     /**
      * @Then I should see the discount of :price
      */
-    public function iShouldSeeTheDiscountOf($discount)
+    public function iShouldSeeTheDiscountOf($discount): void
     {
         Assert::same($this->productPage->getDiscount(), $discount);
     }
@@ -99,7 +98,7 @@ final class ProductContext implements Context
     /**
      * @Then I should see :taxRate tax-rate
      */
-    public function iShouldSeeTheTaxRate($taxRate)
+    public function iShouldSeeTheTaxRate($taxRate): void
     {
         Assert::same($this->productPage->getTaxRate(), $taxRate);
     }
@@ -107,7 +106,7 @@ final class ProductContext implements Context
     /**
      * @Then I should see :tax tax
      */
-    public function iShouldSeeTheTax($tax)
+    public function iShouldSeeTheTax($tax): void
     {
         Assert::same($this->productPage->getTax(), $tax);
     }
@@ -115,7 +114,7 @@ final class ProductContext implements Context
     /**
      * @Then I should see the price :price for unit :unit
      */
-    public function iShouldSeeThePriceForUnit($price, $unit)
+    public function iShouldSeeThePriceForUnit($price, $unit): void
     {
         Assert::same($this->productPage->getPriceForUnit($unit), $price);
     }
@@ -123,7 +122,7 @@ final class ProductContext implements Context
     /**
      * @Then I should see one quantity price rule with price :price
      */
-    public function iShouldSeeOneQuantityPiceRuleWithPrice($price)
+    public function iShouldSeeOneQuantityPiceRuleWithPrice($price): void
     {
         $priceRules = $this->productPage->getQuantityPriceRules();
 
@@ -134,7 +133,7 @@ final class ProductContext implements Context
     /**
      * @Then I should see the quantity price rule :number with price :price
      */
-    public function iShouldSeeTheQuantityPriceRuleWithPrice(int $number, $price)
+    public function iShouldSeeTheQuantityPriceRuleWithPrice(int $number, $price): void
     {
         $number--;
         $priceRules = $this->productPage->getQuantityPriceRules();
@@ -146,7 +145,7 @@ final class ProductContext implements Context
     /**
      * @Then I should see the quantity price rule :number with excl price :price
      */
-    public function iShouldSeeTheQuantityPriceRuleWithInclPrice(int $number, $price)
+    public function iShouldSeeTheQuantityPriceRuleWithInclPrice(int $number, $price): void
     {
         $number--;
         $priceRules = $this->productPage->getQuantityPriceRules();
@@ -158,7 +157,7 @@ final class ProductContext implements Context
     /**
      * @Then I should see the quantity price rule :number starting from :startingFrom
      */
-    public function iShouldSeeTheQuantityPriceRuleStartingFrom(int $number, $startingFrom)
+    public function iShouldSeeTheQuantityPriceRuleStartingFrom(int $number, $startingFrom): void
     {
         $number--;
         $priceRules = $this->productPage->getQuantityPriceRules();
@@ -171,7 +170,7 @@ final class ProductContext implements Context
     /**
      * @Then /^I should see one quantity price rule with price "([^"]+)" for (unit "[^"]+")$/
      */
-    public function iShouldSeeOneQuantityPiceRuleForUnitWithPrice($price, ProductUnitInterface $unit)
+    public function iShouldSeeOneQuantityPiceRuleForUnitWithPrice($price, ProductUnitInterface $unit): void
     {
         $priceRules = $this->productPage->getQuantityPriceRulesForUnit($unit);
 
@@ -182,7 +181,7 @@ final class ProductContext implements Context
     /**
      * @Then /^I should see the quantity price rule (\d+) with price "([^"]+)" for (unit "[^"]+")$/
      */
-    public function iShouldSeeTheQuantityPriceRuleForUnitWithPrice(int $number, $price, ProductUnitInterface $unit)
+    public function iShouldSeeTheQuantityPriceRuleForUnitWithPrice(int $number, $price, ProductUnitInterface $unit): void
     {
         $number--;
         $priceRules = $this->productPage->getQuantityPriceRulesForUnit($unit);
@@ -194,7 +193,7 @@ final class ProductContext implements Context
     /**
      * @Then /^I should see the quantity price rule (\d+) with excl price "([^"]+)" for (unit "[^"]+")$/
      */
-    public function iShouldSeeTheQuantityPriceRuleForUnitWithInclPrice(int $number, $price, ProductUnitInterface $unit)
+    public function iShouldSeeTheQuantityPriceRuleForUnitWithInclPrice(int $number, $price, ProductUnitInterface $unit): void
     {
         $number--;
         $priceRules = $this->productPage->getQuantityPriceRulesForUnit($unit);
@@ -206,7 +205,7 @@ final class ProductContext implements Context
     /**
      * @Then /^I should see the quantity price rule (\d+) starting from "(\d+)" for (unit "[^"]+")$/
      */
-    public function iShouldSeeTheQuantityPriceRuleForUnitStartingFrom(int $number, $startingFrom, ProductUnitInterface $unit)
+    public function iShouldSeeTheQuantityPriceRuleForUnitStartingFrom(int $number, $startingFrom, ProductUnitInterface $unit): void
     {
         $number--;
         $priceRules = $this->productPage->getQuantityPriceRulesForUnit($unit);
@@ -217,7 +216,7 @@ final class ProductContext implements Context
     /**
      * @Then /^I should see that this (product) is out of stock$/
      */
-    public function iShouldSeeThatThisProductIsOutOfStock(ProductInterface $product)
+    public function iShouldSeeThatThisProductIsOutOfStock(ProductInterface $product): void
     {
         $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
 

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -99,7 +99,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         return $shopSteps;
     }
 
-    public function getStep(string $type = '')
+    public function getStep(string $type = ''): ?string
     {
         $validGuesser = ['get_first', 'get_previous', 'get_current', 'get_next', 'get_last'];
 
@@ -132,7 +132,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         OrderInterface $cart,
         ?string $stepIdentifier,
         CheckoutManagerInterface $checkoutManager
-    ) {
+    ): ?string {
         $identifier = null;
         $request = $this->requestStack->getMasterRequest();
         $previousIdentifier = $request->get('stepIdentifier');
@@ -153,7 +153,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         OrderInterface $cart,
         ?string $stepIdentifier,
         CheckoutManagerInterface $checkoutManager
-    ) {
+    ): ?string {
         return $stepIdentifier;
     }
 
@@ -161,7 +161,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         OrderInterface $cart,
         ?string $stepIdentifier,
         CheckoutManagerInterface $checkoutManager
-    ) {
+    ): string {
         $steps = $checkoutManager->getSteps();
 
         return reset($steps);
@@ -171,7 +171,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         OrderInterface $cart,
         ?string $stepIdentifier,
         CheckoutManagerInterface $checkoutManager
-    ) {
+    ): string {
         $steps = $checkoutManager->getSteps();
 
         return end($steps);
@@ -181,7 +181,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         OrderInterface $cart,
         ?string $stepIdentifier,
         CheckoutManagerInterface $checkoutManager
-    ) {
+    ): ?string {
         $identifier = null;
 
         if (null !== $stepIdentifier && $checkoutManager->hasNextStep($stepIdentifier)) {

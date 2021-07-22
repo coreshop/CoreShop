@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,19 +26,15 @@ class ServiceRegistry implements ServiceRegistryInterface
         $this->context = $context;
     }
 
-    public function all()
+    public function all(): array
     {
         return $this->services;
     }
 
-    public function register($identifier, $service)
+    public function register(string $identifier, object $service): void
     {
         if ($this->has($identifier)) {
             throw new ExistingServiceException($this->context, $identifier);
-        }
-
-        if (!is_object($service)) {
-            throw new \InvalidArgumentException(sprintf('%s needs to be an object, %s given.', ucfirst($this->context), gettype($service)));
         }
 
         if (!in_array($this->interface, class_implements($service), true)) {
@@ -50,7 +46,7 @@ class ServiceRegistry implements ServiceRegistryInterface
         $this->services[$identifier] = $service;
     }
 
-    public function unregister($identifier)
+    public function unregister(string $identifier): void
     {
         if (!$this->has($identifier)) {
             throw new NonExistingServiceException($this->context, $identifier, array_keys($this->services));
@@ -59,12 +55,12 @@ class ServiceRegistry implements ServiceRegistryInterface
         unset($this->services[$identifier]);
     }
 
-    public function has($identifier)
+    public function has(string $identifier): bool
     {
         return isset($this->services[$identifier]);
     }
 
-    public function get($identifier)
+    public function get(string $identifier): object
     {
         if (!$this->has($identifier)) {
             throw new NonExistingServiceException($this->context, $identifier, array_keys($this->services));

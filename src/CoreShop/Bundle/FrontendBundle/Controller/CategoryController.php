@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -69,7 +69,7 @@ class CategoryController extends FrontendController
         ]);
     }
 
-    public function detailSlugAction(Request $request, CategoryInterface $object, UrlSlug $urlSlug)
+    public function detailSlugAction(Request $request, CategoryInterface $object, UrlSlug $urlSlug): Response
     {
         return $this->detail($request, $object);
     }
@@ -190,7 +190,7 @@ class CategoryController extends FrontendController
         return $this->render($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
 
-    protected function validateCategory(Request $request, CategoryInterface $category)
+    protected function validateCategory(Request $request, CategoryInterface $category): void
     {
         $isFrontendRequestByAdmin = false;
 
@@ -233,41 +233,26 @@ class CategoryController extends FrontendController
         return $sort;
     }
 
-    /**
-     * @return CategoryRepositoryInterface
-     */
-    protected function getRepository()
+    protected function getRepository(): CategoryRepositoryInterface
     {
         return $this->get('coreshop.repository.category');
     }
 
-    /**
-     * @return ProductRepositoryInterface
-     */
-    protected function getProductRepository()
+    protected function getProductRepository(): ProductRepositoryInterface
     {
         return $this->get('coreshop.repository.product');
     }
 
-    /**
-     * @return \CoreShop\Component\Core\Configuration\ConfigurationService
-     */
     protected function getConfigurationService(): ConfigurationServiceInterface
     {
         return $this->get(ConfigurationServiceInterface::class);
     }
 
-    /**
-     * @return ShopperContextInterface
-     */
     protected function getContext(): ShopperContextInterface
     {
         return $this->get(ShopperContextInterface::class);
     }
 
-    /**
-     * @return PaginatorInterface
-     */
     protected function getPaginator(): PaginatorInterface
     {
         return $this->get(PaginatorInterface::class);

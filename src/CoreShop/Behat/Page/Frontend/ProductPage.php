@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -106,7 +106,7 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
         $this->getElement('add_to_cart')->click();
     }
 
-    protected function processQuantityPriceRuleElement(string $selector)
+    protected function processQuantityPriceRuleElement(string $selector): array
     {
         $element = $this->getElement('product_quantity_price_rules');
 

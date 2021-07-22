@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -58,7 +58,7 @@ final class ShippingContext implements Context
     /**
      * @Then /^there should be a carrier "([^"]+)"$/
      */
-    public function thereShouldBeACarrier($name)
+    public function thereShouldBeACarrier($name): void
     {
         $carriers = $this->carrierRepository->findBy(['name' => $name]);
 
@@ -73,7 +73,7 @@ final class ShippingContext implements Context
      * @Then /^the (shipping rule "[^"]+") should be valid for (my cart) with (carrier "[^"]+")$/
      * @Then /^the (shipping rule) should be valid for (my cart) with (carrier "[^"]+")$/
      */
-    public function theShippingRuleShouldBeValid(ShippingRuleInterface $rule, OrderInterface $cart, CarrierInterface $carrier)
+    public function theShippingRuleShouldBeValid(ShippingRuleInterface $rule, OrderInterface $cart, CarrierInterface $carrier): void
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
@@ -87,7 +87,7 @@ final class ShippingContext implements Context
      * @Then /^the (shipping rule "[^"]+") should be invalid for (my cart) with (carrier "[^"]+")$/
      * @Then /^the (shipping rule) should be invalid for (my cart) with (carrier "[^"]+")$/
      */
-    public function theShippingRuleShouldBeInvalid(ShippingRuleInterface $rule, OrderInterface $cart, CarrierInterface $carrier)
+    public function theShippingRuleShouldBeInvalid(ShippingRuleInterface $rule, OrderInterface $cart, CarrierInterface $carrier): void
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
@@ -100,7 +100,7 @@ final class ShippingContext implements Context
     /**
      * @Then /^shipping for (my cart) with (carrier "[^"]+") should be priced at "([^"]+)"$/
      */
-    public function shippingShouldBePriced(OrderInterface $cart, CarrierInterface $carrier, int $price)
+    public function shippingShouldBePriced(OrderInterface $cart, CarrierInterface $carrier, int $price): void
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
@@ -110,7 +110,7 @@ final class ShippingContext implements Context
     /**
      * @Then /^the (carrier "[^"]+") should be valid for (my cart)$/
      */
-    public function carrierShouldBeValidForMyCart(CarrierInterface $carrier, OrderInterface $cart)
+    public function carrierShouldBeValidForMyCart(CarrierInterface $carrier, OrderInterface $cart): void
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 

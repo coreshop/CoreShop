@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,7 +27,6 @@ use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
-use CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
@@ -39,12 +38,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderShipmentController extends PimcoreController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function getShipAbleItemsAction(Request $request)
+    public function getShipAbleItemsAction(Request $request): JsonResponse
     {
         $orderId = $request->get('id');
         $order = $this->getOrderRepository()->find($orderId);
@@ -91,12 +85,7 @@ class OrderShipmentController extends PimcoreController
         return $this->viewHandler->handle(['success' => true, 'items' => $itemsToReturn]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createShipmentAction(Request $request)
+    public function createShipmentAction(Request $request): JsonResponse
     {
         $orderId = $request->get('id');
 
@@ -155,12 +144,7 @@ class OrderShipmentController extends PimcoreController
         return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed
-     */
-    public function updateStateAction(Request $request)
+    public function updateStateAction(Request $request): JsonResponse
     {
         $shipment = $this->getOrderShipmentRepository()->find($request->get('id'));
         $transition = $request->get('transition');
@@ -180,12 +164,7 @@ class OrderShipmentController extends PimcoreController
         return $this->viewHandler->handle(['success' => true]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function renderAction(Request $request)
+    public function renderAction(Request $request): Response
     {
         $shipmentId = $request->get('id');
         $shipment = $this->getOrderShipmentRepository()->find($shipmentId);
@@ -208,58 +187,37 @@ class OrderShipmentController extends PimcoreController
         throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $shipmentId));
     }
 
-    /**
-     * @return OrderDocumentRendererInterface
-     */
-    protected function getOrderDocumentRenderer()
+    protected function getOrderDocumentRenderer(): OrderDocumentRendererInterface
     {
         return $this->get('coreshop.renderer.order.pdf');
     }
 
-    /**
-     * @return OrderShipmentRepositoryInterface
-     */
-    protected function getOrderShipmentRepository()
+    protected function getOrderShipmentRepository(): OrderShipmentRepositoryInterface
     {
         return $this->get('coreshop.repository.order_shipment');
     }
 
-    /**
-     * @return ProcessableInterface
-     */
-    protected function getProcessableHelper()
+    protected function getProcessableHelper(): ProcessableInterface
     {
         return $this->get('coreshop.order.shipment.processable');
     }
 
-    /**
-     * @return PimcoreRepositoryInterface
-     */
-    protected function getOrderRepository()
+    protected function getOrderRepository(): PimcoreRepositoryInterface
     {
         return $this->get('coreshop.repository.order');
     }
 
-    /**
-     * @return FactoryInterface
-     */
-    protected function getShipmentFactory()
+    protected function getShipmentFactory(): FactoryInterface
     {
         return $this->get('coreshop.factory.order_shipment');
     }
 
-    /**
-     * @return OrderDocumentTransformerInterface
-     */
-    protected function getOrderToShipmentTransformer()
+    protected function getOrderToShipmentTransformer(): OrderDocumentTransformerInterface
     {
         return $this->get(OrderToShipmentTransformer::class);
     }
 
-    /**
-     * @return StateMachineManager
-     */
-    protected function getStateMachineManager()
+    protected function getStateMachineManager(): StateMachineManager
     {
         return $this->get('coreshop.state_machine_manager');
     }

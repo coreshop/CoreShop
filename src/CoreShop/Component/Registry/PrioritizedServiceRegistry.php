@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,12 +27,12 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         $this->priortyMap = new PriorityMap();
     }
 
-    public function all()
+    public function all(): array
     {
         return $this->priortyMap->toArray();
     }
 
-    public function register($identifier, $priority, $service)
+    public function register(string $identifier, int $priority, object $service): void
     {
         if ($this->has($identifier)) {
             throw new ExistingServiceException($this->context, $identifier);
@@ -51,7 +51,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         $this->priortyMap->set($identifier, $service, $priority);
     }
 
-    public function unregister($identifier)
+    public function unregister(string $identifier): void
     {
         if (!$this->has($identifier)) {
             throw new NonExistingServiceException($this->context, $identifier, $this->priortyMap->getKeys());
@@ -60,12 +60,12 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         $this->priortyMap->remove($identifier);
     }
 
-    public function has($identifier)
+    public function has(string $identifier): bool
     {
         return $this->priortyMap->has($identifier);
     }
 
-    public function get($identifier)
+    public function get(string $identifier): object
     {
         if (!$this->has($identifier)) {
             throw new NonExistingServiceException($this->context, $identifier, $this->priortyMap->getKeys());
@@ -74,7 +74,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return $this->priortyMap->get($identifier);
     }
 
-    public function getNextTo($identifier)
+    public function getNextTo(string $identifier): ?object
     {
         $keys = $this->priortyMap->getKeys();
         $nextIndex = -1;
@@ -94,7 +94,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return null;
     }
 
-    public function hasNextTo($identifier)
+    public function hasNextTo(string $identifier): bool
     {
         $keys = $this->priortyMap->getKeys();
         $nextIndex = -1;
@@ -114,12 +114,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return $this->has($keys[$nextIndex]);
     }
 
-    /**
-     * @param string $identifier
-     *
-     * @return bool|int|string
-     */
-    private function getPreviousIndex($identifier)
+    private function getPreviousIndex(string $identifier): int
     {
         $keys = $this->priortyMap->getKeys();
         $prevIndex = -1;
@@ -135,7 +130,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return $prevIndex >= 0 ? $prevIndex : -1;
     }
 
-    public function getPreviousTo($identifier)
+    public function getPreviousTo(string $identifier): ?object
     {
         $keys = $this->priortyMap->getKeys();
         $prevIndex = $this->getPreviousIndex($identifier);
@@ -147,14 +142,14 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return null;
     }
 
-    public function hasPreviousTo($identifier)
+    public function hasPreviousTo(string $identifier): bool
     {
         $prevIndex = $this->getPreviousIndex($identifier);
 
         return $prevIndex >= 0;
     }
 
-    public function getAllPreviousTo($identifier)
+    public function getAllPreviousTo(string $identifier): array
     {
         $keys = $this->priortyMap->getKeys();
         $prevIndex = $this->getPreviousIndex($identifier);
@@ -172,10 +167,10 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return [];
     }
 
-    public function getIndex($identifier)
+    public function getIndex($identifier): int
     {
         $keys = $this->priortyMap->getKeys();
 
-        return array_search($identifier, $keys);
+        return array_search($identifier, $keys, true);
     }
 }

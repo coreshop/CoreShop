@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,6 +26,7 @@ use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
 use Payum\Core\Request\Generic;
 use Payum\Core\Request\GetStatusInterface;
+use Payum\Core\Security\TokenInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,7 +111,7 @@ class PaymentController extends AbstractController
         return $this->get('payum');
     }
 
-    private function provideTokenBasedOnPayment(PaymentInterface $payment)
+    private function provideTokenBasedOnPayment(PaymentInterface $payment): TokenInterface
     {
         /** @var PaymentProviderInterface $paymentMethod */
         $paymentMethod = $payment->getPaymentProvider();
