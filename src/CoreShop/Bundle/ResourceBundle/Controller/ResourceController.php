@@ -75,7 +75,7 @@ class ResourceController extends AdminController
         }
     }
 
-    public function listAction(): JsonResponse
+    public function listAction(Request $request): JsonResponse
     {
         $data = $this->repository->findAll();
 
