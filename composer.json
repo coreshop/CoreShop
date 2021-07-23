@@ -118,11 +118,6 @@
     "symfony/panther": "^1.0",
     "dbrekelmans/bdi": "^0.3.0"
   },
-  "conflict": {
-    "dpfaffenbauer/process-manager": "<2.4",
-    "monolog/monolog": ">=2",
-    "symfony/monolog-bundle": "3.6.0"
-  },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."
   },
