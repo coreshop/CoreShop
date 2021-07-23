@@ -41,8 +41,8 @@ translations:
 
     coreshop.customer.information:
         languages:
-            en: 'VAT Number'
-            de: 'UID Steuernummer'
+            en: 'Customer Information'
+            de: 'Kunden Information'
 
     coreshop.customer.salutation:
         languages:
