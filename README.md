@@ -17,15 +17,30 @@
 ![CoreShop Interface](docs/img/screenshot5.png)
 
 # Requirements
-* Pimcore 6.6
+* Pimcore ^10
 
 # Installation
- - Install with composer ```composer require coreshop/core-shop:^3.0```
+ - Allow dev version to be installed:
+   ```
+   composer config "minimum-stability" "dev"
+   composer config "prefer-stable" "true"
+   ```
+ - Install with composer 
+   ```
+   composer require coreshop/core-shop:^3.0
+   ```
  - Run enable Bundle command
-    ```php bin/console pimcore:bundle:enable CoreShopCoreBundle```
+   ```
+   php bin/console pimcore:bundle:enable CoreShopCoreBundle
+   ```
  - Run Install Command
-    `php bin/console coreshop:install`
- - Optional: Install Demo Data `php bin/console coreshop:install:demo`
+   ```
+   php bin/console coreshop:install
+   ```
+ - Optional: Install Demo Data 
+   ```
+   php bin/console coreshop:install:demo
+   ```
 
 # Further Information
  - [Website](https://www.coreshop.org)
@@ -34,12 +49,12 @@
  - [Help translate CoreShop](https://crowdin.com/project/coreshop)
 
 # Demo
-You can see a running demo here [CoreShop Demo](https://demo2.coreshop.org)
+You can see a running demo here [CoreShop 3.x Demo](https://demox.coreshop.org)
 
 **Backend Credentials**
 
 ```
-Admin: https://demo2.coreshop.org/admin
+Admin: https://demo3.coreshop.org/admin
 
 Username: admin
 Password: coreshop
