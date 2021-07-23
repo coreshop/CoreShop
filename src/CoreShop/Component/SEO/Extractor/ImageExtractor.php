@@ -35,7 +35,7 @@ final class ImageExtractor implements ExtractorInterface
         /**
          * @var SEOImageAwareInterface $object
          */
-        $ogImage = Tool::getHostUrl() . $object->getImage()->getThumbnail('seo');
+        $ogImage = Tool::getHostUrl() . $object->getImage()->getThumbnail('coreshop_seo');
         $seoMetadata->addExtraProperty('og:image', $ogImage);
     }
 }
