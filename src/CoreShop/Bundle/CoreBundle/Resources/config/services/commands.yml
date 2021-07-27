@@ -44,3 +44,7 @@ services:
         tags:
             - { name: console.command, command: coreshop:migrate }
 
+    CoreShop\Bundle\CoreBundle\Command\MigrationGenerateCommand:
+        tags:
+            - { name: console.command, command: coreshop:migration:generate }
+
