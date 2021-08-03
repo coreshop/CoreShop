@@ -15,7 +15,7 @@ coreshop.customer_group.list = Class.create(coreshop.resource.list, {
     type: 'customer_group',
 
     url: {
-        folder: '/admin/coreshop/customer_groups/folder-configuration'
+        folder: 'coreshop_customer_group_folderConfiguration'
     },
 
     setupContextMenuPlugin: function () {
