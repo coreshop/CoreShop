@@ -54,7 +54,7 @@ You can see a running demo here [CoreShop 3.x Demo](https://demox.coreshop.org)
 **Backend Credentials**
 
 ```
-Admin: https://demo3.coreshop.org/admin
+Admin: https://demox.coreshop.org/admin
 
 Username: admin
 Password: coreshop
