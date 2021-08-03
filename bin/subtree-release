@@ -4,7 +4,7 @@ set -e
 set -x
 
 CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
-LAST_TAG=`git describe --tags $(git rev-list --tags --max-count=1)`
+LAST_TAG=`git tag -l  --sort=committerdate | tail -n1`
 
 function split()
 {
@@ -12,6 +12,7 @@ function split()
     git push $2 "$SHA1_TAG:$CURRENT_BRANCH" $LAST_TAG
 }
 
+split 'src/CoreShop/Component/Resource' resource
 split 'src/CoreShop/Component/Registry' registry
 split 'src/CoreShop/Component/Address' address
 split 'src/CoreShop/Component/Configuration' configuration
