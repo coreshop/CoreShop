@@ -207,7 +207,7 @@ class CartRuleApplier implements CartRuleApplierInterface
             }
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
-                $taxItems = $item->getTaxes();
+                $taxItems = $item->getTaxes() ?? new Fieldcollection();
 
                 if ($withTax) {
                     $taxItems->setItems(
