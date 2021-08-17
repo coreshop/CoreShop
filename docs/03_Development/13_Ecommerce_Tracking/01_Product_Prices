@@ -1,0 +1,59 @@
+# Product Prices in Tracking
+
+When a product impression is tracked, the price for the product will be read from the storeValues, a data field in the class definition of the CoreShopProduct.
+
+To have prices in the tracking events, the storeValues must be maintained. This can be done for example with a subscriber as shown below.
+
+The real price must be determined by suitable service.
+
+```php
+<?php declare(strict_types=1);
+
+namespace AppBundle\CoreShop\EventListener;
+
+use Doctrine\Persistence\ObjectRepository;
+use Pimcore\Event\DataObjectEvents;
+use Pimcore\Event\Model\DataObjectEvent;
+use Pimcore\Model\DataObject\CoreShopProduct;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+class StoreValuesProductUpdateSubscriber implements EventSubscriberInterface
+{
+    private const REPLACE_THIS_EXAMPLE_PRICE_WITH_SERVICE_CALL = 1234;
+
+    private ObjectRepository $storeRepository;
+
+    public function __construct(ObjectRepository $storeRepository)
+    {
+        $this->storeRepository = $storeRepository;
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [DataObjectEvents::PRE_UPDATE => 'updateStoreValues'];
+    }
+
+    public function updateStoreValues(DataObjectEvent $dataObjectEvent): void
+    {
+        $object = $dataObjectEvent->getObject();
+
+        if (!$object instanceof CoreShopProduct) {
+            return;
+        }
+
+        /** @var CoreShopProduct $object */
+        if (!$stores = $object->getStores()) {
+            return;
+        }
+
+        foreach ($stores as $storeId) {
+            if (!$store = $this->storeRepository->find($storeId)) {
+                continue;
+            }
+            $price = self::REPLACE_THIS_EXAMPLE_PRICE_WITH_SERVICE_CALL;
+            $object->setStoreValuesOfType('price', $price, $store);
+        }
+    }
+}
+
+```
