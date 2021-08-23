@@ -19,6 +19,8 @@ CoreShop Price Calculation consists of 3 different prices:
  - **Discount**: Discount from promotions
  - **Price**: Retail Price or Discount Price (if available) minus discount rules
 
+To get a non-zero price, the calculation needs at least a matching specific price rule, or a store value to work.
+
 ## Calculator Service
 If you want to calculate the Price for a Product, you need to use a special service to do that. There are two options:
 
