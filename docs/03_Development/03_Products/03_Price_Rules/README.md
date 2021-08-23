@@ -13,13 +13,13 @@ Product price rules are applied to multiple products based on conditions like ca
 
 ### Specific Price Rules
 
-> Checkout all available specific price rules [here](../../../02_User_Documentation/03_Price_Rules/03_Specific_Product_Prices.md)
+> Checkout all available specific price rules [here](../../../02_User_Documentation/03_Price_Rules/03_Specific_Price_Rules.md)
 
 Specific price rules are applied to a single product based on conditions like customer or customer group.
 
 ### Quantity Price Rules
 
-> Checkout all available quantity price rules [here](../../../02_User_Documentation/03_Price_Rules/04_Quantity_Product_Prices.md)
+> Checkout all available quantity price rules [here](../../../02_User_Documentation/03_Price_Rules/04_Quantity_Price_Rules.md)
 
 Quantity price rules are applied to a single product based on conditions like the quantity of a cart item.
 
