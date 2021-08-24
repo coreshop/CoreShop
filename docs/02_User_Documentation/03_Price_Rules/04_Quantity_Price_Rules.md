@@ -5,8 +5,7 @@ on that product. The settings are different to specific price rules. Calculation
 means the property on which the amount is determined. This is volume per default.
 
 Quantity price rules are only applied to the price in context of a cart. In other cases the
-price calculator ignores them. So it is recommended to not have quantity price rules alone,
-but to have at least a default specific price (or a store values entry).
+price calculator ignores them.
 
 ![Specific Price Rules](img/quantity-price-rules.png)
 

@@ -3,9 +3,6 @@
 Specific Prices are basically the same as Product Price Rules, but are configured directly on the
 product and therefore are only applied on that product.
 
-It is recommended to have at least one specific price, which is always applicable. For example a
-rule with no conditions.
-
 ![Specific Price Rules](img/specific-price-rules.png)
 
 ## Available Actions
