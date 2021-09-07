@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -28,8 +28,8 @@ use Doctrine\Common\Collections\Collection;
 
 class UnitVolumeCalculator implements CalculatorInterface
 {
-    protected $inner;
-    protected $actionRegistry;
+    protected VolumeCalculator $inner;
+    protected ServiceRegistryInterface $actionRegistry;
 
     public function __construct(VolumeCalculator $inner, ServiceRegistryInterface $actionRegistry)
     {
@@ -37,9 +37,6 @@ class UnitVolumeCalculator implements CalculatorInterface
         $this->actionRegistry = $actionRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
         QuantityRangePriceAwareInterface $subject,
@@ -71,9 +68,6 @@ class UnitVolumeCalculator implements CalculatorInterface
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculateForRange(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,

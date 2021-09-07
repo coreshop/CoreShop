@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,9 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInterface
 {
-    private $storeRepository;
-    private $requestHelper;
-    private $documentService;
+    private StoreRepositoryInterface $storeRepository;
+    private RequestHelper $requestHelper;
+    private Service $documentService;
 
     public function __construct(
         StoreRepositoryInterface $storeRepository,
@@ -39,9 +39,6 @@ final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInter
         $this->documentService = $documentService;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findStore(Request $request): ?StoreInterface
     {
         if ($this->requestHelper->isFrontendRequestByAdmin($request)) {

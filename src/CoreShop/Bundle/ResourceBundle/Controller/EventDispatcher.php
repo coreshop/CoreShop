@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,16 +22,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class EventDispatcher implements EventDispatcherInterface
 {
-    private $eventDispatcher;
+    private SymfonyEventDispatcherInterface $eventDispatcher;
 
     public function __construct(SymfonyEventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function dispatch($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void
     {
         $event = $this->getEvent($resource, $request);
@@ -42,9 +39,6 @@ final class EventDispatcher implements EventDispatcherInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function dispatchPreEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void
     {
         $event = $this->getEvent($resource, $request);
@@ -55,9 +49,6 @@ final class EventDispatcher implements EventDispatcherInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function dispatchPostEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void
     {
         $event = $this->getEvent($resource, $request);
@@ -68,9 +59,6 @@ final class EventDispatcher implements EventDispatcherInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function dispatchInitializeEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void
     {
         $event = $this->getEvent($resource, $request);

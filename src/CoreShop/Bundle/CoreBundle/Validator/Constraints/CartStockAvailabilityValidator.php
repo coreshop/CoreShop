@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,20 +24,20 @@ use Webmozart\Assert\Assert;
 
 final class CartStockAvailabilityValidator extends ConstraintValidator
 {
-    private $availabilityChecker;
+    private AvailabilityCheckerInterface $availabilityChecker;
 
     public function __construct(AvailabilityCheckerInterface $availabilityChecker)
     {
         $this->availabilityChecker = $availabilityChecker;
     }
 
-    public function validate($cart, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
         /**
-         * @var OrderInterface        $cart
+         * @var OrderInterface        $value
          * @var CartStockAvailability $constraint
          */
-        Assert::isInstanceOf($cart, OrderInterface::class);
+        Assert::isInstanceOf($value, OrderInterface::class);
         Assert::isInstanceOf($constraint, CartStockAvailability::class);
 
         $isStockSufficient = true;
@@ -47,7 +47,7 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
         /**
          * @var OrderItemInterface $cartItem
          */
-        foreach ($cart->getItems() as $cartItem) {
+        foreach ($value->getItems() as $cartItem) {
             $product = $cartItem->getProduct();
 
             if (!$product instanceof StockableInterface) {
@@ -60,7 +60,7 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
 
             $isStockSufficient = $this->availabilityChecker->isStockSufficient(
                 $product,
-                $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
+                $this->getExistingCartItemQuantityFromCart($value, $cartItem)
             );
 
             $productsChecked[] = $product->getId();
@@ -80,7 +80,7 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
         }
     }
 
-    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): int
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): float
     {
         $product = $cartItem->getProduct();
         $quantity = $cartItem->getDefaultUnitQuantity();

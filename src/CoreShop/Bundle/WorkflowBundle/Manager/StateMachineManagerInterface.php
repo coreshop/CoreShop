@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,9 +18,9 @@ use Symfony\Component\Workflow\Workflow;
 
 interface StateMachineManagerInterface
 {
-    public function get($subject, string $workflowName = null): Workflow;
+    public function get(object $subject, string $workflowName = null): Workflow;
 
-    public function getTransitionFromState(Workflow $workflow, $subject, string $fromState): ?string;
+    public function getTransitionFromState(Workflow $workflow, object $subject, string $fromState): ?string;
 
-    public function getTransitionToState(Workflow $workflow, $subject, string $toState): ?string;
+    public function getTransitionToState(Workflow $workflow, object $subject, string $toState): ?string;
 }

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,26 +15,22 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Cli;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand;
-use CoreShop\Bundle\CoreBundle\Command\InstallCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand;
 use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Webmozart\Assert\Assert;
 
 final class InstallerContext implements Context
 {
-    private $kernel;
-    private $application;
-    private $tester;
-    private $command;
+    private KernelInterface $kernel;
+    private ?Application $application = null;
+    private ?CommandTester $tester = null;
+    private ?Command $command = null;
 
-    /**
-     * @param KernelInterface $kernel
-     */
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
@@ -43,7 +39,7 @@ final class InstallerContext implements Context
     /**
      * @Given I run CoreShop Install Fixtures Data command
      */
-    public function iRunCoreShopInstallFixturesCommand()
+    public function iRunCoreShopInstallFixturesCommand(): void
     {
         $installCommand = new InstallFixturesCommand(
             $this->kernel,
@@ -63,7 +59,7 @@ final class InstallerContext implements Context
     /**
      * @Given I run CoreShop Install Demo Data command
      */
-    public function iRunCoreShopInstallSampleDataCommand()
+    public function iRunCoreShopInstallSampleDataCommand(): void
     {
         $installCommand = new InstallDemoCommand(
             $this->kernel,
@@ -83,7 +79,7 @@ final class InstallerContext implements Context
     /**
      * @Given I confirm loading Fixtures Data command
      */
-    public function iConfirmLoadingFixtures()
+    public function iConfirmLoadingFixtures(): void
     {
         $this->iExecuteCommandAndConfirm('coreshop:install:fixtures');
     }
@@ -91,7 +87,7 @@ final class InstallerContext implements Context
     /**
      * @Given I confirm loading Demo Data command
      */
-    public function iConfirmLoadingDemo()
+    public function iConfirmLoadingDemo(): void
     {
         $this->iExecuteCommandAndConfirm('coreshop:install:demo');
     }
@@ -99,7 +95,7 @@ final class InstallerContext implements Context
     /**
      * @Then the command should finish successfully
      */
-    public function commandSuccess()
+    public function commandSuccess(): void
     {
         Assert::same($this->tester->getStatusCode(), 0);
     }
@@ -107,12 +103,9 @@ final class InstallerContext implements Context
     /**
      * @param string $name
      */
-    private function iExecuteCommandAndConfirm($name)
+    private function iExecuteCommandAndConfirm($name): void
     {
-        try {
-            $this->tester->setInputs(['y']);
-            $this->tester->execute(['command' => $name]);
-        } catch (\Exception $e) {
-        }
+        $this->tester->setInputs(['y']);
+        $this->tester->execute(['command' => $name]);
     }
 }

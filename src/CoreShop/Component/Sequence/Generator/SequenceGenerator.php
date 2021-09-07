@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,9 +21,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class SequenceGenerator implements SequenceGeneratorInterface
 {
-    private $sequenceRepository;
-    private $sequenceFactory;
-    private $entityManager;
+    private SequenceRepositoryInterface $sequenceRepository;
+    private SequenceFactoryInterface $sequenceFactory;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         SequenceRepositoryInterface $sequenceRepository,
@@ -36,9 +36,6 @@ class SequenceGenerator implements SequenceGeneratorInterface
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNextSequenceForType(string $type): int
     {
         $sequence = $this->getSequence($type);

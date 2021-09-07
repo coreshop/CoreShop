@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -33,13 +33,13 @@ use Pimcore\Model\Document\Email;
 
 class OrderMailProcessor implements OrderMailProcessorInterface
 {
-    private $logger;
-    private $priceFormatter;
-    private $invoiceRepository;
-    private $shipmentRepository;
-    private $orderDocumentRenderer;
-    private $themeHelper;
-    private $mailProcessor;
+    private Logger $logger;
+    private MoneyFormatterInterface $priceFormatter;
+    private OrderInvoiceRepositoryInterface $invoiceRepository;
+    private OrderShipmentRepositoryInterface $shipmentRepository;
+    private OrderDocumentRendererInterface $orderDocumentRenderer;
+    private ThemeHelperInterface $themeHelper;
+    private MailProcessorInterface $mailProcessor;
 
     public function __construct(
         Logger $logger,
@@ -59,9 +59,6 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $this->mailProcessor = $mailProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sendOrderMail(Email $emailDocument, OrderInterface $order, bool $sendInvoices = false, bool $sendShipments = false, array $params = []): bool
     {
         if (!$emailDocument instanceof Document\Email) {

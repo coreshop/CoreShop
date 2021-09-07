@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -33,12 +33,12 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class ShopperContext implements ShopperContextInterface
 {
-    private $storeContext;
-    private $currencyContext;
-    private $localeContext;
-    private $countryContext;
-    private $customerContext;
-    private $cartContext;
+    protected StoreContextInterface $storeContext;
+    protected CurrencyContextInterface $currencyContext;
+    protected LocaleContextInterface $localeContext;
+    protected CountryContextInterface $countryContext;
+    protected CustomerContextInterface $customerContext;
+    protected CartContextInterface $cartContext;
 
     public function __construct(
         StoreContextInterface $storeContext,
@@ -56,17 +56,11 @@ class ShopperContext implements ShopperContextInterface
         $this->cartContext = $cartContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStore(): StoreInterface
     {
         return $this->storeContext->getStore();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasStore(): bool
     {
         try {
@@ -78,17 +72,11 @@ class ShopperContext implements ShopperContextInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency(): CurrencyInterface
     {
         return $this->currencyContext->getCurrency();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCurrency(): bool
     {
         try {
@@ -100,17 +88,11 @@ class ShopperContext implements ShopperContextInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLocaleCode(): string
     {
         return $this->localeContext->getLocaleCode();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasLocaleCode(): bool
     {
         try {
@@ -122,17 +104,11 @@ class ShopperContext implements ShopperContextInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCountry(): CountryInterface
     {
         return $this->countryContext->getCountry();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCountry(): bool
     {
         try {
@@ -144,17 +120,11 @@ class ShopperContext implements ShopperContextInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomer(): CustomerInterface
     {
         return $this->customerContext->getCustomer();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCustomer(): bool
     {
         try {
@@ -166,17 +136,11 @@ class ShopperContext implements ShopperContextInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCart(): OrderInterface
     {
         return $this->cartContext->getCart();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContext(): array
     {
         return [

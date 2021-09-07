@@ -1,6 +1,6 @@
 default:
     suites:
-        ui_filter:
+        ui_pimcore_filter:
             contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup

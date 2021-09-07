@@ -32,7 +32,7 @@
                     <td class="text-center">
                         {% if item.product and item.product.image is pimcore_asset_image %}
                             <a class="" href="{{ productUrl }}">
-                                {{ item.product.image|pimcore_image_thumbnail_html("coreshop_productCart", {'class': 'img-fluid', 'alt': item.product.name, 'title': item.product.name}) }}
+                                {{ item.product.image|pimcore_image_thumbnail_html('coreshop_productCart', {'imgAttributes': {'class': 'img-fluid'}, 'alt': item.product.name, 'title': item.product.name}) }}
                             </a>
                         {% endif %}
                     </td>
@@ -42,7 +42,7 @@
                         </a>
                     </td>
                     <td class="text-right wishlist-item-price">
-                        {{ currency.price(product) }}
+                        {{ currency.getPrice(product) }}
                     </td>
                     <td class="text-center">
                         <a href="{{ coreshop_path('coreshop_wishlist_remove', {product: product.id}) }}" title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-danger tool-tip" data-id="{{ product.id }}">

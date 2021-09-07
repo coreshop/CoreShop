@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,6 +16,7 @@ namespace CoreShop\Component\Core\Order\Modifier;
 
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Order\Factory\OrderItemUnitFactoryInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
@@ -23,6 +24,13 @@ use Webmozart\Assert\Assert;
 
 class CartItemQuantityModifier implements StorageListItemQuantityModifierInterface
 {
+    private OrderItemUnitFactoryInterface $orderItemUnitFactory;
+
+    public function __construct(OrderItemUnitFactoryInterface $orderItemUnitFactory)
+    {
+        $this->orderItemUnitFactory = $orderItemUnitFactory;
+    }
+
     public function modify(StorageListItemInterface $item, float $targetQuantity): void
     {
         /**
@@ -30,6 +38,7 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
          */
         Assert::isInstanceOf($item, OrderItemInterface::class);
 
+        $currentQuantity = $item->getQuantity();
         $cleanTargetQuantity = $this->roundQuantity($item, $targetQuantity);
 
         $item->setQuantity($cleanTargetQuantity);
@@ -38,6 +47,12 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
             $item->setDefaultUnitQuantity($item->getUnitDefinition()->getConversionRate() * $item->getQuantity());
         } else {
             $item->setDefaultUnitQuantity($item->getQuantity());
+        }
+
+        if ($targetQuantity < $currentQuantity) {
+            $this->decreaseUnitsNumber($item, $currentQuantity - $targetQuantity);
+        } elseif ($targetQuantity > $currentQuantity) {
+            $this->increaseUnitsNumber($item, $targetQuantity - $currentQuantity);
         }
     }
 
@@ -85,5 +100,23 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         }
 
         return null;
+    }
+
+    private function increaseUnitsNumber(OrderItemInterface $orderItem, float $increaseBy): void
+    {
+        for ($i = 0; $i < (int)$increaseBy; ++$i) {
+            $this->orderItemUnitFactory->createForItem($orderItem);
+        }
+    }
+
+    private function decreaseUnitsNumber(OrderItemInterface $orderItem, float $decreaseBy): void
+    {
+        foreach ($orderItem->getUnits() as $unit) {
+            if (0 >= (int)$decreaseBy--) {
+                break;
+            }
+
+            $orderItem->removeUnit($unit);
+        }
     }
 }

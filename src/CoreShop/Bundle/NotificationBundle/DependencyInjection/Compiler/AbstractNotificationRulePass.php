@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,18 +25,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
 {
-    /**
-     * @var string
-     */
-    protected $type;
+    protected string $type;
 
-    /**
-     * @param string $registry
-     * @param string $formRegistry
-     * @param string $parameter
-     * @param string $tag
-     * @param string $type
-     */
     public function __construct($registry, $formRegistry, $parameter, $tag, $type)
     {
         parent::__construct($registry, $formRegistry, $parameter, $tag);
@@ -44,10 +34,7 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has($this->registry) || !$container->has($this->formRegistry)) {
             return;

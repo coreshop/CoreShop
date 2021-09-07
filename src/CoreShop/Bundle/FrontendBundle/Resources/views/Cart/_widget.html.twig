@@ -18,7 +18,7 @@
                             {% if item.product %}
                             <a href="{{ coreshop_path(item.product, 'coreshop_product_detail') }}">
                                 {% if item.product and item.product.image is pimcore_asset_image %}
-                                    {{ item.product.image|pimcore_image_thumbnail_html("coreshop_productCartPreview", {'class': 'img-thumbnail img-fluid', 'title': item.product.name, 'alt': item.product.name}) }}
+                                    {{ item.product.image|pimcore_image_thumbnail_html('coreshop_productCartPreview', {'imgAttributes': {'class': 'img-thumbnail img-fluid'}, 'title': item.product.name, 'alt': item.product.name}) }}
                                 {% endif %}
                             </a>
                             {% endif %}

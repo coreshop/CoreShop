@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,10 +26,10 @@ use Pimcore\Http\RequestHelper;
 
 final class CustomerAndStoreBasedCartContext implements CartContextInterface
 {
-    private $customerContext;
-    private $storeContext;
-    private $cartRepository;
-    private $pimcoreRequestHelper;
+    private CustomerContextInterface $customerContext;
+    private StoreContextInterface $storeContext;
+    private OrderRepositoryInterface $cartRepository;
+    private RequestHelper $pimcoreRequestHelper;
 
     public function __construct(
         CustomerContextInterface $customerContext,
@@ -43,9 +43,6 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
         $this->pimcoreRequestHelper = $pimcoreRequestHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCart(): OrderInterface
     {
         if ($this->pimcoreRequestHelper->hasMasterRequest()) {

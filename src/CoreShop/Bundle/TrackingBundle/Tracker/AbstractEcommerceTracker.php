@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,11 +20,10 @@ use Twig\Environment;
 
 abstract class AbstractEcommerceTracker implements TrackerInterface
 {
-    protected $enabled = false;
-    protected $templatingEngine;
-    protected $templatePrefix;
-    protected $templateExtension;
-    protected $twig;
+    protected bool $enabled = false;
+    protected Environment $twig;
+    protected ?string $templatePrefix = null;
+    protected ?string $templateExtension = null;
 
     public function __construct(
         Environment $twig,
@@ -37,17 +36,11 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
         $this->processOptions($resolver->resolve($options));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEnabled(): bool
     {
         return $this->enabled;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;

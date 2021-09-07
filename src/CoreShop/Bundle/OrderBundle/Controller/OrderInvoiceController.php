@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,9 +24,10 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
-use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,12 +37,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderInvoiceController extends PimcoreController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function getInvoiceAbleItemsAction(Request $request)
+    public function getInvoiceAbleItemsAction(Request $request): JsonResponse
     {
         $orderId = $request->get('id');
         $order = $this->getOrderRepository()->find($orderId);
@@ -88,12 +84,7 @@ class OrderInvoiceController extends PimcoreController
         return $this->viewHandler->handle(['success' => true, 'items' => $itemsToReturn]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createInvoiceAction(Request $request)
+    public function createInvoiceAction(Request $request): JsonResponse
     {
         $orderId = $request->get('id');
 
@@ -152,12 +143,7 @@ class OrderInvoiceController extends PimcoreController
         return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed
-     */
-    public function updateStateAction(Request $request)
+    public function updateStateAction(Request $request): JsonResponse
     {
         $invoiceId = $request->get('id');
         $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
@@ -178,12 +164,7 @@ class OrderInvoiceController extends PimcoreController
         return $this->viewHandler->handle(['success' => true]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function renderAction(Request $request)
+    public function renderAction(Request $request): Response
     {
         $invoiceId = $request->get('id');
         $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
@@ -206,58 +187,37 @@ class OrderInvoiceController extends PimcoreController
         throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $invoiceId));
     }
 
-    /**
-     * @return ProcessableInterface
-     */
-    private function getProcessableHelper()
+    private function getProcessableHelper(): ProcessableInterface
     {
         return $this->get('coreshop.order.invoice.processable');
     }
 
-    /**
-     * @return PimcoreRepositoryInterface
-     */
-    private function getOrderRepository()
+    private function getOrderRepository(): OrderRepositoryInterface
     {
         return $this->get('coreshop.repository.order');
     }
 
-    /**
-     * @return OrderDocumentRendererInterface
-     */
-    private function getOrderDocumentRenderer()
+    private function getOrderDocumentRenderer(): OrderDocumentRendererInterface
     {
         return $this->get('coreshop.renderer.order.pdf');
     }
 
-    /**
-     * @return PimcoreRepositoryInterface
-     */
-    private function getOrderInvoiceRepository()
+    private function getOrderInvoiceRepository(): OrderInvoiceRepositoryInterface
     {
         return $this->get('coreshop.repository.order_invoice');
     }
 
-    /**
-     * @return PimcoreFactoryInterface
-     */
-    private function getInvoiceFactory()
+    private function getInvoiceFactory(): PimcoreFactoryInterface
     {
         return $this->get('coreshop.factory.order_invoice');
     }
 
-    /**
-     * @return OrderDocumentTransformerInterface
-     */
-    private function getOrderToInvoiceTransformer()
+    private function getOrderToInvoiceTransformer(): OrderDocumentTransformerInterface
     {
         return $this->get('coreshop.order.transformer.order_to_invoice');
     }
 
-    /**
-     * @return StateMachineManager
-     */
-    protected function getStateMachineManager()
+    protected function getStateMachineManager(): StateMachineManager
     {
         return $this->get('coreshop.state_machine_manager');
     }

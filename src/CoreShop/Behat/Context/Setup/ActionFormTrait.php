@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,13 +22,7 @@ use Webmozart\Assert\Assert;
 
 trait ActionFormTrait
 {
-    /**
-     * @param string $class
-     * @param string $type
-     *
-     * @throws \Exception
-     */
-    protected function assertActionForm($class, $type)
+    protected function assertActionForm(string $class, string $type): void
     {
         $conditionForm = $this->getActionForm($type);
 
@@ -57,14 +51,7 @@ trait ActionFormTrait
         return $action;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return FormInterface
-     *
-     * @throws \Exception
-     */
-    protected function getActionForm($type)
+    protected function getActionForm(string $type): FormInterface
     {
         if (!$this->getActionFormRegistry()->has($type, 'default')) {
             throw new \Exception("Form not found for $type");
@@ -73,18 +60,9 @@ trait ActionFormTrait
         return $this->getFormFactory()->createNamed('', $this->getActionFormRegistry()->get($type, 'default'));
     }
 
-    /**
-     * @return FormTypeRegistryInterface
-     */
-    abstract protected function getActionFormRegistry();
+    abstract protected function getActionFormRegistry(): FormTypeRegistryInterface;
 
-    /**
-     * @return FormFactoryInterface
-     */
-    abstract protected function getFormFactory();
+    abstract protected function getFormFactory(): FormFactoryInterface;
 
-    /**
-     * @return string
-     */
-    abstract protected function getActionFormClass();
+    abstract protected function getActionFormClass(): string;
 }

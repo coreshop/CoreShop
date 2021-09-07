@@ -11,6 +11,7 @@
 
         <field name="identifier" column="identifier" nullable="true"/>
         <field name="trackingUrl" column="trackingUrl" nullable="true"/>
+        <field name="hideFromCheckout" column="hideFromCheckout" type="boolean"/>
         <field name="isFree" column="isFree" type="boolean"/>
         <field name="logo" column="logo" type="pimcoreAsset" nullable="true"/>
         <field name="taxCalculationStrategy" column="taxCalculationStrategy" nullable="true"/>

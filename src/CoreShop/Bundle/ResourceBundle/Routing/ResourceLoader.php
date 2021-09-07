@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,8 +24,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class ResourceLoader implements LoaderInterface
 {
-    private $modelRegistry;
-    private $routeFactory;
+    private RegistryInterface $modelRegistry;
+    private RouteFactoryInterface $routeFactory;
 
     public function __construct(RegistryInterface $modelRegistry, RouteFactoryInterface $routeFactory)
     {
@@ -33,9 +33,6 @@ final class ResourceLoader implements LoaderInterface
         $this->routeFactory = $routeFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($resource, $type = null)
     {
         $processor = new Processor();
@@ -98,26 +95,17 @@ final class ResourceLoader implements LoaderInterface
         return $routes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($resource, $type = null): bool
     {
         return 'coreshop.resources' === $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResolver()
     {
         // Intentionally left blank.
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setResolver(LoaderResolverInterface $resolver)
+    public function setResolver(LoaderResolverInterface $resolver): void
     {
         // Intentionally left blank.
     }

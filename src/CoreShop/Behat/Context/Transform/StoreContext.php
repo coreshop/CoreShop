@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,13 +16,14 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class StoreContext implements Context
 {
-    private $sharedStorage;
-    private $storeRepository;
+    private SharedStorageInterface $sharedStorage;
+    private StoreRepositoryInterface $storeRepository;
 
     public function __construct(SharedStorageInterface $sharedStorage, StoreRepositoryInterface $storeRepository)
     {
@@ -34,8 +35,11 @@ final class StoreContext implements Context
      * @Transform /^store(?:|s) "([^"]+)"$/
      * @Transform /^store to "([^"]+)"$/
      */
-    public function getStoreByName($name)
+    public function getStoreByName($name): StoreInterface
     {
+        /**
+         * @var StoreInterface[] $stores
+         */
         $stores = $this->storeRepository->findBy(['name' => $name]);
 
         Assert::eq(

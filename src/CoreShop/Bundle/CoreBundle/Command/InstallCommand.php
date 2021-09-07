@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,18 +14,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Command;
 
-use CoreShop\Bundle\CoreBundle\Installer;
-use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Exception\RuntimeException;
 
 final class InstallCommand extends AbstractInstallCommand
 {
-    private $commands = [
+    private array $commands = [
         [
             'command' => 'resources',
             'message' => 'Install Pimcore Classes.',
@@ -40,9 +36,6 @@ final class InstallCommand extends AbstractInstallCommand
         ],
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -54,9 +47,6 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
@@ -92,12 +82,7 @@ EOT
         return 0;
     }
 
-    /**
-     * @param bool $errored
-     *
-     * @return string
-     */
-    private function getProperFinalMessage($errored)
+    private function getProperFinalMessage(bool $errored): string
     {
         if ($errored) {
             return 'CoreShop has been installed, but some error occurred.';
@@ -106,9 +91,6 @@ EOT
         return 'CoreShop has been successfully installed.';
     }
 
-    /**
-     * @return string
-     */
     private function getCoreShopLogo(): string
     {
         return '<fg=red>                                          

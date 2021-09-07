@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -33,20 +33,9 @@ class LoadDataFixturesCommand extends Command
     const MAIN_FIXTURES_PATH = 'Fixtures/Data/Application';
     const DEMO_FIXTURES_PATH = 'Fixtures/Data/Demo';
 
-    /**
-     * @var DataFixturesLoader
-     */
-    protected $fixtureLoader;
+    protected DataFixturesLoader $fixtureLoader;
+    protected DataFixturesExecutorInterface $fixtureExecutor;
 
-    /**
-     * @var DataFixturesExecutorInterface
-     */
-    protected $fixtureExecutor;
-
-    /**
-     * @param DataFixturesLoader            $fixtureLoader
-     * @param DataFixturesExecutorInterface $fixtureExecutor
-     */
     public function __construct(DataFixturesLoader $fixtureLoader, DataFixturesExecutorInterface $fixtureExecutor)
     {
         $this->fixtureLoader = $fixtureLoader;
@@ -55,9 +44,6 @@ class LoadDataFixturesCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this->setName(static::COMMAND_NAME)
@@ -89,9 +75,6 @@ class LoadDataFixturesCommand extends Command
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fixtures = null;

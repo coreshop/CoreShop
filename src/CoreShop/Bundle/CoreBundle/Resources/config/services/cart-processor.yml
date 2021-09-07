@@ -12,6 +12,7 @@ services:
         arguments:
             - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
             - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
+            - '@CoreShop\Component\Order\Distributor\IntegerDistributorInterface'
 
     CoreShop\Component\Core\Order\Processor\CartAdjustmentClearer:
         tags:

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,9 +16,6 @@ namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\Money;
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\Concrete;
 
@@ -152,9 +149,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForResource($data, $object = null, $params = [])
     {
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
@@ -172,9 +166,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         $currencyIndex = $this->getName() . '__currency';
@@ -190,17 +181,11 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
         return $this->getDataForResource($data, $object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
@@ -218,9 +203,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
         public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (is_array($data)) {
@@ -234,18 +216,12 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionPreview($data, $object = null, $params = [])
     {
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function checkValidity($data, $omitMandatoryCheck = false)
+    public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
             throw new Model\Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
@@ -262,13 +238,13 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
                 );
             }
 
-            if (strlen($this->getMinValue()) && $this->getMinValue() > $data->getValue()) {
+            if ((string)$this->getMinValue() !== '' && $this->getMinValue() > $data->getValue()) {
                 throw new Model\Element\ValidationException(
                     'Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue()
                 );
             }
 
-            if (strlen($this->getMaxValue()) && $data->getValue() > $this->getMaxValue()) {
+            if ((string)$this->getMaxValue() !== '' && $data->getValue() > $this->getMaxValue()) {
                 throw new Model\Element\ValidationException(
                     'Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue()
                 );
@@ -276,9 +252,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForCsvExport($object, $params = [])
     {
         $data = $this->getDataFromObjectParam($object, $params);
@@ -286,33 +259,21 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return json_encode($this->getDataForResource($data, $object, $params));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
         //TODO
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         if ($data instanceof Money) {

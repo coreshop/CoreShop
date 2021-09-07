@@ -17,9 +17,9 @@ CoreShop\Component\Shipping\Model\ShippingRule:
             groups: [Detailed]
         conditions:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]
         actions:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]

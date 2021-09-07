@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,9 +19,6 @@ use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 class RuleRepository extends EntityRepository implements RuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findActive(): array
     {
         return $this->createQueryBuilder('o')
@@ -30,9 +27,6 @@ class RuleRepository extends EntityRepository implements RuleRepositoryInterface
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findWithConditionOfType($conditionType): array
     {
         return $this->createQueryBuilder('o')
@@ -43,9 +37,6 @@ class RuleRepository extends EntityRepository implements RuleRepositoryInterface
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findWithActionOfType($actionType): array
     {
         return $this->createQueryBuilder('o')

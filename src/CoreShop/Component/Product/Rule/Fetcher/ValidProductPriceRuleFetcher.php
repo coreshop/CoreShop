@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,8 +20,8 @@ use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
 final class ValidProductPriceRuleFetcher implements ValidRulesFetcherInterface
 {
-    private $productPriceRuleRepository;
-    private $ruleValidationProcessor;
+    private ProductPriceRuleRepositoryInterface $productPriceRuleRepository;
+    private RuleValidationProcessorInterface $ruleValidationProcessor;
 
     public function __construct(
         ProductPriceRuleRepositoryInterface $productPriceRuleRepository,
@@ -32,9 +32,6 @@ final class ValidProductPriceRuleFetcher implements ValidRulesFetcherInterface
         $this->ruleValidationProcessor = $ruleValidationProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getValidRules(ProductInterface $product, array $context): array
     {
         $validRules = [];

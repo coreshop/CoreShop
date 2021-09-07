@@ -6,9 +6,9 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 declare(strict_types=1);
 
@@ -21,10 +21,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_workflow');
         $rootNode = $treeBuilder->getRootNode();
@@ -45,10 +42,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param NodeBuilder $node
-     */
-    private function addStateMachineSection(NodeBuilder $node)
+    private function addStateMachineSection(NodeBuilder $node): void
     {
         $node
             ->arrayNode('places')
@@ -123,10 +117,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param NodeBuilder $node
-     */
-    private function addColorSection(NodeBuilder $node)
+    private function addColorSection(NodeBuilder $node): void
     {
         $node
             ->arrayNode('place_colors')
@@ -141,10 +132,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param NodeBuilder $node
-     */
-    private function addCallBackSection(NodeBuilder $node)
+    private function addCallBackSection(NodeBuilder $node): void
     {
         $callbacks = $node
             ->arrayNode('callbacks');
@@ -156,11 +144,7 @@ final class Configuration implements ConfigurationInterface
         $callbacks->end()->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $callbacks
-     * @param string              $type
-     */
-    private function addSubCallbackSection(ArrayNodeDefinition $callbacks, $type)
+    private function addSubCallbackSection(ArrayNodeDefinition $callbacks, string $type): void
     {
         $callbacks
             ->children()

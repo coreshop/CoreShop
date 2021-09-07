@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,9 +27,9 @@ use Webmozart\Assert\Assert;
 
 final class CartItemTaxProcessor implements CartProcessorInterface
 {
-    private $productTaxFactory;
-    private $taxCollector;
-    private $defaultAddressProvider;
+    private ProductTaxCalculatorFactoryInterface $productTaxFactory;
+    private TaxCollectorInterface $taxCollector;
+    private AddressProviderInterface $defaultAddressProvider;
 
     public function __construct(
         ProductTaxCalculatorFactoryInterface $productTaxFactory,
@@ -41,9 +41,6 @@ final class CartItemTaxProcessor implements CartProcessorInterface
         $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         $store = $cart->getStore();
@@ -58,21 +55,33 @@ final class CartItemTaxProcessor implements CartProcessorInterface
          */
         foreach ($cart->getItems() as $item) {
             $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct(),
-                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
+                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
+            );
 
             $fieldCollection = new Fieldcollection();
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
-                if ($store->getUseGrossPrice()) {
-                    $fieldCollection->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator,
-                        $item->getTotal(true)));
+                foreach ($item->getUnits() as $unit) {
+                    $unitFieldCollection = new Fieldcollection();
 
-                    $item->setItemTax($taxCalculator->getTaxesAmountFromGross($item->getItemPrice(true)));
-                } else {
-                    $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator,
-                        $item->getTotal(false)));
+                    if ($store->getUseGrossPrice()) {
+                        $unitFieldCollection->setItems(
+                            $this->taxCollector->collectTaxesFromGross($taxCalculator, $unit->getTotal(true))
+                        );
+                    } else {
+                        $unitFieldCollection->setItems(
+                            $this->taxCollector->collectTaxes($taxCalculator, $unit->getTotal(false))
+                        );
+                    }
 
-                    $item->setItemTax($taxCalculator->getTaxesAmount($item->getItemPrice(false)));
+                    $unit->setTaxes($unitFieldCollection);
+
+                    $fieldCollection->setItems(
+                        $this->taxCollector->mergeTaxes(
+                            $unitFieldCollection->getItems(),
+                            $fieldCollection->getItems()
+                        )
+                    );
                 }
             }
 

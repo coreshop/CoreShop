@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,6 +17,7 @@ namespace CoreShop\Component\Core\Order\Processor;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
+use CoreShop\Component\Order\Distributor\IntegerDistributor;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
@@ -24,20 +25,20 @@ use Webmozart\Assert\Assert;
 
 final class CartItemProcessor implements CartItemProcessorInterface
 {
-    private $taxCalculator;
-    private $defaultAddressProvider;
+    private ProductTaxCalculatorFactoryInterface $taxCalculator;
+    private AddressProviderInterface $defaultAddressProvider;
+    private IntegerDistributor $integerDistributor;
 
     public function __construct(
         ProductTaxCalculatorFactoryInterface $taxCalculator,
-        AddressProviderInterface $defaultAddressProvider
+        AddressProviderInterface $defaultAddressProvider,
+        IntegerDistributor $integerDistributor
     ) {
         $this->taxCalculator = $taxCalculator;
         $this->defaultAddressProvider = $defaultAddressProvider;
+        $this->integerDistributor = $integerDistributor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function processCartItem(
         OrderItemInterface $cartItem,
         int $itemPrice,
@@ -55,18 +56,39 @@ final class CartItemProcessor implements CartItemProcessorInterface
         $cart = $context['cart'];
         $store = $context['store'];
 
-        $taxCalculator = $this->taxCalculator->getTaxCalculator($product,
-            $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
+        $taxCalculator = $this->taxCalculator->getTaxCalculator(
+            $product, $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
+        );
+
+        $quantity = $cartItem->getQuantity();
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             if ($store->getUseGrossPrice()) {
-                $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross((int)round($itemPrice * $cartItem->getQuantity()));
+                $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross((int)round($itemPrice * $quantity));
                 $itemPriceTax = $taxCalculator->getTaxesAmountFromGross($itemPrice);
                 $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemRetailPrice);
                 $itemDiscountTax = $taxCalculator->getTaxesAmountFromGross($itemDiscount);
                 $itemDiscountPriceTax = $taxCalculator->getTaxesAmountFromGross($itemDiscountPrice);
 
-                $cartItem->setTotal((int)round($itemPrice * $cartItem->getQuantity()), true);
+                $splitTaxes = $this->integerDistributor->distribute($totalTaxAmount, (int)$quantity);
+
+                $i = 0;
+
+                foreach ($cartItem->getUnits() as $unit) {
+                    if (0 === $splitTaxes[$i]) {
+                        continue;
+                    }
+
+                    $unit->setSubtotal($itemPrice, true);
+                    $unit->setSubtotal($itemPrice - $splitTaxes[$i], false);
+
+                    $unit->setTotal($itemPrice, true);
+                    $unit->setTotal($itemPrice - $splitTaxes[$i], false);
+
+                    $i++;
+                }
+
+                $cartItem->setTotal((int)round($itemPrice * $quantity), true);
                 $cartItem->setTotal($cartItem->getTotal(true) - $totalTaxAmount, false);
 
                 $cartItem->setItemPrice($itemPrice, true);
@@ -81,14 +103,32 @@ final class CartItemProcessor implements CartItemProcessorInterface
                 $cartItem->setItemDiscount($itemDiscount, true);
                 $cartItem->setItemDiscount($itemDiscount - $itemDiscountTax, false);
             } else {
-                $totalTaxAmount = $taxCalculator->getTaxesAmount((int)round($itemPrice * $cartItem->getQuantity()));
+                $totalTaxAmount = $taxCalculator->getTaxesAmount((int)round($itemPrice * $quantity));
                 $itemPriceTax = $taxCalculator->getTaxesAmount($itemPrice);
                 $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmount($itemRetailPrice);
                 $itemDiscountTax = $taxCalculator->getTaxesAmount($itemDiscount);
                 $itemDiscountPriceTax = $taxCalculator->getTaxesAmount($itemDiscountPrice);
 
-                $cartItem->setTotal((int)round($itemPrice * $cartItem->getQuantity()), false);
-                $cartItem->setTotal((int)round($itemPrice * $cartItem->getQuantity()) + $totalTaxAmount, true);
+                $splitTaxes = $this->integerDistributor->distribute($totalTaxAmount, (int)$quantity);
+
+                $i = 0;
+
+                foreach ($cartItem->getUnits() as $unit) {
+                    if (0 === $splitTaxes[$i]) {
+                        continue;
+                    }
+
+                    $unit->setSubtotal($itemPrice + $splitTaxes[$i], true);
+                    $unit->setSubtotal($itemPrice, false);
+
+                    $unit->setTotal($itemPrice + $splitTaxes[$i], true);
+                    $unit->setTotal($itemPrice, false);
+
+                    $i++;
+                }
+
+                $cartItem->setTotal((int)round($itemPrice * $quantity), false);
+                $cartItem->setTotal((int)round($itemPrice * $quantity) + $totalTaxAmount, true);
 
                 $cartItem->setItemPrice($itemPrice, false);
                 $cartItem->setItemPrice($itemPrice + $itemPriceTax, true);
@@ -103,8 +143,16 @@ final class CartItemProcessor implements CartItemProcessorInterface
                 $cartItem->setItemDiscount($itemDiscount + $itemDiscountTax, true);
             }
         } else {
-            $cartItem->setTotal((int)round($itemPrice * $cartItem->getQuantity()), false);
-            $cartItem->setTotal((int)round($itemPrice * $cartItem->getQuantity()), true);
+            $cartItem->setTotal((int)round($itemPrice * $quantity), false);
+            $cartItem->setTotal((int)round($itemPrice * $quantity), true);
+
+            foreach ($cartItem->getUnits() as $unit) {
+                $unit->setSubtotal($itemPrice, true);
+                $unit->setSubtotal($itemPrice, false);
+
+                $unit->setTotal($itemPrice, true);
+                $unit->setTotal($itemPrice, false);
+            }
 
             $cartItem->setItemPrice($itemPrice, true);
             $cartItem->setItemPrice($itemPrice, false);

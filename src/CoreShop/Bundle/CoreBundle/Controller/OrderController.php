@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,9 +23,6 @@ use CoreShop\Component\Core\Model\OrderItemInterface as CoreOrderItemInterface;
 
 class OrderController extends BaseOrderController
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function prepareSale(OrderInterface $sale): array
     {
         $order = parent::prepareSale($sale);
@@ -38,9 +35,6 @@ class OrderController extends BaseOrderController
         return $order;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDetails(OrderInterface $sale): array
     {
         $json = parent::getDetails($sale);
@@ -66,7 +60,7 @@ class OrderController extends BaseOrderController
     {
         $summary = parent::getSummary($order);
 
-        if ($order instanceof \CoreShop\Component\Core\Model\OrderInterface && $order->getShipping() > 0) {
+        if ($order instanceof CoreOrderInterface && $order->getShipping() > 0) {
             $summary[] = [
                 'key' => 'shipping',
                 'value' => $order->getShipping(),

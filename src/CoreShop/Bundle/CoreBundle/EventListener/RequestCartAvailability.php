@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,14 +21,13 @@ use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 final class RequestCartAvailability
 {
-    private $cartManager;
-    private $shopperContext;
-    private $pimcoreRequestHelper;
-    private $session;
+    private CartManagerInterface $cartManager;
+    private ShopperContextInterface $shopperContext;
+    private RequestHelper $pimcoreRequestHelper;
+    private Session $session;
 
     public function __construct(
         CartManagerInterface $cartManager,

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,8 +27,8 @@ use Webmozart\Assert\Assert;
 
 final class AddToCartAvailabilityValidator extends ConstraintValidator
 {
-    private $availabilityChecker;
-    protected $cartItemResolver;
+    private AvailabilityCheckerInterface $availabilityChecker;
+    private StorageListItemResolverInterface $cartItemResolver;
 
     public function __construct(
         AvailabilityCheckerInterface $availabilityChecker,
@@ -39,15 +39,15 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         $this->cartItemResolver = $cartItemResolver;
     }
 
-    public function validate($addToCartDto, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
-        Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
+        Assert::isInstanceOf($value, AddToCartInterface::class);
         Assert::isInstanceOf($constraint, AddToCartAvailability::class);
 
         /**
          * @var PurchasableInterface $purchasable
          */
-        $purchasable = $addToCartDto->getCartItem()->getProduct();
+        $purchasable = $value->getCartItem()->getProduct();
 
         if (!$purchasable instanceof StockableInterface) {
             return;
@@ -56,12 +56,12 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         /**
          * @var OrderItemInterface $cartItem
          */
-        $cartItem = $addToCartDto->getCartItem();
+        $cartItem = $value->getCartItem();
 
         /**
          * @var OrderInterface $cart
          */
-        $cart = $addToCartDto->getCart();
+        $cart = $value->getCart();
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $purchasable,

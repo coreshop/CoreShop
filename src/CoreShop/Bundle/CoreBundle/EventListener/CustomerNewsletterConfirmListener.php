@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,9 +25,9 @@ use Webmozart\Assert\Assert;
 
 final class CustomerNewsletterConfirmListener
 {
-    private $linkGenerator;
-    private $requestStack;
-    private $eventDispatcher;
+    private LinkGeneratorInterface $linkGenerator;
+    private RequestStack $requestStack;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         LinkGeneratorInterface $linkGenerator,
@@ -48,7 +48,7 @@ final class CustomerNewsletterConfirmListener
          */
         $user = $event->getSubject();
 
-        if ($user->getIsGuest() === true) {
+        if (null === $user->getUser()) {
             return;
         }
 
@@ -62,7 +62,12 @@ final class CustomerNewsletterConfirmListener
 
         $confirmEvent = new RequestNewsletterConfirmationEvent(
             $user,
-            $this->linkGenerator->generate($event->getSubject(), 'coreshop_customer_confirm_newsletter', ['_locale' => $this->requestStack->getMasterRequest()->getLocale()], UrlGeneratorInterface::ABSOLUTE_URL)
+            $this->linkGenerator->generate(
+                $event->getSubject(),
+                'coreshop_customer_confirm_newsletter',
+                ['_locale' => $this->requestStack->getMasterRequest()->getLocale()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
         );
         $this->eventDispatcher->dispatch($confirmEvent, 'coreshop.customer.request_newsletter_confirm');
     }

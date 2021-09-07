@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,17 +20,16 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
-use CoreShop\Component\Order\Cart\CartItemResolver;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-class AddToCartMinimumQuantityValidator extends ConstraintValidator
+final class AddToCartMinimumQuantityValidator extends ConstraintValidator
 {
-    private $quantityValidatorService;
-    protected $cartItemResolver;
+    private QuantityValidatorService $quantityValidatorService;
+    private StorageListItemResolverInterface $cartItemResolver;
 
     public function __construct(
         QuantityValidatorService $quantityValidatorService,
@@ -41,15 +40,15 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
         $this->cartItemResolver = $cartItemResolver;
     }
 
-    public function validate($addToCartDto, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
-        Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
+        Assert::isInstanceOf($value, AddToCartInterface::class);
         Assert::isInstanceOf($constraint, AddToCartMinimumQuantity::class);
 
         /**
          * @var PurchasableInterface $purchasable
          */
-        $purchasable = $addToCartDto->getCartItem()->getProduct();
+        $purchasable = $value->getCartItem()->getProduct();
 
         if (!$purchasable instanceof StockableInterface) {
             return;
@@ -62,12 +61,12 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
         /**
          * @var OrderInterface $cart
          */
-        $cart = $addToCartDto->getCart();
+        $cart = $value->getCart();
 
         /**
          * @var OrderItemInterface $cartItem
          */
-        $cartItem = $addToCartDto->getCartItem();
+        $cartItem = $value->getCartItem();
 
         $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
         $minLimit = $purchasable->getMinimumQuantityToOrder();

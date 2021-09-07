@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -28,8 +28,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private $formFactory;
-    private $cartManager;
+    private FormFactoryInterface $formFactory;
+    private CartManagerInterface $cartManager;
 
     public function __construct(
         FormFactoryInterface $formFactory,
@@ -39,41 +39,26 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
         $this->cartManager = $cartManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier(): string
     {
         return 'payment';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRequired(OrderInterface $cart): bool
     {
         return $cart->getTotal() > 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function doAutoForward(OrderInterface $cart): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate(OrderInterface $cart): bool
     {
         return $cart->hasItems() && $cart->getPaymentProvider() instanceof PaymentProviderInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $cart);
@@ -93,9 +78,6 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return [

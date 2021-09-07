@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Registry;
 
@@ -19,33 +21,12 @@ use Symfony\Component\DependencyInjection\Reference;
 
 abstract class RegisterRegistryTypePass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
-    protected $registry;
+    protected string $registry;
+    protected string $formRegistry;
+    protected string $parameter;
+    protected string $tag;
 
-    /**
-     * @var string
-     */
-    protected $formRegistry;
-
-    /**
-     * @var string
-     */
-    protected $parameter;
-
-    /**
-     * @var string
-     */
-    protected $tag;
-
-    /**
-     * @param string $registry
-     * @param string $formRegistry
-     * @param string $parameter
-     * @param string $tag
-     */
-    public function __construct($registry, $formRegistry, $parameter, $tag)
+    public function __construct(string $registry, string $formRegistry, string $parameter, string $tag)
     {
         $this->registry = $registry;
         $this->formRegistry = $formRegistry;
@@ -53,10 +34,7 @@ abstract class RegisterRegistryTypePass implements CompilerPassInterface
         $this->tag = $tag;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has($this->registry) || !$container->has($this->formRegistry)) {
             return;

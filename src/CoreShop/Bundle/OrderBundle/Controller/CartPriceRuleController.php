@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,35 +17,31 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherGeneratorType;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CartPriceRuleController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getConfigAction(Request $request)
+    public function getConfigAction(Request $request): JsonResponse
     {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
-        return $this->viewHandler->handle(['actions' => array_keys($actions), 'conditions' => array_keys($conditions)]);
+        return $this->viewHandler->handle([
+            'actions' => array_keys($actions),
+            'conditions' => array_keys($conditions)
+        ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getVoucherCodesAction(Request $request)
+    public function getVoucherCodesAction(Request $request): JsonResponse
     {
         $id = $request->get('cartPriceRule');
         $cartPriceRule = $this->repository->find($id);
@@ -54,15 +50,25 @@ class CartPriceRuleController extends ResourceController
             throw new NotFoundHttpException();
         }
 
-        return $this->viewHandler->handle(['total' => count($cartPriceRule->getVoucherCodes()), 'data' => $cartPriceRule->getVoucherCodes(), 'success' => true], ['group' => 'Detailed']);
+        $data = $this->getVoucherCodeRepository()->findAllPaginator(
+            $cartPriceRule,
+            (int)$request->get('start', 0),
+            (int)$request->get('limit', 50)
+        );
+
+        return $this->viewHandler->handle(
+            [
+                'total' => count($data),
+                'data' => iterator_to_array($data->getIterator()),
+                'success' => true,
+            ],
+            [
+                'group' => 'Detailed',
+            ]
+        );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function createVoucherCodeAction(Request $request)
+    public function createVoucherCodeAction(Request $request): JsonResponse
     {
         $form = $this->get('form.factory')->createNamed('', VoucherType::class);
         $handledForm = $form->handleRequest($request);
@@ -97,12 +103,7 @@ class CartPriceRuleController extends ResourceController
         return $this->viewHandler->handle(['success' => false]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function generateVoucherCodesAction(Request $request)
+    public function generateVoucherCodesAction(Request $request): JsonResponse
     {
         $form = $this->get('form.factory')->createNamed('', VoucherGeneratorType::class);
 
@@ -126,10 +127,7 @@ class CartPriceRuleController extends ResourceController
         return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
     }
 
-    /**
-     * @param Request $request
-     */
-    public function exportVoucherCodesAction(Request $request)
+    public function exportVoucherCodesAction(Request $request): void
     {
         $id = $request->get('cartPriceRule');
         $priceRule = $this->repository->find($id);
@@ -145,7 +143,9 @@ class CartPriceRuleController extends ResourceController
                 'uses',
             ]);
 
-            foreach ($priceRule->getVoucherCodes() as $code) {
+            $codes = $this->getVoucherCodeRepository()->findAllPaginator($priceRule, (int)$request->get('start', 0), (int)$request->get('limit', 50));
+
+            foreach ($codes as $code) {
                 $data = [
                     'code' => $code->getCode(),
                     'creationDate' => $code->getCreationDate() instanceof \DateTime ? $code->getCreationDate()->getTimestamp() : '',
@@ -153,7 +153,7 @@ class CartPriceRuleController extends ResourceController
                     'uses' => $code->getUses(),
                 ];
 
-                $csvData[] = implode(';', $data);
+                $csvData[] = implode(',', $data);
             }
 
             $csv = implode(PHP_EOL, $csvData);
@@ -170,12 +170,7 @@ class CartPriceRuleController extends ResourceController
         exit;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function deleteVoucherCodeAction(Request $request)
+    public function deleteVoucherCodeAction(Request $request): JsonResponse
     {
         $cartPriceRuleId = $request->get('cartPriceRule');
         $id = $request->get('id');
@@ -202,26 +197,22 @@ class CartPriceRuleController extends ResourceController
         return $this->viewHandler->handle(['success' => false]);
     }
 
-    /**
-     * @return \CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator
-     */
-    protected function getVoucherCodeGenerator()
+    protected function getVoucherCodeGenerator(): CartPriceRuleVoucherCodeGenerator
     {
         return $this->get('coreshop.generator.cart_price_rule_voucher_codes');
     }
 
-    /**
-     * @return mixed
-     */
-    protected function getConfigActions()
+    protected function getVoucherCodeRepository(): CartPriceRuleVoucherRepositoryInterface
+    {
+        return $this->get('coreshop.repository.cart_price_rule_voucher_code');
+    }
+
+    protected function getConfigActions(): array
     {
         return $this->container->getParameter('coreshop.cart_price_rule.actions');
     }
 
-    /**
-     * @return mixed
-     */
-    protected function getConfigConditions()
+    protected function getConfigConditions(): array
     {
         return $this->container->getParameter('coreshop.cart_price_rule.conditions');
     }

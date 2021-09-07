@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,11 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Model;
 
-use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
-class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
+class Payment implements PaymentInterface
 {
     use SetValuesTrait;
     use TimestampableTrait;
@@ -32,6 +31,11 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
      * @var PaymentProviderInterface
      */
     protected $paymentProvider;
+
+    /**
+     * @var int
+     */
+    protected $totalAmount;
 
     /**
      * @var string
@@ -49,11 +53,6 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
     protected $details = [];
 
     /**
-     * @var CurrencyInterface
-     */
-    protected $currency;
-
-    /**
      * @var \DateTime
      */
     protected $datePayment;
@@ -62,6 +61,16 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
      * @var int
      */
     protected $orderId;
+
+    /**
+     * @var string
+     */
+    protected $number;
+
+    /**
+     * @var string
+     */
+    protected $description;
 
     public function getId()
     {
@@ -78,19 +87,36 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
         $this->paymentProvider = $paymentProvider;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalAmount()
+    {
+        return $this->totalAmount;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalAmount($totalAmount)
+    {
+        $this->totalAmount = $totalAmount;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCurrencyCode()
     {
-        return $this->currency->getIsoCode();
+        return $this->currencyCode;
     }
 
-    public function getCurrency()
+    /**
+     * {@inheritdoc}
+     */
+    public function setCurrencyCode($currencyCode)
     {
-        return $this->currency;
-    }
-
-    public function setCurrency($currency)
-    {
-        $this->currency = $currency;
+        $this->currencyCode = $currencyCode;
     }
 
     public function getDatePayment()
@@ -132,5 +158,37 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
         }
 
         $this->details = $details;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 }

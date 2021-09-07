@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class TaxRateContext implements Context
 {
-    private $sharedStorage;
-    private $taxRateRepository;
+    private SharedStorageInterface $sharedStorage;
+    private TaxRateRepositoryInterface $taxRateRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -35,7 +35,7 @@ final class TaxRateContext implements Context
     /**
      * @Then /^there should be a tax rate "([^"]+)" with "([^"]+)%" rate$/
      */
-    public function thereShouldBeATaxRate($name, $rate)
+    public function thereShouldBeATaxRate($name, $rate): void
     {
         $rates = $this->taxRateRepository->findByName($name, 'en');
 

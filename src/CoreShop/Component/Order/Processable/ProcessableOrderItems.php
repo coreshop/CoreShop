@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,18 +21,15 @@ use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 
 class ProcessableOrderItems implements ProcessableInterface
 {
-    protected $documentsRepository;
-    protected $stateCancelled;
+    protected OrderDocumentRepositoryInterface $documentsRepository;
+    protected string $stateCancelled;
 
-    public function __construct(OrderDocumentRepositoryInterface $documentsRepository, $stateCancelled)
+    public function __construct(OrderDocumentRepositoryInterface $documentsRepository, string $stateCancelled)
     {
         $this->documentsRepository = $documentsRepository;
         $this->stateCancelled = $stateCancelled;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProcessableItems(OrderInterface $order): array
     {
         $items = $order->getItems();
@@ -62,9 +59,6 @@ class ProcessableOrderItems implements ProcessableInterface
         return $processAbleItems;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProcessedItems(OrderInterface $order): array
     {
         $documents = $this->documentsRepository->getDocumentsNotInState($order, $this->stateCancelled);
@@ -90,17 +84,11 @@ class ProcessableOrderItems implements ProcessableInterface
         return $processedItems;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isFullyProcessed(OrderInterface $order): bool
     {
         return count($this->getProcessableItems($order)) === 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isProcessable(OrderInterface $order): bool
     {
         return !$this->isFullyProcessed($order) && $order->getOrderState() !== OrderStates::STATE_CANCELLED;

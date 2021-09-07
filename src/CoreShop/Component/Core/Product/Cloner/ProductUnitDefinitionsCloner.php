@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,9 +18,6 @@ use CoreShop\Component\Core\Model\ProductInterface;
 
 class ProductUnitDefinitionsCloner implements ProductClonerInterface
 {
-    /**
-     * {@inheritDoc}
-     */
     public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void
     {
         if ($resetExistingData === false && $product->hasUnitDefinitions() === true) {
@@ -28,6 +25,19 @@ class ProductUnitDefinitionsCloner implements ProductClonerInterface
         }
 
         $unitDefinitions = clone $referenceProduct->getUnitDefinitions();
+
+        //Hack to get rid of the ID
+        $reflectionClass = new \ReflectionClass($unitDefinitions);
+        $property = $reflectionClass->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($unitDefinitions, null);
+
+        foreach ($unitDefinitions->getUnitDefinitions() as $unitDefinition) {
+            $reflectionClass = new \ReflectionClass($unitDefinition);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($unitDefinition, null);
+        }
 
         $product->setUnitDefinitions($unitDefinitions);
     }

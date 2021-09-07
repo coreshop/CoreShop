@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,9 +23,9 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInterface
 {
-    private $inner;
-    private $carrierRepository;
-    private $shippableCarrierValidator;
+    private CarriersResolverInterface $inner;
+    private CarrierRepositoryInterface $carrierRepository;
+    private ShippableCarrierValidatorInterface $shippableCarrierValidator;
 
     public function __construct(
         CarriersResolverInterface $inner,
@@ -37,9 +37,6 @@ final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInte
         $this->shippableCarrierValidator = $shippableCarrierValidator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address): array
     {
         if ($shippable instanceof StoreAwareInterface) {

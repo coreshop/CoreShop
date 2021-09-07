@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -89,6 +89,22 @@ interface OrderItemInterface extends
      * @param ?Fieldcollection $taxes
      */
     public function setTaxes(?Fieldcollection $taxes);
+
+    /**
+     * @return OrderItemUnitInterface[]
+     */
+    public function getUnits(): ?array;
+
+    /**
+     * @var OrderItemUnitInterface[] $units
+     */
+    public function setUnits(?array $units);
+
+    public function hasUnit(OrderItemUnitInterface $itemUnit): bool;
+
+    public function addUnit(OrderItemUnitInterface $itemUnit): void;
+
+    public function removeUnit(OrderItemUnitInterface $itemUnit): void;
 
     public function setConvertedItemWholesalePrice(int $convertedItemWholesalePrice);
 

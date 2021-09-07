@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,26 +21,10 @@ use Doctrine\DBAL\Connection;
 
 class PimcoreRepositoryFactory implements RepositoryFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $repositoryClassName;
+    private string $repositoryClassName;
+    private MetadataInterface $metadata;
+    private Connection $connection;
 
-    /**
-     * @var MetadataInterface
-     */
-    private $metadata;
-
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    /**
-     * @param string            $repositoryClassName
-     * @param MetadataInterface $metadata
-     * @param Connection        $connection
-     */
     public function __construct(string $repositoryClassName, MetadataInterface $metadata, Connection $connection)
     {
         $this->repositoryClassName = $repositoryClassName;

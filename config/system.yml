@@ -11,15 +11,7 @@ pimcore:
             de: ''
         default_language: ''
         disable_usage_statistics: false
-        debug: true
-        debug_ip: ''
-        http_auth:
-            username: ''
-            password: ''
-        debug_admin_translations: false
-        devmode: false
         instance_identifier: ''
-        show_cookie_notice: false
     documents:
         versions:
             days: null
@@ -60,9 +52,6 @@ pimcore:
         return:
             name: pimcore
             email: pimcore@example.com
-        method: sendmail
-        debug:
-            email_addresses: ''
     newsletter:
         sender:
             name: ''
@@ -70,8 +59,6 @@ pimcore:
         return:
             name: ''
             email: ''
-        method: sendmail
-        debug: null
         use_specific: true
     applicationlog:
         mail_notification:

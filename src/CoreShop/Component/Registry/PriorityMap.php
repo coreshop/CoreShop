@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,11 +16,12 @@ namespace CoreShop\Component\Registry;
 
 class PriorityMap implements \Iterator, \Countable
 {
-    private $lastSequence = 0;
-    private $list = [];
     const ORDER_ASC = 'asc';
     const ORDER_DESC = 'desc';
-    private $order = self::ORDER_ASC;
+
+    private int $lastSequence = 0;
+    private array $list = [];
+    private string $order = self::ORDER_ASC;
 
     /**
      * Get scalar key from mixed.
@@ -29,9 +30,9 @@ class PriorityMap implements \Iterator, \Countable
     {
         if (is_object($key)) {
             return spl_object_hash($key);
-        } else {
-            return $key;
         }
+
+        return $key;
     }
 
     /**

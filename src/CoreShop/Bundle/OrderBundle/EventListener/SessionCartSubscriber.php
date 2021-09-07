@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,20 +25,21 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class SessionCartSubscriber implements EventSubscriberInterface
 {
-    private $pimcoreContext;
-    private $cartContext;
-    private $sessionKeyName;
+    private PimcoreContextResolver $pimcoreContext;
+    private CartContextInterface $cartContext;
+    private string $sessionKeyName;
 
-    public function __construct(PimcoreContextResolver $pimcoreContextResolver, CartContextInterface $cartContext, string $sessionKeyName)
+    public function __construct(
+        PimcoreContextResolver $pimcoreContextResolver,
+        CartContextInterface $cartContext,
+        string $sessionKeyName
+    )
     {
         $this->pimcoreContext = $pimcoreContextResolver;
         $this->cartContext = $cartContext;
         $this->sessionKeyName = $sessionKeyName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -46,9 +47,6 @@ final class SessionCartSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param ResponseEvent $event
-     */
     public function onKernelResponse(ResponseEvent $event): void
     {
         if ($this->pimcoreContext->matchesPimcoreContext($event->getRequest(), PimcoreContextResolver::CONTEXT_ADMIN)) {

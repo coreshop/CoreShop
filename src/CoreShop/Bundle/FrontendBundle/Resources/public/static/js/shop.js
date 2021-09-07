@@ -69,14 +69,14 @@ $(document).ready(function () {
             return;
         }
 
-        var $invoiceAddress = $addressStep.find('select[name="invoiceAddress"]'),
+        var $invoiceAddress = $addressStep.find('select[name="coreshop[invoiceAddress]"]'),
             $invoicePanel = $addressStep.find('.panel-invoice-address'),
             $invoiceField = $addressStep.find('.invoice-address-selector'),
-            $shippingAddress = $addressStep.find('select[name="shippingAddress"]'),
+            $shippingAddress = $addressStep.find('select[name="coreshop[shippingAddress]"]'),
             $shippingPanel = $addressStep.find('.panel-shipping-address'),
             $shippingField = $addressStep.find('.shipping-address-selector'),
             $shippingAddAddressButton = $shippingPanel.parent().find('.card-footer'),
-            $useIasS = $addressStep.find('[name="useInvoiceAsShipping"]');
+            $useIasS = $addressStep.find('[name="coreshop[useInvoiceAsShipping]"]');
 
         $invoiceAddress.on('change', function () {
             var selected = $(this).find('option:selected');

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,9 +19,6 @@ use Pimcore\Model\Exception\NotFoundException;
 
 class ClassInstaller implements ClassInstallerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createBrick(string $jsonFile, string $brickName): DataObject\Objectbrick\Definition
     {
         try {
@@ -44,9 +41,6 @@ class ClassInstaller implements ClassInstallerInterface
         return $objectBrick;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createClass(string $jsonFile, string $className, bool $updateClass = false): DataObject\ClassDefinition
     {
         $tempClass = new DataObject\ClassDefinition();
@@ -100,9 +94,6 @@ class ClassInstaller implements ClassInstallerInterface
         return $class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createFieldCollection(string $jsonFile, string $name): DataObject\Fieldcollection\Definition
     {
         try {

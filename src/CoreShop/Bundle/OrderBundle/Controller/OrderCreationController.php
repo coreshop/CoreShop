@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -41,10 +41,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class OrderCreationController extends PimcoreController
 {
-    /**
-     * @var AddressFormatterInterface
-     */
-    protected $addressFormatter;
+    protected AddressFormatterInterface $addressFormatter;
 
     public function getCustomerDetailsAction(
         Request $request,
@@ -122,7 +119,11 @@ class OrderCreationController extends PimcoreController
                 );
             }
 
+            /**
+             * @var OrderInterface $cart
+             */
             $cart = $handledForm->getData();
+            $cart->setCreationDate(time());
 
             $workflow = $manager->get($cart, OrderSaleTransitions::IDENTIFIER);
 
@@ -296,7 +297,7 @@ class OrderCreationController extends PimcoreController
         $this->addressFormatter = $addressFormatter;
     }
 
-    protected function getPermission()
+    protected function getPermission(): string
     {
         return 'coreshop_permission_order_create';
     }

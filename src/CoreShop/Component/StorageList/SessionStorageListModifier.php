@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,7 +19,7 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 class SessionStorageListModifier extends SimpleStorageListModifier
 {
-    private $manager;
+    private StorageListManagerInterface $manager;
 
     public function __construct(StorageListManagerInterface $manager)
     {
@@ -28,9 +28,6 @@ class SessionStorageListModifier extends SimpleStorageListModifier
         $this->manager = $manager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         parent::addToList($storageList, $item);
@@ -38,9 +35,6 @@ class SessionStorageListModifier extends SimpleStorageListModifier
         $this->manager->persist($storageList);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         parent::removeFromList($storageList, $item);

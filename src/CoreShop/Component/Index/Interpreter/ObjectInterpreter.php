@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,36 +20,24 @@ use Pimcore\Model\DataObject\AbstractObject;
 
 class ObjectInterpreter implements RelationInterpreterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpretRelational(mixed $value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = []): array
     {
         $result = [];
 
         if (is_array($value)) {
             foreach ($value as $v) {
                 if ($v instanceof AbstractObject) {
-                    $result[] = [
-                        'dest' => $v->getId(),
-                        'type' => 'object',
-                    ];
+                    $result[] = new RelationalValue($v->getId(), 'object');
                 }
             }
         } elseif ($value instanceof AbstractObject) {
-            $result[] = [
-                'dest' => $value->getId(),
-                'type' => 'object',
-            ];
+            $result[] = new RelationalValue($value->getId(), 'object');
         }
 
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpret(mixed $value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = []): mixed
     {
         $result = [];
 

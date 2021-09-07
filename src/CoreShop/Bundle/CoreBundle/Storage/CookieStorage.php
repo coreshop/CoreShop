@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,15 +24,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class CookieStorage implements StorageInterface, EventSubscriberInterface
 {
-    /**
-     * @var ParameterBag
-     */
-    private $requestCookies;
-
-    /**
-     * @var ParameterBag
-     */
-    private $responseCookies;
+    private ParameterBag $requestCookies;
+    private ParameterBag $responseCookies;
 
     public function __construct()
     {
@@ -40,9 +33,6 @@ final class CookieStorage implements StorageInterface, EventSubscriberInterface
         $this->responseCookies = new ParameterBag();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -67,7 +57,7 @@ final class CookieStorage implements StorageInterface, EventSubscriberInterface
     /**
      * @param ResponseEvent $event
      */
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -82,41 +72,26 @@ final class CookieStorage implements StorageInterface, EventSubscriberInterface
         $this->responseCookies = new ParameterBag();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has(string $name): bool
     {
         return !in_array($this->get($name), ['', null], true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         return $this->responseCookies->get($name, $this->requestCookies->get($name, $default));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $this->responseCookies->set($name, $value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove(string $name): void
     {
         $this->set($name, null);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function all(): array
     {
         return array_merge($this->responseCookies->all(), $this->requestCookies->all());

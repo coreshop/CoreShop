@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Context\CartNotFoundException;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
@@ -25,9 +26,9 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 final class CartBlamerListener
 {
-    private $cartProcessor;
-    private $cartContext;
-    private $cartManager;
+    private CartProcessorInterface $cartProcessor;
+    private CartContextInterface $cartContext;
+    private CartManagerInterface $cartManager;
 
     public function __construct(
         CartProcessorInterface $cartProcessor,
@@ -42,11 +43,11 @@ final class CartBlamerListener
     public function onInteractiveLogin(InteractiveLoginEvent $interactiveLoginEvent): void
     {
         $user = $interactiveLoginEvent->getAuthenticationToken()->getUser();
-        if (!$user instanceof CustomerInterface) {
+        if (!$user instanceof UserInterface) {
             return;
         }
 
-        $this->blame($user);
+        $this->blame($user->getCustomer());
     }
 
     public function onRegisterEvent(CustomerRegistrationEvent $event): void

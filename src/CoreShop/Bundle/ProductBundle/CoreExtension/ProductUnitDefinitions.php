@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -122,17 +122,11 @@ class ProductUnitDefinitions extends Data implements
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueryColumnType()
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getColumnType()
     {
         return false;
@@ -186,9 +180,6 @@ class ProductUnitDefinitions extends Data implements
 //        return $code;
 //    }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalVersion($object, $data)
     {
         if (!$data instanceof ProductUnitDefinitionsInterface) {
@@ -202,9 +193,6 @@ class ProductUnitDefinitions extends Data implements
         return $this->getSerializer()->toArray($data, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalVersion($object, $data)
     {
         if (!is_array($data)) {
@@ -233,33 +221,21 @@ class ProductUnitDefinitions extends Data implements
         return $entityData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalRecycleData($object, $data)
     {
         return $this->marshalVersion($object, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalRecycleData($object, $data)
     {
         return $this->unmarshalVersion($object, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preGetData($object, $params = [])
     {
         /**
@@ -283,9 +259,6 @@ class ProductUnitDefinitions extends Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preSetData($object, $data, $params = [])
     {
         if ($object instanceof LazyLoadedFieldsInterface) {
@@ -295,9 +268,6 @@ class ProductUnitDefinitions extends Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($object, $params = [])
     {
         if (isset($params['force']) && $params['force']) {
@@ -307,9 +277,6 @@ class ProductUnitDefinitions extends Data implements
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save($object, $params = [])
     {
         if (!$object instanceof ProductInterface) {
@@ -331,9 +298,6 @@ class ProductUnitDefinitions extends Data implements
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($object, $params = [])
     {
         if (!$object instanceof ProductInterface) {
@@ -349,9 +313,6 @@ class ProductUnitDefinitions extends Data implements
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         if (!$object instanceof ProductInterface) {
@@ -369,9 +330,6 @@ class ProductUnitDefinitions extends Data implements
         return $this->getSerializer()->toArray($data, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (!is_array($data)) {
@@ -418,9 +376,6 @@ class ProductUnitDefinitions extends Data implements
         return $productUnitDefinitionsValues;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionPreview($data, $object = null, $params = [])
     {
         if (!$data instanceof \CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface) {
@@ -433,9 +388,6 @@ class ProductUnitDefinitions extends Data implements
             $data->getAdditionalUnitDefinitions()->count());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForCsvExport($object, $params = [])
     {
         $data = $this->getDataFromObjectParam($object, $params);
@@ -447,9 +399,6 @@ class ProductUnitDefinitions extends Data implements
         return json_encode($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
         if (!$object) {
@@ -466,17 +415,11 @@ class ProductUnitDefinitions extends Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];

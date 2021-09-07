@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,19 +19,9 @@ use Webmozart\Assert\Assert;
 
 trait NestedTrait
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    protected $interpreterRegistry;
+    protected ServiceRegistryInterface $interpreterRegistry;
 
-    /**
-     * @param mixed    $value
-     * @param array    $interpreterConfig
-     * @param callable $callback
-     *
-     * @return mixed
-     */
-    protected function loop($value, $interpreterConfig, callable $callback)
+    protected function loop(mixed $value, array $interpreterConfig, callable $callback): mixed
     {
         foreach ($interpreterConfig['interpreters'] as $interpreter) {
             $interpreterObject = $this->interpreterRegistry->get($interpreter['type']);
@@ -42,10 +32,7 @@ trait NestedTrait
         return $value;
     }
 
-    /**
-     * @param array $interpreterConfig
-     */
-    protected function assert($interpreterConfig)
+    protected function assert(array $interpreterConfig): void
     {
         Assert::keyExists($interpreterConfig, 'interpreters');
         Assert::isArray($interpreterConfig['interpreters'], 'Interpreter Config needs to be array');

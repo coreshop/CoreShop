@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,9 +20,9 @@ use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
 class RulesProcessor implements RulesProcessorInterface
 {
-    private $ruleRepository;
-    private $ruleValidationProcessor;
-    private $ruleApplier;
+    private NotificationRuleRepositoryInterface $ruleRepository;
+    private RuleValidationProcessorInterface $ruleValidationProcessor;
+    private RuleApplierInterface $ruleApplier;
 
     public function __construct(
         NotificationRuleRepositoryInterface $ruleRepository,
@@ -34,9 +34,6 @@ class RulesProcessor implements RulesProcessorInterface
         $this->ruleApplier = $ruleApplier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyRules(string $type, $subject, array $params = []): void
     {
         $rules = $this->ruleRepository->findForType($type);

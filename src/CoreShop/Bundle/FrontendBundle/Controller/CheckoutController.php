@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
-use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
@@ -30,32 +29,20 @@ use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
 class CheckoutController extends FrontendController
 {
-    /**
-     * @var CheckoutManagerFactoryInterface
-     */
-    protected $checkoutManagerFactory;
+    protected CheckoutManagerFactoryInterface $checkoutManagerFactory;
 
-    /**
-     * @param CheckoutManagerFactoryInterface $checkoutManagerFactory
-     */
     public function __construct(CheckoutManagerFactoryInterface $checkoutManagerFactory)
     {
         $this->checkoutManagerFactory = $checkoutManagerFactory;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function processAction(Request $request)
+    public function processAction(Request $request): Response
     {
         if (!$this->getCart()->hasItems()) {
             return $this->redirectToRoute('coreshop_cart_summary');
@@ -159,29 +146,14 @@ class CheckoutController extends FrontendController
         return $this->renderResponseForCheckoutStep($request, $step, $stepIdentifier, $dataForStep);
     }
 
-    /**
-     * @param Request               $request
-     * @param CheckoutStepInterface $step
-     * @param string                $stepIdentifier
-     * @param mixed                 $dataForStep
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, $stepIdentifier, $dataForStep)
+    protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, string $stepIdentifier, array $dataForStep): Response
     {
         $template = $this->templateConfigurator->findTemplate(sprintf('Checkout/steps/%s.html', $stepIdentifier));
 
         return $this->render($template, $dataForStep);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     * @throws \Exception
-     */
-    public function doCheckoutAction(Request $request)
+    public function doCheckoutAction(Request $request): Response
     {
         $cart = $this->getCart();
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
@@ -278,12 +250,7 @@ class CheckoutController extends FrontendController
         return $response;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function errorAction(Request $request)
+    public function errorAction(Request $request): Response
     {
         $orderId = $request->getSession()->get('coreshop_order_id', null);
 
@@ -309,12 +276,7 @@ class CheckoutController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function thankYouAction(Request $request)
+    public function thankYouAction(Request $request): Response
     {
         $orderId = $request->getSession()->get('coreshop_order_id', null);
 
@@ -328,31 +290,27 @@ class CheckoutController extends FrontendController
 
         $this->get(TrackerInterface::class)->trackCheckoutComplete($order);
 
-        //After successfull payment, we log out the customer
-        if ($this->get(ShopperContextInterface::class)->hasCustomer() &&
-            $this->get(ShopperContextInterface::class)->getCustomer()->getIsGuest()) {
-            $this->get('security.token_storage')->setToken(null);
-        }
-
         return $this->render($this->templateConfigurator->findTemplate('Checkout/thank-you.html'), [
             'order' => $order,
         ]);
     }
 
-    protected function addEventFlash(string $type, string $message = null, array $parameters = [])
+    protected function addEventFlash(string $type, string $message = null, array $parameters = []): void
     {
         if (!$message) {
             return;
         }
 
+        $actualMessage = $message;
+
         if (!empty($parameters)) {
-            $message = $this->prepareMessage($message, $parameters);
+            $actualMessage = $this->prepareMessage($message, $parameters);
         }
 
-        $this->addFlash($type, $message);
+        $this->addFlash($type, $actualMessage);
     }
 
-    private function prepareMessage(string $message, array $parameters)
+    private function prepareMessage(string $message, array $parameters): array
     {
         return [
             'message' => $message,
@@ -360,26 +318,22 @@ class CheckoutController extends FrontendController
         ];
     }
 
-    /**
-     * @return \CoreShop\Component\Order\Model\OrderInterface
-     */
-    protected function getCart()
+    protected function getCart(): OrderInterface
     {
-        return $this->getCartContext()->getCart();
+        /**
+         * @var OrderInterface $cart
+         */
+        $cart = $this->getCartContext()->getCart();
+
+        return $cart;
     }
 
-    /**
-     * @return CartContextInterface
-     */
-    protected function getCartContext()
+    protected function getCartContext(): CartContextInterface
     {
         return $this->get(CartContextInterface::class);
     }
 
-    /**
-     * @return Payum
-     */
-    protected function getPayum()
+    protected function getPayum(): Payum
     {
         return $this->get('payum');
     }

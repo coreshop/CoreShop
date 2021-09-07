@@ -6,9 +6,9 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 declare(strict_types=1);
 
@@ -17,34 +17,19 @@ namespace CoreShop\Behat\Service;
 use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Session;
-use Symfony\Component\BrowserKit\Cookie;
 
 class CookieSetter implements CookieSetterInterface
 {
-    /** @var Session */
-    protected $minkSession;
+    protected Session $minkSession;
+    protected array|\ArrayAccess $minkParameters;
 
-    /** @var array */
-    protected $minkParameters;
-
-    public function __construct(Session $minkSession, $minkParameters)
+    public function __construct(Session $minkSession, array|\ArrayAccess $minkParameters)
     {
-        if (!is_array($minkParameters) && !$minkParameters instanceof \ArrayAccess) {
-            throw new \InvalidArgumentException(sprintf(
-                '"$minkParameters" passed to "%s" has to be an array or implement "%s".',
-                self::class,
-                \ArrayAccess::class
-            ));
-        }
-
         $this->minkSession = $minkSession;
         $this->minkParameters = $minkParameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setCookie($name, $value)
+    public function setCookie(string $name, string $value): void
     {
         $this->prepareMinkSessionIfNeeded($this->minkSession);
 
@@ -71,10 +56,6 @@ class CookieSetter implements CookieSetterInterface
             return true;
         }
 
-        if (false !== strpos($session->getCurrentUrl(), $this->minkParameters['base_url'])) {
-            return false;
-        }
-
-        return true;
+        return !(false !== strpos($session->getCurrentUrl(), $this->minkParameters['base_url']));
     }
 }

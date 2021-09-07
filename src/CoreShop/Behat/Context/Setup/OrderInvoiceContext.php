@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,16 +20,15 @@ use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\InvoiceTransitions;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
-use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 final class OrderInvoiceContext implements Context
 {
-    private $sharedStorage;
-    private $invoiceTransformer;
-    private $orderInvoiceFactory;
-    private $stateMachineApplier;
+    private SharedStorageInterface $sharedStorage;
+    private OrderDocumentTransformerInterface $invoiceTransformer;
+    private FactoryInterface $orderInvoiceFactory;
+    private StateMachineApplier $stateMachineApplier;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -47,7 +46,7 @@ final class OrderInvoiceContext implements Context
      * @Given /^I create a invoice for (my order)$/
      * @Given /^I create another invoice for (my order)$/
      */
-    public function iCreateAInvoiceForOrder(OrderInterface $order)
+    public function iCreateAInvoiceForOrder(OrderInterface $order): void
     {
         $items = $order->getItems();
         $orderItem = reset($items);
@@ -66,7 +65,7 @@ final class OrderInvoiceContext implements Context
     /**
      * @Given /^I apply invoice transition "([^"]+)" to (latest order invoice)$/
      */
-    public function iApplyInvoiceTransitionToInvoice($invoiceTransition, OrderInvoiceInterface $invoice)
+    public function iApplyInvoiceTransitionToInvoice($invoiceTransition, OrderInvoiceInterface $invoice): void
     {
         $this->stateMachineApplier->apply($invoice, InvoiceTransitions::IDENTIFIER, $invoiceTransition);
     }

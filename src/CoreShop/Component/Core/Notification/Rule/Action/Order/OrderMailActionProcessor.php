@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,16 +22,13 @@ use Pimcore\Model\Document;
 
 class OrderMailActionProcessor implements NotificationRuleProcessorInterface
 {
-    private $orderMailProcessor;
+    private OrderMailProcessorInterface $orderMailProcessor;
 
     public function __construct(OrderMailProcessorInterface $orderMailProcessor)
     {
         $this->orderMailProcessor = $orderMailProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, array $params = []): void
     {
         if (!array_key_exists('doNotSendToDesignatedRecipient', $configuration)) {

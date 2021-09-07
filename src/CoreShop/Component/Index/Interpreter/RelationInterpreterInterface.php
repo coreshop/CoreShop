@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,17 +20,12 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 interface RelationInterpreterInterface extends InterpreterInterface
 {
     /**
-     * @param mixed                $value
-     * @param IndexableInterface   $indexable
-     * @param IndexColumnInterface $config
-     * @param array                $interpreterConfig
-     *
-     * @return array<int, array<string, int|string>>|RelationalValueInterface[]
+     * @return RelationalValueInterface[]
      */
     public function interpretRelational(
-        $value,
+        mixed $value,
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    );
+    ): array;
 }

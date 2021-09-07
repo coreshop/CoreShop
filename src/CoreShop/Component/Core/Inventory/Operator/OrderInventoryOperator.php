@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,16 +23,13 @@ use Webmozart\Assert\Assert;
 
 final class OrderInventoryOperator implements OrderInventoryOperatorInterface
 {
-    private $productEntityManager;
+    private ObjectManager $productEntityManager;
 
     public function __construct(ObjectManager $productEntityManager)
     {
         $this->productEntityManager = $productEntityManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function cancel(OrderInterface $order): void
     {
         if (in_array(
@@ -48,9 +45,6 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->release($order);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hold(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
@@ -72,9 +66,6 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sell(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
@@ -115,9 +106,6 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function release(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
@@ -147,9 +135,6 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function giveBack(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */

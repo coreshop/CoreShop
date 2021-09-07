@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
@@ -24,9 +26,9 @@ use Webmozart\Assert\Assert;
 
 class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    protected $moneyConverter;
-    protected $currencyRepository;
-    protected $cartRuleApplier;
+    protected CurrencyConverterInterface $moneyConverter;
+    protected CurrencyRepositoryInterface $currencyRepository;
+    protected CartRuleApplierInterface $cartRuleApplier;
 
     public function __construct(
         CurrencyConverterInterface $moneyConverter,
@@ -38,9 +40,6 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         $this->cartRuleApplier = $cartRuleApplier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyRule(
         OrderInterface $cart,
         array $configuration,
@@ -65,7 +64,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         return true;
     }
 
-    protected function getDiscount(OrderInterface $cart, array $configuration)
+    protected function getDiscount(OrderInterface $cart, array $configuration): int
     {
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
@@ -89,13 +88,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         );
     }
 
-    /**
-     * @param int $cartAmount
-     * @param int $ruleAmount
-     *
-     * @return int
-     */
-    protected function getApplicableAmount($cartAmount, $ruleAmount)
+    protected function getApplicableAmount(int $cartAmount, int $ruleAmount): int
     {
         return min($cartAmount, $ruleAmount);
     }

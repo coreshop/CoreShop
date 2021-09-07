@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,21 +17,21 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use Carbon\Carbon;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
+use CoreShop\Component\PayumPayment\Model\GatewayConfig;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Tool;
 
 final class PaymentContext implements Context
 {
-    private $sharedStorage;
-    private $entityManager;
-    private $paymentFactory;
-    private $paymentProviderFactory;
-    private $gatewayConfigFactory;
+    private SharedStorageInterface $sharedStorage;
+    private EntityManagerInterface $entityManager;
+    private FactoryInterface $paymentFactory;
+    private FactoryInterface $paymentProviderFactory;
+    private FactoryInterface $gatewayConfigFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -51,7 +51,7 @@ final class PaymentContext implements Context
      * @Given /^There is a payment provider "([^"]+)" using factory "([^"]+)"$/
      * @Given /^the site has a payment provider "([^"]+)" using factory "([^"]+)"$/
      */
-    public function thereIsAPaymentProviderUsingFactory($name, $factory)
+    public function thereIsAPaymentProviderUsingFactory($name, $factory): void
     {
         /**
          * @var PaymentProviderInterface $paymentProvider
@@ -84,7 +84,7 @@ final class PaymentContext implements Context
      * @Given /^I create a payment for (my order) with (payment provider "[^"]+") and amount ([^"]+)$/
      * @Given /^I create a payment for (my order) with (payment provider "[^"]+")$/
      */
-    public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount = null)
+    public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount = null): void
     {
         /**
          * @var PaymentInterface $payment

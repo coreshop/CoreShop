@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,18 +17,10 @@ namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 final class TableIndex
 {
     const TABLE_INDEX_TYPE_UNIQUE = 'UNIQUE';
-
     const TABLE_INDEX_TYPE_INDEX = 'INDEX';
 
-    /**
-     * @var array
-     */
-    private $columns;
-
-    /**
-     * @var string
-     */
-    private $type;
+    private array $columns = [];
+    private string $type;
 
     /**
      * @return array

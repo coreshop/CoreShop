@@ -70,3 +70,15 @@ services:
             - '%coreshop.all.pimcore.admin.editmode_css%'
         tags:
             - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\PimcoreBundle\EventListener\SluggableListener:
+        arguments:
+            - '@Symfony\Component\String\Slugger\SluggerInterface'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    CoreShop\Component\Pimcore\Slug\SluggableLinkGenerator:
+        public: true
+        arguments:
+            - '@Pimcore\Http\Request\Resolver\SiteResolver'
+            - '@Symfony\Component\HttpFoundation\RequestStack'

@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -50,14 +50,14 @@ coreshop.order.order.detail.blocks.customer = Class.create(coreshop.order.order.
     updateSale: function () {
         var me = this;
 
-        var guestStr = me.sale.customer.isGuest ? ' –  ' + t('coreshop_is_guest') : '';
+        var guestStr = me.sale.customer.user ? ' –  ' + t('coreshop_is_guest') : '';
         me.customerInfo.setTitle(t('coreshop_customer') + ': ' + (me.sale.customer ? me.sale.customer.firstname + ' (' + me.sale.customer.o_id + ')' : t('unknown')) + guestStr);
         me.customerInfo.removeAll();
 
         var items = [];
 
         if (me.sale.customer) {
-            if (!me.sale.customer.isGuest) {
+            if (!me.sale.customer.user) {
 
                 items.push({
                     xtype: 'panel',

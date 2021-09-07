@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
-use CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelperInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
@@ -30,11 +29,11 @@ use Twig\TwigFunction;
 
 final class ProductQuantityPriceRuleRangesPriceExtension extends AbstractExtension
 {
-    protected $quantityReferenceDetector;
-    protected $purchasableCalculator;
-    private $defaultTaxAddressProvider;
-    private $taxCalculatorFactory;
-    private $taxApplicator;
+    private QuantityReferenceDetectorInterface $quantityReferenceDetector;
+    private PurchasableCalculatorInterface$purchasableCalculator;
+    private DefaultTaxAddressProviderInterface $defaultTaxAddressProvider;
+    private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
+    private TaxApplicatorInterface $taxApplicator;
 
     public function __construct(
         QuantityReferenceDetectorInterface $quantityReferenceDetector,
@@ -50,9 +49,6 @@ final class ProductQuantityPriceRuleRangesPriceExtension extends AbstractExtensi
         $this->taxApplicator = $taxApplicator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions(): array
     {
         return [

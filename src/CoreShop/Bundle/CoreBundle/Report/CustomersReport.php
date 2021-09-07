@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,12 +25,12 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CustomersReport implements ReportInterface
 {
-    private $totalRecords = 0;
-    private $db;
-    private $moneyFormatter;
-    private $localeContext;
-    private $orderRepository;
-    private $customerRepository;
+    private int $totalRecords = 0;
+    private Connection $db;
+    private MoneyFormatterInterface $moneyFormatter;
+    private LocaleContextInterface $localeContext;
+    private PimcoreRepositoryInterface $orderRepository;
+    private PimcoreRepositoryInterface $customerRepository;
 
     public function __construct(
         Connection $db,
@@ -46,9 +46,6 @@ class CustomersReport implements ReportInterface
         $this->customerRepository = $customerRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
@@ -91,9 +88,6 @@ class CustomersReport implements ReportInterface
         return array_values($results);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotal(): int
     {
         return $this->totalRecords;

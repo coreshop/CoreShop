@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,26 +19,10 @@ use Pimcore\Model\Document\Editable\EditableInterface;
 
 class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $class;
+    private string $class;
+    private string $repositoryName;
+    private string $nameProperty;
 
-    /**
-     * @var string
-     */
-    private $repositoryName;
-
-    /**
-     * @var string
-     */
-    private $nameProperty;
-
-    /**
-     * @param string $class
-     * @param string $repositoryName
-     * @param string $nameProperty
-     */
     public function __construct(string $class, string $repositoryName, string $nameProperty)
     {
         $this->class = $class;
@@ -46,9 +30,6 @@ class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
         $this->nameProperty = $nameProperty;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(string $type, array $params): EditableInterface
     {
         array_unshift($params, $type);

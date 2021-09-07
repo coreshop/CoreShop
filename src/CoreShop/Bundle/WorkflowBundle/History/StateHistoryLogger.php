@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,23 +21,20 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class StateHistoryLogger implements StateHistoryLoggerInterface
 {
-    private $noteService;
-    private $translator;
-    private $noteIdentifier;
+    private NoteServiceInterface $noteService;
+    private TranslatorInterface $translator;
+    private string $noteIdentifier;
 
     public function __construct(
         NoteServiceInterface $noteService,
         TranslatorInterface $translator,
-        $noteIdentifier
+        string $noteIdentifier
     ) {
         $this->noteService = $noteService;
         $this->translator = $translator;
         $this->noteIdentifier = $noteIdentifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function log(Concrete $object, Event $event): void
     {
         $transition = $event->getTransition();

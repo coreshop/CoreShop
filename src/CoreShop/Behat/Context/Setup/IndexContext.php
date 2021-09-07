@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,18 +24,17 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject\ClassDefinition;
 
 final class IndexContext implements Context
 {
-    private $sharedStorage;
-    private $classStorage;
-    private $objectManager;
-    private $indexFactory;
-    private $workerServiceRegistry;
-    private $indexColumnFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ClassStorageInterface $classStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $indexFactory;
+    private ServiceRegistryInterface $workerServiceRegistry;
+    private FactoryInterface $indexColumnFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -57,7 +56,7 @@ final class IndexContext implements Context
      * @Given /^the site has a index "([^"]+)" for (class "[^"]+") with type "([^"]+)"$/
      * @Given /^the site has a index "([^"]+)" for (behat-class "[^"]+") with type "([^"]+)"$/
      */
-    public function theSiteHasAIndexForClassWithType($name, ClassDefinition $class, $type)
+    public function theSiteHasAIndexForClassWithType($name, ClassDefinition $class, $type): void
     {
         $this->createIndex($name, $class->getName(), $type);
     }
@@ -65,7 +64,7 @@ final class IndexContext implements Context
     /**
      * @Given /the (index) allows version changes$/
      */
-    public function theIndexAllowsVersionChanges(IndexInterface $index)
+    public function theIndexAllowsVersionChanges(IndexInterface $index): void
     {
         $index->setIndexLastVersion(true);
         $this->saveIndex($index);
@@ -74,7 +73,7 @@ final class IndexContext implements Context
     /**
      * @Given /the (index) has following fields:/
      */
-    public function theIndexHasFollowingFields(IndexInterface $index, TableNode $table)
+    public function theIndexHasFollowingFields(IndexInterface $index, TableNode $table): void
     {
         $hash = $table->getHash();
 
@@ -126,7 +125,7 @@ final class IndexContext implements Context
     /**
      * @Given /the (index) has an index for columns "([^"]+)"/
      */
-    public function theIndexHasAnIndexForColumn(IndexInterface $index, $columns)
+    public function theIndexHasAnIndexForColumn(IndexInterface $index, $columns): void
     {
         $tableIndex = new TableIndex();
         $tableIndex->setType(TableIndex::TABLE_INDEX_TYPE_INDEX);
@@ -138,7 +137,7 @@ final class IndexContext implements Context
     /**
      * @Given /the (index) has an localized index for columns "([^"]+)"/
      */
-    public function theIndexHasAnLocalizedIndexForColumn(IndexInterface $index, $columns)
+    public function theIndexHasAnLocalizedIndexForColumn(IndexInterface $index, $columns): void
     {
         $tableIndex = new TableIndex();
         $tableIndex->setType(TableIndex::TABLE_INDEX_TYPE_INDEX);
@@ -152,7 +151,7 @@ final class IndexContext implements Context
      * @param TableIndex     $tableIndex
      * @param bool           $localized
      */
-    private function addIndexToIndex(IndexInterface $index, TableIndex $tableIndex, $localized = false)
+    private function addIndexToIndex(IndexInterface $index, TableIndex $tableIndex, $localized = false): void
     {
         $configurationEntry = $localized ? 'localizedIndexes' : 'indexes';
 
@@ -174,7 +173,7 @@ final class IndexContext implements Context
      * @param string $class
      * @param string $type
      */
-    private function createIndex($name, $class, $type = 'mysql')
+    private function createIndex($name, $class, $type = 'mysql'): void
     {
         /**
          * @var IndexInterface $index
@@ -190,7 +189,7 @@ final class IndexContext implements Context
     /**
      * @param IndexInterface $index
      */
-    private function saveIndex(IndexInterface $index)
+    private function saveIndex(IndexInterface $index): void
     {
         $worker = $index->getWorker();
 

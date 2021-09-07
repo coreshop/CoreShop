@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,14 +16,13 @@ namespace CoreShop\Behat\Context\Ui\Pimcore\CoreShop;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Pimcore\CoreShop\CountryPageInterface;
-use CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPageInterface;
 use CoreShop\Behat\Page\Pimcore\PWAPageInterface;
 use Webmozart\Assert\Assert;
 
 final class CountryContext implements Context
 {
-    private $pwaPage;
-    private $countryPage;
+    private PWAPageInterface $pwaPage;
+    private CountryPageInterface $countryPage;
 
     public function __construct(
         PWAPageInterface $pwaPage,

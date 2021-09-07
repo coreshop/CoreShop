@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,7 +23,6 @@ use CoreShop\Component\Order\Checkout\OptionalCheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -32,9 +31,9 @@ use Webmozart\Assert\Assert;
 
 class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private $shippableCarrierValidator;
-    private $formFactory;
-    private $cartManager;
+    private ShippableCarrierValidatorInterface $shippableCarrierValidator;
+    private FormFactoryInterface $formFactory;
+    private CartManagerInterface $cartManager;
 
     public function __construct(
         ShippableCarrierValidatorInterface $shippableCarrierValidator,
@@ -46,17 +45,11 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
         $this->cartManager = $cartManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier(): string
     {
         return 'shipping';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRequired(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -64,9 +57,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
         return $cart->hasShippableItems();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function doAutoForward(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -74,9 +64,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
         return $cart->hasShippableItems() === false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -88,9 +75,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
                 $this->shippableCarrierValidator->isCarrierValid($cart->getCarrier(), $cart, $cart->getShippingAddress()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $cart);
@@ -110,9 +94,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return [

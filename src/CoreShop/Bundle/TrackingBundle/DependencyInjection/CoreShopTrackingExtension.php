@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,16 +19,14 @@ use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackingExtracto
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 final class CoreShopTrackingExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
 
@@ -46,19 +44,13 @@ final class CoreShopTrackingExtension extends Extension
             ->addTag(TrackingExtractorPass::TRACKING_EXTRACTOR_TAG);
     }
 
-    /**
-     * @param array            $config
-     * @param ContainerBuilder $container
-     */
-    protected function configureTrackers(array $config, ContainerBuilder $container)
+    protected function configureTrackers(array $config, ContainerBuilder $container): void
     {
         foreach ($container->findTaggedServiceIds(TrackerPass::TRACKER_TAG) as $id => $attributes) {
             foreach ($attributes as $tag) {
-                if (!isset($tag['type'])) {
-                    continue;
-                }
+                $definition = $container->findDefinition($id);
 
-                $type = $tag['type'];
+                $type = $tag['type'] ?? Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
 
                 if (!array_key_exists($type, $config['trackers'])) {
                     $container->getDefinition($id)

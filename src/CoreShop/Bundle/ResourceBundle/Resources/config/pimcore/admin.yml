@@ -8,6 +8,7 @@ core_shop_resource:
             resource: '/bundles/coreshopresource/pimcore/js/resource.js'
             resource_panel: '/bundles/coreshopresource/pimcore/js/resource/panel.js'
             resource_item: '/bundles/coreshopresource/pimcore/js/resource/item.js'
+            resource_list: '/bundles/coreshopresource/pimcore/js/resource/list.js'
             resource_combo: '/bundles/coreshopresource/pimcore/js/resource/comboBox.js'
             object_element_href: '/bundles/coreshopresource/pimcore/js/object/elementHref.js'
             object_object_multihref: '/bundles/coreshopresource/pimcore/js/object/objectMultihref.js'

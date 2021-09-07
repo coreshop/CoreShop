@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -31,13 +31,10 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class PaymentType extends AbstractResourceType
 {
-    private $formTypeRegistry;
-    private $paymentProviderRepository;
-    private $gatewayFactories;
+    private FormTypeRegistryInterface $formTypeRegistry;
+    private PaymentProviderRepositoryInterface $paymentProviderRepository;
+    private array $gatewayFactories;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(
         string $dataClass,
         array $validationGroups,
@@ -52,9 +49,6 @@ final class PaymentType extends AbstractResourceType
         $this->gatewayFactories = $gatewayFactories;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -114,9 +108,6 @@ final class PaymentType extends AbstractResourceType
         $builder->setAttribute('prototypes', $prototypes);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['prototypes'] = [];
@@ -127,9 +118,6 @@ final class PaymentType extends AbstractResourceType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -163,9 +151,6 @@ final class PaymentType extends AbstractResourceType
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_checkout_payment';

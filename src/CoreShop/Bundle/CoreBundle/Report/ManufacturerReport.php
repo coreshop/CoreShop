@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,14 +27,14 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ManufacturerReport implements ReportInterface
 {
-    private $totalRecords = 0;
-    private $storeRepository;
-    private $db;
-    private $moneyFormatter;
-    private $localeService;
-    private $orderRepository;
-    private $manufacturerRepository;
-    private $orderItemRepository;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private MoneyFormatterInterface $moneyFormatter;
+    private LocaleContextInterface $localeService;
+    private PimcoreRepositoryInterface $orderRepository;
+    private PimcoreRepositoryInterface $manufacturerRepository;
+    private PimcoreRepositoryInterface $orderItemRepository;
 
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -54,9 +54,6 @@ class ManufacturerReport implements ReportInterface
         $this->orderItemRepository = $orderItemRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));

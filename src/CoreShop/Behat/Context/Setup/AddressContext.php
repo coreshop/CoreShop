@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,9 +24,9 @@ use Pimcore\Model\DataObject\Folder;
 
 final class AddressContext implements Context
 {
-    private $sharedStorage;
-    private $addressFactory;
-    private $addressRepository;
+    private SharedStorageInterface $sharedStorage;
+    private FactoryInterface $addressFactory;
+    private PimcoreRepositoryInterface $addressRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -41,21 +41,12 @@ final class AddressContext implements Context
     /**
      * @Given /^there is an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
      */
-    public function thereIsAnAddress(CountryInterface $country, $postcode, $city, $street, $nr)
+    public function thereIsAnAddress(CountryInterface $country, $postcode, $city, $street, $nr): void
     {
         $this->createAddress($country, $postcode, $city, $street, $nr);
     }
 
-    /**
-     * @param CountryInterface $country
-     * @param string           $postcode
-     * @param string           $city
-     * @param string           $street
-     * @param string           $nr
-     *
-     * @return AddressInterface
-     */
-    private function createAddress(CountryInterface $country, $postcode, $city, $street, $nr)
+    private function createAddress(CountryInterface $country, string $postcode, string $city, string $street, string $nr): AddressInterface
     {
         /**
          * @var AddressInterface $address
@@ -76,10 +67,7 @@ final class AddressContext implements Context
         return $address;
     }
 
-    /**
-     * @param AddressInterface $address
-     */
-    private function saveAddress(AddressInterface $address)
+    private function saveAddress(AddressInterface $address): void
     {
         $address->save();
 

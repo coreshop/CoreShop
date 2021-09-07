@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,13 +16,14 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Core\Repository\PaymentProviderRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class PaymentContext implements Context
 {
-    private $sharedStorage;
-    private $paymentProviderRepository;
+    private SharedStorageInterface $sharedStorage;
+    private PaymentProviderRepositoryInterface $paymentProviderRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -35,8 +36,11 @@ final class PaymentContext implements Context
     /**
      * @Transform /^payment provider "([^"]+)"$/
      */
-    public function getPaymentProviderByTitle($title)
+    public function getPaymentProviderByTitle($title): PaymentProviderInterface
     {
+        /**
+         * @var PaymentProviderInterface[] $paymentProviders
+         */
         $paymentProviders = $this->paymentProviderRepository->findByTitle($title, 'en');
 
         Assert::eq(
@@ -51,7 +55,7 @@ final class PaymentContext implements Context
     /**
      * @Transform /^payment provider/
      */
-    public function country()
+    public function paymentProvider(): PaymentProviderInterface
     {
         return $this->sharedStorage->get('payment-provider');
     }

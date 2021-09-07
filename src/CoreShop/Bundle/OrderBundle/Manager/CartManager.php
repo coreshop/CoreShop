@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,34 +18,28 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 
 final class CartManager implements CartManagerInterface
 {
-    private $objectService;
-    private $cartFolderPath;
-    private $cartItemFolderPath;
-    private $cartProcessor;
+    private CartProcessorInterface $cartProcessor;
+    private FolderCreationServiceInterface $folderCreationService;
 
     public function __construct(
         CartProcessorInterface $cartProcessor,
-        ObjectServiceInterface $objectService,
-        string $cartFolderPath,
-        string $cartItemFolderPath
+        FolderCreationServiceInterface $folderCreationService
     ) {
         $this->cartProcessor = $cartProcessor;
-        $this->objectService = $objectService;
-        $this->cartFolderPath = $cartFolderPath;
-        $this->cartItemFolderPath = $cartItemFolderPath;
+        $this->folderCreationService = $folderCreationService;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function persistCart(OrderInterface $cart): void
     {
-        $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
+        $cartsFolder = $this->folderCreationService->createFolderForResource($cart, [
+            'suffix' => date('Y/m/d'),
+            'path' => 'cart'
+        ]);
 
         VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
             $tempItems = $cart->getItems();
@@ -64,14 +58,26 @@ final class CartManager implements CartManagerInterface
              * @var OrderItemInterface $item
              */
             foreach ($tempItems as $index => $item) {
+                $tempUnits = $item->getUnits();
+
+                $item->setUnits([]);
                 $item->setParent(
-                    $this->objectService->createFolderByPath(
-                        sprintf('%s/%s', $cart->getFullPath(), $this->cartItemFolderPath)
+                    $this->folderCreationService->createFolderForResource(
+                        $item,
+                        ['prefix' => $cart->getFullPath()]
                     )
                 );
                 $item->setPublished(true);
                 $item->setKey($index+1);
                 $item->save();
+
+                $item->setUnits($tempUnits);
+
+                foreach ($item->getUnits() ?? [] as $unitIndex => $unit) {
+                    $unit->setParent($item);
+                    $unit->setPublished(true);
+                    $unit->setKey($unitIndex+1);
+                }
             }
 
             $cart->setItems($tempItems);
@@ -81,6 +87,10 @@ final class CartManager implements CartManagerInterface
              * @var OrderItemInterface $cartItem
              */
             foreach ($cart->getItems() as $cartItem) {
+                foreach ($cartItem->getUnits() as $unit) {
+                    $unit->save();
+                }
+
                 $cartItem->save();
             }
 

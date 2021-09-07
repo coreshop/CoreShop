@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,28 +15,19 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType;
-use CoreShop\Bundle\WorkflowBundle\History\HistoryLogger;
 use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function reviseAction(Request $request)
+    public function reviseAction(Request $request): Response
     {
         $token = $request->get('token');
         $payment = null;
@@ -120,26 +111,17 @@ class OrderController extends FrontendController
         return $this->render($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
     }
 
-    /**
-     * @return OrderRepositoryInterface
-     */
-    protected function getOrderRepository()
+    protected function getOrderRepository(): OrderRepositoryInterface
     {
         return $this->get('coreshop.repository.order');
     }
 
-    /**
-     * @return PaymentRepositoryInterface
-     */
-    private function getPaymentRepository()
+    private function getPaymentRepository(): PaymentRepositoryInterface
     {
         return $this->get('coreshop.repository.payment');
     }
 
-    /**
-     * @return FormFactoryInterface
-     */
-    protected function getFormFactory()
+    protected function getFormFactory(): FormFactoryInterface
     {
         return $this->get('form.factory');
     }

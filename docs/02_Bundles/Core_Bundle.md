@@ -4,7 +4,7 @@ Core Bundle glues all independent CoreShop Bundles into one e-commerce suite and
 
 ## Installation
 ```bash
-$ composer require coreshop/core-shop:^2.0
+$ composer require coreshop/core-shop:^3.0
 ```
 
 ### Enable and Install

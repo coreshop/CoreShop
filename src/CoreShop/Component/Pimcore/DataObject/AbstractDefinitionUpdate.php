@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,49 +19,27 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 {
-    /**
-     * @var array
-     */
-    protected $jsonDefinition;
+    protected array $jsonDefinition;
+    protected array $fieldDefinitions;
 
-    /**
-     * @var array
-     */
-    protected $fieldDefinitions;
-
-    /**
-     * {@inheritdoc}
-     */
     abstract public function save(): bool;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProperty($property): array
+    public function getProperty(string $property): array
     {
         return $this->jsonDefinition[$property];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setProperty($property, $value): void
+    public function setProperty(string $property, $value): void
     {
         $this->jsonDefinition[$property] = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasField($fieldName): bool
+    public function hasField(string $fieldName): bool
     {
         return array_key_exists($fieldName, $this->fieldDefinitions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFieldDefinition($fieldName): ?Data
+    public function getFieldDefinition(string $fieldName): ?Data
     {
         if (!$this->hasField($fieldName)) {
             throw new \InvalidArgumentException(sprintf('Field with Name %s not found', $fieldName));
@@ -70,21 +48,27 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         return $this->fieldDefinitions[$fieldName];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function insertField($jsonFieldDefinition): void
+    public function removeField(string $fieldName): void
+    {
+        $this->findField(
+            $fieldName,
+            false,
+            function (&$foundField, $index, &$parent) {
+                unset($parent['childs'][$index]);
+            }
+        );
+    }
+
+    public function insertField(array $jsonFieldDefinition): void
     {
         $this->jsonDefinition['layoutDefinitions']['childs'][0]['childs'][] = $jsonFieldDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function insertFieldBefore($fieldName, $jsonFieldDefinition): void
+    public function insertFieldBefore(string $fieldName, array $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
+            false,
             function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
                 if ($index === 0) {
                     $index = 1;
@@ -99,13 +83,11 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function insertFieldAfter($fieldName, $jsonFieldDefinition): void
+    public function insertFieldAfter(string $fieldName, array $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
+            false,
             function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
                 $childs = $parent['childs'];
 
@@ -116,26 +98,11 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function replaceField($fieldName, $jsonFieldDefinition): void
+    public function replaceFieldProperties(string $fieldName, array $keyValues): void
     {
         $this->findField(
             $fieldName,
-            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
-                $foundField = $jsonFieldDefinition;
-            }
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function replaceFieldProperties($fieldName, array $keyValues): void
-    {
-        $this->findField(
-            $fieldName,
+            false,
             function (&$foundField, $index, &$parent) use ($keyValues) {
                 foreach ($keyValues as $key => $value) {
                     $foundField[$key] = $value;
@@ -144,40 +111,111 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removeField($fieldName): void
+    public function replaceField(string $fieldName, array $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
+            false,
+            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+                $foundField = $jsonFieldDefinition;
+            }
+        );
+    }
+
+    public function insertLayoutBefore(string $fieldName, array $jsonFieldDefinition): void
+    {
+        $this->findField(
+            $fieldName,
+            true,
+            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+                if ($index === 0) {
+                    $index = 1;
+                }
+
+                $childs = $parent['childs'];
+
+                array_splice($childs, $index, 0, [$jsonFieldDefinition]);
+
+                $parent['childs'] = $childs;
+            }
+        );
+    }
+
+    public function insertLayoutAfter(string $fieldName, array $jsonFieldDefinition): void
+    {
+        $this->findField(
+            $fieldName,
+            true,
+            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+                $childs = $parent['childs'];
+
+                array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
+
+                $parent['childs'] = $childs;
+            }
+        );
+    }
+
+    public function replaceLayout(string $fieldName, array $jsonFieldDefinition): void
+    {
+        $this->findField(
+            $fieldName,
+            true,
+            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+                $foundField = $jsonFieldDefinition;
+            }
+        );
+    }
+
+    public function replaceLayoutProperties(string $fieldName, array $keyValues): void
+    {
+        $this->findField(
+            $fieldName,
+            true,
+            function (&$foundField, $index, &$parent) use ($keyValues) {
+                foreach ($keyValues as $key => $value) {
+                    $foundField[$key] = $value;
+                }
+            }
+        );
+    }
+
+    public function removeLayout(string $fieldName): void
+    {
+        $this->findField(
+            $fieldName,
+            true,
             function (&$foundField, $index, &$parent) {
                 unset($parent['childs'][$index]);
             }
         );
     }
 
-    /**
-     * @param string   $fieldName
-     * @param \Closure $callback
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    protected function findField(string $fieldName, \Closure $callback): void
+    protected function findField(string $fieldName, bool $layoutElement, \Closure $callback): void
     {
         $found = false;
 
-        $traverseFunction = function ($children) use (&$traverseFunction, $fieldName, $callback, &$found) {
+        $traverseFunction = function ($children) use (&$traverseFunction, $layoutElement, $fieldName, $callback, &$found) {
             foreach ($children['childs'] as $index => &$child) {
-                if ($child['name'] === $fieldName) {
+                $eligible = true;
+
+                if ($layoutElement && !array_key_exists('childs', $child)) {
+                    $eligible = false;
+                }
+
+                if (!$layoutElement && array_key_exists('childs', $child)) {
+                    $eligible = false;
+                }
+
+                if ($eligible && $child['name'] === $fieldName) {
                     $callback($child, $index, $children);
                     $found = true;
 
                     break;
-                } else {
-                    if (array_key_exists('childs', $child)) {
-                        $child = $traverseFunction($child);
-                    }
+                }
+
+                if (array_key_exists('childs', $child)) {
+                    $child = $traverseFunction($child);
                 }
             }
 

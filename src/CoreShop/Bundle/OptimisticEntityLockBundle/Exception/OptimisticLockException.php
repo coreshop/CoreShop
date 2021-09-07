@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OptimisticEntityLockBundle\Exception;
 
@@ -16,60 +18,30 @@ use Pimcore\Model\DataObject\Concrete;
 
 class OptimisticLockException extends \Exception
 {
-    /**
-     * @var Concrete|null
-     */
-    private $entity;
+    private ?Concrete $entity;
 
-    /**
-     * @param string   $msg
-     * @param Concrete $entity
-     */
     public function __construct(string $msg, Concrete $entity = null)
     {
         parent::__construct($msg);
         $this->entity = $entity;
     }
-
-    /**
-     * Gets the entity that caused the exception.
-     *
-     * @return Concrete|null
-     */
-    public function getEntity()
+    public function getEntity(): ?Concrete
     {
         return $this->entity;
     }
 
-    /**
-     * @param Concrete $entity
-     *
-     * @return OptimisticLockException
-     */
-    public static function lockFailed(Concrete $entity)
+    public static function lockFailed(Concrete $entity): OptimisticLockException
     {
         return new self("The optimistic lock on an entity failed.", $entity);
     }
 
-    /**
-     * @param Concrete $entity
-     * @param int      $expectedLockVersion
-     * @param int      $actualLockVersion
-     *
-     * @return OptimisticLockException
-     */
-    public static function lockFailedVersionMismatch(Concrete $entity, int $expectedLockVersion, int $actualLockVersion)
+    public static function lockFailedVersionMismatch(Concrete $entity, int $expectedLockVersion, int $actualLockVersion): OptimisticLockException
     {
         return new self("The optimistic lock failed, version ".$expectedLockVersion." was expected, but is actually ".$actualLockVersion,
             $entity);
     }
 
-    /**
-     * @param string $entityName
-     *
-     * @return OptimisticLockException
-     */
-    public static function notVersioned(string $entityName)
+    public static function notVersioned(string $entityName): OptimisticLockException
     {
         return new self("Cannot obtain optimistic lock on unversioned entity ".$entityName, null);
     }

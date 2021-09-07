@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Validator\Constraints;
 
@@ -20,36 +22,32 @@ use Webmozart\Assert\Assert;
 
 final class VoucherAmountValidator extends ConstraintValidator
 {
-    /** @var CodeGeneratorCheckerInterface */
-    private $checker;
+    private CodeGeneratorCheckerInterface $checker;
 
     public function __construct(CodeGeneratorCheckerInterface $checker)
     {
         $this->checker = $checker;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($generator, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
-        /** @var CartPriceRuleVoucherGeneratorInterface $generator */
-        Assert::isInstanceOf($generator, CartPriceRuleVoucherGeneratorInterface::class);
+        /** @var CartPriceRuleVoucherGeneratorInterface $value */
+        Assert::isInstanceOf($value, CartPriceRuleVoucherGeneratorInterface::class);
 
         /** @var VoucherAmount $constraint */
         Assert::isInstanceOf($constraint, VoucherAmount::class);
 
-        if (null === $generator->getLength() || null === $generator->getAmount()) {
+        if (null === $value->getLength() || null === $value->getAmount()) {
             return;
         }
 
-        if (!$this->checker->isGenerationPossible($generator)) {
+        if (!$this->checker->isGenerationPossible($value)) {
             $this->context->addViolation(
                 $constraint->message,
                 [
-                    '%expectedAmount%' => $generator->getAmount(),
-                    '%codeLength%' => $generator->getLength(),
-                    '%possibleAmount%' => $this->checker->getPossibleGenerationAmount($generator),
+                    '%expectedAmount%' => $value->getAmount(),
+                    '%codeLength%' => $value->getLength(),
+                    '%possibleAmount%' => $this->checker->getPossibleGenerationAmount($value),
                 ]
             );
         }

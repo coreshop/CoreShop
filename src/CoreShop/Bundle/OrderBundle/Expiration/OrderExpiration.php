@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,11 +20,11 @@ use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Pimcore\Model\DataObject\Concrete;
 
-final class OrderExpiration implements ProposalExpirationInterface
+final class OrderExpiration implements OrderExpirationInterface
 {
-    private $orderRepository;
-    private $stateMachineApplier;
-    private $historyLogger;
+    private OrderRepositoryInterface $orderRepository;
+    private StateMachineApplier $stateMachineApplier;
+    private HistoryLoggerInterface $historyLogger;
 
     public function __construct(
         OrderRepositoryInterface $orderRepository,
@@ -36,9 +36,6 @@ final class OrderExpiration implements ProposalExpirationInterface
         $this->historyLogger = $historyLogger;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function expire(int $days, array $params = []): void
     {
         if ($days <= 0) {

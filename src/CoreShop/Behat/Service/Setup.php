@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,10 +19,10 @@ use Doctrine\DBAL\DriverManager;
 
 class Setup
 {
-    private static $pimcoreSetupDone = false;
-    private static $coreShopSetupDone = false;
+    private static bool $pimcoreSetupDone = false;
+    private static bool $coreShopSetupDone = false;
 
-    public static function setupPimcore()
+    public static function setupPimcore(): void
     {
         if (getenv('CORESHOP_SKIP_DB_SETUP')) {
             return;
@@ -71,12 +71,12 @@ class Setup
         static::$pimcoreSetupDone = true;
     }
 
-    public static function setupDone()
+    public static function setupDone(): bool
     {
         return getenv('CORESHOP_SKIP_DB_SETUP') || (static::$pimcoreSetupDone && static::$coreShopSetupDone);
     }
 
-    public static function setupCoreShop()
+    public static function setupCoreShop(): void
     {
         if (getenv('CORESHOP_SKIP_DB_SETUP')) {
             return;

@@ -1,0 +1,5 @@
+translations:
+    CoreShopUser:
+        languages:
+            en: 'User'
+            de: 'Benutzer'

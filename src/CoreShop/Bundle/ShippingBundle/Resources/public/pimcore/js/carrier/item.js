@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -136,6 +136,12 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                         valueField: 'value',
                         displayField: 'label',
                         store: pimcore.globalmanager.get('coreshop_shipping_tax_calculation_strategies')
+                    },
+                    {
+                        xtype: 'checkbox',
+                        name: 'hideFromCheckout',
+                        fieldLabel: t('coreshop_carrier_hideFromCheckout'),
+                        value: this.data.hideFromCheckout
                     }
                 ]
             }]
@@ -166,10 +172,11 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         });
 
         var store = Ext.create('store.coreshop_carrier_shipping_rules');
-        store.load();
+        store.load(function() {
+            this.shippingRuleGroupsGrid.setStore(this.shippingRuleGroupsStore);
+        }.bind(this));
 
         this.shippingRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
-            store: this.shippingRuleGroupsStore,
             columns: [
                 {
                     header: t('coreshop_carriers_shipping_rule'),
@@ -272,7 +279,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 name: 'isFree',
                 fieldLabel: t('coreshop_carrier_isFree'),
                 width: 250,
-                value: parseInt(this.data.isFree)
+                value: this.data.isFree
             }, this.getShippingRulesGrid()]
         });
 

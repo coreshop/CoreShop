@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,10 +16,10 @@ namespace CoreShop\Component\Index\Condition;
 
 class LikeCondition implements ConditionInterface
 {
-    private $fieldName;
-    private $pattern;
-    private $value;
-    private $allowedPatterns = ['left', 'right', 'both'];
+    private string $fieldName;
+    private string $pattern;
+    private string $value;
+    private array $allowedPatterns = ['left', 'right', 'both'];
 
     public function __construct(string $fieldName, string $pattern, string $value)
     {

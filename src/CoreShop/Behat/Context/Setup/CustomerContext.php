@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,28 +19,31 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Customer\Context\FixedCustomerContext;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
-use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
 
 final class CustomerContext implements Context
 {
-    private $sharedStorage;
-    private $customerFactory;
-    private $fixedCustomerContext;
-    private $addressFactory;
+    private SharedStorageInterface $sharedStorage;
+    private FactoryInterface $customerFactory;
+    private FactoryInterface $userFactory;
+    private FixedCustomerContext $fixedCustomerContext;
+    private FactoryInterface $addressFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $customerFactory,
+        FactoryInterface $userFactory,
         FixedCustomerContext $fixedCustomerContext,
         FactoryInterface $addressFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->customerFactory = $customerFactory;
+        $this->userFactory = $userFactory;
         $this->fixedCustomerContext = $fixedCustomerContext;
         $this->addressFactory = $addressFactory;
     }
@@ -48,7 +51,7 @@ final class CustomerContext implements Context
     /**
      * @Given /^the site has a customer "([^"]+)"$/
      */
-    public function theSiteHasACustomer(string $email)
+    public function theSiteHasACustomer(string $email): void
     {
         $category = $this->createCustomer($email);
 
@@ -59,12 +62,11 @@ final class CustomerContext implements Context
      * @Given /^the site has a customer "([^"]+)" with password "([^"]+)"$/
      * @Given /^the site has a customer "([^"]+)" with password "([^"]+)" and name "([^"]+)" "([^"]+)"$/
      */
-    public function theSiteHasACustomerWithPassword(string $email, string $password, ?string $firstname = null, ?string $lastname = null)
+    public function theSiteHasACustomerWithPassword(string $email, string $password, ?string $firstname = null, ?string $lastname = null): void
     {
         $customer = $this->createCustomer($email);
 
-        $customer->setPassword($password);
-        $customer->setPublished(true);
+        $customer->getUser()->setPassword($password);
 
         if ($firstname) {
             $customer->setFirstname($firstname);
@@ -80,7 +82,7 @@ final class CustomerContext implements Context
     /**
      * @Then /^the (customer "[^"]+") was deleted$/
      */
-    public function accountWasDeleted(CustomerInterface $customer)
+    public function accountWasDeleted(CustomerInterface $customer): void
     {
         $customer->delete();
     }
@@ -89,7 +91,7 @@ final class CustomerContext implements Context
      * @Then /^the (customer "[^"]+") is in (customer-group "[^"]+")$/
      * @Then /^([^"]+) is in (customer-group "[^"]+")$/
      */
-    public function theCustomerIsInGroup(CustomerInterface $customer, CustomerGroupInterface $group)
+    public function theCustomerIsInGroup(CustomerInterface $customer, CustomerGroupInterface $group): void
     {
         $customer->setCustomerGroups([$group]);
 
@@ -99,7 +101,7 @@ final class CustomerContext implements Context
     /**
      * @Given /^I am (customer "[^"]+")$/
      */
-    public function iAmCustomer(CustomerInterface $customer)
+    public function iAmCustomer(CustomerInterface $customer): void
     {
         $this->fixedCustomerContext->setCustomer($customer);
     }
@@ -115,7 +117,7 @@ final class CustomerContext implements Context
         $city,
         $street,
         $nr
-    ) {
+    ): void {
         /**
          * @var AddressInterface $address
          */
@@ -136,33 +138,50 @@ final class CustomerContext implements Context
         $this->sharedStorage->set('address', $address);
     }
 
-    /**
-     * @param string $email
-     *
-     * @return CustomerInterface
-     */
-    private function createCustomer(string $email)
+    private function createCustomer(string $email): CustomerInterface
     {
         /** @var CustomerInterface $customer */
         $customer = $this->customerFactory->createNew();
 
-        list ($firstname, $lastname) = explode('@', $email);
+        [$firstname, $lastname] = explode('@', $email);
 
+        $customer->setPublished(true);
         $customer->setKey(File::getValidFilename($email));
         $customer->setParent(Folder::getByPath('/'));
         $customer->setEmail($email);
         $customer->setFirstname($firstname);
         $customer->setLastname($lastname);
 
+        /**
+         * @var UserInterface $user
+         */
+        $user = $this->userFactory->createNew();
+        $user->setKey(File::getValidFilename($email));
+        $user->setParent($customer);
+        $user->setPublished(true);
+        $user->setLoginIdentifier($email);
+        $user->setCustomer($customer);
+
+        $customer->setUser($user);
+
         return $customer;
     }
 
-    /**
-     * @param CustomerInterface $customer
-     */
-    private function saveCustomer(CustomerInterface $customer)
+    private function saveCustomer(CustomerInterface $customer): void
     {
+        $user = $customer->getUser();
+        $customer->setUser(null);
         $customer->save();
+
+        if ($user) {
+            $user->setParent($customer);
+            $user->save();
+
+            $customer->setUser($user);
+            $customer->save();
+
+            $this->sharedStorage->set('user', $user);
+        }
 
         $this->sharedStorage->set('customer', $customer);
     }

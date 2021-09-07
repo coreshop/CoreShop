@@ -15,7 +15,7 @@ Currency Bundle provides you with Models for persisting Currencies and resolving
 ## Installation
 
 ```bash
-$ composer require coreshop/currency-bundle:^2.0
+$ composer require coreshop/currency-bundle:^3.0
 ```
 
 ### Adding required bundles to kernel

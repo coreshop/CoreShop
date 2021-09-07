@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,9 +22,9 @@ use Doctrine\Persistence\ObjectManager;
 
 final class ProductUnitContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $productUnitFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $productUnitFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -39,7 +39,7 @@ final class ProductUnitContext implements Context
     /**
      * @Given /^the site has a product-unit "([^"]+)"$/
      */
-    public function thereIsAProductUnit($name)
+    public function thereIsAProductUnit($name): void
     {
         /**
          * @var ProductUnitInterface $unit

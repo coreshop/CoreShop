@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,8 +19,8 @@ use Pimcore\Model\DataObject;
 
 class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameInterface
 {
-    private $classDefinition;
-    private $fieldsToRename = [];
+    private DataObject\ClassDefinition $classDefinition;
+    private array $fieldsToRename = [];
 
     public function __construct(string $className)
     {
@@ -34,9 +34,6 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
         $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->classDefinition), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(): bool
     {
         foreach ($this->fieldsToRename as $from => $to) {
@@ -51,6 +48,7 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
     {
         $this->findField(
             $fieldName,
+            false,
             function (&$foundField, $index, &$parent) use ($fieldName, $newFieldName) {
                 $this->fieldsToRename[$fieldName] = [
                     'newName' => $newFieldName,

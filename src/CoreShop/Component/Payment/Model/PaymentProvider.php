@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -47,7 +47,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     /**
      * @var Asset|null
      */
-    protected $logo;
+     protected $logo;
 
     public function __construct()
     {
@@ -59,7 +59,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
      */
     public function __toString()
     {
-        return $this->getIdentifier();
+        return sprintf('%s', $this->getIdentifier());
     }
 
     public function getId()
@@ -145,5 +145,4 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     {
         return new PaymentProviderTranslation();
     }
-
 }

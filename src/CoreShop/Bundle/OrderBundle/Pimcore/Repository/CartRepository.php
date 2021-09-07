@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,9 +23,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class CartRepository extends PimcoreRepository implements CartRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findForCustomer(CustomerInterface $customer): array
     {
         $list = $this->getList();
@@ -40,9 +37,6 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         return $carts;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findNamedForCustomer(CustomerInterface $customer, $name): ?OrderInterface
     {
         $list = $this->getList();
@@ -58,9 +52,6 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface
     {
         $list = $this->getList();
@@ -78,9 +69,6 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findCartById($id): ?OrderInterface
     {
         $list = $this->getList();
@@ -96,9 +84,6 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findCartByOrder(OrderInterface $order): ?OrderInterface
     {
         $list = $this->getList();
@@ -115,9 +100,6 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findExpiredCarts($days, $anonymous, $customer): array
     {
         $list = $this->getList();

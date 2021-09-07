@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -29,14 +29,14 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ProductsReport implements ReportInterface, ExportReportInterface
 {
-    private $totalRecords = 0;
-    private $storeRepository;
-    private $db;
-    private $localeContext;
-    private $moneyFormatter;
-    private $productStackRepository;
-    private $orderRepository;
-    private $orderItemRepository;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private MoneyFormatterInterface $moneyFormatter;
+    private LocaleContextInterface $localeContext;
+    private PimcoreRepositoryInterface $orderRepository;
+    private PimcoreRepositoryInterface $orderItemRepository;
+    private StackRepository $productStackRepository;
 
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -56,9 +56,6 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         $this->productStackRepository = $productStackRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
@@ -168,9 +165,6 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotal(): int
     {
         return $this->totalRecords;

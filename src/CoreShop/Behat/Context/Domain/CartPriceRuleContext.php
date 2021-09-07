@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,9 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class CartPriceRuleContext implements Context
 {
-    private $sharedStorage;
-    private $shopperContext;
-    private $cartPriceRuleValidationProcessor;
+    private SharedStorageInterface $sharedStorage;
+    private ShopperContextInterface $shopperContext;
+    private CartPriceRuleValidationProcessorInterface $cartPriceRuleValidationProcessor;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -42,7 +42,7 @@ final class CartPriceRuleContext implements Context
      * @Then /^the (cart rule "[^"]+") should be valid for (my cart)$/
      * @Then /^the (cart rule) should be valid for (my cart)$/
      */
-    public function theSpecificPriceRuleForProductShouldBeValid(CartPriceRuleInterface $cartPriceRule, OrderInterface $cart)
+    public function theSpecificPriceRuleForProductShouldBeValid(CartPriceRuleInterface $cartPriceRule, OrderInterface $cart): void
     {
         Assert::true($this->cartPriceRuleValidationProcessor->isValidCartRule($cart, $cartPriceRule));
     }
@@ -51,7 +51,7 @@ final class CartPriceRuleContext implements Context
      * @Then /^the (cart rule "[^"]+") should be invalid for (my cart)$/
      * @Then /^the (cart rule) should be invalid for (my cart)$/
      */
-    public function theSpecificPriceRuleForProductShouldBeInvalid(CartPriceRuleInterface $cartPriceRule, OrderInterface $cart)
+    public function theSpecificPriceRuleForProductShouldBeInvalid(CartPriceRuleInterface $cartPriceRule, OrderInterface $cart): void
     {
         Assert::false($this->cartPriceRuleValidationProcessor->isValidCartRule($cart, $cartPriceRule));
     }

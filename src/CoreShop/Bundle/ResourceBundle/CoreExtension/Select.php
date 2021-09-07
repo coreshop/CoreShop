@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
@@ -81,9 +83,6 @@ abstract class Select extends Data implements
         return ($this->getNullable() ? 'null|' : '') . $this->getInterface();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalVersion($object, $data)
     {
         if ($data instanceof ResourceInterface) {
@@ -93,9 +92,6 @@ abstract class Select extends Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalVersion($object, $data)
     {
         if (null === $data) {
@@ -105,57 +101,36 @@ abstract class Select extends Data implements
         return $this->getRepository()->find($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalRecycleData($object, $data)
     {
         return $this->marshalVersion($object, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalRecycleData($object, $data)
     {
         return $this->unmarshalVersion($object, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueryColumnType()
     {
         return 'int(11)';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getColumnType()
     {
         return 'int(11)';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
@@ -167,9 +142,6 @@ abstract class Select extends Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preGetData($object, $params = [])
     {
         if (!$object instanceof Model\AbstractModel) {
@@ -240,33 +212,21 @@ abstract class Select extends Data implements
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         return $this->getDataForResource($data, $object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         return !$data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForSearchIndex($object, $params = [])
     {
         if ($object instanceof ResourceInterface) {
@@ -276,17 +236,11 @@ abstract class Select extends Data implements
         return parent::getDataForSearchIndex($object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isAllowEmpty()
     {
         return $this->allowEmpty;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setAllowEmpty($allowEmpty)
     {
         $this->allowEmpty = $allowEmpty;

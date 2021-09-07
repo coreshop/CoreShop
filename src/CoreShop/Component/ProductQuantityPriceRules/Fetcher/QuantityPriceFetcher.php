@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,31 +15,20 @@ declare(strict_types=1);
 namespace CoreShop\Component\ProductQuantityPriceRules\Fetcher;
 
 use CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface;
-use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 
-class QuantityPriceFetcher
+class QuantityPriceFetcher implements QuantityPriceFetcherInterface
 {
-    private $calculatorRegistry;
+    private ServiceRegistryInterface $calculatorRegistry;
 
     public function __construct(ServiceRegistryInterface $calculatorRegistry)
     {
         $this->calculatorRegistry = $calculatorRegistry;
     }
 
-    /**
-     * @param ProductQuantityPriceRuleInterface $rule
-     * @param QuantityRangePriceAwareInterface  $subject
-     * @param float                             $quantity
-     * @param int                               $originalPrice
-     * @param array                             $context
-     *
-     * @return int
-     * @throws NoPriceFoundException
-     */
     public function fetchQuantityPrice(
         ProductQuantityPriceRuleInterface $rule,
         QuantityRangePriceAwareInterface $subject,
@@ -55,15 +44,6 @@ class QuantityPriceFetcher
         return $service->calculateForQuantity($rule, $subject, $quantity, $originalPrice, $context);
     }
 
-    /**
-     * @param QuantityRangeInterface           $range
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param int                              $originalPrice
-     * @param array                            $context
-     *
-     * @return int
-     * @throws NoPriceFoundException
-     */
     public function fetchRangePrice(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,

@@ -21,7 +21,7 @@
             <join-column name="taxRuleGroupId" referenced-column-name="id" nullable="false"/>
         </many-to-one>
 
-        <many-to-one field="taxRate" target-entity="CoreShop\Component\Taxation\Model\TaxRateInterface" inversed-by="taxRules">
+        <many-to-one field="taxRate" target-entity="CoreShop\Component\Taxation\Model\TaxRateInterface">
             <join-column name="taxRateId" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
         </many-to-one>
     </mapped-superclass>

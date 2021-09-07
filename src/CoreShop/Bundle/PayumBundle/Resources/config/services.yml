@@ -19,6 +19,19 @@ services:
         tags:
             - { name: payum.action, all: true, alias: coreshop.resolve_next_route }
 
+
+    CoreShop\Bundle\PayumBundle\Action\AuthorizePaymentAction:
+        tags:
+            - { name: payum.action, all: true, alias: coreshop.authorize_payment }
+
+    CoreShop\Bundle\PayumBundle\Action\CapturePaymentAction:
+        tags:
+            - { name: payum.action, all: true, alias: coreshop.capture_payment }
+
+    CoreShop\Bundle\PayumBundle\Action\ExecuteSameRequestWithPaymentDetailsAction:
+        tags:
+            - { name: payum.action, all: true }
+
     CoreShop\Bundle\PayumBundle\Action\ConfirmOrderAction:
         arguments:
             - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface'

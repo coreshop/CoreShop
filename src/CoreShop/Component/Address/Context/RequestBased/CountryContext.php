@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,15 +22,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CountryContext implements CountryContextInterface
 {
-    /**
-     * @var RequestResolverInterface
-     */
-    private $requestResolver;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestResolverInterface $requestResolver;
+    private RequestStack $requestStack;
 
     public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
     {
@@ -38,9 +31,6 @@ final class CountryContext implements CountryContextInterface
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCountry(): CountryInterface
     {
         try {
@@ -50,11 +40,6 @@ final class CountryContext implements CountryContextInterface
         }
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return CountryInterface
-     */
     private function getCountryForRequest(Request $request): CountryInterface
     {
         $country = $this->requestResolver->findCountry($request);
@@ -64,9 +49,6 @@ final class CountryContext implements CountryContextInterface
         return $country;
     }
 
-    /**
-     * @return Request
-     */
     private function getMasterRequest(): Request
     {
         $masterRequest = $this->requestStack->getMasterRequest();
@@ -77,9 +59,6 @@ final class CountryContext implements CountryContextInterface
         return $masterRequest;
     }
 
-    /**
-     * @param CountryInterface|null $country
-     */
     private function assertCountryWasFound(CountryInterface $country = null): void
     {
         if (null === $country) {

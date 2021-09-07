@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,46 +19,30 @@ use CoreShop\Component\Order\Model\OrderDocumentItemInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Webmozart\Assert\Assert;
 
 class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerInterface
 {
-    /**
-     * @var ObjectServiceInterface
-     */
-    private $objectService;
+    protected FolderCreationServiceInterface $folderCreationService;
+    protected TransformerEventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var string
-     */
-    private $pathForItems;
-
-    /**
-     * @var TransformerEventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param ObjectServiceInterface              $objectService
-     * @param string                              $pathForItems
-     * @param TransformerEventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
-        ObjectServiceInterface $objectService,
-        $pathForItems,
+        FolderCreationServiceInterface $folderCreationService,
         TransformerEventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectService = $objectService;
-        $this->pathForItems = $pathForItems;
+        $this->folderCreationService = $folderCreationService;
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function transform(OrderDocumentInterface $invoice, OrderItemInterface $orderItem, OrderDocumentItemInterface $invoiceItem, $quantity, $options = [])
+    public function transform(
+        OrderDocumentInterface $invoice,
+        OrderItemInterface $orderItem,
+        OrderDocumentItemInterface $invoiceItem,
+        int $quantity,
+        array $options = []
+    ): OrderDocumentItemInterface
     {
         /**
          * @var OrderInvoiceInterface     $invoice
@@ -80,7 +64,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
             ]
         );
 
-        $itemFolder = $this->objectService->createFolderByPath($invoice->getFullPath() . '/' . $this->pathForItems);
+        $itemFolder = $this->folderCreationService->createFolderForResource($invoiceItem, ['prefix' => $invoice->getFullPath()]);
 
         $invoiceItem->setKey($orderItem->getKey());
         $invoiceItem->setParent($itemFolder);

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,15 +18,14 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\ExchangeRateInterface;
-use CoreShop\Component\Currency\Repository\ExchangeRateRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Persistence\ObjectManager;
 
 final class ExchangeRateContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $exchangeRateFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $exchangeRateFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -42,7 +41,7 @@ final class ExchangeRateContext implements Context
      * @Given /^the (currency "[^"]+") has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/
      * @Given /^the (currency) has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/
      */
-    public function currencyHasExchangeRateTo(CurrencyInterface $fromCurrency, CurrencyInterface $toCurrency, float $rate)
+    public function currencyHasExchangeRateTo(CurrencyInterface $fromCurrency, CurrencyInterface $toCurrency, float $rate): void
     {
         /**
          * @var ExchangeRateInterface $exchangeRate

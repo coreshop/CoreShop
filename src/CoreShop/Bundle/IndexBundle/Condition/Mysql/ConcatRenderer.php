@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 
 class ConcatRenderer extends AbstractMysqlDynamicRenderer
 {
-    private $renderer;
+    private ConditionRendererInterface $renderer;
 
     public function __construct(Connection $connection, ConditionRendererInterface $renderer)
     {
@@ -33,10 +33,7 @@ class ConcatRenderer extends AbstractMysqlDynamicRenderer
         $this->renderer = $renderer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): string
     {
         /**
          * @var $condition ConcatCondition
@@ -61,9 +58,6 @@ class ConcatRenderer extends AbstractMysqlDynamicRenderer
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
     {
         return $worker instanceof MysqlWorker && $condition instanceof ConcatCondition;

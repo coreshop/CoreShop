@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,8 +22,8 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 final class CurrencyStorage implements CurrencyStorageInterface
 {
-    private $storage;
-    private $currencyRepository;
+    private StorageInterface $storage;
+    private CurrencyRepositoryInterface $currencyRepository;
 
     public function __construct(StorageInterface $storage, CurrencyRepositoryInterface $currencyRepository)
     {
@@ -31,9 +31,6 @@ final class CurrencyStorage implements CurrencyStorageInterface
         $this->currencyRepository = $currencyRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function set(StoreInterface $store, CurrencyInterface $currency): void
     {
         if ($this->isBaseCurrency($currency, $store) || !$this->isAvailableCurrency($currency, $store)) {
@@ -45,9 +42,6 @@ final class CurrencyStorage implements CurrencyStorageInterface
         $this->storage->set($this->provideKey($store), $currency->getId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(StoreInterface $store): CurrencyInterface
     {
         if ($this->storage->get($this->provideKey($store))) {

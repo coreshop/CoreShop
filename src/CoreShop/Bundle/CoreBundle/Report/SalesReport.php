@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,12 +30,12 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class SalesReport implements ReportInterface, ExportReportInterface, PortletInterface, ExportPortletInterface
 {
-    private $totalRecords = 0;
-    private $storeRepository;
-    private $db;
-    private $moneyFormatter;
-    private $localeContext;
-    private $orderRepository;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private MoneyFormatterInterface $moneyFormatter;
+    private LocaleContextInterface $localeContext;
+    private PimcoreRepositoryInterface $orderRepository;
 
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -51,17 +51,11 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReportData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPortletData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
@@ -139,9 +133,6 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
         return array_values($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExportReportData(ParameterBag $parameterBag): array
     {
         $data = $this->getReportData($parameterBag);
@@ -158,9 +149,6 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExportPortletData(ParameterBag $parameterBag): array
     {
         return $this->getExportReportData($parameterBag);

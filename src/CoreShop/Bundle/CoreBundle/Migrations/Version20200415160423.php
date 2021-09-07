@@ -1,24 +1,36 @@
 <?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
 use Doctrine\DBAL\Schema\Schema;
-use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Version20200415160423 extends AbstractPimcoreMigration implements ContainerAwareInterface
+class Version20200415160423 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
-        $this->writeMessage('Start migration for Order Invoice Objects');
+        $this->write('Start migration for Order Invoice Objects');
 
         $orderInvoiceList = $this->container->get('coreshop.repository.order_invoice')->getList();
         $batchList = new BatchListing($orderInvoiceList, 50);
@@ -70,16 +82,12 @@ class Version20200415160423 extends AbstractPimcoreMigration implements Containe
 
             $orderInvoice->save();
         }
-
-        foreach ($fieldsNotMigrated as $from => $to) {
-            $this->writeMessage(sprintf('Could not migrate %s to %s', $from, $to));
-        }
     }
 
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
 

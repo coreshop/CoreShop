@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,30 +19,16 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DoctrineField
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
+    private Type $type;
 
-    /**
-     * @var Type
-     */
-    private $type;
-
-    /**
-     * @param string $name
-     * @param Type   $type
-     */
     public function __construct(string $name, Type $type)
     {
         $this->name = $name;
         $this->type = $type;
     }
 
-    /**
-     * @return array
-     */
-    public function getDefinition()
+    public function getDefinition(): array
     {
         /**
          * Value will be the parent object when it's passed in.

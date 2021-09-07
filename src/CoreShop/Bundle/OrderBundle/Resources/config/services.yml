@@ -33,9 +33,7 @@ services:
     CoreShop\Bundle\OrderBundle\Manager\CartManager:
         arguments:
             - '@CoreShop\Component\Order\Processor\CartProcessorInterface'
-            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
-            - '%coreshop.folder.cart%'
-            - '%coreshop.folder.order_item%'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
 
     coreshop.cart_item.quantity_modifier: '@CoreShop\Component\StorageList\StorageListItemQuantityModifier'
     CoreShop\Component\StorageList\StorageListItemQuantityModifier: ~
@@ -84,6 +82,9 @@ services:
 
     CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface: '@CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor'
     CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor: ~
+
+    CoreShop\Component\Order\Distributor\IntegerDistributorInterface: '@CoreShop\Component\Order\Distributor\IntegerDistributor'
+    CoreShop\Component\Order\Distributor\IntegerDistributor: ~
 
     CoreShop\Component\Order\Factory\AdjustmentFactoryInterface: '@CoreShop\Component\Order\Factory\AdjustmentFactory'
     CoreShop\Component\Order\Factory\AdjustmentFactory:

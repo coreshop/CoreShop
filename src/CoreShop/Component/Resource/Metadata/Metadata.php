@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,42 +14,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\Metadata;
 
-use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 
 final class Metadata implements MetadataInterface
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
+    private string $applicationName;
+    private string $driver;
+    private ?string $templatesNamespace;
+    private array $parameters = [];
 
-    /**
-     * @var string
-     */
-    private $applicationName;
-
-    /**
-     * @var string
-     */
-    private $driver;
-
-    /**
-     * @var string
-     */
-    private $templatesNamespace;
-
-    /**
-     * @var array
-     */
-    private $parameters;
-
-    /**
-     * @param string $name
-     * @param string $applicationName
-     * @param array  $parameters
-     */
-    private function __construct($name, $applicationName, array $parameters)
+    private function __construct(string $name, string $applicationName, array $parameters)
     {
         $this->name = $name;
         $this->applicationName = $applicationName;
@@ -60,54 +35,33 @@ final class Metadata implements MetadataInterface
         $this->parameters = $parameters;
     }
 
-    /**
-     * @param string $alias
-     * @param array  $parameters
-     *
-     * @return self
-     */
-    public static function fromAliasAndConfiguration($alias, array $parameters): Metadata
+    public static function fromAliasAndConfiguration(string $alias, array $parameters): Metadata
     {
         list($applicationName, $name) = self::parseAlias($alias);
 
         return new self($name, $applicationName, $parameters);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAlias(): string
     {
         return $this->applicationName . '.' . $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getApplicationName(): string
     {
         return $this->applicationName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHumanizedName(): string
     {
         return trim(strtolower(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $this->name)));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPluralName(): string
     {
         $inflector = InflectorFactory::create()->build();
@@ -115,26 +69,17 @@ final class Metadata implements MetadataInterface
         return $inflector->pluralize($this->name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDriver(): string
     {
         return $this->driver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTemplatesNamespace(): string
     {
         return $this->templatesNamespace;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParameter($name)
+    public function getParameter(string $name)
     {
         if (!$this->hasParameter($name)) {
             throw new \InvalidArgumentException(sprintf('Parameter "%s" is not configured for resource "%s".', $name, $this->getAlias()));
@@ -143,26 +88,17 @@ final class Metadata implements MetadataInterface
         return $this->parameters[$name];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasParameter($name): bool
+    public function hasParameter(string $name): bool
     {
         return array_key_exists($name, $this->parameters);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClass($name)
+    public function getClass(string $name)
     {
         if (!$this->hasClass($name)) {
             throw new \InvalidArgumentException(sprintf('Class "%s" is not configured for resource "%s".', $name, $this->getAlias()));
@@ -171,25 +107,16 @@ final class Metadata implements MetadataInterface
         return $this->parameters['classes'][$name];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasClass($name): bool
+    public function hasClass(string $name): bool
     {
         return isset($this->parameters['classes'][$name]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getServiceId($serviceName): string
+    public function getServiceId(string $serviceName): string
     {
         return sprintf('%s.%s.%s', $this->applicationName, $serviceName, $this->name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPermissionCode($permissionName): string
     {
         return sprintf('%s.%s.%s', $this->applicationName, $this->name, $permissionName);

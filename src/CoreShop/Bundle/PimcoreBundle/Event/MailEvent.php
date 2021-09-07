@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,10 +20,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class MailEvent extends GenericEvent
 {
-    protected $emailDocument;
-    protected $mail;
-    protected $params;
-    protected $shouldSendMail = true;
+    protected Email $emailDocument;
+    protected Mail $mail;
+    protected array $params;
+    protected bool $shouldSendMail = true;
 
     public function __construct($subject, Email $emailDocument, Mail $mail, array $params = [])
     {

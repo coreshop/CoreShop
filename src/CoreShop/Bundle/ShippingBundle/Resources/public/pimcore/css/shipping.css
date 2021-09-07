@@ -6,7 +6,7 @@
     background: url(../img/carriers.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_shipping {
+body.pimcore_version_10 .coreshop_nav_icon_shipping {
     background: url(../img/carriers_white.svg) center center no-repeat !important;
 }
 
@@ -18,7 +18,7 @@ body.pimcore_version_6 .coreshop_nav_icon_shipping {
     background: url(../img/shippingrules.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_carrier_shipping_rule {
+body.pimcore_version_10 .coreshop_nav_icon_carrier_shipping_rule {
     background: url(../img/shippingrules_white.svg) center center no-repeat !important;
 }
 
@@ -34,7 +34,7 @@ body.pimcore_version_6 .coreshop_nav_icon_carrier_shipping_rule {
     background: url(../img/carriers.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_carriers {
+body.pimcore_version_10 .coreshop_nav_icon_carriers {
     background: url(../img/carriers_white.svg) center center no-repeat !important;
 }
 

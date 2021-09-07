@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -36,7 +36,7 @@ class BodyListener
                     $data = @json_decode($content, true);
 
                     if (is_array($data)) {
-                        $request->request = new ParameterBag($data);
+                        $request->request = new InputBag($data);
                     } else {
                         throw new BadRequestHttpException('Invalid '.$format.' message received');
                     }

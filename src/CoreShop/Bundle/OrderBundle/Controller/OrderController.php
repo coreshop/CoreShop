@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,6 +30,9 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Notes;
+use CoreShop\Component\Order\OrderInvoiceStates;
+use CoreShop\Component\Order\OrderPaymentStates;
+use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
@@ -54,16 +57,16 @@ use Symfony\Component\Workflow\StateMachine;
 
 class OrderController extends PimcoreController
 {
-    protected $eventDispatcher;
-    protected $objectNoteService;
-    protected $addressFormatter;
-    protected $serializer;
-    protected $workflowStateManager;
-    protected $invoiceProcessableHelper;
-    protected $shipmentProcessableHelper;
-    protected $orderInvoiceRepository;
-    protected $orderShipmentRepository;
-    protected $paymentRepository;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected NoteServiceInterface $objectNoteService;
+    protected AddressFormatterInterface $addressFormatter;
+    protected ArrayTransformerInterface $serializer;
+    protected WorkflowStateInfoManagerInterface $workflowStateManager;
+    protected ProcessableInterface $invoiceProcessableHelper;
+    protected ProcessableInterface $shipmentProcessableHelper;
+    protected OrderInvoiceRepositoryInterface $orderInvoiceRepository;
+    protected OrderShipmentRepositoryInterface $orderShipmentRepository;
+    protected PaymentRepositoryInterface $paymentRepository;
 
     public function getStatesAction(Request $request): Response
     {
@@ -282,7 +285,7 @@ class OrderController extends PimcoreController
             'customerName' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname() : '',
             'customerEmail' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getEmail() : '',
             'store' => $order->getStore() instanceof StoreInterface ? $order->getStore()->getId() : null,
-            'orderState' => $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState(), false),
+            'orderState' => $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState() ?? OrderStates::STATE_NEW, false),
             'orderPaymentState' => $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState(), false),
             'orderShippingState' => $this->workflowStateManager->getStateInfo('coreshop_order_shipment', $order->getShippingState(), false),
             'orderInvoiceState' => $this->workflowStateManager->getStateInfo('coreshop_order_invoice', $order->getInvoiceState(), false)
@@ -397,10 +400,10 @@ class OrderController extends PimcoreController
             $jsonSale['priceRule'] = $rules;
         }
 
-        $jsonSale['orderState'] = $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState(), false);
-        $jsonSale['orderPaymentState'] = $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState(), false);
-        $jsonSale['orderShippingState'] = $this->workflowStateManager->getStateInfo('coreshop_order_shipment', $order->getShippingState(), false);
-        $jsonSale['orderInvoiceState'] = $this->workflowStateManager->getStateInfo('coreshop_order_invoice', $order->getInvoiceState(), false);
+        $jsonSale['orderState'] = $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState() ?? OrderStates::STATE_NEW, false);
+        $jsonSale['orderPaymentState'] = $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState() ?? OrderPaymentStates::STATE_NEW, false);
+        $jsonSale['orderShippingState'] = $this->workflowStateManager->getStateInfo('coreshop_order_shipment', $order->getShippingState() ?? OrderShipmentStates::STATE_NEW, false);
+        $jsonSale['orderInvoiceState'] = $this->workflowStateManager->getStateInfo('coreshop_order_invoice', $order->getInvoiceState() ?? OrderInvoiceStates::STATE_NEW, false);
 
         $availableTransitions = $this->workflowStateManager->parseTransitions($order, 'coreshop_order', [
             'cancel',
@@ -437,11 +440,11 @@ class OrderController extends PimcoreController
 
         foreach ($notes as $note) {
             $noteElement = [
-                'date' => $note->date,
-                'description' => $note->description,
+                'date' => $note->getDate(),
+                'description' => $note->getDescription(),
             ];
 
-            foreach ($note->data as $key => $noteData) {
+            foreach ($note->getData() as $key => $noteData) {
                 $noteElement[$key] = $noteData['data'];
             }
 
@@ -473,7 +476,7 @@ class OrderController extends PimcoreController
         return $invoiceArray;
     }
 
-    protected function getShipments($order)
+    protected function getShipments(OrderInterface $order): array
     {
         $shipments = $this->orderShipmentRepository->getDocuments($order);
         $shipmentArray = [];
@@ -568,7 +571,7 @@ class OrderController extends PimcoreController
         ];
     }
 
-    protected function getStatesHistory(OrderInterface $order)
+    protected function getStatesHistory(OrderInterface $order): array
     {
         //Get History
         $history = $this->workflowStateManager->getStateHistory($order);
@@ -596,7 +599,7 @@ class OrderController extends PimcoreController
         return $statesHistory;
     }
 
-    protected function getPayments(OrderInterface $order)
+    protected function getPayments(OrderInterface $order): array
     {
         $payments = $this->paymentRepository->findForPayable($order);
         $return = [];

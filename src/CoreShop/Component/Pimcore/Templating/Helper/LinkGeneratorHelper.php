@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,16 +21,13 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
 {
-    private $linkGenerator;
+    private LinkGeneratorInterface $linkGenerator;
 
     public function __construct(LinkGeneratorInterface $linkGenerator)
     {
         $this->linkGenerator = $linkGenerator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPath($routeNameOrObject/*, $routeName*/, $params = [], $relative = false): string
     {
         list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
@@ -43,9 +40,6 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUrl($routeNameOrObject/*, $routeName*/, $params = [], $schemeRelative = false): string
     {
         list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
@@ -113,9 +107,6 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'coreshop_link';

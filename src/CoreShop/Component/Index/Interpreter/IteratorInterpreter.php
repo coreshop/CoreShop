@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,23 +21,19 @@ use Webmozart\Assert\Assert;
 
 final class IteratorInterpreter implements InterpreterInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $interpreterRegistry;
+    private ServiceRegistryInterface $interpreterRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $interpreterRegistry
-     */
     public function __construct(ServiceRegistryInterface $interpreterRegistry)
     {
         $this->interpreterRegistry = $interpreterRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
+    public function interpret(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): mixed
     {
         Assert::isArray($value, 'IteratorInterpreter can only be used with array values');
 

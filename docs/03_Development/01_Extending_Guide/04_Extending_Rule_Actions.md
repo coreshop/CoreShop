@@ -24,11 +24,8 @@ namespace AppBundle\CoreShop;
 
 final class CustomAction implements \CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface
 {
-    public function getDiscount($subject, $price, array $configuration) {
-        //If your action calculates a discount, put your calculation here
-    }
-
-    public function getPrice($subject, array $configuration) {
+    public function getPrice($subject, array $context, array $configuration): int 
+    {
         //If your action gives the product a new Price, put your calculation here
 
         return $configuration['some_value'];
@@ -51,7 +48,7 @@ final class CustomActionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('some_value', TextType::class)

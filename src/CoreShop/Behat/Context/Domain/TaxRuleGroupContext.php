@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,12 +27,12 @@ use Webmozart\Assert\Assert;
 
 final class TaxRuleGroupContext implements Context
 {
-    private $sharedStorage;
-    private $addressFactory;
-    private $taxRuleGroupRepository;
-    private $taxRuleRepository;
-    private $taxCalculatorFactory;
-    private $countryContext;
+    private SharedStorageInterface $sharedStorage;
+    private FactoryInterface $addressFactory;
+    private RepositoryInterface $taxRuleGroupRepository;
+    private TaxRuleRepositoryInterface $taxRuleRepository;
+    private TaxCalculatorFactoryInterface $taxCalculatorFactory;
+    private CountryContextInterface $countryContext;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -53,7 +53,7 @@ final class TaxRuleGroupContext implements Context
     /**
      * @Then /^there should be a tax rule group "([^"]+)" with "([^"]+)" (?:rule|rules)$/
      */
-    public function thereShouldBeATaxRuleGroupWithXRules($name, $countOfRules)
+    public function thereShouldBeATaxRuleGroupWithXRules($name, $countOfRules): void
     {
         $groups = $this->taxRuleGroupRepository->findBy(['name' => $name]);
 
@@ -81,7 +81,7 @@ final class TaxRuleGroupContext implements Context
      * @Then /^the (tax rule group "[^"]+") should add "([^"]+)" to the price "([^"]+)"$/
      * @Then /^the (tax rule group) should add "([^"]+)" to the price "([^"]+)"$/
      */
-    public function taxRuleShouldTaxThePrice(TaxRuleGroupInterface $taxRuleGroup, $tax, int $price)
+    public function taxRuleShouldTaxThePrice(TaxRuleGroupInterface $taxRuleGroup, $tax, int $price): void
     {
         $address = $this->addressFactory->createNew();
         $address->setCountry($this->countryContext->getCountry());
@@ -101,7 +101,7 @@ final class TaxRuleGroupContext implements Context
     /**
      * @Then /^the tax calculator should be null for (tax rule group) in (country "[^"]+")$/
      */
-    public function taxCalculatorShouldBeNull(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country)
+    public function taxCalculatorShouldBeNull(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country): void
     {
         $address = $this->addressFactory->createNew();
         $address->setCountry($country);

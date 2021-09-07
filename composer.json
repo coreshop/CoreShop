@@ -13,6 +13,12 @@
   "homepage": "https://www.coreshop.org",
   "authors": [
     {
+      "name": "CoreShop Team",
+      "email": "info@coreshop.org",
+      "homepage": "https://www.coreshop.org/",
+      "role": "Developer"
+    },
+    {
       "name": "Dominik Pfaffenbauer",
       "email": "dominik@pfaffenbauer.at",
       "homepage": "https://www.pfaffenbauer.at/",
@@ -72,9 +78,12 @@
     "coreshop/tracking": "self.version",
     "coreshop/theme-bundle": "self.version",
     "coreshop/menu-bundle": "self.version",
+    "coreshop/payum-payment": "self.version",
+    "coreshop/payum-payment-bundle": "self.version",
     "coreshop/optimistic-entity-lock-bundle": "self.version"
   },
   "require": {
+    "ext-json": "*",
     "dachcom-digital/emailizr": "^2.0.0",
     "doctrine/data-fixtures": "^1.0",
     "doctrine/orm": "^2.5",
@@ -85,7 +94,7 @@
     "laminas/laminas-stdlib": "^3.3.1",
     "sylius/theme-bundle": "^2.1",
     "php-http/guzzle7-adapter": "^0.1",
-    "pimcore/pimcore": "dev-master",
+    "pimcore/pimcore": "^10.0",
     "rinvex/countries": "^7.0",
     "stof/doctrine-extensions-bundle": "^1.5",
     "webmozart/assert": "^1.2",
@@ -93,25 +102,21 @@
     "payum/payum-bundle": "dev-master"
   },
   "require-dev": {
-    "behat/behat": "^3.3",
+    "behat/behat": "^3.8",
     "friends-of-behat/symfony-extension": "^2.1",
     "friends-of-behat/page-object-extension": "^0.3.2",
-    "phpstan/phpstan": "^0.12",
-    "phpstan/phpstan-doctrine": "^0.12",
-    "phpstan/phpstan-symfony": "^0.12",
+    "phpstan/phpstan": "^0.12.85",
+    "phpstan/phpstan-doctrine": "^0.12.33",
+    "phpstan/phpstan-symfony": "^0.12.30",
     "phpstan/phpstan-webmozart-assert": "^0.12",
     "behat/mink": "^1.8",
     "friends-of-behat/mink-extension": "^2.4",
     "lakion/mink-debug-extension": "^2.0",
     "friends-of-behat/mink-debug-extension": "^2.0",
     "phpunit/phpunit": "^9.5",
-    "robertfausk/behat-panther-extension": "^1.0"
-  },
-  "conflict": {
-    "dpfaffenbauer/process-manager": "<2.4",
-    "pimcore/pimcore": "6.1.0 || 6.1.1 || 6.5.2",
-    "monolog/monolog": ">=2",
-    "symfony/monolog-bundle": "3.6.0"
+    "robertfausk/behat-panther-extension": "^1.0",
+    "symfony/panther": "^1.0",
+    "dbrekelmans/bdi": "^0.3.0"
   },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."

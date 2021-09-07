@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,10 +26,10 @@ use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 
 class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
-    private $fragmentRenderer;
-    private $eventDispatcher;
-    private $renderer;
-    private $themeHelper;
+    private FragmentRendererInterface $fragmentRenderer;
+    private EventDispatcherInterface $eventDispatcher;
+    private PdfRendererInterface $renderer;
+    private ThemeHelperInterface $themeHelper;
 
     public function __construct(
         FragmentRendererInterface $fragmentRenderer,
@@ -43,9 +43,6 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
         $this->themeHelper = $themeHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string
     {
         return $this->themeHelper->useTheme($orderDocument->getOrder()->getStore()->getTemplate(), function () use ($orderDocument) {

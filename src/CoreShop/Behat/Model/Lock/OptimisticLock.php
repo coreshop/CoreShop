@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Model\Lock;
 
@@ -18,10 +20,13 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class OptimisticLock extends AbstractPimcoreModel implements OptimisticLockedInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getOptimisticLockVersion(): ?int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /** @noinspection ReturnTypeCanBeDeclaredInspection */
+    public function setOptimisticLockVersion(?int $optimisticLockVersion)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -29,7 +34,15 @@ class OptimisticLock extends AbstractPimcoreModel implements OptimisticLockedInt
     /**
      * {@inheritdoc}
      */
-    public function setOptimisticLockVersion(?int $optimisticLockVersion)
+    public function getUser(): void
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUser($user): void
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

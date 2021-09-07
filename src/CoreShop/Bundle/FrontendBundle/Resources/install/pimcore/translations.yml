@@ -1280,14 +1280,14 @@ translations:
           de: 'Aktuelles Passwort'
           it: 'Password corrente'
 
-  coreshop.form.customer.password:
+  coreshop.form.user.password:
       languages:
           de_CH: 'Passwort'
           en: 'Password'
           de: 'Passwort'
           it: 'Password'
 
-  coreshop.form.customer.password_repeat:
+  coreshop.form.user.password_repeat:
       languages:
           de_CH: 'Passwort wiederholen'
           en: 'Repeat Password'

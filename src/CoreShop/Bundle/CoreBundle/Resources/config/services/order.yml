@@ -25,7 +25,7 @@ services:
             - '@CoreShop\Component\Core\Order\Transformer\OrderItemToShipmentItemTransformer.inner'
 
     coreshop.maintenance.cart.expire_task:
-        class: CoreShop\Bundle\CoreBundle\Maintenance\ProposalExpireTask
+        class: CoreShop\Bundle\CoreBundle\Maintenance\OrderExpireTask
         arguments:
             - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
             - '@CoreShop\Bundle\OrderBundle\Expiration\CartExpiration'
@@ -36,7 +36,7 @@ services:
             - { name: pimcore.maintenance.task, type: coreshop_expire_carts }
 
     coreshop.maintenance.order.expire_task:
-        class: CoreShop\Bundle\CoreBundle\Maintenance\ProposalExpireTask
+        class: CoreShop\Bundle\CoreBundle\Maintenance\OrderExpireTask
         arguments:
             - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
             - '@CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration'
@@ -95,6 +95,8 @@ services:
 
     CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier:
         decorates: coreshop.cart_item.quantity_modifier
+        arguments:
+            - '@coreshop.factory.order_item_unit'
 
     CoreShop\Component\Core\Cart\CartContextResolver:
         decorates: 'CoreShop\Component\Order\Cart\CartContextResolver'
@@ -106,17 +108,15 @@ services:
     CoreShop\Component\Core\Order\Committer\OrderCommitter:
         arguments:
             - '@CoreShop\Component\Order\Manager\CartManagerInterface'
-            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
             - '@coreshop.order.number_generator.default'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface'
             - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
-            - '%coreshop.folder.order%'
 
     CoreShop\Component\Order\Committer\QuoteCommitterInterface: '@CoreShop\Component\Core\Order\Committer\QuoteCommitter'
     CoreShop\Component\Core\Order\Committer\QuoteCommitter:
         arguments:
             - '@CoreShop\Component\Order\Manager\CartManagerInterface'
-            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
             - '@coreshop.quote.number_generator.default'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface'
-            - '%coreshop.folder.quote%'

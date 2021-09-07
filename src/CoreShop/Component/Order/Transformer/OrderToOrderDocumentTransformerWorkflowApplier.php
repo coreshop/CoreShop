@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,39 +20,19 @@ use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 
 final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocumentTransformerInterface
 {
-    /**
-     * @var OrderDocumentTransformerInterface
-     */
-    private $innerTransformer;
+    private OrderDocumentTransformerInterface $innerTransformer;
+    private StateMachineManagerInterface $stateMachineManager;
+    private string $initialState;
+    private string $workflowName;
+    private string $transition;
 
-    /**
-     * @var StateMachineManagerInterface
-     */
-    private $stateMachineManager;
-
-    /**
-     * @var string
-     */
-    private $initialState;
-
-    /**
-     * @var string
-     */
-    private $workflowName;
-
-    /**
-     * @var string
-     */
-    private $transition;
-
-    /**
-     * @param OrderDocumentTransformerInterface $innerTransformer
-     * @param StateMachineManagerInterface      $stateMachineManager
-     * @param string                            $initialState
-     * @param string                            $workflowName
-     * @param string                            $transition
-     */
-    public function __construct(OrderDocumentTransformerInterface $innerTransformer, StateMachineManagerInterface $stateMachineManager, string $initialState, string $workflowName, string $transition)
+    public function __construct(
+        OrderDocumentTransformerInterface $innerTransformer,
+        StateMachineManagerInterface $stateMachineManager,
+        string $initialState,
+        string $workflowName,
+        string $transition
+    )
     {
         $this->innerTransformer = $innerTransformer;
         $this->stateMachineManager = $stateMachineManager;
@@ -61,7 +41,7 @@ final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocum
         $this->transition = $transition;
     }
 
-    public function transform(OrderInterface $order, OrderDocumentInterface $document, $items)
+    public function transform(OrderInterface $order, OrderDocumentInterface $document, array $items): OrderDocumentInterface
     {
         $document->setState($this->initialState);
         $document = $this->innerTransformer->transform($order, $document, $items);

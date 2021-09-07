@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,15 +20,14 @@ use Symfony\Component\Finder\Finder;
 
 final class NotificationRuleListener implements NotificationRuleListenerInterface
 {
-    private $cacheDir;
-    private $firedEvents = [];
+    private string $cacheDir;
 
     public function __construct(string $cacheDir)
     {
         $this->cacheDir = $cacheDir;
     }
 
-    public function hasBeenFired($type)
+    public function hasBeenFired(string $type): bool
     {
         $finder = new Finder();
         $finder->files()->name(sprintf('*.%s.notification', $type))->in($this->cacheDir);
@@ -36,7 +35,7 @@ final class NotificationRuleListener implements NotificationRuleListenerInterfac
         return $finder->count() > 0;
     }
 
-    public function clear()
+    public function clear(): void
     {
         if (!is_dir($this->cacheDir)) {
             return;
@@ -52,7 +51,7 @@ final class NotificationRuleListener implements NotificationRuleListenerInterfac
         }
     }
 
-    public function applyNewFired(GenericEvent $type)
+    public function applyNewFired(GenericEvent $type): void
     {
         $data = [
             'subject' => $type->getSubject(),

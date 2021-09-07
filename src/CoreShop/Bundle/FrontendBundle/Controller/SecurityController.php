@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,26 +23,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends FrontendController
 {
-    /**
-     * @var AuthenticationUtils
-     */
-    protected $authenticationUtils;
+    protected AuthenticationUtils $authenticationUtils;
+    protected FormFactoryInterface $formFactory;
+    protected ShopperContextInterface $shopperContext;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
-     * @var ShopperContextInterface
-     */
-    protected $shopperContext;
-
-    /**
-     * @param AuthenticationUtils     $authenticationUtils
-     * @param FormFactoryInterface    $formFactory
-     * @param ShopperContextInterface $shopperContext
-     */
     public function __construct(
         AuthenticationUtils $authenticationUtils,
         FormFactoryInterface $formFactory,
@@ -53,14 +37,9 @@ class SecurityController extends FrontendController
         $this->shopperContext = $shopperContext;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function loginAction(Request $request)
+    public function loginAction(Request $request): Response
     {
-        if ($this->shopperContext->hasCustomer() && $this->shopperContext->getCustomer()->getIsGuest() === false) {
+        if ($this->shopperContext->hasCustomer()) {
             return $this->redirectToRoute('coreshop_index');
         }
 
@@ -83,18 +62,12 @@ class SecurityController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     */
-    public function checkAction(Request $request)
+    public function checkAction(Request $request): void
     {
         throw new \RuntimeException('You must configure the check path to be handled by the firewall.');
     }
 
-    /**
-     * @param Request $request
-     */
-    public function logoutAction(Request $request)
+    public function logoutAction(Request $request): void
     {
         throw new \RuntimeException('You must configure the logout path to be handled by the firewall.');
     }

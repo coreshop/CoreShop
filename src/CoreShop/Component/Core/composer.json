@@ -11,6 +11,12 @@
   "license": "GPL-3.0-or-later",
   "authors": [
     {
+      "name": "CoreShop Team",
+      "email": "info@coreshop.org",
+      "homepage": "https://www.coreshop.org/",
+      "role": "Developer"
+    },
+    {
       "name": "Dominik Pfaffenbauer",
       "email": "dominik@pfaffenbauer.at",
       "homepage": "https://www.pfaffenbauer.at/",
@@ -32,10 +38,12 @@
     "coreshop/product-quantity-price-rules": "^3.0",
     "coreshop/index": "^3.0",
     "coreshop/payment": "^3.0",
+    "coreshop/payum-payment": "^3.0",
     "coreshop/taxation": "^3.0",
     "coreshop/notification": "^3.0",
     "coreshop/payum-bundle": "^3.0",
     "coreshop/seo": "^3.0",
+    "coreshop/user": "^3.0",
     "coreshop/tracking": "^3.0",
     "pimcore/pimcore": "^10.0.0"
   },

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,9 +24,9 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class CartCollector extends DataCollector
 {
-    private $cartContext;
-    private $localeContext;
-    private $pimcoreContext;
+    private CartContextInterface $cartContext;
+    private LocaleContextInterface $localeContext;
+    private PimcoreContextResolver $pimcoreContext;
 
     public function __construct(
         CartContextInterface $cartContext,
@@ -59,9 +59,6 @@ final class CartCollector extends DataCollector
         return $this->data['admin'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         if ($this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
@@ -78,17 +75,11 @@ final class CartCollector extends DataCollector
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reset(): void
     {
         $this->data = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'coreshop.cart_collector';

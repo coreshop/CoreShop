@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,30 +24,28 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
 class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 {
-    protected $orderItemToInvoiceItemTransformer;
-    protected $numberGenerator;
-    protected $invoiceFolderPath;
-    protected $objectService;
-    protected $orderItemRepository;
-    protected $invoiceItemFactory;
-    protected $invoiceRepository;
-    protected $eventDispatcher;
-    protected $adjustmentFactory;
+    protected OrderDocumentItemTransformerInterface $orderItemToInvoiceItemTransformer;
+    protected NumberGeneratorInterface $numberGenerator;
+    protected FolderCreationServiceInterface $folderCreationService;
+    protected PimcoreRepositoryInterface $orderItemRepository;
+    protected PimcoreFactoryInterface $invoiceItemFactory;
+    protected OrderInvoiceRepositoryInterface $invoiceRepository;
+    protected TransformerEventDispatcherInterface $eventDispatcher;
+    protected AdjustmentFactoryInterface $adjustmentFactory;
 
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
         NumberGeneratorInterface $numberGenerator,
-        $invoiceFolderPath,
-        ObjectServiceInterface $objectService,
+        FolderCreationServiceInterface $folderCreationService,
         PimcoreRepositoryInterface $orderItemRepository,
         PimcoreFactoryInterface $invoiceItemFactory,
         OrderInvoiceRepositoryInterface $invoiceRepository,
@@ -56,8 +54,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     ) {
         $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
         $this->numberGenerator = $numberGenerator;
-        $this->invoiceFolderPath = $invoiceFolderPath;
-        $this->objectService = $objectService;
+        $this->folderCreationService = $folderCreationService;
         $this->orderItemRepository = $orderItemRepository;
         $this->invoiceItemFactory = $invoiceItemFactory;
         $this->invoiceRepository = $invoiceRepository;
@@ -65,10 +62,11 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->adjustmentFactory = $adjustmentFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function transform(OrderInterface $order, OrderDocumentInterface $invoice, $itemsToTransform)
+    public function transform(
+        OrderInterface $order,
+        OrderDocumentInterface $invoice,
+        array $itemsToTransform
+    ): OrderDocumentInterface
     {
         /**
          * @var OrderInterface $order
@@ -78,7 +76,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $this->eventDispatcher->dispatchPreEvent('invoice', $invoice, ['order' => $order, 'items' => $itemsToTransform]);
 
-        $invoiceFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->invoiceFolderPath));
+        $invoiceFolder = $this->folderCreationService->createFolderForResource($invoice, ['prefix' => $order->getFullPath()]);
 
         $invoice->setOrder($order);
 
@@ -134,10 +132,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         return $invoice;
     }
 
-    /**
-     * @param OrderInvoiceInterface $invoice
-     */
-    private function calculateInvoice(OrderInvoiceInterface $invoice)
+    private function calculateInvoice(OrderInvoiceInterface $invoice): void
     {
         $this->calculateSubtotal($invoice, true);
         $this->calculateSubtotal($invoice, false);
@@ -151,11 +146,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         }, false);
     }
 
-    /**
-     * @param OrderInvoiceInterface $invoice
-     * @param bool                  $converted    Calculate Subtotal for Base Values
-     */
-    private function calculateSubtotal(OrderInvoiceInterface $invoice, $converted = true)
+    private function calculateSubtotal(OrderInvoiceInterface $invoice, bool $converted = true): void
     {
         $subtotalWithTax = 0;
         $subtotalWithoutTax = 0;
@@ -182,13 +173,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         }
     }
 
-    /**
-     * Calculate all Adjustments for Invoice.
-     *
-     * @param OrderInvoiceInterface $invoice
-     * @param bool                  $converted
-     */
-    private function calculateAdjustments(OrderInvoiceInterface $invoice, $converted = true)
+    private function calculateAdjustments(OrderInvoiceInterface $invoice, bool $converted = true): void
     {
         $order = $invoice->getOrder();
 
@@ -207,13 +192,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         }
     }
 
-    /**
-     * Calculate Total for invoice.
-     *
-     * @param OrderInvoiceInterface $invoice
-     * @param bool                  $converted    Calculate Totals for Base Values
-     */
-    private function calculateTotal(OrderInvoiceInterface $invoice, $converted = true)
+    private function calculateTotal(OrderInvoiceInterface $invoice, bool $converted = true): void
     {
         if ($converted) {
             $subtotalWithTax = $invoice->getConvertedSubtotal();
@@ -241,15 +220,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param string         $adjustmentIdentifier
-     * @param bool           $withTax
-     * @param bool           $converted
-     *
-     * @return int
-     */
-    private function getProcessedAdjustmentValue(OrderInterface $order, $adjustmentIdentifier, bool $withTax, bool $converted)
+    private function getProcessedAdjustmentValue(OrderInterface $order, string $adjustmentIdentifier, bool $withTax, bool $converted): int
     {
         $invoices = $this->invoiceRepository->getDocumentsNotInState($order, OrderInvoiceStates::STATE_CANCELLED);
         $processedValue = 0;

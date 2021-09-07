@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,44 +25,31 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Webmozart\Assert\Assert;
 
 class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private $formFactory;
-    private $tokenStorage;
-    private $cartManager;
+    private FormFactoryInterface $formFactory;
+    private CartManagerInterface $cartManager;
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        TokenStorageInterface $tokenStorage,
         CartManagerInterface $cartManager
     ) {
         $this->formFactory = $formFactory;
-        $this->tokenStorage = $tokenStorage;
         $this->cartManager = $cartManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier(): string
     {
         return 'address';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function doAutoForward(OrderInterface $cart): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -72,12 +59,14 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
             && $cart->getInvoiceAddress() instanceof AddressInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function commitStep(OrderInterface $cart, Request $request): bool
     {
-        $customer = $this->getCustomer();
+        $customer = $cart->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
+        }
+
         $form = $this->createForm($request, $cart, $customer);
 
         if ($form->isSubmitted()) {
@@ -93,30 +82,20 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareStep(OrderInterface $cart, Request $request): array
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
-        $customer = $this->getCustomer();
-
-        return [
-            'form' => $this->createForm($request, $cart, $customer)->createView(),
-            'hasShippableItems' => $cart->hasShippableItems(),
-        ];
-    }
-
-    private function getCustomer(): CustomerInterface
-    {
-        $customer = $this->tokenStorage->getToken()->getUser();
+        $customer = $cart->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
             throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
         }
 
-        return $customer;
+        return [
+            'form' => $this->createForm($request, $cart, $customer)->createView(),
+            'hasShippableItems' => $cart->hasShippableItems(),
+        ];
     }
 
     private function createForm(Request $request, OrderInterface $cart, CustomerInterface $customer): FormInterface

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,7 +27,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FilterConditionType extends AbstractResourceType
 {
-    private $formTypeRegistry;
+    private FormTypeRegistryInterface $formTypeRegistry;
 
     public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
     {
@@ -35,16 +36,15 @@ class FilterConditionType extends AbstractResourceType
         $this->formTypeRegistry = $formTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
         $builder
+            ->add('id', IntegerType::class, ['mapped' => false])
             ->add('type', FilterConditionChoiceType::class)
             ->add('label', TextType::class)
+            ->add('sort', IntegerType::class)
             ->add('quantityUnit', NumberType::class);
 
         $builder
@@ -83,9 +83,6 @@ class FilterConditionType extends AbstractResourceType
             });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -95,22 +92,12 @@ class FilterConditionType extends AbstractResourceType
             ->setAllowedTypes('configuration_type', ['string', 'null']);
     }
 
-    /**
-     * @param FormInterface $form
-     * @param string        $configurationType
-     */
-    protected function addConfigurationFields(FormInterface $form, $configurationType)
+    protected function addConfigurationFields(FormInterface $form, string $configurationType): void
     {
         $form->add('configuration', $configurationType);
     }
 
-    /**
-     * @param FormInterface $form
-     * @param mixed         $data
-     *
-     * @return string|null
-     */
-    protected function getRegistryIdentifier(FormInterface $form, $data = null)
+    protected function getRegistryIdentifier(FormInterface $form, mixed $data = null): ?string
     {
         if (null !== $data && null !== $data->getType()) {
             return $data->getType();
@@ -119,9 +106,6 @@ class FilterConditionType extends AbstractResourceType
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_filter_condition';

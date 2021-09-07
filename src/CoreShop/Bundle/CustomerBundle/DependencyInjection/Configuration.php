@@ -6,9 +6,9 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 declare(strict_types=1);
 
@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\CustomerBundle\DependencyInjection;
 
 use CoreShop\Bundle\CustomerBundle\Pimcore\Repository\CompanyRepository;
 use CoreShop\Bundle\CustomerBundle\Pimcore\Repository\CustomerRepository;
+use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Customer\Model\CompanyInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
@@ -27,10 +28,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_customer');
         $rootNode = $treeBuilder->getRootNode();
@@ -47,10 +45,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addStack(ArrayNodeDefinition $node)
+    private function addStack(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('stack')
@@ -64,10 +59,7 @@ final class Configuration implements ConfigurationInterface
         ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -108,6 +100,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopCustomer')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(CustomerInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(CustomerRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopCustomerBundle/Resources/install/pimcore/classes/CoreShopCustomer.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
@@ -126,6 +119,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopCustomerGroup')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(CustomerGroupInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopCustomerBundle/Resources/install/pimcore/classes/CoreShopCustomerGroup.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
@@ -138,10 +132,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -163,6 +154,13 @@ final class Configuration implements ConfigurationInterface
                         ->useAttributeAsKey('name')
                         ->prototype('scalar')->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue([
+                            'customer_list',
+                            'customer_group_list'
+                        ])
+                    ->end()
                     ->arrayNode('install')
                         ->addDefaultsIfNotSet()
                         ->children()
@@ -170,6 +168,11 @@ final class Configuration implements ConfigurationInterface
                                 ->treatNullLike([])
                                 ->scalarPrototype()->end()
                                 ->defaultValue(['@CoreShopCustomerBundle/Resources/install/pimcore/admin-translations.yml'])
+                            ->end()
+                            ->arrayNode('grid_config')
+                                ->treatNullLike([])
+                                ->scalarPrototype()->end()
+                                ->defaultValue(['@CoreShopCustomerBundle/Resources/install/pimcore/grid-config.yml'])
                             ->end()
                         ->end()
                     ->end()

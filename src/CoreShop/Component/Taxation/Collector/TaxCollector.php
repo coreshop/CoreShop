@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,20 +22,9 @@ use CoreShop\Component\Taxation\Model\TaxRateInterface;
 
 class TaxCollector implements TaxCollectorInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $taxRateRepository;
+    private RepositoryInterface $taxRateRepository;
+    private FactoryInterface $taxItemFactory;
 
-    /**
-     * @var FactoryInterface
-     */
-    private $taxItemFactory;
-
-    /**
-     * @param RepositoryInterface $taxRateRepository
-     * @param FactoryInterface    $taxItemFactory
-     */
     public function __construct(
         RepositoryInterface $taxRateRepository,
         FactoryInterface $taxItemFactory
@@ -44,9 +33,6 @@ class TaxCollector implements TaxCollectorInterface
         $this->taxItemFactory = $taxItemFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array
     {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
@@ -62,9 +48,6 @@ class TaxCollector implements TaxCollectorInterface
         return $usedTaxes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array
     {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
@@ -80,9 +63,6 @@ class TaxCollector implements TaxCollectorInterface
         return $usedTaxes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mergeTaxes(array $taxes1, array $taxes2): array
     {
         foreach ($taxes1 as $id => $tax) {
@@ -92,12 +72,7 @@ class TaxCollector implements TaxCollectorInterface
         return $taxes2;
     }
 
-    /**
-     * @param int   $taxId
-     * @param int   $amount
-     * @param array $usedTaxes
-     */
-    private function addTaxToArray($taxId, $amount, &$usedTaxes)
+    private function addTaxToArray(int $taxId, int $amount, array &$usedTaxes): void
     {
         /**
          * @var TaxRateInterface $tax

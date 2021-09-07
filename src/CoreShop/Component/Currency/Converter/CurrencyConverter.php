@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,27 +14,15 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Currency\Converter;
 
-use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\ExchangeRateInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Currency\Repository\ExchangeRateRepositoryInterface;
 
 final class CurrencyConverter implements CurrencyConverterInterface
 {
-    /**
-     * @var ExchangeRateRepositoryInterface
-     */
-    private $exchangeRateRepository;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
-    private $currencyRepository;
-
-    /**
-     * @var array
-     */
-    private $cache;
+    private ExchangeRateRepositoryInterface $exchangeRateRepository;
+    private CurrencyRepositoryInterface $currencyRepository;
+    private array $cache = [];
 
     public function __construct(ExchangeRateRepositoryInterface $exchangeRateRepository, CurrencyRepositoryInterface $currencyRepository)
     {
@@ -42,9 +30,6 @@ final class CurrencyConverter implements CurrencyConverterInterface
         $this->currencyRepository = $currencyRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convert(int $amount, string $fromCurrencyCode, string $toCurrencyCode): int
     {
         if ($fromCurrencyCode === $toCurrencyCode) {
@@ -64,13 +49,7 @@ final class CurrencyConverter implements CurrencyConverterInterface
         return (int) round($amount / $exchangeRate->getExchangeRate());
     }
 
-    /**
-     * @param string $fromCode
-     * @param string $toCode
-     *
-     * @return ExchangeRateInterface|null
-     */
-    private function getExchangeRate($fromCode, $toCode): ?ExchangeRateInterface
+    private function getExchangeRate(string $fromCode, string $toCode): ?ExchangeRateInterface
     {
         $fromToIndex = $this->createIndex($fromCode, $toCode);
 
@@ -94,13 +73,7 @@ final class CurrencyConverter implements CurrencyConverterInterface
         return null;
     }
 
-    /**
-     * @param string $prefix
-     * @param string $suffix
-     *
-     * @return string
-     */
-    private function createIndex($prefix, $suffix): string
+    private function createIndex(string $prefix, string $suffix): string
     {
         return sprintf('%s-%s', $prefix, $suffix);
     }

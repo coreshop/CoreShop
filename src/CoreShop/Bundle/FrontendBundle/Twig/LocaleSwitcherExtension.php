@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,20 +23,9 @@ use Twig\TwigFunction;
 
 final class LocaleSwitcherExtension extends AbstractExtension
 {
-    /**
-     * @var Document\Service
-     */
-    private $documentService;
+    private Document\Service $documentService;
+    private ShopperContextInterface $shopperContext;
 
-    /**
-     * @var ShopperContextInterface
-     */
-    private $shopperContext;
-
-    /**
-     * @param Document\Service        $documentService
-     * @param ShopperContextInterface $shopperContext
-     */
     public function __construct(
         Document\Service $documentService,
         ShopperContextInterface $shopperContext
@@ -45,22 +34,14 @@ final class LocaleSwitcherExtension extends AbstractExtension
         $this->shopperContext = $shopperContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('coreshop_locale_switcher', [$this, 'getLocalizedLinks']),
         ];
     }
 
-    /**
-     * @param Document $document
-     *
-     * @return array
-     */
-    public function getLocalizedLinks(Document $document)
+    public function getLocalizedLinks(Document $document): array
     {
         $translations = $this->documentService->getTranslations($document);
         $links = [];

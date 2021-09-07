@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -28,7 +28,7 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
      *
      * @return array
      */
-    public function getOptions($context, $fieldDefinition)
+    public function getOptions($context, $fieldDefinition): array
     {
         if (!isset($context['object'])) {
             return [];
@@ -64,26 +64,13 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
         return $types;
     }
 
-    /**
-     * @param array $context
-     * @param Data  $fieldDefinition
-     *
-     * @return mixed
-     */
-    public function getDefaultValue($context, $fieldDefinition)
+    public function getDefaultValue($context, $fieldDefinition): string
     {
         return CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY;
     }
 
-    /**
-     * @param array $context
-     * @param Data $fieldDefinition
-     *
-     * @return bool
-     */
-    public function hasStaticOptions($context, $fieldDefinition)
+    public function hasStaticOptions($context, $fieldDefinition): bool
     {
         return false;
     }
-
 }

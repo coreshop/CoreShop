@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,22 +25,13 @@ use Symfony\Component\Form\FormEvents;
 
 final class CartCreationCartItemTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $productRepository;
+    private RepositoryInterface $productRepository;
 
-    /**
-     * @param RepositoryInterface $productRepository
-     */
     public function __construct(RepositoryInterface $productRepository)
     {
         $this->productRepository = $productRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
@@ -69,9 +60,6 @@ final class CartCreationCartItemTypeExtension extends AbstractTypeExtension
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [CartCreationCartItemType::class];

@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -55,12 +55,6 @@ coreshop.filter.conditions.nested = Class.create(coreshop.filter.conditions.abst
 
     getData: function () {
         var conditions = this.conditions.getData();
-
-        Ext.Object.each(conditions, function(key, cond) {
-            if (!cond.id) {
-                cond.id = Ext.id(null, 'cs-');
-            }
-        });
 
         return {
             configuration: {

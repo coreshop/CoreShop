@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,9 +22,6 @@ use Pimcore\Model\DataObject\Listing;
 
 class CategoryRepository extends BaseCategoryRepository implements CategoryRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findForStore(StoreInterface $store): array
     {
         $list = $this->getList();
@@ -34,9 +31,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findFirstLevelForStore(StoreInterface $store): array
     {
         $list = $this->getList();
@@ -47,9 +41,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array
     {
         $list = $this->getList();
@@ -60,9 +51,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store): array
     {
         $list = $this->getList();
@@ -80,16 +68,15 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $childIds = [];
 
-        foreach ($qb->execute()->fetchAllAssociative() as $column) {
+        $result = $qb->execute();
+
+        foreach ($result->fetchAll() as $column) {
             $childIds[] = $column['oo_id'];
         }
 
         return $childIds;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array
     {
         $childIds = $this->findRecursiveChildCategoryIdsForStore($category, $store);

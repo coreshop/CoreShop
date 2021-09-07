@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,11 +17,13 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Bundle\FrontendBundle\Form\Type\SearchType;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends FrontendController
 {
-    public function widgetAction(Request $request)
+    public function widgetAction(Request $request): Response
     {
         $form = $this->createSearchForm();
 
@@ -30,7 +32,7 @@ class SearchController extends FrontendController
         ]);
     }
 
-    public function searchAction(Request $request)
+    public function searchAction(Request $request): Response
     {
         $form = $this->createSearchForm();
         $form->handleRequest($request);
@@ -57,7 +59,7 @@ class SearchController extends FrontendController
 
             $list = $this->get('coreshop.repository.product')->getList();
             $list->setCondition('active = 1 AND (' . implode(' OR ', $query) . ') AND stores LIKE ?', $queryParams);
-            
+
             $paginator = $this->getPaginator()->paginate(
                 $list,
                 $page,
@@ -73,7 +75,7 @@ class SearchController extends FrontendController
         return $this->redirectToRoute('coreshop_index');
     }
 
-    protected function createSearchForm()
+    protected function createSearchForm(): FormInterface
     {
         return $this->get('form.factory')->createNamed('coreshop', SearchType::class, null, [
             'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
@@ -81,9 +83,6 @@ class SearchController extends FrontendController
         ]);
     }
 
-    /**
-     * @return PaginatorInterface
-     */
     protected function getPaginator(): PaginatorInterface
     {
         return $this->get(PaginatorInterface::class);

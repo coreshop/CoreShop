@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,16 +22,13 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    private $adjustmentFactory;
+    private AdjustmentFactoryInterface $adjustmentFactory;
 
     public function __construct(AdjustmentFactoryInterface $adjustmentFactory)
     {
         $this->adjustmentFactory = $adjustmentFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $shippingAdjustments = $cart->getAdjustments(AdjustmentInterface::SHIPPING);
@@ -51,9 +48,6 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         return true;

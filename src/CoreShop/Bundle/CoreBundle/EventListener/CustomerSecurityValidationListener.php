@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Kamil Wręczycki
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,29 +23,21 @@ use Pimcore\Model\Element\ValidationException;
 
 final class CustomerSecurityValidationListener
 {
-    protected $requestHelper;
-    protected $customerRepository;
-    protected $className;
-    protected $loginIdentifier;
+    protected RequestHelper $requestHelper;
+    protected CustomerRepositoryInterface $customerRepository;
+    protected string $className;
 
     public function __construct(
         RequestHelper $requestHelper,
         CustomerRepositoryInterface $customerRepository,
-        $className,
-        $loginIdentifier
+        string $className
     ) {
         $this->requestHelper = $requestHelper;
         $this->customerRepository = $customerRepository;
         $this->className = $className;
-        $this->loginIdentifier = $loginIdentifier;
     }
 
-    /**
-     * @param DataObjectEvent $event
-     *
-     * @throws ValidationException
-     */
-    public function checkCustomerSecurityDataBeforeUpdate(DataObjectEvent $event)
+    public function checkCustomerSecurityDataBeforeUpdate(DataObjectEvent $event): void
     {
         if ($this->requestHelper->hasCurrentRequest() && !$this->requestHelper->isFrontendRequestByAdmin()) {
             return;
@@ -57,19 +49,20 @@ final class CustomerSecurityValidationListener
             return;
         }
 
-        if ($object->getIsGuest() === true) {
+        if ($object->getUser() === null) {
             return;
         }
 
-        $identifierValue = $this->loginIdentifier === 'email' ? $object->getEmail() : $object->getUsername();
+        $identifierValue = $object->getEmail();
 
         /**
          * @var Listing $listing
          */
         $listing = $this->customerRepository->getList();
         $listing->setUnpublished(true);
-        $listing->addConditionParam(sprintf('%s = ?', $this->loginIdentifier), $identifierValue);
+        $listing->addConditionParam('email', $identifierValue);
         $listing->addConditionParam('o_id != ?', $object->getId());
+        $listing->addConditionParam('user__id IS NOT NULL');
 
         $objects = $listing->getObjects();
 
@@ -77,12 +70,6 @@ final class CustomerSecurityValidationListener
             return;
         }
 
-        throw new ValidationException(
-            sprintf(
-                '%s "%s" is already used. Please use another one.',
-                ucfirst($this->loginIdentifier),
-                $identifierValue
-            )
-        );
+        throw new ValidationException(sprintf('Email "%s" is already used. Please use another one.', $identifierValue));
     }
 }

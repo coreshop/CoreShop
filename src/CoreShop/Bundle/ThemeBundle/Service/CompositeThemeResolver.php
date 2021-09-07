@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,25 +18,18 @@ use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeThemeResolver implements ThemeResolverInterface
 {
-    private $themeResolvers;
+    private PriorityQueue $themeResolvers;
 
     public function __construct()
     {
         $this->themeResolvers = new PriorityQueue();
     }
 
-    /**
-     * @param ThemeResolverInterface $themeResolver
-     * @param int                    $priority
-     */
-    public function register(ThemeResolverInterface $themeResolver, $priority = 0)
+    public function register(ThemeResolverInterface $themeResolver, int $priority = 0): void
     {
         $this->themeResolvers->insert($themeResolver, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolveTheme(): string
     {
         foreach ($this->themeResolvers as $themeResolver) {

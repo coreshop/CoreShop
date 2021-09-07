@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,20 +19,16 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 
 class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterface
 {
-    private $taxCalculatorFactory;
+    private TaxCalculatorFactoryInterface $taxCalculatorFactory;
 
     public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory)
     {
         $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address): ?TaxCalculatorInterface
     {
         $taxRuleGroup = $product->getTaxRule();

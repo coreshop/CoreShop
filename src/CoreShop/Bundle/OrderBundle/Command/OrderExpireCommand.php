@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Command;
 
-use CoreShop\Bundle\OrderBundle\Expiration\ProposalExpirationInterface;
+use CoreShop\Bundle\OrderBundle\Expiration\OrderExpirationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,10 +22,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class OrderExpireCommand extends Command
 {
-    protected $orderExpiration;
-    protected $days;
+    protected OrderExpirationInterface $orderExpiration;
+    protected int $days;
 
-    public function __construct(ProposalExpirationInterface $orderExpiration, int $days = 0)
+    public function __construct(OrderExpirationInterface $orderExpiration, int $days = 0)
     {
         parent::__construct();
 

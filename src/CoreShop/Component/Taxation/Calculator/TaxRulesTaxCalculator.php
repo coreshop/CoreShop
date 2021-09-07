@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,12 +21,8 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
     /**
      * @var TaxRateInterface[]
      */
-    public $taxRates;
-
-    /**
-     * @var int
-     */
-    public $computationMethod;
+    public array $taxRates;
+    public int $computationMethod;
 
     public function __construct(array $taxRates = [], $computationMethod = self::COMBINE_METHOD)
     {
@@ -34,25 +30,16 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
         $this->computationMethod = (int) $computationMethod;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyTaxes(int $price): int
     {
         return (int) round($price * (1 + ($this->getTotalRate() / 100)));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeTaxes(int $price): int
     {
         return (int) round($price / (1 + $this->getTotalRate() / 100));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotalRate(): float
     {
         $taxes = 0;
@@ -73,17 +60,11 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
         return (float) $taxes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxesAmountFromGross(int $price): int
     {
         return array_sum($this->getTaxesAmountFromGrossAsArray($price));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxesAmountFromGrossAsArray(int $price): array
     {
         $taxesAmounts = [];
@@ -100,17 +81,11 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
         return $taxesAmounts;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxesAmount(int $price): int
     {
         return array_sum($this->getTaxesAmountAsArray($price));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxesAmountAsArray(int $price): array
     {
         $taxesAmounts = [];
@@ -128,9 +103,6 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxRates(): array
     {
         return $this->taxRates;

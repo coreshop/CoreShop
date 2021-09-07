@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,16 +22,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CartPriceRuleChoiceType extends AbstractType
 {
-    private $cartPriceRuleRepository;
+    private RepositoryInterface $cartPriceRuleRepository;
 
     public function __construct(RepositoryInterface $cartPriceRuleRepository)
     {
         $this->cartPriceRuleRepository = $cartPriceRuleRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -46,17 +43,11 @@ final class CartPriceRuleChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule_choice';

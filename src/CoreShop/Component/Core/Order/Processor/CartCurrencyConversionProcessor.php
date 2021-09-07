@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,16 +23,13 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartCurrencyConversionProcessor implements CartProcessorInterface
 {
-    protected $currencyConverter;
+    protected CurrencyConverterInterface $currencyConverter;
 
     public function __construct(CurrencyConverterInterface $currencyConverter)
     {
         $this->currencyConverter = $currencyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         $cart->removeConvertedAdjustmentsRecursively();
@@ -93,6 +90,39 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
             }
 
             $item->setConvertedTaxes($convertedItemTaxesFieldCollection);
+
+            foreach ($item->getUnits() as $unit) {
+                foreach ([true, false] as $withTax) {
+                    $unit->setConvertedTotal($this->convert($unit->getTotal($withTax), $cart), $withTax);
+                    $unit->setConvertedSubtotal($this->convert($unit->getSubtotal($withTax), $cart), $withTax);
+                }
+
+                foreach ($unit->getAdjustments() as $adjustment) {
+                    $convertedAdjustment = clone $adjustment;
+
+                    $convertedAdjustment->setAmount(
+                        $this->convert($convertedAdjustment->getAmount(true), $cart),
+                        $this->convert($convertedAdjustment->getAmount(false), $cart)
+                    );
+
+                    $unit->addConvertedAdjustment($convertedAdjustment);
+                }
+
+                $convertedItemTaxesFieldCollection = new Fieldcollection();
+
+                if ($unit->getTaxes() instanceof Fieldcollection) {
+                    foreach ($unit->getTaxes()->getItems() as $taxItem) {
+                        if ($taxItem instanceof TaxItemInterface) {
+                            $convertedItem = clone $taxItem;
+                            $convertedItem->setAmount($this->convert($taxItem->getAmount(), $cart));
+
+                            $convertedItemTaxesFieldCollection->add($convertedItem);
+                        }
+                    }
+                }
+
+                $unit->setConvertedTaxes($convertedItemTaxesFieldCollection);
+            }
         }
 
         foreach ($cart->getAdjustments() as $adjustment) {
@@ -121,7 +151,7 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
         $cart->setConvertedTaxes($convertedTaxesFieldCollection);
     }
 
-    protected function convert(?int $value, OrderInterface $cart)
+    protected function convert(?int $value, OrderInterface $cart): int
     {
         if (null === $value) {
             return 0;

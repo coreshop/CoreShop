@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,25 +23,14 @@ use Payum\Core\Action\ActionInterface;
 
 final class ConfirmOrderAction implements ActionInterface
 {
-    /**
-     * @var StateMachineApplier
-     */
-    private $stateMachineApplier;
+    private StateMachineApplier $stateMachineApplier;
 
-    /**
-     * @param StateMachineApplier $stateMachineApplier
-     */
     public function __construct(StateMachineApplier $stateMachineApplier)
     {
         $this->stateMachineApplier = $stateMachineApplier;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param ConfirmOrder $request
-     */
-    public function execute($request)
+    public function execute($request): void
     {
         $payment = $request->getFirstModel();
         $order = $payment->getOrder();
@@ -56,10 +45,7 @@ final class ConfirmOrderAction implements ActionInterface
         //Shouldn't actually happen -> maybe cancel?
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($request)
+    public function supports($request): bool
     {
         return
             $request instanceof ConfirmOrder &&

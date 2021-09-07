@@ -26,9 +26,8 @@ services:
     CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver:
         public: false
 
-    CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver:
-        public: false
+    CoreShop\Component\Core\Context\TokenBasedCustomerContext:
         arguments:
-            - '@security.token_storage'
+            - '@Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
         tags:
-            - { name: coreshop.context.customer.request_based.resolver }
+            - { name: coreshop.context.customer }

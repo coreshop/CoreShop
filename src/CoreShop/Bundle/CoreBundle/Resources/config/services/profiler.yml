@@ -7,6 +7,7 @@ services:
             - '@coreshop.repository.currency'
             - '@CoreShop\Component\Currency\Context\CurrencyContextInterface'
             - '@CoreShop\Component\Store\Context\StoreContextInterface'
+            - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
             - false
         tags:
             - { name: data_collector, template: '@CoreShopCore/Collector/currency.html.twig', id: coreshop.currency_collector}

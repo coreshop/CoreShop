@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -67,6 +67,22 @@ pimcore.object.classes.data.coreShopRelations = Class.create(coreshop.object.cla
                         value: this.datax.width
                     },
                     {
+                        xtype: "displayfield",
+                        hideLabel: true,
+                        value: t('width_explanation')
+                    },
+                    {
+                        xtype: "textfield",
+                        fieldLabel: t("height"),
+                        name: "height",
+                        value: this.datax.height
+                    },
+                    {
+                        xtype: "displayfield",
+                        hideLabel: true,
+                        value: t('height_explanation')
+                    },
+                    {
                         xtype: 'textfield',
                         width: 600,
                         fieldLabel: t("path_formatter_service"),
@@ -86,7 +102,7 @@ pimcore.object.classes.data.coreShopRelations = Class.create(coreshop.object.cla
                     {
                         xtype: 'combo',
                         fieldLabel: t("coreshop_allowed_stack"),
-                        name: "classes",
+                        name: "stack",
                         id: 'coreshop_relation_stack_' + this.uniqeFieldId,
                         value: this.datax.stack,
                         store: stacks,

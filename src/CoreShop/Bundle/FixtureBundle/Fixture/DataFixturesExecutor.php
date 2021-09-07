@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,28 +22,18 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class DataFixturesExecutor implements DataFixturesExecutorInterface
 {
-    /** @var EntityManager */
-    private $em;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private EntityManager $em;
+    private EventDispatcherInterface $eventDispatcher;
 
     /** @var callable|null */
     private $logger;
 
-    /**
-     * @param EntityManager            $em
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EntityManager $em, EventDispatcherInterface $eventDispatcher)
     {
         $this->em = $em;
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(array $fixtures, $fixturesType)
     {
         $event = new DataFixturesEvent($this->em, $fixturesType, $this->logger);
@@ -58,9 +48,6 @@ final class DataFixturesExecutor implements DataFixturesExecutorInterface
         $this->eventDispatcher->dispatch($event, FixturesEvents::DATA_FIXTURES_POST_LOAD);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLogger($logger)
     {
         $this->logger = $logger;

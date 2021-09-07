@@ -32,11 +32,6 @@ CoreShop\Component\Customer\Model\Customer:
             exp: object.getLocaleCode()
             type: string
             groups: [Detailed]
-        isGuest:
-            serialized_name: isGuest
-            exp: object.getIsGuest()
-            type: boolean
-            groups: [Detailed]
         customerGroups:
             serialized_name: customerGroups
             exp: object.getCustomerGroups()

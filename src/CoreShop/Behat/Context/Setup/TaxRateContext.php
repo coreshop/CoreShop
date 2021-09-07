@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,15 +17,14 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Doctrine\Persistence\ObjectManager;
 
 final class TaxRateContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $taxRateFactory;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $taxRateFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -40,7 +39,7 @@ final class TaxRateContext implements Context
     /**
      * @Given /^the site has a tax rate "([^"]+)" with "([^"]+)%" rate$/
      */
-    public function theSiteHasATaxRate($name, float $rate)
+    public function theSiteHasATaxRate($name, float $rate): void
     {
         $this->createTaxRate($name, $rate);
     }
@@ -48,7 +47,7 @@ final class TaxRateContext implements Context
     /**
      * @Given /^the (tax rate "[^"]+") is active$/
      */
-    public function theTaxRateIsActive(TaxRateInterface $taxRate)
+    public function theTaxRateIsActive(TaxRateInterface $taxRate): void
     {
         $taxRate->setActive(true);
 
@@ -59,7 +58,7 @@ final class TaxRateContext implements Context
      * @param string $name
      * @param float  $rate
      */
-    private function createTaxRate(string $name, float $rate)
+    private function createTaxRate(string $name, float $rate): void
     {
         /**
          * @var TaxRateInterface $taxRate
@@ -74,7 +73,7 @@ final class TaxRateContext implements Context
     /**
      * @param TaxRateInterface $taxRate
      */
-    private function saveTaxRate(TaxRateInterface $taxRate)
+    private function saveTaxRate(TaxRateInterface $taxRate): void
     {
         $this->objectManager->persist($taxRate);
         $this->objectManager->flush();

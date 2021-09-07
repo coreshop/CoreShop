@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -29,31 +29,19 @@ use Symfony\Component\Intl\Languages;
 
 class CountryFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return '2.0';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             ZoneFixture::class,
@@ -62,10 +50,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $countries = CountryLoader::countries(true, true);
         /**
@@ -75,7 +60,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
         $addressFormatReplaces = [
             'recipient' => [
-                '{{ company }};',
+                '{{ company }}',
                 PHP_EOL,
                 '{{ salutation }}',
                 '{{ firstname }}',
@@ -92,6 +77,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 '{{ phoneNumber }}',
             ],
             'region' => '',
+            'region_short' => ''
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
         $defaultSalutations = ['mrs', 'mr'];

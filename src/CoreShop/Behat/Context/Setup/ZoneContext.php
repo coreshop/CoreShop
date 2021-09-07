@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,10 +23,10 @@ use Doctrine\Persistence\ObjectManager;
 
 final class ZoneContext implements Context
 {
-    private $sharedStorage;
-    private $objectManager;
-    private $zoneFactory;
-    private $zoneRepository;
+    private SharedStorageInterface $sharedStorage;
+    private ObjectManager $objectManager;
+    private FactoryInterface $zoneFactory;
+    private RepositoryInterface $zoneRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -43,7 +43,7 @@ final class ZoneContext implements Context
     /**
      * @Given /^the site has a zone "([^"]+)"$/
      */
-    public function theSiteHasAZone($name)
+    public function theSiteHasAZone($name): void
     {
         $this->createZone($name);
     }
@@ -51,7 +51,7 @@ final class ZoneContext implements Context
     /**
      * @param string $name
      */
-    private function createZone($name)
+    private function createZone($name): void
     {
         $zone = $this->zoneRepository->findBy(['name' => $name]);
 
@@ -69,7 +69,7 @@ final class ZoneContext implements Context
     /**
      * @param ZoneInterface $zone
      */
-    private function saveZone(ZoneInterface $zone)
+    private function saveZone(ZoneInterface $zone): void
     {
         $this->objectManager->persist($zone);
         $this->objectManager->flush();

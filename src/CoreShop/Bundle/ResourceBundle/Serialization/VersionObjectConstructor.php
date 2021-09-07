@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
@@ -24,10 +26,10 @@ use JMS\Serializer\Visitor\DeserializationVisitorInterface;
 
 class VersionObjectConstructor implements ObjectConstructorInterface
 {
-    private $fallbackConstructor;
-    private $fallbacksFallbackConstructor;
-    private $fallbackStrategy;
-    private $expressionLanguageExclusionStrategy;
+    private ObjectConstructorInterface $fallbackConstructor;
+    private ObjectConstructorInterface $fallbacksFallbackConstructor;
+    private string $fallbackStrategy;
+    private ?ExpressionLanguageExclusionStrategy $expressionLanguageExclusionStrategy;
 
     public function __construct(
         ObjectConstructorInterface $fallbackConstructor,
@@ -42,9 +44,6 @@ class VersionObjectConstructor implements ObjectConstructorInterface
         $this->expressionLanguageExclusionStrategy = $expressionLanguageExclusionStrategy;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function construct(DeserializationVisitorInterface $visitor, ClassMetadata $metadata, $data, array $type, DeserializationContext $context): ?object
     {
         if (!$context->hasAttribute('em')) {
@@ -103,6 +102,10 @@ class VersionObjectConstructor implements ObjectConstructorInterface
             // $classMetadataFactory->isTransient() fails on embeddable class with file metadata driver
             // https://github.com/doctrine/persistence/issues/37
             return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+        }
+
+        if (array_key_exists('id', $identifierList) && !$identifierList['id']) {
+            return $this->fallbacksFallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
         }
 
         // Entity update, load it from database

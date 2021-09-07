@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,24 +19,12 @@ use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Webmozart\Assert\Assert;
 
 class FilterProcessor implements FilterProcessorInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $preConditionProcessors;
+    private ServiceRegistryInterface $preConditionProcessors;
+    private ServiceRegistryInterface $userConditionProcessors;
 
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $userConditionProcessors;
-
-    /**
-     * @param ServiceRegistryInterface $preConditionProcessors
-     * @param ServiceRegistryInterface $userConditionProcessors
-     */
     public function __construct(
         ServiceRegistryInterface $preConditionProcessors,
         ServiceRegistryInterface $userConditionProcessors
@@ -45,9 +33,6 @@ class FilterProcessor implements FilterProcessorInterface
         $this->userConditionProcessors = $userConditionProcessors;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag): array
     {
         $currentFilter = [];
@@ -69,9 +54,6 @@ class FilterProcessor implements FilterProcessorInterface
         return $currentFilter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, $currentFilter): array
     {
         $conditions = $filter->getConditions();

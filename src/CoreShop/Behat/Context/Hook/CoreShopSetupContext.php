@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,8 +21,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class CoreShopSetupContext implements Context
 {
-    private $entityManager;
-    private $notificationRuleListener;
+    private EntityManagerInterface $entityManager;
+    private NotificationRuleListenerInterface $notificationRuleListener;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -35,7 +35,7 @@ final class CoreShopSetupContext implements Context
     /**
      * @BeforeSuite
      */
-    public static function setupPimcore()
+    public static function setupPimcore(): void
     {
         if (getenv('CORESHOP_SKIP_DB_SETUP')) {
             return;
@@ -47,7 +47,7 @@ final class CoreShopSetupContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeIndexTables()
+    public function purgeIndexTables(): void
     {
         $connection = $this->entityManager->getConnection();
         $schemaManager = $connection->getSchemaManager();
@@ -71,7 +71,7 @@ final class CoreShopSetupContext implements Context
     /**
      * @BeforeScenario
      */
-    public function clearNotificationRuleListener()
+    public function clearNotificationRuleListener(): void
     {
         $this->notificationRuleListener->clear();
     }

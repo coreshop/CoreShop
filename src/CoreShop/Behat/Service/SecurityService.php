@@ -6,15 +6,15 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 declare(strict_types=1);
 
 namespace CoreShop\Behat\Service;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -22,10 +22,10 @@ use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
 
 final class SecurityService implements SecurityServiceInterface
 {
-    private $session;
-    private $cookieSetter;
-    private $sessionTokenVariable;
-    private $firewallContextName;
+    private SessionInterface $session;
+    private CookieSetterInterface $cookieSetter;
+    private string $firewallContextName;
+    private string $sessionTokenVariable;
 
     public function __construct(
         SessionInterface $session,
@@ -35,11 +35,11 @@ final class SecurityService implements SecurityServiceInterface
     {
         $this->session = $session;
         $this->cookieSetter = $cookieSetter;
-        $this->sessionTokenVariable = sprintf('_security_%s', $firewallContextName);
         $this->firewallContextName = $firewallContextName;
+        $this->sessionTokenVariable = sprintf('_security_%s', $firewallContextName);
     }
 
-    public function logIn(CustomerInterface $user): void
+    public function logIn(UserInterface $user): void
     {
         $token = new UsernamePasswordToken($user, $user->getPassword(), $this->firewallContextName, $user->getRoles());
         $this->setToken($token);
@@ -69,7 +69,7 @@ final class SecurityService implements SecurityServiceInterface
         $this->setToken($token);
     }
 
-    private function setToken(TokenInterface $token)
+    private function setToken(TokenInterface $token): void
     {
         $serializedToken = serialize($token);
         $this->session->set($this->sessionTokenVariable, $serializedToken);

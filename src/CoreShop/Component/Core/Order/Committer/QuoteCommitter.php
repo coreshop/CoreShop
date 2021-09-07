@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,51 +23,29 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
 class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
 {
-    /**
-     * @var CartManagerInterface
-     */
-    protected $cartManager;
-
-    /**
-     * @var ObjectServiceInterface
-     */
-    protected $objectService;
-
-    /**
-     * @var NumberGeneratorInterface
-     */
-    protected $numberGenerator;
-
-    /**
-     * @var ObjectClonerInterface
-     */
-    protected $objectCloner;
-
-
-    /**
-     * @var string
-     */
-    protected $orderFolderPath;
+    protected CartManagerInterface $cartManager;
+    protected FolderCreationServiceInterface $folderCreationService;
+    protected NumberGeneratorInterface $numberGenerator;
+    protected ObjectClonerInterface $objectCloner;
+    protected string $orderFolderPath;
 
     public function __construct(
         CartManagerInterface $cartManager,
-        ObjectServiceInterface $objectService,
+        FolderCreationServiceInterface $folderCreationService,
         NumberGeneratorInterface $numberGenerator,
         ObjectClonerInterface $objectCloner,
-        string $orderFolderPath
     ) {
         $this->cartManager = $cartManager;
-        $this->objectService = $objectService;
+        $this->folderCreationService = $folderCreationService;
         $this->numberGenerator = $numberGenerator;
         $this->objectCloner = $objectCloner;
-        $this->orderFolderPath = $orderFolderPath;
     }
 
     public function commitOrder(OrderInterface $order): void
@@ -77,13 +55,10 @@ class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
          */
         Assert::isInstanceOf($order, \CoreShop\Component\Core\Model\OrderInterface::class);
 
-        $orderFolder = $this->objectService->createFolderByPath(
-            sprintf(
-                '%s/%s',
-                $this->orderFolderPath,
-                date('Y/m/d')
-            )
-        );
+        $orderFolder = $this->folderCreationService->createFolderForResource($order, [
+            'suffix' => date('Y/m/d'),
+            'path' => 'quote'
+        ]);
         $orderNumber = $this->numberGenerator->generate($order);
 
         $order->setParent($orderFolder);
@@ -101,7 +76,7 @@ class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
          */
         $shippingAddress = $this->objectCloner->cloneObject(
             $originalShippingAddress,
-            $this->objectService->createFolderByPath(sprintf('%s/addresses', $order->getFullPath())),
+            $this->folderCreationService->createFolderForResource($originalShippingAddress, ['prefix' => $order->getFullPath()]),
             'shipping',
             false
         );
@@ -110,7 +85,7 @@ class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
          */
         $invoiceAddress = $this->objectCloner->cloneObject(
             $order->getInvoiceAddress(),
-            $this->objectService->createFolderByPath(sprintf('%s/addresses', $order->getFullPath())),
+            $this->folderCreationService->createFolderForResource($order->getInvoiceAddress(), ['prefix' => $order->getFullPath()]),
             'invoice',
             false
         );

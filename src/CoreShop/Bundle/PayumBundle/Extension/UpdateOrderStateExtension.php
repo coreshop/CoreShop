@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,37 +26,22 @@ use Payum\Core\Request\Notify;
 
 final class UpdateOrderStateExtension implements ExtensionInterface
 {
-    /**
-     * @var StateMachineManager
-     */
-    private $stateMachineManager;
+    private StateMachineManager $stateMachineManager;
 
-    /**
-     * @param StateMachineManager $stateMachineManager
-     */
     public function __construct(StateMachineManager $stateMachineManager)
     {
         $this->stateMachineManager = $stateMachineManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onPreExecute(Context $context)
+    public function onPreExecute(Context $context): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onExecute(Context $context)
+    public function onExecute(Context $context): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onPostExecute(Context $context)
+    public function onPostExecute(Context $context): void
     {
         if ($context->getException()) {
             return;
@@ -109,10 +94,7 @@ final class UpdateOrderStateExtension implements ExtensionInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     */
-    private function confirmOrderState(OrderInterface $order)
+    private function confirmOrderState(OrderInterface $order): void
     {
         $stateMachine = $this->stateMachineManager->get($order, 'coreshop_order');
         if ($stateMachine->can($order, OrderTransitions::TRANSITION_CONFIRM)) {

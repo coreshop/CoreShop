@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,9 +20,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
 {
-    private $validRuleFetcher;
-    private $requestStack;
-    private $checkedProducts = [];
+    private ValidRulesFetcherInterface $validRuleFetcher;
+    private RequestStack $requestStack;
+    private array $checkedProducts = [];
 
     public function __construct(ValidRulesFetcherInterface $validRuleFetcher, RequestStack $requestStack)
     {
@@ -30,9 +30,6 @@ final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getValidRules(QuantityRangePriceAwareInterface $product, array $context): array
     {
         if ($this->requestStack->getMasterRequest() instanceof Request) {

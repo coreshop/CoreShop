@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Rule\Action;
 
@@ -19,29 +21,15 @@ use Webmozart\Assert\Assert;
 
 class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcessorInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
-    protected $moneyConverter;
+    protected CurrencyConverterInterface $moneyConverter;
+    protected CurrencyRepositoryInterface $currencyRepository;
 
-    /**
-     * @var CurrencyRepositoryInterface
-     */
-    protected $currencyRepository;
-
-    /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyConverterInterface  $moneyConverter
-     */
     public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {
         $this->currencyRepository = $currencyRepository;
         $this->moneyConverter = $moneyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscountPrice($subject, array $context, array $configuration): int
     {
         Assert::keyExists($context, 'currency');

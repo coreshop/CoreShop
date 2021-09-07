@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,9 +22,6 @@ use Doctrine\Common\Collections\Collection;
 
 class ProductQuantityPriceRulesCloner implements ProductClonerInterface
 {
-    /**
-     * {@inheritDoc}
-     */
     public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void
     {
         if ($product->getId() === null) {
@@ -58,6 +55,21 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
     protected function cloneAndReallocateRangeQuantityUnit(ProductInterface $product, ProductQuantityPriceRuleInterface $quantityPriceRule): ProductQuantityPriceRuleInterface
     {
         $newQuantityPriceRule = clone $quantityPriceRule;
+
+         //Hack to get rid of the ID
+        $reflectionClass = new \ReflectionClass($newQuantityPriceRule);
+        $property = $reflectionClass->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($newQuantityPriceRule, null);
+
+        foreach ([$newQuantityPriceRule->getConditions(), $newQuantityPriceRule->getActive()] as $batch) {
+            foreach ($batch as $entry) {
+                $reflectionClass = new \ReflectionClass($entry);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($entry, null);
+            }
+        }
 
         $newQuantityPriceRule->setProduct($product->getId());
 

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,12 +21,11 @@ use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
-use Webmozart\Assert\Assert;
 
 final class OrderStateResolver implements StateResolverInterface
 {
-    private $stateMachineManager;
-    private $includeInvoiceStateToComplete;
+    private StateMachineManager $stateMachineManager;
+    private bool $includeInvoiceStateToComplete;
 
     public function __construct(StateMachineManager $stateMachineManager, bool $includeInvoiceStateToComplete)
     {
@@ -34,9 +33,6 @@ final class OrderStateResolver implements StateResolverInterface
         $this->includeInvoiceStateToComplete = $includeInvoiceStateToComplete;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolve(OrderInterface $order): void
     {
         $stateMachine = $this->stateMachineManager->get($order, 'coreshop_order');
@@ -45,11 +41,6 @@ final class OrderStateResolver implements StateResolverInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return bool
-     */
     private function canOrderBeComplete(OrderInterface $order): bool
     {
         $coreStates = OrderPaymentStates::STATE_PAID === $order->getPaymentState() &&

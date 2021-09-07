@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,15 +16,12 @@ namespace CoreShop\Component\Resource\TokenGenerator;
 
 final class UniqueTokenGenerator
 {
-    private $alphabet;
-    private $numbers;
-    private $keys;
-    private $keyLength;
+    private string $alphabet;
+    private string $numbers;
+    private string $keys;
+    private int $keyLength;
 
-    /**
-     * @param bool $onlyNumbers
-     */
-    public function __construct($onlyNumbers = false)
+    public function __construct(bool $onlyNumbers = false)
     {
         $this->alphabet =
             implode(range('a', 'z'))
@@ -41,35 +38,24 @@ final class UniqueTokenGenerator
         $this->keyLength = strlen($this->keys);
     }
 
-    /**
-     * @param int $length
-     *
-     * @return string
-     */
-    public function generate($length)
+    public function generate(int $length): string
     {
         $token = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $randomKey = $this->getRandomInteger(0, $this->keyLength);
+            $randomKey = $this->getRandomInteger($this->keyLength);
             $token .= $this->keys[$randomKey];
         }
 
         return $token;
     }
 
-    /**
-     * @param int $min
-     * @param int $max
-     *
-     * @return int
-     */
-    private function getRandomInteger($min, $max)
+    private function getRandomInteger(int $max): int
     {
-        $range = ($max - $min);
+        $range = ($max - 0);
 
         if ($range < 0) {
-            return $min;
+            return 0;
         }
 
         $log = log($range, 2);
@@ -82,6 +68,6 @@ final class UniqueTokenGenerator
             $rnd = $rnd & $filter;
         } while ($rnd >= $range);
 
-        return $min + $rnd;
+        return 0 + $rnd;
     }
 }

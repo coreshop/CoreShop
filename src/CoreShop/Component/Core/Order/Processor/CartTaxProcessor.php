@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,9 +27,9 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartTaxProcessor implements CartProcessorInterface
 {
-    private $taxCollector;
-    private $defaultAddressProvider;
-    private $registry;
+    private TaxCollectorInterface $taxCollector;
+    private AddressProviderInterface $defaultAddressProvider;
+    private ServiceRegistry $registry;
 
     public function __construct(
         TaxCollectorInterface $taxCollector,
@@ -41,9 +41,6 @@ final class CartTaxProcessor implements CartProcessorInterface
         $this->registry = $shippingTaxCalculationServices;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         $cart->setTaxes(null);
@@ -104,7 +101,7 @@ final class CartTaxProcessor implements CartProcessorInterface
              */
             $taxCalculationService = $this->registry->get($shippingTaxCalculationStrategy);
             $cartTax = $taxCalculationService->calculateShippingTax($cart, $carrier, $address, $cart->getShipping($store->getUseGrossPrice()));
-            
+
             if (1 === count($cartTax)) {
                 $cart->setShippingTaxRate(reset($cartTax)->getRate());
             } elseif (0 === $cart->getShipping(false)) {

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,11 +25,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CarriersReport implements ReportInterface
 {
-    private $totalRecords = 0;
-    private $storeRepository;
-    private $db;
-    private $carrierRepository;
-    private $orderRepository;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private RepositoryInterface$carrierRepository;
+    private PimcoreRepositoryInterface $orderRepository;
 
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -43,9 +43,6 @@ class CarriersReport implements ReportInterface
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
@@ -103,9 +100,6 @@ class CarriersReport implements ReportInterface
         return array_values($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotal(): int
     {
         return $this->totalRecords;

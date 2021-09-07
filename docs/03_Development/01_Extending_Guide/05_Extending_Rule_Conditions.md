@@ -23,9 +23,13 @@ To do so, we first need to create a new class and implement the interface listed
 //AppBundle/CoreShop/CustomCondition.php
 namespace AppBundle\CoreShop;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
+
 final class CustomCondition implements \CoreShop\Component\Rule\Condition\ConditionCheckerInterface
 {
-    public function isValid($subject, array $configuration);
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
+    {
         //return true if valid, false if not
         return true;
     }
@@ -43,7 +47,7 @@ final class CustomConditionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('some_value', TextType::class)

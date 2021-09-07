@@ -39,6 +39,7 @@ default:
                 - coreshop.behat.context.setup.cart_price_rule
                 - coreshop.behat.context.setup.shipping
                 - coreshop.behat.context.setup.payment
+                - coreshop.behat.context.setup.configuration
 
                 - coreshop.behat.context.ui.checkout
                 - coreshop.behat.context.ui.cart

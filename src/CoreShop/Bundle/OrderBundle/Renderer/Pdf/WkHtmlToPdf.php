@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,22 +19,15 @@ use Symfony\Component\Process\Process;
 
 final class WkHtmlToPdf implements PdfRendererInterface
 {
-    private $kernelCacheDir;
-    private $kernelRootDir;
+    private string $kernelCacheDir;
+    private string $kernelRootDir;
 
-    /**
-     * @param string $kernelCacheDir
-     * @param string $kernelRootDir
-     */
     public function __construct(string $kernelCacheDir, string $kernelRootDir)
     {
         $this->kernelCacheDir = $kernelCacheDir;
         $this->kernelRootDir = $kernelRootDir;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function fromString(string $string, string $header = '', string $footer = '', array $config = []): string
     {
         $bodyHtml = $this->createHtmlFile($string);

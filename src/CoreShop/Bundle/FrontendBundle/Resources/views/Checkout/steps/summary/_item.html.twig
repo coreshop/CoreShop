@@ -6,7 +6,7 @@
     <td class="text-center">
         {% if item.product and item.product.image is pimcore_asset_image %}
             <a href="{{ productUrl }}">
-                {{ item.product.image|pimcore_image_thumbnail_html('coreshop_productCart', {'class': 'img-fluid', 'alt': item.product.name, 'title': item.product.name}) }}
+                {{ item.product.image|pimcore_image_thumbnail_html('coreshop_productCart', {'imgAttributes': {'class': 'img-fluid'}, 'alt': item.product.name, 'title': item.product.name}) }}
             </a>
         {% endif %}
     </td>

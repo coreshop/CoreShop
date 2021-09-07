@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,32 +26,23 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStepInterface
 {
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier(): string
     {
         return 'summary';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function doAutoForward(OrderInterface $cart): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(OrderInterface $cart, Request $request): RedirectResponse
     {
         $checkoutFinisherUrl = $request->get('checkout_finisher');
@@ -59,17 +50,11 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
         return new RedirectResponse($checkoutFinisherUrl);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate(OrderInterface $cart): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $cart);
@@ -85,9 +70,6 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return ['form' => $this->createForm($request, $cart)->createView()];

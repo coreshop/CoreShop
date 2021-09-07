@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,9 +22,9 @@ use Webmozart\Assert\Assert;
 
 class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 {
-    private $type;
-    private $routeName;
-    private $urlGenerator;
+    private string $type;
+    private string $routeName;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(string $type, string $routeName, UrlGeneratorInterface $urlGenerator)
     {
@@ -35,9 +35,6 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 
     public function generate(Concrete $object, array $params = []): string
     {
-        /**
-         * @var Concrete $object
-         */
         Assert::isInstanceOf($object, Concrete::class);
 
         $locale = isset($params['_locale']) ? $params['_locale'] : null;

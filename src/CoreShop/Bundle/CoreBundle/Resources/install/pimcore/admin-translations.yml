@@ -193,3 +193,8 @@ translations:
         languages:
             en: 'Weight'
             de: 'Gewicht'
+
+    coreshop.customer.user:
+        languages:
+            en: 'User'
+            de: 'Benutzer'

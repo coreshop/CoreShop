@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,17 +20,11 @@ use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 
 abstract class AbstractOrderDocumentRepository extends PimcoreRepository implements OrderDocumentRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDocuments(OrderInterface $order): array
     {
         return $this->findBy(['order__id' => $order->getId()], [['key' => 'o_id', 'direction' => 'DESC']]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDocumentsInState(OrderInterface $order, string $state): array
     {
         $list = $this->getList();
@@ -39,9 +33,6 @@ abstract class AbstractOrderDocumentRepository extends PimcoreRepository impleme
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDocumentsNotInState(OrderInterface $order, string $state): array
     {
         $list = $this->getList();

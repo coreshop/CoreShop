@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,9 +26,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface, ProductVariantRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findLatestByStore(StoreInterface $store, int $count = 8): array
     {
         $conditions = [
@@ -39,9 +36,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         return $this->findBy($conditions, ['o_creationDate DESC'], $count);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findAllVariants(ProductInterface $product, bool $recursive = true): array
     {
         $list = $this->getList();
@@ -56,9 +50,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
         $list = $this->getList();
@@ -78,7 +69,9 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         $variantIds = [];
 
-        foreach ($query->execute()->fetchAllAssociative() as $column) {
+        $result = $query->execute();
+
+        foreach ($result->fetchAll() as $column) {
             $variantIds[] = $column['oo_id'];
         }
 
@@ -97,9 +90,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         return $products;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProductsListing(array $options = []): Listing
     {
         $resolver = new OptionsResolver();

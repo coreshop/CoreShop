@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,8 +19,8 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 class SimpleStorageListModifier implements StorageListModifierInterface
 {
-    protected $storageListItemQuantityModifier;
-    protected $storageListItemFinder;
+    protected StorageListItemQuantityModifier $storageListItemQuantityModifier;
+    protected StorageListItemModelEqualsResolver $storageListItemFinder;
 
     public function __construct()
     {
@@ -28,17 +28,11 @@ class SimpleStorageListModifier implements StorageListModifierInterface
         $this->storageListItemFinder = new StorageListItemModelEqualsResolver();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         $this->resolveItem($storageList, $item);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         $storageList->removeItem($item);

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,8 +23,8 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 class VoucherModifier implements VoucherModifierInterface
 {
-    protected $entityManager;
-    protected $voucherCodeRepository;
+    protected EntityManagerInterface $entityManager;
+    protected CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -34,9 +34,6 @@ class VoucherModifier implements VoucherModifierInterface
         $this->voucherCodeRepository = $voucherCodeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function increment(OrderInterface $order): void
     {
         $priceRuleItems = $order->getPriceRuleItems();
@@ -46,6 +43,10 @@ class VoucherModifier implements VoucherModifierInterface
 
         foreach ($priceRuleItems->getItems() as $item) {
             if (!$item instanceof ProposalCartPriceRuleItemInterface) {
+                continue;
+            }
+
+            if (!$item->getVoucherCode()) {
                 continue;
             }
 
@@ -65,9 +66,6 @@ class VoucherModifier implements VoucherModifierInterface
         $this->entityManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function decrement(OrderInterface $order): void
     {
         $priceRuleItems = $order->getPriceRuleItems();

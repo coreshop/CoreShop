@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -165,6 +165,8 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 ]
             });
 
+            var pagingBar = pimcore.helpers.grid.buildDefaultPagingToolbar(store);
+
             var grid = new Ext.grid.Panel({
                 store: store,
                 plugins: {
@@ -216,7 +218,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 ],
                 region: 'center',
                 flex: 1,
-                bbar: pimcore.helpers.grid.buildDefaultPagingToolbar(store)
+                bbar: pagingBar
             });
 
             grid.on('beforerender', function () {
@@ -256,7 +258,11 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_vouchers_export'),
                             handler: function () {
-                                pimcore.helpers.download(Routing.generate('coreshop_cart_price_rule_exportVoucherCodes', {cartPriceRule: this.data.id}));
+                                var page = store.currentPage;
+                                var size = store.getPageSize();
+                                var start = (page - 1) * size;
+
+                                pimcore.helpers.download(Routing.generate('coreshop_cart_price_rule_exportVoucherCodes', {start: start, limit: size, cartPriceRule: this.data.id}));
                             }.bind(this)
                         }
                     ]

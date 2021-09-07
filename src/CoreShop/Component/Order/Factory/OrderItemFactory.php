@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,24 +21,18 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class OrderItemFactory implements OrderItemFactoryInterface
 {
-    private $cartItemFactory;
+    private FactoryInterface $cartItemFactory;
 
     public function __construct(FactoryInterface $cartItemFactory)
     {
         $this->cartItemFactory = $cartItemFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createNew()
     {
         return $this->cartItemFactory->createNew();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createWithCart(OrderInterface $cart, PurchasableInterface $purchasable, float $quantity = 1.0): OrderItemInterface
     {
         $item = $this->cartItemFactory->createNew();
@@ -53,9 +47,6 @@ class OrderItemFactory implements OrderItemFactoryInterface
         return $item;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createWithPurchasable(PurchasableInterface $purchasable, float $quantity = 1.0): OrderItemInterface
     {
         $item = $this->cartItemFactory->createNew();

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,45 +20,43 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
 class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 {
-    protected $orderItemToShipmentItemTransformer;
-    protected $numberGenerator;
-    protected $shipmentFolderPath;
-    protected $objectService;
-    protected $orderItemRepository;
-    protected $shipmentItemFactory;
-    protected $eventDispatcher;
+    protected OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer;
+    protected NumberGeneratorInterface $numberGenerator;
+    protected FolderCreationServiceInterface $folderCreationService;
+    protected PimcoreRepositoryInterface $orderItemRepository;
+    protected PimcoreFactoryInterface $shipmentItemFactory;
+    protected TransformerEventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer,
         NumberGeneratorInterface $numberGenerator,
-        string $shipmentFolderPath,
-        ObjectServiceInterface $objectService,
+        FolderCreationServiceInterface $folderCreationService,
         PimcoreRepositoryInterface $orderItemRepository,
         PimcoreFactoryInterface $shipmentItemFactory,
         TransformerEventDispatcherInterface $eventDispatcher
     ) {
         $this->orderItemToShipmentItemTransformer = $orderItemToShipmentItemTransformer;
         $this->numberGenerator = $numberGenerator;
-        $this->shipmentFolderPath = $shipmentFolderPath;
-        $this->objectService = $objectService;
+        $this->folderCreationService = $folderCreationService;
         $this->orderItemRepository = $orderItemRepository;
         $this->shipmentItemFactory = $shipmentItemFactory;
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function transform(OrderInterface $order, OrderDocumentInterface $shipment, $itemsToTransform)
+    public function transform(
+        OrderInterface $order,
+        OrderDocumentInterface $shipment,
+        array $itemsToTransform
+    ): OrderDocumentInterface
     {
         /**
          * @var $cart OrderInterface
@@ -68,7 +66,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
         $this->eventDispatcher->dispatchPreEvent('shipment', $shipment, ['order' => $order, 'items' => $itemsToTransform]);
 
-        $shipmentFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->shipmentFolderPath));
+        $shipmentFolder = $this->folderCreationService->createFolderForResource($shipment, ['prefix' => $order->getFullPath()]);
 
         $shipment->setOrder($order);
 

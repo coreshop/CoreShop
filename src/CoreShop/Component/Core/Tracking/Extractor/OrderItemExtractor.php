@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,34 +16,27 @@ namespace CoreShop\Component\Core\Tracking\Extractor;
 
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class OrderItemExtractor implements TrackingExtractorInterface
 {
-    protected $decimalFactor;
+    protected int $decimalFactor;
 
     public function __construct(int $decimalFactor)
     {
         $this->decimalFactor = $decimalFactor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($object): bool
     {
-        return $object instanceof ProposalItemInterface;
+        return $object instanceof OrderItemInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, $data = []): array
     {
         /**
-         * @var ProposalItemInterface $object
+         * @var OrderItemInterface $object
          */
         $product = $object->getProduct();
         $categories = [];

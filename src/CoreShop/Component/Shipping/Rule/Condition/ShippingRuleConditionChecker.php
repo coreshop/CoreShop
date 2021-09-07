@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,8 +23,8 @@ use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 
 class ShippingRuleConditionChecker extends AbstractConditionChecker
 {
-    protected $ruleValidationProcessor;
-    protected $shippingRuleRepository;
+    protected RuleValidationProcessorInterface $ruleValidationProcessor;
+    protected RepositoryInterface $shippingRuleRepository;
 
     public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor, RepositoryInterface $shippingRuleRepository)
     {
@@ -32,9 +32,6 @@ class ShippingRuleConditionChecker extends AbstractConditionChecker
         $this->shippingRuleRepository = $shippingRuleRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration): bool
     {
         $shippingRuleId = $configuration['shippingRule'];

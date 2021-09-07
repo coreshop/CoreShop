@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,54 +16,25 @@ namespace CoreShop\Component\Registry;
 
 class ServiceRegistry implements ServiceRegistryInterface
 {
-    /**
-     * @var array
-     */
-    private $services = [];
+    private array $services = [];
+    private string $interface;
+    private string $context;
 
-    /**
-     * Interface which is required by all services.
-     *
-     * @var string
-     */
-    private $interface;
-
-    /**
-     * Human readable context for these services, e.g. "grid field".
-     *
-     * @var string
-     */
-    private $context;
-
-    /**
-     * @param string $interface
-     * @param string $context
-     */
-    public function __construct($interface, $context = 'service')
+    public function __construct(string $interface, string $context = 'service')
     {
         $this->interface = $interface;
         $this->context = $context;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function all()
+    public function all(): array
     {
         return $this->services;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function register($identifier, $service)
+    public function register(string $identifier, object $service): void
     {
         if ($this->has($identifier)) {
             throw new ExistingServiceException($this->context, $identifier);
-        }
-
-        if (!is_object($service)) {
-            throw new \InvalidArgumentException(sprintf('%s needs to be an object, %s given.', ucfirst($this->context), gettype($service)));
         }
 
         if (!in_array($this->interface, class_implements($service), true)) {
@@ -75,10 +46,7 @@ class ServiceRegistry implements ServiceRegistryInterface
         $this->services[$identifier] = $service;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function unregister($identifier)
+    public function unregister(string $identifier): void
     {
         if (!$this->has($identifier)) {
             throw new NonExistingServiceException($this->context, $identifier, array_keys($this->services));
@@ -87,18 +55,12 @@ class ServiceRegistry implements ServiceRegistryInterface
         unset($this->services[$identifier]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function has($identifier)
+    public function has(string $identifier): bool
     {
         return isset($this->services[$identifier]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get($identifier)
+    public function get(string $identifier): object
     {
         if (!$this->has($identifier)) {
             throw new NonExistingServiceException($this->context, $identifier, array_keys($this->services));

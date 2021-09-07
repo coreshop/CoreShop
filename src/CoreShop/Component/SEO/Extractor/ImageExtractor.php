@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,18 +22,12 @@ use Webmozart\Assert\Assert;
 
 final class ImageExtractor implements ExtractorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function supports($object): bool
     {
         return $object instanceof SEOImageAwareInterface &&
             $object->getImage() instanceof Image;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
         Assert::isInstanceOf($object, SEOImageAwareInterface::class);
@@ -41,7 +35,7 @@ final class ImageExtractor implements ExtractorInterface
         /**
          * @var SEOImageAwareInterface $object
          */
-        $ogImage = Tool::getHostUrl() . $object->getImage()->getThumbnail('seo');
+        $ogImage = Tool::getHostUrl() . $object->getImage()->getThumbnail('coreshop_seo');
         $seoMetadata->addExtraProperty('og:image', $ogImage);
     }
 }

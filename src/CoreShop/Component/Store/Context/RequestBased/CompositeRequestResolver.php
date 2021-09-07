@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,7 +21,7 @@ use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeRequestResolver implements RequestResolverInterface
 {
-    private $requestResolvers;
+    private PriorityQueue $requestResolvers;
 
     public function __construct()
     {
@@ -33,9 +33,6 @@ final class CompositeRequestResolver implements RequestResolverInterface
         $this->requestResolvers->insert($requestResolver, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findStore(Request $request): ?StoreInterface
     {
         foreach ($this->requestResolvers as $requestResolver) {

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,15 +21,8 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class Resource extends Input
 {
-    /**
-     * @var DoctrineProvider
-     */
-    protected $doctrineProvider;
-
-    /**
-     * @var string
-     */
-    protected $className;
+    protected DoctrineProvider $doctrineProvider;
+    protected string $className;
 
     public function __construct(Service $graphQlService, DoctrineProvider $doctrineProvider, string $className)
     {
@@ -39,9 +32,6 @@ class Resource extends Input
         $this->className = $className;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->enrichConfig(
@@ -57,9 +47,6 @@ class Resource extends Input
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->doctrineProvider->getGraphQlType($this->className);

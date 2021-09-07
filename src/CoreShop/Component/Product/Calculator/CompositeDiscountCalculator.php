@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,16 +19,13 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositeDiscountCalculator implements ProductDiscountCalculatorInterface
 {
-    protected $discountCalculator;
+    protected PrioritizedServiceRegistryInterface $discountCalculator;
 
     public function __construct(PrioritizedServiceRegistryInterface $discountCalculator)
     {
         $this->discountCalculator = $discountCalculator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscount(ProductInterface $subject, array $context, int $price): int
     {
         $discount = 0;

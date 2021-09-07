@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,8 +26,8 @@ use Doctrine\ORM\Utility\IdentifierFlattener;
 
 class EntityMerger
 {
-    private $em;
-    private $identifierFlattener;
+    private EntityManagerInterface $em;
+    private IdentifierFlattener $identifierFlattener;
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -127,13 +127,32 @@ class EntityMerger
                 //Reset new Data, for some reason the line above resets newData
                 $newData = $class->reflFields[$assoc['fieldName']]->getValue($entity);
 
+                if (!$newCollection instanceof PersistentCollection) {
+                    $newCollection = new PersistentCollection(
+                        $this->em,
+                        $class,
+                        $newCollection
+                    );
+                }
+
                 $this->mergeCollection($origData, $newData, $assoc, static function ($foundEntry) use ($newCollection) {
                     $newCollection->removeElement($foundEntry);
                 }, $visited);
 
                 $this->mergeCollection($newData, $origData, $assoc, static function ($foundEntry) use ($newCollection) {
-                    $newCollection->add($foundEntry);
-                }, $visited);
+                    $found = false;
+
+                    foreach ($newCollection as $entry) {
+                        if (spl_object_hash($entry) === spl_object_hash($foundEntry)) {
+                            $found = true;
+                            break;
+                        }
+                    }
+
+                    if (!$found) {
+                        $newCollection->add($foundEntry);
+                    }
+                }, $visited, true);
 
                 // @todo: check if we really need to build this reference!
                 $newData = &$newCollection;
@@ -169,14 +188,7 @@ class EntityMerger
         }
     }
 
-    /**
-     * @param Collection $from
-     * @param Collection $to
-     * @param array      $assoc
-     * @param \Closure   $notFound
-     * @param array      $visited
-     */
-    private function mergeCollection(Collection $from, Collection $to, array $assoc, \Closure $notFound, array &$visited): void
+    private function mergeCollection(Collection $from, Collection $to, array $assoc, \Closure $notFound, array &$visited, bool $mergeFoundEntity = false): void
     {
         $assocClass = $this->em->getClassMetadata($assoc['targetEntity']);
 
@@ -184,11 +196,20 @@ class EntityMerger
             $found = false;
             $origId = $assocClass->getIdentifierValues($fromEntry);
 
-            foreach ($to as $toEntry) {
+            foreach ($to as $offset => $toEntry) {
                 $newId = $assocClass->getIdentifierValues($toEntry);
+
+                if (!$newId) {
+                    continue;
+                }
 
                 if ($newId === $origId) {
                     $found = true;
+
+                    if ($mergeFoundEntity) {
+                        $to->set($offset, $fromEntry);
+                    }
+
                     break;
                 }
             }

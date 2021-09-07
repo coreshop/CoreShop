@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,12 +17,13 @@ namespace CoreShop\Behat\Context\Transform;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use Webmozart\Assert\Assert;
 
 final class TaxRuleGroupContext implements Context
 {
-    private $sharedStorage;
-    private $taxRuleGroupRepository;
+    private SharedStorageInterface $sharedStorage;
+    private RepositoryInterface $taxRuleGroupRepository;
 
     public function __construct(SharedStorageInterface $sharedStorage, RepositoryInterface $taxRuleGroupRepository)
     {
@@ -33,8 +34,11 @@ final class TaxRuleGroupContext implements Context
     /**
      * @Transform /^tax rule group "([^"]+)"$/
      */
-    public function getTaxRuleGroupByName($name)
+    public function getTaxRuleGroupByName($name): TaxRuleGroupInterface
     {
+        /**
+         * @var TaxRuleGroupInterface[] $groups
+         */
         $groups = $this->taxRuleGroupRepository->findBy(['name' => $name]);
 
         Assert::eq(
@@ -49,7 +53,7 @@ final class TaxRuleGroupContext implements Context
     /**
      * @Transform /^tax rule group$/
      */
-    public function theTaxRuleGroup()
+    public function theTaxRuleGroup(): TaxRuleGroupInterface
     {
         return $this->sharedStorage->get('taxRuleGroup');
     }

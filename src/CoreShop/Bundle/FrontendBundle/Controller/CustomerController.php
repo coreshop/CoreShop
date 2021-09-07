@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,18 +25,13 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use CoreShop\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CustomerController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function headerAction(Request $request)
+    public function headerAction(Request $request): Response
     {
         return $this->render($this->templateConfigurator->findTemplate('Customer/_header.html'), [
             'catalogMode' => false,
@@ -44,10 +39,7 @@ class CustomerController extends FrontendController
         ]);
     }
 
-    /**
-     * @return Response
-     */
-    public function footerAction()
+    public function footerAction(): Response
     {
         return $this->render($this->templateConfigurator->findTemplate('Customer/_footer.html'), [
             'catalogMode' => false,
@@ -55,10 +47,7 @@ class CustomerController extends FrontendController
         ]);
     }
 
-    /**
-     * @return RedirectResponse|Response
-     */
-    public function profileAction()
+    public function profileAction(): Response
     {
         $customer = $this->getCustomer();
 
@@ -71,10 +60,7 @@ class CustomerController extends FrontendController
         ]);
     }
 
-    /**
-     * @return RedirectResponse|Response
-     */
-    public function ordersAction()
+    public function ordersAction(): Response
     {
         $customer = $this->getCustomer();
 
@@ -88,12 +74,7 @@ class CustomerController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|Response
-     */
-    public function orderDetailAction(Request $request)
+    public function orderDetailAction(Request $request): Response
     {
         $orderId = $request->get('order');
         $customer = $this->getCustomer();
@@ -118,10 +99,7 @@ class CustomerController extends FrontendController
         ]);
     }
 
-    /**
-     * @return RedirectResponse|Response
-     */
-    public function addressesAction()
+    public function addressesAction(): Response
     {
         $customer = $this->getCustomer();
 
@@ -134,12 +112,7 @@ class CustomerController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|Response
-     */
-    public function addressAction(Request $request)
+    public function addressAction(Request $request): Response
     {
         $customer = $this->getCustomer();
 
@@ -202,12 +175,7 @@ class CustomerController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     */
-    public function addressDeleteAction(Request $request)
+    public function addressDeleteAction(Request $request): Response
     {
         $customer = $this->getCustomer();
         $addressAssignmentManager = $this->get(AddressAssignmentManagerInterface::class);
@@ -235,12 +203,7 @@ class CustomerController extends FrontendController
         return $this->redirectToRoute('coreshop_customer_addresses');
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|Response
-     */
-    public function settingsAction(Request $request)
+    public function settingsAction(Request $request): Response
     {
         $customer = $this->getCustomer();
 
@@ -273,16 +236,15 @@ class CustomerController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|Response
-     */
-    public function changePasswordAction(Request $request)
+    public function changePasswordAction(Request $request): Response
     {
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        if (!$customer->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('coreshop_index');
         }
 
@@ -293,10 +255,10 @@ class CustomerController extends FrontendController
 
             if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                 $formData = $handledForm->getData();
-                $customer->setPassword($formData['password']);
-                $customer->save();
+                $customer->getUser()->setPassword($formData['password']);
+                $customer->getUser()->save();
 
-                $this->fireEvent($request, $customer, sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'change_password'));
+                $this->fireEvent($request, $customer->getUser(), sprintf('%s.%s.%s_post', 'coreshop', 'user', 'change_password'));
                 $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.customer.password_successfully_changed'));
 
                 return $this->redirectToRoute('coreshop_customer_profile');
@@ -309,12 +271,7 @@ class CustomerController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|Response
-     */
-    public function confirmNewsletterAction(Request $request)
+    public function confirmNewsletterAction(Request $request): Response
     {
         $success = false;
         $token = $request->get('token');
@@ -350,10 +307,7 @@ class CustomerController extends FrontendController
         ]);
     }
 
-    /**
-     * @return CustomerInterface|null
-     */
-    protected function getCustomer()
+    protected function getCustomer(): ?CustomerInterface
     {
         try {
             /**
@@ -362,22 +316,17 @@ class CustomerController extends FrontendController
             $customer = $this->get(CustomerContextInterface::class)->getCustomer();
 
             return $customer;
-        } catch (\Exception $ex) {
+        } catch (\Exception) {
             // fail silently
         }
 
         return null;
     }
 
-    /**
-     * @todo: move this to a resource controller event
-     *
-     * @param Request $request
-     * @param mixed   $object
-     * @param string  $eventName
-     */
-    protected function fireEvent(Request $request, $object, string $eventName)
+    protected function fireEvent(Request $request, mixed $object, string $eventName): void
     {
+        //@todo: move this to a resource controller event
+
         $event = new ResourceControllerEvent($object, ['request' => $request]);
         $this->get('event_dispatcher')->dispatch($event, $eventName);
     }

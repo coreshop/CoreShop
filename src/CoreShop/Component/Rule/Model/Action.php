@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -31,6 +31,11 @@ class Action implements ActionInterface
     protected $type;
 
     /**
+     * @var int
+     */
+    protected $sort;
+
+    /**
      * @var array
      */
     protected $configuration;
@@ -40,6 +45,11 @@ class Action implements ActionInterface
         return $this->id;
     }
 
+    public function getType()
+    {
+        return $this->type;
+    }
+
     public function setType($type)
     {
         $this->type = $type;
@@ -47,20 +57,25 @@ class Action implements ActionInterface
         return $this;
     }
 
-    public function setConfiguration(array $configuration)
+    public function getSort()
     {
-        $this->configuration = $configuration;
-
-        return $this;
+        return $this->sort;
     }
 
-    public function getType()
+    public function setSort($sort)
     {
-        return $this->type;
+        $this->sort = $sort;
     }
 
     public function getConfiguration()
     {
         return $this->configuration;
+    }
+
+    public function setConfiguration(array $configuration)
+    {
+        $this->configuration = $configuration;
+
+        return $this;
     }
 }

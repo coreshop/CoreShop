@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -43,7 +43,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
 
     public function setTotal(int $total, bool $withTax = true)
     {
-        return $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
+        $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
     }
 
     public function getItemPrice(bool $withTax = true): int
@@ -53,7 +53,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
 
     public function setItemPrice(int $itemPrice, bool $withTax = true)
     {
-        return $withTax ? $this->setItemPriceGross($itemPrice) : $this->setItemPriceNet($itemPrice);
+        $withTax ? $this->setItemPriceGross($itemPrice) : $this->setItemPriceNet($itemPrice);
     }
 
     public function getItemRetailPrice(bool $withTax = true): int
@@ -63,7 +63,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
 
     public function setItemRetailPrice(int $itemRetailPrice, bool $withTax = true)
     {
-        return $withTax ? $this->setItemRetailPriceGross($itemRetailPrice) : $this->setItemRetailPriceNet($itemRetailPrice);
+        $withTax ? $this->setItemRetailPriceGross($itemRetailPrice) : $this->setItemRetailPriceNet($itemRetailPrice);
     }
 
     public function getItemDiscountPrice(bool $withTax = true): int
@@ -73,7 +73,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
 
     public function setItemDiscountPrice(int $itemDiscountPrice, bool $withTax = true)
     {
-        return $withTax ? $this->setItemDiscountPriceGross($itemDiscountPrice) : $this->setItemDiscountPriceNet($itemDiscountPrice);
+        $withTax ? $this->setItemDiscountPriceGross($itemDiscountPrice) : $this->setItemDiscountPriceNet($itemDiscountPrice);
     }
 
     public function getItemDiscount(bool $withTax = true): int
@@ -83,7 +83,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
 
     public function setItemDiscount(int $itemDiscount, bool $withTax = true)
     {
-        return $withTax ? $this->setItemDiscountGross($itemDiscount) : $this->setItemDiscountNet($itemDiscount);
+        $withTax ? $this->setItemDiscountGross($itemDiscount) : $this->setItemDiscountNet($itemDiscount);
     }
 
     public function getConvertedItemPrice(bool $withTax = true): int
@@ -93,7 +93,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
 
     public function setConvertedItemPrice(int $itemPrice, bool $withTax = true)
     {
-        return $withTax ? $this->setConvertedItemPriceGross($itemPrice) : $this->setConvertedItemPriceNet($itemPrice);
+        $withTax ? $this->setConvertedItemPriceGross($itemPrice) : $this->setConvertedItemPriceNet($itemPrice);
     }
 
     public function getConvertedItemRetailPrice(bool $withTax = true): int
@@ -103,9 +103,49 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
 
     public function setConvertedItemRetailPrice(int $itemRetailPrice, bool $withTax = true)
     {
-        return $withTax ? $this->setConvertedItemRetailPriceGross($itemRetailPrice) : $this->setConvertedItemRetailPriceNet(
+        $withTax ? $this->setConvertedItemRetailPriceGross($itemRetailPrice) : $this->setConvertedItemRetailPriceNet(
             $itemRetailPrice
         );
+    }
+
+    public function hasUnit(OrderItemUnitInterface $itemUnit): bool
+    {
+        $items = $this->getUnits() ?? [];
+
+        foreach ($items as $iValue) {
+            $arrayItem = $iValue;
+
+            if ($arrayItem->getId() === $itemUnit->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function addUnit(OrderItemUnitInterface $itemUnit): void
+    {
+        $items = $this->getUnits() ?? [];
+        $items[] = $itemUnit;
+
+        $this->setUnits($items);
+    }
+
+    public function removeUnit(OrderItemUnitInterface $itemUnit): void
+    {
+        $items = $this->getUnits() ?? [];
+
+        foreach ($items as $i => $iValue) {
+            $arrayItem = $iValue;
+
+            if ($arrayItem->getId() === $itemUnit->getId()) {
+                unset($items[$i]);
+
+                break;
+            }
+        }
+
+        $this->setUnits(array_values($items));
     }
 
     public function getConvertedTotal(bool $withTax = true): int
@@ -115,7 +155,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
 
     public function setConvertedTotal(int $total, bool $withTax = true)
     {
-        return $withTax ? $this->setConvertedTotalGross($total) : $this->setConvertedTotalNet($total);
+        $withTax ? $this->setConvertedTotalGross($total) : $this->setConvertedTotalNet($total);
     }
 
     public function getConvertedItemDiscount(bool $withTax = true): int
@@ -125,7 +165,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
 
     public function setConvertedItemDiscount(int $itemDiscount, bool $withTax = true)
     {
-        return $withTax ? $this->setConvertedItemDiscountGross($itemDiscount) : $this->setConvertedItemDiscountNet($itemDiscount);
+        $withTax ? $this->setConvertedItemDiscountGross($itemDiscount) : $this->setConvertedItemDiscountNet($itemDiscount);
     }
 
     public function getConvertedItemDiscountPrice(bool $withTax = true): int
@@ -135,7 +175,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
 
     public function setConvertedItemDiscountPrice(int $itemDiscountPrice, bool $withTax = true)
     {
-        return $withTax ? $this->setConvertedItemDiscountPriceGross($itemDiscountPrice) : $this->setConvertedItemDiscountPriceNet($itemDiscountPrice);
+        $withTax ? $this->setConvertedItemDiscountPriceGross($itemDiscountPrice) : $this->setConvertedItemDiscountPriceNet($itemDiscountPrice);
     }
 
     public function getTotalTax(): int
@@ -370,6 +410,16 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     }
 
     public function setTaxes(?Fieldcollection $taxes)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function getUnits(): ?array
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setUnits(?array $units)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

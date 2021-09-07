@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,13 +18,12 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreDaoRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Pimcore\Model\AbstractModel;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
 {
-    protected $metadata;
-    protected $connection;
+    protected MetadataInterface $metadata;
+    protected Connection $connection;
 
     public function __construct(MetadataInterface $metadata, Connection $connection)
     {
@@ -32,25 +31,16 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
         $this->connection = $connection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function add(ResourceInterface $resource): void
     {
         throw new NotImplementedException(sprintf('%s:%s not supported', __CLASS__, __METHOD__));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove(ResourceInterface $resource): void
     {
         throw new NotImplementedException(sprintf('%s:%s not supported', __CLASS__, __METHOD__));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getClassName()
     {
         return $this->metadata->getClass('model');
@@ -77,25 +67,16 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
             $className));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findAll()
     {
         return $this->getList()->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function find($id)
     {
         return $this->forceFind($id, false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function forceFind($id, bool $force = true)
     {
         $class = $this->metadata->getClass('model');
@@ -112,9 +93,6 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
         return $class::getById($id, $force);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $list = $this->getList();
@@ -154,9 +132,6 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
         return $list->load();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneBy(array $criteria)
     {
         $objects = $this->findBy($criteria);

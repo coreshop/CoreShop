@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,10 +26,10 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
 {
-    private $proposalCartPriceRuleCalculator;
-    private $voucherCodeRepository;
-    private $cartPriceRuleValidator;
-    private $cartPriceRuleUnProcessor;
+    private ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator;
+    private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
+    private CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator;
+    private CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor;
 
     public function __construct(
         ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator,
@@ -43,9 +43,6 @@ final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
         $this->cartPriceRuleUnProcessor = $cartPriceRuleUnProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         $priceRuleItems = $cart->getPriceRuleItems();

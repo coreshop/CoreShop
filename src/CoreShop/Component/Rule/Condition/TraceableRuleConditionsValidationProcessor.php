@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,25 +20,19 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditionsValidationProcessorInterface
 {
-    private $ruleConditionsValidationProcessor;
-    private $processed = [];
+    private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor;
+    private array $processed = [];
 
     public function __construct(RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
     {
         $this->ruleConditionsValidationProcessor = $ruleConditionsValidationProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType(): string
     {
         return $this->ruleConditionsValidationProcessor->getType();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, array $params = []): bool
     {
         if (!$rule->getActive()) {
@@ -65,9 +59,6 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
         return $ruleResult;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isConditionValid(ResourceInterface $subject, RuleInterface $rule, ConditionInterface $condition, array $params = []): bool
     {
         $isValid = $this->ruleConditionsValidationProcessor->isConditionValid($subject, $rule, $condition, $params);

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,11 +25,11 @@ use Webmozart\Assert\Assert;
 
 class RegistrationContext implements Context
 {
-    private $sharedStorage;
-    private $homePage;
-    private $loginPage;
-    private $registerPage;
-    private $registerElement;
+    private SharedStorageInterface $sharedStorage;
+    private HomePageInterface $homePage;
+    private LoginPageInterface $loginPage;
+    private RegisterPageInterface $registerPage;
+    private RegisterElementInterface $registerElement;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -318,10 +318,18 @@ class RegistrationContext implements Context
     {
         $this->registerPage->open(['_locale' => $localeCode]);
         $this->registerElement->specifyEmail($email);
+        $this->registerElement->verifyEmail($email);
         $this->registerElement->specifyPassword($password);
         $this->registerElement->verifyPassword($password);
         $this->registerElement->specifyFirstName('Carrot');
         $this->registerElement->specifyLastName('Ironfoundersson');
+        $this->registerElement->specifyAddressFirstname('Carrot');
+        $this->registerElement->specifyAddressLastname('Ironfoundersson');
+        $this->registerElement->specifyAddressCity('Vienna');
+        $this->registerElement->specifyAddressStreet('Ring');
+        $this->registerElement->specifyAddressNumber('1');
+        $this->registerElement->specifyAddressPostcode('1010');
+        $this->registerElement->acceptTermsOfService();
         $this->registerElement->register();
     }
 

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -29,42 +29,20 @@ use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Pimcore\Http\RequestHelper;
+use Pimcore\Model\DataObject\Data\UrlSlug;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryController extends FrontendController
 {
-    /**
-     * @var array
-     */
-    protected $validSortProperties = ['name'];
+    protected array $validSortProperties = ['name'];
+    protected string $repositoryIdentifier = 'oo_id';
+    protected string $requestIdentifier = 'category';
+    protected string $defaultSortName = 'name';
+    protected string $defaultSortDirection = 'asc';
 
-    /**
-     * @var string
-     */
-    protected $repositoryIdentifier = 'oo_id';
-
-    /**
-     * @var string
-     */
-    protected $requestIdentifier = 'category';
-
-    /**
-     * @var string
-     */
-    protected $defaultSortName = 'name';
-
-    /**
-     * @var string
-     */
-    protected $defaultSortDirection = 'asc';
-
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function menuAction(Request $request)
+    public function menuAction(): Response
     {
         $categories = $this->getRepository()->findForStore($this->getContext()->getStore());
 
@@ -73,12 +51,7 @@ class CategoryController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function menuLeftAction(Request $request)
+    public function menuLeftAction(Request $request): Response
     {
         $activeCategory = $request->get('activeCategory');
         $activeSubCategories = [];
@@ -96,12 +69,23 @@ class CategoryController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction(Request $request)
+    public function detailSlugAction(Request $request, CategoryInterface $object, UrlSlug $urlSlug): Response
+    {
+        return $this->detail($request, $object);
+    }
+
+    public function indexAction(Request $request): Response
+    {
+        $category = $this->getRepository()->findOneBy([$this->repositoryIdentifier => $request->get($this->requestIdentifier), 'pimcore_unpublished' => true]);
+
+        if (!$category instanceof CategoryInterface) {
+            throw new NotFoundHttpException(sprintf(sprintf('category with identifier "%s" (%s) not found', $this->repositoryIdentifier, $request->get($this->requestIdentifier))));
+        }
+
+        return $this->detail($request, $category);
+    }
+
+    public function detail(Request $request, CategoryInterface $category): Response
     {
         $listModeDefault = $this->getConfigurationService()->getForStore('system.category.list.mode');
         $gridPerPageAllowed = $this->getConfigurationService()->getForStore('system.category.grid.per_page');
@@ -118,30 +102,8 @@ class CategoryController extends FrontendController
         $allowedPerPage = $type === 'list' ? $listPerPageAllowed : $gridPerPageAllowed;
 
         $perPage = $request->get('perPage', $defaultPerPage);
-        $isFrontendRequestByAdmin = false;
-        $category = $this->getRepository()->findOneBy([$this->repositoryIdentifier => $request->get($this->requestIdentifier), 'pimcore_unpublished' => true]);
 
-        if (!$category instanceof CategoryInterface) {
-            throw new NotFoundHttpException(sprintf(sprintf('category with identifier "%s" (%s) not found', $this->repositoryIdentifier, $request->get($this->requestIdentifier))));
-        }
-
-        if ($this->get(RequestHelper::class)->isFrontendRequestByAdmin($request)) {
-            $isFrontendRequestByAdmin = true;
-        }
-
-        if ($isFrontendRequestByAdmin === false && !$category->isPublished()) {
-            throw new NotFoundHttpException('category not found');
-        }
-
-        if (!in_array($this->getContext()->getStore()->getId(), array_values($category->getStores()))) {
-            throw new NotFoundHttpException(sprintf(sprintf('store (id %s) not available in category', $this->getContext()->getStore()->getId())));
-        }
-
-        if (!in_array($perPage, $allowedPerPage)) {
-            $perPage = $defaultPerPage;
-        }
-
-        $paginator = null;
+        $this->validateCategory($request, $category);
 
         $viewParameters = [];
 
@@ -228,12 +190,24 @@ class CategoryController extends FrontendController
         return $this->render($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
 
-    /**
-     * @param string $sortString
-     *
-     * @return array
-     */
-    protected function parseSorting($sortString)
+    protected function validateCategory(Request $request, CategoryInterface $category): void
+    {
+        $isFrontendRequestByAdmin = false;
+
+        if ($this->get(RequestHelper::class)->isFrontendRequestByAdmin($request)) {
+            $isFrontendRequestByAdmin = true;
+        }
+
+        if ($isFrontendRequestByAdmin === false && !$category->isPublished()) {
+            throw new NotFoundHttpException('category not found');
+        }
+
+        if (!in_array($this->getContext()->getStore()->getId(), array_values($category->getStores()))) {
+            throw new NotFoundHttpException(sprintf(sprintf('store (id %s) not available in category', $this->getContext()->getStore()->getId())));
+        }
+    }
+
+    protected function parseSorting(string $sortString): array
     {
         $sort = [
             'name' => 'name',
@@ -259,41 +233,26 @@ class CategoryController extends FrontendController
         return $sort;
     }
 
-    /**
-     * @return CategoryRepositoryInterface
-     */
-    protected function getRepository()
+    protected function getRepository(): CategoryRepositoryInterface
     {
         return $this->get('coreshop.repository.category');
     }
 
-    /**
-     * @return ProductRepositoryInterface
-     */
-    protected function getProductRepository()
+    protected function getProductRepository(): ProductRepositoryInterface
     {
         return $this->get('coreshop.repository.product');
     }
 
-    /**
-     * @return \CoreShop\Component\Core\Configuration\ConfigurationService
-     */
     protected function getConfigurationService(): ConfigurationServiceInterface
     {
         return $this->get(ConfigurationServiceInterface::class);
     }
 
-    /**
-     * @return ShopperContextInterface
-     */
     protected function getContext(): ShopperContextInterface
     {
         return $this->get(ShopperContextInterface::class);
     }
 
-    /**
-     * @return PaginatorInterface
-     */
     protected function getPaginator(): PaginatorInterface
     {
         return $this->get(PaginatorInterface::class);

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,178 +24,112 @@ class GetStatus extends BaseGetStatus
      */
     protected $status;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function markNew()
+    public function markNew(): void
     {
         $this->status = PaymentInterface::STATE_NEW;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isNew()
+    public function isNew(): bool
     {
         return $this->status === PaymentInterface::STATE_NEW;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function markSuspended()
+    public function markSuspended(): void
     {
         $this->status = PaymentInterface::STATE_PROCESSING;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isSuspended()
+    public function isSuspended(): bool
     {
         return $this->status === PaymentInterface::STATE_PROCESSING;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function markExpired()
+    public function markExpired(): void
     {
         $this->status = PaymentInterface::STATE_FAILED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isExpired()
+    public function isExpired(): bool
     {
         return $this->status === PaymentInterface::STATE_FAILED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function markCanceled()
+    public function markCanceled(): void
     {
         $this->status = PaymentInterface::STATE_CANCELLED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCanceled()
+    public function isCanceled(): bool
     {
         return $this->status === PaymentInterface::STATE_CANCELLED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function markPending()
+    public function markPending(): void
     {
         $this->status = PaymentInterface::STATE_PROCESSING;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isPending()
+    public function isPending(): bool
     {
         return $this->status === PaymentInterface::STATE_PROCESSING;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function markFailed()
+    public function markFailed(): void
     {
         $this->status = PaymentInterface::STATE_FAILED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isFailed()
+    public function isFailed(): bool
     {
         return $this->status === PaymentInterface::STATE_FAILED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function markUnknown()
+    public function markUnknown(): void
     {
         $this->status = PaymentInterface::STATE_UNKNOWN;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isUnknown()
+    public function isUnknown(): bool
     {
         return $this->status === PaymentInterface::STATE_UNKNOWN;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function markCaptured()
+    public function markCaptured(): void
     {
         $this->status = PaymentInterface::STATE_COMPLETED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCaptured()
+    public function isCaptured(): bool
     {
         return $this->status === PaymentInterface::STATE_COMPLETED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isAuthorized()
+    public function isAuthorized(): bool
     {
         return $this->status === PaymentInterface::STATE_AUTHORIZED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function markAuthorized()
+    public function markAuthorized(): void
     {
         $this->status = PaymentInterface::STATE_AUTHORIZED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRefunded()
+    public function isRefunded(): bool
     {
         return $this->status === PaymentInterface::STATE_REFUNDED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function markRefunded()
+    public function markRefunded(): void
     {
         $this->status = PaymentInterface::STATE_REFUNDED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isPayedout()
+    public function isPayedout(): bool
     {
         return $this->status === PaymentInterface::STATE_REFUNDED;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function markPayedout()
+    public function markPayedout(): void
     {
         $this->status = PaymentInterface::STATE_REFUNDED;
     }

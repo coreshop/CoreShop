@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,10 +23,10 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterface
 {
-    private $purchasableCalculator;
-    private $defaultTaxAddressProvider;
-    private $taxCalculatorFactory;
-    private $taxApplicator;
+    private PurchasableCalculatorInterface $purchasableCalculator;
+    private DefaultTaxAddressProviderInterface $defaultTaxAddressProvider;
+    private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
+    private TaxApplicatorInterface $taxApplicator;
 
     public function __construct(
         PurchasableCalculatorInterface $purchasableCalculator,
@@ -40,9 +40,6 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         $this->taxApplicator = $taxApplicator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice(PurchasableInterface $product, array $context, bool $withTax = true): int
     {
         $price = $this->purchasableCalculator->getPrice($product, $context, true);
@@ -55,9 +52,6 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscountPrice(PurchasableInterface $product, array $context, bool $withTax = true): int
     {
         $price = $this->purchasableCalculator->getDiscountPrice($product, $context);
@@ -77,9 +71,6 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscount(PurchasableInterface $product, array $context, bool $withTax = true): int
     {
         $price = $this->purchasableCalculator->getPrice($product, $context);
@@ -93,9 +84,6 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         return $discount;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRetailPrice(PurchasableInterface $product, array $context, bool $withTax = true): int
     {
         $price = $this->purchasableCalculator->getRetailPrice($product, $context);

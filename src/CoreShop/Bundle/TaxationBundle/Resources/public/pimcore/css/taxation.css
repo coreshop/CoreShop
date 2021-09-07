@@ -6,7 +6,7 @@
     background: url(../img/taxes.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_taxes {
+body.pimcore_version_10 .coreshop_nav_icon_taxes {
     background: url(../img/taxes_white.svg) center center no-repeat !important;
 }
 
@@ -18,6 +18,6 @@ body.pimcore_version_6 .coreshop_nav_icon_taxes {
     background: url(../img/taxes.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_tax_rule_groups {
+body.pimcore_version_10 .coreshop_nav_icon_tax_rule_groups {
     background: url(../img/taxes_white.svg) center center no-repeat !important;
 }

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,9 +23,9 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class StoreAwareCurrencyContext implements CurrencyContextInterface
 {
-    private $currencyContext;
-    private $storeContext;
-    private $currencyRepository;
+    private CurrencyContextInterface $currencyContext;
+    private StoreContextInterface $storeContext;
+    private CurrencyRepositoryInterface $currencyRepository;
 
     public function __construct(
         CurrencyContextInterface $currencyContext,
@@ -37,9 +37,6 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
         $this->currencyRepository = $currencyRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency(): CurrencyInterface
     {
         /** @var StoreInterface $store */

@@ -22,7 +22,3 @@ services:
         alias: CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface instead'
 
-    coreshop.context.customer.request_based.resolver.token_based:
-        alias: CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver instead'
-

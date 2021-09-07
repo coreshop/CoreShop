@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,10 +21,10 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 
 final class PurchasableCalculator implements PurchasableCalculatorInterface
 {
-    private $purchasablePriceCalculator;
-    private $purchasableRetailPriceCalculator;
-    private $purchasableDiscountPriceCalculator;
-    private $purchasableDiscountCalculator;
+    private PurchasablePriceCalculatorInterface $purchasablePriceCalculator;
+    private PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator;
+    private PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator;
+    private PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator;
 
     public function __construct(
         PurchasablePriceCalculatorInterface $purchasablePriceCalculator,
@@ -38,9 +38,6 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
         $this->purchasableDiscountCalculator = $purchasableDiscountCalculator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int
     {
         try {
@@ -51,17 +48,11 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscount(PurchasableInterface $purchasable, array $context, int $convertedPrice): int
     {
         return $this->purchasableDiscountCalculator->getDiscount($purchasable, $context, $convertedPrice);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscountPrice(PurchasableInterface $purchasable, array $context): int
     {
         try {
@@ -72,9 +63,6 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRetailPrice(PurchasableInterface $purchasable, array $context): int
     {
         try {

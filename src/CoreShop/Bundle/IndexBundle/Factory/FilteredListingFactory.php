@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,8 +23,8 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FilteredListingFactory implements FilteredListingFactoryInterface
 {
-    private $listingFactory;
-    private $filterProcessor;
+    private ListingFactoryInterface $listingFactory;
+    private FilterProcessorInterface $filterProcessor;
 
     public function __construct(ListingFactoryInterface $listingFactory, FilterProcessorInterface $filterProcessor)
     {
@@ -32,9 +32,6 @@ class FilteredListingFactory implements FilteredListingFactoryInterface
         $this->filterProcessor = $filterProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createList(FilterInterface $filter, ParameterBag $parameterBag): ListingInterface
     {
         $list = $this->listingFactory->createList($filter->getIndex());

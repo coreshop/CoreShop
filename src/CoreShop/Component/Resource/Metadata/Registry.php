@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,22 +16,13 @@ namespace CoreShop\Component\Resource\Metadata;
 
 final class Registry implements RegistryInterface
 {
-    /**
-     * @var array
-     */
-    private $metadata = [];
+    private array $metadata = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAll(): array
     {
         return $this->metadata;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($alias): MetadataInterface
     {
         if (!array_key_exists($alias, $this->metadata)) {
@@ -41,9 +32,6 @@ final class Registry implements RegistryInterface
         return $this->metadata[$alias];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getByClass($className): MetadataInterface
     {
         foreach ($this->metadata as $metadata) {
@@ -55,17 +43,11 @@ final class Registry implements RegistryInterface
         throw new \InvalidArgumentException(sprintf('Model with class "%s" does not exist.', $className));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function add(MetadataInterface $metadata): void
     {
         $this->metadata[$metadata->getAlias()] = $metadata;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addFromAliasAndConfiguration($alias, array $configuration): void
     {
         $this->add(Metadata::fromAliasAndConfiguration($alias, $configuration));

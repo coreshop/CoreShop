@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,16 +27,11 @@ use Pimcore\Tool;
  */
 class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 {
-    private $definition;
-    private $oldFieldName;
-    private $newFieldName;
-    private $database;
+    private ClassDefinition $definition;
+    private string $oldFieldName;
+    private string $newFieldName;
+    private Connection $database;
 
-    /**
-     * @param ClassDefinition $definition
-     * @param string          $oldFieldName
-     * @param string          $newFieldName
-     */
     public function __construct(ClassDefinition $definition, string $oldFieldName, string $newFieldName)
     {
         $this->definition = $definition;
@@ -45,9 +40,6 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         $this->database = Db::getDoctrineConnection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rename(): void
     {
         $queries = $this->getRenameQueries();
@@ -61,35 +53,21 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): ClassDefinition
     {
         return $this->definition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOldFieldName(): string
     {
         return $this->oldFieldName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNewFieldName(): string
     {
         return $this->newFieldName;
     }
 
-    /**
-     * @return array
-     *
-     * @throws \Exception
-     */
     protected function getRenameQueries(): array
     {
         $fieldDefinition = $this->definition->getFieldDefinition($this->oldFieldName);
