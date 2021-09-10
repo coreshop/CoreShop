@@ -53,7 +53,7 @@ class NotificationRuleController extends ResourceController
                     $actions[$type] = [];
                 }
 
-                $actions[$type] = array_merge($actions[$type], array_keys($this->getParameter($actionParameter)));
+                $actions[$type] = array_merge($actions[$type], array_keys($this->container->getParameter($actionParameter)));
             }
 
             if ($this->container->hasParameter($conditionParameter)) {
@@ -61,7 +61,7 @@ class NotificationRuleController extends ResourceController
                     $conditions[$type] = [];
                 }
 
-                $conditions[$type] = array_merge($conditions[$type], array_keys($this->getParameter($conditionParameter)));
+                $conditions[$type] = array_merge($conditions[$type], array_keys($this->container->getParameter($conditionParameter)));
             }
         }
 
