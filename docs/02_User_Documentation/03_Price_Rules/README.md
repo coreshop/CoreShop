@@ -42,7 +42,7 @@ Read more about automation [here](../10_Automation/README.md#expired-rules).
 
 - [Cart Price Rules](./01_Cart_Price_Rules.md)
 - [Product Price Rules](./02_Product_Price_Rules.md)
-- [Specific Product Prices](./03_Specific_Product_Prices.md)
-- [Vouchers](./04_Vouchers.md)
-- [Available Actions](./05_Actions.md)
-- [Available Conditions](./06_Conditions.md)
+- [Specific Product Prices](./03_Specific_Price_Rules.md)
+- [Vouchers](./05_Vouchers.md)
+- [Available Actions](./06_Actions.md)
+- [Available Conditions](./07_Conditions.md)
