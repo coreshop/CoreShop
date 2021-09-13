@@ -17,36 +17,24 @@ namespace CoreShop\Bundle\ResourceBundle\Doctrine;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 
-final class ResourceMappingDriver implements MappingDriver
+final class ResourceMappingDriverChain extends MappingDriverChain
 {
-    /** @var MappingDriver */
-    private $mappingDriver;
-
-    /** @var RegistryInterface */
-    private $resourceRegistry;
+    private RegistryInterface $resourceRegistry;
 
     public function __construct(MappingDriver $mappingDriver, RegistryInterface $resourceRegistry)
     {
-        $this->mappingDriver = $mappingDriver;
         $this->resourceRegistry = $resourceRegistry;
+
+        $this->setDefaultDriver($mappingDriver);
     }
 
     public function loadMetadataForClass($className, ClassMetadata $metadata): void
     {
-        $this->mappingDriver->loadMetadataForClass($className, $metadata);
+        parent::loadMetadataForClass($className, $metadata);
 
         $this->convertResourceMappedSuperclass($metadata);
-    }
-
-    public function getAllClassNames(): iterable
-    {
-        return $this->mappingDriver->getAllClassNames();
-    }
-
-    public function isTransient($className): bool
-    {
-        return $this->mappingDriver->isTransient($className);
     }
 
     private function convertResourceMappedSuperclass(ClassMetadata $metadata): void

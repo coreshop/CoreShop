@@ -22,8 +22,8 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    CoreShop\Bundle\ResourceBundle\Doctrine\ResourceMappingDriver:
+    CoreShop\Bundle\ResourceBundle\Doctrine\ResourceMappingDriverChain:
         decorates: 'doctrine.orm.default_metadata_driver'
         arguments:
-            - '@CoreShop\Bundle\ResourceBundle\Doctrine\ResourceMappingDriver.inner'
+            - '@CoreShop\Bundle\ResourceBundle\Doctrine\ResourceMappingDriverChain.inner'
             - '@coreshop.resource_registry'
