@@ -21,3 +21,9 @@ services:
     CoreShop\Bundle\ResourceBundle\EventListener\DeepCopyListener:
         tags:
             - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\ResourceBundle\Doctrine\ResourceMappingDriver:
+        decorates: 'doctrine.orm.default_metadata_driver'
+        arguments:
+            - '@CoreShop\Bundle\ResourceBundle\Doctrine\ResourceMappingDriver.inner'
+            - '@coreshop.resource_registry'

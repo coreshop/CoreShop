@@ -28,6 +28,7 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
     private string $sessionKeyName;
     private OrderRepositoryInterface $cartRepository;
     private StoreContextInterface $storeContext;
+    private ?OrderInterface $cart = null;
 
     public function __construct(
         SessionInterface $session,
@@ -43,6 +44,10 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
 
     public function getCart(): OrderInterface
     {
+        if (null !== $this->cart) {
+            return $this->cart;
+        }
+
         try {
             $store = $this->storeContext->getStore();
         } catch (StoreNotFoundException $exception) {
@@ -67,6 +72,8 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
 
             throw new CartNotFoundException('CoreShop was not able to find the cart in session');
         }
+
+        $this->cart = $cart;
 
         return $cart;
     }

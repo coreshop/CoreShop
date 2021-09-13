@@ -83,6 +83,7 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
             $controllerDefinition->addTag('controller.service_arguments');
 
             $container->setDefinition($controllerClass, $controllerDefinition);
+            $container->setAlias($controllerKey, $controllerClass)->setPublic(true);
         }
     }
 }
