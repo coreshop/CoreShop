@@ -147,7 +147,7 @@ coreshop.taxrulegroup.item = Class.create(coreshop.resource.item, {
                 xtype: 'actioncolumn',
                 width: 40,
                 tooltip: t('delete'),
-                iconCls: 'pimcore_icon_deletes',
+                iconCls: 'pimcore_icon_delete',
                 handler: function (grid, rowIndex) {
                     grid.getStore().removeAt(rowIndex);
                 }.bind(this)
