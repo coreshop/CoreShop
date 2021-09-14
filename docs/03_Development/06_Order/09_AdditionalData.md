@@ -3,10 +3,15 @@ Sometimes you need to implement additional information in your order (Besides th
 
 > **Note:** To add custom fields you need a custom checkout step.
 
-1. Create your custom brick and apply it to the classes:
+1. Create your custom brick in the admin panel: Settings->DataObjects->ObjectBricks->+
+Name it for example 'AdditionalField'. It will automatically generate the method GetAdditionalField in classes using this objectBrick.
+And apply it to the classes (click green +):
  - Cart (additionalData)
  - Order (additionalData)
  - Quote (additionalData)
+Add fields you need to your ObjectBrick. In our sample we use text input fields on Panel:
+ - SecretField.  Following methods are automatically generated: getSecretField, setSecretField
+ - SecondSecretField. Following methods are automatically generated: getSecondSecretField, setSecondSecretField
 
 2. Add fields to your custom checkout step (`createForm()`):
 
@@ -42,6 +47,13 @@ if ($form->isSubmitted()) {
 ```
 
 That's it - your additional data is now available in backend.
+You can access those values after reloading the page from DB:
+```php
+$secret = $cart->getAdditionalData()
+               ->getAdditionalField()
+               ->getSecretField();
+```
+
 If you want to display those fields in the overview, you need to add some JS:
 
 ```yaml
