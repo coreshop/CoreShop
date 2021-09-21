@@ -40,7 +40,7 @@
     "coreshop/storage-list": "^3.0",
     "coreshop/locale": "^3.0",
     "coreshop/workflow-bundle": "^3.0",
-    "pimcore/pimcore": "^10.0.0",
+    "pimcore/pimcore": "^10.1",
     "laminas/laminas-stdlib": "^3.3"
   },
   "require-dev": {

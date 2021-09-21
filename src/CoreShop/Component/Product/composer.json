@@ -29,7 +29,7 @@
     "coreshop/currency": "^3.0",
     "coreshop/rule": "^3.0",
     "coreshop/address": "^3.0",
-    "pimcore/pimcore": "^10.0.0"
+    "pimcore/pimcore": "^10.1"
   },
   "require-dev": {
     "phpstan/phpstan": "^0.12",

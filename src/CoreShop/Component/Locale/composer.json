@@ -24,7 +24,7 @@
     }
   ],
   "require": {
-    "pimcore/pimcore": "^10.0.0",
+    "pimcore/pimcore": "^10.1",
     "laminas/laminas-stdlib": "^3.3"
   },
   "require-dev": {

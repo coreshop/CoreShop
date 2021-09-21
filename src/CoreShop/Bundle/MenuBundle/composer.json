@@ -27,7 +27,7 @@
     "coreshop/registry": "^3.0",
     "coreshop/pimcore-bundle": "^3.0",
     "knplabs/knp-menu-bundle": "^3.0.0",
-    "pimcore/pimcore": "^10.0.0"
+    "pimcore/pimcore": "^10.1"
   },
   "require-dev": {
     "phpstan/phpstan": "^0.12",
