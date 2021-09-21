@@ -38,10 +38,12 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
          */
         Assert::isInstanceOf($item, OrderItemInterface::class);
 
-        $currentQuantity = $item->getQuantity();
+        $currentUnits = count($item->getUnits());
         $cleanTargetQuantity = $this->roundQuantity($item, $targetQuantity);
 
         $item->setQuantity($cleanTargetQuantity);
+
+        $targetUnits = (int)ceil($cleanTargetQuantity);
 
         if ($item->hasUnitDefinition()) {
             $item->setDefaultUnitQuantity($item->getUnitDefinition()->getConversionRate() * $item->getQuantity());
@@ -49,10 +51,10 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
             $item->setDefaultUnitQuantity($item->getQuantity());
         }
 
-        if ($targetQuantity < $currentQuantity) {
-            $this->decreaseUnitsNumber($item, $currentQuantity - $targetQuantity);
-        } elseif ($targetQuantity > $currentQuantity) {
-            $this->increaseUnitsNumber($item, $targetQuantity - $currentQuantity);
+        if ($targetUnits < $currentUnits) {
+            $this->decreaseUnitsNumber($item, $currentUnits - $targetUnits);
+        } elseif ($targetUnits > $currentUnits) {
+            $this->increaseUnitsNumber($item, $targetUnits - $currentUnits);
         }
     }
 
@@ -102,17 +104,17 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         return null;
     }
 
-    private function increaseUnitsNumber(OrderItemInterface $orderItem, float $increaseBy): void
+    private function increaseUnitsNumber(OrderItemInterface $orderItem, int $increaseBy): void
     {
-        for ($i = 0; $i < (int)$increaseBy; ++$i) {
+        for ($i = 0; $i < $increaseBy; ++$i) {
             $this->orderItemUnitFactory->createForItem($orderItem);
         }
     }
 
-    private function decreaseUnitsNumber(OrderItemInterface $orderItem, float $decreaseBy): void
+    private function decreaseUnitsNumber(OrderItemInterface $orderItem, int $decreaseBy): void
     {
-        foreach ($orderItem->getUnits() as $unit) {
-            if (0 >= (int)$decreaseBy--) {
+        foreach (array_reverse($orderItem->getUnits()) as $unit) {
+            if (0 >= $decreaseBy--) {
                 break;
             }
 

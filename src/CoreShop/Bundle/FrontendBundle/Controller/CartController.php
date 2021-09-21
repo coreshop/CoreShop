@@ -159,7 +159,7 @@ class CartController extends FrontendController
             return $this->redirect($redirect);
         }
 
-        $cartItem = $this->get('coreshop.factory.order_item')->createWithPurchasable($product, 0);
+        $cartItem = $this->get('coreshop.factory.order_item')->createWithPurchasable($product);
 
         $this->getQuantityModifer()->modify($cartItem, 1);
 

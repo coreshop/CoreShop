@@ -21,7 +21,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 interface OrderItemFactoryInterface extends FactoryInterface
 {
-    public function createWithCart(OrderInterface $cart, PurchasableInterface $purchasable, float $quantity = 1.0): OrderItemInterface;
+    public function createWithCart(OrderInterface $cart, PurchasableInterface $purchasable): OrderItemInterface;
 
-    public function createWithPurchasable(PurchasableInterface $purchasable, float $quantity = 1.0): OrderItemInterface;
+    public function createWithPurchasable(PurchasableInterface $purchasable): OrderItemInterface;
 }

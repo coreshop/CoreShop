@@ -115,7 +115,7 @@ class OrderEditController extends PimcoreController
                 ]);
             }
 
-            $cartItem = $orderItemFactory->createWithPurchasable($product, $quantity);
+            $cartItem = $orderItemFactory->createWithPurchasable($product);
 
             $commands[] = $this->createAddToCart($addToCartFactory, $cart, $cartItem);
         }

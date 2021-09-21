@@ -33,7 +33,7 @@ class TaxCollector implements TaxCollectorInterface
         $this->taxItemFactory = $taxItemFactory;
     }
 
-    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array
+    public function collectTaxes(TaxCalculatorInterface $taxCalculator, int $price, array $usedTaxes = []): array
     {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             $taxesAmount = $taxCalculator->getTaxesAmountAsArray($price);
@@ -48,7 +48,7 @@ class TaxCollector implements TaxCollectorInterface
         return $usedTaxes;
     }
 
-    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array
+    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, int $price, array $usedTaxes = []): array
     {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             $taxesAmount = $taxCalculator->getTaxesAmountFromGrossAsArray($price);
