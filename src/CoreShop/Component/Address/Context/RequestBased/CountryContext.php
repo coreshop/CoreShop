@@ -34,7 +34,7 @@ final class CountryContext implements CountryContextInterface
     public function getCountry(): CountryInterface
     {
         try {
-            return $this->getCountryForRequest($this->getMasterRequest());
+            return $this->getCountryForRequest($this->getMainRequest());
         } catch (\UnexpectedValueException $exception) {
             throw new CountryNotFoundException($exception);
         }
@@ -49,9 +49,9 @@ final class CountryContext implements CountryContextInterface
         return $country;
     }
 
-    private function getMasterRequest(): Request
+    private function getMainRequest(): Request
     {
-        $masterRequest = $this->requestStack->getMasterRequest();
+        $masterRequest = $this->requestStack->getMainRequest();
         if (null === $masterRequest) {
             throw new \UnexpectedValueException('There are not any requests on request stack');
         }
