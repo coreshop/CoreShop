@@ -44,7 +44,7 @@ final class ThemeContext implements ThemeContextInterface
 
     public function getTheme(): ?ThemeInterface
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
 
         if (!$request) {
             return null;

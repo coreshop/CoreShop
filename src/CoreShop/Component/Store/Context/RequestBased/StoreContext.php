@@ -34,7 +34,7 @@ final class StoreContext implements StoreContextInterface
     public function getStore(): StoreInterface
     {
         try {
-            return $this->getStoreForRequest($this->getMasterRequest());
+            return $this->getStoreForRequest($this->getMainRequest());
         } catch (\UnexpectedValueException $exception) {
             throw new StoreNotFoundException($exception);
         }
@@ -57,9 +57,9 @@ final class StoreContext implements StoreContextInterface
     /**
      * @return Request
      */
-    private function getMasterRequest(): Request
+    private function getMainRequest(): Request
     {
-        $masterRequest = $this->requestStack->getMasterRequest();
+        $masterRequest = $this->requestStack->getMainRequest();
         if (null === $masterRequest) {
             throw new \UnexpectedValueException('There are not any requests on request stack');
         }
