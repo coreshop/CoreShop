@@ -554,7 +554,7 @@ class Money extends DataObject\ClassDefinition\Data implements
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (is_numeric($data)) {
-            return (int) round((round($data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
+            return (int) round((round((float) $data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
         }
 
         return $data;
