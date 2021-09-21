@@ -33,12 +33,12 @@ class OrderItemFactory implements OrderItemFactoryInterface
         return $this->cartItemFactory->createNew();
     }
 
-    public function createWithCart(OrderInterface $cart, PurchasableInterface $purchasable, float $quantity = 1.0): OrderItemInterface
+    public function createWithCart(OrderInterface $cart, PurchasableInterface $purchasable): OrderItemInterface
     {
         $item = $this->cartItemFactory->createNew();
         $item->setKey(uniqid());
         $item->setParent($cart);
-        $item->setQuantity($quantity);
+        $item->setQuantity(0);
         $item->setProduct($purchasable);
         $item->setPublished(true);
 
@@ -47,11 +47,11 @@ class OrderItemFactory implements OrderItemFactoryInterface
         return $item;
     }
 
-    public function createWithPurchasable(PurchasableInterface $purchasable, float $quantity = 1.0): OrderItemInterface
+    public function createWithPurchasable(PurchasableInterface $purchasable): OrderItemInterface
     {
         $item = $this->cartItemFactory->createNew();
         $item->setKey(uniqid());
-        $item->setQuantity($quantity);
+        $item->setQuantity(0);
         $item->setProduct($purchasable);
         $item->setPublished(true);
 

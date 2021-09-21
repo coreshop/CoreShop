@@ -86,6 +86,9 @@ services:
     CoreShop\Component\Order\Distributor\IntegerDistributorInterface: '@CoreShop\Component\Order\Distributor\IntegerDistributor'
     CoreShop\Component\Order\Distributor\IntegerDistributor: ~
 
+    CoreShop\Component\Order\Distributor\FloatDistributorInterface: '@CoreShop\Component\Order\Distributor\FloatDistributor'
+    CoreShop\Component\Order\Distributor\FloatDistributor: ~
+
     CoreShop\Component\Order\Factory\AdjustmentFactoryInterface: '@CoreShop\Component\Order\Factory\AdjustmentFactory'
     CoreShop\Component\Order\Factory\AdjustmentFactory:
         decorates: coreshop.factory.adjustment

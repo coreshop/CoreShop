@@ -16,6 +16,7 @@ namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
+use CoreShop\Component\Order\Distributor\FloatDistributorInterface;
 use CoreShop\Component\Order\Distributor\IntegerDistributorInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
@@ -29,7 +30,7 @@ use Pimcore\Model\DataObject\Fieldcollection;
 class CartRuleApplier implements CartRuleApplierInterface
 {
     private ProportionalIntegerDistributor $distributor;
-    private IntegerDistributorInterface $integerDistributor;
+    private FloatDistributorInterface $floatDistributor;
     private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
     private TaxCollectorInterface $taxCollector;
     private AddressProviderInterface $defaultAddressProvider;
@@ -37,14 +38,14 @@ class CartRuleApplier implements CartRuleApplierInterface
 
     public function __construct(
         ProportionalIntegerDistributor $distributor,
-        IntegerDistributorInterface $integerDistributor,
+        FloatDistributorInterface $floatDistributor,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
         TaxCollectorInterface $taxCollector,
         AddressProviderInterface $defaultAddressProvider,
         AdjustmentFactoryInterface $adjustmentFactory
     ) {
         $this->distributor = $distributor;
-        $this->integerDistributor = $integerDistributor;
+        $this->floatDistributor = $floatDistributor;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxCollector = $taxCollector;
         $this->defaultAddressProvider = $defaultAddressProvider;
@@ -157,8 +158,8 @@ class CartRuleApplier implements CartRuleApplierInterface
                 continue;
             }
 
-            $splitPromotionAmountNet = $this->integerDistributor->distribute($amountNet, (int)$item->getQuantity());
-            $splitPromotionAmountGross = $this->integerDistributor->distribute($amountGross, (int)$item->getQuantity());
+            $splitPromotionAmountNet = $this->floatDistributor->distribute($amountNet, $item->getQuantity());
+            $splitPromotionAmountGross = $this->floatDistributor->distribute($amountGross, $item->getQuantity());
 
             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
                 $item->getProduct(),

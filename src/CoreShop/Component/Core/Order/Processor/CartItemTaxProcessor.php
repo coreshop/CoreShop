@@ -16,29 +16,20 @@ namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
-use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
-use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
 final class CartItemTaxProcessor implements CartProcessorInterface
 {
-    private ProductTaxCalculatorFactoryInterface $productTaxFactory;
     private TaxCollectorInterface $taxCollector;
-    private AddressProviderInterface $defaultAddressProvider;
 
     public function __construct(
-        ProductTaxCalculatorFactoryInterface $productTaxFactory,
         TaxCollectorInterface $taxCollector,
-        AddressProviderInterface $defaultAddressProvider
     ) {
-        $this->productTaxFactory = $productTaxFactory;
         $this->taxCollector = $taxCollector;
-        $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
     public function process(OrderInterface $cart): void
@@ -54,35 +45,19 @@ final class CartItemTaxProcessor implements CartProcessorInterface
          * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct(),
-                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
-            );
-
             $fieldCollection = new Fieldcollection();
 
-            if ($taxCalculator instanceof TaxCalculatorInterface) {
-                foreach ($item->getUnits() as $unit) {
-                    $unitFieldCollection = new Fieldcollection();
-
-                    if ($store->getUseGrossPrice()) {
-                        $unitFieldCollection->setItems(
-                            $this->taxCollector->collectTaxesFromGross($taxCalculator, $unit->getTotal(true))
-                        );
-                    } else {
-                        $unitFieldCollection->setItems(
-                            $this->taxCollector->collectTaxes($taxCalculator, $unit->getTotal(false))
-                        );
-                    }
-
-                    $unit->setTaxes($unitFieldCollection);
-
-                    $fieldCollection->setItems(
-                        $this->taxCollector->mergeTaxes(
-                            $unitFieldCollection->getItems(),
-                            $fieldCollection->getItems()
-                        )
-                    );
+            foreach ($item->getUnits() as $unit) {
+                if (!$unit->getTaxes()) {
+                    continue;
                 }
+
+                $fieldCollection->setItems(
+                    $this->taxCollector->mergeTaxes(
+                        $unit->getTaxes()->getItems(),
+                        $fieldCollection->getItems()
+                    )
+                );
             }
 
             $item->setTaxes($fieldCollection);

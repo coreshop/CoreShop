@@ -12,7 +12,9 @@ services:
         arguments:
             - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
             - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
-            - '@CoreShop\Component\Order\Distributor\IntegerDistributorInterface'
+            - '@CoreShop\Component\Order\Distributor\FloatDistributorInterface'
+            - '@coreshop.repository.tax_rate'
+            - '@coreshop.factory.tax_item'
 
     CoreShop\Component\Core\Order\Processor\CartAdjustmentClearer:
         tags:
@@ -47,9 +49,7 @@ services:
 
     CoreShop\Component\Core\Order\Processor\CartItemTaxProcessor:
         arguments:
-            - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
             - '@CoreShop\Component\Taxation\Collector\TaxCollectorInterface'
-            - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
         tags:
             - { name: coreshop.cart_processor, priority: 500 }
 

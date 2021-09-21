@@ -74,11 +74,30 @@ final class CartContext implements Context
     {
         $cart = $this->cartContext->getCart();
 
-        $cartItem = $this->factory->createWithPurchasable($product, 0);
+        $cartItem = $this->factory->createWithPurchasable($product);
         $this->cartQuantityModifier->modify($cartItem, $quantity);
 
         $this->cartModifier->addToList($cart, $cartItem);
+        $this->cartManager->persistCart($cart);
+    }
 
+    /**
+     * @Given /^I change the quantity of (product "[^"]+") to (.*)$/
+     */
+    public function changeProductQuantityInCart(ProductInterface $product, float $quantity): void
+    {
+        $cart = $this->cartContext->getCart();
+        $foundItem = null;
+
+        foreach ($cart->getItems() as $cartItem) {
+            if ($cartItem->getProduct()->getId() === $product->getId()) {
+                $foundItem = $cartItem;
+            }
+        }
+
+        Assert::notNull($foundItem);
+
+        $this->cartQuantityModifier->modify($foundItem, $quantity);
         $this->cartManager->persistCart($cart);
     }
 
@@ -120,8 +139,9 @@ final class CartContext implements Context
          */
         $cartItem = $this->factory->createWithPurchasable($productAndUnit['product']);
         $cartItem->setUnitDefinition($productAndUnit['unit']);
-        $cartItem->setQuantity($quantity);
 
+
+        $this->cartQuantityModifier->modify($cartItem, $quantity);
         $this->cartModifier->addToList($cart, $cartItem);
 
         $this->cartManager->persistCart($cart);

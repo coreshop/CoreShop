@@ -69,7 +69,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
             $this->removeCartItem($cart, $cartItem);
         }
 
-        $item = $this->cartItemFactory->createWithCart($cart, $product, 1);
+        $item = $this->cartItemFactory->createWithCart($cart, $product);
         $item->setIsGiftItem(true);
 
         $adjustment = $this->adjustmentFactory->createWithData(
