@@ -19,6 +19,8 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
+use Webmozart\Assert\Assert;
 
 final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
 {
@@ -33,29 +35,10 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
     {
         $metadata = $eventArgs->getClassMetadata();
 
-        $this->convertToEntityIfNeeded($metadata);
-
         if (!$metadata->isMappedSuperclass) {
             $this->setAssociationMappings($metadata, $eventArgs->getEntityManager()->getConfiguration());
         } else {
             $this->unsetAssociationMappings($metadata);
-        }
-    }
-
-    private function convertToEntityIfNeeded(ClassMetadataInfo $metadata): void
-    {
-        if (false === $metadata->isMappedSuperclass) {
-            return;
-        }
-
-        try {
-            $resourceMetadata = $this->resourceRegistry->getByClass($metadata->getName());
-        } catch (\InvalidArgumentException $exception) {
-            return;
-        }
-
-        if ($metadata->getName() === $resourceMetadata->getClass('model')) {
-            $metadata->isMappedSuperclass = false;
         }
     }
 
@@ -65,8 +48,12 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
         if (!class_exists($class)) {
             return;
         }
+
+        $metadataDriver = $configuration->getMetadataDriverImpl();
+        Assert::isInstanceOf($metadataDriver, MappingDriver::class);
+
         foreach (class_parents($class) as $parent) {
-            if (false === in_array($parent, $configuration->getMetadataDriverImpl()->getAllClassNames())) {
+            if (false === in_array($parent, $metadataDriver->getAllClassNames(), true)) {
                 continue;
             }
 
@@ -79,7 +66,7 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
             $parentMetadata->wakeupReflection($this->getReflectionService());
 
             // Load Metadata
-            $configuration->getMetadataDriverImpl()->loadMetadataForClass($parent, $parentMetadata);
+            $metadataDriver->loadMetadataForClass($parent, $parentMetadata);
 
             if (false === $this->isResource($parentMetadata)) {
                 continue;

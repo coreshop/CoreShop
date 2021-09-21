@@ -27,7 +27,7 @@ final class DataObjectBatchListing implements Iterator, Countable
     private int $currentLoopLoaded = -1;
     private int $total = 0;
     private array $items = [];
-    private array $ids = [];
+    private ?array $ids = null;
 
     public function __construct(DataObject\Listing $list, int $batchSize)
     {
@@ -112,6 +112,10 @@ final class DataObjectBatchListing implements Iterator, Countable
 
             for ($i = 0; $i < $this->batchSize; $i++) {
                 $idOffset = ($this->loop * $this->batchSize) + $i;
+
+                if (!array_key_exists($idOffset, $this->ids)) {
+                    break;
+                }
 
                 $itemId = $this->ids[$idOffset];
 
