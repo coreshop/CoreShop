@@ -90,22 +90,6 @@ interface OrderItemInterface extends
      */
     public function setTaxes(?Fieldcollection $taxes);
 
-    /**
-     * @return OrderItemUnitInterface[]
-     */
-    public function getUnits(): ?array;
-
-    /**
-     * @var OrderItemUnitInterface[] $units
-     */
-    public function setUnits(?array $units);
-
-    public function hasUnit(OrderItemUnitInterface $itemUnit): bool;
-
-    public function addUnit(OrderItemUnitInterface $itemUnit): void;
-
-    public function removeUnit(OrderItemUnitInterface $itemUnit): void;
-
     public function setConvertedItemWholesalePrice(int $convertedItemWholesalePrice);
 
     public function getConvertedCustomItemPrice(): int;

@@ -1,4 +1,4 @@
-@ui @cart @wip
+@ui @cart
 Feature: Changing quantity of a product in cart
 
     Background:
@@ -17,3 +17,8 @@ Feature: Changing quantity of a product in cart
         Given I see the summary of my cart
         When I change "TShirt" quantity to 20000
         Then I should see "TShirt" with quantity 20000 in my cart
+
+    Scenario: Increasing and decreasing cart quantity
+        Given I see the summary of my cart
+        When I change "TShirt" quantity to 5
+        When I change "TShirt" quantity to 1

@@ -158,54 +158,10 @@ class CartRuleApplier implements CartRuleApplierInterface
                 continue;
             }
 
-            $splitPromotionAmountNet = $this->floatDistributor->distribute($amountNet, $item->getQuantity());
-            $splitPromotionAmountGross = $this->floatDistributor->distribute($amountGross, $item->getQuantity());
-
             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
                 $item->getProduct(),
                 $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
             );
-
-            $i = 0;
-            foreach ($item->getUnits() as $unit) {
-                $promotionAmountNet = $splitPromotionAmountNet[$i];
-                $promotionAmountGross = $splitPromotionAmountGross[$i];
-
-                $i++;
-
-                if (0 === $promotionAmountNet) {
-                    continue;
-                }
-
-                $unit->addAdjustment($this->adjustmentFactory->createWithData(
-                    AdjustmentInterface::CART_PRICE_RULE,
-                    $cartPriceRuleItem->getCartPriceRule()->getName(),
-                    $positive ? $promotionAmountGross : (-1 * $promotionAmountGross),
-                    $positive ? $promotionAmountNet : (-1 * $promotionAmountNet)
-                ));
-
-                if ($taxCalculator instanceof TaxCalculatorInterface) {
-                    $taxItems = $unit->getTaxes() ?? new Fieldcollection();
-
-                    if ($withTax) {
-                        $taxItems->setItems(
-                            $this->taxCollector->collectTaxesFromGross(
-                                $taxCalculator,
-                                ($positive ? $promotionAmountGross : -1 * $promotionAmountGross),
-                                $taxItems->getItems()
-                            )
-                        );
-                    } else {
-                        $taxItems->setItems(
-                            $this->taxCollector->collectTaxes(
-                                $taxCalculator,
-                                ($positive ? $promotionAmountNet : -1 * $promotionAmountNet),
-                                $taxItems->getItems()
-                            )
-                        );
-                    }
-                }
-            }
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
                 $taxItems = $item->getTaxes() ?? new Fieldcollection();

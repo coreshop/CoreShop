@@ -75,43 +75,15 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             if ($store->getUseGrossPrice()) {
+                $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross((int)round($itemPrice * $quantity));
                 $totalTaxAmountArray = $taxCalculator->getTaxesAmountFromGrossAsArray((int)round($itemPrice * $quantity));
                 $itemPriceTax = $taxCalculator->getTaxesAmountFromGross($itemPrice);
                 $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemRetailPrice);
                 $itemDiscountTax = $taxCalculator->getTaxesAmountFromGross($itemDiscount);
                 $itemDiscountPriceTax = $taxCalculator->getTaxesAmountFromGross($itemDiscountPrice);
+                $taxes = $this->collectItemTaxes($totalTaxAmountArray);
 
-                $splitTaxes = [];
-
-                foreach ($totalTaxAmountArray as $taxId => $taxEntry) {
-                    $splitTaxes[$taxId] = $this->floatDistributor->distribute($taxEntry, $quantity);
-                }
-
-                $i = 0;
-                $totalTaxAmount = 0;
-
-                foreach ($cartItem->getUnits() as $unit) {
-                    $taxes = $this->collectTaxes($i, $splitTaxes);
-
-                    $unitTaxTotal = array_sum(array_map(static function(TaxItemInterface $taxItem) {
-                        return $taxItem->getAmount();
-                    }, $taxes));
-
-                    if (0 === $unitTaxTotal) {
-                        continue;
-                    }
-
-                    $unit->setSubtotal($itemPrice, true);
-                    $unit->setSubtotal($itemPrice - $unitTaxTotal, false);
-
-                    $unit->setTotal($itemPrice, true);
-                    $unit->setTotal($itemPrice - $unitTaxTotal, false);
-
-                    $unit->setTaxes(new Fieldcollection($taxes));
-
-                    $i++;
-                    $totalTaxAmount += $unitTaxTotal;
-                }
+                $cartItem->setTaxes(new Fieldcollection($taxes));
 
                 $cartItem->setTotal((int)round($itemPrice * $quantity), true);
                 $cartItem->setTotal($cartItem->getTotal(true) - $totalTaxAmount, false);
@@ -128,44 +100,15 @@ final class CartItemProcessor implements CartItemProcessorInterface
                 $cartItem->setItemDiscount($itemDiscount, true);
                 $cartItem->setItemDiscount($itemDiscount - $itemDiscountTax, false);
             } else {
+                $totalTaxAmount = $taxCalculator->getTaxesAmount((int)round($itemPrice * $quantity));
                 $totalTaxAmountArray = $taxCalculator->getTaxesAmountAsArray((int)round($itemPrice * $quantity));
                 $itemPriceTax = $taxCalculator->getTaxesAmount($itemPrice);
                 $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmount($itemRetailPrice);
                 $itemDiscountTax = $taxCalculator->getTaxesAmount($itemDiscount);
                 $itemDiscountPriceTax = $taxCalculator->getTaxesAmount($itemDiscountPrice);
+                $taxes = $this->collectItemTaxes($totalTaxAmountArray);
 
-                $splitTaxes = [];
-
-                foreach ($totalTaxAmountArray as $taxId => $taxEntry) {
-                    $splitTaxes[$taxId] = $this->floatDistributor->distribute($taxEntry, $quantity);
-                }
-
-                $i = 0;
-                $totalTaxAmount = 0;
-
-                foreach ($cartItem->getUnits() as $unit) {
-                    $taxes = $this->collectTaxes($i, $splitTaxes);
-
-                    $unitTaxTotal = array_sum(array_map(static function(TaxItemInterface $taxItem) {
-                        return $taxItem->getAmount();
-                    }, $taxes));
-
-                    if (0 === $unitTaxTotal) {
-                        continue;
-                    }
-
-                    $unit->setSubtotal($itemPrice + $unitTaxTotal, true);
-                    $unit->setSubtotal($itemPrice, false);
-
-                    $unit->setTotal($itemPrice + $unitTaxTotal, true);
-                    $unit->setTotal($itemPrice, false);
-
-                    $unit->setTaxes(new Fieldcollection($taxes));
-
-                    $i++;
-
-                    $totalTaxAmount += $unitTaxTotal;
-                }
+                $cartItem->setTaxes(new Fieldcollection($taxes));
 
                 $cartItem->setTotal((int)round($itemPrice * $quantity), false);
                 $cartItem->setTotal((int)round($itemPrice * $quantity) + $totalTaxAmount, true);
@@ -185,14 +128,6 @@ final class CartItemProcessor implements CartItemProcessorInterface
         } else {
             $cartItem->setTotal((int)round($itemPrice * $quantity), false);
             $cartItem->setTotal((int)round($itemPrice * $quantity), true);
-
-            foreach ($cartItem->getUnits() as $unit) {
-                $unit->setSubtotal($itemPrice, true);
-                $unit->setSubtotal($itemPrice, false);
-
-                $unit->setTotal($itemPrice, true);
-                $unit->setTotal($itemPrice, false);
-            }
 
             $cartItem->setItemPrice($itemPrice, true);
             $cartItem->setItemPrice($itemPrice, false);
@@ -239,6 +174,35 @@ final class CartItemProcessor implements CartItemProcessorInterface
                 $usedTaxes[$tax->getId()] = $item;
             } else {
                 $usedTaxes[$tax->getId()]->setAmount($usedTaxes[$tax->getId()]->getAmount() + $splittedTax[$i]);
+            }
+        }
+
+        return $usedTaxes;
+    }
+
+    protected function collectItemTaxes(array $taxes)
+    {
+        $usedTaxes = [];
+
+        foreach ($taxes as $taxId => $amount) {
+            $tax = $this->taxRateRepository->find($taxId);
+
+            if ($amount <= 0) {
+                continue;
+            }
+
+            if (!array_key_exists($tax->getId(), $usedTaxes)) {
+                /**
+                 * @var TaxItemInterface $item
+                 */
+                $item = $this->taxItemFactory->createNew();
+                $item->setName($tax->getName());
+                $item->setRate($tax->getRate());
+                $item->setAmount($amount);
+
+                $usedTaxes[$tax->getId()] = $item;
+            } else {
+                $usedTaxes[$tax->getId()]->setAmount($usedTaxes[$tax->getId()]->getAmount() + $amount);
             }
         }
 

@@ -21,7 +21,6 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Model\OrderItemUnitInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -853,79 +852,6 @@ final class CartContext implements Context
                 $shipping,
                 $cart->getConvertedShipping(true)
             )
-        );
-    }
-
-    /**
-     * @Then /^the cart item with (product) should have one unit$/
-     * @Then /^the cart item with (product "[^"]+") should have one unit$/
-     * @Then /^the cart item with (product) should have (\d+) units$/
-     * @Then /^the cart item with (product "[^"]+") should have (\d+) units$/
-     */
-    public function theCartItemWithProductShouldHaveOneUnit(ProductInterface $product, int $units = 1): void
-    {
-        $cart = $this->cartContext->getCart();
-
-        /**
-         * @var OrderItemInterface $cartItem
-         */
-        $cartItem = $this->findCartItemByProduct($cart, $product);
-
-        Assert::eq(
-            count($cartItem->getUnits()),
-            $units
-        );
-    }
-
-    /**
-     * @Then /^the cart item unit at position (\d+) for (product) should have a total of (\d+) including tax$/
-     * @Then /^the cart item unit at position (\d+) for (product "[^"]+") should have a total of (\d+) including tax$/
-     */
-    public function theCartItemUnitAtPositionForProductShouldHaveATotalOfIncludingTax(int $unitPosition, ProductInterface $product, int $price): void
-    {
-        $cart = $this->cartContext->getCart();
-
-        /**
-         * @var OrderItemInterface $cartItem
-         */
-        $cartItem = $this->findCartItemByProduct($cart, $product);
-
-        Assert::minCount($cartItem->getUnits(), $unitPosition);
-
-        /**
-         * @var OrderItemUnitInterface $cartItemUnit
-         */
-        $cartItemUnit = $cartItem->getUnits()[$unitPosition];
-
-        Assert::eq(
-            $cartItemUnit->getTotal(true),
-            $price
-        );
-    }
-
-    /**
-     * @Then /^the cart item unit at position (\d+) for (product) should have a total of (\d+) excluding tax$/
-     * @Then /^the cart item unit at position (\d+) for (product "[^"]+") should have a total of (\d+) excluding tax$/
-     */
-    public function theCartItemUnitAtPositionForProductShouldHaveATotalOfExcludingTax(int $unitPosition, ProductInterface $product, int $price): void
-    {
-        $cart = $this->cartContext->getCart();
-
-        /**
-         * @var OrderItemInterface $cartItem
-         */
-        $cartItem = $this->findCartItemByProduct($cart, $product);
-
-        Assert::minCount($cartItem->getUnits(), $unitPosition);
-
-        /**
-         * @var OrderItemUnitInterface $cartItemUnit
-         */
-        $cartItemUnit = $cartItem->getUnits()[$unitPosition];
-
-        Assert::eq(
-            $cartItemUnit->getTotal(false),
-            $price
         );
     }
 
