@@ -19,20 +19,23 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use CoreShop\Component\Pimcore\Db\Db;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
+use Doctrine\DBAL\Connection;
 
 final class CartManager implements CartManagerInterface
 {
     private CartProcessorInterface $cartProcessor;
     private FolderCreationServiceInterface $folderCreationService;
+    private Connection $connection;
 
     public function __construct(
         CartProcessorInterface $cartProcessor,
-        FolderCreationServiceInterface $folderCreationService
+        FolderCreationServiceInterface $folderCreationService,
+        Connection $connection
     ) {
         $this->cartProcessor = $cartProcessor;
         $this->folderCreationService = $folderCreationService;
+        $this->connection = $connection;
     }
 
     public function persistCart(OrderInterface $cart): void
@@ -42,7 +45,7 @@ final class CartManager implements CartManagerInterface
             'path' => 'cart'
         ]);
 
-        Db::get()->transactional(function()  use ($cart, $cartsFolder) {
+        $this->connection->transactional(function()  use ($cart, $cartsFolder) {
             VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
                 $tempItems = $cart->getItems();
 
