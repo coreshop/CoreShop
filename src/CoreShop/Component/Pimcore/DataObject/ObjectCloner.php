@@ -25,7 +25,9 @@ final class ObjectCloner implements ObjectClonerInterface
         Service::loadAllObjectFields($object);
 
         $newObject = clone $object;
-        $newObject->setId(null);
+
+        $reflection = new \ReflectionClass($newObject);
+        $reflection->getProperty('o_id')->setValue(null, $newObject);
         $newObject->setParent($parent);
         $newObject->setKey($key);
 

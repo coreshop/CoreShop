@@ -18,6 +18,9 @@ use CoreShop\Component\Currency\Model\Currency as BaseCurrency;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Currency extends BaseCurrency implements CurrencyInterface
 {
     /**

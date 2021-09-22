@@ -48,9 +48,9 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
         return 0;
     }
 
-    public function getDiscount(PurchasableInterface $purchasable, array $context, int $convertedPrice): int
+    public function getDiscount(PurchasableInterface $purchasable, array $context, int $basePrice): int
     {
-        return $this->purchasableDiscountCalculator->getDiscount($purchasable, $context, $convertedPrice);
+        return $this->purchasableDiscountCalculator->getDiscount($purchasable, $context, $basePrice);
     }
 
     public function getDiscountPrice(PurchasableInterface $purchasable, array $context): int

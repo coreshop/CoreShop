@@ -14,9 +14,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Model;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ProductPriceRule extends AbstractPriceRule implements ProductPriceRuleInterface
 {
-    protected function createTranslation()
+    protected function createTranslation(): ProductPriceRuleTranslationInterface
     {
         return new ProductPriceRuleTranslation();
     }

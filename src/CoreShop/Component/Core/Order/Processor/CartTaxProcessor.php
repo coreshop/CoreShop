@@ -51,8 +51,11 @@ final class CartTaxProcessor implements CartProcessorInterface
          * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            $usedTaxes = $this->taxCollector->mergeTaxes($item->getTaxes() instanceof Fieldcollection ? $item->getTaxes()->getItems() : [],
-                $usedTaxes);
+            /** @psalm-suppress InvalidArgument */
+            $usedTaxes = $this->taxCollector->mergeTaxes(
+                $item->getTaxes() instanceof Fieldcollection ? $item->getTaxes()->getItems() : [],
+                $usedTaxes
+            );
         }
 
         $usedTaxes = $this->collectShippingTaxes($cart, $usedTaxes);

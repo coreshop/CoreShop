@@ -57,12 +57,12 @@ class UnitVolumeCalculator implements CalculatorInterface
 
         $price = $this->inner->calculateRangePrice($locatedRange, $subject, $originalPrice, $context);
 
-        if (!is_numeric($price) || $price === 0) {
+        if ($price === 0) {
             throw new NoPriceFoundException(__CLASS__);
         }
 
         if ($subject instanceof ProductInterface && is_numeric($subject->getItemQuantityFactor()) && $subject->getItemQuantityFactor() > 1) {
-            $price = $price / (int)$subject->getItemQuantityFactor();
+            $price = (int)($price / (int)$subject->getItemQuantityFactor());
         }
 
         return $price;
@@ -88,7 +88,7 @@ class UnitVolumeCalculator implements CalculatorInterface
 
         $cheapestRangePrice = null;
         $unitFilteredRanges = array_filter($ranges->toArray(),
-            function (CoreQuantityRangeInterface $range) use ($unitDefinition) {
+            static function (CoreQuantityRangeInterface $range) use ($unitDefinition) {
                 if (!$range->getUnitDefinition() instanceof ProductUnitDefinitionInterface) {
                     return false;
                 }

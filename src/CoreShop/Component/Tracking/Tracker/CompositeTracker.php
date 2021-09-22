@@ -82,10 +82,10 @@ class CompositeTracker implements TrackerInterface
     }
 
     /**
-     * @param callable $function
+     * @param string $function
      * @param array    $data
      */
-    private function compositeTrackerCall($function, array $data): void
+    private function compositeTrackerCall(string $function, array $data): void
     {
         /**
          * @var TrackerInterface $tracker

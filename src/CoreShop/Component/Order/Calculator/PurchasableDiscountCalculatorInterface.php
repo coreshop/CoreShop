@@ -18,5 +18,5 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface PurchasableDiscountCalculatorInterface
 {
-    public function getDiscount(PurchasableInterface $purchasable, array $context, int $convertedPrice): int;
+    public function getDiscount(PurchasableInterface $purchasable, array $context, int $basePrice): int;
 }

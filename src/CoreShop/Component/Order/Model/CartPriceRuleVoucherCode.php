@@ -18,6 +18,9 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
 {
     use TimestampableTrait;

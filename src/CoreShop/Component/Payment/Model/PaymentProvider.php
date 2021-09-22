@@ -20,6 +20,9 @@ use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 use Pimcore\Model\Asset;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class PaymentProvider extends AbstractResource implements PaymentProviderInterface
 {
     use TimestampableTrait;
@@ -127,13 +130,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         $this->logo = $logo;
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return PaymentProviderTranslationInterface
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): PaymentProviderTranslationInterface
     {
         /** @var PaymentProviderTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
@@ -141,7 +138,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return $translation;
     }
 
-    protected function createTranslation()
+    protected function createTranslation(): PaymentProviderTranslationInterface
     {
         return new PaymentProviderTranslation();
     }

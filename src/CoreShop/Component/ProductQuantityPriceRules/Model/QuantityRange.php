@@ -16,6 +16,9 @@ namespace CoreShop\Component\ProductQuantityPriceRules\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class QuantityRange extends AbstractResource implements QuantityRangeInterface
 {
     /**

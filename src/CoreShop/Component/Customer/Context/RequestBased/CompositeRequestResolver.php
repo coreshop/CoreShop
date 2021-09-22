@@ -23,6 +23,7 @@ final class CompositeRequestResolver implements RequestResolverInterface
 {
     /**
      * @var PriorityQueue|RequestResolverInterface[]
+     * @psalm-var PriorityQueue<RequestResolverInterface>
      */
     private PriorityQueue $requestResolvers;
 

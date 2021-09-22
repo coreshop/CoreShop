@@ -17,6 +17,9 @@ namespace CoreShop\Component\Configuration\Model;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Configuration implements ConfigurationInterface
 {
     use TimestampableTrait;

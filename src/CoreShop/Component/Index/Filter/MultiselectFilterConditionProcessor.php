@@ -34,7 +34,7 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
             'currentValues' => $currentFilter[$field],
             'values' => array_values($rawValues),
             'fieldName' => $field,
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
+            'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById((string)$condition->getQuantityUnit()) : null,
         ];
     }
 

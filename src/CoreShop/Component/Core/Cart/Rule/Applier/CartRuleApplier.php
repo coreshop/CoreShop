@@ -26,11 +26,11 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
+use Pimcore\Model\DataObject\Objectbrick\Data\AbstractData;
 
 class CartRuleApplier implements CartRuleApplierInterface
 {
     private ProportionalIntegerDistributor $distributor;
-    private FloatDistributorInterface $floatDistributor;
     private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
     private TaxCollectorInterface $taxCollector;
     private AddressProviderInterface $defaultAddressProvider;
@@ -38,14 +38,12 @@ class CartRuleApplier implements CartRuleApplierInterface
 
     public function __construct(
         ProportionalIntegerDistributor $distributor,
-        FloatDistributorInterface $floatDistributor,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
         TaxCollectorInterface $taxCollector,
         AddressProviderInterface $defaultAddressProvider,
         AdjustmentFactoryInterface $adjustmentFactory
     ) {
         $this->distributor = $distributor;
-        $this->floatDistributor = $floatDistributor;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxCollector = $taxCollector;
         $this->defaultAddressProvider = $defaultAddressProvider;
@@ -85,7 +83,6 @@ class CartRuleApplier implements CartRuleApplierInterface
 
             $itemDiscountGross = 0;
             $itemDiscountNet = 0;
-            $discountFloat = 0;
 
             if (0 === $applicableAmount) {
                 continue;
@@ -105,10 +102,10 @@ class CartRuleApplier implements CartRuleApplierInterface
             if ($taxCalculator instanceof TaxCalculatorInterface) {
                 if ($withTax) {
                     $discountFloat = $applicableAmount / (1 + $taxCalculator->getTotalRate() / 100);
-                    $itemDiscountNet = (int)$discountFloat;
+                    $itemDiscountNet = $discountFloat;
                 } else {
                     $discountFloat = $applicableAmount * (1 + ($taxCalculator->getTotalRate() / 100));
-                    $itemDiscountGross = (int)$discountFloat;
+                    $itemDiscountGross = $discountFloat;
                 }
             } else {
                 if ($withTax) {
@@ -132,10 +129,10 @@ class CartRuleApplier implements CartRuleApplierInterface
         //Add missing cents caused by rounding issues
         if ($totalDiscountFloat > ($withTax ? $totalDiscountNet : $totalDiscountGross)) {
             if ($withTax) {
-                $totalDiscountNet += (int)$totalDiscountFloat - $totalDiscountNet;
+                $totalDiscountNet += $totalDiscountFloat - $totalDiscountNet;
             }
             else {
-                $totalDiscountGross += (int)$totalDiscountFloat - $totalDiscountGross;
+                $totalDiscountGross += $totalDiscountFloat - $totalDiscountGross;
             }
         }
 
@@ -167,6 +164,7 @@ class CartRuleApplier implements CartRuleApplierInterface
                 $taxItems = $item->getTaxes() ?? new Fieldcollection();
 
                 if ($withTax) {
+                    /** @psalm-suppress InvalidArgument */
                     $taxItems->setItems(
                         $this->taxCollector->collectTaxesFromGross(
                             $taxCalculator,
@@ -175,6 +173,7 @@ class CartRuleApplier implements CartRuleApplierInterface
                         )
                     );
                 } else {
+                    /** @psalm-suppress InvalidArgument */
                     $taxItems->setItems(
                         $this->taxCollector->collectTaxes(
                             $taxCalculator,

@@ -25,21 +25,21 @@ class PimcoreLanguageProvider implements ExpressionFunctionProviderInterface
     public function getFunctions(): array
     {
         return array(
-            new ExpressionFunction('object', function ($arg) {
+            new ExpressionFunction('object', function (int $arg) {
                 return sprintf('\\Pimcore\\Model\\DataObject::getById(%s)', $arg);
-            }, static function (array $variables, $value) {
+            }, static function (array $variables, int $value) {
                 return DataObject::getById($value);
             }),
 
-            new ExpressionFunction('asset', function ($arg) {
+            new ExpressionFunction('asset', function (int $arg) {
                 return sprintf('\\Pimcore\\Model\\Asset::getById(%s)', $arg);
-            }, static function (array $variables, $value) {
+            }, static function (array $variables, int $value) {
                 return Asset::getById($value);
             }),
 
-            new ExpressionFunction('document', function ($arg) {
+            new ExpressionFunction('document', function (int $arg) {
                 return sprintf('\\Pimcore\\Model\\Document::getById(%s)', $arg);
-            }, static function (array $variables, $value) {
+            }, static function (array $variables, int $value) {
                 return Document::getById($value);
             }),
         );

@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore;
 
+use Pimcore\Model\Document\Email;
+
 class Mail extends \Pimcore\Mail
 {
     /**
@@ -43,9 +45,11 @@ class Mail extends \Pimcore\Mail
             }
         }
 
-        if ($this->getDocument()) {
+        $document = $this->getDocument();
+
+        if ($document instanceof Email) {
             //now add recipients from emailDocument, if given.
-            $storedRecipients = array_filter(explode(';', $this->getDocument()->getTo()));
+            $storedRecipients = array_filter(explode(';', $document->getTo()));
             foreach ($storedRecipients as $multiRecipient) {
                 $toRecipients[] = [$multiRecipient, ''];
             }

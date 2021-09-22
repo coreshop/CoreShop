@@ -36,10 +36,6 @@ class WishlistController extends FrontendController
 
         $quantity = (int) $request->get('quantity', 1);
 
-        if (!is_int($quantity)) {
-            $quantity = 1;
-        }
-
         /**
          * @var StorageListItem $wishlistItem
          */

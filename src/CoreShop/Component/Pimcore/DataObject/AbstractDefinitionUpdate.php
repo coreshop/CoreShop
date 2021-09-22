@@ -53,7 +53,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             false,
-            function (&$foundField, $index, &$parent) {
+            function (array &$foundField, int $index, array &$parent) {
                 unset($parent['childs'][$index]);
             }
         );
@@ -69,7 +69,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             false,
-            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
                 if ($index === 0) {
                     $index = 1;
                 }
@@ -88,7 +88,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             false,
-            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
                 $childs = $parent['childs'];
 
                 array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
@@ -103,7 +103,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             false,
-            function (&$foundField, $index, &$parent) use ($keyValues) {
+            function (array &$foundField, int $index, array &$parent) use ($keyValues) {
                 foreach ($keyValues as $key => $value) {
                     $foundField[$key] = $value;
                 }
@@ -116,7 +116,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             false,
-            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
                 $foundField = $jsonFieldDefinition;
             }
         );
@@ -127,7 +127,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             true,
-            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
                 if ($index === 0) {
                     $index = 1;
                 }
@@ -146,7 +146,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             true,
-            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
                 $childs = $parent['childs'];
 
                 array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
@@ -161,7 +161,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             true,
-            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+            function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
                 $foundField = $jsonFieldDefinition;
             }
         );
@@ -172,7 +172,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             true,
-            function (&$foundField, $index, &$parent) use ($keyValues) {
+            function (array &$foundField, int $index, array &$parent) use ($keyValues) {
                 foreach ($keyValues as $key => $value) {
                     $foundField[$key] = $value;
                 }
@@ -185,17 +185,17 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         $this->findField(
             $fieldName,
             true,
-            function (&$foundField, $index, &$parent) {
+            function (array &$foundField, int $index, array &$parent) {
                 unset($parent['childs'][$index]);
             }
         );
     }
 
-    protected function findField(string $fieldName, bool $layoutElement, \Closure $callback): void
+    protected function findField(string $fieldName, bool $layoutElement, callable $callback): void
     {
         $found = false;
 
-        $traverseFunction = function ($children) use (&$traverseFunction, $layoutElement, $fieldName, $callback, &$found) {
+        $traverseFunction = static function (array $children) use (&$traverseFunction, $layoutElement, $fieldName, $callback, &$found): array {
             foreach ($children['childs'] as $index => &$child) {
                 $eligible = true;
 

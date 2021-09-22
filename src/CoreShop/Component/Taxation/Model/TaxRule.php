@@ -17,6 +17,9 @@ namespace CoreShop\Component\Taxation\Model;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class TaxRule extends AbstractResource implements TaxRuleInterface
 {
     use TimestampableTrait;

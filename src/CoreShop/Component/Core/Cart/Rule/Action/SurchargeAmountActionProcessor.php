@@ -73,7 +73,7 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
 
         Assert::isInstanceOf($currency, CurrencyInterface::class);
 
-        return (int)$this->moneyConverter->convert($amount, $currency->getIsoCode(),
+        return $this->moneyConverter->convert($amount, $currency->getIsoCode(),
             $cart->getCurrency()->getIsoCode());
     }
 }

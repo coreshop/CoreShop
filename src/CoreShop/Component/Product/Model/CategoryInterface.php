@@ -19,13 +19,13 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface CategoryInterface extends PimcoreModelInterface, SluggableInterface
 {
-    public function getName($language = null): ?string;
+    public function getName(?string $language = null): ?string;
 
-    public function setName(?string $name, $language = null);
+    public function setName(?string $name, ?string $language = null);
 
-    public function getDescription($language = null): ?string;
+    public function getDescription(?string $language = null): ?string;
 
-    public function setDescription(?string$description, $language = null);
+    public function setDescription(?string$description, ?string $language = null);
 
     public function getParentCategory(): ?CategoryInterface;
 

@@ -19,6 +19,9 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class TaxRate extends AbstractResource implements TaxRateInterface
 {
     use ToggleableTrait;
@@ -59,12 +62,12 @@ class TaxRate extends AbstractResource implements TaxRateInterface
         return sprintf('%s (%s)', $this->getName('en'), $this->getId());
     }
 
-    public function getName($language = null)
+    public function getName(?string $language = null)
     {
         return $this->getTranslation($language)->getName();
     }
 
-    public function setName($name, $language = null)
+    public function setName(string $name, ?string $language = null)
     {
         $this->getTranslation($language, false)->setName($name);
     }
@@ -79,21 +82,15 @@ class TaxRate extends AbstractResource implements TaxRateInterface
         $this->rate = $rate;
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return TaxRateTranslation
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): TaxRateTranslationInterface
     {
-        /** @var TaxRateTranslation $translation */
+        /** @var TaxRateTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
 
         return $translation;
     }
 
-    protected function createTranslation()
+    protected function createTranslation(): TaxRateTranslationInterface
     {
         return new TaxRateTranslation();
     }

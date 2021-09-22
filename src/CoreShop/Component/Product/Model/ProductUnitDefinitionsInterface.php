@@ -30,7 +30,7 @@ interface ProductUnitDefinitionsInterface extends ResourceInterface
     public function setProduct(ProductInterface $product);
 
     /**
-     * @return ProductUnitDefinitionInterface
+     * @return ProductUnitDefinitionInterface|null
      */
     public function getDefaultUnitDefinition();
 

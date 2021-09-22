@@ -35,14 +35,10 @@ class TaxCollector implements TaxCollectorInterface
 
     public function collectTaxes(TaxCalculatorInterface $taxCalculator, int $price, array $usedTaxes = []): array
     {
-        if ($taxCalculator instanceof TaxCalculatorInterface) {
-            $taxesAmount = $taxCalculator->getTaxesAmountAsArray($price);
+        $taxesAmount = $taxCalculator->getTaxesAmountAsArray($price);
 
-            if (is_array($taxesAmount)) {
-                foreach ($taxesAmount as $id => $amount) {
-                    $this->addTaxToArray($id, $amount, $usedTaxes);
-                }
-            }
+        foreach ($taxesAmount as $id => $amount) {
+            $this->addTaxToArray($id, $amount, $usedTaxes);
         }
 
         return $usedTaxes;
@@ -50,14 +46,10 @@ class TaxCollector implements TaxCollectorInterface
 
     public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, int $price, array $usedTaxes = []): array
     {
-        if ($taxCalculator instanceof TaxCalculatorInterface) {
-            $taxesAmount = $taxCalculator->getTaxesAmountFromGrossAsArray($price);
+        $taxesAmount = $taxCalculator->getTaxesAmountFromGrossAsArray($price);
 
-            if (is_array($taxesAmount)) {
-                foreach ($taxesAmount as $id => $amount) {
-                    $this->addTaxToArray($id, $amount, $usedTaxes);
-                }
-            }
+        foreach ($taxesAmount as $id => $amount) {
+            $this->addTaxToArray($id, $amount, $usedTaxes);
         }
 
         return $usedTaxes;
@@ -75,7 +67,7 @@ class TaxCollector implements TaxCollectorInterface
     private function addTaxToArray(int $taxId, int $amount, array &$usedTaxes): void
     {
         /**
-         * @var TaxRateInterface $tax
+         * @var TaxRateInterface|null $tax
          */
         $tax = $this->taxRateRepository->find($taxId);
 

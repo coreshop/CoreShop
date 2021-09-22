@@ -17,7 +17,7 @@ namespace CoreShop\Component\Resource\Model;
 interface ResourceInterface
 {
     /**
-     * @return int|string
+     * @return int|string|null
      */
     public function getId();
 

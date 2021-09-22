@@ -56,7 +56,11 @@ class CartPriceRuleVoucherCodeGenerator
             $code = $this->generateCode($lettersToUse, $generator->getLength(), $generator->getPrefix(), $generator->getSuffix(), $generatedVouchers);
 
             if ($generator->getHyphensOn() > 0) {
-                $code = implode('-', str_split($code, $generator->getHyphensOn()));
+                $hyphens = str_split($code, $generator->getHyphensOn());
+
+                if (false !== $hyphens) {
+                    $code = implode('-', $hyphens);
+                }
             }
 
             /**

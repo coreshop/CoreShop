@@ -18,6 +18,9 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use Payum\Core\Model\GatewayConfig as BaseGatewayConfig;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class GatewayConfig extends BaseGatewayConfig implements ResourceInterface
 {
     use SetValuesTrait;

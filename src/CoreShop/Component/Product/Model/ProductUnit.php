@@ -18,6 +18,9 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ProductUnit extends AbstractResource implements ProductUnitInterface
 {
     use TimestampableTrait;
@@ -31,19 +34,13 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
      */
     protected $id;
 
-    /**
-     * @var string
-     */
-    protected $name;
+    protected ?string $name = null;
 
     public function __construct()
     {
         $this->initializeTranslationsCollection();
     }
 
-    /**
-     * @param int $id
-     */
     public function setId(int $id)
     {
         $this->id = $id;
@@ -54,63 +51,57 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
         return $this->id;
     }
 
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getFullLabel($language = null)
+    public function getFullLabel(?string $language = null): ?string
     {
         return $this->getTranslation($language)->getFullLabel();
     }
 
-    public function setFullLabel($fullLabel, $language = null)
+    public function setFullLabel(string $fullLabel, ?string $language = null): void
     {
         $this->getTranslation($language, false)->setFullLabel($fullLabel);
     }
 
-    public function getFullPluralLabel($language = null)
+    public function getFullPluralLabel(?string $language = null): ?string
     {
         return $this->getTranslation($language)->getFullPluralLabel();
     }
 
-    public function setFullPluralLabel($fullPluralLabel, $language = null)
+    public function setFullPluralLabel(string $fullPluralLabel, ?string $language = null): void
     {
         $this->getTranslation($language, false)->setFullPluralLabel($fullPluralLabel);
     }
 
-    public function getShortLabel($language = null)
+    public function getShortLabel(?string $language = null): ?string
     {
         return $this->getTranslation($language)->getShortLabel();
     }
 
-    public function setShortLabel($shortLabel, $language = null)
+    public function setShortLabel(string $shortLabel, ?string $language = null): void
     {
         $this->getTranslation($language, false)->setShortLabel($shortLabel);
     }
 
-    public function getShortPluralLabel($language = null)
+    public function getShortPluralLabel(?string $language = null): ?string
     {
         return $this->getTranslation($language)->getShortPluralLabel();
     }
 
-    public function setShortPluralLabel($shortPluralLabel, $language = null)
+    public function setShortPluralLabel(string $shortPluralLabel, ?string $language = null): void
     {
         $this->getTranslation($language, false)->setShortPluralLabel($shortPluralLabel);
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return ProductUnitTranslationInterface
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): ProductUnitTranslationInterface
     {
         /** @var ProductUnitTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
@@ -118,15 +109,12 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
         return $translation;
     }
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         return sprintf('%s (%d)', $this->getName(), $this->getId());
     }
 
-    protected function createTranslation()
+    protected function createTranslation(): ProductUnitTranslationInterface
     {
         return new ProductUnitTranslation();
     }

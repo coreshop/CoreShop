@@ -16,8 +16,9 @@ namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
+use CoreShop\Component\Resource\Model\TranslationInterface;
 
-interface ProductUnitTranslationInterface extends ResourceInterface, TimestampableInterface
+interface ProductUnitTranslationInterface extends ResourceInterface, TimestampableInterface, TranslationInterface
 {
     /**
      * @return string

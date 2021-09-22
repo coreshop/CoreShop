@@ -18,6 +18,9 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Payment\Model\Payment as BasePayment;
 use Webmozart\Assert\Assert;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Payment extends BasePayment implements PaymentInterface
 {
     protected ?OrderInterface $order = null;

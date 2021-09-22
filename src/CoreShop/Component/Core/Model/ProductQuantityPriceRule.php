@@ -18,6 +18,9 @@ use \CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ProductQuantityPriceRule extends BaseProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
 {
     /**

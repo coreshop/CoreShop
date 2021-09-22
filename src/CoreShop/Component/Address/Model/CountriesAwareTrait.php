@@ -39,22 +39,22 @@ trait CountriesAwareTrait
         return !$this->countries->isEmpty();
     }
 
-    public function addCountry(CountryInterface $store)
+    public function addCountry(CountryInterface $country)
     {
-        if (!$this->hasCountry($store)) {
-            $this->countries->add($store);
+        if (!$this->hasCountry($country)) {
+            $this->countries->add($country);
         }
     }
 
-    public function removeCountry(CountryInterface $store)
+    public function removeCountry(CountryInterface $country)
     {
-        if ($this->hasCountry($store)) {
-            $this->countries->removeElement($store);
+        if ($this->hasCountry($country)) {
+            $this->countries->removeElement($country);
         }
     }
 
-    public function hasCountry(CountryInterface $store)
+    public function hasCountry(CountryInterface $country)
     {
-        return $this->countries->contains($store);
+        return $this->countries->contains($country);
     }
 }

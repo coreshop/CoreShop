@@ -98,7 +98,7 @@ interface OrderInterface extends
     public function getDiscount(bool $withTax = true): int;
 
     /**
-     * @return OrderItemInterface[]
+     * @return OrderItemInterface[]|null
      */
     public function getItems(): ?array;
 
@@ -169,9 +169,9 @@ interface OrderInterface extends
     public function getTaxes();
 
     /**
-     * @param Fieldcollection $taxes
+     * @param Fieldcollection|null $taxes
      */
-    public function setTaxes(Fieldcollection $taxes);
+    public function setTaxes(?Fieldcollection $taxes);
 
     public function getComment(): ?string;
 
@@ -182,7 +182,7 @@ interface OrderInterface extends
     public function setAdditionalData(?Objectbrick $additionalData);
 
     /**
-     * @return Fieldcollection
+     * @return Fieldcollection|null
      */
     public function getPriceRuleItems();
 

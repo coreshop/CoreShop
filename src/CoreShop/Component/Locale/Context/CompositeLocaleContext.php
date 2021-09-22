@@ -20,6 +20,7 @@ final class CompositeLocaleContext implements LocaleContextInterface
 {
     /**
      * @var PriorityQueue|LocaleContextInterface[]
+     * @psalm-var PriorityQueue<LocaleContextInterface>
      */
     private PriorityQueue $localeContexts;
 

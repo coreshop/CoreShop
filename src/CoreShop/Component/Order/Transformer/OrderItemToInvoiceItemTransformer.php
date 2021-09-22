@@ -37,63 +37,63 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     }
 
     public function transform(
-        OrderDocumentInterface $invoice,
+        OrderDocumentInterface $orderDocument,
         OrderItemInterface $orderItem,
-        OrderDocumentItemInterface $invoiceItem,
+        OrderDocumentItemInterface $documentItem,
         int $quantity,
         array $options = []
     ): OrderDocumentItemInterface
     {
         /**
-         * @var OrderInvoiceInterface     $invoice
+         * @var OrderInvoiceInterface     $orderDocument
          * @var OrderItemInterface        $orderItem
-         * @var OrderInvoiceItemInterface $invoiceItem
+         * @var OrderInvoiceItemInterface $documentItem
          */
         Assert::isInstanceOf($orderItem, OrderItemInterface::class);
-        Assert::isInstanceOf($invoice, OrderDocumentInterface::class);
-        Assert::isInstanceOf($invoiceItem, OrderInvoiceItemInterface::class);
+        Assert::isInstanceOf($orderDocument, OrderDocumentInterface::class);
+        Assert::isInstanceOf($documentItem, OrderInvoiceItemInterface::class);
 
         $this->eventDispatcher->dispatchPreEvent(
             'invoice_item',
-            $invoiceItem,
+            $documentItem,
             [
-                'invoice' => $invoice,
+                'invoice' => $orderDocument,
                 'order' => $orderItem->getOrder(),
                 'order_item' => $orderItem,
                 'options' => $options,
             ]
         );
 
-        $itemFolder = $this->folderCreationService->createFolderForResource($invoiceItem, ['prefix' => $invoice->getFullPath()]);
+        $itemFolder = $this->folderCreationService->createFolderForResource($documentItem, ['prefix' => $orderDocument->getFullPath()]);
 
-        $invoiceItem->setKey($orderItem->getKey());
-        $invoiceItem->setParent($itemFolder);
-        $invoiceItem->setPublished(true);
+        $documentItem->setKey($orderItem->getKey());
+        $documentItem->setParent($itemFolder);
+        $documentItem->setPublished(true);
 
-        $invoiceItem->setOrderItem($orderItem);
-        $invoiceItem->setQuantity($quantity);
+        $documentItem->setOrderItem($orderItem);
+        $documentItem->setQuantity($quantity);
 
-        $invoiceItem->setTotal((int)($orderItem->getItemPrice(true) * $quantity), true);
-        $invoiceItem->setTotal((int)($orderItem->getItemPrice(false) * $quantity), false);
+        $documentItem->setTotal((int)($orderItem->getItemPrice(true) * $quantity), true);
+        $documentItem->setTotal((int)($orderItem->getItemPrice(false) * $quantity), false);
 
-        $invoiceItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(true) * $quantity), true);
-        $invoiceItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(false) * $quantity), false);
+        $documentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(true) * $quantity), true);
+        $documentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(false) * $quantity), false);
 
-        VersionHelper::useVersioning(function () use ($invoiceItem) {
-            $invoiceItem->save();
+        VersionHelper::useVersioning(function () use ($documentItem) {
+            $documentItem->save();
         }, false);
 
         $this->eventDispatcher->dispatchPostEvent(
             'invoice_item',
-            $invoiceItem,
+            $documentItem,
             [
-                'invoice' => $invoice,
+                'invoice' => $orderDocument,
                 'order' => $orderItem->getOrder(),
                 'order_item' => $orderItem,
                 'options' => $options,
             ]
         );
 
-        return $invoiceItem;
+        return $documentItem;
     }
 }

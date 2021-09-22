@@ -16,6 +16,9 @@ namespace CoreShop\Component\Rule\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Action implements ActionInterface
 {
     use SetValuesTrait;

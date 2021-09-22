@@ -87,3 +87,7 @@ jobs:
         cp -f config/packages/stan/config.yaml config/packages/dev/config.yaml
         bin/console cache:clear --env=dev
         vendor/bin/phpstan analyse -c phpstan.neon src -l 3
+
+    - name: psalm on Components
+      run: |
+        vendor/bin/psalm src/CoreShop/Component

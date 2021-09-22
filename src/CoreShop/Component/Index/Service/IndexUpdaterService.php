@@ -33,9 +33,9 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
         $this->workerServiceRegistry = $workerServiceRegistry;
     }
 
-    public function updateIndices(IndexableInterface $subject, bool $isVersionEvent = false): void
+    public function updateIndices(IndexableInterface $subject, bool $isVersionChange = false): void
     {
-        $this->operationOnIndex($subject, 'update', $isVersionEvent);
+        $this->operationOnIndex($subject, 'update', $isVersionChange);
     }
 
     public function removeIndices(IndexableInterface $subject): void

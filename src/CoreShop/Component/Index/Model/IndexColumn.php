@@ -17,6 +17,9 @@ namespace CoreShop\Component\Index\Model;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class IndexColumn extends AbstractResource implements IndexColumnInterface
 {
     use TimestampableTrait;
@@ -104,9 +107,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
         return $this->objectKey;
     }
 
-    public function setObjectKey($objectKey)
+    public function setObjectKey($key)
     {
-        $this->objectKey = $objectKey;
+        $this->objectKey = $key;
 
         return $this;
     }

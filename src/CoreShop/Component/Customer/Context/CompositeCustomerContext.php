@@ -21,6 +21,7 @@ final class CompositeCustomerContext implements CustomerContextInterface
 {
     /**
      * @var PriorityQueue|CustomerContextInterface[]
+     * @psalm-var PriorityQueue<CustomerContextInterface>
      */
     private PriorityQueue $customerContexts;
 

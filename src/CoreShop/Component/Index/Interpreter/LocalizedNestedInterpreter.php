@@ -50,14 +50,12 @@ class LocalizedNestedInterpreter implements LocalizedInterpreterInterface
     {
         $this->assert($interpreterConfig);
 
-        $value = $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($language, $indexable, $config) {
+        return $this->loop($value, $interpreterConfig, static function (mixed $value, InterpreterInterface $interpreter, array $interpreterConfig) use ($language, $indexable, $config): mixed {
             if ($interpreter instanceof LocalizedInterpreterInterface) {
                 return $interpreter->interpretForLanguage($language, $value, $indexable, $config, $interpreterConfig);
             }
 
             return $value;
         });
-
-        return $value;
     }
 }

@@ -19,13 +19,5 @@ use CoreShop\Component\Product\Model\ProductInterface;
 
 interface ProductRetailPriceCalculatorInterface
 {
-    /**
-     * @param ProductInterface $subject
-     * @param array            $context
-     *
-     * @throws NoRetailPriceFoundException
-     *
-     * @return int
-     */
-    public function getRetailPrice(ProductInterface $subject, array $context): int;
+    public function getRetailPrice(ProductInterface $product, array $context): int;
 }

@@ -12,14 +12,12 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\Resource\Transformer;
+namespace CoreShop\Component\Shipping\Exception;
 
-interface ItemKeyTransformerInterface
+class NoShippingPriceFoundException extends \Exception
 {
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
-    public function transform(string $string): string;
+    public function __construct($calculatorClass, \Exception $previousException = null)
+    {
+        parent::__construct(sprintf('Price Calculator "%s" was not able to match a valid shipping price.', $calculatorClass), 0, $previousException);
+    }
 }

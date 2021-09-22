@@ -16,6 +16,9 @@ namespace CoreShop\Component\Shipping\Model;
 
 use CoreShop\Component\Rule\Model\RuleTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ShippingRule implements ShippingRuleInterface
 {
     use RuleTrait;

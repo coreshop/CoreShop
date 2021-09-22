@@ -19,6 +19,10 @@ use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeCartContext implements CartContextInterface
 {
+    /**
+     * @var PriorityQueue|CartContextInterface[]
+     * @psalm-var PriorityQueue<CartContextInterface>
+     */
     private PriorityQueue $cartContexts;
 
     public function __construct()

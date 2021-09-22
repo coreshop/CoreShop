@@ -83,7 +83,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
 
     public function getTaxesAmount(int $price): int
     {
-        return array_sum($this->getTaxesAmountAsArray($price));
+        return (int)array_sum($this->getTaxesAmountAsArray($price));
     }
 
     public function getTaxesAmountAsArray(int $price): array

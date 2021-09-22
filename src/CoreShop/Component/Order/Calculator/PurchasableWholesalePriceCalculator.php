@@ -29,7 +29,7 @@ class PurchasableWholesalePriceCalculator implements PurchasableWholesalePriceCa
         $this->currencyConverter = $currencyConverter;
     }
 
-    public function getPurchasableWholesalePrice(PurchasableInterface $subject, array $context): int
+    public function getPurchasableWholesalePrice(PurchasableInterface $purchasable, array $context): int
     {
         Assert::keyExists($context, 'currency');
         Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
@@ -39,7 +39,7 @@ class PurchasableWholesalePriceCalculator implements PurchasableWholesalePriceCa
          */
         $contextCurrency = $context['currency'];
 
-        $wholesalePrice = $subject->getWholesaleBuyingPrice();
+        $wholesalePrice = $purchasable->getWholesaleBuyingPrice();
 
         if (!$wholesalePrice) {
             throw new NoPurchasableWholesalePriceFoundException(__CLASS__);

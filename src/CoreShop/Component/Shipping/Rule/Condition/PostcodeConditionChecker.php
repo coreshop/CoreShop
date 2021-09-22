@@ -60,8 +60,8 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
                 $toText = preg_replace('/[0-9]+/', '', $toPart);
 
                 if ($fromText === $toText) {
-                    $fromNumber = preg_replace('/\D/', '', $fromPart);
-                    $toNumber = preg_replace('/\D/', '', $toPart);
+                    $fromNumber = (int)preg_replace('/\D/', '', $fromPart);
+                    $toNumber = (int)preg_replace('/\D/', '', $toPart);
 
                     if ($fromNumber < $toNumber) {
                         $postcodes = [];

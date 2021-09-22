@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ProductUnitDefinitionPrice extends \CoreShop\Component\Product\Model\ProductUnitDefinitionPrice implements ProductUnitDefinitionPriceInterface
 {
     /**

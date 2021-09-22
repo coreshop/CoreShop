@@ -19,6 +19,9 @@ use CoreShop\Component\Rule\Model\RuleTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class CartPriceRule implements CartPriceRuleInterface
 {
     use RuleTrait {
@@ -122,23 +125,17 @@ class CartPriceRule implements CartPriceRuleInterface
         return $this->voucherCodes->contains($cartPriceRuleVoucherCode);
     }
 
-    public function getLabel($language = null)
+    public function getLabel(?string $language = null)
     {
         return $this->getTranslation($language)->getLabel();
     }
 
-    public function setLabel($label, $language = null)
+    public function setLabel(string $label, ?string $language = null)
     {
         $this->getTranslation($language)->setLabel($label);
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return CartPriceRuleTranslationInterface
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): CartPriceRuleTranslationInterface
     {
         /** @var CartPriceRuleTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
@@ -146,7 +143,7 @@ class CartPriceRule implements CartPriceRuleInterface
         return $translation;
     }
 
-    protected function createTranslation()
+    protected function createTranslation(): CartPriceRuleTranslationInterface
     {
         return new CartPriceRuleTranslation();
     }

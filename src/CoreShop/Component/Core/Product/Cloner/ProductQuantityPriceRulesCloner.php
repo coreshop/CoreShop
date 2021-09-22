@@ -29,12 +29,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
         }
 
         $quantityPriceRules = $referenceProduct->getQuantityPriceRules();
-
-        if (!is_array($quantityPriceRules)) {
-            return;
-        }
-
-        $hasQuantityPriceRules = is_array($product->getQuantityPriceRules()) && count($product->getQuantityPriceRules()) > 0;
+        $hasQuantityPriceRules = count($quantityPriceRules) > 0;
 
         if ($hasQuantityPriceRules === true && $resetExistingData === false) {
             return;
@@ -42,7 +37,6 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
 
         $newQuantityPriceRules = [];
 
-        /** @var ProductQuantityPriceRuleInterface $quantityPriceRule */
         foreach ($quantityPriceRules as $quantityPriceRule) {
             $newQuantityPriceRules[] = $this->cloneAndReallocateRangeQuantityUnit($product, $quantityPriceRule);
         }
@@ -71,7 +65,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
             }
         }
 
-        $newQuantityPriceRule->setProduct($product->getId());
+        $newQuantityPriceRule->setProduct((int)$product->getId());
 
         $ranges = $newQuantityPriceRule->getRanges();
         $referenceRanges = $quantityPriceRule->getRanges();
@@ -116,11 +110,6 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
 
         /** @var ProductUnitDefinitionInterface $unitDefinition */
         foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $unitDefinition) {
-
-            if (!$unitDefinition instanceof ProductUnitDefinitionInterface) {
-                continue;
-            }
-
             if ($unitDefinition->getUnitName() === $unitName) {
                 return $unitDefinition;
             }

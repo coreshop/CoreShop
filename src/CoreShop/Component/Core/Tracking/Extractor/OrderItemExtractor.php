@@ -35,9 +35,6 @@ class OrderItemExtractor implements TrackingExtractorInterface
 
     public function updateMetadata($object, $data = []): array
     {
-        /**
-         * @var OrderItemInterface $object
-         */
         $product = $object->getProduct();
         $categories = [];
 
@@ -45,10 +42,10 @@ class OrderItemExtractor implements TrackingExtractorInterface
             $categories = $product->getCategories();
         }
 
-        $proposal = null;
+        $order = null;
 
         if ($object instanceof OrderItemInterface) {
-            $proposal = $object->getOrder();
+            $order = $object->getOrder();
         }
 
         return array_merge($data, [
@@ -58,7 +55,7 @@ class OrderItemExtractor implements TrackingExtractorInterface
             'category' => (is_array($categories) && count($categories) > 0) ? $categories[0]->getName() : '',
             'price' => $object->getItemPrice() / $this->decimalFactor,
             'quantity' => $object->getQuantity(),
-            'currency' => $proposal ? $proposal->getCurrency()->getIsoCode() : '',
+            'currency' => $order ? $order->getCurrency()->getIsoCode() : '',
         ]);
     }
 }

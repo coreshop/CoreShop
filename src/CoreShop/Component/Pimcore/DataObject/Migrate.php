@@ -24,6 +24,9 @@ use Pimcore\Model\DataObject\Objectbrick;
 use Pimcore\Tool;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 
+/**
+ * @psalm-suppress TypeDoesNotContainType,InternalMethod
+ */
 final class Migrate
 {
     /**

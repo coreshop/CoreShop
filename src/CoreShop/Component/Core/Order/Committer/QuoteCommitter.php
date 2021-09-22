@@ -73,6 +73,7 @@ class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
 
         /**
          * @var AddressInterface $shippingAddress
+         * @psalm-suppress InvalidArgument
          */
         $shippingAddress = $this->objectCloner->cloneObject(
             $originalShippingAddress,
@@ -82,6 +83,7 @@ class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         );
         /**
          * @var AddressInterface $invoiceAddress
+         * @psalm-suppress InvalidArgument
          */
         $invoiceAddress = $this->objectCloner->cloneObject(
             $order->getInvoiceAddress(),

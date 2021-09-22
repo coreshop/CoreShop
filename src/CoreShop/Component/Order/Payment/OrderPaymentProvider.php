@@ -16,7 +16,6 @@ namespace CoreShop\Component\Order\Payment;
 
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
-use CoreShop\Component\Order\Model\Payment;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -59,14 +58,10 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(new \DateTime());
         $payment->setCurrency($order->getCurrency());
-
+        $payment->setOrder($order);
 
         if ($order instanceof PaymentSettingsAwareInterface) {
             $payment->setDetails($order->getPaymentSettings() ?? []);
-        }
-
-        if ($payment instanceof OrderPaymentInterface) {
-            $payment->setOrder($order);
         }
 
         $description = $this->translator->trans(

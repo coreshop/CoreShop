@@ -44,14 +44,14 @@ final class ProductPriceRuleCalculator implements
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
-    public function getRetailPrice(ProductInterface $subject, array $context): int
+    public function getRetailPrice(ProductInterface $product, array $context): int
     {
         $price = null;
 
         /**
          * @var PriceRuleInterface[] $rules
          */
-        $rules = $this->validRulesFetcher->getValidRules($subject, $context);
+        $rules = $this->validRulesFetcher->getValidRules($product, $context);
 
         foreach ($rules as $rule) {
             /**
@@ -65,7 +65,7 @@ final class ProductPriceRuleCalculator implements
                 }
 
                 try {
-                    $actionPrice = $processor->getPrice($subject, $context, $action->getConfiguration());
+                    $actionPrice = $processor->getPrice($product, $context, $action->getConfiguration());
 
                     $price = $actionPrice;
                 } catch (NoRetailPriceFoundException $ex) {
@@ -85,14 +85,14 @@ final class ProductPriceRuleCalculator implements
         return $price;
     }
 
-    public function getDiscountPrice(ProductInterface $subject, array $context): int
+    public function getDiscountPrice(ProductInterface $product, array $context): int
     {
         $price = null;
 
         /**
          * @var PriceRuleInterface[] $rules
          */
-        $rules = $this->validRulesFetcher->getValidRules($subject, $context);
+        $rules = $this->validRulesFetcher->getValidRules($product, $context);
 
         foreach ($rules as $rule) {
             /**
@@ -106,7 +106,7 @@ final class ProductPriceRuleCalculator implements
                 }
 
                 try {
-                    $actionPrice = $processor->getDiscountPrice($subject, $context, $action->getConfiguration());
+                    $actionPrice = $processor->getDiscountPrice($product, $context, $action->getConfiguration());
                     $price = $actionPrice;
                 } catch (NoDiscountPriceFoundException $ex) {
                     //Silently ignore the error
@@ -125,14 +125,14 @@ final class ProductPriceRuleCalculator implements
         return $price;
     }
 
-    public function getDiscount(ProductInterface $subject, array $context, int $price): int
+    public function getDiscount(ProductInterface $product, array $context, int $price): int
     {
         $discount = 0;
 
         /**
          * @var PriceRuleInterface[] $rules
          */
-        $rules = $this->validRulesFetcher->getValidRules($subject, $context);
+        $rules = $this->validRulesFetcher->getValidRules($product, $context);
 
         if (empty($rules)) {
             return $discount;
@@ -146,7 +146,7 @@ final class ProductPriceRuleCalculator implements
                     continue;
                 }
 
-                $discount += $processor->getDiscount($subject, $price, $context, $action->getConfiguration());
+                $discount += $processor->getDiscount($product, $price, $context, $action->getConfiguration());
             }
 
             if ($rule->getStopPropagation()) {

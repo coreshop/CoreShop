@@ -20,6 +20,9 @@ use Payum\Core\Security\TokenInterface;
 use Payum\Core\Security\Util\Random;
 use Payum\Core\Storage\IdentityInterface;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class PaymentSecurityToken implements ResourceInterface, TokenInterface
 {
     use SetValuesTrait;
@@ -30,7 +33,7 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
     protected $hash;
 
     /**
-     * @var IdentityInterface
+     * @var mixed
      */
     protected $details;
 
@@ -67,11 +70,6 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
         $this->details = $details;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @return IdentityInterface|null
-     */
     public function getDetails()
     {
         return $this->details;

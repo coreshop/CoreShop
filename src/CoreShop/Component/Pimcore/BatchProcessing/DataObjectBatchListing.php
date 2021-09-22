@@ -81,6 +81,7 @@ final class DataObjectBatchListing implements Iterator, Countable
                     get_class($this->list)));
             }
 
+            /** @psalm-suppress InternalMethod */
             $this->total = $dao->getTotalCount();
         }
 
@@ -104,6 +105,7 @@ final class DataObjectBatchListing implements Iterator, Countable
                 );
             }
 
+            /** @psalm-suppress InternalMethod */
             $this->ids = $dao->loadIdList();
         }
 

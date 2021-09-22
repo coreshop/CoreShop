@@ -19,7 +19,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 interface ProductUnitDefinitionInterface extends ResourceInterface
 {
     /**
-     * @return ProductUnitInterface
+     * @return ProductUnitInterface|null
      */
     public function getUnit();
 

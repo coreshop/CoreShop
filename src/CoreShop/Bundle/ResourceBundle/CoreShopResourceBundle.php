@@ -86,16 +86,6 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
             }
         }
 
-        if (class_exists(Versions::class)) {
-            if (isset(Versions::VERSIONS[$bundleName])) {
-                return Versions::getVersion($bundleName);
-            }
-
-            if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
-                return Versions::getVersion('coreshop/core-shop');
-            }
-        }
-
         if (class_exists(Version::class)) {
             return Version::getVersion();
         }

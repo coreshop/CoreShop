@@ -48,10 +48,6 @@ final class CustomerAddressAllocator implements CustomerAddressAllocatorInterfac
 
     public function isOwnerOfAddress(CustomerInterface $customer, AddressInterface $address): bool
     {
-        if (!$customer instanceof AddressesAwareInterface) {
-            return false;
-        }
-
         return $customer->hasAddress($address);
     }
 }

@@ -36,12 +36,8 @@ class NestedInterpreter implements InterpreterInterface
     {
         $this->assert($interpreterConfig);
 
-        return $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($indexable, $config) {
-            if ($interpreter instanceof InterpreterInterface) {
-                return $interpreter->interpret($value, $indexable, $config, $interpreterConfig);
-            }
-
-            return $value;
+        return $this->loop($value, $interpreterConfig, function (mixed $value, InterpreterInterface $interpreter, array $interpreterConfig) use ($indexable, $config): mixed {
+            return $interpreter->interpret($value, $indexable, $config, $interpreterConfig);
         });
     }
 }

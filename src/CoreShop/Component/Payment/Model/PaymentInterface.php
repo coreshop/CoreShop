@@ -83,20 +83,11 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
      */
     public function getDescription();
 
-    /**
-     * @var string $description
-     */
-    public function setDescription($description);
+    public function setDescription(string $description);
 
-    /**
-     * @return object
-     */
-    public function getDetails();
+    public function getDetails(): array;
 
-    /**
-     * @var object|array $details
-     */
-    public function setDetails($details);
+    public function setDetails(array $details);
 
     /**
      * @return string

@@ -18,6 +18,9 @@ use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Store extends AbstractResource implements StoreInterface
 {
     use TimestampableTrait;

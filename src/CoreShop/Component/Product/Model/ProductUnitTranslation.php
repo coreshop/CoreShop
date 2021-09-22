@@ -17,6 +17,9 @@ namespace CoreShop\Component\Product\Model;
 use CoreShop\Component\Resource\Model\AbstractTranslation;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ProductUnitTranslation extends AbstractTranslation implements ProductUnitTranslationInterface
 {
     use TimestampableTrait;

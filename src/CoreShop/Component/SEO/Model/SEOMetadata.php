@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\SEO\Model;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class SEOMetadata implements SEOMetadataInterface
 {
     /**

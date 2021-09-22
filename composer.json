@@ -116,7 +116,8 @@
     "phpunit/phpunit": "^9.5",
     "robertfausk/behat-panther-extension": "^1.0",
     "symfony/panther": "^1.0",
-    "dbrekelmans/bdi": "^0.3.0"
+    "dbrekelmans/bdi": "^0.3.0",
+    "vimeo/psalm": "^4.10"
   },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."

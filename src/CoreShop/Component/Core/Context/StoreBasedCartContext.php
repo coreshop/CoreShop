@@ -59,7 +59,11 @@ final class StoreBasedCartContext implements CartContextInterface
         }
 
         if ($this->shopperContext->hasCustomer()) {
-            $this->setCustomerAndAddressOnCart($cart, $this->shopperContext->getCustomer());
+            /**
+             * @var CustomerInterface $customer
+             */
+            $customer = $this->shopperContext->getCustomer();
+            $this->setCustomerAndAddressOnCart($cart, $customer);
         }
 
         $this->cart = $cart;

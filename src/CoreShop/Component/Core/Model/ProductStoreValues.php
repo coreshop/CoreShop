@@ -19,6 +19,9 @@ use CoreShop\Component\Store\Model\StoreAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ProductStoreValues extends AbstractResource implements ProductStoreValuesInterface
 {
     use StoreAwareTrait;
@@ -60,7 +63,7 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
 
     public function getPrice()
     {
-        return (int) $this->price;
+        return $this->price;
     }
 
     public function setPrice(int $price)

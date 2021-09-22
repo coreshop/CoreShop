@@ -53,6 +53,7 @@ class VersionHelper
     {
         $latestVersion = $object->getLatestVersion();
         if ($latestVersion) {
+            /** @psalm-suppress InternalMethod */
             $latestObj = $latestVersion->loadData();
             if ($latestObj instanceof Concrete) {
                 $object = $latestObj;

@@ -22,7 +22,7 @@ interface RequestResolverInterface
     /**
      * @param Request $request
      *
-     * @return CountryInterface
+     * @return CountryInterface|null
      */
-    public function findCountry(Request $request): CountryInterface;
+    public function findCountry(Request $request): ?CountryInterface;
 }

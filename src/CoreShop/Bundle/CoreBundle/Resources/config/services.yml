@@ -37,9 +37,6 @@ services:
     _defaults:
         public: true
 
-    CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface: '@CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer'
-    CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer: ~
-
     CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider:
         arguments:
             - '@coreshop.repository.user'

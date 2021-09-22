@@ -17,6 +17,9 @@ namespace CoreShop\Component\Payment\Model;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Payment implements PaymentInterface
 {
     use SetValuesTrait;
@@ -47,10 +50,7 @@ class Payment implements PaymentInterface
      */
     protected $state = PaymentInterface::STATE_NEW;
 
-    /**
-     * @var array|object
-     */
-    protected $details = [];
+    protected array $details = [];
 
     /**
      * @var \DateTime
@@ -87,33 +87,21 @@ class Payment implements PaymentInterface
         $this->paymentProvider = $paymentProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotalAmount()
     {
         return $this->totalAmount;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotalAmount($totalAmount)
+    public function setTotalAmount($amount)
     {
-        $this->totalAmount = $totalAmount;
+        $this->totalAmount = $amount;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrencyCode()
     {
         return $this->currencyCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCurrencyCode($currencyCode)
     {
         $this->currencyCode = $currencyCode;
@@ -139,55 +127,32 @@ class Payment implements PaymentInterface
         $this->state = $state;
     }
 
-    /**
-     * @return object|array|null
-     */
-    public function getDetails()
+    public function getDetails(): array
     {
         return $this->details;
     }
 
-    public function setDetails($details)
+    public function setDetails(array $details)
     {
-        if ($details instanceof \Traversable) {
-            $details = iterator_to_array($details);
-        }
-
-        if (!is_array($details)) {
-            $details = [];
-        }
-
         $this->details = $details;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNumber()
     {
         return $this->number;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setNumber($number)
     {
         $this->number = $number;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return $this->description;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDescription($description)
+    public function setDescription(string $description)
     {
         $this->description = $description;
     }

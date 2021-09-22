@@ -154,11 +154,10 @@ final class CartItemProcessor implements CartItemProcessorInterface
     {
         $usedTaxes = [];
 
-        foreach ($taxes as $taxId => $splittedTax) {
+        foreach ($taxes as $taxId => $splitted) {
             $tax = $this->taxRateRepository->find($taxId);
-            $unitTaxes[$taxId] = $splittedTax[$i];
 
-            if ($splittedTax[$i] <= 0) {
+            if ($splitted[$i] <= 0) {
                 continue;
             }
 
@@ -169,11 +168,11 @@ final class CartItemProcessor implements CartItemProcessorInterface
                 $item = $this->taxItemFactory->createNew();
                 $item->setName($tax->getName());
                 $item->setRate($tax->getRate());
-                $item->setAmount($splittedTax[$i]);
+                $item->setAmount($splitted[$i]);
 
                 $usedTaxes[$tax->getId()] = $item;
             } else {
-                $usedTaxes[$tax->getId()]->setAmount($usedTaxes[$tax->getId()]->getAmount() + $splittedTax[$i]);
+                $usedTaxes[$tax->getId()]->setAmount($usedTaxes[$tax->getId()]->getAmount() + $splitted[$i]);
             }
         }
 

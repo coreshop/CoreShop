@@ -21,10 +21,6 @@ class DataLoader implements DataLoaderInterface
 {
     public function getDataForObject(DataObject\Concrete $data, array $loadedObjects = []): array
     {
-        if (!$data instanceof DataObject\AbstractObject) {
-            return [];
-        }
-
         $objectData = [];
         DataObject\Service::loadAllObjectFields($data);
 
@@ -39,13 +35,13 @@ class DataLoader implements DataLoaderInterface
 
             $fieldData = $data->$getter();
 
-            if ($def instanceof DataObject\ClassDefinition\Data\ManyToOneRelation || $def instanceof DataObject\ClassDefinition\Data\Href) {
+            if ($def instanceof DataObject\ClassDefinition\Data\ManyToOneRelation) {
                 if ($fieldData instanceof DataObject\Concrete) {
                     if (!in_array($fieldData->getId(), $loadedObjects)) {
                         $objectData[$key] = $this->getDataForObject($fieldData, $loadedObjects);
                     }
                 }
-            } elseif ($def instanceof DataObject\ClassDefinition\Data\ManyToManyRelation || $def instanceof DataObject\ClassDefinition\Data\Multihref) {
+            } elseif ($def instanceof DataObject\ClassDefinition\Data\ManyToManyRelation) {
                 $objectData[$key] = [];
 
                 if (!is_array($fieldData)) {

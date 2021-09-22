@@ -34,7 +34,7 @@ class QuoteController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        if (!$quote instanceof OrderInterface || !$quote->getSaleState() !== OrderSaleStates::STATE_QUOTE) {
+        if (!$quote instanceof OrderInterface || $quote->getSaleState() !== OrderSaleStates::STATE_QUOTE) {
             return $this->redirectToRoute('coreshop_index');
         }
 

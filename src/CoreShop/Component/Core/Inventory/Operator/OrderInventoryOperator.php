@@ -59,7 +59,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
                 continue;
             }
 
-            $product->setOnHold($product->getOnHold() + $orderItem->getDefaultUnitQuantity());
+            $product->setOnHold($product->getOnHold() + (int)ceil($orderItem->getDefaultUnitQuantity()));
             $this->productEntityManager->persist($product);
         }
 
@@ -81,7 +81,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
             }
 
             Assert::greaterThanEq(
-                ($product->getOnHold() - $orderItem->getDefaultUnitQuantity()),
+                ($product->getOnHold() - (int)ceil($orderItem->getDefaultUnitQuantity())),
                 0,
                 sprintf(
                     'Not enough units to decrease on hold quantity from the inventory of a product "%s".',
@@ -90,7 +90,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
             );
 
             Assert::greaterThanEq(
-                ($product->getOnHand() - $orderItem->getDefaultUnitQuantity()),
+                ($product->getOnHand() - (int)ceil($orderItem->getDefaultUnitQuantity())),
                 0,
                 sprintf(
                     'Not enough units to decrease on hand quantity from the inventory of a product "%s".',
@@ -98,8 +98,8 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
                 )
             );
 
-            $product->setOnHold($product->getOnHold() - $orderItem->getDefaultUnitQuantity());
-            $product->setOnHand($product->getOnHand() - $orderItem->getDefaultUnitQuantity());
+            $product->setOnHold($product->getOnHold() - (int)ceil($orderItem->getDefaultUnitQuantity()));
+            $product->setOnHand($product->getOnHand() - (int)ceil($orderItem->getDefaultUnitQuantity()));
             $this->productEntityManager->persist($product);
         }
 
@@ -121,14 +121,14 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
             }
 
             Assert::greaterThanEq(
-                ($product->getOnHold() - $orderItem->getDefaultUnitQuantity()),
+                ($product->getOnHold() - (int)ceil($orderItem->getDefaultUnitQuantity())),
                 0,
                 sprintf(
                     'Not enough units to decrease on hold quantity from the inventory of a product "%s".',
                     $product->getName()
                 )
             );
-            $product->setOnHold($product->getOnHold() - $orderItem->getDefaultUnitQuantity());
+            $product->setOnHold($product->getOnHold() - (int)ceil($orderItem->getDefaultUnitQuantity()));
             $this->productEntityManager->persist($product);
         }
 
@@ -149,7 +149,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
                 continue;
             }
 
-            $product->setOnHand($product->getOnHand() + $orderItem->getDefaultUnitQuantity());
+            $product->setOnHand($product->getOnHand() + (int)ceil($orderItem->getDefaultUnitQuantity()));
             $this->productEntityManager->persist($product);
         }
 

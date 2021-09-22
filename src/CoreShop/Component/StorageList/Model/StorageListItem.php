@@ -16,8 +16,8 @@ namespace CoreShop\Component\StorageList\Model;
 
 class StorageListItem implements StorageListItemInterface
 {
-    protected $quantity;
-    protected $product;
+    protected float $quantity = 0;
+    protected mixed $product;
 
     public function equals(StorageListItemInterface $storageListItem): bool
     {
@@ -46,7 +46,7 @@ class StorageListItem implements StorageListItemInterface
         return $this->quantity;
     }
 
-    public function setQuantity($quantity)
+    public function setQuantity(?float $quantity)
     {
         $this->quantity = $quantity;
     }

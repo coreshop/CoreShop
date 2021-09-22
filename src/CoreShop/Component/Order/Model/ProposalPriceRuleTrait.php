@@ -20,14 +20,14 @@ use Pimcore\Model\DataObject\Fieldcollection;
 trait ProposalPriceRuleTrait
 {
     /**
-     * @return ?Fieldcollection
+     * @return Fieldcollection|null
      */
     public function getPriceRuleItems()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    public function setPriceRuleItems(?Fieldcollection $priceRulesCollection)
+    public function setPriceRuleItems(?Fieldcollection $priceRuleItems)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -74,7 +74,9 @@ trait ProposalPriceRuleTrait
                 $items = new Fieldcollection();
             }
 
-            $items->add($priceRule);
+            if ($priceRule instanceof Fieldcollection\Data\AbstractData) {
+                $items->add($priceRule);
+            }
 
             $this->setPriceRules($items);
         }
@@ -141,14 +143,14 @@ trait ProposalPriceRuleTrait
     }
 
     public function hasCartPriceRule(
-        CartPriceRuleInterface $priceRule,
+        CartPriceRuleInterface $cartPriceRule,
         CartPriceRuleVoucherCodeInterface $voucherCode = null
     ): bool {
-        return null !== $this->getPriceRuleByCartPriceRule($priceRule, $voucherCode);
+        return null !== $this->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
     }
 
     public function getPriceRuleByCartPriceRule(
-        CartPriceRuleInterface $priceRule,
+        CartPriceRuleInterface $cartPriceRule,
         CartPriceRuleVoucherCodeInterface $voucherCode = null
     ): ?ProposalCartPriceRuleItemInterface {
         $items = $this->getPriceRuleItems();
@@ -163,7 +165,7 @@ trait ProposalPriceRuleTrait
                     continue;
                 }
 
-                if ($item->getCartPriceRule()->getId() === $priceRule->getId()) {
+                if ($item->getCartPriceRule()->getId() === $cartPriceRule->getId()) {
                     if (null === $voucherCode || $voucherCode->getCode() === $item->getVoucherCode()) {
                         return $item;
                     }

@@ -16,8 +16,9 @@ namespace CoreShop\Component\Payment\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
+use CoreShop\Component\Resource\Model\TranslationInterface;
 
-interface PaymentProviderTranslationInterface extends ResourceInterface, TimestampableInterface
+interface PaymentProviderTranslationInterface extends ResourceInterface, TimestampableInterface, TranslationInterface
 {
     /**
      * @return string

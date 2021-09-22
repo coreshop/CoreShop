@@ -19,10 +19,5 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface RequestResolverInterface
 {
-    /**
-     * @param Request $request
-     *
-     * @return CustomerInterface
-     */
     public function findCustomer(Request $request): CustomerInterface;
 }

@@ -18,6 +18,9 @@ use CoreShop\Component\Address\Model\CountriesAwareTrait;
 use CoreShop\Component\Store\Model\Store as BaseStore;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Store extends BaseStore implements StoreInterface
 {
     use CountriesAwareTrait;

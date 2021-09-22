@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
 
 class StorageList implements StorageListInterface
 {
-    protected $items;
+    protected array $items;
 
     public function __construct()
     {
@@ -83,6 +83,6 @@ class StorageList implements StorageListInterface
 
     public function hasItems(): bool
     {
-        return is_array($this->getItems()) && count($this->getItems()) > 0;
+        return count($this->items) > 0;
     }
 }

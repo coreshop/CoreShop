@@ -26,7 +26,7 @@ final class StoresConditionChecker extends AbstractConditionChecker
     public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         /**
-         * @var $cart \CoreShop\Component\Core\Model\OrderInterface
+         * @var \CoreShop\Component\Core\Model\OrderInterface $cart
          */
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 

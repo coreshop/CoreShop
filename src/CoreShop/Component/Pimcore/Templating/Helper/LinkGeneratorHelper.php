@@ -28,9 +28,9 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
         $this->linkGenerator = $linkGenerator;
     }
 
-    public function getPath($routeNameOrObject/*, $routeName*/, $params = [], $relative = false): string
+    public function getPath(mixed $nameOrObject/*, string $routeName*/, array $params = [], bool $relative = false): string
     {
-        list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
+        [$object, $routeName, $params, $relative] = $this->prepareParameters(func_get_args());
 
         return $this->linkGenerator->generate(
             $object,
@@ -40,9 +40,9 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
         );
     }
 
-    public function getUrl($routeNameOrObject/*, $routeName*/, $params = [], $schemeRelative = false): string
+    public function getUrl(mixed $nameOrObject/*, string $routeName*/, array $params = [], bool $schemeRelative = false): string
     {
-        list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
+        [$object, $routeName, $params, $relative] = $this->prepareParameters(func_get_args());
 
         return $this->linkGenerator->generate(
             $object,
@@ -52,12 +52,7 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
         );
     }
 
-    /**
-     * @param array $arguments
-     *
-     * @return array
-     */
-    protected function prepareParameters($arguments): array
+    protected function prepareParameters(array $arguments): array
     {
         $object = null;
         $routeName = null;

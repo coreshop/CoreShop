@@ -31,10 +31,6 @@ final class ValidProductQuantityPriceRuleFetcher implements ValidRulesFetcherInt
         $validRules = [];
         $rules = $product->getQuantityPriceRules();
 
-        if (!is_array($rules)) {
-            return [];
-        }
-
         foreach ($rules as $rule) {
             if (!$this->ruleValidationProcessor->isValid($product, $rule, $context)) {
                 continue;

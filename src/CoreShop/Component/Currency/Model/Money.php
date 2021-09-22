@@ -47,6 +47,6 @@ class Money
 
     public function __toString(): string
     {
-        return sprintf('%s%s', $this->value, $this->currency instanceof CurrencyInterface ? $this->currency->getIsoCode() : 'unknown currency');
+        return sprintf('%s%s', $this->value, $this->currency->getIsoCode());
     }
 }

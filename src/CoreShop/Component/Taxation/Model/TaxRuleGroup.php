@@ -20,6 +20,9 @@ use CoreShop\Component\Resource\Model\ToggleableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
 {
     use ToggleableTrait;

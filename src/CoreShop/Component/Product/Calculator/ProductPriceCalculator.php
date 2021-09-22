@@ -34,7 +34,7 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
         $this->discountCalculator = $discountCalculator;
     }
 
-    public function getPrice(ProductInterface $product, array $context, bool $includingDiscounts = false): int
+    public function getPrice(ProductInterface $product, array $context, bool $withDiscount = false): int
     {
         $retailPrice = $this->getRetailPrice($product, $context);
         $price = $retailPrice;
@@ -45,35 +45,35 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
             $price = $discountPrice;
         }
 
-        if ($includingDiscounts) {
+        if ($withDiscount) {
             $price -= $this->getDiscount($product, $context, $price);
         }
 
         return $price;
     }
 
-    public function getRetailPrice(ProductInterface $subject, array $context): int
+    public function getRetailPrice(ProductInterface $product, array $context): int
     {
         try {
-            return $this->retailPriceCalculator->getRetailPrice($subject, $context);
+            return $this->retailPriceCalculator->getRetailPrice($product, $context);
         } catch (NoRetailPriceFoundException $ex) {
         }
 
         return 0;
     }
 
-    public function getDiscountPrice(ProductInterface $subject, array $context): int
+    public function getDiscountPrice(ProductInterface $product, array $context): int
     {
         try {
-            return $this->discountPriceCalculator->getDiscountPrice($subject, $context);
+            return $this->discountPriceCalculator->getDiscountPrice($product, $context);
         } catch (NoDiscountPriceFoundException $ex) {
         }
 
         return 0;
     }
 
-    public function getDiscount(ProductInterface $subject, array $context, int $price): int
+    public function getDiscount(ProductInterface $product, array $context, int $price): int
     {
-        return $this->discountCalculator->getDiscount($subject, $context, $price);
+        return $this->discountCalculator->getDiscount($product, $context, $price);
     }
 }

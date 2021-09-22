@@ -39,6 +39,9 @@ trait ConvertedAdjustableTrait
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return Fieldcollection|null
+     */
     public function getConvertedAdjustmentItems()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -109,7 +112,9 @@ trait ConvertedAdjustableTrait
                 $items = new Fieldcollection();
             }
 
-            $items->add($adjustment);
+            if ($adjustment instanceof Fieldcollection\Data\AbstractData) {
+                $items->add($adjustment);
+            }
 
             $this->setConvertedAdjustmentItems($items);
 
