@@ -35,6 +35,7 @@ class ProductVariantUnitSolidifierController extends AdminController
 
     public function checkStatusAction(Request $request, int $objectId): Response
     {
+        /** @var DataObject\Concrete $object */
         $object = $this->getProductRepository()->find($objectId);
 
         if (!$object instanceof ProductInterface) {
@@ -47,10 +48,6 @@ class ProductVariantUnitSolidifierController extends AdminController
         $strategy = null;
         $errorStatus = false;
 
-        /**
-         * @var DataObject\Concrete $object
-         * @var ProductInterface $object
-         */
         $variants = $object->getChildren([AbstractObject::OBJECT_TYPE_VARIANT], true);
 
         if (count($variants) === 0) {
