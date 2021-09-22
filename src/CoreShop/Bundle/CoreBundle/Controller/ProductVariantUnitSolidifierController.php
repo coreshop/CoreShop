@@ -47,7 +47,10 @@ class ProductVariantUnitSolidifierController extends AdminController
         $strategy = null;
         $errorStatus = false;
 
-        /** @var DataObject\Concrete $object */
+        /**
+         * @var DataObject\Concrete $object
+         * @var ProductInterface $object
+         */
         $variants = $object->getChildren([AbstractObject::OBJECT_TYPE_VARIANT], true);
 
         if (count($variants) === 0) {
