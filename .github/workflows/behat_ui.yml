@@ -12,7 +12,7 @@ jobs:
       APP_ENV: "test"
       CORESHOP_TEST: 1
       PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
-      PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
+      PANTHER_EXTERNAL_BASE_URI: "https://localhost:9080/app_test.php"
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
       PANTHER_CHROME_DRIVER_BINARY: "/usr/bin/chromedriver"
       PIMCORE_KERNEL_CLASS: 'Kernel'
@@ -91,7 +91,9 @@ jobs:
       run: wget https://get.symfony.com/cli/installer -O - | bash
 
     - name: Run Symfony Webserver
-      run: ~/.symfony/bin/symfony server:start --port=9080 --dir=public --force-php-discovery --daemon
+      run: |
+        ~/.symfony/bin/symfony server:ca:install
+        ~/.symfony/bin/symfony server:start --port=9080 --dir=public --force-php-discovery --daemon
 
     - name: Run Behat
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
