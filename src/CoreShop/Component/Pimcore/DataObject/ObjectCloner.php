@@ -28,7 +28,7 @@ final class ObjectCloner implements ObjectClonerInterface
         $reflection = new \ReflectionClass($newObject);
         $property = $reflection->getProperty('o_id');
         $property->setAccessible(true);
-        $property->setValue(null, $newObject);
+        $property->setValue($newObject, null);
         $property->setAccessible(false);
 
         $newObject->setParent($parent);

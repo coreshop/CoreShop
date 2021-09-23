@@ -121,7 +121,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
         if (!array_key_exists($fieldName, $this->conditions)) {
             $this->conditions[$fieldName] = [];
-            return;
         }
 
         $this->conditions[$fieldName][] = $condition;
