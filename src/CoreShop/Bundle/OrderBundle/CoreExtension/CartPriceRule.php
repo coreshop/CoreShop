@@ -17,6 +17,9 @@ namespace CoreShop\Bundle\OrderBundle\CoreExtension;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class CartPriceRule extends Select
 {
     /**

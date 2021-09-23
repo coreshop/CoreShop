@@ -21,15 +21,15 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopUserExtension extends AbstractModelExtension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        //$this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
-        $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
-        $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
-        $this->registerStack('coreshop', $config['stack'], $container);
+        //$this->registerResources('coreshop', $configs['driver'], $configs['resources'], $container);
+        $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
+        $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
+        $this->registerStack('coreshop', $configs['stack'], $container);
 
         $loader->load('services.yml');
     }

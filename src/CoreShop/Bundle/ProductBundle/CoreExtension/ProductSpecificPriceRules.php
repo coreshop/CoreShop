@@ -28,6 +28,9 @@ use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class ProductSpecificPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
     Data\CustomVersionMarshalInterface

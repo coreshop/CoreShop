@@ -75,8 +75,10 @@ class ProductUnitDefinitionsController extends ResourceController
                 ? $productUnitDefinitions->getAdditionalUnitDefinitions()
                 : $productUnitDefinitions->getUnitDefinitions();
         } else {
-            if ($product instanceof Concrete && $product->getClass()->getAllowInherit() && $product->getParent() instanceof ProductInterface) {
-                $definitions = $this->getUnitDefinitionsForProduct($product->getParent(), $type);
+            $parent = $product->getParent();
+
+            if ($parent instanceof ProductInterface && $product instanceof Concrete && $product->getClass()->getAllowInherit()) {
+                $definitions = $this->getUnitDefinitionsForProduct($parent, $type);
             }
         }
 
@@ -90,6 +92,9 @@ class ProductUnitDefinitionsController extends ResourceController
         $modificationDate = $object->getModificationDate();
         $latestVersion = $object->getLatestVersion();
         if ($latestVersion) {
+            /**
+             * @psalm-suppress InternalMethod
+             */
             $latestObj = $latestVersion->loadData();
             if ($latestObj instanceof Concrete) {
                 $object = $latestObj;

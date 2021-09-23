@@ -21,24 +21,24 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopFrontendExtension extends AbstractModelExtension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
-        if (array_key_exists('pimcore_admin', $config)) {
-            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
         }
 
-        if (array_key_exists('controllers', $config)) {
-            $container->setParameter('coreshop.frontend.controllers', $config['controllers']);
+        if (array_key_exists('controllers', $configs)) {
+            $container->setParameter('coreshop.frontend.controllers', $configs['controllers']);
 
-            foreach ($config['controllers'] as $key => $value) {
+            foreach ($configs['controllers'] as $key => $value) {
                 $container->setParameter(sprintf('coreshop.frontend.controller.%s', $key), $value);
             }
         }
 
-        $container->setParameter('coreshop.frontend.view_bundle', $config['view_bundle']);
-        $container->setParameter('coreshop.frontend.view_suffix', $config['view_suffix']);
+        $container->setParameter('coreshop.frontend.view_bundle', $configs['view_bundle']);
+        $container->setParameter('coreshop.frontend.view_suffix', $configs['view_suffix']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');

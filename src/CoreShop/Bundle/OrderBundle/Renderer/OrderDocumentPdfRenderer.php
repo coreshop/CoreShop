@@ -80,7 +80,12 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
                 sprintf('coreshop.order.%s.wkhtml.options', $orderDocument::getDocumentType())
             );
 
-            return $this->renderer->fromString($content, $contentHeader, $contentFooter, ['options' => [$event->getOptions()]]);
+            return $this->renderer->fromString(
+                $content ?: '',
+                $contentHeader ?: '',
+                $contentFooter ?: '',
+                ['options' => [$event->getOptions()]]
+            );
         });
     }
 }

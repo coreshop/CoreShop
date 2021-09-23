@@ -22,9 +22,9 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class CoreShopPayumExtension extends AbstractModelExtension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $xmlLoader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
@@ -32,7 +32,7 @@ final class CoreShopPayumExtension extends AbstractModelExtension
         $loader->load('services.yml');
         $xmlLoader->load('payum.xml');
 
-        $container->setParameter('payum.template.layout', $config['template']['layout']);
-        $container->setParameter('payum.template.obtain_credit_card', $config['template']['obtain_credit_card']);
+        $container->setParameter('payum.template.layout', $configs['template']['layout']);
+        $container->setParameter('payum.template.obtain_credit_card', $configs['template']['obtain_credit_card']);
     }
 }

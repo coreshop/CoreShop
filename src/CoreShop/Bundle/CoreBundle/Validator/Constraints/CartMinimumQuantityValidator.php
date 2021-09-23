@@ -35,8 +35,8 @@ class CartMinimumQuantityValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint): void
     {
         /**
-         * @var OrderInterface               $value
-         * @var CartMinimumQuantityValidator $constraint
+         * @var OrderInterface      $value
+         * @var CartMinimumQuantity $constraint
          */
         Assert::isInstanceOf($value, OrderInterface::class);
         Assert::isInstanceOf($constraint, CartMinimumQuantity::class);

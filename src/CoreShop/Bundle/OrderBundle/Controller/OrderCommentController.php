@@ -84,6 +84,7 @@ class OrderCommentController extends PimcoreController
         $commentEntity = $objectNoteService->getNoteById($commentId);
 
         if ($commentEntity instanceof Note) {
+            /** @psalm-suppress InternalMethod */
             $commentEntity->getDao()->delete();
         }
 

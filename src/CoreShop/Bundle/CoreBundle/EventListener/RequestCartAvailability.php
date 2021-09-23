@@ -43,7 +43,7 @@ final class RequestCartAvailability
 
     public function checkCartAvailability(RequestEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

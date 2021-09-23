@@ -24,15 +24,17 @@ class LockingStorage extends DoctrineStorage
     protected function doFind($id)
     {
         $objectManager = $this->objectManager;
+        /** @psalm-var class-string $modelClass */
+        $modelClass = $this->modelClass;
 
         if ($objectManager instanceof EntityManager) {
             if (
-                in_array(PaymentInterface::class, class_implements($this->modelClass), true) &&
+                in_array(PaymentInterface::class, class_implements($modelClass), true) &&
                 $objectManager->getConnection()->isTransactionActive()
             ) {
                 $objectManager->getConnection()->setAutoCommit(false);
 
-                return $objectManager->find($this->modelClass, $id, LockMode::PESSIMISTIC_WRITE);
+                return $objectManager->find($modelClass, $id, LockMode::PESSIMISTIC_WRITE);
             }
         }
 

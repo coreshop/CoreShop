@@ -57,7 +57,7 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
     /**
      * @var array
      */
-    public $getterConfig;
+    public $getterConfig = [];
 
     /**
      * @var string
@@ -72,7 +72,7 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
     /**
      * @var array
      */
-    public $interpreterConfig;
+    public $interpreterConfig = [];
 
     /**
      * @var string
@@ -82,7 +82,7 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
     /**
      * @var array
      */
-    public $configuration;
+    public $configuration = [];
 
     /**
      * @var IndexInterface

@@ -18,8 +18,14 @@ use CoreShop\Bundle\OrderBundle\DTO\AddMultipleToCartInterface;
 
 class AddMultipleToCartFactory implements AddMultipleToCartFactoryInterface
 {
+    /**
+     * @psalm-var class-string
+     */
     protected string $addMultipleToCartClass;
 
+    /**
+     * @psalm-param class-string $addMultipleToCartClass
+     */
     public function __construct(string $addMultipleToCartClass)
     {
         $this->addMultipleToCartClass = $addMultipleToCartClass;

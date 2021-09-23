@@ -16,6 +16,9 @@ namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class CountryMultiselect extends Multiselect
 {
     public $fieldtype = 'coreShopCountryMultiselect';

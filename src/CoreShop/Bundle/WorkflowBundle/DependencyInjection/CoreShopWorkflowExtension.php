@@ -21,9 +21,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 final class CoreShopWorkflowExtension extends Extension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.yml');
@@ -33,8 +33,8 @@ final class CoreShopWorkflowExtension extends Extension
 
         $coreShopStateMachines = [];
 
-        if (is_array($config['state_machine'])) {
-            foreach ($config['state_machine'] as $stateMachineName => $stateMachineConfig) {
+        if (is_array($configs['state_machine'])) {
+            foreach ($configs['state_machine'] as $stateMachineName => $stateMachineConfig) {
                 $coreShopStateMachines[] = $stateMachineName;
 
                 $data = [];

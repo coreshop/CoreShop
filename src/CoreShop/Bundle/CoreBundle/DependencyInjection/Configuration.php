@@ -27,6 +27,7 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_core');
+        /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
@@ -132,7 +133,7 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->validate()
-                                ->ifTrue(function ($array) {
+                                ->ifTrue(function (array $array) {
                                     $notValid = false;
                                     foreach ($array as $key => $value) {
                                         if ($key === 'cart') {

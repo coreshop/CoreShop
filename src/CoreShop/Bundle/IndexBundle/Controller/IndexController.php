@@ -199,10 +199,12 @@ class IndexController extends ResourceController
 
     protected function getLocalizedFields(DataObject\ClassDefinition\Data\Localizedfields $field): array
     {
-        $result['localizedfields'] = [
-            'nodeLabel' => 'localizedfields',
-            'nodeType' => 'localizedfields',
-            'childs' => [],
+        $result = [
+            'localizedfields' => [
+                'nodeLabel' => 'localizedfields',
+                'nodeType' => 'localizedfields',
+                'childs' => [],
+            ]
         ];
 
         $localizedFields = $field->getFieldDefinitions();
@@ -307,10 +309,6 @@ class IndexController extends ResourceController
 
         $relations = $config->getRelations();
 
-        if (!is_array($relations)) {
-            return $result;
-        }
-
         foreach ($relations as $relation) {
             if ($relation instanceof DataObject\Classificationstore\KeyGroupRelation) {
                 $keyId = $relation->getKeyId();
@@ -363,16 +361,25 @@ class IndexController extends ResourceController
         return $definition;
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getInterpreterTypes(): array
     {
         return $this->container->getParameter('coreshop.index.interpreters');
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getGetterTypes(): array
     {
         return $this->container->getParameter('coreshop.index.getters');
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getWorkerTypes(): array
     {
         return $this->container->getParameter('coreshop.index.workers');

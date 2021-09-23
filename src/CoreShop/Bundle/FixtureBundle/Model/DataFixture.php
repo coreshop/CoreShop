@@ -17,6 +17,9 @@ namespace CoreShop\Bundle\FixtureBundle\Model;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class DataFixture extends AbstractResource implements DataFixtureInterface
 {
     use SetValuesTrait;

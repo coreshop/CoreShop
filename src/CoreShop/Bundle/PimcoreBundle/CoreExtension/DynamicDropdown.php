@@ -17,6 +17,9 @@ namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Element;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement, InvalidArgument, MissingConstructor
+ */
 class DynamicDropdown extends DataObject\ClassDefinition\Data\ManyToOneRelation
 {
     use DynamicDropdownTrait;

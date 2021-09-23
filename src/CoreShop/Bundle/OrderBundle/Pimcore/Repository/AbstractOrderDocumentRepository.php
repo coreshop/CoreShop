@@ -22,7 +22,7 @@ abstract class AbstractOrderDocumentRepository extends PimcoreRepository impleme
 {
     public function getDocuments(OrderInterface $order): array
     {
-        return $this->findBy(['order__id' => $order->getId()], [['key' => 'o_id', 'direction' => 'DESC']]);
+        return $this->findBy(['order__id' => $order->getId()], ['o_id' => 'DESC']);
     }
 
     public function getDocumentsInState(OrderInterface $order, string $state): array

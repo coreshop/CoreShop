@@ -67,7 +67,7 @@ class GridController extends AdminController
     public function applyGridAction(Request $request): Response
     {
         $requestedIds = $request->request->get('ids');
-        $actionId = $request->request->get('actionId');
+        $actionId = (string)$request->request->get('actionId');
 
         if (is_string($requestedIds)) {
             $requestedIds = json_decode($requestedIds);

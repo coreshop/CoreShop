@@ -18,15 +18,8 @@ use Symfony\Component\Validator\Constraint;
 
 final class UniqueCustomer extends Constraint
 {
-    /**
-     * @var string
-     */
-    public $messageEmail;
-
-    /**
-     * @var string
-     */
-    public $messageUsername;
+    public string $messageEmail;
+    public string $messageUsername;
 
     public function validatedBy(): string
     {

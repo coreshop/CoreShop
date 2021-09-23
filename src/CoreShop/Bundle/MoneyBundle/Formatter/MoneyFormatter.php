@@ -26,16 +26,16 @@ final class MoneyFormatter implements MoneyFormatterInterface
         $this->decimalFactor = $decimalFactor;
     }
 
-    public function format(int $amount, string $currency, string $locale = 'en', int $fraction = 2, int $factor = null): string
+    public function format(int $amount, string $currencyCode, string $locale = 'en', int $fraction = 2, int $factor = null): string
     {
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
         $formatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, $fraction);
 
-        $result = $formatter->formatCurrency(abs($amount / ($factor ?? $this->decimalFactor)), $currency);
+        $result = $formatter->formatCurrency(abs($amount / ($factor ?? $this->decimalFactor)), $currencyCode);
         Assert::notSame(
             false,
             $result,
-            sprintf('The amount "%s" of type %s cannot be formatted to currency "%s".', $amount, gettype($amount), $currency)
+            sprintf('The amount "%s" of type %s cannot be formatted to currency "%s".', $amount, gettype($amount), $currencyCode)
         );
 
         return $amount >= 0 ? $result : '-' . $result;

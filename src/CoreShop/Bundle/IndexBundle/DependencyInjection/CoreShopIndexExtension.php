@@ -40,16 +40,16 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopIndexExtension extends AbstractModelExtension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
 
         $bundles = $container->getParameter('kernel.bundles');
 
-        $container->setParameter('coreshop.index.mapping_types', array_keys($config['mapping_types']));
+        $container->setParameter('coreshop.index.mapping_types', array_keys($configs['mapping_types']));
 
         $loader->load('services.yml');
 
@@ -66,7 +66,7 @@ final class CoreShopIndexExtension extends AbstractModelExtension
             $loader->load('services/data_hub.yml');
         }
 
-        $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
 
         $container
             ->registerForAutoconfiguration(DynamicRendererInterface::class)

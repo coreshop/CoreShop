@@ -31,7 +31,6 @@ class ActiveValidator extends ConstraintValidator
             if (!$value->getActive()) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ value }}', $this->formatValue($value))
-                    ->setCode(Active::IS_NOT_ENABLED_ERROR)
                     ->addViolation();
             }
         } else {

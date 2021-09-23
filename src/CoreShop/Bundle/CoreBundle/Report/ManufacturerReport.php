@@ -102,7 +102,7 @@ class ManufacturerReport implements ReportInterface
 
         $results = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         $data = [];
         foreach ($results as $result) {

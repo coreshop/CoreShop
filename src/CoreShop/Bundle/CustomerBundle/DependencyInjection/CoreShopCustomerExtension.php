@@ -25,17 +25,17 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopCustomerExtension extends AbstractModelExtension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        //$this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
-        $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
-        $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
-        $this->registerStack('coreshop', $config['stack'], $container);
+        //$this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
+        $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
+        $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
+        $this->registerStack('coreshop', $configs['stack'], $container);
 
-        $container->setParameter('coreshop.customer.security.login_identifier', $config['login_identifier']);
+        $container->setParameter('coreshop.customer.security.login_identifier', $configs['login_identifier']);
 
         $loader->load('services.yml');
 

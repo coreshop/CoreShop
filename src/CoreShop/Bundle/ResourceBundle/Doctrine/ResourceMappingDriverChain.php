@@ -37,6 +37,9 @@ final class ResourceMappingDriverChain extends MappingDriverChain
         $this->convertResourceMappedSuperclass($metadata);
     }
 
+    /**
+     * @psalm-suppress NoInterfaceProperties https://github.com/vimeo/psalm/issues/2206
+     */
     private function convertResourceMappedSuperclass(ClassMetadata $metadata): void
     {
         if (!isset($metadata->isMappedSuperclass)) {

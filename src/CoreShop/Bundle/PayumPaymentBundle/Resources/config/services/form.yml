@@ -6,6 +6,10 @@ services:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType }
 
+    CoreShop\Bundle\PayumPaymentBundle\Form\Extension\PaymentProviderChoiceTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType }
+
     CoreShop\Bundle\PayumPaymentBundle\Form\Type\GatewayConfigType:
         arguments:
             - '%coreshop.model.gateway_config.class%'

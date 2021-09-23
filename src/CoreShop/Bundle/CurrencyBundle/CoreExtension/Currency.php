@@ -17,6 +17,9 @@ namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class Currency extends Select
 {
     /**

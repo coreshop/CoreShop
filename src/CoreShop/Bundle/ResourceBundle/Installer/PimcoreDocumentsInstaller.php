@@ -143,8 +143,14 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
         if (!Document\Service::pathExists($path)) {
             $class = 'Pimcore\\Model\\Document\\' . ucfirst($properties['type']);
 
+            /**
+             * @psalm-suppress InternalMethod
+             */
             if (\Pimcore\Tool::classExists($class)) {
-                /** @var Document\Page $document */
+                /**
+                 * @var Document $document
+                 * @psalm-var class-string $class
+                 */
                 $document = new $class();
                 $document->setParent(
                     Document::getByPath($rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'])
@@ -153,42 +159,44 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 $document->setKey(Service::getValidKey($properties['key'], 'document'));
                 $document->setProperty('language', $language, 'text', true);
 
-                if (isset($properties['title'])) {
-                    $document->setTitle($properties['title']);
-                }
-                if (isset($properties['controller'])) {
-                    $document->setController($properties['controller']);
-                }
-                if (isset($properties['template'])) {
-                    $document->setTemplate($properties['template']);
-                }
+                if ($document instanceof Document\PageSnippet) {
 
-                if (array_key_exists('content', $properties)) {
-                    foreach ($properties['content'] as $fieldLanguage => $fields) {
-                        if ($fieldLanguage !== $language) {
-                            continue;
-                        }
+                    if ($document instanceof Document\Page && isset($properties['title'])) {
+                        $document->setTitle($properties['title']);
+                    }
 
-                        foreach ($fields as $key => $field) {
-                            $type = $field['type'];
-                            $content = null;
+                    if (isset($properties['controller'])) {
+                        $document->setController($properties['controller']);
+                    }
+                    if (isset($properties['template'])) {
+                        $document->setTemplate($properties['template']);
+                    }
 
-                            if (array_key_exists('value', $field)) {
-                                $content = $field['value'];
+                    if (array_key_exists('content', $properties)) {
+                        foreach ($properties['content'] as $fieldLanguage => $fields) {
+                            if ($fieldLanguage !== $language) {
+                                continue;
                             }
 
-                            if (!empty($content)) {
-                                if ($type === 'objectProperty') {
-                                    $document->setValue($key, $content);
-                                } else {
-                                    $document->setRawEditable($key, $type, $content);
+                            foreach ($fields as $key => $field) {
+                                $type = $field['type'];
+                                $content = null;
+
+                                if (array_key_exists('value', $field)) {
+                                    $content = $field['value'];
+                                }
+
+                                if (!empty($content)) {
+                                    if ($type === 'objectProperty') {
+                                        $document->setValue($key, $content);
+                                    } else {
+                                        $document->setRawEditable($key, $type, $content);
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                if ($document instanceof Document\PageSnippet) {
                     $document->setMissingRequiredEditable(false);
                 }
 

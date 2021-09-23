@@ -26,16 +26,14 @@ class InRenderer extends AbstractMysqlDynamicRenderer
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
-         * @var $condition InCondition
+         * @var InCondition $condition
          */
         Assert::isInstanceOf($condition, InCondition::class);
 
         $inValues = [];
 
-        if (is_array($condition->getValues())) {
-            foreach ($condition->getValues() as $c => $value) {
-                $inValues[] = $this->quote((string)$value);
-            }
+        foreach ($condition->getValues() as $c => $value) {
+            $inValues[] = $this->quote((string)$value);
         }
 
         if (count($inValues) > 0) {

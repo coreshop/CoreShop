@@ -18,6 +18,9 @@ use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class State extends Select
 {
     public $fieldtype = 'coreShopState';

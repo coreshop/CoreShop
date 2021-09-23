@@ -16,6 +16,9 @@ namespace CoreShop\Bundle\ShippingBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class CarrierMultiselect extends Multiselect
 {
     /**

@@ -30,6 +30,9 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class ProductUnitDefinitions extends Data implements
     Data\CustomResourcePersistingInterface,
     Data\CustomVersionMarshalInterface

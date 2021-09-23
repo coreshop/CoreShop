@@ -21,7 +21,7 @@ class ReplyToSymfonyResponseConverter extends BaseReplyToSymfonyResponseConverte
 {
     public function convert(ReplyInterface $reply)
     {
-        if ($reply instanceof ReplyException) {
+        if ($reply instanceof ReplyException && null !== $reply->getPrevious()) {
             throw $reply->getPrevious();
         }
 

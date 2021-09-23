@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
+/** @psalm-suppress DeprecatedInterface */
 final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
 {
     private LinkGeneratorInterface $linkGenerator;

@@ -96,10 +96,7 @@ class WorkflowListener implements EventSubscriberInterface
 
     public function call(Event $event, array $callable, array $callableArgs = []): void
     {
-        if (is_array($callable)
-            && is_string($callable[0])
-            && 0 === strpos($callable[0], '@')
-        ) {
+        if (is_string($callable[0]) && str_starts_with($callable[0], '@')) {
             $serviceId = substr($callable[0], 1);
             $callable[0] = $this->container->get($serviceId);
         }
@@ -109,7 +106,8 @@ class WorkflowListener implements EventSubscriberInterface
         } else {
             $expr = new ExpressionLanguage();
             $args = array_map(
-                function ($arg) use ($expr, $event) {
+                function (mixed $arg) use ($expr, $event): mixed
+                {
                     if (!is_string($arg)) {
                         return $arg;
                     }
@@ -129,7 +127,7 @@ class WorkflowListener implements EventSubscriberInterface
 
     protected function setCallbacksPriority(array $callbacks): array
     {
-        uasort($callbacks, function ($a, $b) {
+        uasort($callbacks, static function (array $a, array $b) {
             if ($a['priority'] === $b['priority']) {
                 return 0;
             }

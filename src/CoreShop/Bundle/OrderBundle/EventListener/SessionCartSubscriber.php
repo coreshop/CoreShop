@@ -53,7 +53,7 @@ final class SessionCartSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
@@ -70,7 +70,7 @@ final class SessionCartSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (null !== $cart && 0 !== $cart->getId() && null !== $cart->getStore()) {
+        if (0 !== $cart->getId() && null !== $cart->getStore()) {
             $session = $request->getSession();
 
             if ($session instanceof SessionInterface) {

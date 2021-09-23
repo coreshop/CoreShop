@@ -28,7 +28,7 @@ class ResourceControllerEvent extends GenericEvent
     private string $message = '';
     private array $messageParameters = [];
     private int $errorCode = 500;
-    private Response $response;
+    private ?Response $response = null;
 
     public function stop(string $message, string $type = self::TYPE_ERROR, array $parameters = [], int $errorCode = 500): void
     {

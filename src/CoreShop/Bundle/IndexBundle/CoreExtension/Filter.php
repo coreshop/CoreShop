@@ -17,6 +17,9 @@ namespace CoreShop\Bundle\IndexBundle\CoreExtension;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Index\Model\FilterInterface;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class Filter extends Select
 {
     /**

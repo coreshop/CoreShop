@@ -82,6 +82,9 @@ final class SluggableListener implements EventSubscriberInterface
                             $actualSlugs[] = $existingSlug;
                         }
                         else {
+                            /**
+                             * @psalm-suppress InternalMethod
+                             */
                             $newSlug->setPreviousSlug($existingSlug->getSlug());
                             $actualSlugs[] = $newSlug;
 

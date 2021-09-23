@@ -17,6 +17,9 @@ namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class ProductUnit extends Select
 {
     /**

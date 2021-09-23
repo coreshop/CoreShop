@@ -16,14 +16,17 @@ namespace CoreShop\Component\Resource\Model;
 
 trait ToggleableTrait
 {
-    protected bool $active = false;
+    /**
+     * @var bool
+     */
+    protected $active = false;
 
-    public function getActive(): bool
+    public function getActive(): ?bool
     {
         return $this->active;
     }
 
-    public function setActive(bool $active)
+    public function setActive(?bool $active)
     {
         $this->active = $active;
     }

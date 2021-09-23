@@ -20,8 +20,14 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 
 class AddToCartFactory implements AddToCartFactoryInterface
 {
+    /**
+     * @psalm-var class-string
+     */
     protected string $addToCartClass;
 
+    /**
+     * @psalm-param class-string $addToCartClass
+     */
     public function __construct(string $addToCartClass)
     {
         $this->addToCartClass = $addToCartClass;

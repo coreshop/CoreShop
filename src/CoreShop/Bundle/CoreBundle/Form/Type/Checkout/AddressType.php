@@ -71,15 +71,11 @@ final class AddressType extends AbstractResourceType
                 'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.shipping',
                 'allowed_address_identifier' => [null, 'shipping'],
-                'choice_attr' => function ($address) {
-                    if ($address instanceof AddressInterface) {
-                        return [
-                            'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($address)]),
-                            'data-address-type' => $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : '',
-                        ];
-                    }
-
-                    return [];
+                'choice_attr' => function (AddressInterface $address) {
+                    return [
+                        'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($address)]),
+                        'data-address-type' => $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : '',
+                    ];
                 },
                 'empty_data' => $defaultShippingAddress,
             ])
@@ -88,15 +84,11 @@ final class AddressType extends AbstractResourceType
                 'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.invoice',
                 'allowed_address_identifier' => [null, 'invoice'],
-                'choice_attr' => function ($address) {
-                    if ($address instanceof AddressInterface) {
-                        return [
-                            'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($address)]),
-                            'data-address-type' => $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : '',
-                        ];
-                    }
-
-                    return [];
+                'choice_attr' => function (AddressInterface $address) {
+                    return [
+                        'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($address)]),
+                        'data-address-type' => $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : '',
+                    ];
                 },
                 'empty_data' => $defaultInvoiceAddress,
             ])

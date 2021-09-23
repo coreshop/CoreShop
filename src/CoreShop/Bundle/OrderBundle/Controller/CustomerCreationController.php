@@ -25,6 +25,7 @@ use CoreShop\Component\Address\Model\DefaultAddressAwareInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\File;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,7 +64,9 @@ class CustomerCreationController extends PimcoreController
                 );
 
                 $customer->setPublished(true);
+                /** @psalm-suppress InternalMethod */
                 $customer->setKey(File::getValidFilename($customer->getEmail()));
+                /** @psalm-suppress InvalidArgument */
                 $customer->setKey(Service::getUniqueKey($customer));
                 $customer->save();
 

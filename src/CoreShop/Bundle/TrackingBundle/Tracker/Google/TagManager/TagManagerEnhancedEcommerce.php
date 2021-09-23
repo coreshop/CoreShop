@@ -105,7 +105,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     {
         $this->ensureDataLayer();
 
-        $parameters = [];
+        $actionData = [];
         $actionData['products'] = $cart['items'];
         $actionField = [];
 
@@ -124,6 +124,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
             $actionData['actionField'] = $actionField;
         }
 
+        $parameters = [];
         $parameters['actionData'] = $actionData;
 
         $result = $this->renderTemplate('checkout', $parameters);
@@ -140,6 +141,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
             $actionData['products'][] = $item;
         }
 
+        $parameters = [];
         $parameters['actionData'] = $actionData;
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
@@ -152,7 +154,6 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $product['quantity'] = 1;
 
-        $parameters = [];
         $actionData = [$action => []];
 
         if ($action === 'add') {
@@ -161,6 +162,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $actionData[$action]['products'][] = $product;
 
+        $parameters = [];
         $parameters['actionData'] = $actionData;
         $parameters['event'] = $action === 'remove' ? 'csRemoveFromCart' : 'csAddToCart';
 

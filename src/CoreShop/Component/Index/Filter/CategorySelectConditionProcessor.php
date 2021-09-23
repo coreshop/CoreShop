@@ -41,7 +41,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
                     continue;
                 }
 
-                if (array_key_exists($e, $parsedValues)) {
+                if (isset($parsedValues[$e])) {
                     $count = (int) $parsedValues[$e]['count'] + (int) $v['count'];
                 } else {
                     $count = (int) $v['count'];

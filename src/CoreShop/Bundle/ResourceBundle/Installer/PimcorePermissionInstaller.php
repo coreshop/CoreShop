@@ -40,9 +40,16 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
             $permissionGroups = $this->kernel->getContainer()->getParameter($parameter);
 
             if ($parameter !== 'coreshop.all.permissions') {
-                $permissionGroups = [
-                    $applicationName => $permissionGroups,
-                ];
+                if (null !== $applicationName) {
+                    $permissionGroups = [
+                        $applicationName => $permissionGroups,
+                    ];
+                }
+                else {
+                    $permissionGroups = [
+                        'all' => $permissionGroups,
+                    ];
+                }
             }
 
             $progress = new ProgressBar($output);

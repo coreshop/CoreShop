@@ -112,8 +112,9 @@ final class PimcoreDriver extends AbstractDriver
         $folder = $metadata->getParameter('path');
 
         if (!is_array($folder)) {
-            $folders[$metadata->getName()] = $folder;
-        } else {
+            $folders = [$metadata->getName() => $folder];
+        }
+        else {
             $folders = $folder;
         }
 
@@ -144,10 +145,12 @@ final class PimcoreDriver extends AbstractDriver
         $repositoryClass = PimcoreRepository::class;
 
         if ($container->hasParameter($repositoryClassParameterName)) {
+            /** @var string $repositoryClass */
             $repositoryClass = $container->getParameter($repositoryClassParameterName);
         }
 
         if ($metadata->hasClass('repository')) {
+            /** @var string $repositoryClass */
             $repositoryClass = $metadata->getClass('repository');
         }
 
@@ -179,10 +182,12 @@ final class PimcoreDriver extends AbstractDriver
         $repositoryClass = PimcoreRepository::class;
 
         if ($container->hasParameter($repositoryFactoryClassParameterName)) {
+            /** @var string $repositoryFactoryClass */
             $repositoryFactoryClass = $container->getParameter($repositoryFactoryClassParameterName);
         }
 
         if ($metadata->hasClass('repository')) {
+            /** @var string $repositoryClass */
             $repositoryClass = $metadata->getClass('repository');
         }
 

@@ -64,7 +64,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
         $customer = $cart->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
-            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
+            throw new CheckoutException('Customer not set', 'coreshop.ui.error.coreshop_checkout_internal_error');
         }
 
         $form = $this->createForm($request, $cart, $customer);
@@ -89,7 +89,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
         $customer = $cart->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
-            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
+            throw new CheckoutException('Customer not set', 'coreshop.ui.error.coreshop_checkout_internal_error');
         }
 
         return [

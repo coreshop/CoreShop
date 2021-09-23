@@ -37,20 +37,11 @@ final class PaymentProviderChoiceType extends AbstractType
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
-                    $paymentProvider = $this->paymentProviderResolver->resolvePaymentProviders($options['subject']);
-
-                    return $paymentProvider;
+                    return $this->paymentProviderResolver->resolvePaymentProviders($options['subject']);
                 },
                 'choice_value' => 'id',
-                'choice_label' => function ($paymentProvider) {
-                    /**
-                     * @var $paymentProvider PaymentProviderInterface
-                     */
+                'choice_label' => function (PaymentProviderInterface $paymentProvider): string {
                     return $paymentProvider->getTitle();
-                },
-                'choice_attr' => function ($val, $key, $index) {
-                    // adds a class like attending_yes, attending_no, etc
-                    return ['data-factory' => $val->getGatewayConfig()->getFactoryName()];
                 },
                 'choice_translation_domain' => false,
                 'active' => true,

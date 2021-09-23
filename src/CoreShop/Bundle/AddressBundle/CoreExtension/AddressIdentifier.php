@@ -18,6 +18,9 @@ use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Address\Model\AddressIdentifierInterface;
 use CoreShop\Component\Address\Repository\AddressIdentifierRepositoryInterface;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class AddressIdentifier extends Select
 {
     public $fieldtype = 'coreShopAddressIdentifier';

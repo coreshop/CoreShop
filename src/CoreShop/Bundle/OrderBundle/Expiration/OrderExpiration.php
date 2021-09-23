@@ -44,20 +44,18 @@ final class OrderExpiration implements OrderExpirationInterface
 
         $orders = $this->orderRepository->findExpiredOrders($days);
 
-        if (is_array($orders)) {
-            foreach ($orders as $order) {
-                $this->stateMachineApplier->apply(
-                    $order,
-                    OrderTransitions::IDENTIFIER,
-                    OrderTransitions::TRANSITION_CANCEL
-                );
+        foreach ($orders as $order) {
+            $this->stateMachineApplier->apply(
+                $order,
+                OrderTransitions::IDENTIFIER,
+                OrderTransitions::TRANSITION_CANCEL
+            );
 
-                if (null !== $this->historyLogger && $order instanceof Concrete) {
-                    $this->historyLogger->log(
-                        $order,
-                        'Automatic Expiration Order Cancellation'
-                    );
-                }
+            if ($order instanceof Concrete) {
+                $this->historyLogger->log(
+                    $order,
+                    'Automatic Expiration Order Cancellation'
+                );
             }
         }
     }

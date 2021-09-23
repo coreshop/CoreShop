@@ -61,10 +61,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
 
     public function sendOrderMail(Email $emailDocument, OrderInterface $order, bool $sendInvoices = false, bool $sendShipments = false, array $params = []): bool
     {
-        if (!$emailDocument instanceof Document\Email) {
-            return false;
-        }
-
+        $emailParameters = [];
         $attachments = [];
         $customer = $order->getCustomer();
 

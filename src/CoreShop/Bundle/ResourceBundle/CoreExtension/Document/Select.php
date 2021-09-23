@@ -18,6 +18,9 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\Document\Editable;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class Select extends Editable
 {
     /**

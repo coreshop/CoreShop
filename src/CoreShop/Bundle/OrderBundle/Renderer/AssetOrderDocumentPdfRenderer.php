@@ -38,7 +38,7 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 
         if ($orderDocument->getRenderedAsset() instanceof Asset) {
             // check if asset is outdated.
-            if ((int) $orderDocument->getRenderedAsset()->getCreationDate() >= (int) $orderDocument->getModificationDate()) {
+            if ((int) $orderDocument->getRenderedAsset()->getCreationDate() >= $orderDocument->getModificationDate()) {
                 return $orderDocument->getRenderedAsset()->getData();
             }
         }

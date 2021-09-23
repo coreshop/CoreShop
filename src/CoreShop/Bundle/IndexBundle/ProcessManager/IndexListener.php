@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class IndexListener
 {
-    private ProcessInterface $process;
+    private ?ProcessInterface $process = null;
     private ProcessFactoryInterface $processFactory;
     private ProcessLogger $processLogger;
 

@@ -26,7 +26,7 @@ class LikeRenderer extends AbstractMysqlDynamicRenderer
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
-         * @var $condition LikeCondition
+         * @var LikeCondition $condition
          */
         Assert::isInstanceOf($condition, LikeCondition::class);
 

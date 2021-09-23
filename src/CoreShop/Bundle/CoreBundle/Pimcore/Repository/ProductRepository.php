@@ -33,7 +33,8 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             ['condition' => 'stores LIKE ?', 'variable' => '%,' . $store->getId() . ',%'],
         ];
 
-        return $this->findBy($conditions, ['o_creationDate DESC'], $count);
+        /** @psalm-suppress InvalidScalarArgument */
+        return $this->findBy($conditions, ['o_creationDate' => 'DESC'], $count);
     }
 
     public function findAllVariants(ProductInterface $product, bool $recursive = true): array
@@ -55,6 +56,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $list = $this->getList();
         $dao = $list->getDao();
 
+        /** @psalm-suppress InternalMethod */
         $query = $this->connection->createQueryBuilder()
             ->select()
             ->from($dao->getTableName())
@@ -71,7 +73,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         $result = $query->execute();
 
-        foreach ($result->fetchAll() as $column) {
+        foreach ($result->fetchAllAssociative() as $column) {
             $variantIds[] = $column['oo_id'];
         }
 
@@ -112,7 +114,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $resolver->setAllowedTypes('order_key_quote', 'bool');
         $resolver->setAllowedTypes('order', 'string');
         $resolver->setAllowedTypes('object_types', ['null', 'array']);
-        $resolver->setAllowedValues('object_types', function ($value) {
+        $resolver->setAllowedValues('object_types', function (?array $value) {
             $valid = [
                 null,
                 AbstractObject::OBJECT_TYPE_FOLDER,

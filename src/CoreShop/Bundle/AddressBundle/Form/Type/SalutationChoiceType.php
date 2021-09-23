@@ -34,7 +34,7 @@ final class SalutationChoiceType extends AbstractType
     {
         $resolver
             ->setDefault('country', $this->countryContext->getCountry())
-            ->setAllowedValues('country', function ($country) {
+            ->setAllowedValues('country', function (mixed $country) {
                 return $country instanceof CountryInterface;
             })
             ->setDefaults([

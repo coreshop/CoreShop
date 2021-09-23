@@ -100,6 +100,9 @@ final class ResourceLoader implements LoaderInterface
         return 'coreshop.resources' === $type;
     }
 
+    /**
+     * @psalm-suppress InvalidReturnType Symfony docblocks are messing with us
+     */
     public function getResolver()
     {
         // Intentionally left blank.

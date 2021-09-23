@@ -121,7 +121,7 @@ abstract class AbstractWorker implements WorkerInterface
             'o_classId' => $object->getClassId(),
             'o_className' => $object->getClassName(),
             'o_virtualObjectId' => $virtualObjectId,
-            'o_virtualObjectActive' => $virtualObjectActive === null ? false : $virtualObjectActive,
+            'o_virtualObjectActive' => $virtualObjectActive,
             'o_type' => $object->getType(),
         ];
 
@@ -132,10 +132,6 @@ abstract class AbstractWorker implements WorkerInterface
         }
 
         $data['active'] = $object->getIndexableEnabled($index);
-
-        if (!is_bool($data['active'])) {
-            $data['active'] = false;
-        }
 
         $localizedData = [
             'oo_id' => $object->getId(),
@@ -258,16 +254,16 @@ abstract class AbstractWorker implements WorkerInterface
 
         if ($interpreterClass instanceof LocalizedInterpreterInterface) {
             foreach (Tool::getValidLanguages() as $language) {
-                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $object, $column, $column->getInterpreterConfig() ?? []);
+                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $object, $column, $column->getInterpreterConfig());
             }
             //reset value here, we only populate localized values here
             $value = null;
             $isLocalizedValue = true;
         } elseif ($interpreterClass instanceof InterpreterInterface) {
-            $value = $interpreterClass->interpret($originalValue, $object, $column, $column->getInterpreterConfig() ?? []);
+            $value = $interpreterClass->interpret($originalValue, $object, $column, $column->getInterpreterConfig());
 
             if ($interpreterClass instanceof RelationInterpreterInterface) {
-                $relationalValue = $interpreterClass->interpretRelational($originalValue, $object, $column, $column->getInterpreterConfig() ?? []);
+                $relationalValue = $interpreterClass->interpretRelational($originalValue, $object, $column, $column->getInterpreterConfig());
 
                 $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
             }

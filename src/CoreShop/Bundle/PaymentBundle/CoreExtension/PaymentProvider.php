@@ -17,6 +17,9 @@ namespace CoreShop\Bundle\PaymentBundle\CoreExtension;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class PaymentProvider extends Select
 {
     /**

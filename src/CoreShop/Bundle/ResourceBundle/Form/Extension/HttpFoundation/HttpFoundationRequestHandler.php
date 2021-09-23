@@ -17,7 +17,9 @@ namespace CoreShop\Bundle\ResourceBundle\Form\Extension\HttpFoundation;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\RequestHandlerInterface;
 use Symfony\Component\Form\Util\ServerParams;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -28,18 +30,16 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @see \Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
  */
-final class HttpFoundationRequestHandler extends \Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
+final class HttpFoundationRequestHandler implements RequestHandlerInterface
 {
     private ServerParams $serverParams;
 
     public function __construct(ServerParams $serverParams = null)
     {
-        parent::__construct($serverParams);
-
         $this->serverParams = $serverParams ?: new ServerParams();
     }
 
-    public function handleRequest(FormInterface $form, $request = null): void
+    public function handleRequest(FormInterface $form, $request = null)
     {
         if (!$request instanceof Request) {
             throw new UnexpectedTypeException($request, 'Symfony\Component\HttpFoundation\Request');
@@ -83,8 +83,15 @@ final class HttpFoundationRequestHandler extends \Symfony\Component\Form\Extensi
                 $params = $request->request->all();
                 $files = $request->files->all();
             } elseif ($request->request->has($name) || $request->files->has($name)) {
+                /** @psalm-var array|null $default */
                 $default = $form->getConfig()->getCompound() ? [] : null;
-                $params = $request->request->get($name, $default);
+
+                if ($request->request->has($name)) {
+                    $params = $request->request->get($name);
+                } else {
+                    $params = $default;
+                }
+
                 $files = $request->files->get($name, $default);
             } else {
                 // Don't submit the form if it is not present in the request
@@ -98,6 +105,12 @@ final class HttpFoundationRequestHandler extends \Symfony\Component\Form\Extensi
             }
         }
 
+        /** @psalm-suppress InvalidScalarArgument */
         $form->submit($data, 'PATCH' !== $method);
+    }
+
+    public function isFileUpload($data)
+    {
+        return $data instanceof File;
     }
 }

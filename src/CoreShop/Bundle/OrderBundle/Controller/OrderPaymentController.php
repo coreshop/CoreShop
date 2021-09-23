@@ -59,7 +59,7 @@ class OrderPaymentController extends PimcoreController
 
         $orderId = $request->get('o_id');
         $order = $this->getSaleRepository()->find($orderId);
-        $amount = (float) $request->get('amount', 0) * $this->container->getParameter('coreshop.currency.decimal_factor');
+        $amount = (int) round($request->get('amount', 0) * $this->container->getParameter('coreshop.currency.decimal_factor'));
 
         $paymentProviderId = $request->get('paymentProvider');
 
@@ -69,10 +69,11 @@ class OrderPaymentController extends PimcoreController
 
         $payments = $this->getPaymentRepository()->findForPayable($order);
         $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
-        $totalPayed = array_sum(array_map(function (PaymentInterface $payment) {
-            if ($payment->getState() === PaymentInterface::STATE_CANCELLED ||
-                $payment->getState() === PaymentInterface::STATE_FAILED ||
-                $payment->getState() === PaymentInterface::STATE_REFUNDED) {
+        $totalPayed = array_sum(array_map(static function (PaymentInterface $payment) {
+            $state = $payment->getState();
+            if ($state === PaymentInterface::STATE_CANCELLED ||
+                $state === PaymentInterface::STATE_FAILED ||
+                $state === PaymentInterface::STATE_REFUNDED) {
                 return 0;
             }
 

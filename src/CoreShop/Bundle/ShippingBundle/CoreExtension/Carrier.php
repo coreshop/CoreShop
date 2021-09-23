@@ -17,6 +17,9 @@ namespace CoreShop\Bundle\ShippingBundle\CoreExtension;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class Carrier extends Select
 {
     /**

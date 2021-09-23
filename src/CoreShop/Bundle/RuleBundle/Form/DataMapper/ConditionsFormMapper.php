@@ -31,14 +31,14 @@ class ConditionsFormMapper implements DataMapperInterface
         $this->propertyMapper = $propertyMapper;
     }
 
-    public function mapDataToForms($data, $forms): void
+    public function mapDataToForms($viewData, $forms): void
     {
 //        $this->propertyPathDataMapper->mapDataToForms($data, $forms);
     }
 
-    public function mapFormsToData($forms, &$data): void
+    public function mapFormsToData($forms, &$viewData): void
     {
-        if (!$data instanceof Collection) {
+        if (!$viewData instanceof Collection) {
             return;
         }
 
@@ -53,7 +53,7 @@ class ConditionsFormMapper implements DataMapperInterface
             }
 
             if ($id) {
-                foreach ($data as $entry) {
+                foreach ($viewData as $entry) {
                     if (!$entry instanceof ResourceInterface) {
                         continue;
                     }
@@ -70,6 +70,6 @@ class ConditionsFormMapper implements DataMapperInterface
             $actualData[] = $formData;
         }
 
-        $data = $actualData;
+        $viewData = $actualData;
     }
 }

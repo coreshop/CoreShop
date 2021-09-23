@@ -17,6 +17,9 @@ namespace CoreShop\Bundle\TaxationBundle\CoreExtension;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class TaxRuleGroup extends Select
 {
     /**

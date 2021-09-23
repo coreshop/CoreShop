@@ -18,10 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class AddToCartMaximumQuantity extends Constraint
 {
-    /**
-     * @var string
-     */
-    public $messageAboveMaximum;
+    public string $messageAboveMaximum;
 
     public function validatedBy(): string
     {

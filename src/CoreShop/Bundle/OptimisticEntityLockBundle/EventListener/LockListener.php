@@ -55,6 +55,10 @@ class LockListener implements EventSubscriberInterface
             return;
         }
 
+        /**
+         * @var Concrete $object
+         * @var OptimisticLockedInterface $object
+         */
         $object->setOptimisticLockVersion(1);
     }
 
@@ -70,6 +74,9 @@ class LockListener implements EventSubscriberInterface
             return;
         }
 
+        /**
+         * @var Concrete $object
+         */
         $this->lockManager->updateLock($object);
     }
 
@@ -86,6 +93,11 @@ class LockListener implements EventSubscriberInterface
         }
 
         $this->ensureVersionMatch($object);
+
+        /**
+         * @var Concrete $object
+         * @var OptimisticLockedInterface $object
+         */
         $object->setOptimisticLockVersion(($object->getOptimisticLockVersion() ?? 1) + 1);
     }
 
@@ -104,7 +116,7 @@ class LockListener implements EventSubscriberInterface
         ;
 
         $stmt = $queryBuilder->execute();
-        $currentVersion = (int)$stmt->fetchColumn();
+        $currentVersion = (int)$stmt->fetchOne();
 
         if ($currentVersion === $object->getOptimisticLockVersion()) {
             return;

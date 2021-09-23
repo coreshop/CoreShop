@@ -25,7 +25,7 @@ class IsRenderer extends AbstractMysqlDynamicRenderer
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): string
     {
         /**
-         * @var $condition IsCondition
+         * @var IsCondition $condition
          */
         Assert::isInstanceOf($condition, IsCondition::class);
 

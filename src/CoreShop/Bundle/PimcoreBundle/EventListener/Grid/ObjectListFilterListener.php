@@ -46,8 +46,6 @@ final class ObjectListFilterListener
         $filterService = $this->filterServiceRegistry->get($filter);
         $data = $filterService->filter($list, $context);
 
-        if ($data instanceof DataObject\Listing) {
-            $event->setArgument('list', $data);
-        }
+        $event->setArgument('list', $data);
     }
 }

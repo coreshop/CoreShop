@@ -77,6 +77,9 @@ final class CarrierChoiceType extends AbstractResourceType
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $prices = [];
+        /**
+         * @var OrderInterface $cart
+         */
         $cart = $options['cart'];
 
         foreach ($view->vars['choices'] as $choice) {

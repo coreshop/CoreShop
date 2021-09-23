@@ -36,7 +36,7 @@ class ConcatRenderer extends AbstractMysqlDynamicRenderer
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): string
     {
         /**
-         * @var $condition ConcatCondition
+         * @var ConcatCondition $condition
          */
         Assert::isInstanceOf($condition, ConcatCondition::class);
 
@@ -44,7 +44,7 @@ class ConcatRenderer extends AbstractMysqlDynamicRenderer
 
         foreach ($condition->getConditions() as $subCondition) {
             /**
-             * @var $subCondition ConditionInterface
+             * @var ConditionInterface $subCondition
              */
             Assert::isInstanceOf($subCondition, ConditionInterface::class);
 

@@ -21,7 +21,7 @@ use CoreShop\Component\Currency\Repository\ExchangeRateRepositoryInterface;
 
 class ExchangeRateRepository extends EntityRepository implements ExchangeRateRepositoryInterface
 {
-    public function findOneWithCurrencyPair(CurrencyInterface $firstCurrency, CurrencyInterface $secondCurrency): ?ExchangeRateInterface
+    public function findOneWithCurrencyPair(CurrencyInterface $fromCurrency, CurrencyInterface $toCurrency): ?ExchangeRateInterface
     {
         $expr = $this->getEntityManager()->getExpressionBuilder();
 
@@ -30,8 +30,8 @@ class ExchangeRateRepository extends EntityRepository implements ExchangeRateRep
                 'o.fromCurrency = :firstCurrency AND o.toCurrency = :secondCurrency',
                 'o.toCurrency = :firstCurrency AND o.fromCurrency = :secondCurrency'
             ))
-            ->setParameter('firstCurrency', $firstCurrency)
-            ->setParameter('secondCurrency', $secondCurrency)
+            ->setParameter('firstCurrency', $fromCurrency)
+            ->setParameter('secondCurrency', $toCurrency)
             ->getQuery()
             ->getOneOrNullResult();
     }

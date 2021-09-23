@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement, MissingConstructor
+ */
 class ItemSelector extends DynamicDropdownMultiple
 {
     /**

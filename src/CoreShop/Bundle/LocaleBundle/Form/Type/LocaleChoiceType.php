@@ -38,16 +38,16 @@ final class LocaleChoiceType extends AbstractType
                 'choices' => static function (Options $options) {
                     $locales = Tool::getValidLanguages();
 
-                    usort($locales, static function ($a, $b): int {
+                    usort($locales, static function (string $a, string $b): int {
                         return $a <=> $b;
                     });
 
                     return $locales;
                 },
-                'choice_value' => static function ($value) {
+                'choice_value' => static function (string $value) {
                     return $value;
                 },
-                'choice_label' => static function($value) {
+                'choice_label' => static function(string $value) {
                     return $value;
                 },
                 'choice_translation_domain' => false,

@@ -17,7 +17,6 @@ namespace CoreShop\Behat\Context\Transform;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Pimcore\DataObject\ClassLoader;
 use Pimcore\Cache\Runtime;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
@@ -44,7 +43,12 @@ final class PimcoreClassContext implements Context
     {
         Runtime::clear();
 
-        ClassLoader::forceLoadDataObjectClass($name);
+        $fqcp = sprintf('%s/DataObject/%s.php', PIMCORE_CLASS_DIRECTORY, $name);
+        $fqcn = sprintf('\\Pimcore\\Model\\DataObject\\%s', $name);
+
+        if (file_exists($fqcp) && !class_exists($fqcn)) {
+            require_once $fqcp;
+        }
 
         $classDefinition = ClassDefinition::getByName($name);
 

@@ -11,6 +11,15 @@
             <file name="src/Kernel.php" />
 
             <directory name="src/CoreShop/Component/Resource/DataHub" />
+            <directory name="src/CoreShop/Bundle/*/DataHub" />
+            <directory name="src/CoreShop/Bundle/*/CoreExtension" />
+            <directory name="src/CoreShop/Bundle/*/Pimcore/GridColumnConfig" />
+            <directory name="src/CoreShop/Bundle/*/Migrations" />
+            <directory name="src/CoreShop/Bundle/*/Fixtures" />
+            <directory name="src/CoreShop/Behat" />
+
+            <directory name="src/CoreShop/Bundle/FrontendBundle" />
+            <directory name="src/CoreShop/Bundle/IndexBundle/ProcessManager" />
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>

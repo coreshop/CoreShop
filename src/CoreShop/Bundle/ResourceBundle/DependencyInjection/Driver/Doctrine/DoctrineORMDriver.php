@@ -44,10 +44,12 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         $repositoryClass = EntityRepository::class;
 
         if ($container->hasParameter($repositoryClassParameterName)) {
+            /** @var string $repositoryClass */
             $repositoryClass = $container->getParameter($repositoryClassParameterName);
         }
 
         if ($metadata->hasClass('repository')) {
+            /** @var string $repositoryClass */
             $repositoryClass = $metadata->getClass('repository');
         }
 
@@ -78,10 +80,12 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         $repositoryClass = EntityRepository::class;
 
         if ($container->hasParameter($repositoryFactoryClassParameterName)) {
+            /** @var string $repositoryFactoryClass */
             $repositoryFactoryClass = $container->getParameter($repositoryFactoryClassParameterName);
         }
 
         if ($metadata->hasClass('repository')) {
+            /** @var string $repositoryFactoryClass */
             $repositoryClass = $metadata->getClass('repository');
         }
 

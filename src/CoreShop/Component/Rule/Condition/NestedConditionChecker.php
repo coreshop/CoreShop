@@ -34,14 +34,18 @@ class NestedConditionChecker implements ConditionCheckerInterface
         foreach ($configuration['conditions'] as $condition) {
             $conditionValid = $this->ruleConditionsValidationProcessor->isValid($subject, $rule, [$condition], $params);
 
-            if ('and' === $operator) {
-                if (!$conditionValid) {
-                    $valid = false;
+            switch ($operator) {
+                case 'and':
+                    if (!$conditionValid) {
+                        return false;
+                    }
                     break;
-                }
-            } elseif (('or' === $operator) && $conditionValid) {
-                $valid = true;
-                break;
+
+                case 'or':
+                    if ($conditionValid) {
+                        return true;
+                    }
+                    break;
             }
         }
 

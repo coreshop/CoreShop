@@ -67,16 +67,20 @@ final class DataFixturesSorter
         $this->orderedFixtures = $this->fixtures;
         usort(
             $this->orderedFixtures,
-            function ($a, $b) {
+            static function (mixed $a, mixed $b) {
                 if ($a instanceof OrderedFixtureInterface && $b instanceof OrderedFixtureInterface) {
                     if ($a->getOrder() === $b->getOrder()) {
                         return 0;
                     }
 
                     return $a->getOrder() < $b->getOrder() ? -1 : 1;
-                } elseif ($a instanceof OrderedFixtureInterface) {
+                }
+
+                if ($a instanceof OrderedFixtureInterface) {
                     return $a->getOrder() === 0 ? 0 : 1;
-                } elseif ($b instanceof OrderedFixtureInterface) {
+                }
+
+                if ($b instanceof OrderedFixtureInterface) {
                     return $b->getOrder() === 0 ? 0 : -1;
                 }
 
@@ -133,6 +137,8 @@ final class DataFixturesSorter
         // Now we order fixtures by sequence
         $sequence = 1;
         $lastCount = -1;
+        $count = 0;
+        $unsequencedClasses = [];
 
         while (($count = count($unsequencedClasses = $this->getUnsequencedClasses($sequenceForClasses))) > 0
             && $count !== $lastCount) {

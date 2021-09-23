@@ -42,11 +42,13 @@ final class OrderMailNoteEventListener
 
     private function addOrderNote(OrderInterface $order, Email $emailDocument, Mail $mail, array $params = []): void
     {
+        /** @psalm-suppress InvalidArgument */
         $noteInstance = $this->noteService->createPimcoreNoteInstance($order, Notes::NOTE_EMAIL);
 
         $noteInstance->setTitle('Order Mail');
 
         $noteInstance->addData('document', 'text', $emailDocument->getId());
+        /** @psalm-suppress InternalMethod */
         $noteInstance->addData('subject', 'text', $mail->getSubjectRendered());
 
         $mailTos = [];

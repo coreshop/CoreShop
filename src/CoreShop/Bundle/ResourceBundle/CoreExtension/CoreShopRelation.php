@@ -16,6 +16,9 @@ namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class CoreShopRelation extends Data\ManyToOneRelation
 {
     public $fieldtype = 'coreShopRelation';

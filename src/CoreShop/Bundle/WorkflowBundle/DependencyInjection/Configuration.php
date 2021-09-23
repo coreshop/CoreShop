@@ -24,13 +24,14 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_workflow');
+        /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
         $smNode = $rootNode
             ->children()
                 ->arrayNode('state_machine')
                     ->useAttributeAsKey('name')
-                    ->prototype('array')
+                    ->arrayPrototype()
                         ->children();
 
         $this->addStateMachineSection($smNode);
@@ -55,7 +56,7 @@ final class Configuration implements ConfigurationInterface
             ->arrayNode('transitions')
                 ->beforeNormalization()
                     ->always()
-                    ->then(function ($transitions) {
+                    ->then(function (array $transitions) {
                         // It's an indexed array, we let the validation occurs
                         if (isset($transitions[0])) {
                             return $transitions;
@@ -75,7 +76,7 @@ final class Configuration implements ConfigurationInterface
                 ->isRequired()
                 ->requiresAtLeastOneElement()
                 ->useAttributeAsKey('transition')
-                ->prototype('array')
+                ->arrayPrototype()
                     ->children()
                         ->scalarNode('name')
                             ->isRequired()
@@ -90,7 +91,7 @@ final class Configuration implements ConfigurationInterface
                             ->performNoDeepMerging()
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function ($v) {
+                                ->then(function (mixed $v) {
                                     return array($v);
                                 })
                             ->end()
@@ -103,7 +104,7 @@ final class Configuration implements ConfigurationInterface
                             ->performNoDeepMerging()
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function ($v) {
+                                ->then(function (mixed $v) {
                                     return array($v);
                                 })
                             ->end()
@@ -150,7 +151,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode($type)
                     ->useAttributeAsKey('name')
-                    ->prototype('array')
+                    ->arrayPrototype()
                         ->children()
                             ->booleanNode('enabled')->defaultTrue()->end()
                             ->variableNode('on')->end()

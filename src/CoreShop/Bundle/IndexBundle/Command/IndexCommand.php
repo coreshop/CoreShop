@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Command;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
 use CoreShop\Component\Pimcore\BatchProcessing\DataObjectBatchListing;
@@ -116,10 +117,15 @@ final class IndexCommand extends Command
         foreach ($classesToUpdate as $class) {
             $class = ucfirst($class);
 
+
             /**
-             * @var Listing $list
+             * @psalm-var class-string $list
              */
             $list = '\Pimcore\Model\DataObject\\' . $class . '\Listing';
+            /**
+             * @var Listing $list
+             * @psalm-suppress UndefinedClass
+             */
             $list = new $list();
 
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
@@ -161,6 +167,10 @@ final class IndexCommand extends Command
                 $progress->advance();
 
                 $this->dispatchInfo('progress', sprintf('Index %s (%s)', $object->getFullPath(), $object->getId()));
+
+                if (!$object instanceof IndexableInterface) {
+                    continue;
+                }
 
                 $this->indexUpdater->updateIndices($object);
             }

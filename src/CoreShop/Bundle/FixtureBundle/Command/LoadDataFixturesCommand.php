@@ -75,7 +75,7 @@ class LoadDataFixturesCommand extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fixtures = null;
 
@@ -85,7 +85,7 @@ class LoadDataFixturesCommand extends Command
             $output->writeln('');
             $output->writeln(sprintf('<error>%s</error>', $ex->getMessage()));
 
-            return $ex->getCode() == 0 ? 1 : $ex->getCode();
+            return 1;
         }
 
         if (!empty($fixtures)) {
@@ -172,7 +172,7 @@ class LoadDataFixturesCommand extends Command
         );
 
         $this->fixtureExecutor->setLogger(
-            function ($message) use ($output) {
+            function (string $message) use ($output) {
                 $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
             }
         );

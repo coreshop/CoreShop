@@ -16,6 +16,9 @@ namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
 use Pimcore\Model;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 abstract class Multiselect extends Model\DataObject\ClassDefinition\Data\Multiselect
 {
     public function isDiffChangeAllowed($object, $params = [])

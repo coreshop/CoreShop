@@ -18,10 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class CartPriceRule extends Constraint
 {
-    /**
-     * @var string
-     */
-    public $message = 'Voucher "%rule%" is not valid anymore.';
+    public string $message = 'Voucher "%rule%" is not valid anymore.';
 
     public function validatedBy(): string
     {

@@ -34,14 +34,14 @@ final class ProductStoreValuesSelectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new CallbackTransformer(
-            function ($value) {
+            function (mixed $value): mixed {
                 if ($value instanceof ProductStoreValuesInterface) {
                     return $value->getId();
                 }
 
                 return null;
             },
-            function ($value) {
+            function (mixed $value): mixed {
                 return $this->productStoreValuesRepository->find($value);
             }
         ));

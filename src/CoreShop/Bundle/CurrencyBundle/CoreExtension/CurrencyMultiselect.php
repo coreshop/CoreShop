@@ -16,6 +16,9 @@ namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class CurrencyMultiselect extends Multiselect
 {
     /**

@@ -35,10 +35,10 @@ class ProductValidationController extends AdminController
         $objectId = $request->get('id', null);
         $unitDefinitionId = $request->get('unitDefinitionId', null);
 
-        if (is_null($unitDefinitionId)) {
+        if (null === $unitDefinitionId) {
             return new JsonResponse([
                 'success' => false,
-                'message' => sprintf('%s is not a valid unit definition id.', $unitDefinitionId),
+                'message' => 'Unit definition ID is null.',
             ]);
         }
 
@@ -52,7 +52,7 @@ class ProductValidationController extends AdminController
             ]);
         }
 
-        $hasQuantityPriceRules = is_array($object->getQuantityPriceRules()) && count($object->getQuantityPriceRules()) > 0;
+        $hasQuantityPriceRules = count($object->getQuantityPriceRules()) > 0;
 
         if ($hasQuantityPriceRules === false) {
             return new JsonResponse([

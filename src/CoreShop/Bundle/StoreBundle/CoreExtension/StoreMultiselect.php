@@ -16,6 +16,9 @@ namespace CoreShop\Bundle\StoreBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class StoreMultiselect extends Multiselect
 {
     /**

@@ -33,12 +33,12 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
 
     public function add(ResourceInterface $resource): void
     {
-        throw new NotImplementedException(sprintf('%s:%s not supported', __CLASS__, __METHOD__));
+        throw new \Exception(sprintf('%s:%s not supported', __CLASS__, __METHOD__));
     }
 
     public function remove(ResourceInterface $resource): void
     {
-        throw new NotImplementedException(sprintf('%s:%s not supported', __CLASS__, __METHOD__));
+        throw new \Exception(sprintf('%s:%s not supported', __CLASS__, __METHOD__));
     }
 
     public function getClassName()
@@ -57,6 +57,7 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
             return $className::getList();
         }
 
+        /** @psalm-var class-string $listClass */
         $listClass = $className.'\\Listing';
 
         if (class_exists($className)) {
@@ -107,23 +108,24 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
 
         if (is_array($criteria) && count($criteria) > 0) {
             foreach ($criteria as $criterion) {
-                $list->addConditionParam($criterion['condition'],
-                    array_key_exists('variable', $criterion) ? $criterion['variable'] : null);
+                $list->addConditionParam(
+                    $criterion['condition'],
+                    $criterion['variable'] ?? null
+                );
             }
         }
 
-        if (is_array($orderBy) && count($orderBy) > 0) {
-            $orderBy = $orderBy[0];
+        if (null !== $orderBy && count($orderBy) > 0) {
+            $orderKeys = [];
+            $orders = [];
 
-            if (null !== $orderBy) {
-                $orderBy = $this->normalizeOrderBy($orderBy);
-
-                if ($orderBy['key']) {
-                    $list->setOrderKey($orderBy['key']);
-                }
-
-                $list->setOrder($orderBy['direction']);
+            foreach ($orderBy as $key => $direction) {
+                $orderKeys[] = $key;
+                $orders[] = $direction;
             }
+
+            $list->setOrderKey($orderKeys);
+            $list->setOrder($orders);
         }
 
         $list->setLimit($limit);
@@ -194,50 +196,6 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
                 if (count($normalizedCriterion) > 0) {
                     $normalized[] = $normalizedCriterion;
                 }
-            }
-        }
-
-        return $normalized;
-    }
-
-    /**
-     * Normalizes Order By.
-     *
-     * [
-     *      "key" => "o_id",
-     *      "direction" => "ASC"
-     * ]
-     *
-     * OR
-     *
-     * "o_id ASC"
-     *
-     * @param array|string $orderBy
-     *
-     * @return array
-     */
-    private function normalizeOrderBy($orderBy)
-    {
-        $normalized = [
-            'key' => '',
-            'direction' => 'ASC',
-        ];
-
-        if (is_array($orderBy)) {
-            if (array_key_exists('key', $orderBy)) {
-                $normalized['key'] = $orderBy['key'];
-            }
-
-            if (array_key_exists('direction', $orderBy)) {
-                $normalized['direction'] = $orderBy['direction'];
-            }
-        } elseif (is_string($orderBy)) {
-            $exploded = explode(' ', $orderBy);
-
-            $normalized['key'] = $exploded[0];
-
-            if (count($exploded) > 1) {
-                $normalized['direction'] = $exploded[1];
             }
         }
 

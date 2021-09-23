@@ -18,10 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class CartStockAvailability extends Constraint
 {
-    /**
-     * @var string
-     */
-    public $message = 'coreshop.cart_item.not_sufficient_stock';
+    public string $message = 'coreshop.cart_item.not_sufficient_stock';
 
     public function validatedBy(): string
     {
