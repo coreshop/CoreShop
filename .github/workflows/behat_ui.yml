@@ -14,7 +14,6 @@ jobs:
       PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
       PANTHER_EXTERNAL_BASE_URI: "https://localhost:9080/app_test.php"
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
-      PANTHER_CHROME_DRIVER_BINARY: "/usr/bin/chromedriver"
       PIMCORE_KERNEL_CLASS: 'Kernel'
 
     strategy:
@@ -92,6 +91,7 @@ jobs:
 
     - name: Run Symfony Webserver
       run: |
+        sudo apt install libnss3-tools
         ~/.symfony/bin/symfony server:ca:install
         ~/.symfony/bin/symfony server:start --port=9080 --dir=public --force-php-discovery --daemon
 

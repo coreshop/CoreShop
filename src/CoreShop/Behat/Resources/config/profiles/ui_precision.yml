@@ -19,7 +19,7 @@ ui_precision:
             screenshot: true
 
         Behat\MinkExtension:
-            base_url: "http://localhost:9080/app_test_precision.php"
+            base_url: "https://localhost:9080/app_test_precision.php"
             sessions:
                 default:
                     panther:
