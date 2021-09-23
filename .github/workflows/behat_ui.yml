@@ -14,7 +14,6 @@ jobs:
       PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
       PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
-      PANTHER_CHROME_DRIVER_BINARY: "/usr/bin/chromedriver"
       PIMCORE_KERNEL_CLASS: 'Kernel'
 
     strategy:
@@ -45,6 +44,7 @@ jobs:
         php-version: ${{ matrix.php }}
         ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
         extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
+        tools: symfony
 
     - name: Check PHP Version
       run: php -v
@@ -87,14 +87,11 @@ jobs:
     - name: Install Browser Drivers
       run: vendor/bin/bdi detect drivers
 
-    - name: Setup Symfony CLI
-      run: wget https://get.symfony.com/cli/installer -O - | bash
-
     - name: Run Symfony Webserver
-      run: ~/.symfony/bin/symfony server:start --port=9080 --dir=public --force-php-discovery --daemon
+      run: symfony server:start --port=9080 --dir=public --daemon --no-tls
 
     - name: Run Behat
-      run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
+      run: vendor/bin/behat --strict --no-interaction -vvv --config behat.yml.dist -p ui
 
     - name: Upload Behat logs
       uses: actions/upload-artifact@v2

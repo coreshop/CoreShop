@@ -108,46 +108,6 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         );
     }
 
-    public function hasUnit(OrderItemUnitInterface $itemUnit): bool
-    {
-        $items = $this->getUnits() ?? [];
-
-        foreach ($items as $iValue) {
-            $arrayItem = $iValue;
-
-            if ($arrayItem->getId() === $itemUnit->getId()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function addUnit(OrderItemUnitInterface $itemUnit): void
-    {
-        $items = $this->getUnits() ?? [];
-        $items[] = $itemUnit;
-
-        $this->setUnits($items);
-    }
-
-    public function removeUnit(OrderItemUnitInterface $itemUnit): void
-    {
-        $items = $this->getUnits() ?? [];
-
-        foreach ($items as $i => $iValue) {
-            $arrayItem = $iValue;
-
-            if ($arrayItem->getId() === $itemUnit->getId()) {
-                unset($items[$i]);
-
-                break;
-            }
-        }
-
-        $this->setUnits(array_values($items));
-    }
-
     public function getConvertedTotal(bool $withTax = true): int
     {
         return $withTax ? $this->getConvertedTotalGross() : $this->getConvertedTotalNet();
@@ -410,16 +370,6 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     }
 
     public function setTaxes(?Fieldcollection $taxes)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    public function getUnits(): ?array
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    public function setUnits(?array $units)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

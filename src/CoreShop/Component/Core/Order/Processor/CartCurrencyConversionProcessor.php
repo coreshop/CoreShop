@@ -90,39 +90,6 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
             }
 
             $item->setConvertedTaxes($convertedItemTaxesFieldCollection);
-
-            foreach ($item->getUnits() as $unit) {
-                foreach ([true, false] as $withTax) {
-                    $unit->setConvertedTotal($this->convert($unit->getTotal($withTax), $cart), $withTax);
-                    $unit->setConvertedSubtotal($this->convert($unit->getSubtotal($withTax), $cart), $withTax);
-                }
-
-                foreach ($unit->getAdjustments() as $adjustment) {
-                    $convertedAdjustment = clone $adjustment;
-
-                    $convertedAdjustment->setAmount(
-                        $this->convert($convertedAdjustment->getAmount(true), $cart),
-                        $this->convert($convertedAdjustment->getAmount(false), $cart)
-                    );
-
-                    $unit->addConvertedAdjustment($convertedAdjustment);
-                }
-
-                $convertedItemTaxesFieldCollection = new Fieldcollection();
-
-                if ($unit->getTaxes() instanceof Fieldcollection) {
-                    foreach ($unit->getTaxes()->getItems() as $taxItem) {
-                        if ($taxItem instanceof TaxItemInterface) {
-                            $convertedItem = clone $taxItem;
-                            $convertedItem->setAmount($this->convert($taxItem->getAmount(), $cart));
-
-                            $convertedItemTaxesFieldCollection->add($convertedItem);
-                        }
-                    }
-                }
-
-                $unit->setConvertedTaxes($convertedItemTaxesFieldCollection);
-            }
         }
 
         foreach ($cart->getAdjustments() as $adjustment) {

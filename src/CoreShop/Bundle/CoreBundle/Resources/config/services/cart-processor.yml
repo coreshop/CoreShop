@@ -47,12 +47,6 @@ services:
         tags:
             - { name: coreshop.cart_processor, priority: 550 }
 
-    CoreShop\Component\Core\Order\Processor\CartItemTaxProcessor:
-        arguments:
-            - '@CoreShop\Component\Taxation\Collector\TaxCollectorInterface'
-        tags:
-            - { name: coreshop.cart_processor, priority: 500 }
-
     CoreShop\Component\Core\Order\Processor\CartRuleAutoProcessor:
         arguments:
             - '@coreshop.repository.cart_price_rule'

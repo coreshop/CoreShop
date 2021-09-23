@@ -12,3 +12,8 @@ services:
         arguments: [ CoreShop\Behat\Service\Payum\Concurrency\ConcurrencyGatewayFactory ]
         tags:
             - { name: payum.gateway_factory_builder, factory: concurrency }
+
+framework:
+    profiler:
+        enabled: false
+        collect: false

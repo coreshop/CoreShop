@@ -21,8 +21,5 @@ Feature: Create a new cart
   Scenario: Create a new cart and add a product and calculate totals
     Given I add the product "Shoes" with unit "Carton" in quantity 1.5 to my cart
     And I change the quantity of product "Shoes" to 2.6
-    Then the cart item with product "Shoes" should have 3 units
     And I change the quantity of product "Shoes" to 4.785
-    Then the cart item with product "Shoes" should have 5 units
     And I change the quantity of product "Shoes" to 1.5
-    Then the cart item with product "Shoes" should have 2 units

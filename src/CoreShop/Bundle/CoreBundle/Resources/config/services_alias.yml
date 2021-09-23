@@ -54,10 +54,6 @@ services:
         alias: CoreShop\Component\Core\Order\Processor\CartShippingProcessor
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Core\Order\Processor\CartShippingProcessor instead'
 
-    coreshop.cart_processor.item_taxes:
-        alias: CoreShop\Component\Core\Order\Processor\CartItemTaxProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Core\Order\Processor\CartItemTaxProcessor instead'
-
     coreshop.cart_processor.rule_auto:
         alias: CoreShop\Component\Core\Order\Processor\CartRuleAutoProcessor
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Core\Order\Processor\CartRuleAutoProcessor instead'

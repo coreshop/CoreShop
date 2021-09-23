@@ -25,7 +25,6 @@ ui:
                     panther:
                         options:
                             browser: chrome
-#                            external_converted_uri: "http://localhost:9080/app_test.php"
             show_auto: false
 
         Robertfausk\Behat\PantherExtension: ~

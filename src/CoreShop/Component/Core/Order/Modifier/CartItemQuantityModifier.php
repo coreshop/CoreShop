@@ -16,7 +16,6 @@ namespace CoreShop\Component\Core\Order\Modifier;
 
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Order\Factory\OrderItemUnitFactoryInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
@@ -24,13 +23,6 @@ use Webmozart\Assert\Assert;
 
 class CartItemQuantityModifier implements StorageListItemQuantityModifierInterface
 {
-    private OrderItemUnitFactoryInterface $orderItemUnitFactory;
-
-    public function __construct(OrderItemUnitFactoryInterface $orderItemUnitFactory)
-    {
-        $this->orderItemUnitFactory = $orderItemUnitFactory;
-    }
-
     public function modify(StorageListItemInterface $item, float $targetQuantity): void
     {
         /**
@@ -38,23 +30,14 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
          */
         Assert::isInstanceOf($item, OrderItemInterface::class);
 
-        $currentUnits = count($item->getUnits());
         $cleanTargetQuantity = $this->roundQuantity($item, $targetQuantity);
 
         $item->setQuantity($cleanTargetQuantity);
-
-        $targetUnits = (int)ceil($cleanTargetQuantity);
 
         if ($item->hasUnitDefinition()) {
             $item->setDefaultUnitQuantity($item->getUnitDefinition()->getConversionRate() * $item->getQuantity());
         } else {
             $item->setDefaultUnitQuantity($item->getQuantity());
-        }
-
-        if ($targetUnits < $currentUnits) {
-            $this->decreaseUnitsNumber($item, $currentUnits - $targetUnits);
-        } elseif ($targetUnits > $currentUnits) {
-            $this->increaseUnitsNumber($item, $targetUnits - $currentUnits);
         }
     }
 
@@ -102,23 +85,5 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         }
 
         return null;
-    }
-
-    private function increaseUnitsNumber(OrderItemInterface $orderItem, int $increaseBy): void
-    {
-        for ($i = 0; $i < $increaseBy; ++$i) {
-            $this->orderItemUnitFactory->createForItem($orderItem);
-        }
-    }
-
-    private function decreaseUnitsNumber(OrderItemInterface $orderItem, int $decreaseBy): void
-    {
-        foreach (array_reverse($orderItem->getUnits()) as $unit) {
-            if (0 >= $decreaseBy--) {
-                break;
-            }
-
-            $orderItem->removeUnit($unit);
-        }
     }
 }
