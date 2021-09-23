@@ -44,6 +44,7 @@ jobs:
         php-version: ${{ matrix.php }}
         ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
         extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
+        tools: symfony
 
     - name: Check PHP Version
       run: php -v
@@ -86,14 +87,11 @@ jobs:
     - name: Install Browser Drivers
       run: vendor/bin/bdi detect drivers
 
-    - name: Setup Symfony CLI
-      run: wget https://get.symfony.com/cli/installer -O - | bash
+    - name: Install Certificates
+      run: symfony server:ca:install
 
     - name: Run Symfony Webserver
-      run: |
-        sudo apt install libnss3-tools
-        ~/.symfony/bin/symfony server:ca:install
-        ~/.symfony/bin/symfony server:start --port=9080 --dir=public --force-php-discovery --daemon
+      run: symfony server:start --port=9080 --dir=public --force-php-discovery --daemon
 
     - name: Run Behat
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
