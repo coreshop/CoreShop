@@ -1303,57 +1303,6 @@
                                     }
                                 ],
                                 "locked": false
-                            },
-                            {
-                                "fieldtype": "panel",
-                                "layout": null,
-                                "border": false,
-                                "name": "units",
-                                "type": null,
-                                "region": null,
-                                "title": "coreshop.order_item.units",
-                                "width": "",
-                                "height": "",
-                                "collapsible": false,
-                                "collapsed": false,
-                                "bodyStyle": "",
-                                "datatype": "layout",
-                                "permissions": null,
-                                "childs": [
-                                    {
-                                        "fieldtype": "coreShopRelations",
-                                        "stack": "coreshop.order_item_unit",
-                                        "relationType": true,
-                                        "objectsAllowed": true,
-                                        "assetsAllowed": false,
-                                        "documentsAllowed": false,
-                                        "width": null,
-                                        "height": "",
-                                        "maxItems": "",
-                                        "assetUploadPath": null,
-                                        "assetTypes": [],
-                                        "documentTypes": [],
-                                        "classes": [],
-                                        "pathFormatterClass": "",
-                                        "name": "units",
-                                        "title": "coreshop.order_item.units",
-                                        "tooltip": "",
-                                        "mandatory": false,
-                                        "noteditable": true,
-                                        "index": false,
-                                        "locked": false,
-                                        "style": "",
-                                        "permissions": null,
-                                        "datatype": "data",
-                                        "invisible": false,
-                                        "visibleGridView": false,
-                                        "visibleSearch": false
-                                    }
-                                ],
-                                "locked": false,
-                                "icon": "",
-                                "labelWidth": "",
-                                "labelAlign": "left"
                             }
                         ],
                         "locked": false
