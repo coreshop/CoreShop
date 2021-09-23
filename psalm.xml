@@ -58,8 +58,6 @@
         </DeprecatedInterface>
         <DeprecatedMethod>
             <errorLevel type="info">
-                <referencedMethod name="FOS\RestBundle\View\View::setTemplate" />
-                <referencedMethod name="FOS\RestBundle\View\View::setTemplateVar" />
                 <referencedMethod name="Payum\Core\Model\GatewayConfigInterface::setFactoryName" />
                 <referencedMethod name="Symfony\Component\EventDispatcher\Event::stopPropagation" />
                 <referencedMethod name="Symfony\Component\HttpKernel\Kernel::getRootDir" />
@@ -73,7 +71,6 @@
 
         <InternalMethod>
             <errorLevel type="info">
-                <referencedMethod name="PHPUnit\Framework\TestCase::__construct" />
                 <referencedMethod name="Symfony\Bundle\SecurityBundle\Security\_FirewallMap::getFirewallConfig" />
             </errorLevel>
         </InternalMethod>
@@ -81,7 +78,7 @@
         <MissingReturnType errorLevel="info" />
 
         <PropertyNotSetInConstructor errorLevel="info" />
-        <MissingParamType errorLevel="info" />
+
 
         <RedundantConditionGivenDocblockType errorLevel="info" />
 
