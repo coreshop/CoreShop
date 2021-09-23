@@ -78,7 +78,7 @@
         <MissingReturnType errorLevel="info" />
 
         <PropertyNotSetInConstructor errorLevel="info" />
-
+        <MissingParamType errorLevel="info" />
 
         <RedundantConditionGivenDocblockType errorLevel="info" />
 
