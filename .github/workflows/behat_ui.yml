@@ -12,7 +12,7 @@ jobs:
       APP_ENV: "test"
       CORESHOP_TEST: 1
       PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
-      PANTHER_EXTERNAL_BASE_URI: "https://127.0.0.1:9080/app_test.php"
+      PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
       PIMCORE_KERNEL_CLASS: 'Kernel'
 
@@ -87,11 +87,8 @@ jobs:
     - name: Install Browser Drivers
       run: vendor/bin/bdi detect drivers
 
-    - name: Install Certificates
-      run: symfony server:ca:install
-
     - name: Run Symfony Webserver
-      run: symfony server:start --port=9080 --dir=public --daemon
+      run: symfony server:start --port=9080 --dir=public --daemon --no-tls
 
     - name: Run Behat
       run: vendor/bin/behat --strict --no-interaction -vvv --config behat.yml.dist -p ui
