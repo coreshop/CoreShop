@@ -1,7 +1,7 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% set productUrl = coreshop_path(item.product, 'coreshop_product_detail') %}
+{% set productUrl = pimcore_object_path(item.product) %}
 
 <tr class="shopping-cart-item" {% if item.hasUnitDefinition %}{{ coreshop_test_html_attribute('cart-item-row-unit-' ~ item.unitDefinition.id, item.name) }}{% endif %}{{ coreshop_test_html_attribute('cart-item-row', item.name) }}>
     <td class="text-center">
@@ -62,7 +62,7 @@
     <td class="text-center">
         {% if not item.isGiftItem %}
             <a
-                href="{{ coreshop_path(cart, 'coreshop_cart_remove', {cartItem: item.id}) }}"
+                href="{{ path('coreshop_cart_remove', {cartItem: item.id}) }}"
                 title="{{ 'coreshop.ui.remove'|trans }}"
                 class="btn btn-danger tool-tip"
                 data-id="{{ item.id }}"

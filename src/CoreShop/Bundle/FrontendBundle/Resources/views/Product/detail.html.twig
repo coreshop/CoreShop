@@ -6,10 +6,10 @@
 {% block center %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
             {% if product.categories|length > 0 %}
                 {% for cat in product.categories|first.hierarchy %}
-                    <li class="breadcrumb-item"><a href="{{ coreshop_path(cat, 'coreshop_category_list') }}">{{ cat.name }}</a></li>
+                    <li class="breadcrumb-item"><a href="{{ pimcore_object_path(cat) }}">{{ cat.name }}</a></li>
                 {% endfor %}
             {% endif %}
             <li class="breadcrumb-item active">{{ product.name }}</li>
@@ -102,7 +102,7 @@
 
             <div class="options">
                 <div class="cart-button btn-group">
-                    <a href="{{ coreshop_path('coreshop_wishlist_add', {product: product.id}) }}" class="btn btn-wishlist">
+                    <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" class="btn btn-wishlist">
                         <i class="fa fa-heart"></i>
                     </a>
                     {% if coreshop_inventory_is_available(product) %}

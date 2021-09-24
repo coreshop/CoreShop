@@ -18,24 +18,22 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Frontend\ProductPageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
+use Pimcore\Model\DataObject\Concrete;
+use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
     private SharedStorageInterface $sharedStorage;
-    private LinkGeneratorInterface $linkGenerator;
     private ProductPageInterface $productPage;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        LinkGeneratorInterface $linkGenerator,
         ProductPageInterface $productPage
     )
     {
         $this->sharedStorage = $sharedStorage;
-        $this->linkGenerator = $linkGenerator;
         $this->productPage = $productPage;
     }
 
@@ -52,7 +50,13 @@ final class ProductContext implements Context
      */
     public function iShouldBeOnProductDetailedPage(ProductInterface $product): void
     {
-        Assert::true($this->productPage->isOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en'])));
+        $path = null;
+
+        if ($product instanceof Concrete) {
+            $path = $product->getClass()->getLinkGenerator()->generate($product, ['_locale' => 'en']);
+        }
+
+        Assert::true($this->productPage->isOpenWithUri($path));
     }
 
     /**
@@ -60,7 +64,13 @@ final class ProductContext implements Context
      */
     public function iCheckLatestProducts(ProductInterface $product): void
     {
-        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $path = null;
+
+        if ($product instanceof Concrete) {
+            $path = $product->getClass()->getLinkGenerator()->generate($product, ['_locale' => 'en']);
+        }
+
+        $this->productPage->tryToOpenWithUri($path);
     }
 
     /**
@@ -218,7 +228,13 @@ final class ProductContext implements Context
      */
     public function iShouldSeeThatThisProductIsOutOfStock(ProductInterface $product): void
     {
-        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $path = null;
+
+        if ($product instanceof Concrete) {
+            $path = $product->getClass()->getLinkGenerator()->generate($product, ['_locale' => 'en']);
+        }
+
+        $this->productPage->tryToOpenWithUri($path);
 
         Assert::true($this->productPage->getIsOutOfStock());
     }

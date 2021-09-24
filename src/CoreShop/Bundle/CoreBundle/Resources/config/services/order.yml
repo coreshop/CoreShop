@@ -91,7 +91,7 @@ services:
            - '@coreshop.repository.order_shipment'
            - '@coreshop.renderer.order.pdf'
            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface'
-           - '@CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface'
+           - '@CoreShop\Component\Pimcore\Mail\MailProcessorInterface'
 
     CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier:
         decorates: coreshop.cart_item.quantity_modifier

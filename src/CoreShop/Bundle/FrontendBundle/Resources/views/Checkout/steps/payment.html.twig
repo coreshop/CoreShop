@@ -35,7 +35,7 @@
                     {% set previousStep = coreshop_checkout_steps_get_previous() %}
                     {% if previousStep is not null %}
                         <div class="col-12 col-sm-6">
-                            <a href="{{ coreshop_path(cart, 'coreshop_checkout', {'stepIdentifier': previousStep}) }}" class="btn btn-secondary">
+                            <a href="{{ path('coreshop_checkout', {'stepIdentifier': previousStep}) }}" class="btn btn-secondary">
                                 {{ 'coreshop.ui.back'|trans }}
                             </a>
                         </div>

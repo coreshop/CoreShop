@@ -15,10 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @property ContainerInterface $container
@@ -30,10 +28,5 @@ class FrontendController extends AbstractController
     public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator): void
     {
         $this->templateConfigurator = $templateConfigurator;
-    }
-
-    protected function generateCoreShopUrl($object, $route = null, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): ?string
-    {
-        return $this->container->get(LinkGeneratorInterface::class)->generate($object, $route, $parameters, $referenceType);
     }
 }

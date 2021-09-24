@@ -163,7 +163,7 @@ services:
         class: CoreShop\Behat\Context\Domain\LinkGeneratorContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
+            - '@router'
         tags:
             - { name: fob.context_service }
 

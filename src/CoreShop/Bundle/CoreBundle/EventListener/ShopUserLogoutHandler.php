@@ -15,29 +15,29 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
 /** @psalm-suppress DeprecatedInterface */
 final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
 {
-    private LinkGeneratorInterface $linkGenerator;
+    private RouterInterface $router;
     private string $routeName;
     private SessionInterface $session;
     private StoreContextInterface $storeContext;
 
     public function __construct(
-        LinkGeneratorInterface $linkGenerator,
+        RouterInterface $router,
         string $routeName,
         SessionInterface $session,
         StoreContextInterface $storeContext
     ) {
-        $this->linkGenerator = $linkGenerator;
+        $this->router = $router;
         $this->routeName = $routeName;
         $this->session = $session;
         $this->storeContext = $storeContext;
@@ -51,6 +51,6 @@ final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
             $this->session->remove('coreshop.cart.' . $store->getId());
         }
 
-        return new RedirectResponse($this->linkGenerator->generate(null, $this->routeName, ['_locale' => $request->getLocale()]));
+        return new RedirectResponse($this->router->generate($this->routeName, ['_locale' => $request->getLocale()]));
     }
 }

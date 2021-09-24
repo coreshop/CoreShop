@@ -170,7 +170,7 @@ services:
 
     CoreShop\Component\Notification\Rule\Action\MailActionProcessor:
         arguments:
-            - '@CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface'
+            - '@CoreShop\Component\Pimcore\Mail\MailProcessorInterface'
         tags:
             - { name: coreshop.notification_rule.action, type: mail, notification-type: order, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
             - { name: coreshop.notification_rule.action, type: mail, notification-type: user, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }

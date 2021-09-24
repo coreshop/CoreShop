@@ -12,7 +12,7 @@
         </id>
 
         <field name="product" column="product" type="pimcoreObject"/>
-        <field name="price" column="price" type="bigint"/>
+        <field name="price" column="price" type="bigintInteger"/>
 
         <many-to-one field="store" target-entity="CoreShop\Component\Store\Model\StoreInterface">
             <join-column name="store" referenced-column-name="id" on-delete="CASCADE"/>

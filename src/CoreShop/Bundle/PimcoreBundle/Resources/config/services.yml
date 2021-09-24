@@ -1,7 +1,5 @@
 imports:
     - { resource: services_alias.yml }
-    - { resource: services/templating.yml }
-    - { resource: services/twig.yml }
     - { resource: services/grid.yml }
     - { resource: services/dynamic_dropdown.yml }
     - { resource: services/pimcore.yml }
@@ -15,9 +13,6 @@ services:
 
     CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface: '@CoreShop\Component\Pimcore\DataObject\ClassInstaller'
     CoreShop\Component\Pimcore\DataObject\ClassInstaller: ~
-
-    coreshop.object_link_generator: '@CoreShop\Component\Pimcore\DataObject\LinkGenerator'
-    CoreShop\Component\Pimcore\DataObject\LinkGenerator: ~
 
     CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface: '@CoreShop\Component\Pimcore\DataObject\GridConfigInstaller'
     CoreShop\Component\Pimcore\DataObject\GridConfigInstaller: ~
@@ -35,13 +30,7 @@ services:
     CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface: '@CoreShop\Component\Pimcore\DataObject\ObjectCloner'
     CoreShop\Component\Pimcore\DataObject\ObjectCloner: ~
 
-    CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface: '@CoreShop\Component\Pimcore\Routing\LinkGenerator'
-    CoreShop\Component\Pimcore\Routing\LinkGenerator:
-        arguments:
-            - '@CoreShop\Component\Pimcore\DataObject\LinkGenerator'
-            - '@router'
-
-    CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface: '@CoreShop\Bundle\PimcoreBundle\Mail\MailProcessor'
+    CoreShop\Component\Pimcore\Mail\MailProcessorInterface: '@CoreShop\Bundle\PimcoreBundle\Mail\MailProcessor'
     CoreShop\Bundle\PimcoreBundle\Mail\MailProcessor:
         arguments:
             - '@event_dispatcher'
@@ -82,3 +71,7 @@ services:
         arguments:
             - '@Pimcore\Http\Request\Resolver\SiteResolver'
             - '@Symfony\Component\HttpFoundation\RequestStack'
+
+    CoreShop\Component\Pimcore\Twig\Extension\DataObjectRoutingExtension:
+        tags:
+            - { name: twig.extension }

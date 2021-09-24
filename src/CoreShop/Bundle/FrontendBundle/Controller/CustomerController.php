@@ -164,7 +164,7 @@ class CustomerController extends FrontendController
                 $this->fireEvent($request, $address, sprintf('%s.%s.%s_post', 'coreshop', 'address', $eventType));
                 $this->addFlash('success', $this->get('translator')->trans(sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated')));
 
-                return $this->redirect($request->get('_redirect', $this->generateCoreShopUrl($customer, 'coreshop_customer_addresses')));
+                return $this->redirect($request->get('_redirect', $this->generateUrl('coreshop_customer_addresses')));
             }
         }
 

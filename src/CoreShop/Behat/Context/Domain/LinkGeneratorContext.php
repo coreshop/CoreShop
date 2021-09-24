@@ -16,19 +16,19 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Pimcore\Model\DataObject\Concrete;
+use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
 final class LinkGeneratorContext implements Context
 {
     private SharedStorageInterface $sharedStorage;
-    private LinkGeneratorInterface $linkGenerator;
+    private RouterInterface $router;
 
-    public function __construct(SharedStorageInterface $sharedStorage, LinkGeneratorInterface $linkGenerator)
+    public function __construct(SharedStorageInterface $sharedStorage, RouterInterface $router)
     {
         $this->sharedStorage = $sharedStorage;
-        $this->linkGenerator = $linkGenerator;
+        $this->router = $router;
     }
 
     /**
@@ -36,7 +36,7 @@ final class LinkGeneratorContext implements Context
      */
     public function theGeneratedUrlForObjectShouldBe(Concrete $object, $url): void
     {
-        $generatedUrl = $this->linkGenerator->generate($object, null, ['_locale' => 'en']);
+        $generatedUrl = $object->getClass()->getLinkGenerator()->generate($object, ['_locale' => 'en']);
 
         Assert::eq(
             $generatedUrl,
@@ -54,7 +54,7 @@ final class LinkGeneratorContext implements Context
      */
     public function theGeneratedUrlForObjectWithRouteShouldBe(Concrete $object, $routeName, $url): void
     {
-        $generatedUrl = $this->linkGenerator->generate($object, $routeName, ['_locale' => 'en']);
+        $generatedUrl = $object->getClass()->getLinkGenerator()->generate($object, ['_locale' => 'en', 'route' => $routeName]);
 
         Assert::eq(
             $generatedUrl,
@@ -72,7 +72,7 @@ final class LinkGeneratorContext implements Context
      */
     public function theGeneratedUrlForRouteShouldBe($route, $url): void
     {
-        $generatedUrl = $this->linkGenerator->generate(null, $route, ['_locale' => 'en']);
+        $generatedUrl = $this->router->generate($route, ['_locale' => 'en']);
 
         Assert::eq(
             $generatedUrl,

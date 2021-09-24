@@ -4,9 +4,9 @@
 {% macro generate_seo_pagination_url(page) %}
     {% apply spaceless %}
         {% if page == 1 %}
-            {% set pageUrl = pimcore_url({ page: null }) %}
+            {% set pageUrl = pimcore_object_path({ page: null }) %}
         {% else %}
-            {% set pageUrl = pimcore_url({ page: page }) %}
+            {% set pageUrl = pimcore_object_path({ page: page }) %}
         {% endif %}
 
         {{ pageUrl }}
@@ -30,7 +30,7 @@
 
                 {% if pages.next is defined %}
                     {% if pages.next %}
-                        <li class="page-item"><a class="page-link" href="{{ pimcore_url({ page: pages.last }) }}">»</a></li>
+                        <li class="page-item"><a class="page-link" href="{{ pimcore_object_path({ page: pages.last }) }}">»</a></li>
                     {% endif %}
                 {% endif %}
             </ul>

@@ -19,26 +19,26 @@ use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class CheckoutIdentifierExtension extends AbstractExtension
 {
     private RequestStack $requestStack;
-    private LinkGeneratorInterface $linkGenerator;
+    private RouterInterface $router;
     private CheckoutManagerFactoryInterface $checkoutManagerFactory;
     private CartContextInterface $cartContext;
 
     public function __construct(
         RequestStack $requestStack,
-        LinkGeneratorInterface $linkGenerator,
+        RouterInterface $router,
         CheckoutManagerFactoryInterface $checkoutManagerFactory,
         CartContextInterface $cartContext
     ) {
         $this->requestStack = $requestStack;
-        $this->linkGenerator = $linkGenerator;
+        $this->router = $router;
         $this->checkoutManagerFactory = $checkoutManagerFactory;
         $this->cartContext = $cartContext;
     }
@@ -78,7 +78,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
                 'done' => null !== $stepIdentifier,
                 'current' => $requestAttributes->get('_route') === 'coreshop_cart_summary',
                 'valid' => null !== $stepIdentifier,
-                'url' => $this->linkGenerator->generate($cart, 'coreshop_cart_summary'),
+                'url' => $this->router->generate('coreshop_cart_summary'),
             ],
         ];
 
@@ -92,7 +92,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
                 'done' => null !== $stepIdentifier && $currentStep > $stepIndex,
                 'current' => null !== $stepIdentifier && $currentStep === $stepIndex,
                 'valid' => $isValid,
-                'url' => $this->linkGenerator->generate($cart, 'coreshop_checkout', ['stepIdentifier' => $identifier]),
+                'url' => $this->router->generate('coreshop_checkout', ['stepIdentifier' => $identifier]),
             ];
         }
 
