@@ -25,6 +25,11 @@ interface OrderInterface extends
     PaymentSettingsAwareInterface,
     ShippableInterface
 {
+    /**
+     * @return OrderItemInterface[]|null
+     */
+    public function getItems(): ?array;
+
     public function hasShippableItems(): ?bool;
 
     public function getWeight(): ?float;

@@ -131,6 +131,10 @@
                 <referencedFunction name="Symfony\Component\HttpKernel\Config\FileLocator::__construct" />
                 <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
             </errorLevel>
+            <errorLevel type="suppress">
+                <referencedFunction name="Doctrine\ORM\Query\Expr::andX" />
+                <referencedFunction name="Doctrine\ORM\Query\Expr::orX" />
+            </errorLevel>
         </TooManyArguments>
 
         <!-- level 6 issues - really bad things -->
