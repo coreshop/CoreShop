@@ -154,31 +154,6 @@ use CoreShop\Component\Pimcore\Migration\SharedTranslation;
 SharedTranslation::add('key', 'en', 'value');
 ```
 
-### Routing Features
-
-#### Link Generator
-The CoreShop Link Generator is a wrapper arounds Symfony Routing Component, and helps you to easier generate routes for Pimcore Objects and Symfony Routes with one function.
-
-```php
-//Generate a route for a Pimcore Object with a Link Generator
-
-$this->get('coreshop.link_generator')->generate($product, 'route_product', ['foo' => 'bar']);
-
-//Generate a route for a Symfony Route or Pimcore Static Routes Route
-
-$this->get('coreshop.link_generator')->generate(null, 'overview', ['foo' => 'bar']);
-```
-
-CoreShop also provides your with twig helpers for that:
-
-```twig
-{{ coreshop_path(product, 'coreshop_product_detail') }}
-
-{{ coreshop_path('coreshop_cart_remove_price_rule', {'code' : priceRule.voucherCode }) }}
-
-coreshop_path('coreshop_index')
-```
-
 ### Twig Features
 CoreShop adds a lot of additional twig functions to make a developers live even more enjoyable :)
 

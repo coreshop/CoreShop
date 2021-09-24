@@ -20,6 +20,16 @@ final class DebugStoreProvider implements DebugStoreProviderInterface
 {
     public function getStoreId(Request $request): ?string
     {
-        return (string)$request->query->get('_store_id') ?: $request->cookies->get('_store_id');
+        $queryStoreId = $request->query->get('_store_id');
+        if (is_string($queryStoreId) && $queryStoreId !== '') {
+            return $queryStoreId;
+        }
+
+        $cookiesStoreId = $request->cookies->get('_store_id');
+        if (is_string($cookiesStoreId) && $cookiesStoreId !== '') {
+            return $cookiesStoreId;
+        }
+
+        return null;
     }
 }
