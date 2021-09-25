@@ -85,6 +85,7 @@
   "require": {
     "ext-json": "*",
     "dachcom-digital/emailizr": "^2.0.0",
+    "doctrine/doctrine-bundle": "^2.4",
     "doctrine/data-fixtures": "^1.0",
     "doctrine/orm": "^2.9",
     "fzaninotto/faker": "^1.6",
