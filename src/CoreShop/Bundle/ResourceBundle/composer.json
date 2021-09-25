@@ -25,9 +25,9 @@
   ],
   "require": {
     "doctrine/orm": "^2.9",
-    "doctrine/doctrine-bundle": "^2.2",
-    "jms/serializer-bundle": "^3.0",
-    "stof/doctrine-extensions-bundle": "^1.2",
+    "doctrine/doctrine-bundle": "^2.4",
+    "jms/serializer-bundle": "^3.10",
+    "stof/doctrine-extensions-bundle": "^1.6",
     "coreshop/pimcore-bundle": "^3.0",
     "coreshop/optimistic-entity-lock-bundle": "^3.0",
     "coreshop/registry": "^3.0",
@@ -41,7 +41,7 @@
     "symfony/twig-bundle": "^5.2.0",
     "symfony/validator": "^5.2.0",
     "symfony/yaml": "^5.2.0",
-    "gedmo/doctrine-extensions": "^3.0.0",
+    "gedmo/doctrine-extensions": "^3.1.0",
     "pimcore/pimcore": "^10.1"
   },
   "require-dev": {

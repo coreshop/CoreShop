@@ -28,7 +28,7 @@
     "symfony/framework-bundle": "^5.2.0",
     "symfony/doctrine-bridge": "^5.2.0",
     "symfony/twig-bundle": "^5.2.0",
-    "doctrine/data-fixtures": "^1.0",
+    "doctrine/data-fixtures": "^1.5",
     "doctrine/dbal": "^2.13",
     "doctrine/orm": "^2.9",
     "pimcore/pimcore": "^10.1"

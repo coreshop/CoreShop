@@ -51,7 +51,7 @@
     "coreshop/user-bundle": "^3.0",
     "coreshop/core": "^3.0",
     "fzaninotto/faker": "^1.6",
-    "rinvex/countries": "^7.0",
+    "rinvex/countries": "^7.3",
     "pimcore/pimcore": "^10.1"
   },
   "require-dev": {
