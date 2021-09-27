@@ -184,9 +184,9 @@ class LoadDataFixturesCommand extends Command
      *
      * @return string
      */
-    protected function getTypeOfFixtures(InputInterface $input)
+    protected function getTypeOfFixtures(InputInterface $input): string
     {
-        return $input->getOption('fixtures-type');
+        return (string)$input->getOption('fixtures-type');
     }
 
     /**
