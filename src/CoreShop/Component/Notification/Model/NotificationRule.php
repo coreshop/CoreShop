@@ -16,6 +16,9 @@ namespace CoreShop\Component\Notification\Model;
 
 use CoreShop\Component\Rule\Model\RuleTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class NotificationRule implements NotificationRuleInterface
 {
     use RuleTrait;

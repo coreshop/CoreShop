@@ -24,7 +24,7 @@ final class MigrationGenerateCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('coreshop:migrate:generate')
+            ->setName('coreshop:migration:generate')
             ->setHidden(true)
             ->setDescription('Create a new  CoreShop migrations.')
         ;

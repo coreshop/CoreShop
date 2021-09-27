@@ -61,7 +61,11 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $objectTypeFilter = $parameterBag->get('objectType', 'all');
-        $storeId = (int)$parameterBag->get('store', null);
+        $storeId = $parameterBag->get('store');
+
+        if (null === $storeId) {
+            return [];
+        }
 
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
@@ -75,10 +79,6 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         $locale = $this->localeContext->getLocaleCode();
-
-        if (null === $storeId) {
-            return [];
-        }
 
         $store = $this->storeRepository->find($storeId);
         if (!$store instanceof StoreInterface) {
@@ -140,7 +140,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
 
         $productSales = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($productSales as &$sale) {
             $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);

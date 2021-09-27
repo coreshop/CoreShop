@@ -21,6 +21,9 @@ use Doctrine\ORM\EntityRepository;
 
 abstract class AbstractEntityReferenceFixture extends AbstractFixture
 {
+    /**
+     * @psalm-param class-string $className
+     */
     protected function getObjectReferences(ObjectManager $objectManager, string $className): array
     {
         $identifier = $objectManager->getClassMetadata($className)->getIdentifier();
@@ -43,6 +46,9 @@ abstract class AbstractEntityReferenceFixture extends AbstractFixture
         return $this->getObjectReferencesByIds($objectManager, $className, $ids);
     }
 
+    /**
+     * @psalm-param class-string $className
+     */
     protected function getObjectReferencesByIds(ObjectManager $objectManager, string $className, array $ids): array
     {
         $entities = [];

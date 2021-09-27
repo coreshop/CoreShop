@@ -125,15 +125,8 @@ class Dao
 
     /**
      * Load Grouo by Relation values and type.
-     *
-     * @param QueryBuilder $queryBuilder
-     * @param string       $fieldName
-     * @param string       $type
-     * @param bool         $countValues
-     *
-     * @return array
      */
-    public function loadGroupByRelationValuesAndType(QueryBuilder $queryBuilder, $fieldName, $type, $countValues = false)
+    public function loadGroupByRelationValuesAndType(QueryBuilder $queryBuilder, string $fieldName, ?string $type = null, bool $countValues = false): array
     {
         $queryBuilder->from($this->model->getRelationTablename(), 'q');
 
@@ -209,7 +202,7 @@ class Dao
         }
         $stmt = $this->database->executeQuery($queryBuilder->getSQL());
 
-        return (int)$stmt->fetchColumn();
+        return (int)$stmt->fetchOne();
     }
 
     /**
@@ -238,13 +231,8 @@ class Dao
 
     /**
      * returns order by statement for similarity calculations based on given fields and object ids.
-     *
-     * @param array $fields
-     * @param int   $objectId
-     *
-     * @return string
      */
-    public function buildSimilarityOrderBy($fields, $objectId)
+    public function buildSimilarityOrderBy(array $fields, int $objectId): string
     {
         //TODO: similarity
         /*

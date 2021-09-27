@@ -44,7 +44,7 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
         Assert::isInstanceOf($params['store'], StoreInterface::class);
 
         /**
-         * @var $subject ProductInterface
+         * @var ProductInterface $subject
          */
         Assert::isInstanceOf($subject, ProductInterface::class);
 

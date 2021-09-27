@@ -17,6 +17,9 @@ namespace CoreShop\Component\Index\Model;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class FilterCondition extends AbstractResource implements FilterConditionInterface
 {
     use TimestampableTrait;

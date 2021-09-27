@@ -44,7 +44,7 @@ class GtmDataLayerBlockListener
     {
         $request = $event->getRequest();
 
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
@@ -52,6 +52,9 @@ class GtmDataLayerBlockListener
             return;
         }
 
+        /**
+         * @psalm-suppress InternalMethod
+         */
         if (!Tool::useFrontendOutputFilters()) {
             return;
         }
@@ -62,12 +65,19 @@ class GtmDataLayerBlockListener
         }
 
         $response = $event->getResponse();
+        /**
+         * @psalm-suppress InternalMethod
+         */
         if (!$this->responseHelper->isHtmlResponse($response)) {
             return;
         }
 
         $codeHead = $this->generateCode();
         $content = $response->getContent();
+
+        if (false === $content) {
+            return;
+        }
 
         if (!empty($codeHead)) {
             $headEndPosition = stripos($content, '</head>');

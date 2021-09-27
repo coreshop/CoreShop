@@ -28,7 +28,7 @@ abstract class AbstractPriceRule implements PriceRuleInterface
     }
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -82,12 +82,12 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         return $this;
     }
 
-    public function getLabel($language = null)
+    public function getLabel(?string $language = null)
     {
         return $this->getTranslation($language)->getLabel();
     }
 
-    public function setLabel($label, $language = null)
+    public function setLabel(string $label, ?string $language = null)
     {
         $this->getTranslation($language)->setLabel($label);
     }
@@ -102,13 +102,7 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         $this->stopPropagation = $stopPropagation;
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return PriceRuleTranslationInterface
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): PriceRuleTranslationInterface
     {
         /** @var ProductPriceRuleTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);

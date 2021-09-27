@@ -21,6 +21,7 @@ final class CompositeCountryContext implements CountryContextInterface
 {
     /**
      * @var PriorityQueue|CountryContextInterface[]
+     * @psalm-var PriorityQueue<CountryContextInterface>
      */
     private PriorityQueue $countryContexts;
 

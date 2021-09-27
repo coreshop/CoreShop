@@ -47,16 +47,18 @@ final class CartBlamerListener
             return;
         }
 
-        $this->blame($user->getCustomer());
+        $customer = $user->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            return;
+        }
+
+        $this->blame($customer);
     }
 
     public function onRegisterEvent(CustomerRegistrationEvent $event): void
     {
         $user = $event->getCustomer();
-
-        if (!$user instanceof CustomerInterface) {
-            return;
-        }
 
         $this->blame($user);
     }

@@ -30,6 +30,9 @@ use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 use Webmozart\Assert\Assert;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface,
     Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface

@@ -29,16 +29,12 @@ class WishlistController extends FrontendController
         $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
-            $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
+            $redirect = $request->get('_redirect', $this->generateUrl('coreshop_index'));
 
             return $this->redirect($redirect);
         }
 
         $quantity = (int) $request->get('quantity', 1);
-
-        if (!is_int($quantity)) {
-            $quantity = 1;
-        }
 
         /**
          * @var StorageListItem $wishlistItem
@@ -51,7 +47,7 @@ class WishlistController extends FrontendController
 
         $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
 
-        $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getWishlist(), 'coreshop_wishlist_summary'));
+        $redirect = $request->get('_redirect', $this->generateUrl( 'coreshop_wishlist_summary'));
 
         return $this->redirect($redirect);
     }

@@ -54,6 +54,7 @@ final class ProductAvailabilityEventListener
             return;
         }
 
+        /** @psalm-suppress InternalMethod */
         $originalItem = $this->pimcoreModelFactory->build(get_class($object));
         $originalItem->getDao()->getById($object->getId());
 

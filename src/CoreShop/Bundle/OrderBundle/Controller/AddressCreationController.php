@@ -57,7 +57,7 @@ class AddressCreationController extends PimcoreController
                 $address->setParent($objectService->createFolderByPath(sprintf(
                     '/%s/%s',
                     $customer->getFullPath(),
-                    $this->container->getParameter('coreshop.folder.address')
+                    (string)$this->container->getParameter('coreshop.folder.address')
                 )));
                 $address->save();
 

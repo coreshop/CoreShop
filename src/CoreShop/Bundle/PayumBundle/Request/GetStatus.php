@@ -21,6 +21,7 @@ class GetStatus extends BaseGetStatus
 {
     /**
      * @var string
+     * @psalm-suppress NonInvariantDocblockPropertyType
      */
     protected $status;
 

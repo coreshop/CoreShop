@@ -127,6 +127,7 @@ class EntityMerger
                 //Reset new Data, for some reason the line above resets newData
                 $newData = $class->reflFields[$assoc['fieldName']]->getValue($entity);
 
+                /** @psalm-suppress TypeDoesNotContainType */
                 if (!$newCollection instanceof PersistentCollection) {
                     $newCollection = new PersistentCollection(
                         $this->em,
@@ -135,11 +136,11 @@ class EntityMerger
                     );
                 }
 
-                $this->mergeCollection($origData, $newData, $assoc, static function ($foundEntry) use ($newCollection) {
+                $this->mergeCollection($origData, $newData, $assoc, static function (mixed $foundEntry) use ($newCollection): void {
                     $newCollection->removeElement($foundEntry);
                 }, $visited);
 
-                $this->mergeCollection($newData, $origData, $assoc, static function ($foundEntry) use ($newCollection) {
+                $this->mergeCollection($newData, $origData, $assoc, static function (mixed $foundEntry) use ($newCollection): void {
                     $found = false;
 
                     foreach ($newCollection as $entry) {
@@ -182,7 +183,7 @@ class EntityMerger
                 continue;
             }
 
-            $this->mergeCollection($origData, $newData, $assoc, function ($foundEntry) {
+            $this->mergeCollection($origData, $newData, $assoc, function (mixed $foundEntry): void {
                 $this->em->getUnitOfWork()->scheduleOrphanRemoval($foundEntry);
             }, $visited);
         }

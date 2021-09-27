@@ -24,13 +24,13 @@ interface PriceRuleInterface extends RuleInterface, TranslatableInterface
      *
      * @return string
      */
-    public function getLabel($language = null);
+    public function getLabel(?string $language = null);
 
     /**
      * @param string      $label
      * @param string|null $language
      */
-    public function setLabel($label, $language = null);
+    public function setLabel(string $label, ?string $language = null);
 
     /**
      * @return int

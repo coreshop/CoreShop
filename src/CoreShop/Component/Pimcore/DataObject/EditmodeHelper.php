@@ -21,6 +21,7 @@ class EditmodeHelper
 {
     public function getDataForObject(DataObject\Concrete $object, bool $objectFromVersion = false): array
     {
+        /** @psalm-suppress InternalClass */
         $dataObjectController = new DataObjectController();
         $trackerReflector = new \ReflectionClass(DataObjectController::class);
         $method = $trackerReflector->getMethod('getDataForObject');

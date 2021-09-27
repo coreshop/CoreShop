@@ -17,7 +17,10 @@ namespace CoreShop\Component\Address\Model;
 use CoreShop\Component\Resource\Model\AbstractTranslation;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
-class StateTranslation extends AbstractTranslation implements CountryTranslationInterface
+/**
+ * @psalm-suppress MissingConstructor
+ */
+class StateTranslation extends AbstractTranslation implements StateTranslationInterface
 {
     use TimestampableTrait;
 

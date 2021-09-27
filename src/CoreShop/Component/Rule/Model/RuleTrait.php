@@ -83,24 +83,24 @@ trait RuleTrait
         return $this->conditions;
     }
 
-    public function hasConditions()
+    public function hasConditions(): bool
     {
         return !$this->conditions->isEmpty();
     }
 
-    public function hasCondition(ConditionInterface $condition)
+    public function hasCondition(ConditionInterface $condition): bool
     {
         return $this->conditions->contains($condition);
     }
 
-    public function addCondition(ConditionInterface $condition)
+    public function addCondition(ConditionInterface $condition): void
     {
         if (!$this->hasCondition($condition)) {
             $this->conditions->add($condition);
         }
     }
 
-    public function removeCondition(ConditionInterface $condition)
+    public function removeCondition(ConditionInterface $condition): void
     {
         $this->conditions->removeElement($condition);
     }

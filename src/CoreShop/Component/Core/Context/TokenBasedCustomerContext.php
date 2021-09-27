@@ -32,7 +32,16 @@ final class TokenBasedCustomerContext implements CustomerContextInterface
     public function getCustomer(): CustomerInterface
     {
         if ($this->tokenStorage->getToken() instanceof TokenInterface && $this->tokenStorage->getToken()->getUser() instanceof UserInterface) {
-            return $this->tokenStorage->getToken()->getUser()->getCustomer();
+            /**
+             * @var UserInterface $user
+             */
+            $user = $this->tokenStorage->getToken()->getUser();
+
+            if (null === $user->getCustomer()) {
+                throw new CustomerNotFoundException();
+            }
+
+            return $user->getCustomer();
         }
 
         throw new CustomerNotFoundException();

@@ -17,6 +17,9 @@ namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition\Data\ManyToManyObjectRelation;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement, MissingConstructor
+ */
 class DynamicDropdownMultiple extends ManyToManyObjectRelation
 {
     use DynamicDropdownTrait;

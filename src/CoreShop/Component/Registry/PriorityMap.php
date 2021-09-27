@@ -39,17 +39,17 @@ class PriorityMap implements \Iterator, \Countable
      * Add new item to map.
      *
      * @param string $key      name
-     * @param string $value    value
+     * @param mixed  $value    value
      * @param int    $priority priority
      *
      * @return \stdClass
      */
-    public function set($key, $value, $priority = 0)
+    public function set(string $key, mixed $value, int $priority = 0)
     {
         $key = $this->getScalarKey($key);
         $this->list[$key] = new \stdClass();
         $this->list[$key]->value = $value;
-        $this->list[$key]->priority = (int) $priority;
+        $this->list[$key]->priority = $priority;
         $this->list[$key]->sequence = $this->lastSequence++;
 
         return $this->list[$key];
@@ -100,7 +100,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Get list of keys.
      *
-     * @return int[]|string[]
+     * @return array<int, int|string>
      */
     public function getKeys()
     {

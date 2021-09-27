@@ -44,13 +44,7 @@ class VolumeCalculator implements CalculatorInterface
             throw new NoPriceFoundException(__CLASS__);
         }
 
-        $price = $this->calculateRangePrice($locatedRange, $subject, $originalPrice, $context);
-
-        if (!is_numeric($price) || $price === 0) {
-            throw new NoPriceFoundException(__CLASS__);
-        }
-
-        return $price;
+        return $this->calculateRangePrice($locatedRange, $subject, $originalPrice, $context);
     }
 
     public function calculateForRange(
@@ -59,13 +53,7 @@ class VolumeCalculator implements CalculatorInterface
         int $originalPrice,
         array $context
     ): int {
-        $price = $this->calculateRangePrice($range, $subject, $originalPrice, $context);
-
-        if (!is_numeric($price) || $price === 0) {
-            throw new NoPriceFoundException(__CLASS__);
-        }
-
-        return $price;
+        return $this->calculateRangePrice($range, $subject, $originalPrice, $context);
     }
 
     public function calculateRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $originalPrice, array $context): int

@@ -50,6 +50,9 @@ final class DebugStoreContext implements StoreContextInterface
          */
         $store = $this->storeRepository->find($debugStoreId);
 
+        /**
+         * @psalm-suppress DocblockTypeContradiction
+         */
         if (null === $store) {
             throw new StoreNotFoundException();
         }

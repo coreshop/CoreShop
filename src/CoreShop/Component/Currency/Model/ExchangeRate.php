@@ -17,6 +17,9 @@ namespace CoreShop\Component\Currency\Model;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ExchangeRate implements ExchangeRateInterface
 {
     use SetValuesTrait;
@@ -76,12 +79,9 @@ class ExchangeRate implements ExchangeRateInterface
         return $this->fromCurrency;
     }
 
-    /**
-     * @param CurrencyInterface $fromCurrency
-     */
-    public function setFromCurrency(CurrencyInterface $fromCurrency)
+    public function setFromCurrency(CurrencyInterface $currency)
     {
-        $this->fromCurrency = $fromCurrency;
+        $this->fromCurrency = $currency;
     }
 
     /**
@@ -92,11 +92,8 @@ class ExchangeRate implements ExchangeRateInterface
         return $this->toCurrency;
     }
 
-    /**
-     * @param CurrencyInterface $toCurrency
-     */
-    public function setToCurrency(CurrencyInterface $toCurrency)
+    public function setToCurrency(CurrencyInterface $currency)
     {
-        $this->toCurrency = $toCurrency;
+        $this->toCurrency = $currency;
     }
 }

@@ -32,10 +32,6 @@ class QuantityRuleFetcher implements QuantityRuleFetcherInterface
     {
         $quantityPriceRules = $this->getQuantityPriceRulesForSubject($subject, $context);
 
-        if (!is_array($quantityPriceRules)) {
-            throw new NoRuleFoundException();
-        }
-
         if (count($quantityPriceRules) === 0) {
             throw new NoRuleFoundException();
         }
@@ -47,10 +43,6 @@ class QuantityRuleFetcher implements QuantityRuleFetcherInterface
     {
         /** @var ProductQuantityPriceRuleInterface[] $rules */
         $rules = $this->validRulesFetcher->getValidRules($subject, $context);
-
-        if (!is_array($rules)) {
-            return [];
-        }
 
         // sort by priority: higher priority first!
         usort($rules, function (ProductQuantityPriceRuleInterface $a, ProductQuantityPriceRuleInterface $b) {

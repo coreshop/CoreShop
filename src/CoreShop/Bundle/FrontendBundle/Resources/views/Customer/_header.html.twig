@@ -1,32 +1,32 @@
 {%  if customer and customer.user %}
     <li class="nav-item">
-        <a class="nav-link" href="{{ coreshop_path(customer, 'coreshop_customer_profile') }}">
+        <a class="nav-link" href="{{ path('coreshop_customer_profile') }}">
             {{ 'coreshop.ui.account'|trans }}
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ coreshop_path(coreshop.cart, 'coreshop_cart_summary') }}">
+        <a class="nav-link" href="{{ path('coreshop_cart_summary') }}">
             {{ 'coreshop.ui.shopping_cart'|trans }}
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ coreshop_path(coreshop.cart, 'coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}">
+        <a class="nav-link" href="{{ path('coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}">
             {{ 'coreshop.ui.checkout'|trans }}
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ coreshop_path('coreshop_logout') }}" {{ coreshop_test_html_attribute('logout-button') }}>
+        <a class="nav-link" href="{{ path('coreshop_logout') }}" {{ coreshop_test_html_attribute('logout-button') }}>
             {{ 'coreshop.ui.logout'|trans }}
         </a>
     </li>
 {% else %}
     <li class="nav-item">
-        <a class="nav-link" href="{{ coreshop_path('coreshop_register') }}">
+        <a class="nav-link" href="{{ path('coreshop_register') }}">
             {{ 'coreshop.ui.register'|trans }}
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ coreshop_path('coreshop_login') }}">
+        <a class="nav-link" href="{{ path('coreshop_login') }}">
             {{ 'coreshop.ui.login'|trans }}
         </a>
     </li>

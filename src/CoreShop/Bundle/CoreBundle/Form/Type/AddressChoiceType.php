@@ -44,15 +44,8 @@ final class AddressChoiceType extends AbstractType
             ->setDefaults(
                 [
                     'choices' => function (Options $options) {
-                        /**
-                         * @var CustomerInterface $customer
-                         */
                         $customer = $this->customerRepository->find($options['customer']);
                         $allowedAddressIdentifier = $options['allowed_address_identifier'];
-
-                        if (!$customer instanceof CustomerInterface) {
-                            throw new \InvalidArgumentException('Customer needs to be set');
-                        }
 
                         $addresses = $this->customerAddressAllocator->allocateForCustomer($customer);
 
@@ -60,19 +53,15 @@ final class AddressChoiceType extends AbstractType
                             return $addresses;
                         }
 
-                        return array_filter($addresses, function (AddressInterface $address) use ($allowedAddressIdentifier) {
+                        return array_filter($addresses, static function (AddressInterface $address) use ($allowedAddressIdentifier): bool {
                             $addressIdentifierName = $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : null;
 
                             return in_array($addressIdentifierName, $allowedAddressIdentifier);
                         });
                     },
                     'choice_value' => 'id',
-                    'choice_label' => function ($address) {
-                        if ($address instanceof AddressInterface) {
-                            return sprintf('%s %s', $address->getStreet(), $address->getNumber());
-                        }
-
-                        return null;
+                    'choice_label' => function (AddressInterface $address) {
+                        return sprintf('%s %s', $address->getStreet(), $address->getNumber());
                     },
                     'choice_translation_domain' => false,
                     'active' => true,

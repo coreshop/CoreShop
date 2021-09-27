@@ -18,6 +18,9 @@ use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use CoreShop\Component\Taxation\Model\TaxRule as BaseTaxRule;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class TaxRule extends BaseTaxRule implements TaxRuleInterface
 {
     /**

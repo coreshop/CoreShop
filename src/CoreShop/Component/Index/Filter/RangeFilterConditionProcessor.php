@@ -51,7 +51,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             'values' => array_values($rawValues),
             'fieldName' => $field,
             'stepCount' => $condition->getConfiguration()['stepCount'],
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
+            'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById((string)$condition->getQuantityUnit()) : null,
         ];
     }
 

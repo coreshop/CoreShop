@@ -33,12 +33,12 @@ class CartItemQuantityDataMapper implements DataMapperInterface
         $this->propertyPathDataMapper = $propertyPathDataMapper;
     }
 
-    public function mapDataToForms($data, $forms): void
+    public function mapDataToForms($viewData, $forms): void
     {
-        $this->propertyPathDataMapper->mapDataToForms($data, $forms);
+        $this->propertyPathDataMapper->mapDataToForms($viewData, $forms);
     }
 
-    public function mapFormsToData($forms, &$data): void
+    public function mapFormsToData($forms, &$viewData): void
     {
         $formsOtherThanQuantity = [];
         $quantityForm = null;
@@ -49,7 +49,7 @@ class CartItemQuantityDataMapper implements DataMapperInterface
                 $quantityForm = $form;
 
                 $targetQuantity = $form->getData();
-                $this->cartItemQuantityModifier->modify($data, (float) $targetQuantity);
+                $this->cartItemQuantityModifier->modify($viewData, (float) $targetQuantity);
 
                 continue;
             }
@@ -58,12 +58,12 @@ class CartItemQuantityDataMapper implements DataMapperInterface
         }
 
         if (!empty($formsOtherThanQuantity)) {
-            $this->propertyPathDataMapper->mapFormsToData($formsOtherThanQuantity, $data);
+            $this->propertyPathDataMapper->mapFormsToData($formsOtherThanQuantity, $viewData);
         }
 
         if (null !== $quantityForm) {
             $targetQuantity = $quantityForm->getData();
-            $this->cartItemQuantityModifier->modify($data, (float) $targetQuantity);
+            $this->cartItemQuantityModifier->modify($viewData, (float) $targetQuantity);
         }
     }
 }

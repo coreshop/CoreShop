@@ -26,8 +26,8 @@
   "require": {
     "coreshop/pimcore": "^3.0",
     "doctrine/common": "^3.1",
-    "doctrine/orm": "^2.5",
-    "webmozart/assert": "^1.2",
+    "doctrine/orm": "^2.9",
+    "webmozart/assert": "^1.10",
     "pimcore/pimcore": "^10.1"
   },
   "require-dev": {

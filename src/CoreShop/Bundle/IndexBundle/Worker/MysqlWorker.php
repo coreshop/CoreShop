@@ -286,7 +286,7 @@ QUERY;
             $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index->getName()) . '`');
             $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index->getName()) . '`');
         } catch (\Exception $e) {
-            $this->logger->error($e);
+            $this->logger->error((string)$e);
         }
     }
 
@@ -317,7 +317,7 @@ QUERY;
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->error($e);
+            $this->logger->error((string)$e);
         }
     }
 

@@ -36,7 +36,7 @@ final class ResourceTranslationsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-            /** @var TranslationInterface[] $translations */
+            /** @var TranslationInterface[]|null[] $translations */
             $translations = $event->getData();
             $translatable = $event->getForm()->getParent()->getData();
 
@@ -59,10 +59,10 @@ final class ResourceTranslationsType extends AbstractType
     {
         $resolver->setDefaults([
             'entries' => $this->definedLocalesCodes,
-            'entry_name' => function ($localeCode) {
+            'entry_name' => function (string $localeCode): string {
                 return $localeCode;
             },
-            'entry_options' => function ($localeCode) {
+            'entry_options' => function (string $localeCode): array {
                 return [
                     'required' => $localeCode === $this->defaultLocaleCode,
                 ];

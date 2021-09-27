@@ -19,6 +19,9 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Element\ValidationException;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement, MissingConstructor
+ */
 class Money extends DataObject\ClassDefinition\Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
@@ -260,8 +263,19 @@ class Money extends DataObject\ClassDefinition\Data implements
 
     public function getSetterCode($class)
     {
-        $returnType = $class instanceof DataObject\Fieldcollection\Definition ? '\\Pimcore\\Model\\DataObject\\FieldCollection\\Data\\' . ucfirst($class->getKey()) :
-            '\\Pimcore\\Model\\DataObject\\' . ucfirst($class->getName());
+        $returnType = 'mixed';
+
+        switch (get_class($class)) {
+            case DataObject\Objectbrick\Definition::class:
+                $returnType = '\\Pimcore\\Model\\DataObject\\Objectbrick\\Data\\' . ucfirst($class->getKey());
+                break;
+            case DataObject\Fieldcollection\Definition::class:
+                $returnType = '\\Pimcore\\Model\\DataObject\\FieldCollection\\Data\\' . ucfirst($class->getKey());
+                break;
+            case DataObject\ClassDefinition::class:
+                $returnType = '\\Pimcore\\Model\\DataObject\\FieldCollection\\Data\\' . ucfirst($class->getName());
+                break;
+        }
 
         $key = $this->getName();
         $code = '';
@@ -485,7 +499,12 @@ class Money extends DataObject\ClassDefinition\Data implements
     public function getSetterCodeLocalizedfields($class)
     {
         $key = $this->getName();
-        if ($class instanceof DataObject\Fieldcollection\Definition || $class instanceof DataObject\Objectbrick\Definition) {
+
+        if ($class instanceof DataObject\Objectbrick\Definition) {
+            $classname = 'Objectbrick\\Data\\' . ucfirst($class->getKey());
+            $containerGetter = 'getDefinition';
+        }
+        else if ($class instanceof DataObject\Fieldcollection\Definition) {
             $classname = 'FieldCollection\\Data\\' . ucfirst($class->getKey());
             $containerGetter = 'getDefinition';
         } else {

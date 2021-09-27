@@ -23,7 +23,7 @@
                 <button
                         type="submit"
                         name="checkout_finisher"
-                        value="{{ coreshop_path(cart, 'coreshop_cart_create_qoute') }}"
+                        value="{{ path('coreshop_cart_create_qoute') }}"
                         class="btn btn-success w-100"
                         {{  coreshop_test_html_attribute('submit-quote') }}
                 >
@@ -34,7 +34,7 @@
                 <button
                         type="submit"
                         name="checkout_finisher"
-                        value="{{ coreshop_path(cart, 'coreshop_checkout_do') }}"
+                        value="{{ path('coreshop_checkout_do') }}"
                         class="btn btn-success w-100"
                         {{ coreshop_test_html_attribute('submit-order') }}>
                     {{ 'coreshop.ui.buy'|trans }}

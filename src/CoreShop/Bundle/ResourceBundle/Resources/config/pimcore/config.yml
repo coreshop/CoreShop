@@ -32,6 +32,8 @@ doctrine:
                 class: CoreShop\Component\Resource\Doctrine\Type\PimcoreAsset
             pimcoreSite:
                 class: CoreShop\Component\Resource\Doctrine\Type\PimcoreSite
+            bigintInteger:
+                class: CoreShop\Component\Resource\Doctrine\Type\BigIntIntegerType
         mapping_types:
             enum: string
     orm:

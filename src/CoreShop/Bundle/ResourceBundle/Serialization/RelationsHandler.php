@@ -42,7 +42,7 @@ class RelationsHandler
         }
 
         if (is_array($relation)) {
-            return array_map(function ($rel) use ($manager) {
+            return array_map(function (mixed $rel) use ($manager): mixed {
                 return $this->getSingleEntityRelation($rel, $manager);
             }, $relation);
         }

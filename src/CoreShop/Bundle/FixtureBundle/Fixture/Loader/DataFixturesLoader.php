@@ -85,7 +85,7 @@ class DataFixturesLoader extends ContainerAwareLoader
      */
     protected function isFixtureAlreadyLoaded($fixtureObject)
     {
-        if (!is_array($this->loadedFixtures) || count($this->loadedFixtures) === 0) {
+        if (count($this->loadedFixtures) === 0) {
             $this->loadedFixtures = [];
 
             $loadedFixtures = $this->dataFixtureRepository->findAll();

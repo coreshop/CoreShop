@@ -26,7 +26,7 @@ class IsNullRenderer extends AbstractMysqlDynamicRenderer
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
-         * @var $condition IsNullCondition
+         * @var IsNullCondition $condition
          */
         Assert::isInstanceOf($condition, IsNullCondition::class);
 

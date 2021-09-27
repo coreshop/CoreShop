@@ -20,9 +20,17 @@ use Pimcore\Model\DataObject\Service;
 
 class ObjectService implements ObjectServiceInterface
 {
+    /**
+     * @psalm-return Folder
+     */
     public function createFolderByPath(string $path): Folder
     {
-        return Service::createFolderByPath($path);
+        /**
+         * @var Folder $folder
+         */
+        $folder = Service::createFolderByPath($path);
+
+        return $folder;
     }
 
     public function copyObject(Concrete $fromObject, Concrete $toObject): void

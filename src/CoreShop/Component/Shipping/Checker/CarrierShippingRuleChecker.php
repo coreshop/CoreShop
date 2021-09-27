@@ -18,6 +18,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 
 class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
@@ -47,7 +48,7 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
                 'address' => $address,
             ]);
 
-            if ($isValid === false && $rule->getStopPropagation() === true) {
+            if ($isValid === false && ($rule instanceof ShippingRuleGroupInterface && $rule->getStopPropagation() === true)) {
                 return null;
             }
 

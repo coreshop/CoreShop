@@ -31,10 +31,6 @@ final class ValidProductSpecificPriceRuleFetcher implements ValidRulesFetcherInt
         $validRules = [];
         $rules = $product->getSpecificPriceRules();
 
-        if (!is_array($rules)) {
-            return [];
-        }
-
         foreach ($rules as $rule) {
             if (!$this->ruleValidationProcessor->isValid($product, $rule, $context)) {
                 continue;

@@ -29,7 +29,7 @@ final class DynamicDropdownController extends AdminController
     public function optionsAction(Request $request): JsonResponse
     {
         $folderName = $request->get('folderName');
-        $parts = array_map(static function ($part) {
+        $parts = array_map(static function (string $part) {
             return Service::getValidKey($part, 'object');
         }, preg_split('/\//', $folderName, 0, PREG_SPLIT_NO_EMPTY));
         $parentFolderPath = sprintf('/%s', implode('/', $parts));
@@ -59,24 +59,22 @@ final class DynamicDropdownController extends AdminController
             );
         }
 
-        if (null !== $options) {
-            usort(
-                $options,
-                function ($a, $b) use ($sort) {
-                    $field = 'value';
+        usort(
+            $options,
+            static function (array $a, array $b) use ($sort) {
+                $field = 'value';
 
-                    if (strtolower($sort) === 'byvalue') {
-                        $field = 'key';
-                    }
-
-                    if ($a[$field] == $b[$field]) {
-                        return 0;
-                    }
-
-                    return $a[$field] < $b[$field] ? 0 : 1;
+                if (strtolower($sort) === 'byvalue') {
+                    $field = 'key';
                 }
-            );
-        }
+
+                if ($a[$field] === $b[$field]) {
+                    return 0;
+                }
+
+                return $a[$field] < $b[$field] ? 0 : 1;
+            }
+        );
 
         return $this->json(
             [
@@ -93,7 +91,13 @@ final class DynamicDropdownController extends AdminController
         $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', $request->get('className'));
 
         if (!empty($className)) {
+            /**
+             * @psalm-var class-string $fqcn
+             */
             $fqcn = '\\Pimcore\\Model\\DataObject\\' . ucfirst($className);
+            /**
+             * @psalm-suppress InternalMethod
+             */
             $instance = $modelFactory->build($fqcn);
 
             $class = new \ReflectionClass(get_class($instance));
@@ -104,7 +108,7 @@ final class DynamicDropdownController extends AdminController
             }, $methods);
 
             foreach ($classMethods as $methodName) {
-                if (strpos($methodName, 'get') === 0) {
+                if (str_starts_with($methodName, 'get')) {
                     $availableMethods[] = ['value' => $methodName, 'key' => $methodName];
                 }
             }
@@ -117,8 +121,16 @@ final class DynamicDropdownController extends AdminController
     {
         $currentLang = $request->get('current_language');
         $source = $request->get('methodName');
-        $className = ucfirst($request->get('className'));
-        $objectName = '\\Pimcore\\Model\\DataObject\\' . $className;
+        $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', $request->get('className'));
+
+        if (empty($className)) {
+            throw new \InvalidArgumentException();
+        }
+
+        /**
+         * @psalm-var class-string $className
+         */
+        $fqcn = '\\Pimcore\\Model\\DataObject\\' . ucfirst($className);
 
         $usesI18n = false;
         $children = $folder->getChildren();
@@ -140,9 +152,6 @@ final class DynamicDropdownController extends AdminController
             }
         }
 
-        /**
-         * @var DataObject\Concrete $child
-         */
         foreach ($children as $child) {
             if ($child instanceof DataObject\Folder) {
                 /**
@@ -153,7 +162,7 @@ final class DynamicDropdownController extends AdminController
                     $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                 }
             }
-            else if ($child instanceof $objectName) {
+            else if ($child instanceof $fqcn) {
                 $key = $usesI18n ? $child->$source($currentLang) : $child->$source();
                 $options[] = [
                     'value' => $child->getId(),
@@ -173,6 +182,9 @@ final class DynamicDropdownController extends AdminController
     private function isUsingI18n(DataObject\Concrete $object, string $method): bool
     {
         $classDefinition = $object->getClass();
+        /**
+         * @psalm-suppress InternalMethod
+         */
         $definitionFile = $classDefinition->getDefinitionFile();
 
         if (!is_file($definitionFile)) {
@@ -191,11 +203,14 @@ final class DynamicDropdownController extends AdminController
      *
      * @return mixed
      */
-    private function parseTree($tree, $definition)
+    private function parseTree(mixed $tree, mixed $definition)
     {
         if ($tree instanceof DataObject\ClassDefinition\Layout || $tree instanceof DataObject\ClassDefinition\Data\Localizedfields) { // Did I forget something?
             $children = $tree->getChildren();
             foreach ($children as $child) {
+                /**
+                 * @psalm-suppress InternalProperty, UndefinedPropertyFetch
+                 */
                 $definition['get' . ucfirst($child->name)] = $tree->fieldtype === 'localizedfields';
                 $definition = $this->parseTree($child, $definition);
             }

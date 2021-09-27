@@ -21,6 +21,7 @@ final class CompositeCurrencyContext implements CurrencyContextInterface
 {
     /**
      * @var PriorityQueue|CurrencyContextInterface[]
+     * @psalm-var PriorityQueue<CurrencyContextInterface>
      */
     private PriorityQueue $currencyContexts;
 

@@ -4,7 +4,7 @@ services:
 
     CoreShop\Bundle\CoreBundle\EventListener\ShopUserLogoutHandler:
         arguments:
-            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
+            - '@router'
             - '%coreshop.after_logout_redirect_route%'
             - '@session'
             - '@CoreShop\Component\Store\Context\StoreContextInterface'

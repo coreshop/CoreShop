@@ -16,8 +16,9 @@ namespace CoreShop\Component\Shipping\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
+use CoreShop\Component\Resource\Model\TranslationInterface;
 
-interface CarrierTranslationInterface extends ResourceInterface, TimestampableInterface
+interface CarrierTranslationInterface extends ResourceInterface, TimestampableInterface, TranslationInterface
 {
     /**
      * @return string
@@ -25,9 +26,9 @@ interface CarrierTranslationInterface extends ResourceInterface, TimestampableIn
     public function getTitle();
 
     /**
-     * @param string $label
+     * @param string $title
      */
-    public function setTitle($label);
+    public function setTitle($title);
 
     /**
      * @return string

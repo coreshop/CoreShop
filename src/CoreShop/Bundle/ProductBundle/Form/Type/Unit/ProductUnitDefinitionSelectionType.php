@@ -34,14 +34,14 @@ final class ProductUnitDefinitionSelectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new CallbackTransformer(
-            function ($value) {
+            function (mixed $value) {
                 if ($value instanceof ProductUnitDefinitionInterface) {
                     return $value->getId();
                 }
 
                 return null;
             },
-            function ($value) {
+            function (mixed $value) {
                 if ($value === null) {
                     return null;
                 }

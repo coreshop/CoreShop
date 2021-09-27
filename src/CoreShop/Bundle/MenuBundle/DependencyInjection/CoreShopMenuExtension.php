@@ -23,11 +23,11 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopMenuExtension extends AbstractPimcoreExtension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        //$this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        //$this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
 
         $loader->load('services.yml');
 

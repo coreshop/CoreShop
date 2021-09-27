@@ -18,5 +18,5 @@ use CoreShop\Component\Product\Model\ProductInterface;
 
 interface ProductDiscountCalculatorInterface
 {
-    public function getDiscount(ProductInterface $subject, array $context, int $price): int;
+    public function getDiscount(ProductInterface $product, array $context, int $price): int;
 }

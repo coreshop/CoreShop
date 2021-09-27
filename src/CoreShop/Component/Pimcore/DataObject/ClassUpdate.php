@@ -49,7 +49,7 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
         $this->findField(
             $fieldName,
             false,
-            function (&$foundField, $index, &$parent) use ($fieldName, $newFieldName) {
+            function (array &$foundField, int $index, array &$parent) use ($fieldName, $newFieldName) {
                 $this->fieldsToRename[$fieldName] = [
                     'newName' => $newFieldName,
                     'definition' => $foundField,

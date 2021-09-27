@@ -20,7 +20,7 @@ services:
 
     CoreShop\Bundle\CoreBundle\EventListener\CustomerNewsletterConfirmListener:
         arguments:
-            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
+            - '@router'
             - '@request_stack'
             - '@event_dispatcher'
         tags:

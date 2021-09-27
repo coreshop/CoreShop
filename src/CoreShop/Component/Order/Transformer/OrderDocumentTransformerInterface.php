@@ -25,6 +25,6 @@ interface OrderDocumentTransformerInterface
     public function transform(
         OrderInterface $order,
         OrderDocumentInterface $document,
-        array $items
+        array $itemsToTransform
     ): OrderDocumentInterface;
 }

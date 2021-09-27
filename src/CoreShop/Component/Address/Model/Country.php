@@ -20,6 +20,9 @@ use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Country extends AbstractResource implements CountryInterface
 {
     use ToggleableTrait;
@@ -142,13 +145,7 @@ class Country extends AbstractResource implements CountryInterface
         return $this->getZone() instanceof ZoneInterface ? $this->getZone()->getName() : '';
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return CountryTranslationInterface
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): CountryTranslationInterface
     {
         /** @var CountryTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
@@ -156,7 +153,7 @@ class Country extends AbstractResource implements CountryInterface
         return $translation;
     }
 
-    protected function createTranslation()
+    protected function createTranslation(): CountryTranslationInterface
     {
         return new CountryTranslation();
     }

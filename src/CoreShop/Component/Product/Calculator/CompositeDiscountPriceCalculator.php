@@ -27,7 +27,7 @@ class CompositeDiscountPriceCalculator implements ProductDiscountPriceCalculator
         $this->discountPriceCalculator = $discountPriceCalculator;
     }
 
-    public function getDiscountPrice(ProductInterface $subject, array $context): int
+    public function getDiscountPrice(ProductInterface $product, array $context): int
     {
         $price = null;
 
@@ -36,7 +36,7 @@ class CompositeDiscountPriceCalculator implements ProductDiscountPriceCalculator
          */
         foreach ($this->discountPriceCalculator->all() as $calculator) {
             try {
-                $actionPrice = $calculator->getDiscountPrice($subject, $context);
+                $actionPrice = $calculator->getDiscountPrice($product, $context);
                 $price = $actionPrice;
             } catch (NoDiscountPriceFoundException $ex) {
             }

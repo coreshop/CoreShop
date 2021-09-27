@@ -24,21 +24,27 @@ class ProductUnitDefinitionsCloner implements ProductClonerInterface
             return;
         }
 
-        $unitDefinitions = clone $referenceProduct->getUnitDefinitions();
+        $unitDefinitions =  $referenceProduct->getUnitDefinitions();
+
+        if (null === $unitDefinitions) {
+            return;
+        }
+
+        $newUnitDefinitions = clone $unitDefinitions;
 
         //Hack to get rid of the ID
-        $reflectionClass = new \ReflectionClass($unitDefinitions);
+        $reflectionClass = new \ReflectionClass($newUnitDefinitions);
         $property = $reflectionClass->getProperty('id');
         $property->setAccessible(true);
         $property->setValue($unitDefinitions, null);
 
-        foreach ($unitDefinitions->getUnitDefinitions() as $unitDefinition) {
+        foreach ($newUnitDefinitions->getUnitDefinitions() as $unitDefinition) {
             $reflectionClass = new \ReflectionClass($unitDefinition);
             $property = $reflectionClass->getProperty('id');
             $property->setAccessible(true);
             $property->setValue($unitDefinition, null);
         }
 
-        $product->setUnitDefinitions($unitDefinitions);
+        $product->setUnitDefinitions($newUnitDefinitions);
     }
 }

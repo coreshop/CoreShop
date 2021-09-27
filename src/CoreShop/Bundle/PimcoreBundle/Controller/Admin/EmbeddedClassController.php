@@ -25,6 +25,9 @@ final class EmbeddedClassController extends AdminController
     public function getCustomLayoutsAction(Request $request): Response
     {
         $className = $request->get('className');
+        /**
+         * @psalm-suppress InternalClass
+         */
         $list = new DataObject\ClassDefinition\CustomLayout\Listing();
 
         $class = DataObject\ClassDefinition::getByName($className);
@@ -59,7 +62,13 @@ final class EmbeddedClassController extends AdminController
             throw new NotFoundHttpException();
         }
 
+        /**
+         * @psalm-var class-string $fqcn
+         */
         $fqcn = 'Pimcore\\Model\\DataObject\\' . ucfirst($class->getName());
+        /**
+         * @var DataObject\Concrete $tempInstance
+         */
         $tempInstance = new $fqcn();
 
         $validLayouts = DataObject\Service::getValidLayouts($tempInstance);
@@ -83,14 +92,6 @@ final class EmbeddedClassController extends AdminController
             'icon' => '',
             'iconCls' => '',
         ];
-
-        if ($tempInstance->getElementAdminStyle()->getElementIcon()) {
-            $general['icon'] = $tempInstance->getElementAdminStyle()->getElementIcon();
-        }
-
-        if ($tempInstance->getElementAdminStyle()->getElementIconClass()) {
-            $general['iconCls'] = $tempInstance->getElementAdminStyle()->getElementIconClass();
-        }
 
         return $this->adminJson([
             'layout' => $layout,

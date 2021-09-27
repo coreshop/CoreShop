@@ -26,14 +26,8 @@ use Symfony\Component\Validator\Constraints\Type;
 
 class DiscountAmountActionConfigurationType extends AbstractType
 {
-    /**
-     * @var string[]
-     */
     protected array $validationGroups = [];
 
-    /**
-     * @param string[] $validationGroups
-     */
     public function __construct(array $validationGroups)
     {
         $this->validationGroups = $validationGroups;
@@ -56,14 +50,14 @@ class DiscountAmountActionConfigurationType extends AbstractType
             ]);
 
         $builder->get('currency')->addModelTransformer(new CallbackTransformer(
-            function ($currency) {
+            function (mixed $currency): mixed {
                 if ($currency instanceof CurrencyInterface) {
                     return $currency->getId();
                 }
 
                 return null;
             },
-            function ($currency) {
+            function (mixed $currency): mixed {
                 if ($currency instanceof CurrencyInterface) {
                     return $currency->getId();
                 }

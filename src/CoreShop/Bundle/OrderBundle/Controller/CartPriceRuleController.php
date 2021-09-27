@@ -75,9 +75,7 @@ class CartPriceRuleController extends ResourceController
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
             $resource = $form->getData();
 
-            $codeCheck = $this->manager
-                ->getRepository('CoreShop\Component\Order\Model\CartPriceRuleVoucherCode')
-                ->findOneBy(['code' => $resource->getCode()]);
+            $codeCheck = $this->getVoucherCodeRepository()->findOneBy(['code' => $resource->getCode()]);
 
             if ($codeCheck instanceof CartPriceRuleVoucherCode) {
                 return $this->viewHandler->handle(['success' => false, 'message' => 'voucher code already exists']);
@@ -180,12 +178,7 @@ class CartPriceRuleController extends ResourceController
             throw new NotFoundHttpException();
         }
 
-        /**
-         * @var RepositoryInterface $repository
-         */
-        $repository = $this->manager
-            ->getRepository('CoreShop\Component\Order\Model\CartPriceRuleVoucherCode');
-
+        $repository = $this->getVoucherCodeRepository();
         $code = $repository->find(['id' => $id]);
 
         if ($code instanceof CartPriceRuleVoucherCode) {
@@ -207,11 +200,17 @@ class CartPriceRuleController extends ResourceController
         return $this->get('coreshop.repository.cart_price_rule_voucher_code');
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getConfigActions(): array
     {
         return $this->container->getParameter('coreshop.cart_price_rule.actions');
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getConfigConditions(): array
     {
         return $this->container->getParameter('coreshop.cart_price_rule.conditions');

@@ -27,17 +27,23 @@ abstract class OrderItem extends BaseOrderItem implements OrderItemInterface
 
     public function getWidth()
     {
-        return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getWidth() : 0;
+        $product = $this->getProduct();
+
+        return $product instanceof ProductInterface ? $product->getWidth() : 0;
     }
 
     public function getHeight()
     {
-        return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getHeight() : 0;
+        $product = $this->getProduct();
+
+        return $product instanceof ProductInterface ? $product->getHeight() : 0;
     }
 
     public function getDepth()
     {
-        return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getDepth() : 0;
+        $product = $this->getProduct();
+
+        return $product instanceof ProductInterface ? $product->getDepth() : 0;
     }
 
     public function hasUnitDefinition(): bool

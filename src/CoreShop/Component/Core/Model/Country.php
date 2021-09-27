@@ -17,6 +17,9 @@ namespace CoreShop\Component\Core\Model;
 use CoreShop\Component\Address\Model\Country as BaseCountry;
 use CoreShop\Component\Store\Model\StoresAwareTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Country extends BaseCountry implements CountryInterface
 {
     use StoresAwareTrait {

@@ -37,62 +37,62 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
     }
 
     public function transform(
-        OrderDocumentInterface $shipment,
+        OrderDocumentInterface $orderDocument,
         OrderItemInterface $orderItem,
-        OrderDocumentItemInterface $shipmentItem,
+        OrderDocumentItemInterface $documentItem,
         int $quantity,
         array $options = []
     ): OrderDocumentItemInterface
     {
         /**
-         * @var OrderInvoiceInterface      $shipment
+         * @var OrderInvoiceInterface      $orderDocument
          * @var OrderItemInterface         $orderItem
-         * @var OrderShipmentItemInterface $shipmentItem
+         * @var OrderShipmentItemInterface $documentItem
          */
         Assert::isInstanceOf($orderItem, OrderItemInterface::class);
-        Assert::isInstanceOf($shipment, OrderDocumentInterface::class);
-        Assert::isInstanceOf($shipmentItem, OrderShipmentItemInterface::class);
+        Assert::isInstanceOf($orderDocument, OrderDocumentInterface::class);
+        Assert::isInstanceOf($documentItem, OrderShipmentItemInterface::class);
 
         $this->eventDispatcher->dispatchPreEvent(
             'shipment_item',
-            $shipmentItem,
+            $documentItem,
             [
-                'shipment' => $shipment,
+                'shipment' => $orderDocument,
                 'order' => $orderItem->getOrder(),
                 'order_item' => $orderItem,
                 'options' => $options,
             ]
         );
 
-        $itemFolder = $this->folderCreationService->createFolderForResource($shipmentItem, ['prefix' => $shipment->getFullPath()]);
+        $itemFolder = $this->folderCreationService->createFolderForResource($documentItem, ['prefix' => $orderDocument->getFullPath()]);
 
-        $shipmentItem->setKey($orderItem->getKey());
-        $shipmentItem->setParent($itemFolder);
-        $shipmentItem->setPublished(true);
+        $documentItem->setKey($orderItem->getKey());
+        $documentItem->setParent($itemFolder);
+        $documentItem->setPublished(true);
 
-        $shipmentItem->setOrderItem($orderItem);
-        $shipmentItem->setQuantity($quantity);
-        $shipmentItem->setTotal((int)($orderItem->getItemPrice(true) * $quantity), true);
-        $shipmentItem->setTotal((int)($orderItem->getItemPrice(false) * $quantity), false);
+        $documentItem->setOrderItem($orderItem);
+        $documentItem->setQuantity($quantity);
+        $documentItem->setTotal((int)($orderItem->getItemPrice(true) * $quantity), true);
+        $documentItem->setTotal((int)($orderItem->getItemPrice(false) * $quantity), false);
 
-        $shipmentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(true) * $quantity), true);
-        $shipmentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(false) * $quantity), false);
+        $documentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(true) * $quantity), true);
+        $documentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(false) * $quantity), false);
 
-        VersionHelper::useVersioning(function () use ($shipmentItem) {
-            $shipmentItem->save();
+        VersionHelper::useVersioning(function () use ($documentItem) {
+            $documentItem->save();
         }, false);
 
         $this->eventDispatcher->dispatchPostEvent(
             'shipment_item',
-            $shipmentItem,
+            $documentItem,
             [
-                'shipment' => $shipment,
+                'shipment' => $orderDocument,
                 'order' => $orderItem->getOrder(),
                 'order_item' => $orderItem,
                 'options' => $options,
             ]
         );
 
-        return $shipmentItem;
+        return $documentItem;
     }
 }

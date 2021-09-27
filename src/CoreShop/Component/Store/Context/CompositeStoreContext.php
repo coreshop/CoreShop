@@ -19,6 +19,10 @@ use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeStoreContext implements StoreContextInterface
 {
+    /**
+     * @var PriorityQueue|StoreContextInterface[]
+     * @psalm-var PriorityQueue<StoreContextInterface>
+     */
     private PriorityQueue $storeContexts;
 
     public function __construct()

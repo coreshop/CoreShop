@@ -21,28 +21,25 @@ use CoreShop\Behat\Service\NotificationCheckerInterface;
 use CoreShop\Behat\Service\NotificationType;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
     private SharedStorageInterface $sharedStorage;
-    private LinkGeneratorInterface $linkGenerator;
     private NotificationCheckerInterface $notificationChecker;
     private CartPageInterface $cartPage;
     private ProductPageInterface $productPage;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        LinkGeneratorInterface $linkGenerator,
         NotificationCheckerInterface $notificationChecker,
         CartPageInterface $cartPage,
         ProductPageInterface $productPage
     )
     {
         $this->sharedStorage = $sharedStorage;
-        $this->linkGenerator = $linkGenerator;
         $this->notificationChecker = $notificationChecker;
         $this->cartPage = $cartPage;
         $this->productPage = $productPage;
@@ -73,7 +70,13 @@ final class CartContext implements Context
      */
     public function iAddProductToTheCart(ProductInterface $product): void
     {
-        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $path = null;
+
+        if ($product instanceof Concrete) {
+            $path = $product->getClass()->getLinkGenerator()->generate($product, ['_locale' => 'en']);
+        }
+
+        $this->productPage->tryToOpenWithUri($path);
         $this->productPage->addToCart();
 
         $this->sharedStorage->set('product', $product);
@@ -84,7 +87,13 @@ final class CartContext implements Context
      */
     public function iAddQuantityProductToTheCart($quantity, ProductInterface $product): void
     {
-        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $path = null;
+
+        if ($product instanceof Concrete) {
+            $path = $product->getClass()->getLinkGenerator()->generate($product, ['_locale' => 'en']);
+        }
+
+        $this->productPage->tryToOpenWithUri($path);
         $this->productPage->addToCartWithQuantity($quantity);
     }
 
@@ -96,7 +105,13 @@ final class CartContext implements Context
     {
         $unitDefinition = $this->findUnitDefinition($product, $unit);
 
-        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $path = null;
+
+        if ($product instanceof Concrete) {
+            $path = $product->getClass()->getLinkGenerator()->generate($product, ['_locale' => 'en']);
+        }
+
+        $this->productPage->tryToOpenWithUri($path);
         $this->productPage->addToCartInUnit($unitDefinition);
 
         $this->sharedStorage->set('product', $product);
@@ -110,7 +125,13 @@ final class CartContext implements Context
     {
         $unitDefinition = $this->findUnitDefinition($product, $unit);
 
-        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $path = null;
+
+        if ($product instanceof Concrete) {
+            $path = $product->getClass()->getLinkGenerator()->generate($product, ['_locale' => 'en']);
+        }
+
+        $this->productPage->tryToOpenWithUri($path);
         $this->productPage->addToCartInUnitWithQuantity($unitDefinition, $quantity);
 
         $this->sharedStorage->set('product', $product);

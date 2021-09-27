@@ -85,19 +85,20 @@
   "require": {
     "ext-json": "*",
     "dachcom-digital/emailizr": "^2.0.0",
-    "doctrine/data-fixtures": "^1.0",
-    "doctrine/orm": "^2.5",
+    "doctrine/doctrine-bundle": "^2.4",
+    "doctrine/data-fixtures": "^1.5",
+    "doctrine/orm": "^2.9",
     "fzaninotto/faker": "^1.6",
-    "gedmo/doctrine-extensions": "^3.0.0",
-    "jms/serializer-bundle": "^3.7",
-    "knplabs/knp-menu-bundle": "^3.0.0",
-    "laminas/laminas-stdlib": "^3.3.1",
-    "sylius/theme-bundle": "^2.1",
+    "gedmo/doctrine-extensions": "^3.1.0",
+    "jms/serializer-bundle": "^3.10",
+    "knplabs/knp-menu-bundle": "^3.1",
+    "laminas/laminas-stdlib": "^3.6",
+    "sylius/theme-bundle": "^2.2",
     "php-http/guzzle7-adapter": "^0.1",
     "pimcore/pimcore": "^10.1",
-    "rinvex/countries": "^7.0",
-    "stof/doctrine-extensions-bundle": "^1.5",
-    "webmozart/assert": "^1.2",
+    "rinvex/countries": "^7.3",
+    "stof/doctrine-extensions-bundle": "^1.6",
+    "webmozart/assert": "^1.10",
     "payum/payum": "dev-master",
     "payum/payum-bundle": "dev-master"
   },
@@ -116,7 +117,8 @@
     "phpunit/phpunit": "^9.5",
     "robertfausk/behat-panther-extension": "^1.0",
     "symfony/panther": "^1.0",
-    "dbrekelmans/bdi": "^0.3.0"
+    "dbrekelmans/bdi": "^0.3.0",
+    "vimeo/psalm": "^4.10"
   },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."

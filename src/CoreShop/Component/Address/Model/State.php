@@ -19,6 +19,9 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class State extends AbstractResource implements StateInterface
 {
     use ToggleableTrait;
@@ -105,13 +108,7 @@ class State extends AbstractResource implements StateInterface
         return $this->getCountry() instanceof CountryInterface ? $this->getCountry()->getName() : '';
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return StateTranslationInterface
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): StateTranslationInterface
     {
         /** @var StateTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
@@ -119,7 +116,7 @@ class State extends AbstractResource implements StateInterface
         return $translation;
     }
 
-    protected function createTranslation()
+    protected function createTranslation(): StateTranslationInterface
     {
         return new StateTranslation();
     }

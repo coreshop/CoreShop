@@ -53,9 +53,18 @@ final class PimcoreDependantBundleInstaller implements ResourceInstallerInterfac
                 $progress->setMessage(sprintf('Install Bundle "%s"', $bundleName));
 
                 try {
+                    /**
+                     * @psalm-suppress InternalMethod
+                     */
                     $bundle = $this->bundleManager->getActiveBundle($bundleName, false);
 
+                    /**
+                     * @psalm-suppress InternalMethod
+                     */
                     if ($this->bundleManager->canBeInstalled($bundle)) {
+                        /**
+                         * @psalm-suppress InternalMethod
+                         */
                         $this->bundleManager->install($bundle);
                     }
                 } catch (BundleNotFoundException $ex) {

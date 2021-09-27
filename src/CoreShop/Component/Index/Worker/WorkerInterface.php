@@ -36,8 +36,6 @@ interface WorkerInterface
      * deletes necessary index structuers (like database tables).
      *
      * @param IndexInterface $index
-     *
-     * @return mixed
      */
     public function deleteIndexStructures(IndexInterface $index);
 

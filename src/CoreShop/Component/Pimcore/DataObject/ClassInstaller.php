@@ -36,8 +36,6 @@ class ClassInstaller implements ClassInstallerInterface
 
         DataObject\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
 
-        ClassLoader::forceLoadBrick($brickName);
-
         return $objectBrick;
     }
 
@@ -47,6 +45,7 @@ class ClassInstaller implements ClassInstallerInterface
         $class = null;
 
         try {
+            /** @psalm-suppress InternalMethod */
             $id = $tempClass->getDao()->getIdByName($className);
 
             if ($id) {
@@ -89,8 +88,6 @@ class ClassInstaller implements ClassInstallerInterface
             }
         }
 
-        ClassLoader::forceLoadDataObjectClass($className);
-
         return $class;
     }
 
@@ -110,8 +107,6 @@ class ClassInstaller implements ClassInstallerInterface
         $json = file_get_contents($jsonFile);
 
         DataObject\ClassDefinition\Service::importFieldCollectionFromJson($fieldCollection, $json, true);
-
-        ClassLoader::forceLoadFieldCollection($name);
 
         return $fieldCollection;
     }

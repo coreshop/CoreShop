@@ -49,6 +49,7 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
     {
         /**
          * @var StoreAwareInterface $shippable
+         * @var ShippableInterface $shippable
          */
         Assert::isInstanceOf($shippable, StoreAwareInterface::class);
 

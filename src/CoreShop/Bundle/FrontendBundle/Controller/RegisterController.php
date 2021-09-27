@@ -38,7 +38,7 @@ class RegisterController extends FrontendController
 
         $form = $this->get('form.factory')->createNamed('customer', CustomerRegistrationType::class, $this->get('coreshop.factory.customer')->createNew());
 
-        $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_customer_profile'));
+        $redirect = $request->get('_redirect', $this->generateUrl('coreshop_customer_profile'));
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $form = $form->handleRequest($request);
@@ -78,7 +78,7 @@ class RegisterController extends FrontendController
                 $user->setPasswordResetHash($this->generateResetPasswordHash($user));
                 $user->save();
 
-                $resetLink = $this->generateCoreShopUrl(null, 'coreshop_customer_password_reset', ['token' => $user->getPasswordResetHash()], UrlGeneratorInterface::ABSOLUTE_URL);
+                $resetLink = $this->generateUrl('coreshop_customer_password_reset', ['token' => $user->getPasswordResetHash()], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $dispatcher = $this->container->get('event_dispatcher');
                 $dispatcher->dispatch(new RequestPasswordChangeEvent($user, $resetLink), 'coreshop.user.request_password_reset');

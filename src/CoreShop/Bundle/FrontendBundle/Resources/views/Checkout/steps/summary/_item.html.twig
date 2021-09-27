@@ -1,6 +1,6 @@
 {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
 
-{% set productUrl = coreshop_path(item.product, 'coreshop_product_detail') %}
+{% set productUrl = pimcore_object_path(item.product) %}
 
 <tr class="shopping-cart-item">
     <td class="text-center">

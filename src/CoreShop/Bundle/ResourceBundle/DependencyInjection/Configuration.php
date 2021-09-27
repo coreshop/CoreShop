@@ -27,6 +27,7 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_resource');
+        /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addResourcesSection($rootNode);
@@ -43,7 +44,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('resources')
                     ->useAttributeAsKey('name')
-                    ->prototype('array')
+                    ->arrayPrototype()
                         ->children()
                             ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                             ->variableNode('options')->end()
@@ -99,7 +100,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('drivers')
                     ->defaultValue([CoreShopResourceBundle::DRIVER_DOCTRINE_ORM])
-                    ->prototype('enum')->values(CoreShopResourceBundle::getAvailableDrivers())->end()
+                    ->enumPrototype()->values(CoreShopResourceBundle::getAvailableDrivers())->end()
                 ->end()
             ->end();
     }

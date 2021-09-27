@@ -168,7 +168,6 @@ services:
         class: CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplier
         arguments:
             - '@CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface'
-            - '@CoreShop\Component\Order\Distributor\FloatDistributorInterface'
             - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
             - '@CoreShop\Component\Taxation\Collector\TaxCollectorInterface'
             - '@CoreShop\Component\Core\Provider\AddressProviderInterface'

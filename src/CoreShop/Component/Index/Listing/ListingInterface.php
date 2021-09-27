@@ -237,13 +237,8 @@ interface ListingInterface extends \Countable, \IteratorAggregate
     /**
      * returns order by statement for similarity calculations based on given fields and object ids
      * returns cosine similarity calculation.
-     *
-     * @param string $fields
-     * @param int    $objectId
-     *
-     * @return string
      */
-    public function buildSimilarityOrderBy($fields, $objectId);
+    public function buildSimilarityOrderBy(array $fields, int $objectId): string;
 
     public function getIndex(): IndexInterface;
 

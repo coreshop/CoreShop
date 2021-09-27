@@ -21,6 +21,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\Asset;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Carrier extends AbstractResource implements CarrierInterface
 {
     use TimestampableTrait;
@@ -96,17 +99,17 @@ class Carrier extends AbstractResource implements CarrierInterface
         return $this->getTranslation($language)->getDescription();
     }
 
-    public function setDescription($description, $language = null)
+    public function setDescription(string $description, ?string $language = null)
     {
         $this->getTranslation($language)->setDescription($description);
     }
 
-    public function getTitle($language = null)
+    public function getTitle(?string $language = null)
     {
         return $this->getTranslation($language)->getTitle();
     }
 
-    public function setTitle($title, $language = null)
+    public function setTitle(string $title, ?string $language = null)
     {
         $this->getTranslation($language)->setTitle($title);
     }
@@ -193,24 +196,16 @@ class Carrier extends AbstractResource implements CarrierInterface
         return $this->shippingRules->contains($shippingRuleGroup);
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return CarrierTranslation
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): CarrierTranslationInterface
     {
-        /** @var CarrierTranslation $translation */
+        /** @var CarrierTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
 
         return $translation;
     }
 
-    protected function createTranslation()
+    protected function createTranslation(): CarrierTranslationInterface
     {
         return new CarrierTranslation();
     }
-
-
 }

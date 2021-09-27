@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class CartPriceRuleVoucherGenerator implements CartPriceRuleVoucherGeneratorInterface
 {
     /**

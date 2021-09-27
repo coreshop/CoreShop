@@ -87,6 +87,9 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
         $route = new Staticroute();
 
         try {
+            /**
+             * @psalm-suppress InternalMethod
+             */
             $route->getDao()->getByName($name, null);
         } catch (\Exception $e) {
             //Route does not exist, so we install it

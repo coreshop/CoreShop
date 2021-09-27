@@ -51,6 +51,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
     ): array {
         /**
          * @var StoreAwareInterface $shippable
+         * @var ShippableInterface $shippable
          */
         Assert::isInstanceOf($shippable, StoreAwareInterface::class);
 
@@ -119,16 +120,13 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
         foreach ($distributedAmount as $i => $amount) {
             $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($taxRuleGroup[$i], $address);
 
-            if (!$taxCalculator) {
-                continue;
-            }
-
             if ($useGrossValues) {
                 $shippingTax = $this->taxCollector->collectTaxesFromGross($taxCalculator, $amount);
             }
             else {
                 $shippingTax = $this->taxCollector->collectTaxes($taxCalculator, $amount);
             }
+            /** @psalm-suppress InvalidArgument */
             $taxes = $this->taxCollector->mergeTaxes($shippingTax, $taxes);
         }
 

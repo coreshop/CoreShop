@@ -18,6 +18,9 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefinitionsInterface
 {
     /**
@@ -72,13 +75,9 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
 
     public function setDefaultUnitDefinition(ProductUnitDefinitionInterface $defaultUnitDefinition)
     {
-        if ($defaultUnitDefinition) {
-            $defaultUnitDefinition->setConversionRate(1.0);
-            $this->addUnitDefinition($defaultUnitDefinition);
-            $this->defaultUnitDefinition = $this->getUnitDefinition($defaultUnitDefinition->getUnitName());
-        } else {
-            $this->defaultUnitDefinition = $defaultUnitDefinition;
-        }
+        $defaultUnitDefinition->setConversionRate(1.0);
+        $this->addUnitDefinition($defaultUnitDefinition);
+        $this->defaultUnitDefinition = $this->getUnitDefinition($defaultUnitDefinition->getUnitName());
     }
 
     public function addUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition)
@@ -97,9 +96,9 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         }
     }
 
-    public function hasUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition)
+    public function hasUnitDefinition(ProductUnitDefinitionInterface $unitDefinition)
     {
-        return $this->unitDefinitions->contains($productUnitDefinition);
+        return $this->unitDefinitions->contains($unitDefinition);
     }
 
     public function removeUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition)
@@ -136,7 +135,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         $productUnit = $unitDefinition->getUnit();
         $defaultDefinition = $this->getDefaultUnitDefinition();
 
-        $defaultDefinitionUnit = $defaultDefinition ? $defaultDefinition->getUnit() : null;
+        $defaultDefinitionUnit = $defaultDefinition;
         if ($productUnit === $defaultDefinitionUnit) {
             return;
         }
@@ -149,7 +148,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         $productUnit = $unitDefinition->getUnit();
         $defaultDefinition = $this->getDefaultUnitDefinition();
 
-        $defaultDefinitionUnit = $defaultDefinition ? $defaultDefinition->getUnit() : null;
+        $defaultDefinitionUnit = $defaultDefinition;
         if ($productUnit === $defaultDefinitionUnit) {
             return;
         }
@@ -160,6 +159,10 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
     public function getAdditionalUnitDefinitions()
     {
         $defaultDefinition = $this->getDefaultUnitDefinition();
+
+        if (null === $defaultDefinition) {
+            return new ArrayCollection();
+        }
 
         if (null === $defaultDefinition->getUnit()) {
             return new ArrayCollection();
@@ -174,9 +177,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
                 return $definition->getUnit()->getId() !== $defaultDefinition->getUnit()->getId();
             });
 
-        $additionalDefinitionsSorted = new ArrayCollection(array_values($additionalDefinitions->toArray()));
-
-        return $additionalDefinitionsSorted;
+        return new ArrayCollection(array_values($additionalDefinitions->toArray()));
     }
 
     public function __clone()
@@ -185,7 +186,13 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
             return;
         }
 
-        $newDefaultUnitDefinition = clone $this->getDefaultUnitDefinition();
+        $defaultUnitDefinition = $this->getDefaultUnitDefinition();
+
+        if (null === $defaultUnitDefinition) {
+            return;
+        }
+
+        $newDefaultUnitDefinition = clone $defaultUnitDefinition;
         $newDefaultUnitDefinition->setProductUnitDefinitions($this);
 
         $additionalUnits = $this->getAdditionalUnitDefinitions();

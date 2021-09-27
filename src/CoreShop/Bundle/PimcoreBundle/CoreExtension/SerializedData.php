@@ -16,6 +16,9 @@ namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
 use Pimcore\Model;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class SerializedData extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface
 {
     /**

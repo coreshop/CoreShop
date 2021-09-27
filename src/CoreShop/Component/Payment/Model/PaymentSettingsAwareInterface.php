@@ -17,7 +17,7 @@ namespace CoreShop\Component\Payment\Model;
 interface PaymentSettingsAwareInterface
 {
     /**
-     * @return array
+     * @return array|null
      */
     public function getPaymentSettings();
 

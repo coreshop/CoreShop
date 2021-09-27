@@ -41,7 +41,7 @@ final class RequestCartRecalculation
 
     public function checkPriceRuleState(RequestEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

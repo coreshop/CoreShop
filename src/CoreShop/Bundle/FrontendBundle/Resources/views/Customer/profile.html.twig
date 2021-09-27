@@ -5,7 +5,7 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
             <li class="breadcrumb-item active">{{ 'coreshop.ui.profile'|trans }}</li>
         </ol>
     </nav>
@@ -18,19 +18,19 @@
     {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
 
     <div class="list-group">
-        <a href="{{ coreshop_path(customer, 'coreshop_customer_orders') }}" title="{{ 'coreshop.ui.orders'|trans }}" class="list-group-item">
+        <a href="{{ path('coreshop_customer_orders') }}" title="{{ 'coreshop.ui.orders'|trans }}" class="list-group-item">
             <i class="fa fa-list-ol"></i>
             <span>{{ 'coreshop.ui.order_history_and_details'|trans }}</span>
         </a>
-        <a href="{{ coreshop_path(customer, 'coreshop_customer_addresses') }}" title="{{ 'coreshop.ui.addresses'|trans }}" class="list-group-item">
+        <a href="{{ path('coreshop_customer_addresses') }}" title="{{ 'coreshop.ui.addresses'|trans }}" class="list-group-item">
             <i class="fa fa-building"></i>
             <span>{{ 'coreshop.ui.addresses'|trans }}</span>
         </a>
-        <a href="{{ coreshop_path(customer, 'coreshop_customer_settings') }}" title="{{ 'coreshop.ui.personal_information'|trans }}" class="list-group-item">
+        <a href="{{ path('coreshop_customer_settings') }}" title="{{ 'coreshop.ui.personal_information'|trans }}" class="list-group-item">
             <i class="fa fa-user"></i>
             <span>{{ 'coreshop.ui.personal_information'|trans }}</span>
         </a>
-        <a href="{{ coreshop_path(customer, 'coreshop_customer_change_password') }}" title="{{ 'coreshop.ui.change_password'|trans }}" class="list-group-item">
+        <a href="{{ path('coreshop_customer_change_password') }}" title="{{ 'coreshop.ui.change_password'|trans }}" class="list-group-item">
             <i class="fa fa-lock"></i>
             <span>{{ 'coreshop.ui.change_password'|trans }}</span>
         </a>

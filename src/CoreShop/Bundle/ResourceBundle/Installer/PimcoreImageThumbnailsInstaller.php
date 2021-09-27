@@ -88,6 +88,9 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
              * @var \Pimcore\Model\Asset\Image\Thumbnail\Config\Dao
              */
             $dao = $thumbnailConfig->getDao();
+            /**
+             * @psalm-suppress InternalMethod
+             */
             $dao->getByName($name);
         } catch (\Exception $e) {
             //Thumbnail does not exist, so we install it

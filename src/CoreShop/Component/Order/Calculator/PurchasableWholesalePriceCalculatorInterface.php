@@ -18,11 +18,5 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface PurchasableWholesalePriceCalculatorInterface
 {
-    /**
-     * @param PurchasableInterface $subject
-     * @param array                $context
-     *
-     * @return int
-     */
-    public function getPurchasableWholesalePrice(PurchasableInterface $subject, array $context): int;
+    public function getPurchasableWholesalePrice(PurchasableInterface $purchasable, array $context): int;
 }

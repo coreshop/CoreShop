@@ -17,6 +17,9 @@ namespace CoreShop\Component\Core\Model;
 use CoreShop\Component\Configuration\Model\Configuration as BaseConfiguration;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Configuration extends BaseConfiguration implements ConfigurationInterface
 {
     use StoreAwareTrait;

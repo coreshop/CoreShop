@@ -16,6 +16,7 @@ namespace CoreShop\Component\Shipping\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
+use CoreShop\Component\Shipping\Exception\NoShippingPriceFoundException;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
@@ -30,21 +31,20 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
 
     public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int
     {
-        $netPrice = 0;
+        $price = 0;
 
         /**
          * @var CarrierPriceCalculatorInterface $calculator
          */
         foreach ($this->shippingCalculatorRegistry->all() as $calculator) {
-            $price = $calculator->getPrice($carrier, $shippable, $address, $context);
-
-            if (false !== $price && null !== $price) {
-                $netPrice = $price;
-
-                break;
+            try {
+                $price = $calculator->getPrice($carrier, $shippable, $address, $context);
+            }
+            catch (NoShippingPriceFoundException $ex) {
+                continue;
             }
         }
 
-        return $netPrice;
+        return $price;
     }
 }

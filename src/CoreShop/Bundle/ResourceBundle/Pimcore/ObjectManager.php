@@ -26,42 +26,46 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
     private array $modelsToInsert = [];
     private array $modelsToRemove = [];
 
+    /**
+     * @psalm-suppress InvalidReturnType
+     */
     public function find($className, $id): ?Concrete
     {
         /**
          * @var Concrete $className
+         * @psalm-suppress InvalidReturnStatement
          */
         return $className::getById($id);
     }
 
-    public function persist($resource): void
+    public function persist($object): void
     {
         /**
-         * @var $resource AbstractModel
+         * @var AbstractModel $object
          */
-        Assert::isInstanceOf($resource, AbstractModel::class);
+        Assert::isInstanceOf($object, AbstractModel::class);
 
-        $id = $this->getResourceId($resource);
-        $className = $this->getResourceClassName($resource);
+        $id = $this->getResourceId($object);
+        $className = $this->getResourceClassName($object);
 
         if ($id) {
-            $this->modelsToUpdate[$className][$id] = $resource;
+            $this->modelsToUpdate[$className][$id] = $object;
         } else {
-            $this->modelsToInsert[$className][] = $resource;
+            $this->modelsToInsert[$className][] = $object;
         }
     }
 
-    public function remove($resource): void
+    public function remove($object): void
     {
-        $id = $this->getResourceId($resource);
-        $className = $this->getResourceClassName($resource);
+        $id = $this->getResourceId($object);
+        $className = $this->getResourceClassName($object);
 
-        if ($resource instanceof Concrete) {
-            $className = $resource->getClassName();
+        if ($object instanceof Concrete) {
+            $className = $object->getClassName();
         }
 
         if ($id) {
-            $this->modelsToRemove[$className][$id] = $resource;
+            $this->modelsToRemove[$className][$id] = $object;
         }
     }
 
@@ -112,10 +116,8 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         foreach ([$this->modelsToInsert, $this->modelsToUpdate] as $modelsToSave) {
             foreach ($modelsToSave as $className => $classTypeModels) {
                 foreach ($classTypeModels as $model) {
-                    if ($model instanceof Concrete) {
-                        if (!$model->getPublished()) {
-                            $model->setOmitMandatoryCheck(true);
-                        }
+                    if (($model instanceof Concrete) && !$model->getPublished()) {
+                        $model->setOmitMandatoryCheck(true);
                     }
 
                     $model->save();

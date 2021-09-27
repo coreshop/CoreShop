@@ -66,7 +66,7 @@ class VersionObjectConstructor implements ObjectConstructorInterface
         }
 
         // Managed entity, check for proxy load
-        if (!\is_array($data) && !(is_object($data) && 'SimpleXMLElement' === get_class($data))) {
+        if (!\is_array($data) && !(is_object($data) && \SimpleXMLElement::class === get_class($data))) {
             // Single identifier, load proxy
             return $objectManager->getReference($metadata->name, $data);
         }
@@ -135,10 +135,12 @@ class VersionObjectConstructor implements ObjectConstructorInterface
     private function isIdentifierFieldExcluded(PropertyMetadata $propertyMetadata, DeserializationContext $context): bool
     {
         $exclusionStrategy = $context->getExclusionStrategy();
+        /** @psalm-suppress InternalMethod */
         if (null !== $exclusionStrategy && $exclusionStrategy->shouldSkipProperty($propertyMetadata, $context)) {
             return true;
         }
 
+        /** @psalm-suppress InternalMethod */
         return null !== $this->expressionLanguageExclusionStrategy && $this->expressionLanguageExclusionStrategy->shouldSkipProperty($propertyMetadata, $context);
     }
 }

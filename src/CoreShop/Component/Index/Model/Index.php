@@ -19,6 +19,9 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Index extends AbstractResource implements IndexInterface
 {
     use TimestampableTrait;

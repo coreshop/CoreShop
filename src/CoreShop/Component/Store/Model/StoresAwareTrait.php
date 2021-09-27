@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\Collection;
 trait StoresAwareTrait
 {
     /**
-     * @var Collection|ArrayCollection<StoreInterface>
+     * @var Collection|ArrayCollection<int, StoreInterface>
      */
     protected $stores;
 

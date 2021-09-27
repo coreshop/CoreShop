@@ -33,7 +33,7 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
 
         foreach ($controllers as $key => $value) {
             $controllerKey = sprintf('coreshop.frontend.controller.%s', $key);
-            $controllerClass = $container->getParameter($controllerKey);
+            $controllerClass = (string) $container->getParameter($controllerKey);
 
             if ($container->hasDefinition($controllerClass)) {
                 $customController = $container->getDefinition($controllerClass);

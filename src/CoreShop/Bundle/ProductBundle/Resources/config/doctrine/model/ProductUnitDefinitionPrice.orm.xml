@@ -7,7 +7,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="price" column="price" type="bigint"/>
+        <field name="price" column="price" type="bigintInteger"/>
 
         <many-to-one field="unitDefinition" target-entity="CoreShop\Component\Product\Model\ProductUnitDefinitionInterface">
             <join-column name="unit_definition" referenced-column-name="id" on-delete="CASCADE"/>

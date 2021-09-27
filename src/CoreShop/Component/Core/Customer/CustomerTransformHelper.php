@@ -21,6 +21,7 @@ use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject;
@@ -93,10 +94,11 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
             )
         );
 
+        /** @psalm-suppress InternalMethod */
         $company->setKey(File::getValidFilename($company->getName()));
-        $company->setKey(DataObject\Service::getUniqueKey($company));
 
-        if ($company instanceof AbstractObject) {
+        if ($company instanceof Concrete) {
+            $company->setKey(DataObject\Service::getUniqueKey($company));
             $company->setChildrenSortBy('index');
         }
 
@@ -179,8 +181,10 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }
 
         $dependenciesObjects = [];
-        $dependenciesResult = Dependency::getBySourceId($address->getId(), 'object');
+        /** @psalm-suppress InternalClass,InternalMethod */
+        $dependenciesResult = Dependency::getBySourceId((int)$address->getId(), 'object');
 
+        /** @psalm-suppress InternalMethod */
         foreach ($dependenciesResult->getRequiredBy() as $r) {
             if ($r['type'] === 'object') {
                 $object = DataObject::getById($r['id']);
@@ -234,15 +238,17 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $resolver;
     }
 
-    protected function forceSave(ElementInterface $element, bool $useVersioning = true): void
+    protected function forceSave(mixed $element, bool $useVersioning = true): void
     {
         if ($element instanceof Concrete) {
             $element->setOmitMandatoryCheck(true);
         }
 
-        VersionHelper::useVersioning(function () use ($element) {
-            $element->save();
-        }, $useVersioning);
+        if ($element instanceof ElementInterface) {
+            VersionHelper::useVersioning(function () use ($element) {
+                $element->save();
+            }, $useVersioning);
+        }
     }
 
     protected function isNewEntity(ElementInterface $element): bool

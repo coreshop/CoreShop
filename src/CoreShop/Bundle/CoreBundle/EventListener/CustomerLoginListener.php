@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface;
 use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
+use CoreShop\Component\Core\Model\UserInterface;
 
 final class CustomerLoginListener
 {
@@ -28,8 +29,9 @@ final class CustomerLoginListener
 
     public function onCustomerRegister(CustomerRegistrationEvent $customerRegistrationEvent): void
     {
-        if (null !== $customerRegistrationEvent->getCustomer()->getUser()) {
-            $this->customerLoginService->loginCustomer($customerRegistrationEvent->getCustomer()->getUser());
+        $user = $customerRegistrationEvent->getCustomer()->getUser();
+        if ($user instanceof UserInterface) {
+            $this->customerLoginService->loginCustomer($user);
         }
     }
 }

@@ -102,7 +102,7 @@ class CartController extends FrontendController
     {
         $cart = $this->getCart();
         $form = $this->get('form.factory')->createNamed('coreshop', ShippingCalculatorType::class, null, [
-                'action' => $this->generateCoreShopUrl(null, 'coreshop_cart_check_shipment'),
+                'action' => $this->generateUrl('coreshop_cart_check_shipment'),
             ]);
 
         $availableCarriers = [];
@@ -145,7 +145,7 @@ class CartController extends FrontendController
 
     public function addItemAction(Request $request): Response
     {
-        $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
+        $redirect = $request->get('_redirect', $this->generateUrl('coreshop_index'));
 
         $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
@@ -168,7 +168,7 @@ class CartController extends FrontendController
         $form = $this->get('form.factory')->createNamed('coreshop-' . $product->getId(), AddToCartType::class, $addToCart);
 
         if ($request->isMethod('POST')) {
-            $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getCart(), 'coreshop_cart_summary'));
+            $redirect = $request->get('_redirect', $this->generateUrl('coreshop_cart_summary'));
 
             $form->handleRequest($request);
 

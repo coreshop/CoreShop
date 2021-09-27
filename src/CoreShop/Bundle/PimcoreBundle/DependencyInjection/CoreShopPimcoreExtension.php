@@ -25,9 +25,9 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopPimcoreExtension extends AbstractPimcoreExtension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
@@ -37,7 +37,7 @@ final class CoreShopPimcoreExtension extends AbstractPimcoreExtension
             $loader->load('services/data_hub.yml');
         }
 
-        $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
 
         $loader->load('services.yml');
 

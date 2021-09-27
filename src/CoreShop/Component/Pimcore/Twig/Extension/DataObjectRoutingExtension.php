@@ -14,24 +14,27 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
-use CoreShop\Component\Pimcore\Templating\Helper\LinkGeneratorHelperInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-final class LinkGeneratorExtensions extends AbstractExtension
+class DataObjectRoutingExtension extends AbstractExtension
 {
-    private LinkGeneratorHelperInterface $helper;
-
-    public function __construct(LinkGeneratorHelperInterface $helper)
-    {
-        $this->helper = $helper;
-    }
-
-    public function getFunctions(): array
+    public function getFunctions()
     {
         return [
-            new TwigFunction('coreshop_url', [$this->helper, 'getUrl']),
-            new TwigFunction('coreshop_path', [$this->helper, 'getPath']),
+            new TwigFunction('pimcore_object_path', [$this, 'objectPath']),
         ];
+    }
+
+    public function objectPath(Concrete $object, array $params = [])
+    {
+        $linkGenerator = $object->getClass()->getLinkGenerator();
+
+        if (!$linkGenerator) {
+            throw new \InvalidArgumentException('DataObject does not have a LinkGenerator');
+        }
+
+        return $linkGenerator->generate($object, $params);
     }
 }

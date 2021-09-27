@@ -17,6 +17,9 @@ namespace CoreShop\Component\Shipping\Model;
 use CoreShop\Component\Resource\Model\AbstractTranslation;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class CarrierTranslation extends AbstractTranslation implements CarrierTranslationInterface
 {
     use TimestampableTrait;

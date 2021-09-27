@@ -11,7 +11,7 @@ services:
     CoreShop\Bundle\CoreBundle\Twig\CheckoutIdentifierExtension:
         arguments:
             - '@request_stack'
-            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
+            - '@router'
             - '@CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface'
             - '@CoreShop\Component\Order\Context\CartContextInterface'
         tags:

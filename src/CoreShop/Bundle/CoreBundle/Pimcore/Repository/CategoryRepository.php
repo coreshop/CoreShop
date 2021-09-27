@@ -58,6 +58,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
 
         $qb = $this->connection->createQueryBuilder();
+        /** @psalm-suppress InternalMethod */
         $qb
             ->select('oo_id')
             ->from($dao->getTableName())
@@ -68,9 +69,9 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $childIds = [];
 
-        $result = $qb->execute();
+        $result = $this->connection->fetchAllAssociative($qb->getSQL(), $qb->getParameters());
 
-        foreach ($result->fetchAll() as $column) {
+        foreach ($result as $column) {
             $childIds[] = $column['oo_id'];
         }
 

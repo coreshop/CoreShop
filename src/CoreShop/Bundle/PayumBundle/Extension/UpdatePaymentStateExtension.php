@@ -61,7 +61,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
             }
         }
 
-        /** @var Generic $request */
+        /** @var Generic|bool $request */
         $request = $context->getRequest();
         if (false === $request instanceof Generic) {
             return;
@@ -71,7 +71,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
             return;
         }
 
-        /** @var PaymentInterface $payment */
+        /** @var PaymentInterface|bool $payment */
         $payment = $request->getFirstModel();
         if (false === $payment instanceof PaymentInterface) {
             return;

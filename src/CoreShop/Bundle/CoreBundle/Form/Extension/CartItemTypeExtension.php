@@ -41,7 +41,7 @@ final class CartItemTypeExtension extends AbstractTypeExtension
                 return;
             }
 
-            /** @var ProductInterface $product */
+            /** @var ProductInterface|null $product */
             $product = $data->getProduct();
             if (!$product instanceof ProductInterface) {
                 return;

@@ -123,9 +123,9 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         return $withTax ? $this->getConvertedItemDiscountGross() : $this->getConvertedItemDiscountNet();
     }
 
-    public function setConvertedItemDiscount(int $itemDiscount, bool $withTax = true)
+    public function setConvertedItemDiscount(int $convertedItemDiscount, bool $withTax = true)
     {
-        $withTax ? $this->setConvertedItemDiscountGross($itemDiscount) : $this->setConvertedItemDiscountNet($itemDiscount);
+        $withTax ? $this->setConvertedItemDiscountGross($convertedItemDiscount) : $this->setConvertedItemDiscountNet($convertedItemDiscount);
     }
 
     public function getConvertedItemDiscountPrice(bool $withTax = true): int
@@ -133,9 +133,9 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         return $withTax ? $this->getConvertedItemDiscountPriceGross() : $this->getConvertedItemDiscountPriceNet();
     }
 
-    public function setConvertedItemDiscountPrice(int $itemDiscountPrice, bool $withTax = true)
+    public function setConvertedItemDiscountPrice(int $convertedItemDiscountPrice, bool $withTax = true)
     {
-        $withTax ? $this->setConvertedItemDiscountPriceGross($itemDiscountPrice) : $this->setConvertedItemDiscountPriceNet($itemDiscountPrice);
+        $withTax ? $this->setConvertedItemDiscountPriceGross($convertedItemDiscountPrice) : $this->setConvertedItemDiscountPriceNet($convertedItemDiscountPrice);
     }
 
     public function getTotalTax(): int
@@ -429,7 +429,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    public function setConvertedItemWholesalePrice(int $wholesalePrice)
+    public function setConvertedItemWholesalePrice(int $convertedItemWholesalePrice)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

@@ -45,7 +45,6 @@ services:
         class: CoreShop\Behat\Context\Ui\Frontend\ProductContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
             - '@CoreShop\Behat\Page\Frontend\ProductPageInterface'
         tags:
             - { name: fob.context_service }
@@ -54,7 +53,6 @@ services:
         class: CoreShop\Behat\Context\Ui\Frontend\CartContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
             - '@CoreShop\Behat\Service\NotificationCheckerInterface'
             - '@CoreShop\Behat\Page\Frontend\CartPageInterface'
             - '@CoreShop\Behat\Page\Frontend\ProductPageInterface'

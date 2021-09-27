@@ -16,6 +16,9 @@ namespace CoreShop\Component\Sequence\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Sequence implements SequenceInterface
 {
     use SetValuesTrait;

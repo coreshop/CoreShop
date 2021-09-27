@@ -17,6 +17,9 @@ namespace CoreShop\Bundle\StoreBundle\CoreExtension;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Store\Model\StoreInterface;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class Store extends Select
 {
     /**

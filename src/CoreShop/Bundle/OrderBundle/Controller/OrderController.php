@@ -158,8 +158,8 @@ class OrderController extends PimcoreController
 
         $type = $request->get('saleType', 'order');
 
-        $orderClassId = $this->container->getParameter('coreshop.model.order.pimcore_class_name');
-        $folderPath = $this->container->getParameter('coreshop.folder.' . $type);
+        $orderClassId = (string)$this->container->getParameter('coreshop.model.order.pimcore_class_name');
+        $folderPath = (string)$this->container->getParameter('coreshop.folder.' . $type);
         $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
         $folder = DataObject::getByPath('/' . $folderPath);
@@ -184,16 +184,19 @@ class OrderController extends PimcoreController
         $list->setOffset($request->get('page', 1) - 1);
 
         if ($request->get('filter', null)) {
+            /** @psalm-suppress InternalClass */
             $gridHelper = new GridHelperService();
 
             $conditionFilters = [];
+            /** @psalm-suppress InternalMethod */
             $conditionFilters[] = $gridHelper->getFilterCondition($request->get('filter'),
-                DataObject\ClassDefinition::getByName($this->container->getParameter('coreshop.model.order.pimcore_class_name')));
+                DataObject\ClassDefinition::getByName((string)$this->container->getParameter('coreshop.model.order.pimcore_class_name')));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
         }
 
+        /** @psalm-suppress InternalClass, InternalMethod */
         $sortingSettings = QueryParams::extractSortingSettings($request->request->all());
 
         $order = 'DESC';
@@ -305,12 +308,12 @@ class OrderController extends PimcoreController
         $prefix = 'address'.ucfirst($type);
         $values = [];
         $fullAddress = [];
-        $classDefinition = DataObject\ClassDefinition::getByName($this->container->getParameter('coreshop.model.address.pimcore_class_name'));
+        $classDefinition = DataObject\ClassDefinition::getByName((string)$this->container->getParameter('coreshop.model.address.pimcore_class_name'));
 
         foreach ($classDefinition->getFieldDefinitions() as $fieldDefinition) {
             $value = '';
 
-            if ($address instanceof AddressInterface && $address instanceof DataObject\Concrete) {
+            if ($address instanceof DataObject\Concrete) {
                 $getter = 'get'.ucfirst($fieldDefinition->getName());
 
                 if (method_exists($address, $getter)) {
@@ -327,7 +330,7 @@ class OrderController extends PimcoreController
             $values[$prefix.ucfirst($fieldDefinition->getName())] = $value;
         }
 
-        if ($address instanceof AddressInterface && $address->getCountry() instanceof \CoreShop\Component\Address\Model\CountryInterface) {
+        if ($address->getCountry() instanceof \CoreShop\Component\Address\Model\CountryInterface) {
             $values[$prefix.'All'] = $this->addressFormatter->formatAddress($address, false);
         }
 
@@ -436,6 +439,9 @@ class OrderController extends PimcoreController
     {
         $list = [];
 
+        /**
+         * @var DataObject\Concrete $order
+         */
         $notes = $this->objectNoteService->getObjectNotes($order, Notes::NOTE_EMAIL);
 
         foreach ($notes as $note) {
@@ -573,27 +579,27 @@ class OrderController extends PimcoreController
 
     protected function getStatesHistory(OrderInterface $order): array
     {
-        //Get History
+        /**
+         * @var DataObject\Concrete $order
+         */
         $history = $this->workflowStateManager->getStateHistory($order);
 
         $statesHistory = [];
 
-        if (is_array($history)) {
-            foreach ($history as $note) {
-                $user = User::getById($note->getUser());
-                $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
-                $date = Carbon::createFromTimestamp($note->getDate());
-                $statesHistory[] = [
-                    'icon' => 'coreshop_icon_orderstates',
-                    'type' => $note->getType(),
-                    'date' => $date->formatLocalized('%A %d %B %Y %H:%M:%S'),
-                    'avatar' => $avatar,
-                    'user' => $user ? $user->getName() : null,
-                    'description' => $note->getDescription(),
-                    'title' => $note->getTitle(),
-                    'data' => $note->getData(),
-                ];
-            }
+        foreach ($history as $note) {
+            $user = User::getById($note->getUser());
+            $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
+            $date = Carbon::createFromTimestamp($note->getDate());
+            $statesHistory[] = [
+                'icon' => 'coreshop_icon_orderstates',
+                'type' => $note->getType(),
+                'date' => $date->formatLocalized('%A %d %B %Y %H:%M:%S'),
+                'avatar' => $avatar,
+                'user' => $user ? $user->getName() : null,
+                'description' => $note->getDescription(),
+                'title' => $note->getTitle(),
+                'data' => $note->getData(),
+            ];
         }
 
         return $statesHistory;
@@ -606,29 +612,27 @@ class OrderController extends PimcoreController
 
         foreach ($payments as $payment) {
             $details = [];
-            if (is_array($payment->getDetails()) && count($payment->getDetails()) > 0) {
-                foreach ($payment->getDetails() as $detailName => $detailValue) {
-                    if (empty($detailValue) && $detailValue != 0) {
-                        continue;
-                    }
-                    if (is_array($detailValue)) {
-                        $detailValue = implode(', ', $detailValue);
-                    }
-
-                    if (true === is_bool($detailValue)) {
-                        if (true === $detailValue) {
-                            $detailValue = 'true';
-                        } else {
-                            $detailValue = 'false';
-                        }
-                    }
-
-                    if (false === is_string($detailValue)) {
-                        $detailValue = (string)$detailValue;
-                    }
-
-                    $details[] = [$detailName, $detailValue ? htmlentities($detailValue) : ''];
+            foreach ($payment->getDetails() as $detailName => $detailValue) {
+                if (empty($detailValue) && $detailValue != 0) {
+                    continue;
                 }
+                if (is_array($detailValue)) {
+                    $detailValue = implode(', ', $detailValue);
+                }
+
+                if (true === is_bool($detailValue)) {
+                    if (true === $detailValue) {
+                        $detailValue = 'true';
+                    } else {
+                        $detailValue = 'false';
+                    }
+                }
+
+                if (false === is_string($detailValue)) {
+                    $detailValue = (string)$detailValue;
+                }
+
+                $details[] = [$detailName, $detailValue ? htmlentities($detailValue) : ''];
             }
 
             $availableTransitions = $this->workflowStateManager->parseTransitions($payment, 'coreshop_payment', [

@@ -3,7 +3,7 @@
 {% block content %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
             <li class="breadcrumb-item active">{{ 'coreshop.ui.error'|trans }}</a></li>
         </ol>
     </nav>
@@ -21,12 +21,12 @@
         {% if lastPayment.state == 'cancelled' %}
             <p>{{ 'coreshop.ui.checkout.error.cancelled'|trans }}</p>
             <p>
-                <a href="{{ coreshop_path(cart, 'coreshop_cart_summary') }}" class="btn btn-secondary text-uppercase">{{ 'coreshop.ui.cart'|trans }}</a>
+                <a href="{{ path('coreshop_cart_summary') }}" class="btn btn-secondary text-uppercase">{{ 'coreshop.ui.cart'|trans }}</a>
             </p>
         {% else %}
             <p>{{ 'coreshop.ui.checkout.error.default'|trans }}</p>
             <p>
-                <a href="{{ coreshop_path('coreshop_index') }}" class="btn btn-secondary text-uppercase">{{ 'coreshop.ui.back_to_home'|trans }}</a>
+                <a href="{{ path('coreshop_index') }}" class="btn btn-secondary text-uppercase">{{ 'coreshop.ui.back_to_home'|trans }}</a>
             </p>
         {% endif %}
     </div>

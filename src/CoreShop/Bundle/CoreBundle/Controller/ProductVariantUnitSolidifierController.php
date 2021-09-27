@@ -58,7 +58,7 @@ class ProductVariantUnitSolidifierController extends AdminController
 
         if ($errorStatus === false) {
             $strategy = self::DISPATCH_STRATEGY_ONLY_UNIT_DEFINITIONS;
-            if (is_array($object->getQuantityPriceRules()) && count($object->getQuantityPriceRules()) > 0) {
+            if (count($object->getQuantityPriceRules()) > 0) {
                 $strategy = self::DISPATCH_STRATEGY_UNIT_DEFINITIONS_AND_QPR;
             }
         }

@@ -20,10 +20,16 @@ use Webmozart\Assert\Assert;
 
 final class SimpleStateChecker extends AbstractConditionChecker
 {
+    /**
+     * @psalm-var class-string
+     */
     private string $interface;
     private string $stateField;
     private string $configurationField;
 
+    /**
+     * @psalm-param class-string $interface
+     */
     public function __construct(string $interface, string $stateField, string $configurationField)
     {
         $this->interface = $interface;

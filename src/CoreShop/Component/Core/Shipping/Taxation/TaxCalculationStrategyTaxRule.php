@@ -24,6 +24,7 @@ use CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroup;
 use Webmozart\Assert\Assert;
 
@@ -70,14 +71,10 @@ class TaxCalculationStrategyTaxRule implements TaxCalculationStrategyInterface
 
         $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($taxRule, $address);
 
-        if ($taxCalculator instanceof TaxCalculatorInterface) {
-            if ($store->getUseGrossPrice()) {
-                return $this->taxCollector->collectTaxesFromGross($taxCalculator, $shippingAmount);
-            }
-
-            return $this->taxCollector->collectTaxes($taxCalculator, $shippingAmount);
+        if ($store->getUseGrossPrice()) {
+            return $this->taxCollector->collectTaxesFromGross($taxCalculator, $shippingAmount);
         }
 
-        return [];
+        return $this->taxCollector->collectTaxes($taxCalculator, $shippingAmount);
     }
 }

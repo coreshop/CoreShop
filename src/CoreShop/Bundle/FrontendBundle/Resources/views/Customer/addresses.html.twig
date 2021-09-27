@@ -5,9 +5,9 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-            <li class="breadcrumb-item"><a href="{{ coreshop_path(customer, 'coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
-            <li class="breadcrumb-item"><a href="{{ coreshop_path(customer, 'coreshop_customer_addresses') }}">{{ 'coreshop.ui.addresses'|trans }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('coreshop_customer_addresses') }}">{{ 'coreshop.ui.addresses'|trans }}</a></li>
             <li class="breadcrumb-item active">{{ 'coreshop.ui.address'|trans }}</li>
         </ol>
     </nav>
@@ -32,10 +32,10 @@
                             {{ address|coreshop_format_address }}
                             <br/>
                             <br/>
-                            <a href="{{ coreshop_path(address, 'coreshop_customer_address_edit', {name: address.street, address: address.id}) }}" class="btn btn-success">
+                            <a href="{{ path('coreshop_customer_address_edit', {name: address.street, address: address.id}) }}" class="btn btn-success">
                                 {{ 'coreshop.ui.edit'|trans }}
                             </a>
-                            <a href="{{ coreshop_path(address, 'coreshop_customer_address_delete', {address: address.id}) }}" class="btn btn-danger">
+                            <a href="{{ path('coreshop_customer_address_delete', {address: address.id}) }}" class="btn btn-danger">
                                 {{ 'coreshop.ui.delete'|trans }}
                             </a>
                         </div>
@@ -45,7 +45,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <a href="{{ coreshop_path('coreshop_customer_address_new') }}" class="btn btn-success">
+                <a href="{{ path('coreshop_customer_address_new') }}" class="btn btn-success">
                     {{ 'coreshop.ui.add_new_address'|trans }}
                 </a>
             </div>

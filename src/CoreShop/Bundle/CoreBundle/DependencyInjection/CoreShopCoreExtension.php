@@ -53,20 +53,20 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         'coreshop_taxation',
     ];
 
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $container->setParameter('coreshop.all.dependant.bundles', []);
 
-        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
 
-        if (array_key_exists('pimcore_admin', $config)) {
-            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
         }
 
-        $container->setParameter('coreshop.after_logout_redirect_route', $config['after_logout_redirect_route']);
+        $container->setParameter('coreshop.after_logout_redirect_route', $configs['after_logout_redirect_route']);
 
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -76,17 +76,17 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $loader->load('services.yml');
 
-        $env = $container->getParameter('kernel.environment');
-        if (strpos($env, 'test') !== false) {
+        $env = (string)$container->getParameter('kernel.environment');
+        if (str_contains($env, 'test')) {
             $loader->load('services_test.yml');
         }
 
-        if (array_key_exists('checkout', $config)) {
-            $this->registerCheckout($container, $config['checkout']);
+        if (array_key_exists('checkout', $configs)) {
+            $this->registerCheckout($container, $configs['checkout']);
         }
 
-        if (array_key_exists('checkout_manager_factory', $config)) {
-            $alias = new Alias(sprintf('coreshop.checkout_manager.factory.%s', $config['checkout_manager_factory']));
+        if (array_key_exists('checkout_manager_factory', $configs)) {
+            $alias = new Alias(sprintf('coreshop.checkout_manager.factory.%s', $configs['checkout_manager_factory']));
             $alias->setPublic(true);
 
             $container->setAlias('coreshop.checkout_manager.factory', $alias);
@@ -105,21 +105,21 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
     public function prepend(ContainerBuilder $container): void
     {
-        $config = $container->getExtensionConfig($this->getAlias());
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
         foreach ($container->getExtensions() as $name => $extension) {
             if (in_array($name, self::$bundles, true)) {
-                $container->prependExtensionConfig($name, ['driver' => $config['driver']]);
+                $container->prependExtensionConfig($name, ['driver' => $configs['driver']]);
             }
         }
     }
 
-    private function registerCheckout(ContainerBuilder $container, array $config): void
+    private function registerCheckout(ContainerBuilder $container, array $configs): void
     {
         $availableCheckoutManagerFactories = [];
 
-        foreach ($config as $checkoutIdentifier => $typeConfiguration) {
+        foreach ($configs as $checkoutIdentifier => $typeConfiguration) {
             $stepsLocatorId = sprintf('coreshop.checkout_manager.steps.%s', $checkoutIdentifier);
             $checkoutManagerFactoryId = sprintf('coreshop.checkout_manager.factory.%s', $checkoutIdentifier);
 

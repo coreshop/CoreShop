@@ -47,6 +47,7 @@ class PimcoreRepository extends PimcoreDaoRepository implements PimcoreRepositor
             return $className::getList();
         }
 
+        /** @psalm-var class-string $listClass */
         $listClass = $className.'\\Listing';
 
         if (class_exists($className)) {

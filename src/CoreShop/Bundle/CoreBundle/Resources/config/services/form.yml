@@ -12,9 +12,7 @@ services:
     _defaults:
         public: true
 
-    CoreShop\Bundle\CoreBundle\Form\DataMapper\CustomerDataMapper:
-        arguments:
-            - '@property_accessor'
+    CoreShop\Bundle\CoreBundle\Form\DataMapper\CustomerDataMapper: ~
 
     CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType:
         arguments:

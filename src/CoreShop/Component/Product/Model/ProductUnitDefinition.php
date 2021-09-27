@@ -16,6 +16,9 @@ namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ProductUnitDefinition extends AbstractResource implements ProductUnitDefinitionInterface
 {
     /**

@@ -17,6 +17,9 @@ namespace CoreShop\Component\Currency\Model;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Currency extends AbstractResource implements CurrencyInterface
 {
     use TimestampableTrait;

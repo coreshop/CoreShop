@@ -45,7 +45,7 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
         try {
             $currency = $this->currencyContext->getCurrency();
 
-            if (!$currency instanceof CurrencyInterface || !$this->isAvailableCurrency($currency, $store)) {
+            if (!$this->isAvailableCurrency($currency, $store)) {
                 return $store->getCurrency();
             }
 

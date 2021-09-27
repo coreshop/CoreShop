@@ -30,12 +30,13 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_product_quantity_price_rules');
+        /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
                 ->arrayNode('action_constraints')
-                    ->prototype('array')
+                    ->arrayPrototype()
                     ->children()
                         ->scalarNode('class')->end()
                         ->arrayNode('groups')

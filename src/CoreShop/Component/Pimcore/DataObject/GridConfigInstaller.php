@@ -20,11 +20,13 @@ class GridConfigInstaller implements GridConfigInstallerInterface
 {
     public function installGridConfig(array $config, string $name, string $class, bool $overwrite = false): void
     {
+        /** @psalm-suppress InternalClass */
         $list = new GridConfig\Listing();
         $list->addConditionParam('name = ?', $name);
         $elements = $list->load();
 
         if (count($elements) === 0) {
+            /** @psalm-suppress InternalClass */
             $gridConfig = new GridConfig();
         } elseif ($overwrite) {
             $gridConfig = $elements[0];
@@ -35,12 +37,19 @@ class GridConfigInstaller implements GridConfigInstallerInterface
         $config['classId'] = $class;
 
         $configDataEncoded = json_encode($config);
+        /** @psalm-suppress InternalMethod */
         $gridConfig->setName($name);
+        /** @psalm-suppress InternalMethod */
         $gridConfig->setShareGlobally(true);
+        /** @psalm-suppress InternalMethod */
         $gridConfig->setConfig($configDataEncoded);
+        /** @psalm-suppress InternalMethod */
         $gridConfig->setOwnerId(0);
+        /** @psalm-suppress InternalMethod */
         $gridConfig->setSearchType('folder');
+        /** @psalm-suppress InternalMethod */
         $gridConfig->setClassId($class);
+        /** @psalm-suppress InternalMethod */
         $gridConfig->save();
     }
 }

@@ -32,7 +32,7 @@ interface ProductSpecificPriceRuleInterface extends PriceRuleInterface
     public function getProduct();
 
     /**
-     * @param int $id
+     * @param int $product
      */
-    public function setProduct($id);
+    public function setProduct($product);
 }

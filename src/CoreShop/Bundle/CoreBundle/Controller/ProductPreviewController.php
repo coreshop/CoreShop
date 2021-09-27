@@ -49,12 +49,12 @@ class ProductPreviewController extends AdminController
         $id = $request->get('id');
 
         /**
-         * @var DataObject\Concrete $object
+         * @var DataObject\Concrete|null $object
          */
         $object = DataObject::getById($id);
 
-        if (!$object instanceof DataObject\Concrete) {
-            return new Response('Store Preview is only available for DataObjects');
+        if (null === $object) {
+            return new Response('DataObject not found');
         }
 
         if (!$object instanceof PimcoreStoresAwareInterface) {
@@ -91,7 +91,7 @@ class ProductPreviewController extends AdminController
 
         $urlParts = parse_url($url);
 
-        $newUrl = ($site ? 'https://' . $site->getMainDomain() : '') . $urlParts['path'];
+        $newUrl = ($site ? 'https://' . $site->getMainDomain() : '') . ($urlParts['path'] ?? '');
         $newUrl .= '?pimcore_object_preview=' . $id . '&_dc=' . time() . (isset($urlParts['query']) ? '&' . $urlParts['query'] : '');
 
         return $this->redirect($newUrl);

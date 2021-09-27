@@ -17,6 +17,9 @@ namespace CoreShop\Component\Payment\Model;
 use CoreShop\Component\Resource\Model\AbstractTranslation;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class PaymentProviderTranslation extends AbstractTranslation implements PaymentProviderTranslationInterface
 {
     use TimestampableTrait;

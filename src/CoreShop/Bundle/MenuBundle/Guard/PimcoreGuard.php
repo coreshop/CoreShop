@@ -36,7 +36,7 @@ class PimcoreGuard
         $user = $this->tokenStorageUserResolver->getUser();
 
         if ($user instanceof User) {
-            return $user->isAllowed($item->getAttribute('permission'));
+            return $user->isAllowed((string)$item->getAttribute('permission'));
         }
 
         return false;

@@ -40,22 +40,22 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopOrderExtension extends AbstractModelExtension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.yml');
 
-        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
-        $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
+        $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
 
-        if (array_key_exists('pimcore_admin', $config)) {
-            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
         }
 
-        if (array_key_exists('stack', $config)) {
-            $this->registerStack('coreshop', $config['stack'], $container);
+        if (array_key_exists('stack', $configs)) {
+            $this->registerStack('coreshop', $configs['stack'], $container);
         }
 
         $bundles = $container->getParameter('kernel.bundles');
@@ -64,12 +64,12 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             $loader->load('services/data_hub.yml');
         }
 
-        $container->setParameter('coreshop.order.legacy_serialization', $config['legacy_serialization']);
-        $container->setParameter('coreshop.cart.expiration.days', $config['expiration']['cart']['days']);
-        $container->setParameter('coreshop.cart.expiration.anonymous', $config['expiration']['cart']['anonymous']);
-        $container->setParameter('coreshop.cart.expiration.customer', $config['expiration']['cart']['customer']);
+        $container->setParameter('coreshop.order.legacy_serialization', $configs['legacy_serialization']);
+        $container->setParameter('coreshop.cart.expiration.days', $configs['expiration']['cart']['days']);
+        $container->setParameter('coreshop.cart.expiration.anonymous', $configs['expiration']['cart']['anonymous']);
+        $container->setParameter('coreshop.cart.expiration.customer', $configs['expiration']['cart']['customer']);
 
-        $container->setParameter('coreshop.order.expiration.days', $config['expiration']['order']['days']);
+        $container->setParameter('coreshop.order.expiration.days', $configs['expiration']['order']['days']);
 
         $loader->load('services.yml');
 

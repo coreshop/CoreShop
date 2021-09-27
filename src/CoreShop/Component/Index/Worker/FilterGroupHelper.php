@@ -79,7 +79,7 @@ class FilterGroupHelper implements FilterGroupHelperInterface
                             continue;
                         }
 
-                        if ($values[$e]) {
+                        if (array_key_exists($e, $values)) {
                             $values[$e]['count'] += $v['count'];
                             continue;
                         }
@@ -89,7 +89,7 @@ class FilterGroupHelper implements FilterGroupHelperInterface
                 }
 
                 foreach ($values as $value) {
-                    if ($value) {
+                    if (array_key_exists('value', $value)) {
                         $returnValues[] = [
                             'key' => $value['value'],
                             'value' => $value['value'],

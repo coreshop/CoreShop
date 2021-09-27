@@ -9,7 +9,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ coreshop_path('coreshop_index') }}">
+                            <a class="nav-link" href="{{ path('coreshop_index') }}">
                                 {{ 'coreshop.ui.home'|trans }}
                             </a>
                         </li>
@@ -17,7 +17,7 @@
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ coreshop_path('coreshop_wishlist_summary') }}">
+                            <a class="nav-link" href="{{ path('coreshop_wishlist_summary') }}">
                                 {{ 'coreshop.ui.wishlist'|trans }}
                             </a>
                             {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CurrencyController::widgetAction')) }}
@@ -46,7 +46,7 @@
 
                 <div class="col-md-6">
                     <div id="logo">
-                        <a href="{{ coreshop_path('coreshop_index') }}">
+                        <a href="{{ path('coreshop_index') }}">
                             <img src="/bundles/coreshopfrontend/static/images/logo-full.svg" title="CoreShop" alt="CoreShop" class="img-fluid" width="300px"/>
                         </a>
                     </div>

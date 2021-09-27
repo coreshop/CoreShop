@@ -17,6 +17,9 @@ namespace CoreShop\Component\Core\Model;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange as BaseQuantityRange;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
 {
     /**
@@ -35,13 +38,13 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
     protected $unitDefinition;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $pseudoPrice = 0;
 
     public function getAmount()
     {
-        return (int) $this->amount;
+        return $this->amount;
     }
 
     public function setAmount(int $amount)
@@ -76,12 +79,12 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
 
     public function getPseudoPrice()
     {
-        return (int) $this->pseudoPrice;
+        return $this->pseudoPrice;
     }
 
     public function hasPseudoPrice()
     {
-        return $this->getPseudoPrice() !== 0;
+        return null !== $this->getPseudoPrice() && $this->getPseudoPrice() !== 0;
     }
 
     public function setPseudoPrice(int $pseudoPrice)

@@ -28,10 +28,10 @@ final class QuantityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addViewTransformer(new CallbackTransformer(
-            function ($value) {
+            function (mixed $value): mixed {
                 return is_string($value) ? str_replace(',', '.', $value) : $value;
             },
-            function ($value) {
+            function (mixed $value): mixed {
                 return $value;
             }
         ));

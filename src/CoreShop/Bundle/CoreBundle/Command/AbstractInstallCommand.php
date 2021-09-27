@@ -40,11 +40,12 @@ abstract class AbstractInstallCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $application = $this->getApplication();
-        $application->setCatchExceptions(false);
 
         if (null === $application) {
             throw new \InvalidArgumentException('application is null');
         }
+
+        $application->setCatchExceptions(false);
 
         $this->commandExecutor = new CommandExecutor($input, $output, $application);
     }

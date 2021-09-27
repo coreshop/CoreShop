@@ -22,10 +22,6 @@ services:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType }
 
-    CoreShop\Bundle\CoreBundle\Form\Extension\PaymentProviderTypeExtension:
-        tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType }
-
     CoreShop\Bundle\CoreBundle\Form\Extension\OrderShipmentCreationTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType }

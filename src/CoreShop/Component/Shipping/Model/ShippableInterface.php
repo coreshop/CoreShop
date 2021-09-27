@@ -17,7 +17,7 @@ namespace CoreShop\Component\Shipping\Model;
 interface ShippableInterface
 {
     /**
-     * @return ShippableItemInterface[]
+     * @return ShippableItemInterface[]|null
      */
     public function getItems(): ?array;
 

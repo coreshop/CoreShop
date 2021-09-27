@@ -39,6 +39,9 @@ trait AdjustableTrait
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return Fieldcollection|null
+     */
     public function getAdjustmentItems()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -109,7 +112,9 @@ trait AdjustableTrait
                 $items = new Fieldcollection();
             }
 
-            $items->add($adjustment);
+            if ($adjustment instanceof Fieldcollection\Data\AbstractData) {
+                $items->add($adjustment);
+            }
 
             $this->setAdjustmentItems($items);
 

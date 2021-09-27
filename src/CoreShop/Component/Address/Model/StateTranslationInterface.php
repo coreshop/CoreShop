@@ -15,8 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TranslationInterface;
 
-interface StateTranslationInterface extends ResourceInterface
+interface StateTranslationInterface extends ResourceInterface, TranslationInterface
 {
     /**
      * @return string

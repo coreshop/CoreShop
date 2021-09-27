@@ -41,33 +41,6 @@ interface ProductQuantityPriceRuleInterface extends RuleInterface
     public function setCalculationBehaviour($calculationBehaviour);
 
     /**
-     * @return Collection|ConditionInterface[]
-     */
-    public function getConditions();
-
-    /**
-     * @return bool
-     */
-    public function hasConditions();
-
-    /**
-     * @param ConditionInterface $conditions
-     *
-     * @return bool
-     */
-    public function hasCondition(ConditionInterface $conditions);
-
-    /**
-     * @param ConditionInterface $conditions
-     */
-    public function addCondition(ConditionInterface $conditions);
-
-    /**
-     * @param ConditionInterface $conditions
-     */
-    public function removeCondition(ConditionInterface $conditions);
-
-    /**
      * @return Collection|QuantityRangeInterface[]
      */
     public function getRanges();
@@ -110,7 +83,7 @@ interface ProductQuantityPriceRuleInterface extends RuleInterface
     public function getProduct();
 
     /**
-     * @param int $id
+     * @param int $product
      */
-    public function setProduct($id);
+    public function setProduct($product);
 }

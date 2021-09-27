@@ -42,11 +42,7 @@ final class CustomerContext implements CustomerContextInterface
 
     private function getCustomerForRequest(Request $request): CustomerInterface
     {
-        $customer = $this->requestResolver->findCustomer($request);
-
-        $this->assertCustomerWasFound($customer);
-
-        return $customer;
+        return $this->requestResolver->findCustomer($request);
     }
 
     private function getMainRequest(): Request
@@ -57,12 +53,5 @@ final class CustomerContext implements CustomerContextInterface
         }
 
         return $masterRequest;
-    }
-
-    private function assertCustomerWasFound(CustomerInterface $customer = null)
-    {
-        if (null === $customer) {
-            throw new \UnexpectedValueException('Customer was not found for given request');
-        }
     }
 }

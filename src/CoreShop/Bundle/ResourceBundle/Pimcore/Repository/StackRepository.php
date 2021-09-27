@@ -82,9 +82,7 @@ class StackRepository extends PimcoreRepository
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        $criteria[] = [
-            'variable' => implode(',', $this->classNames),
-        ];
+        $criteria['variable'] = implode(',', $this->classNames);
 
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }

@@ -56,9 +56,6 @@ class PaymentController extends AbstractController
 
     public function prepareCaptureAction(Request $request): RedirectResponse
     {
-        /**
-         * @var $order OrderInterface
-         */
         if ($request->attributes->has('token')) {
             $property = 'token';
             $identifier = $request->attributes->get('token');
@@ -68,7 +65,7 @@ class PaymentController extends AbstractController
         }
 
         /**
-         * @var OrderInterface $order
+         * @var OrderInterface|null $order
          */
         $order = $this->orderRepository->findOneBy([$property => $identifier]);
 
@@ -76,6 +73,9 @@ class PaymentController extends AbstractController
             throw new NotFoundHttpException(sprintf('Order with %s "%s" does not exist.', $property, $identifier));
         }
 
+        /**
+         * @var PaymentInterface $payment
+         */
         $payment = $this->orderPaymentProvider->provideOrderPayment($order);
 
         $request->getSession()->set('coreshop_order_id', $order->getId());
@@ -92,7 +92,7 @@ class PaymentController extends AbstractController
     {
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 
-        /** @var Generic|GetStatusInterface $status */
+        /** @var Generic $status */
         $status = $this->getStatusRequestFactory->createNewWithModel($token);
         $this->getPayum()->getGateway($token->getGatewayName())->execute($status);
 

@@ -60,7 +60,7 @@
                 {% set productUrl = '/' %}
 
                 {% if productIsAvailable %}
-                    {% set productUrl = coreshop_path(item.product, 'coreshop_product_detail') %}
+                    {% set productUrl = pimcore_object_path(item.product) %}
                 {% endif %}
 
                 <tr class="shopping-cart-item shopping-cart-item-{{ item.id }}">

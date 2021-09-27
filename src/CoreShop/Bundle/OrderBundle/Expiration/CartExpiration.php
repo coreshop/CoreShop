@@ -33,10 +33,8 @@ final class CartExpiration implements OrderExpirationInterface
 
         $carts = $this->cartRepository->findExpiredCarts($days, $params['anonymous'], $params['customer']);
 
-        if (is_array($carts)) {
-            foreach ($carts as $cart) {
-                $cart->delete();
-            }
+        foreach ($carts as $cart) {
+            $cart->delete();
         }
     }
 }

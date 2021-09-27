@@ -55,12 +55,13 @@ final class CustomerListener extends AbstractNotificationRuleListener
          * @var CustomerInterface $customer
          */
         $customer = $event->getSubject();
+        $user = $customer->getUser();
 
-        if (null === $customer->getUser()) {
+        if (!$user instanceof UserInterface) {
             return;
         }
 
-        $params = $this->prepareUserParameters($customer->getUser());
+        $params = $this->prepareUserParameters($user);
         $params = array_merge(
             $params,
             [
@@ -73,14 +74,10 @@ final class CustomerListener extends AbstractNotificationRuleListener
 
     public function applyNewsletterConfirmRequestRule(RequestNewsletterConfirmationEvent $event): void
     {
-        Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
-
-        /**
-         * @var CustomerInterface $customer
-         */
         $customer = $event->getCustomer();
+        $user = $customer->getUser();
 
-        if (null === $customer->getUser()) {
+        if (!$user instanceof UserInterface) {
             return;
         }
 
@@ -98,12 +95,9 @@ final class CustomerListener extends AbstractNotificationRuleListener
         );
 
         $confirmLink = $event->getConfirmLink();
-        $confirmLink = $confirmLink . (parse_url(
-            $confirmLink,
-            PHP_URL_QUERY
-        ) ? '&' : '?') . 'token=' . $customer->getNewsletterToken();
+        $confirmLink .= (parse_url($confirmLink, PHP_URL_QUERY) ? '&' : '?').'token='.$customer->getNewsletterToken();
 
-        $params = $this->prepareUserParameters($customer->getUser());
+        $params = $this->prepareUserParameters($user);
         $params = array_merge(
             $params,
             [
@@ -124,12 +118,13 @@ final class CustomerListener extends AbstractNotificationRuleListener
          * @var CustomerInterface $customer
          */
         $customer = $event->getSubject();
+        $user = $customer->getUser();
 
-        if (null === $customer->getUser()) {
+        if (!$user instanceof UserInterface) {
             return;
         }
 
-        $params = $this->prepareUserParameters($customer->getUser());
+        $params = $this->prepareUserParameters($user);
         $params = array_merge(
             $params,
             [

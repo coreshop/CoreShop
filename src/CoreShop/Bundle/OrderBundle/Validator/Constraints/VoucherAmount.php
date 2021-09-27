@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class VoucherAmount extends Constraint
 {
-    public $message = 'coreshop.cart_price_rule_voucher_generator.possible_generation_amount';
+    public string $message = 'coreshop.cart_price_rule_voucher_generator.possible_generation_amount';
 
     public function getTargets(): string
     {

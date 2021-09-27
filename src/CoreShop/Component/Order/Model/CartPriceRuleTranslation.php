@@ -17,6 +17,9 @@ namespace CoreShop\Component\Order\Model;
 use CoreShop\Component\Resource\Model\AbstractTranslation;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class CartPriceRuleTranslation extends AbstractTranslation implements CartPriceRuleTranslationInterface
 {
     use TimestampableTrait;

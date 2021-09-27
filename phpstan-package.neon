@@ -28,6 +28,7 @@ parameters:
         - '/unknown class LuceneSearchBundle/'
         - '/typehint type LuceneSearchBundle/'
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)/'
+        - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface/'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::save\(\)./'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::delete\(\)./'
         - '/Method Pimcore\\Model\\DataObject\\Concrete::getLatestVersion\(\)\(.*\)/'

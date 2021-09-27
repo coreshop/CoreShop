@@ -27,7 +27,7 @@ class CompositeRetailPriceCalculator implements ProductRetailPriceCalculatorInte
         $this->retailPriceCalculator = $retailPriceCalculator;
     }
 
-    public function getRetailPrice(ProductInterface $subject, array $context): int
+    public function getRetailPrice(ProductInterface $product, array $context): int
     {
         $price = null;
 
@@ -36,7 +36,7 @@ class CompositeRetailPriceCalculator implements ProductRetailPriceCalculatorInte
          */
         foreach ($this->retailPriceCalculator->all() as $calculator) {
             try {
-                $actionPrice = $calculator->getRetailPrice($subject, $context);
+                $actionPrice = $calculator->getRetailPrice($product, $context);
                 $price = $actionPrice;
             } catch (NoRetailPriceFoundException $exception) {
             }

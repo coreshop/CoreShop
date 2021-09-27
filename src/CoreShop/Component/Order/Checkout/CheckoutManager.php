@@ -71,9 +71,7 @@ class CheckoutManager implements CheckoutManagerInterface
 
     public function getPreviousSteps(string $identifier): array
     {
-        $previousSteps = $this->serviceRegistry->getAllPreviousTo($identifier);
-
-        return is_array($previousSteps) ? $previousSteps : [];
+        return $this->serviceRegistry->getAllPreviousTo($identifier);
     }
 
     public function validateStep(CheckoutStepInterface $step, OrderInterface $cart): bool

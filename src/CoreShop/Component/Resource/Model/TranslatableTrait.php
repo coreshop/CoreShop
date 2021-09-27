@@ -21,31 +21,22 @@ use Doctrine\ORM\PersistentCollection;
 trait TranslatableTrait
 {
     /**
-     * @var ArrayCollection|PersistentCollection|ArrayCollection<TranslationInterface>
+     * @var ArrayCollection|PersistentCollection|TranslationInterface[]
+     * @psalm-var Collection
      */
     protected $translations;
 
     /**
      * @var array|TranslationInterface[]
      */
-    protected $translationsCache = [];
-
-    /**
-     * @var string
-     */
-    protected $currentLocale;
+    protected array $translationsCache = [];
+    protected ?string $currentLocale = null;
 
     /**
      * Cache current translation. Useful in Doctrine 2.4+.
-     *
-     * @var TranslationInterface
      */
-    protected $currentTranslation;
-
-    /**
-     * @var string
-     */
-    protected $fallbackLocale;
+    protected ?TranslationInterface $currentTranslation = null;
+    protected ?string $fallbackLocale = null;
 
     public function __construct()
     {
@@ -57,13 +48,7 @@ trait TranslatableTrait
         $this->translations = new ArrayCollection();
     }
 
-    /**
-     * @param string|null $locale
-     * @param bool        $useFallbackTranslation
-     *
-     * @return TranslationInterface
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(string $locale = null, bool $useFallbackTranslation = true): TranslationInterface
     {
         $locale = $locale ?: $this->currentLocale;
         if (null === $locale) {
@@ -100,28 +85,17 @@ trait TranslatableTrait
         return $translation;
     }
 
-    /**
-     * @return TranslationInterface[]|Collection
-     */
-    public function getTranslations()
+    public function getTranslations(): Collection
     {
         return $this->translations;
     }
 
-    /**
-     * @param TranslationInterface $translation
-     *
-     * @return bool
-     */
-    public function hasTranslation(TranslationInterface $translation)
+    public function hasTranslation(TranslationInterface $translation): bool
     {
         return isset($this->translationsCache[$translation->getLocale()]) || $this->translations->containsKey($translation->getLocale());
     }
 
-    /**
-     * @param TranslationInterface $translation
-     */
-    public function addTranslation(TranslationInterface $translation)
+    public function addTranslation(TranslationInterface $translation): void
     {
         if (!$this->hasTranslation($translation)) {
             $this->translationsCache[$translation->getLocale()] = $translation;
@@ -131,10 +105,7 @@ trait TranslatableTrait
         }
     }
 
-    /**
-     * @param TranslationInterface $translation
-     */
-    public function removeTranslation(TranslationInterface $translation)
+    public function removeTranslation(TranslationInterface $translation): void
     {
         if ($this->translations->removeElement($translation)) {
             unset($this->translationsCache[$translation->getLocale()]);
@@ -143,20 +114,14 @@ trait TranslatableTrait
         }
     }
 
-    /**
-     * @param string $currentLocale
-     */
-    public function setCurrentLocale($currentLocale)
+    public function setCurrentLocale(string $locale): void
     {
-        $this->currentLocale = $currentLocale;
+        $this->currentLocale = $locale;
     }
 
-    /**
-     * @param string $fallbackLocale
-     */
-    public function setFallbackLocale($fallbackLocale)
+    public function setFallbackLocale(string  $locale): void
     {
-        $this->fallbackLocale = $fallbackLocale;
+        $this->fallbackLocale = $locale;
     }
 
     /**
@@ -164,5 +129,5 @@ trait TranslatableTrait
      *
      * @return TranslationInterface
      */
-    abstract protected function createTranslation();
+    abstract protected function createTranslation(): TranslationInterface;
 }

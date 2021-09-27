@@ -35,15 +35,16 @@ class StoreBasedAddressProvider implements AddressProviderInterface
 
     public function getAddress(OrderInterface $cart): ?AddressInterface
     {
-        if ($cart->getStore() instanceof StoreInterface) {
+        $store = $cart->getStore();
+        if ($store instanceof StoreInterface) {
             $address = $this->addressFactory->createNew();
 
             try {
                 $address->setCountry($this->shopperContext->getCountry());
             } catch (StoreNotFoundException $ex) {
-                $address->setCountry($cart->getStore()->getBaseCountry());
+                $address->setCountry($store->getBaseCountry());
             } catch (CountryNotFoundException $ex) {
-                $address->setCountry($cart->getStore()->getBaseCountry());
+                $address->setCountry($store->getBaseCountry());
             }
 
             return $address;

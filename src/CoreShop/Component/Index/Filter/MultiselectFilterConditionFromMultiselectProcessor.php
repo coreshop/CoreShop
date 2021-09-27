@@ -38,7 +38,7 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
                     continue;
                 }
 
-                if ($values[$e]) {
+                if (array_key_exists($e, $values)) {
                     $values[$e]['count'] += $v['count'];
                     continue;
                 }
@@ -50,12 +50,12 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
         return [
             'type' => 'multiselect',
             'label' => $condition->getLabel(),
-            'currentValues' => array_map(function($value) {
+            'currentValues' => array_map(static function(string $value) {
                 return trim($value, ',');
             }, $currentFilter[$field] ?: []),
             'values' => array_values($values),
             'fieldName' => $field,
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
+            'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById((string)$condition->getQuantityUnit()) : null,
         ];
     }
 

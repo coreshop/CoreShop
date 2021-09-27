@@ -17,6 +17,9 @@ namespace CoreShop\Component\Taxation\Model;
 use CoreShop\Component\Resource\Model\AbstractTranslation;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class TaxRateTranslation extends AbstractTranslation implements TaxRateTranslationInterface
 {
     use TimestampableTrait;

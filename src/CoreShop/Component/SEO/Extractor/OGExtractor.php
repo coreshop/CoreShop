@@ -27,11 +27,11 @@ final class OGExtractor implements ExtractorInterface
 
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
+        /**
+         * @var SEOOpenGraphAwareInterface $object
+         */
         Assert::isInstanceOf($object, SEOOpenGraphAwareInterface::class);
 
-        /**
-         * @var $object SEOOpenGraphAwareInterface
-         */
         if ($object->getOGTitle()) {
             $seoMetadata->addExtraProperty('og:title', $object->getOGTitle());
         }

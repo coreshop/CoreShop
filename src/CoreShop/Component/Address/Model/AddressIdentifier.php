@@ -18,6 +18,9 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class AddressIdentifier extends AbstractResource implements AddressIdentifierInterface
 {
     use ToggleableTrait;

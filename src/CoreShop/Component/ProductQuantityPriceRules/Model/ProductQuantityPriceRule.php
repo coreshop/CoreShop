@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Model;
 
+use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
@@ -22,7 +23,10 @@ use CoreShop\Component\Resource\Model\ToggleableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
+/**
+ * @psalm-suppress MissingConstructor
+ */
+class ProductQuantityPriceRule extends AbstractResource implements ProductQuantityPriceRuleInterface
 {
     use TimestampableTrait;
     use SetValuesTrait;
@@ -97,24 +101,24 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
         return $this->conditions;
     }
 
-    public function hasConditions()
+    public function hasConditions(): bool
     {
         return !$this->conditions->isEmpty();
     }
 
-    public function hasCondition(ConditionInterface $condition)
+    public function hasCondition(ConditionInterface $condition): bool
     {
         return $this->conditions->contains($condition);
     }
 
-    public function addCondition(ConditionInterface $condition)
+    public function addCondition(ConditionInterface $condition): void
     {
         if (!$this->hasCondition($condition)) {
             $this->conditions->add($condition);
         }
     }
 
-    public function removeCondition(ConditionInterface $condition)
+    public function removeCondition(ConditionInterface $condition): void
     {
         $this->conditions->removeElement($condition);
     }
@@ -134,12 +138,12 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
         throw new \Exception('actions are not supported in quantity range price rules. use hasRange() instead.');
     }
 
-    public function addAction(ActionInterface $range)
+    public function addAction(ActionInterface $action)
     {
         throw new \Exception('actions are not supported in quantity range price rules. use addRange() instead.');
     }
 
-    public function removeAction(ActionInterface $range)
+    public function removeAction(ActionInterface $action)
     {
         throw new \Exception('actions are not supported in quantity range price rules. use addRange() instead.');
     }
@@ -154,23 +158,23 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
         return !$this->ranges->isEmpty();
     }
 
-    public function hasRange(QuantityRangeInterface $range)
+    public function hasRange(QuantityRangeInterface $priceRange)
     {
-        return $this->ranges->contains($range);
+        return $this->ranges->contains($priceRange);
     }
 
-    public function addRange(QuantityRangeInterface $range)
+    public function addRange(QuantityRangeInterface $priceRange)
     {
-        if (!$this->hasRange($range)) {
-            $range->setRule($this);
-            $this->ranges->add($range);
+        if (!$this->hasRange($priceRange)) {
+            $priceRange->setRule($this);
+            $this->ranges->add($priceRange);
         }
     }
 
-    public function removeRange(QuantityRangeInterface $range)
+    public function removeRange(QuantityRangeInterface $priceRange)
     {
-        $range->setRule(null);
-        $this->ranges->removeElement($range);
+        $priceRange->setRule(null);
+        $this->ranges->removeElement($priceRange);
     }
 
     public function getProduct()

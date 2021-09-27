@@ -17,7 +17,7 @@ namespace CoreShop\Component\Order\Model;
 interface CartPriceRuleVoucherGeneratorInterface
 {
     /**
-     * @return int
+     * @return int|null
      */
     public function getAmount();
 
@@ -27,7 +27,7 @@ interface CartPriceRuleVoucherGeneratorInterface
     public function setAmount($amount);
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getLength();
 

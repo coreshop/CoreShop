@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 final class TableIndex
 {
     const TABLE_INDEX_TYPE_UNIQUE = 'UNIQUE';

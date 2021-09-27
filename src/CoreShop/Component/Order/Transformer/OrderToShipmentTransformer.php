@@ -54,39 +54,35 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
     public function transform(
         OrderInterface $order,
-        OrderDocumentInterface $shipment,
+        OrderDocumentInterface $document,
         array $itemsToTransform
     ): OrderDocumentInterface
     {
-        /**
-         * @var $cart OrderInterface
-         */
-        Assert::isInstanceOf($order, OrderInterface::class);
-        Assert::isInstanceOf($shipment, OrderShipmentInterface::class);
+        Assert::isInstanceOf($document, OrderShipmentInterface::class);
 
-        $this->eventDispatcher->dispatchPreEvent('shipment', $shipment, ['order' => $order, 'items' => $itemsToTransform]);
+        $this->eventDispatcher->dispatchPreEvent('shipment', $document, ['order' => $order, 'items' => $itemsToTransform]);
 
-        $shipmentFolder = $this->folderCreationService->createFolderForResource($shipment, ['prefix' => $order->getFullPath()]);
+        $documentFolder = $this->folderCreationService->createFolderForResource($document, ['prefix' => $order->getFullPath()]);
 
-        $shipment->setOrder($order);
+        $document->setOrder($order);
 
-        $shipmentNumber = $this->numberGenerator->generate($shipment);
+        $documentNumber = $this->numberGenerator->generate($document);
 
         /**
-         * @var $shipment OrderShipmentInterface
-         * @var $order    OrderInterface
+         * @var OrderShipmentInterface $document
+         * @var OrderInterface $order
          */
-        $shipment->setKey(Service::getValidKey($shipmentNumber, 'object'));
-        $shipment->setShipmentNumber($shipmentNumber);
-        $shipment->setParent($shipmentFolder);
-        $shipment->setPublished(true);
-        $shipment->setShipmentDate(Carbon::now());
+        $document->setKey(Service::getValidKey($documentNumber, 'object'));
+        $document->setShipmentNumber($documentNumber);
+        $document->setParent($documentFolder);
+        $document->setPublished(true);
+        $document->setShipmentDate(Carbon::now());
 
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function () use ($shipment) {
-            $shipment->save();
+        VersionHelper::useVersioning(function () use ($document) {
+            $document->save();
         }, false);
         $items = [];
 
@@ -94,28 +90,28 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
          * @var $cartItem CartItemInterface
          */
         foreach ($itemsToTransform as $item) {
-            $shipmentItem = $this->shipmentItemFactory->createNew();
+            $documentItem = $this->shipmentItemFactory->createNew();
             $orderItem = $this->orderItemRepository->find($item['orderItemId']);
             $quantity = $item['quantity'];
 
             if ($orderItem instanceof OrderItemInterface) {
                 $items[] = $this->orderItemToShipmentItemTransformer->transform(
-                    $shipment,
+                    $document,
                     $orderItem,
-                    $shipmentItem,
+                    $documentItem,
                     $quantity,
                     $item
                 );
             }
         }
 
-        $shipment->setItems($items);
-        VersionHelper::useVersioning(function () use ($shipment) {
-            $shipment->save();
+        $document->setItems($items);
+        VersionHelper::useVersioning(function () use ($document) {
+            $document->save();
         }, false);
 
-        $this->eventDispatcher->dispatchPostEvent('shipment', $shipment, ['order' => $order, 'items' => $itemsToTransform]);
+        $this->eventDispatcher->dispatchPostEvent('shipment', $document, ['order' => $order, 'items' => $itemsToTransform]);
 
-        return $shipment;
+        return $document;
     }
 }

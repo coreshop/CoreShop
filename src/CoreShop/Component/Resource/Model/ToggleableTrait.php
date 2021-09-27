@@ -21,20 +21,14 @@ trait ToggleableTrait
      */
     protected $active = false;
 
-    /**
-     * @return bool
-     */
     public function getActive(): ?bool
     {
         return $this->active;
     }
 
-    /**
-     * @param bool $enabled
-     */
-    public function setActive(?bool $enabled)
+    public function setActive(?bool $active)
     {
-        $this->active = (bool) $enabled;
+        $this->active = $active;
     }
 
     public function activate()

@@ -16,6 +16,9 @@ namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnitDefinitionPriceInterface
 {
     /**
@@ -45,7 +48,7 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
 
     public function getPrice()
     {
-        return (int) $this->price;
+        return $this->price;
     }
 
     public function setPrice(int $price)
@@ -63,9 +66,6 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
         $this->unitDefinition = $unitDefinition;
     }
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         $definitionId = $this->getUnitDefinition() instanceof ProductUnitDefinitionInterface ? $this->getUnitDefinition()->getUnitName() : '--';

@@ -21,6 +21,9 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 final class InstallCommand extends AbstractInstallCommand
 {
+    /**
+     * @var array<int, array>
+     */
     private array $commands = [
         [
             'command' => 'resources',

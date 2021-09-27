@@ -27,21 +27,21 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopResourceExtension extends AbstractModelExtension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.yml');
 
-        if ($config['translation']['enabled']) {
+        if ($configs['translation']['enabled']) {
             $loader->load('services/integrations/translation.yml');
 
-            $container->setAlias('coreshop.translation_locale_provider', $config['translation']['locale_provider']);
+            $container->setAlias('coreshop.translation_locale_provider', $configs['translation']['locale_provider']);
         }
 
-        if (array_key_exists('pimcore_admin', $config)) {
-            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
         }
 
         if (!$container->hasParameter('coreshop.all.pimcore_classes')) {
@@ -58,7 +58,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension
             $loader->load('services/data_hub.yml');
         }
 
-        $this->loadPersistence($config['drivers'], $config['resources'], $loader);
+        $this->loadPersistence($configs['drivers'], $configs['resources'], $loader);
 
         $bodyListener = new Definition(BodyListener::class);
         $bodyListener->addTag('kernel.event_listener', [

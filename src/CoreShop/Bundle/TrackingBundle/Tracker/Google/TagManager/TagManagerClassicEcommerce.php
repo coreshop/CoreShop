@@ -91,6 +91,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
             $actionData['transactionProducts'][] = $this->transformProductAction($item);
         }
 
+        $parameters = [];
         $parameters['actionData'] = $actionData;
 
         $result = $this->renderTemplate('checkout_complete', $parameters);

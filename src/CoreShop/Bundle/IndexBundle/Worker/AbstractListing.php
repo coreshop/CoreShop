@@ -27,7 +27,7 @@ abstract class AbstractListing implements ListingInterface
     protected IndexInterface $index;
     protected WorkerInterface $worker;
     protected Connection $connection;
-    protected string $locale;
+    protected ?string $locale = null;
 
     public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection)
     {
@@ -87,7 +87,7 @@ abstract class AbstractListing implements ListingInterface
 
     abstract public function getGroupBySystemValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true);
 
-    abstract public function buildSimilarityOrderBy($fields, $objectId);
+    abstract public function buildSimilarityOrderBy(array $fields, int $objectId): string;
 
     public function getIndex(): IndexInterface
     {
@@ -103,13 +103,7 @@ abstract class AbstractListing implements ListingInterface
     {
         //TODO: Use Locale Services
         if (is_null($this->locale)) {
-            $language = null;
-
-            if (!$language) {
-                $language = Tool::getDefaultLanguage();
-            }
-
-            $this->locale = $language;
+            $this->locale = Tool::getDefaultLanguage();
         }
 
         return $this->locale;

@@ -24,6 +24,8 @@ use Pimcore\Tool;
 
 /**
  * @experimental Use with caution only, this is a new experimental feature
+ *
+ * @psalm-suppress RedundantCondition,InternalMethod,InternalProperty
  */
 class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 {

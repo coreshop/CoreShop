@@ -36,7 +36,7 @@ class RelationalNestedInterpreter implements RelationInterpreterInterface
     {
         $this->assert($interpreterConfig);
 
-        return $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($indexable, $config) {
+        return $this->loop($value, $interpreterConfig, static function (mixed $value, InterpreterInterface $interpreter, array $interpreterConfig) use ($indexable, $config): mixed {
             if ($interpreter instanceof RelationInterpreterInterface) {
                 return $interpreter->interpretRelational($value, $indexable, $config, $interpreterConfig);
             }
@@ -54,12 +54,8 @@ class RelationalNestedInterpreter implements RelationInterpreterInterface
     {
         $this->assert($interpreterConfig);
 
-        return $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($indexable, $config) {
-            if ($interpreter instanceof InterpreterInterface) {
-                return $interpreter->interpret($value, $indexable, $config, $interpreterConfig);
-            }
-
-            return $value;
+        return $this->loop($value, $interpreterConfig, static function (mixed $value, InterpreterInterface $interpreter, array $interpreterConfig) use ($indexable, $config): mixed {
+            return $interpreter->interpret($value, $indexable, $config, $interpreterConfig);
         });
     }
 }

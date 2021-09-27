@@ -23,7 +23,7 @@ class BackendCreatedChecker extends AbstractConditionChecker
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         /**
-         * @var $subject OrderInterface
+         * @var OrderInterface $subject
          */
         Assert::isInstanceOf($subject, OrderInterface::class);
 

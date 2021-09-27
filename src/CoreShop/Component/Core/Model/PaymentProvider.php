@@ -17,6 +17,9 @@ namespace CoreShop\Component\Core\Model;
 use CoreShop\Component\PayumPayment\Model\PaymentProvider as BasePaymentProvider;
 use CoreShop\Component\Store\Model\StoresAwareTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class PaymentProvider extends BasePaymentProvider implements PaymentProviderInterface
 {
     use StoresAwareTrait {

@@ -18,10 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class CartMinimumQuantity extends Constraint
 {
-    /**
-     * @var string
-     */
-    public $messageBelowMinimum;
+    public string $messageBelowMinimum;
 
     public function validatedBy(): string
     {

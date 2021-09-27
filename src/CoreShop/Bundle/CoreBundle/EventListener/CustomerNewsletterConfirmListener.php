@@ -16,25 +16,25 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Event\RequestNewsletterConfirmationEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 final class CustomerNewsletterConfirmListener
 {
-    private LinkGeneratorInterface $linkGenerator;
+    private RouterInterface $router;
     private RequestStack $requestStack;
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
-        LinkGeneratorInterface $linkGenerator,
+        RouterInterface $router,
         RequestStack $requestStack,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->linkGenerator = $linkGenerator;
+        $this->router = $router;
         $this->requestStack = $requestStack;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -62,8 +62,7 @@ final class CustomerNewsletterConfirmListener
 
         $confirmEvent = new RequestNewsletterConfirmationEvent(
             $user,
-            $this->linkGenerator->generate(
-                $event->getSubject(),
+            $this->router->generate(
                 'coreshop_customer_confirm_newsletter',
                 ['_locale' => $this->requestStack->getMainRequest()->getLocale()],
                 UrlGeneratorInterface::ABSOLUTE_URL

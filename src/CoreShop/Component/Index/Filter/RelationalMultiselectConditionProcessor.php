@@ -45,7 +45,7 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
             'values' => $rawValues,
             'objects' => $objects,
             'fieldName' => $field,
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
+            'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById((string)$condition->getQuantityUnit()) : null,
         ];
     }
 

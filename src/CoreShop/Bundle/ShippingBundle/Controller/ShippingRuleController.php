@@ -28,11 +28,17 @@ class ShippingRuleController extends ResourceController
         return $this->viewHandler->handle(['actions' => array_keys($actions), 'conditions' => array_keys($conditions)]);
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getConfigActions(): array
     {
         return $this->container->getParameter('coreshop.shipping_rule.actions');
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getConfigConditions(): array
     {
         return $this->container->getParameter('coreshop.shipping_rule.conditions');

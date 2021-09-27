@@ -19,6 +19,9 @@ use CoreShop\Component\Currency\Model\Money;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\Concrete;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement, RedundantCondition
+ */
 class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface, Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
 {
     /**
@@ -31,17 +34,17 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
     /**
      * @var int
      */
-    public $width;
+    public $width = 0;
 
     /**
      * @var float
      */
-    public $minValue;
+    public $minValue = 0;
 
     /**
      * @var float
      */
-    public $maxValue;
+    public $maxValue = 0;
 
     public function getParameterTypeDeclaration(): ?string
     {
@@ -140,7 +143,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
 
         if ($data instanceof Money) {
             if ($data->getCurrency()) {
-                $currency = $this->getCurrencyById($data->getCurrency()->getId());
+                $currency = $this->getCurrencyById((int)$data->getCurrency()->getId());
 
                 return new Money($data->getValue(), $currency);
             }
@@ -203,7 +206,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         ];
     }
 
-        public function getDataFromEditmode($data, $object = null, $params = [])
+    public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (is_array($data)) {
             $currency = $this->getCurrencyById($data['currency']);

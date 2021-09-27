@@ -25,12 +25,12 @@ use Webmozart\Assert\Assert;
 
 final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPriceCalculatorInterface
 {
-    public function getRetailPrice(ProductInterface $subject, array $context): int
+    public function getRetailPrice(ProductInterface $product, array $context): int
     {
         /**
-         * @var $subject \CoreShop\Component\Core\Model\ProductInterface
+         * @var \CoreShop\Component\Core\Model\ProductInterface $product
          */
-        Assert::isInstanceOf($subject, \CoreShop\Component\Core\Model\ProductInterface::class);
+        Assert::isInstanceOf($product, \CoreShop\Component\Core\Model\ProductInterface::class);
         Assert::keyExists($context, 'store');
         Assert::isInstanceOf($context['store'], StoreInterface::class);
 
@@ -41,7 +41,7 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
         $contextUnitDefinition = $context['unitDefinition'];
         $contextStore = $context['store'];
 
-        $storeValues = $subject->getStoreValuesForStore($contextStore);
+        $storeValues = $product->getStoreValuesForStore($contextStore);
         if (!$storeValues instanceof ProductStoreValuesInterface) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }
@@ -60,12 +60,12 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
             throw new NoRetailPriceFoundException(__CLASS__);
         }
 
-        $price = $filteredDefinitionPrices->first()->getPrice();
+        $first = $filteredDefinitionPrices->first();
 
-        if (null === $price) {
+        if (false === $first) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }
 
-        return $price;
+        return $first->getPrice();
     }
 }

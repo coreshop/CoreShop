@@ -16,7 +16,7 @@
                     <tr>
                         <td class="text-center">
                             {% if item.product %}
-                            <a href="{{ coreshop_path(item.product, 'coreshop_product_detail') }}">
+                            <a href="{{ pimcore_object_path(item.product) }}">
                                 {% if item.product and item.product.image is pimcore_asset_image %}
                                     {{ item.product.image|pimcore_image_thumbnail_html('coreshop_productCartPreview', {'imgAttributes': {'class': 'img-thumbnail img-fluid'}, 'title': item.product.name, 'alt': item.product.name}) }}
                                 {% endif %}
@@ -25,7 +25,7 @@
                         </td>
                         <td class="text-left">
                             {% if item.product %}
-                            <a href="{{ coreshop_path(item.product, 'coreshop_product_detail') }}">
+                            <a href="{{ pimcore_object_path(item.product) }}">
                                 {{ item.product.name }}
                             </a>
                             {% endif %}
@@ -34,7 +34,7 @@
                         <td class="text-right">{{ currency.convertAndFormat(item.total) }}</td>
                         <td class="text-center">
                             {% if not item.isGiftItem %}
-                                <a href="{{ coreshop_path(cart, 'coreshop_cart_remove', {cartItem: item.id}) }}" class="removeFromCart" data-id="{{ item.id }}" data-refresh="true">
+                                <a href="{{ path('coreshop_cart_remove', {cartItem: item.id}) }}" class="removeFromCart" data-id="{{ item.id }}" data-refresh="true">
                                     <i class="fa fa-times"></i>
                                 </a>
                             {% endif %}
@@ -58,10 +58,10 @@
                 </tbody>
             </table>
             <p class="text-right btn-block1">
-                <a href="{{ coreshop_path(cart, 'coreshop_cart_summary') }}">
+                <a href="{{ path('coreshop_cart_summary') }}">
                     {{ 'coreshop.ui.cart'|trans }}
                 </a>
-                <a href="{{ coreshop_path(cart, 'coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}">
+                <a href="{{ path('coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}">
                     {{ 'coreshop.ui.checkout'|trans }}
                 </a>
             </p>

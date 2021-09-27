@@ -39,12 +39,6 @@ class RegisterWorkflowValidatorPass implements CompilerPassInterface
 
                 $manager = $container->getDefinition($tag['manager']);
 
-                if (!$manager) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Workflow Manager with identifier %s not found', $tag['manager'])
-                    );
-                }
-
                 $priority = isset($tag['priority']) ? (int)$tag['priority'] : 0;
 
                 $manager->addMethodCall('addValidator', [new Reference($id), $tag['type'], $priority]);

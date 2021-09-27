@@ -26,14 +26,14 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 final class CoreShopTrackingExtension extends Extension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
-        $this->configureTrackers($config, $container);
+        $this->configureTrackers($configs, $container);
 
         $container
             ->registerForAutoconfiguration(TrackerInterface::class)
@@ -44,7 +44,7 @@ final class CoreShopTrackingExtension extends Extension
             ->addTag(TrackingExtractorPass::TRACKING_EXTRACTOR_TAG);
     }
 
-    protected function configureTrackers(array $config, ContainerBuilder $container): void
+    protected function configureTrackers(array $configs, ContainerBuilder $container): void
     {
         foreach ($container->findTaggedServiceIds(TrackerPass::TRACKER_TAG) as $id => $attributes) {
             foreach ($attributes as $tag) {
@@ -52,12 +52,12 @@ final class CoreShopTrackingExtension extends Extension
 
                 $type = $tag['type'] ?? Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
 
-                if (!array_key_exists($type, $config['trackers'])) {
+                if (!array_key_exists($type, $configs['trackers'])) {
                     $container->getDefinition($id)
                         ->addMethodCall('setEnabled', [false]);
                 } else {
                     $container->getDefinition($id)
-                        ->addMethodCall('setEnabled', [$config['trackers'][$type]['enabled']]);
+                        ->addMethodCall('setEnabled', [$configs['trackers'][$type]['enabled']]);
                 }
             }
         }

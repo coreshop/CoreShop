@@ -89,7 +89,7 @@ class FilterController extends ResourceController
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     protected function getPreConditionTypes(): array
     {
@@ -97,7 +97,7 @@ class FilterController extends ResourceController
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     protected function getUserConditionTypes(): array
     {

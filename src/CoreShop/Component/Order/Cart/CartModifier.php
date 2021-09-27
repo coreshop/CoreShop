@@ -49,8 +49,8 @@ class CartModifier implements CartModifierInterface
     public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         /**
-         * @var $storageList OrderInterface
-         * @var $item        OrderItemInterface
+         * @var OrderInterface $storageList
+         * @var OrderItemInterface $item
          */
         Assert::isInstanceOf($storageList, OrderInterface::class);
         Assert::isInstanceOf($item, OrderItemInterface::class);

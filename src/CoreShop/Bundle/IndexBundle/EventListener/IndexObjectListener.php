@@ -63,7 +63,7 @@ final class IndexObjectListener
         $children = $object->getChildren($this->validObjectTypes);
         /** @var AbstractObject $child */
         foreach ($children as $child) {
-            if (get_class($child) === get_class($object)) {
+            if ($child instanceof IndexableInterface && get_class($child) === get_class($object)) {
                 InheritanceHelper::useInheritedValues(function () use ($child, $isVersionChange) {
                     $this->indexUpdaterService->updateIndices($child, $isVersionChange);
                 });

@@ -40,11 +40,13 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
                 if (empty($e)) {
                     continue;
                 }
-                if ($parsedValues[$e]) {
+
+                if (isset($parsedValues[$e])) {
                     $count = (int) $parsedValues[$e]['count'] + (int) $v['count'];
                 } else {
                     $count = (int) $v['count'];
                 }
+
                 $parsedValues[$e] = ['value' => $e, 'count' => (int) $count];
             }
         }
@@ -53,7 +55,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
 
         $objects = [];
         foreach ($values as $value) {
-            $object = Concrete::getById($value['value']);
+            $object = Concrete::getById((int)$value['value']);
             if ($object instanceof Concrete) {
                 $objects[] = $object;
             }

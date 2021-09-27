@@ -17,7 +17,7 @@ namespace CoreShop\Component\Core\Shipping\Rule\Condition;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Core\Rule\Condition\CategoriesConditionCheckerTrait;
-use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
@@ -45,18 +45,24 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
             return false;
         }
 
-        $cartItems = $shippable->getItems();
+        $cartItems = $shippable->getItems() ?? [];
 
-        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $shippable->getStore(),
-            $configuration['recursive'] ?: false);
+        $categoryIdsToCheck = $this->getCategoriesToCheck(
+            $configuration['categories'],
+            $shippable->getStore(),
+            $configuration['recursive'] ?: false
+        );
 
         foreach ($cartItems as $item) {
-            if ($item->getProduct() instanceof ProductInterface) {
-                if (!is_array($item->getProduct()->getCategories())) {
+            $product = $item->getProduct();
+            if ($product instanceof ProductInterface) {
+                $categories = $product->getCategories();
+
+                if (null === $categories) {
                     continue;
                 }
 
-                foreach ($item->getProduct()->getCategories() as $category) {
+                foreach ($categories as $category) {
                     if ($category instanceof ResourceInterface) {
                         if (in_array($category->getId(), $categoryIdsToCheck)) {
                             return true;

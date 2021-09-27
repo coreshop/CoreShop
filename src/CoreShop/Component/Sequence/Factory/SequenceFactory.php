@@ -19,8 +19,14 @@ use CoreShop\Component\Sequence\Model\SequenceInterface;
 
 class SequenceFactory implements SequenceFactoryInterface
 {
+    /**
+     * @psalm-var class-string
+     */
     private string $className;
 
+    /**
+     * @psalm-param class-string $className
+     */
     public function __construct(string $className)
     {
         $this->className = $className;

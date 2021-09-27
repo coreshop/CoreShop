@@ -38,7 +38,7 @@ class SelectFilterConditionFromMultiselectProcessor implements FilterConditionPr
                     continue;
                 }
 
-                if ($values[$e]) {
+                if (array_key_exists($e, $values)) {
                     $values[$e]['count'] += $v['count'];
                     continue;
                 }
@@ -53,7 +53,7 @@ class SelectFilterConditionFromMultiselectProcessor implements FilterConditionPr
             'currentValue' => trim($currentFilter[$field], ','),
             'values' => array_values($values),
             'fieldName' => $field,
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
+            'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById((string)$condition->getQuantityUnit()) : null,
         ];
     }
 

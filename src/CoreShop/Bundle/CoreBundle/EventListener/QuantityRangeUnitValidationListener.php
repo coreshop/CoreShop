@@ -45,10 +45,6 @@ final class QuantityRangeUnitValidationListener
             return;
         }
 
-        if (!is_array($data)) {
-            return;
-        }
-
         foreach ($data as $rule) {
             $this->validateRule($rule, $object);
         }

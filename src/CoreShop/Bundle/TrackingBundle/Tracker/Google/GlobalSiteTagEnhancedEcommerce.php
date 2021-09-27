@@ -143,6 +143,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
             $actionData['items'][] = $this->transformProductAction($item);
         }
 
+        $parameters = [];
         $parameters['actionData'] = $actionData;
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
@@ -205,7 +206,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     protected function isGoogleTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();
-        if ($config === false) {
+        if ($config === null) {
             return false;
         }
 

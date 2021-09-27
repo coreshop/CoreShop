@@ -2,10 +2,6 @@ services:
     _defaults:
         public: true
 
-    coreshop.core.key_transformer:
-        alias: CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer instead'
-
     coreshop.taxation.factory.tax_calculator:
         alias: CoreShop\Component\Core\Taxation\TaxCalculatorFactory
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Core\Taxation\TaxCalculatorFactory instead'

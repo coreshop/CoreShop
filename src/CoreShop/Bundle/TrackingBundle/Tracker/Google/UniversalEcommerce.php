@@ -102,7 +102,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     protected function isGlobalSiteTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();
-        if ($config === false) {
+        if ($config === null) {
             return false;
         }
 

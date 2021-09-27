@@ -36,27 +36,13 @@ interface RuleInterface extends ResourceInterface, TimestampableInterface, Toggl
      */
     public function getConditions();
 
-    /**
-     * @return bool
-     */
-    public function hasConditions();
+    public function hasConditions(): bool;
 
-    /**
-     * @param ConditionInterface $conditions
-     *
-     * @return bool
-     */
-    public function hasCondition(ConditionInterface $conditions);
+    public function hasCondition(ConditionInterface $condition): bool;
 
-    /**
-     * @param ConditionInterface $conditions
-     */
-    public function addCondition(ConditionInterface $conditions);
+    public function addCondition(ConditionInterface $condition): void;
 
-    /**
-     * @param ConditionInterface $conditions
-     */
-    public function removeCondition(ConditionInterface $conditions);
+    public function removeCondition(ConditionInterface $condition): void;
 
     /**
      * @return Collection|ActionInterface[]

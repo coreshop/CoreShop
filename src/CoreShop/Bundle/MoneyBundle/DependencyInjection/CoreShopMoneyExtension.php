@@ -21,12 +21,12 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopMoneyExtension extends AbstractPimcoreExtension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
-        $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
 
         if (!$container->hasParameter('coreshop.currency.decimal_factor')) {
             $container->setParameter('coreshop.currency.decimal_factor', 100);

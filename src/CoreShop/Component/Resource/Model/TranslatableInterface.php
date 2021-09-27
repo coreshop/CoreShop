@@ -20,41 +20,14 @@ use Doctrine\Common\Collections\Collection;
 interface TranslatableInterface
 {
     /**
-     * @return Collection|ArrayCollection<TranslationInterface>
+     * @return Collection|TranslatableInterface[]
+     * @psalm-return Collection
      */
-    public function getTranslations();
-
-    /**
-     * @param string|null $locale
-     *
-     * @return TranslationInterface
-     */
-    public function getTranslation($locale = null);
-
-    /**
-     * @param TranslationInterface $translation
-     *
-     * @return bool
-     */
-    public function hasTranslation(TranslationInterface $translation);
-
-    /**
-     * @param TranslationInterface $translation
-     */
-    public function addTranslation(TranslationInterface $translation);
-
-    /**
-     * @param TranslationInterface $translation
-     */
-    public function removeTranslation(TranslationInterface $translation);
-
-    /**
-     * @param string $locale
-     */
-    public function setCurrentLocale($locale);
-
-    /**
-     * @param string $locale
-     */
-    public function setFallbackLocale($locale);
+    public function getTranslations(): Collection;
+    public function getTranslation(string $locale = null): TranslationInterface;
+    public function hasTranslation(TranslationInterface $translation): bool;
+    public function addTranslation(TranslationInterface $translation): void;
+    public function removeTranslation(TranslationInterface $translation): void;
+    public function setCurrentLocale(string $locale): void;
+    public function setFallbackLocale(string $locale): void;
 }

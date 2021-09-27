@@ -54,6 +54,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
         $this->ensureDependencies($product['currency']);
 
+        $parameters = [];
         $parameters['productData'] = $this->transformProductAction($product);
 
         unset($parameters['productData']['price']);
@@ -225,7 +226,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
     protected function isGlobalSiteTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();
-        if ($config === false) {
+        if ($config === null) {
             return false;
         }
 

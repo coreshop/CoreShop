@@ -16,6 +16,9 @@ namespace CoreShop\Component\PayumPayment\Model;
 
 use CoreShop\Component\Payment\Model\PaymentProvider as BasePaymentProvider;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class PaymentProvider extends BasePaymentProvider implements PaymentProviderInterface
 {
     protected ?GatewayConfig $gatewayConfig = null;

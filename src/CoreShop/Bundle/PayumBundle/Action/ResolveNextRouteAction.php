@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\PayumBundle\Action;
 
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Core\Model\PaymentInterface;
 use Payum\Core\Action\ActionInterface;
@@ -32,7 +33,7 @@ final class ResolveNextRouteAction implements ActionInterface
         $payment = $request->getFirstModel();
         $order = $payment->getOrder();
 
-        if ($order instanceof PayableInterface) {
+        if ($order instanceof OrderInterface) {
             $request->setRouteParameters([
                 '_locale' => $order->getLocaleCode(),
             ]);

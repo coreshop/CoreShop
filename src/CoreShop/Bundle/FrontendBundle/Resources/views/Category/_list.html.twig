@@ -6,7 +6,7 @@
             <div class="col-12 col-sm-3">
                 <div class="image">
                     {% if product.image is pimcore_asset_image %}
-                        <a href="{{ coreshop_path(product, 'coreshop_product_detail') }}">
+                        <a href="{{ pimcore_object_path(product) }}">
                             {{ product.image|pimcore_image_thumbnail_html("coreshop_productList", {"imgAttributes": {"class": "img-fluid"}}) }}
                         </a>
                     {% endif %}
@@ -15,7 +15,7 @@
             <div class="col-12 col-sm-9">
                 <div class="caption">
                     <h4>
-                        <a href="{{ coreshop_path(product, 'coreshop_product_detail') }}">{{ product.name }}</a>
+                        <a href="{{ pimcore_object_path(product) }}">{{ product.name }}</a>
                     </h4>
                     <div class="description">
                         {{ product.shortDescription }}
@@ -25,7 +25,7 @@
                         {{ product_price.display_product_price(product) }}
                     </div>
                     <div class="cart-button btn-group">
-                        <a href="{{ coreshop_path('coreshop_wishlist_add', {product: product.id}) }}" title="" class="btn btn-wishlist">
+                        <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" title="" class="btn btn-wishlist">
                             <i class="fa fa-heart"></i>
                         </a>
                         {% if coreshop_inventory_is_available(product) %}

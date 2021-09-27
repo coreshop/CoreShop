@@ -41,6 +41,8 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
 
     private function getRequiredCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper): array
     {
+        $commands = [];
+
         if ($input->getOption('no-interaction')) {
             $commands['coreshop:resources:drop-tables'] = ['application-name' => 'coreshop', '--force' => true];
         }

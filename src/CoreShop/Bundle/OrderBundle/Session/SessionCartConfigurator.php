@@ -22,6 +22,7 @@ class SessionCartConfigurator implements SessionConfiguratorInterface
 {
     public function configure(SessionInterface $session): void
     {
+        /** @psalm-suppress DeprecatedClass */
         $bag = new NamespacedAttributeBag('coreshop_session_cart');
         $bag->setName('cart');
 

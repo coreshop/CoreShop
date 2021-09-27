@@ -60,19 +60,21 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
             if ($action instanceof ActionInterface) {
                 $actionCommand = $this->actionServiceRegistry->get($action->getType());
 
+                /**
+                 * @var CartPriceRuleActionProcessorInterface $actionCommand
+                 */
                 Assert::isInstanceOf($actionCommand, CartPriceRuleActionProcessorInterface::class);
 
                 $config = $action->getConfiguration();
                 $config['action'] = $action;
 
-                $result |= $actionCommand->applyRule($cart, $config, $priceRuleItem);
+                $actionResult = $actionCommand->applyRule($cart, $config, $priceRuleItem);
+                $result = $result || $actionResult;
             }
         }
 
         if (!$result) {
-            if ($priceRuleItem instanceof ProposalCartPriceRuleItemInterface) {
-                $cart->removePriceRule($priceRuleItem);
-            }
+            $cart->removePriceRule($priceRuleItem);
 
             return null;
         }

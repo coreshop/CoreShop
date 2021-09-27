@@ -120,7 +120,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
         }
 
         preg_match_all("@srcset\s*=[\"'](.*?)[\"']@is", $string, $matches);
-        foreach ((array) $matches[1] as $i => $value) {
+        foreach ($matches[1] as $i => $value) {
             $parts = explode(',', $value);
             foreach ($parts as $key => $v) {
                 $parts[$key] = $hostUrl . trim($v);
@@ -208,11 +208,11 @@ final class WkHtmlToPdf implements PdfRendererInterface
 
     private function getWkHtmlToPdfBinary(): string
     {
-        return Console::getExecutable('wkhtmltopdf');
+        return (string)Console::getExecutable('wkhtmltopdf', true);
     }
 
     private function getXvfbBinary(): string
     {
-        return Console::getExecutable('xvfb-run');
+        return (string)Console::getExecutable('xvfb-run', true);
     }
 }

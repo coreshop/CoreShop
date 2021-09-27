@@ -68,6 +68,7 @@ class NoteService implements NoteServiceInterface
     public function storeNoteForEmail(Note $note, Document\Email $emailDocument): Note
     {
         //Because logger does not return any id, we need to fetch the last one!
+        /** @psalm-suppress InternalClass */
         $listing = new Log\Listing();
         $listing->addConditionParam('documentId = ?', $emailDocument->getId());
         $listing->setOrderKey('sentDate');
@@ -76,6 +77,7 @@ class NoteService implements NoteServiceInterface
         $logData = $listing->load();
 
         if (isset($logData[0]) && $logData[0] instanceof Log) {
+            /** @psalm-suppress InternalMethod */
             $note->addData('email-log', 'text', $logData[0]->getId());
         }
 

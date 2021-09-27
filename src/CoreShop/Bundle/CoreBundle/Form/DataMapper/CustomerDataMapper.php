@@ -16,25 +16,24 @@ namespace CoreShop\Bundle\CoreBundle\Form\DataMapper;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Form\Extension\Core\DataMapper\DataMapper;
 
 class CustomerDataMapper implements DataMapperInterface
 {
-    private DataMapperInterface $propertyPathDataMapper;
+    private DataMapper $propertyPathDataMapper;
 
-    public function __construct(PropertyAccessor $propertyAccessor)
+    public function __construct()
     {
-        $this->propertyPathDataMapper = new PropertyPathMapper($propertyAccessor);
+        $this->propertyPathDataMapper = new DataMapper();
     }
 
-    public function mapDataToForms($data, $forms): void
+    public function mapDataToForms($viewData, $forms): void
     {
         $formsOtherThanAddress = [];
 
         foreach ($forms as $key => $form) {
-            if ($data instanceof CustomerInterface && $key === 'address') {
-                $address = $data->getAddresses();
+            if ($viewData instanceof CustomerInterface && $key === 'address') {
+                $address = $viewData->getAddresses();
 
                 if (count($address) > 0) {
                     $form->setData($address[0]);
@@ -47,11 +46,11 @@ class CustomerDataMapper implements DataMapperInterface
         }
 
         if (!empty($formsOtherThanAddress)) {
-            $this->propertyPathDataMapper->mapDataToForms($data, $formsOtherThanAddress);
+            $this->propertyPathDataMapper->mapDataToForms($viewData, $formsOtherThanAddress);
         }
     }
 
-    public function mapFormsToData($forms, &$data): void
+    public function mapFormsToData($forms, &$viewData): void
     {
         $formsOtherThanAddress = [];
 
@@ -60,7 +59,7 @@ class CustomerDataMapper implements DataMapperInterface
                 $address = $form->getData();
 
                 if (null !== $address) {
-                    $data->setAddresses([$form->getData()]);
+                    $viewData->setAddresses([$form->getData()]);
                 }
 
                 continue;
@@ -70,7 +69,7 @@ class CustomerDataMapper implements DataMapperInterface
         }
 
         if (!empty($formsOtherThanAddress)) {
-            $this->propertyPathDataMapper->mapFormsToData($formsOtherThanAddress, $data);
+            $this->propertyPathDataMapper->mapFormsToData($formsOtherThanAddress, $viewData);
         }
     }
 }

@@ -37,10 +37,6 @@ class ZonesConditionChecker extends AbstractConditionChecker
 
         $zone = $country->getZone();
 
-        if (!$zone instanceof ZoneInterface) {
-            return false;
-        }
-
         return in_array($zone->getId(), $configuration['zones']);
     }
 }
