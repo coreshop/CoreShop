@@ -115,8 +115,7 @@ class LockListener implements EventSubscriberInterface
             ->setParameter('id', $object->getId())
         ;
 
-        $stmt = $queryBuilder->execute();
-        $currentVersion = (int)$stmt->fetchOne();
+        $currentVersion = (int)$this->connection->fetchOne($queryBuilder->getSQL(), $queryBuilder->getParameters());
 
         if ($currentVersion === $object->getOptimisticLockVersion()) {
             return;

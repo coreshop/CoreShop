@@ -29,10 +29,8 @@ parameters:
         - '/Constant PIMCORE_DEVMODE not found./'
         - '/Class Zend_Paginator_Adapter_Interface not found and could not be autoloaded./'
 
-        - '/Class LuceneSearchBundle/'
-        - '/unknown class LuceneSearchBundle/'
-        - '/typehint type LuceneSearchBundle/'
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)/'
+        - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface/'
         - '/Call to an undefined method Pimcore\\Model\\\(.*\)::save\(\)./'
         - '/Call to an undefined method Pimcore\\Model\\\(.*\)::delete\(\)./'
         - '/Method Pimcore\\Model\\DataObject\\Concrete::getLatestVersion\(\)(.*)/'

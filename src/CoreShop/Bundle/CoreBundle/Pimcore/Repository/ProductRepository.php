@@ -71,9 +71,9 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         $variantIds = [];
 
-        $result = $query->execute();
+        $result = $this->connection->fetchAllAssociative($query->getSQL(), $query->getParameters());
 
-        foreach ($result->fetchAllAssociative() as $column) {
+        foreach ($result as $column) {
             $variantIds[] = $column['oo_id'];
         }
 

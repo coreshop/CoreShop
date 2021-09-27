@@ -121,11 +121,16 @@ final class DynamicDropdownController extends AdminController
     {
         $currentLang = $request->get('current_language');
         $source = $request->get('methodName');
-        $className = ucfirst($request->get('className'));
+        $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', $request->get('className'));
+
+        if (empty($className)) {
+            throw new \InvalidArgumentException();
+        }
+
         /**
          * @psalm-var class-string $className
          */
-        $objectName = '\\Pimcore\\Model\\DataObject\\' . $className;
+        $fqcn = '\\Pimcore\\Model\\DataObject\\' . ucfirst($className);
 
         $usesI18n = false;
         $children = $folder->getChildren();
@@ -157,7 +162,7 @@ final class DynamicDropdownController extends AdminController
                     $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                 }
             }
-            else if ($child instanceof $objectName) {
+            else if ($child instanceof $fqcn) {
                 $key = $usesI18n ? $child->$source($currentLang) : $child->$source();
                 $options[] = [
                     'value' => $child->getId(),
