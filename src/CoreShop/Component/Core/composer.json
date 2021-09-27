@@ -30,7 +30,6 @@
     "coreshop/address": "^3.0",
     "coreshop/order": "^3.0",
     "coreshop/currency": "^3.0",
-    "coreshop/locale": "^3.0",
     "coreshop/customer": "^3.0",
     "coreshop/shipping": "^3.0",
     "coreshop/inventory": "^3.0",

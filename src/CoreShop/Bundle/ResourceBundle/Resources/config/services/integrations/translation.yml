@@ -15,6 +15,7 @@ services:
     CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface: '@CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner'
     CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner:
         arguments:
+            - '@CoreShop\Component\Locale\Context\LocaleContextInterface'
             - '@CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface'
 
     CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType:

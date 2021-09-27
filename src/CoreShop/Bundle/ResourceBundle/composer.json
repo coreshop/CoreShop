@@ -29,6 +29,7 @@
     "jms/serializer-bundle": "^3.10",
     "stof/doctrine-extensions-bundle": "^1.6",
     "coreshop/pimcore-bundle": "^3.0",
+    "coreshop/locale-bundle": "^3.0",
     "coreshop/optimistic-entity-lock-bundle": "^3.0",
     "coreshop/registry": "^3.0",
     "coreshop/resource": "^3.0",

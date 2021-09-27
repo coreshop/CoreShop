@@ -28,7 +28,6 @@
     "coreshop/currency-bundle": "^3.0",
     "coreshop/customer-bundle": "^3.0",
     "coreshop/payment-bundle": "^3.0",
-    "coreshop/locale-bundle": "^3.0",
     "coreshop/registry": "^3.0",
     "coreshop/rule-bundle": "^3.0",
     "coreshop/store-bundle": "^3.0",

@@ -68,7 +68,6 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
 
         $collection->addBundle(new CoreShopWorkflowBundle(), 3600);
         $collection->addBundle(new CoreShopRuleBundle(), 3500);
-        $collection->addBundle(new CoreShopLocaleBundle(), 3400);
         $collection->addBundle(new CoreShopCustomerBundle(), 3100);
         $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
         $collection->addBundle(new CoreShopStoreBundle(), 2500);

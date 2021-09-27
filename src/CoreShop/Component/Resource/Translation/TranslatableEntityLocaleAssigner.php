@@ -14,23 +14,36 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\Translation;
 
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Locale\Context\LocaleNotFoundException;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 
 final class TranslatableEntityLocaleAssigner implements TranslatableEntityLocaleAssignerInterface
 {
+    private LocaleContextInterface $localeContext;
     private TranslationLocaleProviderInterface $translationLocaleProvider;
 
-    public function __construct(TranslationLocaleProviderInterface $translationLocaleProvider)
+    public function __construct(
+        LocaleContextInterface $localeContext,
+        TranslationLocaleProviderInterface $translationLocaleProvider
+    )
     {
+        $this->localeContext = $localeContext;
         $this->translationLocaleProvider = $translationLocaleProvider;
     }
 
     public function assignLocale(TranslatableInterface $translatableEntity): void
     {
-        $localeCode = $this->translationLocaleProvider->getDefaultLocaleCode();
+        $fallbackLocale = $this->translationLocaleProvider->getDefaultLocaleCode();
 
-        $translatableEntity->setCurrentLocale($localeCode);
-        $translatableEntity->setFallbackLocale($localeCode);
+        try {
+            $currentLocale = $this->localeContext->getLocaleCode();
+        } catch (LocaleNotFoundException $e) {
+            $currentLocale = $fallbackLocale;
+        }
+
+        $translatableEntity->setCurrentLocale($currentLocale);
+        $translatableEntity->setFallbackLocale($currentLocale);
     }
 }
