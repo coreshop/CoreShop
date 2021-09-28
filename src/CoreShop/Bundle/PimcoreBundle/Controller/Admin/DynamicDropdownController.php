@@ -131,33 +131,17 @@ final class DynamicDropdownController extends AdminController
          * @psalm-var class-string $className
          */
         $fqcn = '\\Pimcore\\Model\\DataObject\\' . ucfirst($className);
-
-        $usesI18n = false;
         $children = $folder->getChildren();
-        if (is_array($children)) {
-            foreach ($children as $i18nProbeChild) {
-                if ($i18nProbeChild instanceof DataObject\Concrete) {
-                    $usesI18n = $this->isUsingI18n($i18nProbeChild, $source);
 
-                    break;
-                }
-            }
-        }
-
-        if (!Tool::isValidLanguage($currentLang)) {
-            $currentLang = Tool::getDefaultLanguage();
-
-            if (is_null($currentLang)) {
-                $usesI18n = false;
-            }
-        }
+        $classDefinition = DataObject\ClassDefinition::getByName($className);
+        $usesI18n = $this->isUsingI18n($classDefinition, $source);
 
         foreach ($children as $child) {
             if ($child instanceof DataObject\Folder) {
                 /**
                  * @var DataObject\Folder $child
                  */
-                $key = $child->getProperty('Taglabel') != '' ? $child->getProperty('Taglabel') : $child->getKey();
+                $key = $child->getProperty('Taglabel') !== '' ? $child->getProperty('Taglabel') : $child->getKey();
                 if ($request->get('recursive') === 'true') {
                     $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                 }
@@ -179,22 +163,11 @@ final class DynamicDropdownController extends AdminController
         return $options;
     }
 
-    private function isUsingI18n(DataObject\Concrete $object, string $method): bool
+    private function isUsingI18n(DataObject\ClassDefinition $classDefinition, string $method): bool
     {
-        $classDefinition = $object->getClass();
-        /**
-         * @psalm-suppress InternalMethod
-         */
-        $definitionFile = $classDefinition->getDefinitionFile();
+        $definition = $this->parseTree($classDefinition->getLayoutDefinitions(), []);
 
-        if (!is_file($definitionFile)) {
-            return false;
-        }
-
-        $tree = include $definitionFile;
-        $definition = $this->parseTree($tree, []);
-
-        return $definition[$method];
+        return isset($definition[$method]);
     }
 
     /**
