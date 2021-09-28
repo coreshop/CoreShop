@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 
-use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -24,8 +24,9 @@ final class StoresConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('stores', StoreChoiceType::class, [
-                'multiple' => true,
+            ->add('stores', CollectionType::class, [
+                'allow_add' => true,
+                'allow_delete' => true,
             ]);
     }
 
