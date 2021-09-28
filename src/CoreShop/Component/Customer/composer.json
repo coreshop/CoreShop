@@ -25,7 +25,6 @@
   ],
   "require": {
     "coreshop/resource": "^3.0",
-    "coreshop/locale": "^3.0",
     "pimcore/pimcore": "^10.1",
     "laminas/laminas-stdlib": "^3.6"
   },
