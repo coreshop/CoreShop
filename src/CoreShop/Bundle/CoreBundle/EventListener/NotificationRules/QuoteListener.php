@@ -44,7 +44,7 @@ final class QuoteListener extends AbstractNotificationRuleListener
             'email' => $customer->getEmail(),
             'fax' => $customer->getFaxNumber(),
             'phone' => $customer->getPhoneNumber(),
-            'company' => $customer->getCompany(),
+            'company' => $customer->getCompany() ? $customer->getCompany()->getName() ? '',
             'quoteNumber' => $quote->getQuoteNumber(),
         ]);
     }
