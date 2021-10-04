@@ -35,6 +35,8 @@ final class QuoteListener extends AbstractNotificationRuleListener
             return;
         }
 
+        \Pimcore\Logger::info(sprintf('quote: %s, language: %s', $quote->getQuoteNumber(), $quote->getLocaleCode()));
+        
         /** @var $customer CoreShopCustomer */
         $this->rulesProcessor->applyRules('quote', $event->getSubject(), [
             '_locale' => $quote->getLocaleCode(),
