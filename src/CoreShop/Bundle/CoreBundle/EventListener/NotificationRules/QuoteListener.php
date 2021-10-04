@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\QuoteInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use Pimcore\Model\DataObject\CoreShopCustomer;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
@@ -34,12 +35,17 @@ final class QuoteListener extends AbstractNotificationRuleListener
             return;
         }
 
+        /** @var $customer CoreShopCustomer */
         $this->rulesProcessor->applyRules('quote', $event->getSubject(), [
             '_locale' => $quote->getLocaleCode(),
             'recipient' => $customer->getEmail(),
             'firstname' => $customer->getFirstname(),
             'lastname' => $customer->getLastname(),
-            'quoteNumber' => $quote->getQuoteNumber()
+            'email' => $customer->getEmail(),
+            'fax' => $customer->getFaxNumber(),
+            'phone' => $customer->getPhoneNumber(),
+            'company' => $customer->getCompany(),
+            'quoteNumber' => $quote->getQuoteNumber(),
         ]);
     }
 }
