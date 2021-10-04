@@ -28,7 +28,7 @@ final class QuoteListener extends AbstractNotificationRuleListener
             return;
         }
 
-        $customer = $order->getCustomer();
+        $customer = $quote->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
             return;
