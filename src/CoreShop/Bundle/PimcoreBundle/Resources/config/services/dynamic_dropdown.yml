@@ -1,8 +1,7 @@
 services:
-    coreshop.pimcore_controller.dynamic_dropdown:
-        alias: 'CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController'
-        public: true
-
     CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController:
+        calls:
+            - [ setContainer, [ '@Psr\Container\ContainerInterface' ]]
         tags:
             - { name: controller.service_arguments }
+            - { name: container.service_subscriber }

@@ -1,15 +1,3 @@
-coreshop_pimcore_embedded_class_get_custom_layouts:
-    path: /%coreshop.admin.route.base%/embedded-class/get-custom-layouts
-    defaults: { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\EmbeddedClassController::getCustomLayoutsAction }
-    options:
-        expose: true
-
-coreshop_pimcore_embedded_class_get_layout_configuration:
-    path: /%coreshop.admin.route.base%/embedded-class/get-layout-configuration
-    defaults: { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\EmbeddedClassController::getClassLayoutAction }
-    options:
-        expose: true
-
 coreshop_pimcore_grid_get_filters:
     path: /%coreshop.admin.route.base%/grid/filters/{listType}
     methods: [GET]

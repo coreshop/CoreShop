@@ -25,3 +25,4 @@ pimcore:
             data:
                 map:
                     coreShopStoreValues: CoreShop\Bundle\CoreBundle\CoreExtension\StoreValues
+        auto_save_interval: 0

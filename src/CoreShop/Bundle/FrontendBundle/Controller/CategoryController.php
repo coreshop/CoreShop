@@ -95,13 +95,13 @@ class CategoryController extends FrontendController
         $displaySubCategories = $this->getConfigurationService()->getForStore('system.category.list.include_subcategories');
         $variantMode = $this->getConfigurationService()->getForStore('system.category.variant_mode');
 
-        $page = $request->get('page', 1);
+        $page = (int)$request->get('page', 1) ?: 1;
         $type = $request->get('type', $listModeDefault);
 
         $defaultPerPage = $type === 'list' ? $listPerPageDefault : $gridPerPageDefault;
         $allowedPerPage = $type === 'list' ? $listPerPageAllowed : $gridPerPageAllowed;
 
-        $perPage = $request->get('perPage', $defaultPerPage);
+        $perPage = (int)$request->get('perPage', $defaultPerPage) ?: 10;
 
         $this->validateCategory($request, $category);
 
