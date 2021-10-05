@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle;
 
+use Pimcore\Console\Application;
 use Pimcore\Extension\Bundle\Installer\InstallerInterface;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
