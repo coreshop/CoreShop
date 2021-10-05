@@ -32,6 +32,7 @@ class Installer implements InstallerInterface
 
     public function install(): void
     {
+        /** @psalm-suppress InternalClass, InternalMethod */
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
         $options = ['command' => 'coreshop:install'];
