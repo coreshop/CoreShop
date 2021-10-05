@@ -119,7 +119,10 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     private function removeCartItem(OrderInterface $cart, OrderItemInterface $cartItem): void
     {
         $cart->removeItem($cartItem);
-        $cartItem->delete();
+
+        if ($cartItem->getId() !== 0) {
+            $cartItem->delete();
+        }
     }
 
     private function getKey(ActionInterface $action): string
