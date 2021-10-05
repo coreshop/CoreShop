@@ -126,6 +126,7 @@ coreshop.product.unit.builder = Class.create({
             items: this.unitStore.getRange().length === 1 ? [] : [{
                 xtype: 'toolbar',
                 style: 'margin-bottom: 10px; padding: 5px;',
+                itemId: 'additional-unit-toolbar',
                 height: 50,
                 items: ['->', {
                     xtype: 'button',
@@ -204,7 +205,7 @@ coreshop.product.unit.builder = Class.create({
         compositeField = new Ext.form.FieldContainer({
             layout: 'hbox',
             hideLabel: true,
-            itemCls: 'object_field additional-unit-field-container',
+            itemCls: ['object_field', 'additional-unit-field-container'],
             items: unitFieldForm
         });
 
@@ -349,15 +350,15 @@ coreshop.product.unit.builder = Class.create({
 
     checkAddUnitBlockAvailability: function (comp) {
         var unitDefinitions = comp.query('fieldcontainer'),
-            addButton = comp.query('button[itemId="additional-unit-add-button"]')[0];
+            toolbar = comp.query('toolbar[itemId="additional-unit-toolbar"]')[0];
 
         // no additional units available.
-        if (addButton === undefined) {
+        if (toolbar === undefined) {
             return;
         }
 
         // -1 = default unit store cannot be selected
-        addButton.setVisible(unitDefinitions.length < this.unitStore.getRange().length - 1);
+        toolbar.setVisible(unitDefinitions.length < this.unitStore.getRange().length - 1);
     },
 
     cloneStore: function (store, disallowed) {
