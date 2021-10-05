@@ -21,6 +21,13 @@ pimcore.object.tags.coreShopSuperBoxSelect = Class.create(pimcore.object.tags.ma
         this.fieldConfig = fieldConfig;
     },
 
+    getLayoutShow: function () {
+        var comp = this.getLayoutEdit();
+        comp.setDisabled(true);
+
+        return comp;
+    },
+
     getLayoutEdit: function () {
         this.options_store = new Ext.data.JsonStore({
             proxy: {
