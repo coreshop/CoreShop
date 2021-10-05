@@ -55,7 +55,7 @@ final class BatchListing implements Iterator, Countable
 
     public function key(): int
     {
-        return ($this->index + 1) * ($this->loop + 1);
+        return ($this->loop * $this->batchSize) + ($this->index + 1);
     }
 
     public function valid(): bool
