@@ -18,7 +18,6 @@ use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Pimcore\DataObject\AbstractSluggableLinkGenerator;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Webmozart\Assert\Assert;
 
 class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 {
@@ -35,7 +34,7 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 
     public function generate(Concrete $object, array $params = []): string
     {
-        $locale = isset($params['_locale']) ? $params['_locale'] : null;
+        $locale = $params['_locale'] ?? null;
 
         $name = InheritanceHelper::useInheritedValues(function () use ($object, $locale) {
             if (method_exists($object, 'getName')) {
@@ -58,6 +57,6 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
             $params['referenceType'] = UrlGeneratorInterface::ABSOLUTE_PATH;
         }
 
-        return $this->urlGenerator->generate($params['route'] ?: $this->routeName, $routeParams, $params['referenceType']);
+        return $this->urlGenerator->generate($params['route'] ?? $this->routeName, $routeParams, $params['referenceType']);
     }
 }
