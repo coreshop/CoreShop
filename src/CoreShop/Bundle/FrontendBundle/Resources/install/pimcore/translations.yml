@@ -1269,7 +1269,7 @@ translations:
   coreshop.form.customer.email_repeat:
       languages:
           de_CH: 'E-Mail-Adresse wiederholen'
-          en: 'Repeat Email Addres'
+          en: 'Repeat Email Address'
           de: 'E-Mail-Adresse wiederholen'
           it: "Ripeti l'indirizzo e-mail"
 
