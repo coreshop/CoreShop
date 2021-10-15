@@ -1,5 +1,41 @@
 # Within 2.2
 
+## 2.2.10
+ - Bugs:
+     - [Shipping] make shipping calculation more independent from cart (https://github.com/coreshop/CoreShop/pull/1562)
+     - [PaymentBundle] Add PaymentProvider Multiselect CoreExtension (https://github.com/coreshop/CoreShop/pull/1585)
+     - [Address] prevent empty lines in address formatter (https://github.com/coreshop/CoreShop/pull/1587/files)
+     - [Core] remove country-aware currency context as it messes with the Storage Based Currency Context (https://github.com/coreshop/CoreShop/pull/1588)
+     - [DoctrineCache] remove doctrine cache and all usages of useQueryCache and useResultCache (https://github.com/coreshop/CoreShop/pull/1596)
+     - [FrontendBundle] use named forms where applicable (https://github.com/coreshop/CoreShop/pull/1597)
+     - [All] Add italian translations for validators (https://github.com/coreshop/CoreShop/pull/1595)
+     - [PaymentBundle] Fix provider multiselect (https://github.com/coreshop/CoreShop/pull/1601)
+     - [IndexBundle] Fix range filter to work if min/max value = 0 (https://github.com/coreshop/CoreShop/pull/1606)
+     - [Docs] Fixed typo (https://github.com/coreshop/CoreShop/pull/1608)
+     - [FrontendBundle] clear password reset hash after reset (https://github.com/coreshop/CoreShop/pull/1631)
+     - [ShippingBundle] fix configuration (https://github.com/coreshop/CoreShop/pull/1632)
+     - [PimcoreBundle] fix missing Multiselect (https://github.com/coreshop/CoreShop/pull/1614)
+     - [Fixtures] fix region_short for address format (https://github.com/coreshop/CoreShop/pull/1636)
+     - [Docs] Add missing process conditions in docs (https://github.com/coreshop/CoreShop/pull/1643)
+     - [FrontendBundle] fix having unique form-ids for cart add (https://github.com/coreshop/CoreShop/pull/1648)
+     - [Core] fix cloning and serializing (with DeepCopy) of UnitDefinitions (https://github.com/coreshop/CoreShop/pull/1649)
+     - [Tracking] enable auto-configuration and auto-wiring with configuration (https://github.com/coreshop/CoreShop/pull/1656)
+     - [Rule] refactor Rule conditions and actions persistence (https://github.com/coreshop/CoreShop/pull/1657)
+     - [OrderBundle] fix pagination in voucher codes and add pagination for csv export (https://github.com/coreshop/CoreShop/pull/1662)
+     - [CoreBundle] remove zones from shipping rules installer (https://github.com/coreshop/CoreShop/pull/1664)
+     - [IndexBundle] add feature to rename tables when index get's renamed (https://github.com/coreshop/CoreShop/pull/1663)
+     - [FrontendBundle] Print cart price rule label instead name if available (https://github.com/coreshop/CoreShop/pull/1668)
+     - [Tests] Add Pimcore ~6.9.0 in behat test matrix (https://github.com/coreshop/CoreShop/pull/1670)
+     - [CoreBundle] Use right permission for tax rate (https://github.com/coreshop/CoreShop/pull/1681)
+     - [SEO] Add thumbnail definition coreshop_seo (https://github.com/coreshop/CoreShop/pull/1688)
+     - [Core] Fix: ProductRepository: Added missing placeholder (https://github.com/coreshop/CoreShop/pull/1708)
+     - [Docs] Quantity Price Rules (https://github.com/coreshop/CoreShop/pull/1716)
+     - [PimcoreBundle] super-select box readonly (https://github.com/coreshop/CoreShop/pull/1739)
+     
+ - Feature:
+     - [ProductQuantityPriceRules] add interface for QuantityPriceFetcher and QuantityRuleFetcher (https://github.com/coreshop/CoreShop/pull/1628)
+     - [Payment] make payment description translatable (https://github.com/coreshop/CoreShop/pull/1633)
+ 
 ## 2.2.9
  - Bugs:
      - [ResourceBundle] fix compatibility with Doctrine EventSubscriber (https://github.com/coreshop/CoreShop/pull/1580)

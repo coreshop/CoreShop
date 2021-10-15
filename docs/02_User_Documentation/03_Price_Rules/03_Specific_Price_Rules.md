@@ -1,8 +1,9 @@
-# CoreShop Product Price Rules
+# CoreShop Specific Price Rules
 
-Product Price Rules are applied directly on products and the "discounted" price will be stored directly in the order.
+Specific Prices are basically the same as Product Price Rules, but are configured directly on the
+product and therefore are only applied on that product.
 
-![Cart Price Rules](img/product-pricerule.png)
+![Specific Price Rules](img/specific-price-rules.png)
 
 ## Available Actions
 
@@ -16,11 +17,8 @@ Product Price Rules are applied directly on products and the "discounted" price 
 - [Customers](./07_Conditions.md#customers)
 - [Customer Groups](./07_Conditions.md#customer-groups)
 - [Time Span](./07_Conditions.md#time-span)
-- [Voucher](./07_Conditions.md#voucher)
 - [Countries](./07_Conditions.md#countries)
 - [Zones](./07_Conditions.md#zones)
 - [Stores](./07_Conditions.md#stores)
 - [Currencies](./07_Conditions.md#currencies)
 - [Nested Rules](./07_Conditions.md#nested-rules)
-- [Products](./07_Conditions.md#products)
-- [Categories](./07_Conditions.md#categories)
