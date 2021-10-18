@@ -20,6 +20,7 @@ jobs:
       PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
       PIMCORE_INSTALL_MYSQL_PORT: "3306"
       PIMCORE_KERNEL_CLASS: 'Kernel'
+      PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
 
     strategy:
       matrix:
@@ -96,8 +97,6 @@ jobs:
     - name: Install CoreShop
       run: |
         bin/console coreshop:install
-        ls -la var/config
-        ls -la var/tmp/behat/var/classes
 
     - name: Run Behat
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default

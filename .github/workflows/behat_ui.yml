@@ -22,6 +22,7 @@ jobs:
       PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
       PIMCORE_KERNEL_CLASS: 'Kernel'
+      PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
 
     strategy:
       matrix:
@@ -100,8 +101,6 @@ jobs:
     - name: Install CoreShop
       run: |
         bin/console coreshop:install
-        ls -la var/config
-        ls -la var/tmp/behat/var/classes
 
     - name: Install Browser Drivers
       run: vendor/bin/bdi detect drivers
