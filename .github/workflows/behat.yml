@@ -10,8 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_ENV: "test"
-      CORESHOP_TEST: 1
+      CORESHOP_SKIP_DB_SETUP: "1"
       PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
+      PIMCORE_INSTALL_ADMIN_USERNAME: "admin"
+      PIMCORE_INSTALL_ADMIN_PASSWORD: "admin"
+      PIMCORE_INSTALL_MYSQL_HOST_SOCKET: "127.0.0.1"
+      PIMCORE_INSTALL_MYSQL_USERNAME: "root"
+      PIMCORE_INSTALL_MYSQL_PASSWORD: "root"
+      PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
+      PIMCORE_INSTALL_MYSQL_PORT: "3306"
 
     strategy:
       matrix:
@@ -78,6 +85,12 @@ jobs:
 
     - name: Assets Install
       run: bin/console assets:install --symlink
+
+    - name: Install Pimcore
+      run: vendor/bin/pimcore-install --ignore-existing-config --env=test --skip-database-config
+
+    - name: Install CoreShop
+      run: bin/console coreshop:install
 
     - name: Run Behat
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default
