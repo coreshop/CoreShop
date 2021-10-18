@@ -94,7 +94,10 @@ jobs:
       run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --ignore-existing-config --env=test --skip-database-config
 
     - name: Install CoreShop
-      run: bin/console coreshop:install
+      run: |
+        bin/console coreshop:install
+        ls -la var/config
+        ls -la var/tmp/behat/var/classes
 
     - name: Run Behat
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default
