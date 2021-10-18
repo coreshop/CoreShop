@@ -19,6 +19,7 @@ jobs:
       PIMCORE_INSTALL_MYSQL_PASSWORD: "root"
       PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
       PIMCORE_INSTALL_MYSQL_PORT: "3306"
+      PIMCORE_KERNEL_CLASS: 'Kernel'
 
     strategy:
       matrix:
@@ -87,7 +88,7 @@ jobs:
       run: bin/console assets:install --symlink
 
     - name: Install Pimcore
-      run: vendor/bin/pimcore-install --ignore-existing-config --env=test --skip-database-config
+      run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --ignore-existing-config --env=test --skip-database-config
 
     - name: Install CoreShop
       run: bin/console coreshop:install
