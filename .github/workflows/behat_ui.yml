@@ -23,6 +23,7 @@ jobs:
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
       PIMCORE_KERNEL_CLASS: 'Kernel'
       PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
+      PIMCORE_WRITE_TARGET_STATICROUTES: 'settings-store'
 
     strategy:
       matrix:

@@ -21,6 +21,7 @@ jobs:
       PIMCORE_INSTALL_MYSQL_PORT: "3306"
       PIMCORE_KERNEL_CLASS: 'Kernel'
       PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
+      PIMCORE_WRITE_TARGET_STATICROUTES: 'settings-store'
 
     strategy:
       matrix:
