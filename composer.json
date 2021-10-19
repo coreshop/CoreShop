@@ -120,6 +120,9 @@
     "dbrekelmans/bdi": "^0.3.0",
     "vimeo/psalm": "^4.10"
   },
+  "conflict": {
+    "pimcore/pimcore": "10.2.0 || 10.2.1"
+  },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."
   },
@@ -136,7 +139,8 @@
   "autoload-dev": {
     "classmap": [
       "src/Kernel.php",
-      "src/BehatKernel.php"
+      "src/BehatKernel.php",
+      "src/AppKernel.php"
     ]
   },
   "minimum-stability": "dev",
