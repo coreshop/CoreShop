@@ -59,7 +59,10 @@ class CustomerCreationController extends PimcoreController
                 $customer->setParent(
                     $folderCreationService->createFolderForResource(
                         $customer,
-                        ['suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))]
+                        [
+                            'path' => 'guest',
+                            'suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
+                        ]
                     )
                 );
 
