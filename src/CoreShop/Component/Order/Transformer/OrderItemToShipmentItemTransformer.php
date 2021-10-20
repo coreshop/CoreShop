@@ -40,7 +40,7 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
         OrderDocumentInterface $orderDocument,
         OrderItemInterface $orderItem,
         OrderDocumentItemInterface $documentItem,
-        int $quantity,
+        float $quantity,
         array $options = []
     ): OrderDocumentItemInterface
     {
