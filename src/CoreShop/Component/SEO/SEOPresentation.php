@@ -22,18 +22,8 @@ use Pimcore\Twig\Extension\Templating\HeadTitle;
 
 class SEOPresentation implements SEOPresentationInterface
 {
-    protected HeadMeta $headMeta;
-    protected HeadTitle $headTitle;
-    protected PrioritizedServiceRegistryInterface $extractorRegistry;
-
-    public function __construct(
-        HeadMeta $headMeta,
-        HeadTitle $headTitle,
-        PrioritizedServiceRegistryInterface $extractorRegistry
-    ) {
-        $this->headMeta = $headMeta;
-        $this->headTitle = $headTitle;
-        $this->extractorRegistry = $extractorRegistry;
+    public function __construct(protected HeadMeta $headMeta, protected HeadTitle $headTitle, protected PrioritizedServiceRegistryInterface $extractorRegistry)
+    {
     }
 
     public function updateSeoMetadata($object): void

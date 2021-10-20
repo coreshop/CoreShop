@@ -25,8 +25,6 @@ interface ResourceBundleInterface
      *
      * @see CoreShopResourceBundle::DRIVER_DOCTRINE_ORM
      * @see CoreShopResourceBundle::DRIVER_PIMCORE
-     *
-     * @return array
      */
     public function getSupportedDrivers(): array;
 }

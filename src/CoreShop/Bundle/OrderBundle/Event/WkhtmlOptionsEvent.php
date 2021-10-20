@@ -19,12 +19,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class WkhtmlOptionsEvent extends Event
 {
-    protected OrderDocumentInterface $orderDocument;
     protected string $options;
 
-    public function __construct(OrderDocumentInterface $orderDocument)
+    public function __construct(protected OrderDocumentInterface $orderDocument)
     {
-        $this->orderDocument = $orderDocument;
     }
 
     public function getOrderDocument(): OrderDocumentInterface

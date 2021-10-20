@@ -16,9 +16,6 @@ namespace CoreShop\Component\Product\Model;
 
 interface ProductPriceRuleInterface extends PriceRuleInterface
 {
-    /**
-     * @return string
-     */
     public function getDescription(): string;
 
     /**

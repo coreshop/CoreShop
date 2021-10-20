@@ -42,12 +42,12 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
                 }
 
                 if (isset($parsedValues[$e])) {
-                    $count = (int) $parsedValues[$e]['count'] + (int) $v['count'];
+                    $count = $parsedValues[$e]['count'] + (int) $v['count'];
                 } else {
                     $count = (int) $v['count'];
                 }
 
-                $parsedValues[$e] = ['value' => $e, 'count' => (int) $count];
+                $parsedValues[$e] = ['value' => $e, 'count' => $count];
             }
         }
 

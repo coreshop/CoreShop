@@ -32,7 +32,7 @@ class InRenderer extends AbstractMysqlDynamicRenderer
 
         $inValues = [];
 
-        foreach ($condition->getValues() as $c => $value) {
+        foreach ($condition->getValues() as $value) {
             $inValues[] = $this->quote((string)$value);
         }
 

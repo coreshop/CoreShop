@@ -25,11 +25,8 @@ use Webmozart\Assert\Assert;
 
 class CartMinimumQuantityValidator extends ConstraintValidator
 {
-    private QuantityValidatorService $quantityValidatorService;
-
-    public function __construct(QuantityValidatorService $quantityValidatorService)
+    public function __construct(private QuantityValidatorService $quantityValidatorService)
     {
-        $this->quantityValidatorService = $quantityValidatorService;
     }
 
     public function validate($value, Constraint $constraint): void
@@ -72,7 +69,7 @@ class CartMinimumQuantityValidator extends ConstraintValidator
                 continue;
             }
 
-            $minLimit = (int) $product->getMinimumQuantityToOrder();
+            $minLimit = $product->getMinimumQuantityToOrder();
             $lowerThenMinimum = $this->quantityValidatorService->isLowerThenMinLimit(
                 $minLimit,
                 $this->getExistingCartItemQuantityFromCart($value, $cartItem)

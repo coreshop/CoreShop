@@ -20,15 +20,8 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 
 final class CurrencyContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private HomePageInterface $homePage;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        HomePageInterface $homePage
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->homePage = $homePage;
+    public function __construct(private HomePageInterface $homePage)
+    {
     }
 
     /**

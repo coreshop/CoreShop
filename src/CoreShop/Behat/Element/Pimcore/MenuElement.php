@@ -63,7 +63,7 @@ class MenuElement extends AbstractElement implements MenuElementInterface
         $count = 0;
 
         foreach ($this->getDocument()->findAll('css', '.pimcore_navigation_flyout') as $element) {
-            if (strpos($element->getAttribute('style'), 'visiblity') === false) {
+            if (!str_contains($element->getAttribute('style'), 'visiblity')) {
                 $count++;
             }
         }
@@ -74,7 +74,7 @@ class MenuElement extends AbstractElement implements MenuElementInterface
     protected function getOpenMenu()
     {
         foreach ($this->getDocument()->findAll('css', '.pimcore_navigation_flyout') as $element) {
-            if (strpos($element->getAttribute('style'), 'visiblity') === false) {
+            if (!str_contains($element->getAttribute('style'), 'visiblity')) {
                 return $element;
             }
         }

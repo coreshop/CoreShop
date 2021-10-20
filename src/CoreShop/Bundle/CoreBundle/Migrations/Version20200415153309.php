@@ -24,9 +24,6 @@ class Version20200415153309 extends AbstractMigration implements ContainerAwareI
 {
     use ContainerAwareTrait;
 
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void
     {
         $orderInvoiceItemClass = $this->container->getParameter('coreshop.model.order_invoice_item.pimcore_class_name');
@@ -99,9 +96,6 @@ class Version20200415153309 extends AbstractMigration implements ContainerAwareI
         }
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

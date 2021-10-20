@@ -22,15 +22,8 @@ use Symfony\Component\Form\DataMapperInterface;
  */
 class CartItemQuantityDataMapper implements DataMapperInterface
 {
-    private StorageListItemQuantityModifierInterface $cartItemQuantityModifier;
-    private DataMapperInterface $propertyPathDataMapper;
-
-    public function __construct(
-        StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
-        DataMapperInterface $propertyPathDataMapper
-    ) {
-        $this->cartItemQuantityModifier = $cartItemQuantityModifier;
-        $this->propertyPathDataMapper = $propertyPathDataMapper;
+    public function __construct(private StorageListItemQuantityModifierInterface $cartItemQuantityModifier, private DataMapperInterface $propertyPathDataMapper)
+    {
     }
 
     public function mapDataToForms($viewData, $forms): void
@@ -44,7 +37,7 @@ class CartItemQuantityDataMapper implements DataMapperInterface
         $quantityForm = null;
 
         //First map all the other fields, then map quantity.
-        foreach ($forms as $key => $form) {
+        foreach ($forms as $form) {
             if ('quantity' === $form->getName()) {
                 $quantityForm = $form;
 

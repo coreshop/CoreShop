@@ -21,7 +21,7 @@ use CoreShop\Component\Resource\Model\TranslatableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class ProductUnit extends AbstractResource implements ProductUnitInterface
+class ProductUnit extends AbstractResource implements ProductUnitInterface, \Stringable
 {
     use TimestampableTrait;
     use TranslatableTrait {
@@ -109,7 +109,7 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
         return $translation;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%d)', $this->getName(), $this->getId());
     }

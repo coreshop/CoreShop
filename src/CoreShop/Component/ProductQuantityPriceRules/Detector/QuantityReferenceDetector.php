@@ -22,13 +22,8 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 
 class QuantityReferenceDetector implements QuantityReferenceDetectorInterface
 {
-    private QuantityRuleFetcher $quantityRuleFetcher;
-    private QuantityPriceFetcher $quantityPriceFetcher;
-
-    public function __construct(QuantityRuleFetcher $quantityRuleFetcher, QuantityPriceFetcher $quantityPriceFetcher)
+    public function __construct(private QuantityRuleFetcher $quantityRuleFetcher, private QuantityPriceFetcher $quantityPriceFetcher)
     {
-        $this->quantityRuleFetcher = $quantityRuleFetcher;
-        $this->quantityPriceFetcher = $quantityPriceFetcher;
     }
 
     public function detectRule(QuantityRangePriceAwareInterface $subject, array $context): ProductQuantityPriceRuleInterface

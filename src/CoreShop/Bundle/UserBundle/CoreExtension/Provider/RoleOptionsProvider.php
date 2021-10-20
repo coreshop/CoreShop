@@ -33,8 +33,6 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
     /**
      * @param array $context
      * @param Data  $fieldDefinition
-     *
-     * @return array
      */
     public function getOptions($context, $fieldDefinition): array
     {
@@ -63,8 +61,6 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
     /**
      * @param array $context
      * @param Data  $fieldDefinition
-     *
-     * @return bool
      */
     public function hasStaticOptions($context, $fieldDefinition): bool
     {
@@ -74,8 +70,6 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
     /**
      * @param array $context
      * @param Data  $fieldDefinition
-     *
-     * @return string
      */
     public function getDefaultValue($context, $fieldDefinition): string
     {

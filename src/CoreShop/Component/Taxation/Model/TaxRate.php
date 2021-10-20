@@ -22,7 +22,7 @@ use CoreShop\Component\Resource\Model\TranslatableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class TaxRate extends AbstractResource implements TaxRateInterface
+class TaxRate extends AbstractResource implements TaxRateInterface, \Stringable
 {
     use ToggleableTrait;
     use TimestampableTrait;
@@ -54,10 +54,7 @@ class TaxRate extends AbstractResource implements TaxRateInterface
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName('en'), $this->getId());
     }

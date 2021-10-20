@@ -22,13 +22,8 @@ use Symfony\Component\Workflow\Event\Event;
 
 class WorkflowListener implements EventSubscriberInterface
 {
-    protected array $callbackConfig;
-    protected ContainerInterface $container;
-
-    public function __construct(array $callbackConfig, ContainerInterface $container)
+    public function __construct(protected array $callbackConfig, protected ContainerInterface $container)
     {
-        $this->callbackConfig = $callbackConfig;
-        $this->container = $container;
     }
 
     public static function getSubscribedEvents(): array

@@ -22,11 +22,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CustomerLoginType extends AbstractType
 {
-    protected string $loginIdentifier;
-
-    public function __construct(string $loginIdentifier)
+    public function __construct(protected string $loginIdentifier)
     {
-        $this->loginIdentifier = $loginIdentifier;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

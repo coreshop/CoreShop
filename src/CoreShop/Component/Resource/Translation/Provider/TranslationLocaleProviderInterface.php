@@ -21,8 +21,5 @@ interface TranslationLocaleProviderInterface
      */
     public function getDefinedLocalesCodes(): array;
 
-    /**
-     * @return string
-     */
     public function getDefaultLocaleCode(): string;
 }

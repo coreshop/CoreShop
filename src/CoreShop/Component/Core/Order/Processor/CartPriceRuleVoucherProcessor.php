@@ -26,21 +26,8 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
 {
-    private ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator;
-    private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
-    private CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator;
-    private CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor;
-
-    public function __construct(
-        ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator,
-        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
-        CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
-        CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
-    ) {
-        $this->proposalCartPriceRuleCalculator = $proposalCartPriceRuleCalculator;
-        $this->voucherCodeRepository = $voucherCodeRepository;
-        $this->cartPriceRuleValidator = $cartPriceRuleValidator;
-        $this->cartPriceRuleUnProcessor = $cartPriceRuleUnProcessor;
+    public function __construct(private ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator, private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository, private CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator, private CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor)
+    {
     }
 
     public function process(OrderInterface $cart): void

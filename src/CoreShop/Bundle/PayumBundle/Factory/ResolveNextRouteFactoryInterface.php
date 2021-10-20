@@ -20,8 +20,6 @@ interface ResolveNextRouteFactoryInterface
 {
     /**
      * @param mixed $model
-     *
-     * @return ResolveNextRouteInterface
      */
     public function createNewWithModel($model): ResolveNextRouteInterface;
 }

@@ -23,11 +23,8 @@ use Twig\TwigFunction;
 
 final class ProductQuantityPriceRuleRangesExtension extends AbstractExtension
 {
-    protected QuantityReferenceDetectorInterface $quantityReferenceDetector;
-
-    public function __construct(QuantityReferenceDetectorInterface $quantityReferenceDetector)
+    public function __construct(protected QuantityReferenceDetectorInterface $quantityReferenceDetector)
     {
-        $this->quantityReferenceDetector = $quantityReferenceDetector;
     }
 
     public function getFunctions(): array
@@ -43,7 +40,7 @@ final class ProductQuantityPriceRuleRangesExtension extends AbstractExtension
     {
         try {
             $this->quantityReferenceDetector->detectRule($product, $context);
-        } catch (NoRuleFoundException $e) {
+        } catch (NoRuleFoundException) {
             return false;
         }
 

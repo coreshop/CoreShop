@@ -24,21 +24,8 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class RequestCartAvailability
 {
-    private CartManagerInterface $cartManager;
-    private ShopperContextInterface $shopperContext;
-    private RequestHelper $pimcoreRequestHelper;
-    private Session $session;
-
-    public function __construct(
-        CartManagerInterface $cartManager,
-        ShopperContextInterface $shopperContext,
-        RequestHelper $pimcoreRequestHelper,
-        Session $session
-    ) {
-        $this->cartManager = $cartManager;
-        $this->shopperContext = $shopperContext;
-        $this->pimcoreRequestHelper = $pimcoreRequestHelper;
-        $this->session = $session;
+    public function __construct(private CartManagerInterface $cartManager, private ShopperContextInterface $shopperContext, private RequestHelper $pimcoreRequestHelper, private Session $session)
+    {
     }
 
     public function checkCartAvailability(RequestEvent $event): void

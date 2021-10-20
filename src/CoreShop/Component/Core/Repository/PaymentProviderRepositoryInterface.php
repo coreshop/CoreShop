@@ -21,8 +21,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface PaymentProviderRepositoryInterface extends BasePaymentProviderRepositoryInterface
 {
     /**
-     * @param StoreInterface $store
-     *
      * @return PaymentProviderInterface[]
      */
     public function findActiveForStore(StoreInterface $store): array;

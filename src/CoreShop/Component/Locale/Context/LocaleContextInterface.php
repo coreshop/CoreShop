@@ -16,8 +16,5 @@ namespace CoreShop\Component\Locale\Context;
 
 interface LocaleContextInterface
 {
-    /**
-     * @return string
-     */
     public function getLocaleCode(): string;
 }

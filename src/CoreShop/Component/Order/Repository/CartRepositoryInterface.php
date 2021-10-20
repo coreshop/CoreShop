@@ -22,32 +22,20 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface CartRepositoryInterface extends PimcoreRepositoryInterface
 {
     /**
-     * @param CustomerInterface $customer
-     *
      * @return OrderInterface[]
      */
     public function findForCustomer(CustomerInterface $customer): array;
 
     /**
-     * @param CustomerInterface $customer
      * @param string            $name
      *
-     * @return OrderInterface|null
      */
     public function findNamedForCustomer(CustomerInterface $customer, $name): ?OrderInterface;
 
-    /**
-     * @param StoreInterface    $store
-     * @param CustomerInterface $customer
-     *
-     * @return OrderInterface|null
-     */
     public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface;
 
     /**
      * @param int $id
-     *
-     * @return OrderInterface|null
      */
     public function findCartById($id): ?OrderInterface;
 

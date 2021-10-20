@@ -22,13 +22,6 @@ use Webmozart\Assert\Assert;
 
 final class RecycleBinContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-
-    public function __construct(SharedStorageInterface $sharedStorage)
-    {
-        $this->sharedStorage = $sharedStorage;
-    }
-
     /**
      * @Then /^the recycled (product) does not exist anymore$/
      */

@@ -30,7 +30,7 @@ class QuoteController extends FrontendController
 
         try {
             $currentCustomer = $this->get(CustomerContextInterface::class)->getCustomer();
-        } catch (CustomerNotFoundException $ex) {
+        } catch (CustomerNotFoundException) {
             return $this->redirectToRoute('coreshop_index');
         }
 

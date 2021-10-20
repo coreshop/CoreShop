@@ -19,13 +19,8 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 
 class AddToCart implements AddToCartInterface
 {
-    private OrderInterface $cart;
-    private OrderItemInterface $cartItem;
-
-    public function __construct(OrderInterface $cart, OrderItemInterface $cartItem)
+    public function __construct(private OrderInterface $cart, private OrderItemInterface $cartItem)
     {
-        $this->cart = $cart;
-        $this->cartItem = $cartItem;
     }
 
     public function getCart(): OrderInterface

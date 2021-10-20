@@ -24,16 +24,10 @@ use Pimcore\Tool;
 
 abstract class AbstractListing implements ListingInterface
 {
-    protected IndexInterface $index;
-    protected WorkerInterface $worker;
-    protected Connection $connection;
     protected ?string $locale = null;
 
-    public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection)
+    public function __construct(protected IndexInterface $index, protected WorkerInterface $worker, protected Connection $connection)
     {
-        $this->index = $index;
-        $this->worker = $worker;
-        $this->connection = $connection;
     }
 
     public function getIterator()

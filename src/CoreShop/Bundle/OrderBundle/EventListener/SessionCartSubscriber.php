@@ -25,19 +25,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class SessionCartSubscriber implements EventSubscriberInterface
 {
-    private PimcoreContextResolver $pimcoreContext;
-    private CartContextInterface $cartContext;
-    private string $sessionKeyName;
-
-    public function __construct(
-        PimcoreContextResolver $pimcoreContextResolver,
-        CartContextInterface $cartContext,
-        string $sessionKeyName
-    )
+    public function __construct(private PimcoreContextResolver $pimcoreContext, private CartContextInterface $cartContext, private string $sessionKeyName)
     {
-        $this->pimcoreContext = $pimcoreContextResolver;
-        $this->cartContext = $cartContext;
-        $this->sessionKeyName = $sessionKeyName;
     }
 
     public static function getSubscribedEvents(): array
@@ -66,19 +55,17 @@ final class SessionCartSubscriber implements EventSubscriberInterface
 
         try {
             $cart = $this->cartContext->getCart();
-        } catch (CartNotFoundException $exception) {
+        } catch (CartNotFoundException) {
             return;
         }
 
         if (0 !== $cart->getId() && null !== $cart->getStore()) {
             $session = $request->getSession();
 
-            if ($session instanceof SessionInterface) {
-                $session->set(
-                    sprintf('%s.%s', $this->sessionKeyName, $cart->getStore()->getId()),
-                    $cart->getId()
-                );
-            }
+            $session->set(
+                sprintf('%s.%s', $this->sessionKeyName, $cart->getStore()->getId()),
+                $cart->getId()
+            );
         }
     }
 }

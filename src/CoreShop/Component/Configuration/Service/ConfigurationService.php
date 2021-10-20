@@ -21,19 +21,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ConfigurationService implements ConfigurationServiceInterface
 {
-    protected EntityManagerInterface $entityManager;
-    protected ConfigurationRepositoryInterface $configurationRepository;
-    protected FactoryInterface $configurationFactory;
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        ConfigurationRepositoryInterface $configurationRepository,
-        FactoryInterface $configurationFactory
-    )
+    public function __construct(protected EntityManagerInterface $entityManager, protected ConfigurationRepositoryInterface $configurationRepository, protected FactoryInterface $configurationFactory)
     {
-        $this->entityManager = $entityManager;
-        $this->configurationRepository = $configurationRepository;
-        $this->configurationFactory = $configurationFactory;
     }
 
     public function get(string $key, bool $returnObject = false): mixed

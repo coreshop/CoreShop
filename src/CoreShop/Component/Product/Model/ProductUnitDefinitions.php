@@ -203,12 +203,10 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
 
         $this->setDefaultUnitDefinition($newDefaultUnitDefinition);
 
-        if ($additionalUnits instanceof Collection) {
-            foreach ($additionalUnits as $additionalUnit) {
-                $newAdditionalDefinition = clone $additionalUnit;
-                $newAdditionalDefinition->setProductUnitDefinitions($this);
-                $this->addUnitDefinition($newAdditionalDefinition);
-            }
+        foreach ($additionalUnits as $additionalUnit) {
+            $newAdditionalDefinition = clone $additionalUnit;
+            $newAdditionalDefinition->setProductUnitDefinitions($this);
+            $this->addUnitDefinition($newAdditionalDefinition);
         }
     }
 }

@@ -20,11 +20,8 @@ use Twig\TwigFilter;
 
 final class FormatAddressExtension extends AbstractExtension
 {
-    private AddressFormatterInterface $addressFormatter;
-
-    public function __construct(AddressFormatterInterface $addressFormatter)
+    public function __construct(private AddressFormatterInterface $addressFormatter)
     {
-        $this->addressFormatter = $addressFormatter;
     }
 
     public function getFilters(): array

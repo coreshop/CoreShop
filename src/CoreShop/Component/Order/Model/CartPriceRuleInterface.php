@@ -28,7 +28,6 @@ interface CartPriceRuleInterface extends RuleInterface, TranslatableInterface
     public function getLabel(string $language = null);
 
     /**
-     * @param string      $label
      * @param string|null $language
      */
     public function setLabel(string $label, string $language = null);
@@ -63,19 +62,11 @@ interface CartPriceRuleInterface extends RuleInterface, TranslatableInterface
      */
     public function hasVoucherCodes();
 
-    /**
-     * @param CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode
-     */
     public function addVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode);
 
-    /**
-     * @param CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode
-     */
     public function removeVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode);
 
     /**
-     * @param CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode
-     *
      * @return bool
      */
     public function hasVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode);

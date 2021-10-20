@@ -23,15 +23,8 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 class VoucherModifier implements VoucherModifierInterface
 {
-    protected EntityManagerInterface $entityManager;
-    protected CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
-    ) {
-        $this->entityManager = $entityManager;
-        $this->voucherCodeRepository = $voucherCodeRepository;
+    public function __construct(protected EntityManagerInterface $entityManager, protected CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
+    {
     }
 
     public function increment(OrderInterface $order): void

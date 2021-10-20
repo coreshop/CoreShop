@@ -24,11 +24,8 @@ use Twig\TwigFilter;
 
 final class OrderStateExtension extends AbstractExtension
 {
-    private WorkflowStateInfoManagerInterface $workflowStateManager;
-
-    public function __construct(WorkflowStateInfoManagerInterface $workflowStateManager)
+    public function __construct(private WorkflowStateInfoManagerInterface $workflowStateManager)
     {
-        $this->workflowStateManager = $workflowStateManager;
     }
 
     public function getFilters(): array

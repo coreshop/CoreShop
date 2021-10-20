@@ -29,15 +29,8 @@ use Webmozart\Assert\Assert;
 
 class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private FormFactoryInterface $formFactory;
-    private CartManagerInterface $cartManager;
-
-    public function __construct(
-        FormFactoryInterface $formFactory,
-        CartManagerInterface $cartManager
-    ) {
-        $this->formFactory = $formFactory;
-        $this->cartManager = $cartManager;
+    public function __construct(private FormFactoryInterface $formFactory, private CartManagerInterface $cartManager)
+    {
     }
 
     public function getIdentifier(): string

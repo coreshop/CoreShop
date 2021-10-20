@@ -20,11 +20,8 @@ use Twig\TwigFilter;
 
 final class ValidPriceRulesExtension extends AbstractExtension
 {
-    protected ValidRulesFetcherInterface $validPriceRulesFetcher;
-
-    public function __construct(ValidRulesFetcherInterface $validPriceRulesFetcher)
+    public function __construct(protected ValidRulesFetcherInterface $validPriceRulesFetcher)
     {
-        $this->validPriceRulesFetcher = $validPriceRulesFetcher;
     }
 
     public function getFilters(): array

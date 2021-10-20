@@ -14,15 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Currency\Model;
 
-class Money
+class Money implements \Stringable
 {
-    public int $value;
-    public CurrencyInterface $currency;
-
-    public function __construct(int $value, CurrencyInterface $currency)
+    public function __construct(public int $value, public CurrencyInterface $currency)
     {
-        $this->value = $value;
-        $this->currency = $currency;
     }
 
     public function getValue(): int

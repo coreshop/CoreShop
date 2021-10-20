@@ -121,8 +121,6 @@ interface OrderInterface extends
 
     /**
      * @param OrderItemInterface $item
-     *
-     * @return bool
      */
     public function hasItem($item): bool;
 
@@ -168,9 +166,6 @@ interface OrderInterface extends
      */
     public function getTaxes();
 
-    /**
-     * @param Fieldcollection|null $taxes
-     */
     public function setTaxes(?Fieldcollection $taxes);
 
     public function getComment(): ?string;
@@ -186,9 +181,6 @@ interface OrderInterface extends
      */
     public function getPriceRuleItems();
 
-    /**
-     * @param Fieldcollection $priceRuleItems
-     */
     public function setPriceRuleItems(Fieldcollection $priceRuleItems);
 
     /**

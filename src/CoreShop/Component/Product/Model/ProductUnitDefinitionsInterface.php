@@ -24,9 +24,6 @@ interface ProductUnitDefinitionsInterface extends ResourceInterface
      */
     public function getProduct();
 
-    /**
-     * @param ProductInterface $product
-     */
     public function setProduct(ProductInterface $product);
 
     /**
@@ -34,19 +31,10 @@ interface ProductUnitDefinitionsInterface extends ResourceInterface
      */
     public function getDefaultUnitDefinition();
 
-    /**
-     * @param ProductUnitDefinitionInterface $defaultUnitDefinition
-     */
     public function setDefaultUnitDefinition(ProductUnitDefinitionInterface $defaultUnitDefinition);
 
-    /**
-     * @param ProductUnitDefinitionInterface $productUnitDefinition
-     */
     public function addUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition);
 
-    /**
-     * @param ProductUnitDefinitionInterface $productUnitDefinition
-     */
     public function removeUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition);
 
     /**
@@ -60,20 +48,12 @@ interface ProductUnitDefinitionsInterface extends ResourceInterface
     public function hasUnitDefinition(ProductUnitDefinitionInterface $unitDefinition);
 
     /**
-     * @param string $identifier
-     *
      * @return ProductUnitDefinitionInterface|null
      */
     public function getUnitDefinition(string $identifier);
 
-    /**
-     * @param \CoreShop\Component\Product\Model\ProductUnitDefinitionInterface $unitDefinition
-     */
     public function addAdditionalUnitDefinition(ProductUnitDefinitionInterface $unitDefinition);
 
-    /**
-     * @param \CoreShop\Component\Product\Model\ProductUnitDefinitionInterface $unitDefinition
-     */
     public function removeAdditionalUnitDefinition(ProductUnitDefinitionInterface $unitDefinition);
 
     /**

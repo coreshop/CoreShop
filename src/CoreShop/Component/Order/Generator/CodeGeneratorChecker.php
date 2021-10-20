@@ -20,19 +20,8 @@ use Webmozart\Assert\Assert;
 
 class CodeGeneratorChecker implements CodeGeneratorCheckerInterface
 {
-    private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
-    private CodeGeneratorLetterResolver $letterResolver;
-    private float $ratio;
-
-    public function __construct(
-        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
-        CodeGeneratorLetterResolver $letterResolver,
-        float $ratio = 0.5
-    )
+    public function __construct(private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository, private CodeGeneratorLetterResolver $letterResolver, private float $ratio = 0.5)
     {
-        $this->voucherCodeRepository = $voucherCodeRepository;
-        $this->letterResolver = $letterResolver;
-        $this->ratio = $ratio;
     }
 
     public function isGenerationPossible(CartPriceRuleVoucherGeneratorInterface $generator): bool

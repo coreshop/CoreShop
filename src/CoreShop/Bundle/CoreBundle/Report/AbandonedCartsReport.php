@@ -28,24 +28,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 final class AbandonedCartsReport implements ReportInterface, ExportReportInterface
 {
     private int $totalRecords = 0;
-    private RepositoryInterface $storeRepository;
-    private Connection $db;
-    private PimcoreRepositoryInterface $cartRepository;
-    private PimcoreRepositoryInterface $customerRepository;
-    private LocaleContextInterface $localeContext;
 
-    public function __construct(
-        RepositoryInterface $storeRepository,
-        Connection $db,
-        PimcoreRepositoryInterface $cartRepository,
-        PimcoreRepositoryInterface $customerRepository,
-        LocaleContextInterface $localeContext
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->db = $db;
-        $this->cartRepository = $cartRepository;
-        $this->customerRepository = $customerRepository;
-        $this->localeContext = $localeContext;
+    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private PimcoreRepositoryInterface $cartRepository, private PimcoreRepositoryInterface $customerRepository, private LocaleContextInterface $localeContext)
+    {
     }
 
     public function getReportData(ParameterBag $parameterBag): array

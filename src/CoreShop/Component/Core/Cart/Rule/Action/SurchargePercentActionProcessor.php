@@ -21,11 +21,8 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 class SurchargePercentActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    protected CartRuleApplierInterface $cartRuleApplier;
-
-    public function __construct(CartRuleApplierInterface $cartRuleApplier)
+    public function __construct(protected CartRuleApplierInterface $cartRuleApplier)
     {
-        $this->cartRuleApplier = $cartRuleApplier;
     }
 
     public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool

@@ -85,7 +85,6 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         }
 
         if ($metadata->hasClass('repository')) {
-            /** @var string $repositoryFactoryClass */
             $repositoryClass = $metadata->getClass('repository');
         }
 

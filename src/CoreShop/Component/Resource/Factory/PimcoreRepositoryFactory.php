@@ -22,20 +22,17 @@ use Doctrine\DBAL\Connection;
 class PimcoreRepositoryFactory implements RepositoryFactoryInterface
 {
     /**
-     * @psalm-var class-string
-     */
-    private string $repositoryClassName;
-    private MetadataInterface $metadata;
-    private Connection $connection;
-
-    /**
      * @psalm-param class-string $repositoryClassName
      */
-    public function __construct(string $repositoryClassName, MetadataInterface $metadata, Connection $connection)
+    public function __construct(
+        /**
+         * @psalm-var class-string
+         */
+        private string $repositoryClassName,
+        private MetadataInterface $metadata,
+        private Connection $connection
+    )
     {
-        $this->repositoryClassName = $repositoryClassName;
-        $this->metadata = $metadata;
-        $this->connection = $connection;
     }
 
     public function createNewRepository(ObjectManager $objectManager): RepositoryInterface

@@ -19,13 +19,8 @@ use CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface;
 
 class SequenceNumberGenerator implements NumberGeneratorInterface
 {
-    protected SequenceGeneratorInterface $sequenceNumberGenerator;
-    protected string $type;
-
-    public function __construct(SequenceGeneratorInterface $sequenceNumberGenerator, string $type)
+    public function __construct(protected SequenceGeneratorInterface $sequenceNumberGenerator, protected string $type)
     {
-        $this->sequenceNumberGenerator = $sequenceNumberGenerator;
-        $this->type = $type;
     }
 
     public function generate(ResourceInterface $model): string

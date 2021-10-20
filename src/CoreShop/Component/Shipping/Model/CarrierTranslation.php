@@ -20,7 +20,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class CarrierTranslation extends AbstractTranslation implements CarrierTranslationInterface
+class CarrierTranslation extends AbstractTranslation implements CarrierTranslationInterface, \Stringable
 {
     use TimestampableTrait;
 
@@ -39,10 +39,7 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
      */
     protected $description = '';
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getDescription();
     }

@@ -25,8 +25,6 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
     /**
      * @param array $context
      * @param Data  $fieldDefinition
-     *
-     * @return array
      */
     public function getOptions($context, $fieldDefinition): array
     {

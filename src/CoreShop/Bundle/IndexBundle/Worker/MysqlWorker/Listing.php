@@ -444,9 +444,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         }
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     */
     public function addJoins(QueryBuilder $queryBuilder)
     {
         foreach ($this->queryJoins as $table => $tableJoins) {
@@ -501,15 +498,11 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->totalCount;
     }
 
-    /**
-     * @return PimcoreModelInterface|bool
-     */
-    public function current()
+    public function current(): \CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface|bool
     {
         $this->getObjects();
-        $var = current($this->objects);
 
-        return $var;
+        return current($this->objects);
     }
 
     /**
@@ -529,20 +522,15 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     public function key()
     {
         $this->getObjects();
-        $var = key($this->objects);
 
-        return $var;
+        return key($this->objects);
     }
 
-    /**
-     * @return PimcoreModelInterface|bool
-     */
-    public function next()
+    public function next(): \CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface|bool
     {
         $this->getObjects();
-        $var = next($this->objects);
 
-        return $var;
+        return next($this->objects);
     }
 
     public function rewind()
@@ -556,8 +544,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     public function valid()
     {
-        $var = $this->current() !== false;
-
-        return $var;
+        return $this->current() !== false;
     }
 }

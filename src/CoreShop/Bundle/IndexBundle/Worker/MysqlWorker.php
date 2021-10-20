@@ -35,8 +35,6 @@ use Pimcore\Tool;
 
 class MysqlWorker extends AbstractWorker
 {
-    protected Connection $database;
-
     public function __construct(
         ServiceRegistryInterface $extensionsRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
@@ -44,7 +42,7 @@ class MysqlWorker extends AbstractWorker
         FilterGroupHelperInterface $filterGroupHelper,
         ConditionRendererInterface $conditionRenderer,
         OrderRendererInterface $orderRenderer,
-        Connection $connection
+        protected Connection $database
     ) {
         parent::__construct(
             $extensionsRegistry,
@@ -54,8 +52,6 @@ class MysqlWorker extends AbstractWorker
             $conditionRenderer,
             $orderRenderer
         );
-
-        $this->database = $connection;
     }
 
     public function createOrUpdateIndexStructures(IndexInterface $index): void

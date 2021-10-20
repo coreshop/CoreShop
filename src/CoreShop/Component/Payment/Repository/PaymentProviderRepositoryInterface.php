@@ -20,8 +20,6 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 interface PaymentProviderRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param string $title
-     * @param string $locale
      *
      * @return PaymentProviderInterface[]
      */

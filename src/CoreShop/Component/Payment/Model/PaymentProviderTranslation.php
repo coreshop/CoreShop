@@ -20,7 +20,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class PaymentProviderTranslation extends AbstractTranslation implements PaymentProviderTranslationInterface
+class PaymentProviderTranslation extends AbstractTranslation implements PaymentProviderTranslationInterface, \Stringable
 {
     use TimestampableTrait;
 
@@ -44,10 +44,7 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
      */
     protected $instructions;
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getTitle();
     }

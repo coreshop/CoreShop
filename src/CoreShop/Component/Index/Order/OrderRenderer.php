@@ -19,11 +19,8 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 final class OrderRenderer implements OrderRendererInterface
 {
-    private ServiceRegistryInterface $registry;
-
-    public function __construct(ServiceRegistryInterface $registry)
+    public function __construct(private ServiceRegistryInterface $registry)
     {
-        $this->registry = $registry;
     }
 
     public function render(WorkerInterface $worker, OrderInterface $condition, string $prefix = null)
@@ -38,7 +35,7 @@ final class OrderRenderer implements OrderRendererInterface
         }
 
         throw new \InvalidArgumentException(
-            sprintf('No Renderer found for order with type %s', get_class($condition))
+            sprintf('No Renderer found for order with type %s', $condition::class)
         );
     }
 }

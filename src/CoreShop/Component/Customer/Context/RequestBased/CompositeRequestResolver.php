@@ -43,7 +43,7 @@ final class CompositeRequestResolver implements RequestResolverInterface
             try {
                 return $requestResolver->findCustomer($request);
             }
-            catch (CustomerNotFoundException $ex) {
+            catch (CustomerNotFoundException) {
                 //Ignore and continue
             }
         }

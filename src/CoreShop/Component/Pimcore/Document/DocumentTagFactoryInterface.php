@@ -18,11 +18,5 @@ use Pimcore\Model\Document\Editable\EditableInterface;
 
 interface DocumentTagFactoryInterface
 {
-    /**
-     * @param string $type
-     * @param array  $params
-     *
-     * @return EditableInterface
-     */
     public function create(string $type, array $params): EditableInterface;
 }

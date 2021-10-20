@@ -24,18 +24,8 @@ use Webmozart\Assert\Assert;
 
 final class ProductPriceRuleContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ShopperContextInterface $shopperContext;
-    private RuleValidationProcessorInterface $ruleValidationProcessor;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ShopperContextInterface $shopperContext,
-        RuleValidationProcessorInterface $ruleValidationProcessor
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->shopperContext = $shopperContext;
-        $this->ruleValidationProcessor = $ruleValidationProcessor;
+    public function __construct(private ShopperContextInterface $shopperContext, private RuleValidationProcessorInterface $ruleValidationProcessor)
+    {
     }
 
     /**

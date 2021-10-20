@@ -18,8 +18,6 @@ interface SEOMetadataInterface
 {
     /**
      * Updates the description.
-     *
-     * @param string $metaDescription
      */
     public function setMetaDescription(string $metaDescription): void;
 
@@ -32,8 +30,6 @@ interface SEOMetadataInterface
 
     /**
      * Sets the original URL for content that has several URLs.
-     *
-     * @param string $originalUrl
      */
     public function setOriginalUrl(string $originalUrl): void;
 
@@ -49,8 +45,6 @@ interface SEOMetadataInterface
 
     /**
      * Sets the title.
-     *
-     * @param string $title
      */
     public function setTitle(string $title): void;
 
@@ -61,57 +55,30 @@ interface SEOMetadataInterface
      */
     public function getTitle(): ?string;
 
-    /**
-     * @param array $extraProperties
-     */
     public function setExtraProperties(array $extraProperties): void;
 
-    /**
-     * @param array $extraNames
-     */
     public function setExtraNames(array $extraNames): void;
 
-    /**
-     * @param array $extraHttp
-     */
     public function setExtraHttp(array $extraHttp): void;
 
-    /**
-     * @return array
-     */
     public function getExtraProperties(): array;
 
-    /**
-     * @return array
-     */
     public function getExtraNames(): array;
 
-    /**
-     * @return array
-     */
     public function getExtraHttp(): array;
 
     /**
      * Add a key-value pair for meta attribute property.
-     *
-     * @param string $key
-     * @param string $value
      */
     public function addExtraProperty(string $key, string $value): void;
 
     /**
      * Add a key-value pair for meta attribute name.
-     *
-     * @param string $key
-     * @param string $value
      */
     public function addExtraName(string $key, string $value): void;
 
     /**
      * Add a key-value pair for meta attribute http-equiv.
-     *
-     * @param string $key
-     * @param string $value
      */
     public function addExtraHttp(string $key, string $value): void;
 }

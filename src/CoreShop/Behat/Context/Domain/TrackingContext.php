@@ -35,19 +35,10 @@ use Webmozart\Assert\Assert;
 
 final class TrackingContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private TrackingExtractorInterface $trackingExtractor;
-    private ServiceRegistry $trackerRegistry;
-
     public function __construct(
-        SharedStorageInterface $sharedStorage,
-        TrackingExtractorInterface $trackingExtractor,
-        ServiceRegistry $trackerRegistry
+        private TrackingExtractorInterface $trackingExtractor,
+        private ServiceRegistry $trackerRegistry
     ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->trackingExtractor = $trackingExtractor;
-        $this->trackerRegistry = $trackerRegistry;
-
         /**
          * @var AnalyticsEnhancedEcommerce $googleAnalyticsEnhancedTracker
          */
@@ -102,8 +93,6 @@ final class TrackingContext implements Context
         $tracker = $this->getTracker($tracker);
 
         $tracker->trackCartAdd($this->trackingExtractor->updateMetadata($cart), $this->trackingExtractor->updateMetadata($product), 1);
-
-        $params = ['cart' => $cart, 'product' => $product];
 
         $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
 

@@ -18,10 +18,5 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface NumberGeneratorInterface
 {
-    /**
-     * @param ResourceInterface $model
-     *
-     * @return string
-     */
     public function generate(ResourceInterface $model): string;
 }

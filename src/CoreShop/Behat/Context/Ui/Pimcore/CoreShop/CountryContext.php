@@ -21,16 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class CountryContext implements Context
 {
-    private PWAPageInterface $pwaPage;
-    private CountryPageInterface $countryPage;
-
-    public function __construct(
-        PWAPageInterface $pwaPage,
-        CountryPageInterface $countryPage
-    )
+    public function __construct(private PWAPageInterface $pwaPage, private CountryPageInterface $countryPage)
     {
-        $this->pwaPage = $pwaPage;
-        $this->countryPage = $countryPage;
     }
 
     /**

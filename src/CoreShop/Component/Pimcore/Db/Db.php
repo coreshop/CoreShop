@@ -19,9 +19,6 @@ use Webmozart\Assert\Assert;
 
 final class Db extends \Pimcore\Db
 {
-    /**
-     * @return Connection
-     */
     public static function getDoctrineConnection(): Connection
     {
         /**
@@ -36,8 +33,6 @@ final class Db extends \Pimcore\Db
 
     /**
      * @param string $table
-     *
-     * @return array
      */
     public static function getColumns($table): array
     {
@@ -57,8 +52,6 @@ final class Db extends \Pimcore\Db
      * Check if table exists.
      *
      * @param string $table
-     *
-     * @return bool
      */
     public static function tableExists($table): bool
     {

@@ -23,9 +23,6 @@ interface ProductUnitDefinitionPriceInterface extends ResourceInterface
      */
     public function getPrice();
 
-    /**
-     * @param int $price
-     */
     public function setPrice(int $price);
 
     /**
@@ -33,8 +30,5 @@ interface ProductUnitDefinitionPriceInterface extends ResourceInterface
      */
     public function getUnitDefinition();
 
-    /**
-     * @param ProductUnitDefinitionInterface $unitDefinition
-     */
     public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition);
 }

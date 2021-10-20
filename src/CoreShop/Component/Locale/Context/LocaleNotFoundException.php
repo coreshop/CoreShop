@@ -23,8 +23,6 @@ final class LocaleNotFoundException extends \RuntimeException
 
     /**
      * @param string $localeCode
-     *
-     * @return self
      */
     public static function notFound($localeCode): LocaleNotFoundException
     {
@@ -33,9 +31,7 @@ final class LocaleNotFoundException extends \RuntimeException
 
     /**
      * @param string $localeCode
-     * @param array  $availableLocalesCodes
      *
-     * @return self
      */
     public static function notAvailable($localeCode, array $availableLocalesCodes): LocaleNotFoundException
     {

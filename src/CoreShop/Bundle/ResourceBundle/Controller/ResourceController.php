@@ -29,33 +29,17 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ResourceController extends AdminController
 {
-    protected MetadataInterface $metadata;
-    protected RepositoryInterface $repository;
-    protected FactoryInterface $factory;
-    protected ObjectManager $manager;
-    protected EventDispatcherInterface $eventDispatcher;
-    protected ResourceFormFactoryInterface $resourceFormFactory;
-    protected ErrorSerializer $formErrorSerializer;
-
     public function __construct(
-        MetadataInterface $metadata,
-        RepositoryInterface $repository,
-        FactoryInterface $factory,
-        ObjectManager $manager,
+        protected MetadataInterface $metadata,
+        protected RepositoryInterface $repository,
+        protected FactoryInterface $factory,
+        protected ObjectManager $manager,
         ViewHandler $viewHandler,
-        EventDispatcherInterface $eventDispatcher,
-        ResourceFormFactoryInterface $resourceFormFactory,
-        ErrorSerializer $formErrorSerializer
+        protected EventDispatcherInterface $eventDispatcher,
+        protected ResourceFormFactoryInterface $resourceFormFactory,
+        protected ErrorSerializer $formErrorSerializer
     ) {
         parent::__construct($viewHandler);
-
-        $this->metadata = $metadata;
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->manager = $manager;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->resourceFormFactory = $resourceFormFactory;
-        $this->formErrorSerializer = $formErrorSerializer;
     }
 
     /**

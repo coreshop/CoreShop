@@ -23,8 +23,6 @@ final class CurrencyNotFoundException extends \RuntimeException
 
     /**
      * @param string $currencyCode
-     *
-     * @return self
      */
     public static function notFound($currencyCode): CurrencyNotFoundException
     {
@@ -33,8 +31,6 @@ final class CurrencyNotFoundException extends \RuntimeException
 
     /**
      * @param string $currencyCode
-     *
-     * @return self
      */
     public static function disabled($currencyCode): CurrencyNotFoundException
     {
@@ -43,9 +39,7 @@ final class CurrencyNotFoundException extends \RuntimeException
 
     /**
      * @param string $currencyCode
-     * @param array  $availableCurrenciesCodes
      *
-     * @return self
      */
     public static function notAvailable($currencyCode, array $availableCurrenciesCodes): CurrencyNotFoundException
     {

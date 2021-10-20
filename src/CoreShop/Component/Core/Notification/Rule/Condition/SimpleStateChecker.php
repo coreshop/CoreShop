@@ -21,20 +21,17 @@ use Webmozart\Assert\Assert;
 final class SimpleStateChecker extends AbstractConditionChecker
 {
     /**
-     * @psalm-var class-string
-     */
-    private string $interface;
-    private string $stateField;
-    private string $configurationField;
-
-    /**
      * @psalm-param class-string $interface
      */
-    public function __construct(string $interface, string $stateField, string $configurationField)
+    public function __construct(
+        /**
+         * @psalm-var class-string
+         */
+        private string $interface,
+        private string $stateField,
+        private string $configurationField
+    )
     {
-        $this->interface = $interface;
-        $this->stateField = $stateField;
-        $this->configurationField = $configurationField;
     }
 
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool

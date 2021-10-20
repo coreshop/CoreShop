@@ -26,23 +26,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DataFixturesLoader extends ContainerAwareLoader
 {
-    protected EntityManager $em;
     protected array $loadedFixtures = [];
     protected ?\ReflectionProperty $ref = null;
-    protected UpdateDataFixturesFixture $updateDataFixturesFixture;
-    protected DataFixtureRepositoryInterface $dataFixtureRepository;
 
     public function __construct(
-        EntityManager $em,
+        protected EntityManager $em,
         ContainerInterface $container,
-        UpdateDataFixturesFixture $updateDataFixturesFixture,
-        DataFixtureRepositoryInterface $dataFixtureRepository
+        protected UpdateDataFixturesFixture $updateDataFixturesFixture,
+        protected DataFixtureRepositoryInterface $dataFixtureRepository
     ) {
         parent::__construct($container);
-
-        $this->em = $em;
-        $this->updateDataFixturesFixture = $updateDataFixturesFixture;
-        $this->dataFixtureRepository = $dataFixtureRepository;
     }
 
     public function getFixtures()
@@ -65,12 +58,12 @@ class DataFixturesLoader extends ContainerAwareLoader
                 if ($fixture instanceof VersionedFixtureInterface) {
                     $version = $fixture->getVersion();
                 }
-                $toBeLoadFixtureClassNames[get_class($fixture)] = $version;
+                $toBeLoadFixtureClassNames[$fixture::class] = $version;
             }
 
             $updateFixture = $this->updateDataFixturesFixture;
             $updateFixture->setDataFixtures($toBeLoadFixtureClassNames);
-            $fixtures[get_class($updateFixture)] = $updateFixture;
+            $fixtures[$updateFixture::class] = $updateFixture;
         }
 
         return $fixtures;
@@ -97,9 +90,9 @@ class DataFixturesLoader extends ContainerAwareLoader
 
         $alreadyLoaded = false;
 
-        if (isset($this->loadedFixtures[get_class($fixtureObject)])) {
+        if (isset($this->loadedFixtures[$fixtureObject::class])) {
             $alreadyLoaded = true;
-            $loadedVersion = $this->loadedFixtures[get_class($fixtureObject)];
+            $loadedVersion = $this->loadedFixtures[$fixtureObject::class];
             if ($fixtureObject instanceof VersionedFixtureInterface
                 && version_compare($loadedVersion, $fixtureObject->getVersion()) == -1
             ) {

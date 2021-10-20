@@ -23,7 +23,7 @@ use Pimcore\Model\Asset;
 /**
  * @psalm-suppress MissingConstructor
  */
-class PaymentProvider extends AbstractResource implements PaymentProviderInterface
+class PaymentProvider extends AbstractResource implements PaymentProviderInterface, \Stringable
 {
     use TimestampableTrait;
     use ToggleableTrait;
@@ -57,10 +57,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         $this->initializeTranslationsCollection();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s', $this->getIdentifier());
     }

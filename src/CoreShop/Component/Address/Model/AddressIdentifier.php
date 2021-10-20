@@ -21,7 +21,7 @@ use CoreShop\Component\Resource\Model\ToggleableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class AddressIdentifier extends AbstractResource implements AddressIdentifierInterface
+class AddressIdentifier extends AbstractResource implements AddressIdentifierInterface, \Stringable
 {
     use ToggleableTrait;
     use TimestampableTrait;
@@ -36,10 +36,7 @@ class AddressIdentifier extends AbstractResource implements AddressIdentifierInt
      */
     protected $name;
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }

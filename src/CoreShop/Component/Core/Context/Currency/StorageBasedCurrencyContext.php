@@ -24,13 +24,8 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 final class StorageBasedCurrencyContext implements CurrencyContextInterface
 {
-    private StoreContextInterface $storeContext;
-    private CurrencyStorageInterface $currencyStorage;
-
-    public function __construct(StoreContextInterface $storeContext, CurrencyStorageInterface $currencyStorage)
+    public function __construct(private StoreContextInterface $storeContext, private CurrencyStorageInterface $currencyStorage)
     {
-        $this->storeContext = $storeContext;
-        $this->currencyStorage = $currencyStorage;
     }
 
     public function getCurrency(): CurrencyInterface

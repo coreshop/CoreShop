@@ -26,18 +26,8 @@ use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderInvoiceStateResolver implements StateResolverInterface
 {
-    private StateMachineManager $stateMachineManager;
-    private OrderInvoiceRepositoryInterface $orderInvoiceRepository;
-    private ProcessableInterface $processable;
-
-    public function __construct(
-        StateMachineManager $stateMachineManager,
-        OrderInvoiceRepositoryInterface $orderInvoiceRepository,
-        ProcessableInterface $processable
-    ) {
-        $this->stateMachineManager = $stateMachineManager;
-        $this->orderInvoiceRepository = $orderInvoiceRepository;
-        $this->processable = $processable;
+    public function __construct(private StateMachineManager $stateMachineManager, private OrderInvoiceRepositoryInterface $orderInvoiceRepository, private ProcessableInterface $processable)
+    {
     }
 
     public function resolve(OrderInterface $order): void

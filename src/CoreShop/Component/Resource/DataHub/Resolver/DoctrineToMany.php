@@ -21,18 +21,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DoctrineToMany
 {
-    private string $name;
-    private string $graphName;
-    private DoctrineProvider $typeProvider;
-
-    public function __construct(
-        DoctrineProvider $provider,
-        string $name,
-        string $graphName
-    ) {
-        $this->name = $name;
-        $this->graphName = $graphName;
-        $this->typeProvider = $provider;
+    public function __construct(private DoctrineProvider $typeProvider, private string $name, private string $graphName)
+    {
     }
 
     public function getDefinition(): array

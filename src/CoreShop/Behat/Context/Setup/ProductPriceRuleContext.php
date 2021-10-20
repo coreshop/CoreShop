@@ -52,27 +52,8 @@ final class ProductPriceRuleContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    private SharedStorageInterface $sharedStorage;
-    private ObjectManager $objectManager;
-    private FormFactoryInterface $formFactory;
-    private FormTypeRegistryInterface $conditionFormTypeRegistry;
-    private FormTypeRegistryInterface $actionFormTypeRegistry;
-    private FactoryInterface $productPriceRuleFactory;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FormFactoryInterface $formFactory,
-        FormTypeRegistryInterface $conditionFormTypeRegistry,
-        FormTypeRegistryInterface $actionFormTypeRegistry,
-        FactoryInterface $productPriceRuleFactory
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->formFactory = $formFactory;
-        $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
-        $this->actionFormTypeRegistry = $actionFormTypeRegistry;
-        $this->productPriceRuleFactory = $productPriceRuleFactory;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FormFactoryInterface $formFactory, private FormTypeRegistryInterface $conditionFormTypeRegistry, private FormTypeRegistryInterface $actionFormTypeRegistry, private FactoryInterface $productPriceRuleFactory)
+    {
     }
 
     /**
@@ -430,10 +411,6 @@ final class ProductPriceRuleContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('quantity', $configuration));
     }
 
-    /**
-     * @param ProductPriceRuleInterface $rule
-     * @param ConditionInterface        $condition
-     */
     private function addCondition(ProductPriceRuleInterface $rule, ConditionInterface $condition): void
     {
         $rule->addCondition($condition);
@@ -442,10 +419,6 @@ final class ProductPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @param ProductPriceRuleInterface $rule
-     * @param ActionInterface           $action
-     */
     private function addAction(ProductPriceRuleInterface $rule, ActionInterface $action): void
     {
         $rule->addAction($action);

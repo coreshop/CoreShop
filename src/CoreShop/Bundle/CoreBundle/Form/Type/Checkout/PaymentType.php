@@ -31,22 +31,14 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class PaymentType extends AbstractResourceType
 {
-    private FormTypeRegistryInterface $formTypeRegistry;
-    private PaymentProviderRepositoryInterface $paymentProviderRepository;
-    private array $gatewayFactories;
-
     public function __construct(
         string $dataClass,
         array $validationGroups,
-        FormTypeRegistryInterface $formTypeRegistry,
-        PaymentProviderRepositoryInterface $paymentProviderRepository,
-        array $gatewayFactories
+        private FormTypeRegistryInterface $formTypeRegistry,
+        private PaymentProviderRepositoryInterface $paymentProviderRepository,
+        private array $gatewayFactories
     ) {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->formTypeRegistry = $formTypeRegistry;
-        $this->paymentProviderRepository = $paymentProviderRepository;
-        $this->gatewayFactories = $gatewayFactories;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

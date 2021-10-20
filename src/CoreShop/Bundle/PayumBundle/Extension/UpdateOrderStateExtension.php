@@ -26,11 +26,8 @@ use Payum\Core\Request\Notify;
 
 final class UpdateOrderStateExtension implements ExtensionInterface
 {
-    private StateMachineManager $stateMachineManager;
-
-    public function __construct(StateMachineManager $stateMachineManager)
+    public function __construct(private StateMachineManager $stateMachineManager)
     {
-        $this->stateMachineManager = $stateMachineManager;
     }
 
     public function onPreExecute(Context $context): void
@@ -55,7 +52,7 @@ final class UpdateOrderStateExtension implements ExtensionInterface
         }
 
         if ($previousStackSize === 1) {
-            $previousActionClassName = get_class($previousStack[0]->getAction());
+            $previousActionClassName = $previousStack[0]->getAction()::class;
             if (false === stripos($previousActionClassName, 'NotifyNullAction')) {
                 return;
             }
@@ -88,9 +85,7 @@ final class UpdateOrderStateExtension implements ExtensionInterface
             $value === PaymentInterface::STATE_AUTHORIZED
         ) {
             $order = $payment->getOrder();
-            if ($order instanceof OrderInterface) {
-                $this->confirmOrderState($order);
-            }
+            $this->confirmOrderState($order);
         }
     }
 

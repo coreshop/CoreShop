@@ -24,18 +24,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 final class IndexListener
 {
     private ?ProcessInterface $process = null;
-    private ProcessFactoryInterface $processFactory;
-    private ProcessLogger $processLogger;
 
-    public function __construct(FactoryInterface $processFactory, ProcessLogger $processLogger)
+    public function __construct(private FactoryInterface $processFactory, private ProcessLogger $processLogger)
     {
-        $this->processFactory = $processFactory;
-        $this->processLogger = $processLogger;
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function onClasssesEvent(GenericEvent $event): void
     {
         if (null === $this->process) {
@@ -57,9 +50,6 @@ final class IndexListener
         }
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function onStartEvent(GenericEvent $event): void
     {
         if ($this->process) {
@@ -70,9 +60,6 @@ final class IndexListener
         }
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function onProgressEvent(GenericEvent $event): void
     {
         if ($this->process) {
@@ -83,9 +70,6 @@ final class IndexListener
         }
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function onStatusEvent(GenericEvent $event): void
     {
         if ($this->process) {
@@ -96,9 +80,6 @@ final class IndexListener
         }
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function onFinishedEvent(GenericEvent $event): void
     {
         if ($this->process) {

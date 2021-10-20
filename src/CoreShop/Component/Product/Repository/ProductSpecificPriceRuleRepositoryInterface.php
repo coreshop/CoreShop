@@ -20,8 +20,6 @@ use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 interface ProductSpecificPriceRuleRepositoryInterface extends PriceRuleRepositoryInterface
 {
     /**
-     * @param ProductInterface $product
-     *
      * @return ProductSpecificPriceRuleInterface[]
      */
     public function findForProduct(ProductInterface $product): array;

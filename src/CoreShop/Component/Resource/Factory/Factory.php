@@ -17,16 +17,15 @@ namespace CoreShop\Component\Resource\Factory;
 final class Factory implements FactoryInterface
 {
     /**
-     * @psalm-var class-string
-     */
-    private string $className;
-
-    /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className)
+    public function __construct(
+        /**
+         * @psalm-var class-string
+         */
+        private string $className
+    )
     {
-        $this->className = $className;
     }
 
     public function createNew()

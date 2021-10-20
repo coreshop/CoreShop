@@ -19,27 +19,19 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface CheckoutStepInterface
 {
-    /**
-     * @return string
-     */
     public function getIdentifier(): string;
 
     /**
      * Determines if this step should be forward if valid.
      *
-     * @param OrderInterface $cart
      *
-     * @return bool
      */
     public function doAutoForward(OrderInterface $cart): bool;
 
     /**
      * Commit Step from Request (validate form or whatever).
      *
-     * @param OrderInterface $cart
-     * @param Request       $request
      *
-     * @return bool
      *
      * @throws CheckoutException
      */
@@ -48,8 +40,6 @@ interface CheckoutStepInterface
     /**
      * Prepare Checkout Step.
      *
-     * @param OrderInterface $cart
-     * @param Request       $request
      *
      * @return array $params for the view
      */

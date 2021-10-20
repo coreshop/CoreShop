@@ -23,13 +23,8 @@ use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 
 class ShippingRuleConditionChecker extends AbstractConditionChecker
 {
-    protected RuleValidationProcessorInterface $ruleValidationProcessor;
-    protected RepositoryInterface $shippingRuleRepository;
-
-    public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor, RepositoryInterface $shippingRuleRepository)
+    public function __construct(protected RuleValidationProcessorInterface $ruleValidationProcessor, protected RepositoryInterface $shippingRuleRepository)
     {
-        $this->ruleValidationProcessor = $ruleValidationProcessor;
-        $this->shippingRuleRepository = $shippingRuleRepository;
     }
 
     public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration): bool

@@ -34,14 +34,10 @@ final class DriverProvider
         if (isset(self::$drivers[$type])) {
             return self::$drivers[$type];
         }
-
-        switch ($type) {
-            case CoreShopResourceBundle::DRIVER_DOCTRINE_ORM:
-                return self::$drivers[$type] = new DoctrineORMDriver();
-            case CoreShopResourceBundle::DRIVER_PIMCORE:
-                return self::$drivers[$type] = new PimcoreDriver();
-        }
-
-        throw new UnknownDriverException($type);
+        return match ($type) {
+            CoreShopResourceBundle::DRIVER_DOCTRINE_ORM => new DoctrineORMDriver(),
+            CoreShopResourceBundle::DRIVER_PIMCORE => new PimcoreDriver(),
+            default => throw new UnknownDriverException($type),
+        };
     }
 }

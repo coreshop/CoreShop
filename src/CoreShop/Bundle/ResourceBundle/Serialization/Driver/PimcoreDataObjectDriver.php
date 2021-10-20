@@ -19,17 +19,10 @@ use Metadata\Driver\DriverInterface;
 
 class PimcoreDataObjectDriver implements DriverInterface
 {
-    protected DriverInterface $decorated;
-
-    public function __construct(DriverInterface $decorated)
+    public function __construct(protected DriverInterface $decorated)
     {
-        $this->decorated = $decorated;
     }
 
-    /**
-     * @param \ReflectionClass $class
-     * @return \Metadata\ClassMetadata|null
-     */
     public function loadMetadataForClass(\ReflectionClass $class): ?ClassMetadata
     {
 //        //We don't want Pimcore entities to be serialized directly

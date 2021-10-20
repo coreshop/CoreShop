@@ -26,14 +26,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 abstract class AbstractInstallCommand extends Command
 {
     protected CommandExecutor $commandExecutor;
-    protected KernelInterface $kernel;
-    protected CommandDirectoryChecker $directoryChecker;
 
-    public function __construct(KernelInterface $kernel, CommandDirectoryChecker $directoryChecker)
+    public function __construct(protected KernelInterface $kernel, protected CommandDirectoryChecker $directoryChecker)
     {
-        $this->kernel = $kernel;
-        $this->directoryChecker = $directoryChecker;
-
         parent::__construct();
     }
 

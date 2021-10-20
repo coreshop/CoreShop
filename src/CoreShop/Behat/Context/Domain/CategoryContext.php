@@ -23,13 +23,8 @@ use Webmozart\Assert\Assert;
 
 final class CategoryContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private CategoryRepositoryInterface $categoryRepository;
-
-    public function __construct(SharedStorageInterface $sharedStorage, CategoryRepositoryInterface $categoryRepository)
+    public function __construct(private CategoryRepositoryInterface $categoryRepository)
     {
-        $this->sharedStorage = $sharedStorage;
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**

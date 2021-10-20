@@ -16,15 +16,8 @@ namespace CoreShop\Component\Index\Condition;
 
 class CompareCondition implements ConditionInterface
 {
-    private string $fieldName;
-    private string $operator;
-    private string $value;
-
-    public function __construct(string $fieldName, string $operator, string $value)
+    public function __construct(private string $fieldName, private string $operator, private string $value)
     {
-        $this->fieldName = $fieldName;
-        $this->operator = $operator;
-        $this->value = $value;
     }
 
     public function getFieldName(): string

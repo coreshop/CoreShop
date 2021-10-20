@@ -323,10 +323,8 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
 
         /**
      * @param mixed $value
-     *
-     * @return float|int
      */
-    protected function toNumeric($value)
+    protected function toNumeric($value): float|int
     {
         return (int) round($value * $this->getDecimalFactor());
     }

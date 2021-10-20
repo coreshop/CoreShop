@@ -21,11 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class TaxRateContext implements Context
 {
-    private TaxRateRepositoryInterface $taxRateRepository;
-
-    public function __construct(TaxRateRepositoryInterface $taxRateRepository)
+    public function __construct(private TaxRateRepositoryInterface $taxRateRepository)
     {
-        $this->taxRateRepository = $taxRateRepository;
     }
 
     /**

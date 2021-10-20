@@ -21,8 +21,6 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 interface PaymentRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param PayableInterface $payable
-     *
      * @return PaymentInterface[]
      */
     public function findForPayable(PayableInterface $payable): array;

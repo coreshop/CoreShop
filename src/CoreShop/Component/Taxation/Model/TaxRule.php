@@ -20,7 +20,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class TaxRule extends AbstractResource implements TaxRuleInterface
+class TaxRule extends AbstractResource implements TaxRuleInterface, \Stringable
 {
     use TimestampableTrait;
 
@@ -44,10 +44,7 @@ class TaxRule extends AbstractResource implements TaxRuleInterface
      */
     protected $behavior;
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $tax = $this->getTaxRate() instanceof TaxRateInterface ? $this->getTaxRate()->getName() : 'none';
 

@@ -24,22 +24,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class ThemeContext implements ThemeContextInterface
 {
-    private ThemeResolverInterface $resolver;
-    private ThemeRepositoryInterface $themeRepository;
-    private PimcoreContextResolver $pimcoreContext;
-    private RequestStack $requestStack;
-
-    public function __construct(
-        ThemeResolverInterface $resolver,
-        ThemeRepositoryInterface $themeRepository,
-        PimcoreContextResolver $pimcoreContext,
-        RequestStack $requestStack,
-    )
+    public function __construct(private ThemeResolverInterface $resolver, private ThemeRepositoryInterface $themeRepository, private PimcoreContextResolver $pimcoreContext, private RequestStack $requestStack)
     {
-        $this->resolver = $resolver;
-        $this->themeRepository = $themeRepository;
-        $this->pimcoreContext = $pimcoreContext;
-        $this->requestStack = $requestStack;
     }
 
     public function getTheme(): ?ThemeInterface
@@ -56,7 +42,7 @@ final class ThemeContext implements ThemeContextInterface
 
         try {
             return $this->themeRepository->findOneByName($this->resolver->resolveTheme());
-        } catch (ThemeNotResolvedException $exception) {
+        } catch (ThemeNotResolvedException) {
             return null;
         }
     }

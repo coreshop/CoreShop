@@ -18,18 +18,9 @@ use CoreShop\Component\StorageList\Model\StorageListInterface;
 
 interface StorageListManagerInterface
 {
-    /**
-     * @return StorageListInterface
-     */
     public function getStorageList(): StorageListInterface;
 
-    /**
-     * @return bool
-     */
     public function hasStorageList(): bool;
 
-    /**
-     * @param StorageListInterface $storageList
-     */
     public function persist(StorageListInterface $storageList): void;
 }

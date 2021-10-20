@@ -19,12 +19,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class WorkflowTransitionEvent extends Event
 {
     protected array $allowedTransitions;
-    protected string $workflowName;
 
-    public function __construct(array $allowedTransitions, string $workflowName)
+    public function __construct(array $allowedTransitions, protected string $workflowName)
     {
         $this->allowedTransitions = $allowedTransitions;
-        $this->workflowName = $workflowName;
     }
 
     public function getWorkflowName(): string

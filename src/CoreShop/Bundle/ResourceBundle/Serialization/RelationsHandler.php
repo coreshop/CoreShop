@@ -22,11 +22,8 @@ use JMS\Serializer\JsonSerializationVisitor;
 
 class RelationsHandler
 {
-    private EntityManagerInterface $manager;
-
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
-        $this->manager = $manager;
     }
 
     public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
@@ -88,7 +85,7 @@ class RelationsHandler
 
     protected function getSingleEntityRelation($relation, EntityManagerInterface $entityManager)
     {
-        $metadata = $entityManager->getClassMetadata(get_class($relation));
+        $metadata = $entityManager->getClassMetadata($relation::class);
 
         $ids = $metadata->getIdentifierValues($relation);
         if (!$metadata->isIdentifierComposite) {

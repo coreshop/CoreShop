@@ -27,11 +27,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 {
-    private KernelInterface $kernel;
-
-    public function __construct(KernelInterface $kernel)
+    public function __construct(private KernelInterface $kernel)
     {
-        $this->kernel = $kernel;
     }
 
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void

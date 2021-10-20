@@ -23,18 +23,8 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class StoreAwareCurrencyContext implements CurrencyContextInterface
 {
-    private CurrencyContextInterface $currencyContext;
-    private StoreContextInterface $storeContext;
-    private CurrencyRepositoryInterface $currencyRepository;
-
-    public function __construct(
-        CurrencyContextInterface $currencyContext,
-        StoreContextInterface $storeContext,
-        CurrencyRepositoryInterface $currencyRepository
-    ) {
-        $this->currencyContext = $currencyContext;
-        $this->storeContext = $storeContext;
-        $this->currencyRepository = $currencyRepository;
+    public function __construct(private CurrencyContextInterface $currencyContext, private StoreContextInterface $storeContext, private CurrencyRepositoryInterface $currencyRepository)
+    {
     }
 
     public function getCurrency(): CurrencyInterface
@@ -50,7 +40,7 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
             }
 
             return $currency;
-        } catch (CurrencyNotFoundException $exception) {
+        } catch (CurrencyNotFoundException) {
             return $store->getCurrency();
         }
     }
@@ -63,8 +53,6 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
     }
 
     /**
-     * @param StoreInterface $store
-     *
      * @return CurrencyInterface[]
      */
     private function getCurrenciesForStore(StoreInterface $store): array

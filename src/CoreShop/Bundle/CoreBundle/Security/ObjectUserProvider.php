@@ -22,16 +22,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ObjectUserProvider implements UserProviderInterface
 {
-    protected UserRepositoryInterface $userRepository;
-    protected string $className;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        string $className
-    )
+    public function __construct(protected UserRepositoryInterface $userRepository, protected string $className)
     {
-        $this->userRepository = $userRepository;
-        $this->className = $className;
     }
 
     public function loadUserByUsername(string $username): ?UserInterface

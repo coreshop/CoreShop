@@ -22,13 +22,8 @@ use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
 {
-    protected MetadataInterface $metadata;
-    protected Connection $connection;
-
-    public function __construct(MetadataInterface $metadata, Connection $connection)
+    public function __construct(protected MetadataInterface $metadata, protected Connection $connection)
     {
-        $this->metadata = $metadata;
-        $this->connection = $connection;
     }
 
     public function add(ResourceInterface $resource): void

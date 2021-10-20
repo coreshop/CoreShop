@@ -20,12 +20,10 @@ use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
 class OrderState extends AbstractOperator
 {
     private bool $highlightLabel = false;
-    private WorkflowStateInfoManagerInterface $workflowManager;
 
-    public function __construct(WorkflowStateInfoManagerInterface $workflowManager, \stdClass $config, $context = null)
+    public function __construct(private WorkflowStateInfoManagerInterface $workflowManager, \stdClass $config, $context = null)
     {
         parent::__construct($config, $context);
-        $this->workflowManager = $workflowManager;
         $this->highlightLabel = $config->highlightLabel;
     }
 

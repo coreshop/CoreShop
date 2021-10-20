@@ -25,11 +25,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProviderInterface
 {
-    private Registry $doctrineRegistry;
-
-    public function __construct(Registry $doctrineRegistry)
+    public function __construct(private Registry $doctrineRegistry)
     {
-        $this->doctrineRegistry = $doctrineRegistry;
     }
 
     public function getCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper): array

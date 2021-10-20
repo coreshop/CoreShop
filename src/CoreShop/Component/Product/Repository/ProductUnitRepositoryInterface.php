@@ -19,10 +19,5 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface ProductUnitRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @param string $name
-     *
-     * @return ProductUnitInterface|null
-     */
     public function findByName(string $name): ?ProductUnitInterface;
 }

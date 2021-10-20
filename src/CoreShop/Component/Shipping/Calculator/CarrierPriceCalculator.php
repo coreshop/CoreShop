@@ -22,11 +22,8 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
 {
-    private PrioritizedServiceRegistryInterface $shippingCalculatorRegistry;
-
-    public function __construct(PrioritizedServiceRegistryInterface $shippingCalculatorRegistry)
+    public function __construct(private PrioritizedServiceRegistryInterface $shippingCalculatorRegistry)
     {
-        $this->shippingCalculatorRegistry = $shippingCalculatorRegistry;
     }
 
     public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int
@@ -40,7 +37,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
             try {
                 $price = $calculator->getPrice($carrier, $shippable, $address, $context);
             }
-            catch (NoShippingPriceFoundException $ex) {
+            catch (NoShippingPriceFoundException) {
                 continue;
             }
         }

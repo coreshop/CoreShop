@@ -33,14 +33,8 @@ class LoadDataFixturesCommand extends Command
     const MAIN_FIXTURES_PATH = 'Fixtures/Data/Application';
     const DEMO_FIXTURES_PATH = 'Fixtures/Data/Demo';
 
-    protected DataFixturesLoader $fixtureLoader;
-    protected DataFixturesExecutorInterface $fixtureExecutor;
-
-    public function __construct(DataFixturesLoader $fixtureLoader, DataFixturesExecutorInterface $fixtureExecutor)
+    public function __construct(protected DataFixturesLoader $fixtureLoader, protected DataFixturesExecutorInterface $fixtureExecutor)
     {
-        $this->fixtureLoader = $fixtureLoader;
-        $this->fixtureExecutor = $fixtureExecutor;
-
         parent::__construct();
     }
 
@@ -100,8 +94,6 @@ class LoadDataFixturesCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      *
      * @return array
      *
@@ -138,8 +130,6 @@ class LoadDataFixturesCommand extends Command
     /**
      * Output list of fixtures.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      * @param array           $fixtures
      */
     protected function outputFixtures(InputInterface $input, OutputInterface $output, $fixtures)
@@ -151,15 +141,13 @@ class LoadDataFixturesCommand extends Command
             )
         );
         foreach ($fixtures as $fixture) {
-            $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', get_class($fixture)));
+            $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $fixture::class));
         }
     }
 
     /**
      * Process fixtures.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      * @param array           $fixtures
      */
     protected function processFixtures(InputInterface $input, OutputInterface $output, $fixtures)
@@ -179,19 +167,12 @@ class LoadDataFixturesCommand extends Command
         $this->fixtureExecutor->execute($fixtures, $this->getTypeOfFixtures($input));
     }
 
-    /**
-     * @param InputInterface $input
-     *
-     * @return string
-     */
     protected function getTypeOfFixtures(InputInterface $input): string
     {
         return (string)$input->getOption('fixtures-type');
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return string
      */
     protected function getFixtureRelativePath(InputInterface $input)

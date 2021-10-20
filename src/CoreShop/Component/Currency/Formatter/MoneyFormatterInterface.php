@@ -17,13 +17,7 @@ namespace CoreShop\Component\Currency\Formatter;
 interface MoneyFormatterInterface
 {
     /**
-     * @param int    $amount
-     * @param string $currencyCode
-     * @param string $locale
-     * @param int    $fraction
-     * @param int    $factor
      *
-     * @return string
      *
      * @throws \InvalidArgumentException
      */

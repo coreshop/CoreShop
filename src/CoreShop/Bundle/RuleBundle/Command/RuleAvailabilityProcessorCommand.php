@@ -21,12 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class RuleAvailabilityProcessorCommand extends Command
 {
-    private RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor;
-
-    public function __construct(RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor)
+    public function __construct(private RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor)
     {
-        $this->ruleAvailabilityProcessor = $ruleAvailabilityProcessor;
-
         parent::__construct();
     }
 

@@ -33,9 +33,6 @@ interface ExchangeRateInterface extends ResourceInterface
      */
     public function getFromCurrency();
 
-    /**
-     * @param CurrencyInterface $currency
-     */
     public function setFromCurrency(CurrencyInterface $currency);
 
     /**
@@ -43,8 +40,5 @@ interface ExchangeRateInterface extends ResourceInterface
      */
     public function getToCurrency();
 
-    /**
-     * @param CurrencyInterface $currency
-     */
     public function setToCurrency(CurrencyInterface $currency);
 }

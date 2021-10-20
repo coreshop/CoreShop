@@ -38,9 +38,6 @@ class StoreFixture extends AbstractFixture implements ContainerAwareInterface, V
     public function load(ObjectManager $manager): void
     {
         if (!$this->container->get('coreshop.repository.store')->findStandard()) {
-            /**
-             * @var StoreInterface
-             */
             $store = $this->container->get('coreshop.factory.store')->createNew();
             $store->setName('Standard');
             $store->setTemplate('Standard');

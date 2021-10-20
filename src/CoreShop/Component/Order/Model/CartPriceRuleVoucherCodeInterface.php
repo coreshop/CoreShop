@@ -75,9 +75,6 @@ interface CartPriceRuleVoucherCodeInterface extends ResourceInterface, Timestamp
      */
     public function getCreditCurrency();
 
-    /**
-     * @param CurrencyInterface|null $creditCurrency
-     */
     public function setCreditCurrency(?CurrencyInterface $creditCurrency);
 
     /**

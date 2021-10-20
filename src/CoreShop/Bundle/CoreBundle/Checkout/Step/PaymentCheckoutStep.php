@@ -28,15 +28,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private FormFactoryInterface $formFactory;
-    private CartManagerInterface $cartManager;
-
-    public function __construct(
-        FormFactoryInterface $formFactory,
-        CartManagerInterface $cartManager
-    ) {
-        $this->formFactory = $formFactory;
-        $this->cartManager = $cartManager;
+    public function __construct(private FormFactoryInterface $formFactory, private CartManagerInterface $cartManager)
+    {
     }
 
     public function getIdentifier(): string

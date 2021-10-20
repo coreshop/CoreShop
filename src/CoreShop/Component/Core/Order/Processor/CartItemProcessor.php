@@ -30,24 +30,8 @@ use Webmozart\Assert\Assert;
 
 final class CartItemProcessor implements CartItemProcessorInterface
 {
-    private ProductTaxCalculatorFactoryInterface $taxCalculator;
-    private AddressProviderInterface $defaultAddressProvider;
-    private FloatDistributorInterface $floatDistributor;
-    private RepositoryInterface $taxRateRepository;
-    private FactoryInterface $taxItemFactory;
-
-    public function __construct(
-        ProductTaxCalculatorFactoryInterface $taxCalculator,
-        AddressProviderInterface $defaultAddressProvider,
-        FloatDistributorInterface $floatDistributor,
-        RepositoryInterface $taxRateRepository,
-        FactoryInterface $taxItemFactory,
-    ) {
-        $this->taxCalculator = $taxCalculator;
-        $this->defaultAddressProvider = $defaultAddressProvider;
-        $this->floatDistributor = $floatDistributor;
-        $this->taxRateRepository = $taxRateRepository;
-        $this->taxItemFactory = $taxItemFactory;
+    public function __construct(private ProductTaxCalculatorFactoryInterface $taxCalculator, private AddressProviderInterface $defaultAddressProvider, private RepositoryInterface $taxRateRepository, private FactoryInterface $taxItemFactory)
+    {
     }
 
     public function processCartItem(

@@ -21,13 +21,8 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class RuleConditionsValidationProcessor implements RuleConditionsValidationProcessorInterface
 {
-    private ServiceRegistryInterface $ruleRegistry;
-    private string $type;
-
-    public function __construct(ServiceRegistryInterface $ruleRegistry, string $type)
+    public function __construct(private ServiceRegistryInterface $ruleRegistry, private string $type)
     {
-        $this->ruleRegistry = $ruleRegistry;
-        $this->type = $type;
     }
 
     public function getType(): string

@@ -21,11 +21,9 @@ use Symfony\Component\Filesystem\Filesystem;
 final class CommandDirectoryChecker
 {
     private string $name;
-    private Filesystem $filesystem;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(private Filesystem $filesystem)
     {
-        $this->filesystem = $filesystem;
     }
 
     public function ensureDirectoryExists(string $directory, OutputInterface $output): void
@@ -38,7 +36,7 @@ final class CommandDirectoryChecker
             $this->filesystem->mkdir($directory, 0755);
 
             $output->writeln(sprintf('<comment>Created "%s" directory.</comment>', realpath($directory)));
-        } catch (IOException $exception) {
+        } catch (IOException) {
             $output->writeln('');
             $output->writeln('<error>Cannot run command due to unexisting directory (tried to create it automatically, failed).</error>');
             $output->writeln('');
@@ -61,7 +59,7 @@ final class CommandDirectoryChecker
             $this->filesystem->chmod($directory, 0755);
 
             $output->writeln(sprintf('<comment>Changed "%s" permissions to 0755.</comment>', realpath($directory)));
-        } catch (IOException $exception) {
+        } catch (IOException) {
             $output->writeln('');
             $output->writeln('<error>Cannot run command due to bad directory permissions (tried to change permissions to 0755).</error>');
             $output->writeln('');

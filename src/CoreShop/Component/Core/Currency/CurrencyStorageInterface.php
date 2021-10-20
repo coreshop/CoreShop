@@ -20,16 +20,10 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 interface CurrencyStorageInterface
 {
-    /**
-     * @param StoreInterface    $store
-     * @param CurrencyInterface $currency
-     */
     public function set(StoreInterface $store, CurrencyInterface $currency): void;
 
     /**
-     * @param StoreInterface $store
      *
-     * @return CurrencyInterface
      *
      * @throws CurrencyNotFoundException
      */

@@ -16,11 +16,5 @@ namespace CoreShop\Component\Order\Distributor;
 
 interface ProportionalIntegerDistributorInterface
 {
-    /**
-     * @param array $integers
-     * @param int   $amount
-     *
-     * @return array
-     */
     public function distribute(array $integers, int $amount): array;
 }

@@ -20,11 +20,8 @@ use Pimcore\Model\User;
 
 class PimcoreGuard
 {
-    private TokenStorageUserResolver $tokenStorageUserResolver;
-
-    public function __construct(TokenStorageUserResolver $tokenStorageUserResolver)
+    public function __construct(private TokenStorageUserResolver $tokenStorageUserResolver)
     {
-        $this->tokenStorageUserResolver = $tokenStorageUserResolver;
     }
 
     public function matchItem(ItemInterface $item): bool

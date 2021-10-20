@@ -22,11 +22,8 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 class QuantityPriceFetcher implements QuantityPriceFetcherInterface
 {
-    private ServiceRegistryInterface $calculatorRegistry;
-
-    public function __construct(ServiceRegistryInterface $calculatorRegistry)
+    public function __construct(private ServiceRegistryInterface $calculatorRegistry)
     {
-        $this->calculatorRegistry = $calculatorRegistry;
     }
 
     public function fetchQuantityPrice(

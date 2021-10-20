@@ -27,37 +27,25 @@ interface WorkerInterface
 {
     /**
      * creates or updates necessary index structures (like database tables and so on).
-     *
-     * @param IndexInterface $index
      */
     public function createOrUpdateIndexStructures(IndexInterface $index);
 
     /**
      * deletes necessary index structuers (like database tables).
-     *
-     * @param IndexInterface $index
      */
     public function deleteIndexStructures(IndexInterface $index);
 
     /**
      * deletes given element from index.
-     *
-     * @param IndexInterface     $index
-     * @param IndexableInterface $object
      */
     public function deleteFromIndex(IndexInterface $index, IndexableInterface $object);
 
     /**
      * updates given element in index.
-     *
-     * @param IndexInterface     $index
-     * @param IndexableInterface $object
      */
     public function updateIndex(IndexInterface $index, IndexableInterface $object);
 
     /**
-     * @param IndexInterface $index
-     *
      * @return IndexExtensionInterface[]
      */
     public function getExtensions(IndexInterface $index);
@@ -65,7 +53,6 @@ interface WorkerInterface
     /**
      * returns product list implementation valid and configured for this worker/tenant.
      *
-     * @param IndexInterface $index
      *
      * @return ListingInterface
      */
@@ -74,9 +61,7 @@ interface WorkerInterface
     /**
      * Renders the condition to fit the service.
      *
-     * @param ConditionInterface $condition
      * @param string             $prefix
-     *
      * @return mixed
      */
     public function renderCondition(ConditionInterface $condition, $prefix = null);
@@ -84,7 +69,6 @@ interface WorkerInterface
     /**
      * Renders field type for the service.
      *
-     * @param string $type
      *
      * @return mixed
      */

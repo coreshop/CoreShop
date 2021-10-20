@@ -25,14 +25,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DropDatabaseTablesCommand extends Command
 {
-    private array $coreShopResources;
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(array $coreShopResources, EntityManagerInterface $entityManager)
+    public function __construct(private array $coreShopResources, private EntityManagerInterface $entityManager)
     {
-        $this->coreShopResources = $coreShopResources;
-        $this->entityManager = $entityManager;
-
         parent::__construct();
     }
 
@@ -109,10 +103,6 @@ EOT
 
             $ui->text(sprintf('    <info>%s</info> %s executed', count($sqls), $pluralization));
             $ui->success('Database schema dropped successfully!');
-        }
-
-        if ($dumpSql || $force) {
-            return 0;
         }
 
         return 0;

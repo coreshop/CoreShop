@@ -21,9 +21,7 @@ interface OrderDocumentRendererInterface
     /**
      * Renders a Order Document as PDF.
      *
-     * @param OrderDocumentInterface $orderDocument
      *
-     * @return string
      */
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string;
 }

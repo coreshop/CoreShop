@@ -204,8 +204,6 @@ class SEOMetadata implements SEOMetadataInterface
 
     /**
      * @param mixed $data
-     *
-     * @return array
      */
     private function toArray($data): array
     {
@@ -220,7 +218,7 @@ class SEOMetadata implements SEOMetadataInterface
         throw new \InvalidArgumentException(
             sprintf(
                 'Expected array or Traversable, got "%s"',
-                is_object($data) ? get_class($data) : gettype($data)
+                get_debug_type($data)
             )
         );
     }

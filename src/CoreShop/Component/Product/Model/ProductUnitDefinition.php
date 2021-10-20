@@ -19,7 +19,7 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 /**
  * @psalm-suppress MissingConstructor
  */
-class ProductUnitDefinition extends AbstractResource implements ProductUnitDefinitionInterface
+class ProductUnitDefinition extends AbstractResource implements ProductUnitDefinitionInterface, \Stringable
 {
     /**
      * @var int|null
@@ -46,9 +46,6 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
      */
     protected $productUnitDefinitions;
 
-    /**
-     * @param int $id
-     */
     public function setId(int $id)
     {
         $this->id = $id;
@@ -108,10 +105,7 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
         return null;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s, (Conversion Rate: %s)', $this->getUnitName(), $this->getConversionRate());
     }

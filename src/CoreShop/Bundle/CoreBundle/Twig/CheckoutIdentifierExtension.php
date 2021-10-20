@@ -26,21 +26,8 @@ use Twig\TwigFunction;
 
 final class CheckoutIdentifierExtension extends AbstractExtension
 {
-    private RequestStack $requestStack;
-    private RouterInterface $router;
-    private CheckoutManagerFactoryInterface $checkoutManagerFactory;
-    private CartContextInterface $cartContext;
-
-    public function __construct(
-        RequestStack $requestStack,
-        RouterInterface $router,
-        CheckoutManagerFactoryInterface $checkoutManagerFactory,
-        CartContextInterface $cartContext
-    ) {
-        $this->requestStack = $requestStack;
-        $this->router = $router;
-        $this->checkoutManagerFactory = $checkoutManagerFactory;
-        $this->cartContext = $cartContext;
+    public function __construct(private RequestStack $requestStack, private RouterInterface $router, private CheckoutManagerFactoryInterface $checkoutManagerFactory, private CartContextInterface $cartContext)
+    {
     }
 
     public function getFunctions(): array
@@ -85,7 +72,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         foreach ($checkoutSteps as $identifier) {
             $stepIndex = $checkoutManager->getCurrentStepIndex($identifier);
             $step = $checkoutManager->getStep($identifier);
-            $isValid = $step instanceof ValidationCheckoutStepInterface ? $step->validate($cart) : false;
+            $isValid = $step instanceof ValidationCheckoutStepInterface && $step->validate($cart);
 
             $shopSteps[$identifier] = [
                 'waiting' => null === $stepIdentifier || $currentStep < $stepIndex,
@@ -133,7 +120,6 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         ?string $stepIdentifier,
         CheckoutManagerInterface $checkoutManager
     ): ?string {
-        $identifier = null;
         $request = $this->requestStack->getMainRequest();
         $previousIdentifier = $request->get('stepIdentifier');
 

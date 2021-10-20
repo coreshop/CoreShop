@@ -22,15 +22,9 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 interface CalculatorInterface
 {
     /**
-     * @param ProductQuantityPriceRuleInterface $quantityPriceRule
-     * @param QuantityRangePriceAwareInterface  $subject
-     * @param float                             $quantity
-     * @param int                               $originalPrice
-     * @param array                             $context
      *
      * @throws NoPriceFoundException
      *
-     * @return int
      */
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
@@ -41,14 +35,9 @@ interface CalculatorInterface
     ): int;
 
     /**
-     * @param QuantityRangeInterface           $range
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param int                              $originalPrice
-     * @param array                            $context
      *
      * @throws NoPriceFoundException
      *
-     * @return int
      */
     public function calculateForRange(
         QuantityRangeInterface $range,

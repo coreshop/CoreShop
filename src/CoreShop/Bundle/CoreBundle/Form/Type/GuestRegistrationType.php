@@ -34,22 +34,14 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 class GuestRegistrationType extends AbstractResourceType
 {
-    private DataMapperInterface $dataMapper;
-    private CustomerRepositoryInterface $customerRepository;
-    private FactoryInterface $customerFactory;
-
     public function __construct(
         string $dataClass,
         array $validationGroups,
-        DataMapperInterface $dataMapper,
-        CustomerRepositoryInterface $customerRepository,
-        FactoryInterface $customerFactory
+        private DataMapperInterface $dataMapper,
+        private CustomerRepositoryInterface $customerRepository,
+        private FactoryInterface $customerFactory
     ) {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->dataMapper = $dataMapper;
-        $this->customerRepository = $customerRepository;
-        $this->customerFactory = $customerFactory;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

@@ -18,12 +18,6 @@ use Pimcore\Model\DataObject;
 
 interface HistoryLoggerInterface
 {
-    /**
-     * @param DataObject\Concrete $object
-     * @param string|null         $message
-     * @param string|null         $description
-     * @param bool                $translate
-     */
     public function log(
         DataObject\Concrete $object,
         ?string $message = null,

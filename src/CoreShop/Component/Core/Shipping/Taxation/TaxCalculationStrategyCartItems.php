@@ -29,18 +29,8 @@ use Webmozart\Assert\Assert;
 
 class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
 {
-    private TaxCollectorInterface $taxCollector;
-    private TaxCalculatorFactoryInterface $taxCalculationFactory;
-    private ProportionalIntegerDistributorInterface $distributor;
-
-    public function __construct(
-        TaxCollectorInterface $taxCollector,
-        TaxCalculatorFactoryInterface $taxCalculationFactory,
-        ProportionalIntegerDistributorInterface $distributor
-    ) {
-        $this->taxCollector = $taxCollector;
-        $this->taxCalculationFactory = $taxCalculationFactory;
-        $this->distributor = $distributor;
+    public function __construct(private TaxCollectorInterface $taxCollector, private TaxCalculatorFactoryInterface $taxCalculationFactory, private ProportionalIntegerDistributorInterface $distributor)
+    {
     }
 
     public function calculateShippingTax(

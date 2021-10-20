@@ -28,13 +28,8 @@ use Doctrine\Common\Collections\Collection;
 
 class UnitVolumeCalculator implements CalculatorInterface
 {
-    protected VolumeCalculator $inner;
-    protected ServiceRegistryInterface $actionRegistry;
-
-    public function __construct(VolumeCalculator $inner, ServiceRegistryInterface $actionRegistry)
+    public function __construct(protected VolumeCalculator $inner, protected ServiceRegistryInterface $actionRegistry)
     {
-        $this->inner = $inner;
-        $this->actionRegistry = $actionRegistry;
     }
 
     public function calculateForQuantity(
@@ -62,7 +57,7 @@ class UnitVolumeCalculator implements CalculatorInterface
         }
 
         if ($subject instanceof ProductInterface && is_numeric($subject->getItemQuantityFactor()) && $subject->getItemQuantityFactor() > 1) {
-            $price = (int)($price / (int)$subject->getItemQuantityFactor());
+            $price = (int)($price / $subject->getItemQuantityFactor());
         }
 
         return $price;
@@ -103,7 +98,7 @@ class UnitVolumeCalculator implements CalculatorInterface
         $unitFilteredRanges = array_values($unitFilteredRanges);
 
         /** @var CoreQuantityRangeInterface $range */
-        foreach ($unitFilteredRanges as $index => $range) {
+        foreach ($unitFilteredRanges as $range) {
             if ($range->getRangeStartingFrom() > $quantity) {
                 break;
             }

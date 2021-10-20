@@ -19,11 +19,8 @@ use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 
 final class OrderDocumentWkhtmlPrintOptionsListener
 {
-    private ConfigurationServiceInterface $configurationHelper;
-
-    public function __construct(ConfigurationServiceInterface $configurationHelper)
+    public function __construct(private ConfigurationServiceInterface $configurationHelper)
     {
-        $this->configurationHelper = $configurationHelper;
     }
 
     public function resolveOptions(WkhtmlOptionsEvent $event): void

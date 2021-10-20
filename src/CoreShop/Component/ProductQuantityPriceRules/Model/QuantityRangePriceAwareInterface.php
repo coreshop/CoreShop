@@ -23,8 +23,5 @@ interface QuantityRangePriceAwareInterface extends ResourceInterface
      */
     public function getQuantityPriceRules(): array;
 
-    /**
-     * @param array $quantityPriceRules
-     */
     public function setQuantityPriceRules(array $quantityPriceRules);
 }

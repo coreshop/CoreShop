@@ -268,7 +268,7 @@ class OrderController extends PimcoreController
 
     protected function prepareSale(OrderInterface $order): array
     {
-        $date = (int)$order->getOrderDate()->getTimestamp();
+        $date = $order->getOrderDate()->getTimestamp();
 
         $element = [
             'o_id' => $order->getId(),
@@ -294,13 +294,11 @@ class OrderController extends PimcoreController
             'orderInvoiceState' => $this->workflowStateManager->getStateInfo('coreshop_order_invoice', $order->getInvoiceState(), false)
         ];
 
-        $element = array_merge(
+        return array_merge(
             $element,
             $this->prepareAddress($order->getShippingAddress(), 'shipping'),
             $this->prepareAddress($order->getInvoiceAddress(), 'invoice')
         );
-
-        return $element;
     }
 
     protected function prepareAddress(AddressInterface $address, string $type): array
@@ -430,9 +428,7 @@ class OrderController extends PimcoreController
 
         $this->eventDispatcher->dispatch($event, Events::SALE_DETAIL_PREPARE);
 
-        $jsonSale = $event->getArguments();
-
-        return $jsonSale;
+        return $event->getArguments();
     }
 
     protected function getMailCorrespondence(OrderInterface $order): array

@@ -24,13 +24,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractConfigurableIndexColumnElementType extends AbstractResourceType
 {
-    private FormTypeRegistryInterface $formTypeRegistry;
-
-    public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
+    public function __construct(string $dataClass, array $validationGroups, private FormTypeRegistryInterface $formTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->formTypeRegistry = $formTypeRegistry;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -82,10 +78,6 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
             ->setAllowedTypes('configuration_type', ['string', 'null']);
     }
 
-    /**
-     * @param FormInterface $form
-     * @param string        $configurationType
-     */
     protected function addConfigurationFields(FormInterface $form, string $configurationType): void
     {
         $form->add('configuration', $configurationType, [
@@ -94,10 +86,8 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
     }
 
     /**
-     * @param FormInterface $form
      * @param mixed         $data
      *
-     * @return string|null
      */
     protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {

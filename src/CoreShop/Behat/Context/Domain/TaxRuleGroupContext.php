@@ -27,27 +27,8 @@ use Webmozart\Assert\Assert;
 
 final class TaxRuleGroupContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private FactoryInterface $addressFactory;
-    private RepositoryInterface $taxRuleGroupRepository;
-    private TaxRuleRepositoryInterface $taxRuleRepository;
-    private TaxCalculatorFactoryInterface $taxCalculatorFactory;
-    private CountryContextInterface $countryContext;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        FactoryInterface $addressFactory,
-        RepositoryInterface $taxRuleGroupRepository,
-        TaxRuleRepositoryInterface $taxRuleRepository,
-        TaxCalculatorFactoryInterface $taxCalculatorFactory,
-        CountryContextInterface $countryContext
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->addressFactory = $addressFactory;
-        $this->taxRuleGroupRepository = $taxRuleGroupRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->taxCalculatorFactory = $taxCalculatorFactory;
-        $this->countryContext = $countryContext;
+    public function __construct(private FactoryInterface $addressFactory, private RepositoryInterface $taxRuleGroupRepository, private TaxRuleRepositoryInterface $taxRuleRepository, private TaxCalculatorFactoryInterface $taxCalculatorFactory, private CountryContextInterface $countryContext)
+    {
     }
 
     /**

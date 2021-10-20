@@ -19,14 +19,7 @@ use CoreShop\Component\Notification\Processor\RulesProcessorInterface;
 
 abstract class AbstractNotificationRuleListener
 {
-    protected RulesProcessorInterface $rulesProcessor;
-    protected ShopperContextInterface $shopperContext;
-
-    public function __construct(
-        RulesProcessorInterface $rulesProcessor,
-        ShopperContextInterface $shopperContext
-    ) {
-        $this->rulesProcessor = $rulesProcessor;
-        $this->shopperContext = $shopperContext;
+    public function __construct(protected RulesProcessorInterface $rulesProcessor, protected ShopperContextInterface $shopperContext)
+    {
     }
 }

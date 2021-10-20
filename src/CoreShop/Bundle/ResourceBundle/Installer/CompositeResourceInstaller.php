@@ -19,11 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CompositeResourceInstaller implements ResourceInstallerInterface
 {
-    protected PrioritizedServiceRegistryInterface $serviceRegistry;
-
-    public function __construct(PrioritizedServiceRegistryInterface $serviceRegistry)
+    public function __construct(protected PrioritizedServiceRegistryInterface $serviceRegistry)
     {
-        $this->serviceRegistry = $serviceRegistry;
     }
 
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void

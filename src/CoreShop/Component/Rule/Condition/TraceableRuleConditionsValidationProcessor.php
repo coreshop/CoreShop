@@ -20,12 +20,10 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditionsValidationProcessorInterface
 {
-    private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor;
     private array $processed = [];
 
-    public function __construct(RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
+    public function __construct(private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
     {
-        $this->ruleConditionsValidationProcessor = $ruleConditionsValidationProcessor;
     }
 
     public function getType(): string
@@ -79,7 +77,7 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
         if (!isset($this->processed[$subject->getId()])) {
             $this->processed[$subject->getId()] = [
                 'subject' => $subject,
-                'type' => get_class($subject),
+                'type' => $subject::class,
                 'rules' => [],
             ];
         }

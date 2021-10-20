@@ -20,14 +20,9 @@ use Doctrine\ORM\QueryBuilder;
 
 interface CountryRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @return QueryBuilder
-     */
     public function createListQueryBuilder(): QueryBuilder;
 
     /**
-     * @param string $name
-     * @param string $locale
      *
      * @return CountryInterface[]
      */

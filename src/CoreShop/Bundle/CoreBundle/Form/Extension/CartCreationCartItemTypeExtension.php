@@ -25,11 +25,8 @@ use Symfony\Component\Form\FormEvents;
 
 final class CartCreationCartItemTypeExtension extends AbstractTypeExtension
 {
-    private RepositoryInterface $productRepository;
-
-    public function __construct(RepositoryInterface $productRepository)
+    public function __construct(private RepositoryInterface $productRepository)
     {
-        $this->productRepository = $productRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

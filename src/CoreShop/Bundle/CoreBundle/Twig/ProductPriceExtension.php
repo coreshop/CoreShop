@@ -20,11 +20,8 @@ use Twig\TwigFilter;
 
 final class ProductPriceExtension extends AbstractExtension
 {
-    private TaxedProductPriceCalculatorInterface $productPriceCalculator;
-
-    public function __construct(TaxedProductPriceCalculatorInterface $productPriceCalculator)
+    public function __construct(private TaxedProductPriceCalculatorInterface $productPriceCalculator)
     {
-        $this->productPriceCalculator = $productPriceCalculator;
     }
 
     public function getFilters(): array

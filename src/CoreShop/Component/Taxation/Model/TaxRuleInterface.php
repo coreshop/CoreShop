@@ -44,8 +44,5 @@ interface TaxRuleInterface extends ResourceInterface, TimestampableInterface
      */
     public function getTaxRate();
 
-    /**
-     * @param TaxRateInterface $taxRate
-     */
     public function setTaxRate(TaxRateInterface $taxRate);
 }

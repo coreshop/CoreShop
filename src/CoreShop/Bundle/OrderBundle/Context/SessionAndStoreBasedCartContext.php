@@ -24,22 +24,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class SessionAndStoreBasedCartContext implements CartContextInterface
 {
-    private SessionInterface $session;
-    private string $sessionKeyName;
-    private OrderRepositoryInterface $cartRepository;
-    private StoreContextInterface $storeContext;
     private ?OrderInterface $cart = null;
 
-    public function __construct(
-        SessionInterface $session,
-        string $sessionKeyName,
-        OrderRepositoryInterface $cartRepository,
-        StoreContextInterface $storeContext
-    ) {
-        $this->session = $session;
-        $this->sessionKeyName = $sessionKeyName;
-        $this->cartRepository = $cartRepository;
-        $this->storeContext = $storeContext;
+    public function __construct(private SessionInterface $session, private string $sessionKeyName, private OrderRepositoryInterface $cartRepository, private StoreContextInterface $storeContext)
+    {
     }
 
     public function getCart(): OrderInterface

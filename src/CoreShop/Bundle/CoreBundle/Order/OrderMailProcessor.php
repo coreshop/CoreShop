@@ -33,30 +33,8 @@ use Pimcore\Model\Document\Email;
 
 class OrderMailProcessor implements OrderMailProcessorInterface
 {
-    private Logger $logger;
-    private MoneyFormatterInterface $priceFormatter;
-    private OrderInvoiceRepositoryInterface $invoiceRepository;
-    private OrderShipmentRepositoryInterface $shipmentRepository;
-    private OrderDocumentRendererInterface $orderDocumentRenderer;
-    private ThemeHelperInterface $themeHelper;
-    private MailProcessorInterface $mailProcessor;
-
-    public function __construct(
-        Logger $logger,
-        MoneyFormatterInterface $priceFormatter,
-        OrderInvoiceRepositoryInterface $invoiceRepository,
-        OrderShipmentRepositoryInterface $shipmentRepository,
-        OrderDocumentRendererInterface $orderDocumentRenderer,
-        ThemeHelperInterface $themeHelper,
-        MailProcessorInterface $mailProcessor
-    ) {
-        $this->logger = $logger;
-        $this->priceFormatter = $priceFormatter;
-        $this->invoiceRepository = $invoiceRepository;
-        $this->shipmentRepository = $shipmentRepository;
-        $this->orderDocumentRenderer = $orderDocumentRenderer;
-        $this->themeHelper = $themeHelper;
-        $this->mailProcessor = $mailProcessor;
+    public function __construct(private Logger $logger, private MoneyFormatterInterface $priceFormatter, private OrderInvoiceRepositoryInterface $invoiceRepository, private OrderShipmentRepositoryInterface $shipmentRepository, private OrderDocumentRendererInterface $orderDocumentRenderer, private ThemeHelperInterface $themeHelper, private MailProcessorInterface $mailProcessor)
+    {
     }
 
     public function sendOrderMail(Email $emailDocument, OrderInterface $order, bool $sendInvoices = false, bool $sendShipments = false, array $params = []): bool

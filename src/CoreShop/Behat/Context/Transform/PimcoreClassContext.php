@@ -25,15 +25,8 @@ use Webmozart\Assert\Assert;
 
 final class PimcoreClassContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ClassStorageInterface $classStorage;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ClassStorageInterface $classStorage
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->classStorage = $classStorage;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ClassStorageInterface $classStorage)
+    {
     }
 
     /**

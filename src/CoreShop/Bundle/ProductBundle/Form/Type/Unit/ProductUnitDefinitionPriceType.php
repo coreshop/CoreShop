@@ -20,15 +20,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class ProductUnitDefinitionPriceType extends AbstractResourceType
 {
-    protected int $decimalFactor;
-    protected int $decimalPrecision;
-
-    public function __construct(string $dataClass, array $validationGroups, int $decimalFactor, int $decimalPrecision)
+    public function __construct(string $dataClass, array $validationGroups, protected int $decimalFactor, protected int $decimalPrecision)
     {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->decimalFactor = $decimalFactor;
-        $this->decimalPrecision = $decimalPrecision;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

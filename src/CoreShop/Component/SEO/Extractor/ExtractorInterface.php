@@ -26,8 +26,6 @@ interface ExtractorInterface
      * or introspection to see if a certain method exists.
      *
      * @param object $object
-     *
-     * @return bool
      */
     public function supports($object): bool;
 
@@ -40,7 +38,6 @@ interface ExtractorInterface
      * This method should only be called if supports returned true.
      *
      * @param object               $object
-     * @param SEOMetadataInterface $seoMetadata
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void;
 }

@@ -18,10 +18,5 @@ use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CheckoutManagerFactoryInterface
 {
-    /**
-     * @param OrderInterface $cart
-     *
-     * @return CheckoutManagerInterface
-     */
     public function createCheckoutManager(OrderInterface $cart): CheckoutManagerInterface;
 }

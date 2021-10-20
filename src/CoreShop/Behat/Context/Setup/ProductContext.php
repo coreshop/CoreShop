@@ -39,30 +39,8 @@ use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private FactoryInterface $productFactory;
-    private FactoryInterface $productUnitDefinitions;
-    private FactoryInterface $productUnitDefinition;
-    private FactoryInterface $productUnitDefinitionPriceFactory;
-    private ProductUnitDefinitionsCloner $unitDefinitionsCloner;
-    private ProductQuantityPriceRulesCloner $quantityPriceRulesCloner;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        FactoryInterface $productFactory,
-        FactoryInterface $productUnitDefinitions,
-        FactoryInterface $productUnitDefinition,
-        FactoryInterface $productUnitDefinitionPriceFactory,
-        ProductUnitDefinitionsCloner $unitDefinitionsCloner,
-        ProductQuantityPriceRulesCloner $quantityPriceRulesCloner
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->productFactory = $productFactory;
-        $this->productUnitDefinitions = $productUnitDefinitions;
-        $this->productUnitDefinition = $productUnitDefinition;
-        $this->productUnitDefinitionPriceFactory = $productUnitDefinitionPriceFactory;
-        $this->unitDefinitionsCloner = $unitDefinitionsCloner;
-        $this->quantityPriceRulesCloner = $quantityPriceRulesCloner;
+    public function __construct(private SharedStorageInterface $sharedStorage, private FactoryInterface $productFactory, private FactoryInterface $productUnitDefinitions, private FactoryInterface $productUnitDefinition, private FactoryInterface $productUnitDefinitionPriceFactory, private ProductUnitDefinitionsCloner $unitDefinitionsCloner, private ProductQuantityPriceRulesCloner $quantityPriceRulesCloner)
+    {
     }
 
     /**

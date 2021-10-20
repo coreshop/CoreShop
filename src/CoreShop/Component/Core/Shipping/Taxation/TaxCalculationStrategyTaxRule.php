@@ -30,15 +30,8 @@ use Webmozart\Assert\Assert;
 
 class TaxCalculationStrategyTaxRule implements TaxCalculationStrategyInterface
 {
-    private TaxCollectorInterface $taxCollector;
-    private TaxCalculatorFactoryInterface $taxCalculationFactory;
-
-    public function __construct(
-        TaxCollectorInterface $taxCollector,
-        TaxCalculatorFactoryInterface $taxCalculationFactory
-    ) {
-        $this->taxCollector = $taxCollector;
-        $this->taxCalculationFactory = $taxCalculationFactory;
+    public function __construct(private TaxCollectorInterface $taxCollector, private TaxCalculatorFactoryInterface $taxCalculationFactory)
+    {
     }
 
     public function calculateShippingTax(

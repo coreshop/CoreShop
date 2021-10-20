@@ -23,24 +23,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterface
 {
-    private EventDispatcherInterface $eventDispatcher;
-    private StateMachineManagerInterface $stateMachineManager;
-    private TranslatorInterface $translator;
-    private HistoryRepositoryInterface $historyRepository;
-    private array $stateColors;
-
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        StateMachineManagerInterface $stateMachineManager,
-        TranslatorInterface $translator,
-        HistoryRepositoryInterface $historyRepository,
-        array $stateColors
-    ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->stateMachineManager = $stateMachineManager;
-        $this->historyRepository = $historyRepository;
-        $this->translator = $translator;
-        $this->stateColors = $stateColors;
+    public function __construct(private EventDispatcherInterface $eventDispatcher, private StateMachineManagerInterface $stateMachineManager, private TranslatorInterface $translator, private HistoryRepositoryInterface $historyRepository, private array $stateColors)
+    {
     }
 
     public function getStateInfo(string $workflowName, string $value, bool $forFrontend = true): array
@@ -50,13 +34,11 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
 
         $color = isset($this->stateColors[$workflowName]['place_colors'][$value]) ? $this->stateColors[$workflowName]['place_colors'][$value] : '#f6f1de';
 
-        $data = [
+        return [
             'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
             'state' => $value,
             'color' => $color,
         ];
-
-        return $data;
     }
 
     public function parseTransitions(object $subject, string $workflowName, array $transitions = [], bool $forFrontend = true): array

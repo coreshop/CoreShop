@@ -51,20 +51,12 @@ interface ProductQuantityPriceRuleInterface extends RuleInterface
     public function hasRanges();
 
     /**
-     * @param QuantityRangeInterface $priceRange
-     *
      * @return bool
      */
     public function hasRange(QuantityRangeInterface $priceRange);
 
-    /**
-     * @param QuantityRangeInterface $priceRange
-     */
     public function addRange(QuantityRangeInterface $priceRange);
 
-    /**
-     * @param QuantityRangeInterface $priceRange
-     */
     public function removeRange(QuantityRangeInterface $priceRange);
 
     /**

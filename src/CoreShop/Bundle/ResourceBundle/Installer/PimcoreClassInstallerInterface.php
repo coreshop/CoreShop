@@ -16,18 +16,9 @@ namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 interface PimcoreClassInstallerInterface extends ResourceInstallerInterface
 {
-    /**
-     * @return array
-     */
     public function getInstalledClasses(): array;
 
-    /**
-     * @return array
-     */
     public function getInstalledCollections(): array;
 
-    /**
-     * @return array
-     */
     public function getInstalledBricks(): array;
 }

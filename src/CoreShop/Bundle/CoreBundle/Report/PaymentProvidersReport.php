@@ -26,21 +26,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class PaymentProvidersReport implements ReportInterface
 {
     private int $totalRecords = 0;
-    private RepositoryInterface $storeRepository;
-    private Connection $db;
-    private RepositoryInterface $paymentProviderRepository;
-    private PimcoreRepositoryInterface $orderRepository;
 
-    public function __construct(
-        RepositoryInterface $storeRepository,
-        Connection $db,
-        RepositoryInterface $paymentProviderRepository,
-        PimcoreRepositoryInterface $orderRepository
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->db = $db;
-        $this->paymentProviderRepository = $paymentProviderRepository;
-        $this->orderRepository = $orderRepository;
+    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private RepositoryInterface $paymentProviderRepository, private PimcoreRepositoryInterface $orderRepository)
+    {
     }
 
     public function getReportData(ParameterBag $parameterBag): array

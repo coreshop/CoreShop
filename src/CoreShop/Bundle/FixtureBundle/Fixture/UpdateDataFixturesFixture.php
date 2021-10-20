@@ -21,23 +21,14 @@ use Doctrine\Persistence\ObjectManager;
 
 class UpdateDataFixturesFixture extends AbstractFixture
 {
-    protected FactoryInterface $fixtureFactory;
-    protected DataFixtureRepositoryInterface $fixtureRepository;
     protected array $dataFixturesClassNames;
 
-    public function __construct(
-        FactoryInterface $fixtureFactory,
-        DataFixtureRepositoryInterface $fixtureRepository
-    )
+    public function __construct(protected FactoryInterface $fixtureFactory, protected DataFixtureRepositoryInterface $fixtureRepository)
     {
-        $this->fixtureFactory = $fixtureFactory;
-        $this->fixtureRepository = $fixtureRepository;
     }
 
     /**
      * Set a list of data fixtures to be updated.
-     *
-     * @param array $classNames
      */
     public function setDataFixtures(array $classNames): void
     {

@@ -20,11 +20,8 @@ use Twig\TwigFunction;
 
 final class ConfigurationExtension extends AbstractExtension
 {
-    private ConfigurationServiceInterface $configurationService;
-
-    public function __construct(ConfigurationServiceInterface $configurationService)
+    public function __construct(private ConfigurationServiceInterface $configurationService)
     {
-        $this->configurationService = $configurationService;
     }
 
     public function getFunctions(): array

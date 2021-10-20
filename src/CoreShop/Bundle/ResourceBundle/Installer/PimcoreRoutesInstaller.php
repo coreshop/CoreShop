@@ -24,11 +24,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreRoutesInstaller implements ResourceInstallerInterface
 {
-    private KernelInterface $kernel;
-
-    public function __construct(KernelInterface $kernel)
+    public function __construct(private KernelInterface $kernel)
     {
-        $this->kernel = $kernel;
     }
 
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
@@ -91,7 +88,7 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
              * @psalm-suppress InternalMethod
              */
             $route->getDao()->getByName($name, null);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             //Route does not exist, so we install it
             $route = Staticroute::create();
             $route->setName($name);

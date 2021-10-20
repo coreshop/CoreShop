@@ -26,21 +26,8 @@ use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 /** @psalm-suppress DeprecatedInterface */
 final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
 {
-    private RouterInterface $router;
-    private string $routeName;
-    private SessionInterface $session;
-    private StoreContextInterface $storeContext;
-
-    public function __construct(
-        RouterInterface $router,
-        string $routeName,
-        SessionInterface $session,
-        StoreContextInterface $storeContext
-    ) {
-        $this->router = $router;
-        $this->routeName = $routeName;
-        $this->session = $session;
-        $this->storeContext = $storeContext;
+    public function __construct(private RouterInterface $router, private string $routeName, private SessionInterface $session, private StoreContextInterface $storeContext)
+    {
     }
 
     public function onLogoutSuccess(Request $request): Response

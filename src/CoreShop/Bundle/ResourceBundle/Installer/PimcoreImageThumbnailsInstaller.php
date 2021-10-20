@@ -24,11 +24,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterface
 {
-    private KernelInterface $kernel;
-
-    public function __construct(KernelInterface $kernel)
+    public function __construct(private KernelInterface $kernel)
     {
-        $this->kernel = $kernel;
     }
 
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
@@ -85,14 +82,14 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
 
         try {
             /**
-             * @var \Pimcore\Model\Asset\Image\Thumbnail\Config\Dao
+             * @var Config\Dao $dao
              */
             $dao = $thumbnailConfig->getDao();
             /**
              * @psalm-suppress InternalMethod
              */
             $dao->getByName($name);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             //Thumbnail does not exist, so we install it
             $thumbnailConfig = new Config();
             $thumbnailConfig->setName($name);

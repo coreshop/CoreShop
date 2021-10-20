@@ -21,9 +21,6 @@ interface DynamicOrderRendererInterface
     /**
      * Renders the condition.
      *
-     * @param WorkerInterface $worker
-     * @param OrderInterface  $order
-     * @param string          $prefix
      *
      * @return mixed
      */

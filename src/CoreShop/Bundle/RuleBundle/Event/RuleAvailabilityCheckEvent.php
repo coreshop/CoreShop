@@ -19,15 +19,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class RuleAvailabilityCheckEvent extends Event
 {
-    private RuleInterface $rule;
-    private string $ruleType;
-    private bool $available;
-
-    public function __construct(RuleInterface $rule, string $ruleType, bool $available)
+    public function __construct(private RuleInterface $rule, private string $ruleType, private bool $available)
     {
-        $this->rule = $rule;
-        $this->ruleType = $ruleType;
-        $this->available = $available;
     }
 
     public function getRule(): RuleInterface

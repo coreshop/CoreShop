@@ -18,8 +18,6 @@ class PriorityMap implements \Iterator, \Countable
 {
     const ORDER_ASC = 'asc';
     const ORDER_DESC = 'desc';
-
-    private int $lastSequence = 0;
     private array $list = [];
     private string $order = self::ORDER_ASC;
 
@@ -50,7 +48,6 @@ class PriorityMap implements \Iterator, \Countable
         $this->list[$key] = new \stdClass();
         $this->list[$key]->value = $value;
         $this->list[$key]->priority = $priority;
-        $this->list[$key]->sequence = $this->lastSequence++;
 
         return $this->list[$key];
     }

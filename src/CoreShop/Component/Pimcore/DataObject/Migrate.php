@@ -30,11 +30,6 @@ use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 final class Migrate
 {
     /**
-     * @param string $fromClass
-     * @param string $toClass
-     * @param array  $options
-     *
-     * @return ClassDefinition
      *
      * @throws ClassDefinitionAlreadyExistsException
      * @throws ClassDefinitionNotFoundException
@@ -128,8 +123,6 @@ final class Migrate
     /**
      * Migrates all the data from $oldClassDefinition to $newClassDefinition.
      *
-     * @param string $oldPimcoreClass
-     * @param string $newPimcoreClass
      *
      * @throws \Exception
      */

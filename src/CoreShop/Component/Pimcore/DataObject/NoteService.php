@@ -23,11 +23,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class NoteService implements NoteServiceInterface
 {
-    protected EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(protected EventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getNoteById(int $id): ?Note

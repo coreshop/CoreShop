@@ -24,13 +24,8 @@ use CoreShop\Component\Order\StateResolver\StateResolverInterface;
 
 final class OrderStateResolver implements StateResolverInterface
 {
-    private StateMachineManager $stateMachineManager;
-    private bool $includeInvoiceStateToComplete;
-
-    public function __construct(StateMachineManager $stateMachineManager, bool $includeInvoiceStateToComplete)
+    public function __construct(private StateMachineManager $stateMachineManager, private bool $includeInvoiceStateToComplete)
     {
-        $this->stateMachineManager = $stateMachineManager;
-        $this->includeInvoiceStateToComplete = $includeInvoiceStateToComplete;
     }
 
     public function resolve(OrderInterface $order): void

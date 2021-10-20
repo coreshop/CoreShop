@@ -27,21 +27,8 @@ use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ShopperContextInterface $shopperContext;
-    private ProductPriceCalculatorInterface $productPriceCalculator;
-    private TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ShopperContextInterface $shopperContext,
-        ProductPriceCalculatorInterface $productPriceCalculator,
-        TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->shopperContext = $shopperContext;
-        $this->productPriceCalculator = $productPriceCalculator;
-        $this->taxedProductPriceCalculator = $taxedProductPriceCalculator;
+    public function __construct(private ShopperContextInterface $shopperContext, private ProductPriceCalculatorInterface $productPriceCalculator, private TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator)
+    {
     }
 
     /**
@@ -52,7 +39,7 @@ final class ProductContext implements Context
      */
     public function productShouldBePriced(ProductInterface $product, int $price): void
     {
-        Assert::same((int) $price, $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), true));
+        Assert::same($price, $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), true));
     }
 
     /**
@@ -62,7 +49,7 @@ final class ProductContext implements Context
      */
     public function productsDiscountPriceShouldBe(ProductInterface $product, int $price): void
     {
-        Assert::same((int) $price, $this->productPriceCalculator->getDiscountPrice($product, $this->shopperContext->getContext()));
+        Assert::same($price, $this->productPriceCalculator->getDiscountPrice($product, $this->shopperContext->getContext()));
     }
 
     /**
@@ -72,7 +59,7 @@ final class ProductContext implements Context
      */
     public function productsRetailPriceShouldBe(ProductInterface $product, int $price): void
     {
-        Assert::same((int) $price, $this->productPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
+        Assert::same($price, $this->productPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
     }
 
     /**
@@ -120,7 +107,7 @@ final class ProductContext implements Context
      */
     public function productTaxedPriceShouldBe(ProductInterface $product, int $price): void
     {
-        Assert::same((int) $price, $this->taxedProductPriceCalculator->getPrice($product, $this->shopperContext->getContext()));
+        Assert::same($price, $this->taxedProductPriceCalculator->getPrice($product, $this->shopperContext->getContext()));
     }
 
     /**
@@ -130,7 +117,7 @@ final class ProductContext implements Context
      */
     public function productTaxedRetailPriceShouldBe(ProductInterface $product, int $price): void
     {
-        Assert::same((int) $price, $this->taxedProductPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
+        Assert::same($price, $this->taxedProductPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
     }
 
     /**

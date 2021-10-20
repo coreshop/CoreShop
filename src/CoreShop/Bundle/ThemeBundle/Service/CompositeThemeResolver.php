@@ -35,7 +35,7 @@ final class CompositeThemeResolver implements ThemeResolverInterface
         foreach ($this->themeResolvers as $themeResolver) {
             try {
                 return $themeResolver->resolveTheme();
-            } catch (ThemeNotResolvedException $exception) {
+            } catch (ThemeNotResolvedException) {
                 continue;
             }
         }

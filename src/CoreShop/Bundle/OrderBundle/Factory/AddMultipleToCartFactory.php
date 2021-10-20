@@ -19,16 +19,15 @@ use CoreShop\Bundle\OrderBundle\DTO\AddMultipleToCartInterface;
 class AddMultipleToCartFactory implements AddMultipleToCartFactoryInterface
 {
     /**
-     * @psalm-var class-string
-     */
-    protected string $addMultipleToCartClass;
-
-    /**
      * @psalm-param class-string $addMultipleToCartClass
      */
-    public function __construct(string $addMultipleToCartClass)
+    public function __construct(
+        /**
+         * @psalm-var class-string
+         */
+        protected string $addMultipleToCartClass
+    )
     {
-        $this->addMultipleToCartClass = $addMultipleToCartClass;
     }
 
     public function createWithMultipleAddToCarts(array $addToCarts): AddMultipleToCartInterface
@@ -37,7 +36,7 @@ class AddMultipleToCartFactory implements AddMultipleToCartFactoryInterface
 
         if (!in_array(AddMultipleToCartInterface::class, class_implements($class), true)) {
             throw new \InvalidArgumentException(
-                sprintf('%s needs to implement "%s".', get_class($class), AddMultipleToCartInterface::class)
+                sprintf('%s needs to implement "%s".', $class::class, AddMultipleToCartInterface::class)
             );
         }
 

@@ -24,15 +24,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 {
-    private FormTypeRegistryInterface $getterTypeRegistry;
-    private FormTypeRegistryInterface $interpreterTypeRegistry;
-
-    public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry, FormTypeRegistryInterface $getterTypeRegistry, FormTypeRegistryInterface $interpreterTypeRegistry)
+    public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry, private FormTypeRegistryInterface $getterTypeRegistry, private FormTypeRegistryInterface $interpreterTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups, $formTypeRegistry);
-
-        $this->getterTypeRegistry = $getterTypeRegistry;
-        $this->interpreterTypeRegistry = $interpreterTypeRegistry;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options = []): void
@@ -114,7 +108,6 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     }
 
     /**
-     * @param FormInterface $form
      * @param string        $configurationType
      */
     protected function addGetterConfigurationFields(FormInterface $form, $configurationType): void
@@ -123,7 +116,6 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     }
 
     /**
-     * @param FormInterface $form
      * @param string        $configurationType
      */
     protected function addInterpreterConfigurationFields(FormInterface $form, $configurationType): void
@@ -132,10 +124,8 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     }
 
     /**
-     * @param FormInterface $form
      * @param mixed         $data
      *
-     * @return string|null
      */
     protected function getGetterRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
@@ -147,10 +137,8 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     }
 
     /**
-     * @param FormInterface $form
      * @param mixed         $data
      *
-     * @return string|null
      */
     protected function getInterpreterRegistryIdentifier(FormInterface $form, $data = null): ?string
     {

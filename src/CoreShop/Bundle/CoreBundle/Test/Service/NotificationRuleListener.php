@@ -20,11 +20,8 @@ use Symfony\Component\Finder\Finder;
 
 final class NotificationRuleListener implements NotificationRuleListenerInterface
 {
-    private string $cacheDir;
-
-    public function __construct(string $cacheDir)
+    public function __construct(private string $cacheDir)
     {
-        $this->cacheDir = $cacheDir;
     }
 
     public function hasBeenFired(string $type): bool

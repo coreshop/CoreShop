@@ -16,9 +16,5 @@ namespace CoreShop\Component\Currency\Display;
 
 interface DisplayFractionProviderInterface
 {
-    /**
-     * @param array $context
-     * @return int
-     */
     public function getDisplayFraction(array $context): int;
 }

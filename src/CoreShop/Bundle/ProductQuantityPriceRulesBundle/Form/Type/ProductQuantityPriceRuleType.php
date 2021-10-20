@@ -24,13 +24,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class ProductQuantityPriceRuleType extends RuleType
 {
-    protected array $calculatorTypes;
-
-    public function __construct(string $dataClass, array $validationGroups, array $calculatorTypes)
+    public function __construct(string $dataClass, array $validationGroups, protected array $calculatorTypes)
     {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->calculatorTypes = $calculatorTypes;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

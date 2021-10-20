@@ -158,7 +158,6 @@ class CustomerTransformerController extends AdminController
         $error = false;
         $formError = false;
         $message = null;
-        $data = null;
 
         $addressAssignmentType = $request->get('addressAssignmentType');
         $addressAccessType = $request->get('addressAccessType');
@@ -199,7 +198,6 @@ class CustomerTransformerController extends AdminController
         $error = false;
         $formError = false;
         $message = null;
-        $data = null;
 
         $companyId = null;
 

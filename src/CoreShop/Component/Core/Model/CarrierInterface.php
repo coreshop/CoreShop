@@ -25,8 +25,5 @@ interface CarrierInterface extends BaseCarrierInterface, StoresAwareInterface
      */
     public function getTaxRule();
 
-    /**
-     * @param TaxRuleGroupInterface $taxRule
-     */
     public function setTaxRule(TaxRuleGroupInterface $taxRule);
 }

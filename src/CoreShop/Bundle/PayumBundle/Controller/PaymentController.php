@@ -34,24 +34,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentController extends AbstractController
 {
-    private OrderPaymentProviderInterface $orderPaymentProvider;
-    private PimcoreRepositoryInterface $orderRepository;
-    private GetStatusFactoryInterface $getStatusRequestFactory;
-    private ResolveNextRouteFactoryInterface $resolveNextRouteRequestFactory;
-    private ConfirmOrderFactoryInterface $confirmOrderFactory;
-
-    public function __construct(
-        OrderPaymentProviderInterface $orderPaymentProvider,
-        PimcoreRepositoryInterface $orderRepository,
-        GetStatusFactoryInterface $getStatusRequestFactory,
-        ResolveNextRouteFactoryInterface $resolveNextRouteRequestFactory,
-        ConfirmOrderFactoryInterface $confirmOrderFactory
-    ) {
-        $this->orderPaymentProvider = $orderPaymentProvider;
-        $this->orderRepository = $orderRepository;
-        $this->getStatusRequestFactory = $getStatusRequestFactory;
-        $this->resolveNextRouteRequestFactory = $resolveNextRouteRequestFactory;
-        $this->confirmOrderFactory = $confirmOrderFactory;
+    public function __construct(private OrderPaymentProviderInterface $orderPaymentProvider, private PimcoreRepositoryInterface $orderRepository, private GetStatusFactoryInterface $getStatusRequestFactory, private ResolveNextRouteFactoryInterface $resolveNextRouteRequestFactory, private ConfirmOrderFactoryInterface $confirmOrderFactory)
+    {
     }
 
     public function prepareCaptureAction(Request $request): RedirectResponse

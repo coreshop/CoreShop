@@ -19,17 +19,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class MemoryCachedProductPriceCalculator implements ProductPriceCalculatorInterface
 {
-    private ProductPriceCalculatorInterface $inner;
-    private RequestStack $requestStack;
     private array $cachedPrice = [];
     private array $cachedRetailPrice = [];
     private array $cachedDiscountPrice = [];
     private array $cachedDiscount = [];
 
-    public function __construct(ProductPriceCalculatorInterface $inner, RequestStack $requestStack)
+    public function __construct(private ProductPriceCalculatorInterface $inner, private RequestStack $requestStack)
     {
-        $this->inner = $inner;
-        $this->requestStack = $requestStack;
     }
 
     public function getPrice(ProductInterface $product, array $context, bool $withDiscount = false): int

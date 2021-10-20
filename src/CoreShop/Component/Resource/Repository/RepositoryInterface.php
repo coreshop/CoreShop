@@ -22,13 +22,7 @@ interface RepositoryInterface extends ObjectRepository
     const ORDER_ASCENDING = 'ASC';
     const ORDER_DESCENDING = 'DESC';
 
-    /**
-     * @param ResourceInterface $resource
-     */
     public function add(ResourceInterface $resource): void;
 
-    /**
-     * @param ResourceInterface $resource
-     */
     public function remove(ResourceInterface $resource): void;
 }

@@ -23,11 +23,8 @@ use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 
 class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
 {
-    protected RuleValidationProcessorInterface $ruleValidationProcessor;
-
-    public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor)
+    public function __construct(protected RuleValidationProcessorInterface $ruleValidationProcessor)
     {
-        $this->ruleValidationProcessor = $ruleValidationProcessor;
     }
 
     public function findValidShippingRule(

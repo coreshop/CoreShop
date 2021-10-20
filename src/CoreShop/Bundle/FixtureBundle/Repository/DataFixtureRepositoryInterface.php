@@ -28,7 +28,6 @@ interface DataFixtureRepositoryInterface extends RepositoryInterface
 
     /**
      * @param string $where
-     * @param array  $parameters
      *
      * @return bool
      */

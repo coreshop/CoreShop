@@ -29,25 +29,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CarrierChoiceType extends AbstractResourceType
 {
-    private CarrierRepositoryInterface $repository;
-    private CarriersResolverInterface $carriersResolver;
-    private TaxedShippingCalculatorInterface $taxedShippingCalculator;
-    private CartContextResolverInterface $cartContextResolver;
-
     public function __construct(
         $dataClass,
         array $validationGroups,
-        CarrierRepositoryInterface $repository,
-        CarriersResolverInterface $carriersResolver,
-        TaxedShippingCalculatorInterface $taxedShippingCalculator,
-        CartContextResolverInterface $cartContextResolver
+        private CarrierRepositoryInterface $repository,
+        private CarriersResolverInterface $carriersResolver,
+        private TaxedShippingCalculatorInterface $taxedShippingCalculator,
+        private CartContextResolverInterface $cartContextResolver
     ) {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->repository = $repository;
-        $this->carriersResolver = $carriersResolver;
-        $this->taxedShippingCalculator = $taxedShippingCalculator;
-        $this->cartContextResolver = $cartContextResolver;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

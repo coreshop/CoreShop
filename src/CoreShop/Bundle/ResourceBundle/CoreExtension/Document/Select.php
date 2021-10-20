@@ -28,31 +28,8 @@ class Select extends Editable
      */
     public $resource;
 
-    /**
-     * @var string
-     */
-    protected $repositoryName;
-
-    /**
-     * @var string
-     */
-    protected $nameProperty;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @param string $repositoryName
-     * @param string $nameProperty
-     * @param string $type
-     */
-    public function __construct(string $repositoryName, string $nameProperty, string $type)
+    public function __construct(protected string $repositoryName, protected string $nameProperty, protected string $type)
     {
-        $this->repositoryName = $repositoryName;
-        $this->nameProperty = $nameProperty;
-        $this->type = $type;
     }
 
     public function getType()
@@ -138,8 +115,6 @@ class Select extends Editable
     }
 
     /**
-     * @param ResourceInterface $resource
-     *
      * @return mixed
      */
     protected function getResourceName(ResourceInterface $resource)
@@ -151,7 +126,7 @@ class Select extends Editable
                 sprintf(
                     'Property with Name %s does not exist in resource %s',
                     $this->nameProperty,
-                    get_class($resource)
+                    $resource::class
                 )
             );
         }

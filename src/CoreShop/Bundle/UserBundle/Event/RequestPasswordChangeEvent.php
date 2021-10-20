@@ -19,13 +19,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class RequestPasswordChangeEvent extends Event
 {
-    private UserInterface $user;
-    private string $resetLink;
-
-    public function __construct(UserInterface $user, string $resetLink)
+    public function __construct(private UserInterface $user, private string $resetLink)
     {
-        $this->user = $user;
-        $this->resetLink = $resetLink;
     }
 
     public function getUser(): UserInterface

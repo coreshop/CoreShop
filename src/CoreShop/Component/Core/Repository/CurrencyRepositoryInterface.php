@@ -21,8 +21,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface CurrencyRepositoryInterface extends BaseCurrencyRepositoryInterface
 {
     /**
-     * @param StoreInterface $store
-     *
      * @return CurrencyInterface[]
      */
     public function findActiveForStore(StoreInterface $store): array;

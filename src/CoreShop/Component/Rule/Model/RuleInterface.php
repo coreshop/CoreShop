@@ -55,19 +55,11 @@ interface RuleInterface extends ResourceInterface, TimestampableInterface, Toggl
     public function hasActions();
 
     /**
-     * @param ActionInterface $action
-     *
      * @return bool
      */
     public function hasAction(ActionInterface $action);
 
-    /**
-     * @param ActionInterface $action
-     */
     public function addAction(ActionInterface $action);
 
-    /**
-     * @param ActionInterface $action
-     */
     public function removeAction(ActionInterface $action);
 }

@@ -26,7 +26,7 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
 
     public function isEmpty(): bool
     {
-        return false !== strpos($this->getElement('cart_empty')->getText(), 'Your cart is empty.');
+        return str_contains($this->getElement('cart_empty')->getText(), 'Your cart is empty.');
     }
 
     public function isSingleItemOnPage(): bool
@@ -105,7 +105,7 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
     {
         $cartTotalText = $this->getElement('cart_total')->getText();
 
-        if (strpos($cartTotalText, ',') !== false) {
+        if (str_contains($cartTotalText, ',')) {
             return strstr($cartTotalText, ',', true);
         }
 
@@ -113,11 +113,9 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
     }
 
     /**
-     * @param string|array $selector
-     *
      * @throws ElementNotFoundException
      */
-    private function hasItemWith(string $attributeName, $selector): bool
+    private function hasItemWith(string $attributeName, string|array $selector): bool
     {
         $itemsAttributes = $this->getElement('cart_items')->findAll('css', $selector);
 
@@ -128,11 +126,6 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
         }
 
         return false;
-    }
-
-    private function getPriceFromString(string $price): int
-    {
-        return (int)round((float)str_replace(['€', '£', '$'], '', $price) * 100, 2);
     }
 
     protected function getDefinedElements(): array

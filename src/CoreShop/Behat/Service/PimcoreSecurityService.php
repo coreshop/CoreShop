@@ -20,13 +20,8 @@ use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 final class PimcoreSecurityService implements PimcoreSecurityServiceInterface
 {
-    private CookieSetterInterface $cookieSetter;
-
-    public function __construct(
-        CookieSetterInterface $cookieSetter
-    )
+    public function __construct(private CookieSetterInterface $cookieSetter)
     {
-        $this->cookieSetter = $cookieSetter;
     }
 
     public function logIn(User $user): void

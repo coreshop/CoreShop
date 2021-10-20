@@ -20,7 +20,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class IndexColumn extends AbstractResource implements IndexColumnInterface
+class IndexColumn extends AbstractResource implements IndexColumnInterface, \Stringable
 {
     use TimestampableTrait;
 
@@ -89,10 +89,7 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
      */
     public $index;
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }

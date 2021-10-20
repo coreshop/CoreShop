@@ -560,9 +560,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
-        /**
-         * @var ProductInterface $object
-         */
         $errors = [];
         $storeValues = [];
 
@@ -682,7 +679,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
     /**
      * @param ProductInterface $object
-     * @param StoreInterface   $store
      *
      * @return ProductStoreValuesInterface
      */
@@ -717,9 +713,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
      * Removes already deleted ProductUnitDefinitions from the serialized StoreValues for Versions. Otherwise, these
      * Additional Unit Definitions would get restored on unmarshall
      *
-     * @param ProductStoreValuesInterface $storeValuesEntity
-     * @param Model\DataObject\Concrete $object
-     * @param array $serialized
      * @return array
      */
     protected function clearRemovedUnitDefinitions(
@@ -784,12 +777,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
     /**
      * @param mixed $value
-     *
-     * @return float|int
      */
-    protected function toNumeric($value)
+    protected function toNumeric($value): float|int
     {
-        if (strpos((string)$value, '.') === false) {
+        if (!str_contains((string)$value, '.')) {
             return (int)$value;
         }
 
@@ -797,8 +788,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @param array $array
-     *
      * @return array
      */
     protected function expandDotNotationKeys(array $array)
@@ -810,7 +799,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $key = (string)key($array);
             unset($array[$key]);
 
-            if (strpos($key, '.') !== false) {
+            if (str_contains($key, '.')) {
                 list($base, $ext) = explode('.', $key, 2);
                 if (!array_key_exists($base, $array)) {
                     $array[$base] = [];

@@ -20,11 +20,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CheckoutManager implements CheckoutManagerInterface
 {
-    private PrioritizedServiceRegistryInterface $serviceRegistry;
-
-    public function __construct(PrioritizedServiceRegistryInterface $serviceRegistry)
+    public function __construct(private PrioritizedServiceRegistryInterface $serviceRegistry)
     {
-        $this->serviceRegistry = $serviceRegistry;
     }
 
     public function addCheckoutStep(CheckoutStepInterface $step, int $priority): void

@@ -19,24 +19,12 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DoctrineToOne
 {
-    private string $name;
-    private string $graphName;
-    private DoctrineProvider $typeProvider;
-
-    public function __construct(
-        DoctrineProvider $provider,
-        string $name,
-        string $graphName
-    ) {
-        $this->name = $name;
-        $this->graphName = $graphName;
-        $this->typeProvider = $provider;
+    public function __construct(private DoctrineProvider $typeProvider, private string $name, private string $graphName)
+    {
     }
 
     /**
      * Generate the definition for the GraphQL field.
-     *
-     * @return array
      */
     public function getDefinition(): array
     {

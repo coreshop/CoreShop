@@ -27,7 +27,7 @@ final class RegisterResourcesPass implements CompilerPassInterface
         try {
             $resources = $container->getParameter('coreshop.resources');
             $registry = $container->findDefinition(RegistryInterface::class);
-        } catch (InvalidArgumentException $exception) {
+        } catch (InvalidArgumentException) {
             return;
         }
 

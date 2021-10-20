@@ -21,18 +21,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class StateHistoryLogger implements StateHistoryLoggerInterface
 {
-    private NoteServiceInterface $noteService;
-    private TranslatorInterface $translator;
-    private string $noteIdentifier;
-
-    public function __construct(
-        NoteServiceInterface $noteService,
-        TranslatorInterface $translator,
-        string $noteIdentifier
-    ) {
-        $this->noteService = $noteService;
-        $this->translator = $translator;
-        $this->noteIdentifier = $noteIdentifier;
+    public function __construct(private NoteServiceInterface $noteService, private TranslatorInterface $translator, private string $noteIdentifier)
+    {
     }
 
     public function log(Concrete $object, Event $event): void

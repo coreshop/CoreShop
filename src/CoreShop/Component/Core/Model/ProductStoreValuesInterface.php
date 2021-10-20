@@ -25,9 +25,6 @@ interface ProductStoreValuesInterface extends ResourceInterface, StoreAwareInter
      */
     public function getPrice();
 
-    /**
-     * @param int $price
-     */
     public function setPrice(int $price);
 
     /**
@@ -35,19 +32,10 @@ interface ProductStoreValuesInterface extends ResourceInterface, StoreAwareInter
      */
     public function getProduct();
 
-    /**
-     * @param ProductInterface $product
-     */
     public function setProduct(ProductInterface $product);
 
-    /**
-     * @param ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice
-     */
     public function addProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice);
 
-    /**
-     * @param ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice
-     */
     public function removeProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice);
 
     /**

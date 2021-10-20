@@ -105,7 +105,6 @@ class OrderEditController extends PimcoreController
 
         foreach ($request->get('items', []) as $product) {
             $productId = $product['cartItem']['purchasable'];
-            $quantity = $product['cartItem']['quantity'] ?? 1;
 
             $product = $purchasableStackRepository->find($productId);
 

@@ -24,9 +24,6 @@ interface QuantityRangeInterface extends BaseQuantityRangeInterface
      */
     public function getAmount();
 
-    /**
-     * @param int $amount
-     */
     public function setAmount(int $amount);
 
     /**
@@ -34,9 +31,6 @@ interface QuantityRangeInterface extends BaseQuantityRangeInterface
      */
     public function getCurrency();
 
-    /**
-     * @param CurrencyInterface $currency
-     */
     public function setCurrency(CurrencyInterface $currency = null);
 
     /**
@@ -54,9 +48,6 @@ interface QuantityRangeInterface extends BaseQuantityRangeInterface
      */
     public function hasUnitDefinition();
 
-    /**
-     * @param int $pseudoPrice
-     */
     public function setPseudoPrice(int $pseudoPrice);
 
     /**

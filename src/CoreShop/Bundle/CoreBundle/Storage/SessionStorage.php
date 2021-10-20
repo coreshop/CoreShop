@@ -19,11 +19,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class SessionStorage implements StorageInterface
 {
-    private SessionInterface $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(private SessionInterface $session)
     {
-        $this->session = $session;
     }
 
     public function has(string $name): bool

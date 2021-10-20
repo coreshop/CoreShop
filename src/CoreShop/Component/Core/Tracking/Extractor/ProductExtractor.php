@@ -23,18 +23,8 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class ProductExtractor implements TrackingExtractorInterface
 {
-    private TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator;
-    private ShopperContextInterface $shopperContext;
-    private int $decimalFactor;
-
-    public function __construct(
-        TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator,
-        ShopperContextInterface $shopperContext,
-        int $decimalFactor
-    ) {
-        $this->taxedPurchasablePriceCalculator = $taxedPurchasablePriceCalculator;
-        $this->shopperContext = $shopperContext;
-        $this->decimalFactor = $decimalFactor;
+    public function __construct(private TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator, private ShopperContextInterface $shopperContext, private int $decimalFactor)
+    {
     }
 
     public function supports($object): bool

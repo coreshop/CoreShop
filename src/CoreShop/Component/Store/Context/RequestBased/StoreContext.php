@@ -22,13 +22,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class StoreContext implements StoreContextInterface
 {
-    private RequestResolverInterface $requestResolver;
-    private RequestStack $requestStack;
-
-    public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
+    public function __construct(private RequestResolverInterface $requestResolver, private RequestStack $requestStack)
     {
-        $this->requestResolver = $requestResolver;
-        $this->requestStack = $requestStack;
     }
 
     public function getStore(): StoreInterface
@@ -40,11 +35,6 @@ final class StoreContext implements StoreContextInterface
         }
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return StoreInterface
-     */
     private function getStoreForRequest(Request $request): StoreInterface
     {
         $store = $this->requestResolver->findStore($request);
@@ -54,9 +44,6 @@ final class StoreContext implements StoreContextInterface
         return $store;
     }
 
-    /**
-     * @return Request
-     */
     private function getMainRequest(): Request
     {
         $masterRequest = $this->requestStack->getMainRequest();

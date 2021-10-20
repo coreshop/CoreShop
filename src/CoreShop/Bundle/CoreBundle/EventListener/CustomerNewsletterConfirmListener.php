@@ -25,18 +25,8 @@ use Webmozart\Assert\Assert;
 
 final class CustomerNewsletterConfirmListener
 {
-    private RouterInterface $router;
-    private RequestStack $requestStack;
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(
-        RouterInterface $router,
-        RequestStack $requestStack,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->router = $router;
-        $this->requestStack = $requestStack;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(private RouterInterface $router, private RequestStack $requestStack, private EventDispatcherInterface $eventDispatcher)
+    {
     }
 
     public function checkCustomerNewsletterConfirmation(GenericEvent $event): void

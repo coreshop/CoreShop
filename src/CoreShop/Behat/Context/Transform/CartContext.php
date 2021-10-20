@@ -23,18 +23,8 @@ use Symfony\Component\Form\FormInterface;
 
 final class CartContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private OrderRepositoryInterface $cartRepository;
-    private CartContextInterface $cartContext;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        OrderRepositoryInterface $cartRepository,
-        CartContextInterface $cartContext
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->cartRepository = $cartRepository;
-        $this->cartContext = $cartContext;
+    public function __construct(private SharedStorageInterface $sharedStorage, private OrderRepositoryInterface $cartRepository, private CartContextInterface $cartContext)
+    {
     }
 
     /**

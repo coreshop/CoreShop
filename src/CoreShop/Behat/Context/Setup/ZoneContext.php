@@ -23,21 +23,8 @@ use Doctrine\Persistence\ObjectManager;
 
 final class ZoneContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ObjectManager $objectManager;
-    private FactoryInterface $zoneFactory;
-    private RepositoryInterface $zoneRepository;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FactoryInterface $zoneFactory,
-        RepositoryInterface $zoneRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->zoneFactory = $zoneFactory;
-        $this->zoneRepository = $zoneRepository;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FactoryInterface $zoneFactory, private RepositoryInterface $zoneRepository)
+    {
     }
 
     /**
@@ -66,9 +53,6 @@ final class ZoneContext implements Context
         }
     }
 
-    /**
-     * @param ZoneInterface $zone
-     */
     private function saveZone(ZoneInterface $zone): void
     {
         $this->objectManager->persist($zone);

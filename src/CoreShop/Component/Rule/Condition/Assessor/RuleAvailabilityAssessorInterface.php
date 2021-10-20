@@ -23,10 +23,5 @@ interface RuleAvailabilityAssessorInterface
      */
     public function getRules(): array;
 
-    /**
-     * @param RuleInterface $rule
-     *
-     * @return bool
-     */
     public function isValid(RuleInterface $rule): bool;
 }

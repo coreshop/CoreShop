@@ -21,8 +21,5 @@ interface ProductUnitDefinitionPriceInterface extends \CoreShop\Component\Produc
      */
     public function getProductStoreValues();
 
-    /**
-     * @param ProductStoreValuesInterface $productStoreValues
-     */
     public function setProductStoreValues(ProductStoreValuesInterface $productStoreValues);
 }

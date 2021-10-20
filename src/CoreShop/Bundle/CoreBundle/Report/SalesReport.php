@@ -31,24 +31,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class SalesReport implements ReportInterface, ExportReportInterface, PortletInterface, ExportPortletInterface
 {
     private int $totalRecords = 0;
-    private RepositoryInterface $storeRepository;
-    private Connection $db;
-    private MoneyFormatterInterface $moneyFormatter;
-    private LocaleContextInterface $localeContext;
-    private PimcoreRepositoryInterface $orderRepository;
 
-    public function __construct(
-        RepositoryInterface $storeRepository,
-        Connection $db,
-        MoneyFormatterInterface $moneyFormatter,
-        LocaleContextInterface $localeContext,
-        PimcoreRepositoryInterface $orderRepository
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->db = $db;
-        $this->moneyFormatter = $moneyFormatter;
-        $this->localeContext = $localeContext;
-        $this->orderRepository = $orderRepository;
+    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeContext, private PimcoreRepositoryInterface $orderRepository)
+    {
     }
 
     public function getReportData(ParameterBag $parameterBag): array
@@ -61,11 +46,6 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
         return $this->getData($parameterBag);
     }
 
-    /**
-     * @param ParameterBag $parameterBag
-     *
-     * @return array
-     */
     protected function getData(ParameterBag $parameterBag): array
     {
         $groupBy = $parameterBag->get('groupBy', 'day');

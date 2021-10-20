@@ -40,8 +40,6 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
     /**
      * @param string $postcode
      * @param string $deliveryPostcode
-     *
-     * @return bool
      */
     private function checkPostCode($postcode, $deliveryPostcode): bool
     {

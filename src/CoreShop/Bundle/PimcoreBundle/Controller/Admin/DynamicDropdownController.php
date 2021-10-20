@@ -100,7 +100,7 @@ final class DynamicDropdownController extends AdminController
              */
             $instance = $modelFactory->build($fqcn);
 
-            $class = new \ReflectionClass(get_class($instance));
+            $class = new \ReflectionClass($instance::class);
             $methods = $class->getMethods();
 
             $classMethods = array_map(function (\ReflectionMethod $method) {
@@ -151,7 +151,7 @@ final class DynamicDropdownController extends AdminController
                 $options[] = [
                     'value' => $child->getId(),
                     'key' => ltrim($path . $this->separator . $key, $this->separator),
-                    'published' => $child instanceof DataObject\Concrete ? $child->getPublished() : false,
+                    'published' => $child instanceof DataObject\Concrete && $child->getPublished(),
                 ];
 
                 if ($request->get('recursive') === 'true') {
@@ -171,8 +171,6 @@ final class DynamicDropdownController extends AdminController
     }
 
     /**
-     * @param mixed $tree
-     * @param mixed $definition
      *
      * @return mixed
      */

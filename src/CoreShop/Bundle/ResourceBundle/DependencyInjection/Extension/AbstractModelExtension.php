@@ -25,8 +25,6 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
     /**
      * @param string           $applicationName
      * @param string           $driver
-     * @param array            $resources
-     * @param ContainerBuilder $container
      */
     protected function registerResources($applicationName, $driver, array $resources, ContainerBuilder $container): void
     {
@@ -62,8 +60,6 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
 
     /**
      * @param string           $applicationName
-     * @param array            $models
-     * @param ContainerBuilder $container
      */
     protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container): void
     {
@@ -74,33 +70,23 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
             $alias = $applicationName . '.' . $modelName;
             $modelConfig = array_merge(['driver' => 'pimcore', 'alias' => $this->getAlias()], $modelConfig);
 
-            switch ($modelConfig['classes']['type']) {
-                case CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION:
-                    $modelConfig['pimcore_class'] = str_replace(
-                        'Pimcore\Model\DataObject\Fieldcollection\Data\\',
-                        '',
-                        $modelConfig['classes']['model']
-                    );
-                    break;
-
-                case CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK:
-                    $modelConfig['pimcore_class'] = str_replace(
-                        'Pimcore\Model\DataObject\Objectbrick\Data\\',
-                        '',
-                        $modelConfig['classes']['model']
-                    );
-                    break;
-
-                case CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT:
-                default:
-                    $modelConfig['pimcore_class'] = str_replace(
-                        'Pimcore\Model\DataObject\\',
-                        '',
-                        $modelConfig['classes']['model']
-                    );
-                    break;
-
-            }
+            $modelConfig['pimcore_class'] = match ($modelConfig['classes']['type']) {
+                CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION => str_replace(
+                    'Pimcore\Model\DataObject\Fieldcollection\Data\\',
+                    '',
+                    $modelConfig['classes']['model']
+                ),
+                CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK => str_replace(
+                    'Pimcore\Model\DataObject\Objectbrick\Data\\',
+                    '',
+                    $modelConfig['classes']['model']
+                ),
+                default => str_replace(
+                    'Pimcore\Model\DataObject\\',
+                    '',
+                    $modelConfig['classes']['model']
+                ),
+            };
 
             foreach (['coreshop.all.pimcore_classes', sprintf('%s.pimcore_classes', $applicationName)] as $parameter) {
                 $models = $container->hasParameter($parameter) ? $container->getParameter($parameter) : [];
@@ -114,11 +100,6 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
         }
     }
 
-    /**
-     * @param string           $applicationName
-     * @param array            $stack
-     * @param ContainerBuilder $container
-     */
     public function registerStack(string $applicationName, array $stack, ContainerBuilder $container): void
     {
         $appParameterName = sprintf('%s.stack', $applicationName);
@@ -199,7 +180,6 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
     /**
      * @param string           $applicationName
      * @param array            $bundles
-     * @param ContainerBuilder $container
      */
     public function registerDependantBundles($applicationName, $bundles, ContainerBuilder $container): void
     {

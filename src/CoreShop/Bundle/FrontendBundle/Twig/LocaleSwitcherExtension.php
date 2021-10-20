@@ -23,15 +23,8 @@ use Twig\TwigFunction;
 
 final class LocaleSwitcherExtension extends AbstractExtension
 {
-    private Document\Service $documentService;
-    private ShopperContextInterface $shopperContext;
-
-    public function __construct(
-        Document\Service $documentService,
-        ShopperContextInterface $shopperContext
-    ) {
-        $this->documentService = $documentService;
-        $this->shopperContext = $shopperContext;
+    public function __construct(private Document\Service $documentService, private ShopperContextInterface $shopperContext)
+    {
     }
 
     public function getFunctions(): array
@@ -56,14 +49,13 @@ final class LocaleSwitcherExtension extends AbstractExtension
                 if ($site instanceof Site) {
                     $basePath = $site->getRootDocument()->getRealFullPath() . '/';
                 }
-            } catch (\Exception $ex) {
+            } catch (\Exception) {
                 $basePath = '/';
             }
         }
 
         foreach (Tool::getValidLanguages() as $language) {
             $target = $basePath . $language;
-            $localizedDocument = null;
 
             if (isset($translations[$language])) {
                 $localizedDocument = Document::getById($translations[$language]);

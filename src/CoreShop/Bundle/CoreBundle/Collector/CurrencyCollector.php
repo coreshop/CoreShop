@@ -25,26 +25,20 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class CurrencyCollector extends DataCollector
 {
-    private CurrencyContextInterface $currencyContext;
-    private PimcoreContextResolver $pimcoreContext;
-
     public function __construct(
         CurrencyRepositoryInterface $currencyRepository,
-        CurrencyContextInterface $currencyContext,
+        private CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext,
-        PimcoreContextResolver $pimcoreContext,
+        private PimcoreContextResolver $pimcoreContext,
         $currencyChangeSupport = false
     ) {
-        $this->currencyContext = $currencyContext;
-        $this->pimcoreContext = $pimcoreContext;
-
         try {
             $this->data = [
                 'currency' => null,
                 'currencies' => $currencyRepository->findActiveForStore($storeContext->getStore()),
                 'currency_change_support' => $currencyChangeSupport,
             ];
-        } catch (\Exception $ex) {
+        } catch (\Exception) {
             //If some goes wrong, we just ignore it
         }
     }
@@ -74,7 +68,7 @@ final class CurrencyCollector extends DataCollector
 
         try {
             $this->data['currency'] = $this->currencyContext->getCurrency();
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             //If some goes wrong, we just ignore it
         }
     }

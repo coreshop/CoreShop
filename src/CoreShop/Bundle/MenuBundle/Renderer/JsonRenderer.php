@@ -21,18 +21,14 @@ use Twig\Environment;
 
 class JsonRenderer implements RendererInterface
 {
-    private Environment $environment;
-    private PimcoreGuard $guard;
     private array $defaultOptions;
 
     public function __construct(
-        Environment $environment,
+        private Environment $environment,
         string $template,
-        PimcoreGuard $guard,
+        private PimcoreGuard $guard,
         array $defaultOptions = []
     ) {
-        $this->environment = $environment;
-        $this->guard = $guard;
         $this->defaultOptions = array_merge(array(
             'depth' => null,
             'matchingDepth' => null,
@@ -50,7 +46,7 @@ class JsonRenderer implements RendererInterface
 
         $items = $this->recursiveProcessMenuItems($item);
 
-        $html = $this->environment->render(
+        return $this->environment->render(
             $options['template'],
             [
                 'item' => $this->renderItem($item),
@@ -58,8 +54,6 @@ class JsonRenderer implements RendererInterface
                 'options' => $options,
             ]
         );
-
-        return $html;
     }
 
     protected function renderItem(ItemInterface $item): array
@@ -99,7 +93,7 @@ class JsonRenderer implements RendererInterface
         $addLast = array();
         $alreadyTaken = array();
 
-        foreach ($menu->getChildren() as $key => $menuItem) {
+        foreach ($menu->getChildren() as $menuItem) {
             if ($menuItem->hasChildren()) {
                 $this->reorderMenuItems($menuItem);
             }
@@ -146,7 +140,7 @@ class JsonRenderer implements RendererInterface
 
         // add items without ordernumber to the end
         if (count($addLast)) {
-            foreach ($addLast as $key => $value) {
+            foreach ($addLast as $value) {
                 $menuOrderArray[] = $value;
             }
         }

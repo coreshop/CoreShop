@@ -16,13 +16,8 @@ namespace CoreShop\Bundle\FrontendBundle\TemplateConfigurator;
 
 class TemplateConfigurator implements TemplateConfiguratorInterface
 {
-    private string $bundleName;
-    private string $templateSuffix;
-
-    public function __construct(string $bundleName, string $templateSuffix)
+    public function __construct(private string $bundleName, private string $templateSuffix)
     {
-        $this->bundleName = $bundleName;
-        $this->templateSuffix = $templateSuffix;
     }
 
     public function findTemplate($templateName): string

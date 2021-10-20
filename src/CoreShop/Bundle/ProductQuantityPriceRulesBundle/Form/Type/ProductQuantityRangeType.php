@@ -25,15 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProductQuantityRangeType extends AbstractResourceType
 {
-    protected array $actionTypes;
-    protected array $actionConstraints;
-
-    public function __construct(string $dataClass, array $validationGroups, array $actionTypes, array $actionConstraints)
+    public function __construct(string $dataClass, array $validationGroups, protected array $actionTypes, protected array $actionConstraints)
     {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->actionTypes = $actionTypes;
-        $this->actionConstraints = $actionConstraints;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options = []): void

@@ -23,18 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class GeoLiteBasedRequestResolver implements RequestResolverInterface
 {
-    private CountryRepositoryInterface $countryRepository;
-    private CoreCacheHandler $cache;
-    private ?string $geoDbFile = null;
-
-    public function __construct(
-        CountryRepositoryInterface $countryRepository,
-        CoreCacheHandler $cache,
-        ?string $geoDbFile = null
-    ) {
-        $this->countryRepository = $countryRepository;
-        $this->cache = $cache;
-        $this->geoDbFile = $geoDbFile;
+    public function __construct(private CountryRepositoryInterface $countryRepository, private CoreCacheHandler $cache, private ?string $geoDbFile = null)
+    {
     }
 
     public function findCountry(Request $request): CountryInterface
@@ -44,9 +34,6 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
         if (null === $geoDbFileLocation || !file_exists($geoDbFileLocation)) {
             throw new CountryNotFoundException();
         }
-
-        $record = null;
-        $isoCode = null;
         $clientIp = $request->getClientIp();
 
         if ($this->checkIfIpIsPrivate($clientIp)) {
@@ -85,8 +72,6 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     /**
      * @param string $clientIp
      * @param string $geoDbFileLocation
-     *
-     * @return string|null
      */
     private function guessCountryByGeoLite($clientIp, $geoDbFileLocation): ?string
     {
@@ -95,7 +80,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             $record = $reader->city($clientIp);
 
             return $record->country->isoCode;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             //If something goes wrong, ignore the exception and throw a CountryNotFoundException
         }
 
@@ -106,8 +91,6 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      * Check if ip is private.
      *
      * @param string $clientIp
-     *
-     * @return bool
      */
     private function checkIfIpIsPrivate($clientIp): bool
     {

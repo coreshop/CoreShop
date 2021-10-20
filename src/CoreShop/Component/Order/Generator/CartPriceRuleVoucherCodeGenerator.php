@@ -27,22 +27,8 @@ class CartPriceRuleVoucherCodeGenerator
     const FORMAT_ALPHABETIC = 'alphabetic';
     const FORMAT_NUMERIC = 'numeric';
 
-    private FactoryInterface $voucherCodeFactory;
-    private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
-    private CodeGeneratorCheckerInterface $checker;
-    private CodeGeneratorLetterResolver $letterResolver;
-
-    public function __construct(
-        FactoryInterface $voucherCodeFactory,
-        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
-        CodeGeneratorCheckerInterface $checker,
-        CodeGeneratorLetterResolver $letterResolver
-    )
+    public function __construct(private FactoryInterface $voucherCodeFactory, private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository, private CodeGeneratorCheckerInterface $checker, private CodeGeneratorLetterResolver $letterResolver)
     {
-        $this->voucherCodeFactory = $voucherCodeFactory;
-        $this->voucherCodeRepository = $voucherCodeRepository;
-        $this->checker = $checker;
-        $this->letterResolver = $letterResolver;
     }
 
     public function generateCodes(CartPriceRuleVoucherGeneratorInterface $generator): array
@@ -63,9 +49,6 @@ class CartPriceRuleVoucherCodeGenerator
                 }
             }
 
-            /**
-             * @var CartPriceRuleVoucherCodeInterface
-             */
             $codeObject = $this->voucherCodeFactory->createNew();
             $codeObject->setCode($code);
             $codeObject->setCreationDate(new \DateTime());

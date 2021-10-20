@@ -21,16 +21,13 @@ use Twig\Environment;
 abstract class AbstractEcommerceTracker implements TrackerInterface
 {
     protected bool $enabled = false;
-    protected Environment $twig;
     protected ?string $templatePrefix = null;
     protected ?string $templateExtension = null;
 
     public function __construct(
-        Environment $twig,
+        protected Environment $twig,
         array $options = []
     ) {
-        $this->twig = $twig;
-
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
         $this->processOptions($resolver->resolve($options));
@@ -46,18 +43,12 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
         $this->enabled = $enabled;
     }
 
-    /**
-     * @param array $options
-     */
     protected function processOptions(array $options): void
     {
         $this->templatePrefix = $options['template_prefix'];
         $this->templateExtension = $options['template_extension'];
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['template_prefix', 'template_extension']);
@@ -71,11 +62,6 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
         $resolver->setAllowedTypes('template_extension', 'string');
     }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
     protected function getTemplatePath(string $name): string
     {
         return sprintf(
@@ -86,12 +72,6 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
         );
     }
 
-    /**
-     * @param string $name
-     * @param array  $parameters
-     *
-     * @return string
-     */
     protected function renderTemplate(string $name, array $parameters): string
     {
         return $this->twig->render(
@@ -103,10 +83,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     /**
      * Remove null values from an object, keep protected keys in any case.
      *
-     * @param array $data
-     * @param array $protectedKeys
      *
-     * @return array
      */
     protected function filterNullValues(array $data, array $protectedKeys = []): array
     {

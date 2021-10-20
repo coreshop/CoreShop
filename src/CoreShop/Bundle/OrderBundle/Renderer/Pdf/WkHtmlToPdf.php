@@ -19,13 +19,8 @@ use Symfony\Component\Process\Process;
 
 final class WkHtmlToPdf implements PdfRendererInterface
 {
-    private string $kernelCacheDir;
-    private string $kernelRootDir;
-
-    public function __construct(string $kernelCacheDir, string $kernelRootDir)
+    public function __construct(private string $kernelCacheDir, private string $kernelRootDir)
     {
-        $this->kernelCacheDir = $kernelCacheDir;
-        $this->kernelRootDir = $kernelRootDir;
     }
 
     public function fromString(string $string, string $header = '', string $footer = '', array $config = []): string
@@ -69,8 +64,6 @@ final class WkHtmlToPdf implements PdfRendererInterface
      * Creates an Temporary HTML File.
      *
      * @param string $string
-     *
-     * @return string|null
      */
     private function createHtmlFile($string): ?string
     {
@@ -86,8 +79,6 @@ final class WkHtmlToPdf implements PdfRendererInterface
 
     /**
      * @param string $string
-     *
-     * @return string
      */
     private function replaceUrls($string): string
     {
@@ -100,9 +91,9 @@ final class WkHtmlToPdf implements PdfRendererInterface
             foreach ($matches[0] as $key => $value) {
                 $path = $matches[2][$key];
 
-                if (strpos($path, '//') === 0) {
+                if (str_starts_with($path, '//')) {
                     $absolutePath = 'http:' . $path;
-                } elseif (strpos($path, '/') === 0) {
+                } elseif (str_starts_with($path, '/')) {
                     $absolutePath = preg_replace('@^' . $replacePrefix . '/@', '/', $path);
                     $absolutePath = $hostUrl . $absolutePath;
                 } else {

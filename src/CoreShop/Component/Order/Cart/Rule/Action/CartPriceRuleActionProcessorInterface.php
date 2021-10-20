@@ -22,22 +22,14 @@ interface CartPriceRuleActionProcessorInterface
     /**
      * Apply Rule to Cart.
      *
-     * @param OrderInterface                      $cart
-     * @param array                              $configuration
-     * @param ProposalCartPriceRuleItemInterface $cartPriceRuleItem
      *
-     * @return bool
      */
     public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool;
 
     /**
      * Remove Rule from Cart.
      *
-     * @param OrderInterface                      $cart
-     * @param array                              $configuration
-     * @param ProposalCartPriceRuleItemInterface $cartPriceRuleItem
      *
-     * @return bool
      */
     public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool;
 }

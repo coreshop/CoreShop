@@ -23,33 +23,15 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 interface ShopperContextInterface extends StoreContextInterface, CurrencyContextInterface, LocaleContextInterface, CountryContextInterface, CustomerContextInterface, CartContextInterface
 {
-    /**
-     * @return array
-     */
     public function getContext(): array;
 
-    /**
-     * @return bool
-     */
     public function hasStore(): bool;
 
-    /**
-     * @return bool
-     */
     public function hasCurrency(): bool;
 
-    /**
-     * @return bool
-     */
     public function hasLocaleCode(): bool;
 
-    /**
-     * @return bool
-     */
     public function hasCountry(): bool;
 
-    /**
-     * @return bool
-     */
     public function hasCustomer(): bool;
 }

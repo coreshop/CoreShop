@@ -19,7 +19,7 @@ use CoreShop\Component\Payment\Model\PaymentProvider as BasePaymentProvider;
 /**
  * @psalm-suppress MissingConstructor
  */
-class PaymentProvider extends BasePaymentProvider implements PaymentProviderInterface
+class PaymentProvider extends BasePaymentProvider implements PaymentProviderInterface, \Stringable
 {
     protected ?GatewayConfig $gatewayConfig = null;
 

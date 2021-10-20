@@ -31,7 +31,7 @@ final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
         try {
             $resources = $container->getParameter('coreshop.resources');
             $resolveTargetEntityListener = $container->findDefinition('doctrine.orm.listeners.resolve_target_entity');
-        } catch (InvalidArgumentException $exception) {
+        } catch (InvalidArgumentException) {
             return;
         }
 
@@ -71,7 +71,7 @@ final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
         });
 
         $interfaces = array_map(static function (array $classes): string {
-            return (string) current($classes);
+            return current($classes);
         }, $interfaces);
 
         foreach ($resources as $alias => $configuration) {

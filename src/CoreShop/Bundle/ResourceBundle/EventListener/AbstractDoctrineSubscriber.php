@@ -23,12 +23,10 @@ use Doctrine\Persistence\Mapping\RuntimeReflectionService;
 
 abstract class AbstractDoctrineSubscriber implements EventSubscriber
 {
-    protected RegistryInterface $resourceRegistry;
     protected ReflectionService $reflectionService;
 
-    public function __construct(RegistryInterface $resourceRegistry)
+    public function __construct(protected RegistryInterface $resourceRegistry)
     {
-        $this->resourceRegistry = $resourceRegistry;
         $this->reflectionService = new RuntimeReflectionService();
     }
 

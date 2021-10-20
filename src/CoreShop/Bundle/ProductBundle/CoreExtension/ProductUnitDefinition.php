@@ -67,18 +67,12 @@ class ProductUnitDefinition extends Data implements
         return '\\' . ProductUnitDefinitionInterface::class;
     }
 
-    /**
-     * @return string | array
-     */
-    public function getQueryColumnType()
+    public function getQueryColumnType(): string|array
     {
         return 'int(11)';
     }
 
-    /**
-     * @return string | array
-     */
-    public function getColumnType()
+    public function getColumnType(): string|array
     {
         return 'int(11)';
     }

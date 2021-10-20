@@ -24,11 +24,8 @@ use CoreShop\Component\ProductQuantityPriceRules\Rule\Action\ProductQuantityPric
 
 class VolumeCalculator implements CalculatorInterface
 {
-    protected ServiceRegistryInterface $actionRegistry;
-
-    public function __construct(ServiceRegistryInterface $actionRegistry)
+    public function __construct(protected ServiceRegistryInterface $actionRegistry)
     {
-        $this->actionRegistry = $actionRegistry;
     }
 
     public function calculateForQuantity(
@@ -76,7 +73,7 @@ class VolumeCalculator implements CalculatorInterface
 
         $cheapestRangePrice = null;
         /** @var QuantityRangeInterface $range */
-        foreach ($ranges as $index => $range) {
+        foreach ($ranges as $range) {
             if ($range->getRangeStartingFrom() > $quantity) {
                 break;
             }

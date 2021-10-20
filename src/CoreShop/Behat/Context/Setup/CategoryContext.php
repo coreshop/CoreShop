@@ -24,16 +24,8 @@ use Pimcore\Model\DataObject\Folder;
 
 final class CategoryContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private FactoryInterface $categoryFactory;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        FactoryInterface $categoryFactory
-    )
+    public function __construct(private SharedStorageInterface $sharedStorage, private FactoryInterface $categoryFactory)
     {
-        $this->sharedStorage = $sharedStorage;
-        $this->categoryFactory = $categoryFactory;
     }
 
     /**

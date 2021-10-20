@@ -26,22 +26,8 @@ use JMS\Serializer\Visitor\DeserializationVisitorInterface;
 
 class VersionObjectConstructor implements ObjectConstructorInterface
 {
-    private ObjectConstructorInterface $fallbackConstructor;
-    private ObjectConstructorInterface $fallbacksFallbackConstructor;
-    private string $fallbackStrategy;
-    private ?ExpressionLanguageExclusionStrategy $expressionLanguageExclusionStrategy;
-
-    public function __construct(
-        ObjectConstructorInterface $fallbackConstructor,
-        ObjectConstructorInterface $fallbacksFallbackConstructor,
-        string $fallbackStrategy = DoctrineObjectConstructor::ON_MISSING_NULL,
-        ?ExpressionLanguageExclusionStrategy $expressionLanguageExclusionStrategy = null
-    )
+    public function __construct(private ObjectConstructorInterface $fallbackConstructor, private ObjectConstructorInterface $fallbacksFallbackConstructor, private string $fallbackStrategy = DoctrineObjectConstructor::ON_MISSING_NULL, private ?\JMS\Serializer\Exclusion\ExpressionLanguageExclusionStrategy $expressionLanguageExclusionStrategy = null)
     {
-        $this->fallbackConstructor = $fallbackConstructor;
-        $this->fallbacksFallbackConstructor = $fallbacksFallbackConstructor;
-        $this->fallbackStrategy = $fallbackStrategy;
-        $this->expressionLanguageExclusionStrategy = $expressionLanguageExclusionStrategy;
     }
 
     public function construct(DeserializationVisitorInterface $visitor, ClassMetadata $metadata, $data, array $type, DeserializationContext $context): ?object
@@ -66,7 +52,7 @@ class VersionObjectConstructor implements ObjectConstructorInterface
         }
 
         // Managed entity, check for proxy load
-        if (!\is_array($data) && !(is_object($data) && \SimpleXMLElement::class === get_class($data))) {
+        if (!\is_array($data) && !(is_object($data) && \SimpleXMLElement::class === $data::class)) {
             // Single identifier, load proxy
             return $objectManager->getReference($metadata->name, $data);
         }

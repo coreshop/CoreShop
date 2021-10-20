@@ -16,13 +16,8 @@ namespace CoreShop\Component\Index\Order;
 
 class SimpleOrder implements OrderInterface
 {
-    protected string $key;
-    protected string $direction;
-
-    public function __construct(string $key, string $direction)
+    public function __construct(protected string $key, protected string $direction)
     {
-        $this->key = $key;
-        $this->direction = $direction;
     }
 
     public function getKey(): string

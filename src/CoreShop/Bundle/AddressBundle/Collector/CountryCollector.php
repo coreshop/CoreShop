@@ -23,17 +23,11 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class CountryCollector extends DataCollector
 {
-    private CountryContextInterface $countryContext;
-    private PimcoreContextResolver $pimcoreContext;
-
     public function __construct(
-        CountryContextInterface $countryContext,
-        PimcoreContextResolver $pimcoreContext,
+        private CountryContextInterface $countryContext,
+        private PimcoreContextResolver $pimcoreContext,
         $countryChangeSupport = false
     ) {
-        $this->countryContext = $countryContext;
-        $this->pimcoreContext = $pimcoreContext;
-
         $this->data = [
             'country' => null,
             'country_change_support' => $countryChangeSupport,
@@ -62,7 +56,7 @@ final class CountryCollector extends DataCollector
             $this->data['country'] = $this->countryContext->getCountry();
             $this->data['country_name'] = $this->countryContext->getCountry() ? $this->countryContext->getCountry()->getName() : null;
             $this->data['country_change_support'] = $this->isCountryChangeSupported();
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             //If something went wrong, we don't have any country, which we can safely ignore
         }
     }

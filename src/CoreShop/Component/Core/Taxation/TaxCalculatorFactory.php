@@ -22,11 +22,8 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {
-    private TaxRuleRepositoryInterface $taxRuleRepository;
-
-    public function __construct(TaxRuleRepositoryInterface $taxRuleRepository)
+    public function __construct(private TaxRuleRepositoryInterface $taxRuleRepository)
     {
-        $this->taxRuleRepository = $taxRuleRepository;
     }
 
     public function getTaxCalculatorForAddress(

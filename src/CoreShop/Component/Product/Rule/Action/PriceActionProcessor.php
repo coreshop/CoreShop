@@ -21,16 +21,8 @@ use Webmozart\Assert\Assert;
 
 class PriceActionProcessor implements ProductPriceActionProcessorInterface
 {
-    protected CurrencyRepositoryInterface $currencyRepository;
-    protected CurrencyConverterInterface $moneyConverter;
-
-    public function __construct(
-        CurrencyRepositoryInterface $currencyRepository,
-        CurrencyConverterInterface $moneyConverter
-    )
+    public function __construct(protected CurrencyRepositoryInterface $currencyRepository, protected CurrencyConverterInterface $moneyConverter)
     {
-        $this->currencyRepository = $currencyRepository;
-        $this->moneyConverter = $moneyConverter;
     }
 
     public function getPrice($subject, array $context, array $configuration): int

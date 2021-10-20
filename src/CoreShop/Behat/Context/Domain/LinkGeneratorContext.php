@@ -22,13 +22,8 @@ use Webmozart\Assert\Assert;
 
 final class LinkGeneratorContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private RouterInterface $router;
-
-    public function __construct(SharedStorageInterface $sharedStorage, RouterInterface $router)
+    public function __construct(private RouterInterface $router)
     {
-        $this->sharedStorage = $sharedStorage;
-        $this->router = $router;
     }
 
     /**

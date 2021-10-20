@@ -29,27 +29,8 @@ use Webmozart\Assert\Assert;
 
 class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 {
-    protected OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer;
-    protected NumberGeneratorInterface $numberGenerator;
-    protected FolderCreationServiceInterface $folderCreationService;
-    protected PimcoreRepositoryInterface $orderItemRepository;
-    protected PimcoreFactoryInterface $shipmentItemFactory;
-    protected TransformerEventDispatcherInterface $eventDispatcher;
-
-    public function __construct(
-        OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer,
-        NumberGeneratorInterface $numberGenerator,
-        FolderCreationServiceInterface $folderCreationService,
-        PimcoreRepositoryInterface $orderItemRepository,
-        PimcoreFactoryInterface $shipmentItemFactory,
-        TransformerEventDispatcherInterface $eventDispatcher
-    ) {
-        $this->orderItemToShipmentItemTransformer = $orderItemToShipmentItemTransformer;
-        $this->numberGenerator = $numberGenerator;
-        $this->folderCreationService = $folderCreationService;
-        $this->orderItemRepository = $orderItemRepository;
-        $this->shipmentItemFactory = $shipmentItemFactory;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(protected OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer, protected NumberGeneratorInterface $numberGenerator, protected FolderCreationServiceInterface $folderCreationService, protected PimcoreRepositoryInterface $orderItemRepository, protected PimcoreFactoryInterface $shipmentItemFactory, protected TransformerEventDispatcherInterface $eventDispatcher)
+    {
     }
 
     public function transform(

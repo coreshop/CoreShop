@@ -26,18 +26,8 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 final class CartBlamerListener
 {
-    private CartProcessorInterface $cartProcessor;
-    private CartContextInterface $cartContext;
-    private CartManagerInterface $cartManager;
-
-    public function __construct(
-        CartProcessorInterface $cartProcessor,
-        CartContextInterface $cartContext,
-        CartManagerInterface $cartManager
-    ) {
-        $this->cartProcessor = $cartProcessor;
-        $this->cartContext = $cartContext;
-        $this->cartManager = $cartManager;
+    public function __construct(private CartProcessorInterface $cartProcessor, private CartContextInterface $cartContext, private CartManagerInterface $cartManager)
+    {
     }
 
     public function onInteractiveLogin(InteractiveLoginEvent $interactiveLoginEvent): void
@@ -97,7 +87,7 @@ final class CartBlamerListener
         try {
             return $this->cartContext->getCart();
         }
-        catch (CartNotFoundException $ex) {
+        catch (CartNotFoundException) {
             return null;
         }
     }

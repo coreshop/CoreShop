@@ -22,15 +22,8 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FilterProcessor implements FilterProcessorInterface
 {
-    private ServiceRegistryInterface $preConditionProcessors;
-    private ServiceRegistryInterface $userConditionProcessors;
-
-    public function __construct(
-        ServiceRegistryInterface $preConditionProcessors,
-        ServiceRegistryInterface $userConditionProcessors
-    ) {
-        $this->preConditionProcessors = $preConditionProcessors;
-        $this->userConditionProcessors = $userConditionProcessors;
+    public function __construct(private ServiceRegistryInterface $preConditionProcessors, private ServiceRegistryInterface $userConditionProcessors)
+    {
     }
 
     public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag): array

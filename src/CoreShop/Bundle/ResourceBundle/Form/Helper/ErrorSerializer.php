@@ -20,11 +20,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ErrorSerializer
 {
-    protected TranslatorInterface $trans;
-
-    public function __construct(TranslatorInterface $trans)
+    public function __construct(protected TranslatorInterface $trans)
     {
-        $this->trans = $trans;
     }
 
     public function serializeErrorFromHandledForm(FormInterface $handledForm): array

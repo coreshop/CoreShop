@@ -25,11 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class InterpreterType extends AbstractType
 {
-    private FormTypeRegistryInterface $formTypeRegistry;
-
-    public function __construct(FormTypeRegistryInterface $formTypeRegistry)
+    public function __construct(private FormTypeRegistryInterface $formTypeRegistry)
     {
-        $this->formTypeRegistry = $formTypeRegistry;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -86,7 +83,6 @@ final class InterpreterType extends AbstractType
     }
 
     /**
-     * @param FormInterface $form
      * @param string        $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType): void
@@ -95,10 +91,8 @@ final class InterpreterType extends AbstractType
     }
 
     /**
-     * @param FormInterface $form
      * @param mixed         $data
      *
-     * @return string|null
      */
     protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {

@@ -18,11 +18,8 @@ use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 
 final class StateMachineApplier implements StateMachineApplierInterface
 {
-    private StateMachineManagerInterface $stateMachineManager;
-
-    public function __construct(StateMachineManagerInterface $stateMachineManager)
+    public function __construct(private StateMachineManagerInterface $stateMachineManager)
     {
-        $this->stateMachineManager = $stateMachineManager;
     }
 
     public function apply($subject, ?string $workflowName = null, ?string $transition = null, bool $soft = true): void

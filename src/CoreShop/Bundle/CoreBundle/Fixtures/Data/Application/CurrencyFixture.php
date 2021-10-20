@@ -60,9 +60,6 @@ class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface
         }
 
         foreach ($currencies as $iso => $c) {
-            /**
-             * @var CurrencyInterface
-             */
             $currency = $this->container->get('coreshop.repository.currency')->getByCode($iso);
             if (null === $currency) {
                 $currency = $this->container->get('coreshop.factory.currency')->createNew();

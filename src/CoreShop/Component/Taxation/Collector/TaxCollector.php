@@ -22,15 +22,8 @@ use CoreShop\Component\Taxation\Model\TaxRateInterface;
 
 class TaxCollector implements TaxCollectorInterface
 {
-    private RepositoryInterface $taxRateRepository;
-    private FactoryInterface $taxItemFactory;
-
-    public function __construct(
-        RepositoryInterface $taxRateRepository,
-        FactoryInterface $taxItemFactory
-    ) {
-        $this->taxRateRepository = $taxRateRepository;
-        $this->taxItemFactory = $taxItemFactory;
+    public function __construct(private RepositoryInterface $taxRateRepository, private FactoryInterface $taxItemFactory)
+    {
     }
 
     public function collectTaxes(TaxCalculatorInterface $taxCalculator, int $price, array $usedTaxes = []): array

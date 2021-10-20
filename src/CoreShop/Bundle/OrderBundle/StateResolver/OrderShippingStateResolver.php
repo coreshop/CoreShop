@@ -26,18 +26,8 @@ use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderShippingStateResolver implements StateResolverInterface
 {
-    private StateMachineManager $stateMachineManager;
-    private OrderShipmentRepositoryInterface $orderShipmentRepository;
-    private ProcessableInterface $processable;
-
-    public function __construct(
-        StateMachineManager $stateMachineManager,
-        OrderShipmentRepositoryInterface $orderShipmentRepository,
-        ProcessableInterface $processable
-    ) {
-        $this->stateMachineManager = $stateMachineManager;
-        $this->orderShipmentRepository = $orderShipmentRepository;
-        $this->processable = $processable;
+    public function __construct(private StateMachineManager $stateMachineManager, private OrderShipmentRepositoryInterface $orderShipmentRepository, private ProcessableInterface $processable)
+    {
     }
 
     public function resolve(OrderInterface $order): void

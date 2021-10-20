@@ -20,11 +20,8 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositePurchasablePriceCalculator implements PurchasablePriceCalculatorInterface
 {
-    protected PrioritizedServiceRegistryInterface $calculators;
-
-    public function __construct(PrioritizedServiceRegistryInterface $calculators)
+    public function __construct(protected PrioritizedServiceRegistryInterface $calculators)
     {
-        $this->calculators = $calculators;
     }
 
     public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int
@@ -38,7 +35,7 @@ class CompositePurchasablePriceCalculator implements PurchasablePriceCalculatorI
             try {
                 $actionPrice = $calculator->getPrice($purchasable, $context, $includingDiscounts);
                 $price = $actionPrice;
-            } catch (NoPurchasablePriceFoundException $ex) {
+            } catch (NoPurchasablePriceFoundException) {
             }
         }
 

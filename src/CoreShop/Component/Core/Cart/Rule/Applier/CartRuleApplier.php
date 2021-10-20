@@ -30,24 +30,8 @@ use Pimcore\Model\DataObject\Objectbrick\Data\AbstractData;
 
 class CartRuleApplier implements CartRuleApplierInterface
 {
-    private ProportionalIntegerDistributor $distributor;
-    private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
-    private TaxCollectorInterface $taxCollector;
-    private AddressProviderInterface $defaultAddressProvider;
-    private AdjustmentFactoryInterface $adjustmentFactory;
-
-    public function __construct(
-        ProportionalIntegerDistributor $distributor,
-        ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
-        TaxCollectorInterface $taxCollector,
-        AddressProviderInterface $defaultAddressProvider,
-        AdjustmentFactoryInterface $adjustmentFactory
-    ) {
-        $this->distributor = $distributor;
-        $this->taxCalculatorFactory = $taxCalculatorFactory;
-        $this->taxCollector = $taxCollector;
-        $this->defaultAddressProvider = $defaultAddressProvider;
-        $this->adjustmentFactory = $adjustmentFactory;
+    public function __construct(private ProportionalIntegerDistributor $distributor, private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory, private TaxCollectorInterface $taxCollector, private AddressProviderInterface $defaultAddressProvider, private AdjustmentFactoryInterface $adjustmentFactory)
+    {
     }
 
     public function applyDiscount(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false): void
@@ -62,9 +46,6 @@ class CartRuleApplier implements CartRuleApplierInterface
 
     protected function apply(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
     {
-        /**
-         * @var \CoreShop\Component\Core\Model\OrderInterface $cart
-         */
         $totalAmount = [];
 
         foreach ($cart->getItems() as $item) {

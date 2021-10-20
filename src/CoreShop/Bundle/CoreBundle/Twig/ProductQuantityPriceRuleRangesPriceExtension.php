@@ -29,24 +29,8 @@ use Twig\TwigFunction;
 
 final class ProductQuantityPriceRuleRangesPriceExtension extends AbstractExtension
 {
-    private QuantityReferenceDetectorInterface $quantityReferenceDetector;
-    private PurchasableCalculatorInterface$purchasableCalculator;
-    private DefaultTaxAddressProviderInterface $defaultTaxAddressProvider;
-    private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
-    private TaxApplicatorInterface $taxApplicator;
-
-    public function __construct(
-        QuantityReferenceDetectorInterface $quantityReferenceDetector,
-        PurchasableCalculatorInterface $purchasableCalculator,
-        DefaultTaxAddressProviderInterface $defaultTaxAddressProvider,
-        ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
-        TaxApplicatorInterface $taxApplicator
-    ) {
-        $this->quantityReferenceDetector = $quantityReferenceDetector;
-        $this->purchasableCalculator = $purchasableCalculator;
-        $this->defaultTaxAddressProvider = $defaultTaxAddressProvider;
-        $this->taxCalculatorFactory = $taxCalculatorFactory;
-        $this->taxApplicator = $taxApplicator;
+    public function __construct(private QuantityReferenceDetectorInterface $quantityReferenceDetector, private PurchasableCalculatorInterface $purchasableCalculator, private DefaultTaxAddressProviderInterface $defaultTaxAddressProvider, private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory, private TaxApplicatorInterface $taxApplicator)
+    {
     }
 
     public function getFunctions(): array

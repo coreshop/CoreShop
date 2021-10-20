@@ -20,13 +20,8 @@ use Pimcore\Model\Asset;
 
 class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
-    private OrderDocumentRendererInterface $decoratedService;
-    private string $environment;
-
-    public function __construct(OrderDocumentRendererInterface $decoratedService, string $environment)
+    public function __construct(private OrderDocumentRendererInterface $decoratedService, private string $environment)
     {
-        $this->decoratedService = $decoratedService;
-        $this->environment = $environment;
     }
 
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string
@@ -38,7 +33,7 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 
         if ($orderDocument->getRenderedAsset() instanceof Asset) {
             // check if asset is outdated.
-            if ((int) $orderDocument->getRenderedAsset()->getCreationDate() >= $orderDocument->getModificationDate()) {
+            if ($orderDocument->getRenderedAsset()->getCreationDate() >= $orderDocument->getModificationDate()) {
                 return $orderDocument->getRenderedAsset()->getData();
             }
         }

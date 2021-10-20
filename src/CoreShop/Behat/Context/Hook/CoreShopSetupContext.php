@@ -21,15 +21,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class CoreShopSetupContext implements Context
 {
-    private EntityManagerInterface $entityManager;
-    private NotificationRuleListenerInterface $notificationRuleListener;
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        NotificationRuleListenerInterface $notificationRuleListener
-    ) {
-        $this->entityManager = $entityManager;
-        $this->notificationRuleListener = $notificationRuleListener;
+    public function __construct(private EntityManagerInterface $entityManager, private NotificationRuleListenerInterface $notificationRuleListener)
+    {
     }
 
     /**
@@ -56,13 +49,13 @@ final class CoreShopSetupContext implements Context
         $views = $schemaManager->listViews();
 
         foreach ($tables as $tbl) {
-            if (strpos($tbl, 'coreshop_index_mysql_') === 0) {
+            if (str_starts_with($tbl, 'coreshop_index_mysql_')) {
                 $schemaManager->dropTable($tbl);
             }
         }
 
         foreach ($views as $view) {
-            if (strpos($view->getName(), 'coreshop_index_mysql_') === 0) {
+            if (str_starts_with($view->getName(), 'coreshop_index_mysql_')) {
                 $schemaManager->dropView($view->getName());
             }
         }

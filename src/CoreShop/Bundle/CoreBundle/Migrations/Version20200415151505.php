@@ -24,9 +24,6 @@ class Version20200415151505 extends AbstractMigration implements ContainerAwareI
 {
     use ContainerAwareTrait;
 
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void
     {
         //add new state field to Order Class
@@ -69,9 +66,6 @@ class Version20200415151505 extends AbstractMigration implements ContainerAwareI
         $classUpdater->save();
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

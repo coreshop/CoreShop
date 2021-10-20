@@ -21,8 +21,6 @@ interface AddMultipleToCartFactoryInterface
 {
     /**
      * @param AddToCartInterface[] $addToCarts
-     *
-     * @return AddMultipleToCartInterface
      */
     public function createWithMultipleAddToCarts(array $addToCarts): AddMultipleToCartInterface;
 }

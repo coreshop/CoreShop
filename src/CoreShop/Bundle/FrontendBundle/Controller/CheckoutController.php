@@ -35,11 +35,8 @@ use Webmozart\Assert\Assert;
 
 class CheckoutController extends FrontendController
 {
-    protected CheckoutManagerFactoryInterface $checkoutManagerFactory;
-
-    public function __construct(CheckoutManagerFactoryInterface $checkoutManagerFactory)
+    public function __construct(protected CheckoutManagerFactoryInterface $checkoutManagerFactory)
     {
-        $this->checkoutManagerFactory = $checkoutManagerFactory;
     }
 
     public function processAction(Request $request): Response
@@ -50,9 +47,6 @@ class CheckoutController extends FrontendController
 
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
 
-        /**
-         * @var CheckoutStepInterface
-         */
         $stepIdentifier = $request->get('stepIdentifier');
         $step = $checkoutManager->getStep($stepIdentifier);
         $dataForStep = [];

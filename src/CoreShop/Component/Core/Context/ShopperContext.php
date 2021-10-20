@@ -33,27 +33,8 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class ShopperContext implements ShopperContextInterface
 {
-    protected StoreContextInterface $storeContext;
-    protected CurrencyContextInterface $currencyContext;
-    protected LocaleContextInterface $localeContext;
-    protected CountryContextInterface $countryContext;
-    protected CustomerContextInterface $customerContext;
-    protected CartContextInterface $cartContext;
-
-    public function __construct(
-        StoreContextInterface $storeContext,
-        CurrencyContextInterface $currencyContext,
-        LocaleContextInterface $localeContext,
-        CountryContextInterface $countryContext,
-        CustomerContextInterface $customerContext,
-        CartContextInterface $cartContext
-    ) {
-        $this->storeContext = $storeContext;
-        $this->currencyContext = $currencyContext;
-        $this->localeContext = $localeContext;
-        $this->countryContext = $countryContext;
-        $this->customerContext = $customerContext;
-        $this->cartContext = $cartContext;
+    public function __construct(protected StoreContextInterface $storeContext, protected CurrencyContextInterface $currencyContext, protected LocaleContextInterface $localeContext, protected CountryContextInterface $countryContext, protected CustomerContextInterface $customerContext, protected CartContextInterface $cartContext)
+    {
     }
 
     public function getStore(): StoreInterface
@@ -67,7 +48,7 @@ class ShopperContext implements ShopperContextInterface
             $this->storeContext->getStore();
 
             return true;
-        } catch (StoreNotFoundException $ex) {
+        } catch (StoreNotFoundException) {
             return false;
         }
     }
@@ -83,7 +64,7 @@ class ShopperContext implements ShopperContextInterface
             $this->currencyContext->getCurrency();
 
             return true;
-        } catch (CurrencyNotFoundException $ex) {
+        } catch (CurrencyNotFoundException) {
             return false;
         }
     }
@@ -99,7 +80,7 @@ class ShopperContext implements ShopperContextInterface
             $this->localeContext->getLocaleCode();
 
             return true;
-        } catch (LocaleNotFoundException $ex) {
+        } catch (LocaleNotFoundException) {
             return false;
         }
     }
@@ -115,7 +96,7 @@ class ShopperContext implements ShopperContextInterface
             $this->countryContext->getCountry();
 
             return true;
-        } catch (CountryNotFoundException $ex) {
+        } catch (CountryNotFoundException) {
             return false;
         }
     }
@@ -131,7 +112,7 @@ class ShopperContext implements ShopperContextInterface
             $this->customerContext->getCustomer();
 
             return true;
-        } catch (CustomerNotFoundException $ex) {
+        } catch (CustomerNotFoundException) {
             return false;
         }
     }

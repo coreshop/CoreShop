@@ -25,11 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CountryChoiceType extends AbstractType
 {
-    private RepositoryInterface $countryRepository;
-
-    public function __construct(RepositoryInterface $countryRepository)
+    public function __construct(private RepositoryInterface $countryRepository)
     {
-        $this->countryRepository = $countryRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

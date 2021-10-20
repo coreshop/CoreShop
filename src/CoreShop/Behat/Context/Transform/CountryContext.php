@@ -22,15 +22,8 @@ use Webmozart\Assert\Assert;
 
 final class CountryContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private CountryRepositoryInterface $countryRepository;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CountryRepositoryInterface $countryRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->countryRepository = $countryRepository;
+    public function __construct(private SharedStorageInterface $sharedStorage, private CountryRepositoryInterface $countryRepository)
+    {
     }
 
     /**

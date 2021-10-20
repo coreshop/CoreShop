@@ -26,7 +26,7 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
         try {
             $resources = $container->getParameter('coreshop.all.pimcore_classes');
             $registry = $container->findDefinition(RegistryInterface::class);
-        } catch (InvalidArgumentException $exception) {
+        } catch (InvalidArgumentException) {
             return;
         }
 

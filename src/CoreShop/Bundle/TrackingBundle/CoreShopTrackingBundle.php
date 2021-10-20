@@ -21,9 +21,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class CoreShopTrackingBundle extends Bundle
 {
-    /**
-     * @param ContainerBuilder $container
-     */
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new TrackerPass());

@@ -25,15 +25,8 @@ use Webmozart\Assert\Assert;
 
 class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerInterface
 {
-    protected FolderCreationServiceInterface $folderCreationService;
-    protected TransformerEventDispatcherInterface $eventDispatcher;
-
-    public function __construct(
-        FolderCreationServiceInterface $folderCreationService,
-        TransformerEventDispatcherInterface $eventDispatcher
-    ) {
-        $this->folderCreationService = $folderCreationService;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(protected FolderCreationServiceInterface $folderCreationService, protected TransformerEventDispatcherInterface $eventDispatcher)
+    {
     }
 
     public function transform(
@@ -44,13 +37,6 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         array $options = []
     ): OrderDocumentItemInterface
     {
-        /**
-         * @var OrderInvoiceInterface     $orderDocument
-         * @var OrderItemInterface        $orderItem
-         * @var OrderInvoiceItemInterface $documentItem
-         */
-        Assert::isInstanceOf($orderItem, OrderItemInterface::class);
-        Assert::isInstanceOf($orderDocument, OrderDocumentInterface::class);
         Assert::isInstanceOf($documentItem, OrderInvoiceItemInterface::class);
 
         $this->eventDispatcher->dispatchPreEvent(
@@ -73,11 +59,11 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $documentItem->setOrderItem($orderItem);
         $documentItem->setQuantity($quantity);
 
-        $documentItem->setTotal((int)($orderItem->getItemPrice(true) * $quantity), true);
-        $documentItem->setTotal((int)($orderItem->getItemPrice(false) * $quantity), false);
+        $documentItem->setTotal($orderItem->getItemPrice(true) * $quantity, true);
+        $documentItem->setTotal($orderItem->getItemPrice(false) * $quantity, false);
 
-        $documentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(true) * $quantity), true);
-        $documentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(false) * $quantity), false);
+        $documentItem->setConvertedTotal($orderItem->getConvertedItemPrice(true) * $quantity, true);
+        $documentItem->setConvertedTotal($orderItem->getConvertedItemPrice(false) * $quantity, false);
 
         VersionHelper::useVersioning(function () use ($documentItem) {
             $documentItem->save();

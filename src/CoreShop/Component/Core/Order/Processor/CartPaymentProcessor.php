@@ -19,13 +19,8 @@ use CoreShop\Component\Order\Processor\CartProcessorInterface;
 
 final class CartPaymentProcessor implements CartProcessorInterface
 {
-    private int $decimalFactor;
-    private int $decimalPrecision;
-
-    public function __construct(int $decimalFactor, int $decimalPrecision)
+    public function __construct(private int $decimalFactor, private int $decimalPrecision)
     {
-        $this->decimalFactor = $decimalFactor;
-        $this->decimalPrecision = $decimalPrecision;
     }
 
     public function process(OrderInterface $cart): void

@@ -23,9 +23,6 @@ interface QuantityRangeInterface extends ResourceInterface
      */
     public function getRangeStartingFrom();
 
-    /**
-     * @param float $rangeStartingFrom
-     */
     public function setRangeStartingFrom(float $rangeStartingFrom);
 
     /**
@@ -33,9 +30,6 @@ interface QuantityRangeInterface extends ResourceInterface
      */
     public function getPricingBehaviour();
 
-    /**
-     * @param string $pricingBehaviour
-     */
     public function setPricingBehaviour(string $pricingBehaviour);
 
     /**
@@ -43,9 +37,6 @@ interface QuantityRangeInterface extends ResourceInterface
      */
     public function getPercentage();
 
-    /**
-     * @param float $percentage
-     */
     public function setPercentage(float $percentage);
 
     /**
@@ -58,9 +49,6 @@ interface QuantityRangeInterface extends ResourceInterface
      */
     public function isHighlighted();
 
-    /**
-     * @param bool $highlighted
-     */
     public function setHighlighted(bool $highlighted);
 
     /**

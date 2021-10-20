@@ -22,13 +22,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CustomerContext implements CustomerContextInterface
 {
-    private RequestResolverInterface $requestResolver;
-    private RequestStack $requestStack;
-
-    public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
+    public function __construct(private RequestResolverInterface $requestResolver, private RequestStack $requestStack)
     {
-        $this->requestResolver = $requestResolver;
-        $this->requestStack = $requestStack;
     }
 
     public function getCustomer(): CustomerInterface

@@ -22,13 +22,6 @@ use Webmozart\Assert\Assert;
 
 final class CustomerGroupContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-
-    public function __construct(SharedStorageInterface $sharedStorage)
-    {
-        $this->sharedStorage = $sharedStorage;
-    }
-
     /**
      * @Then /^the (customer "[^"]+") should be in (customer-group "[^"]+")$/
      */

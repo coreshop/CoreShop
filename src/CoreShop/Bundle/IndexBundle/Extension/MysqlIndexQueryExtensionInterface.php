@@ -22,15 +22,9 @@ use Doctrine\DBAL\Query\QueryBuilder;
 interface MysqlIndexQueryExtensionInterface extends IndexExtensionInterface
 {
     /**
-     * @param IndexInterface $index
-     *
      * @return ConditionInterface[]
      */
     public function preConditionQuery(IndexInterface $index): array;
 
-    /**
-     * @param IndexInterface $index
-     * @param QueryBuilder   $queryBuilder
-     */
     public function addJoins(IndexInterface $index, QueryBuilder $queryBuilder): void;
 }

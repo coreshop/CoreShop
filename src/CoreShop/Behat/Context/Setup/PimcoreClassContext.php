@@ -31,15 +31,8 @@ use Pimcore\Tool;
 
 final class PimcoreClassContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ClassStorageInterface $classStorage;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ClassStorageInterface $classStorage
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->classStorage = $classStorage;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ClassStorageInterface $classStorage)
+    {
     }
 
     /**
@@ -161,7 +154,7 @@ final class PimcoreClassContext implements Context
         ClassDefinition\Service::importClassDefinitionFromJson($classDefinition, $json, true);
 
         $this->sharedStorage->set('pimcore_definition_name', $className);
-        $this->sharedStorage->set('pimcore_definition_class', get_class($classDefinition));
+        $this->sharedStorage->set('pimcore_definition_class', $classDefinition::class);
     }
 
     /**
@@ -221,7 +214,7 @@ final class PimcoreClassContext implements Context
         ClassDefinition\Service::importObjectBrickFromJson($brickDefinition, $json, true);
 
         $this->sharedStorage->set('pimcore_definition_name', $brickName);
-        $this->sharedStorage->set('pimcore_definition_class', get_class($brickDefinition));
+        $this->sharedStorage->set('pimcore_definition_class', $brickDefinition::class);
     }
 
     /**
@@ -279,7 +272,7 @@ final class PimcoreClassContext implements Context
         ClassDefinition\Service::importFieldCollectionFromJson($collectionDefinition, $json, true);
 
         $this->sharedStorage->set('pimcore_definition_name', $collection);
-        $this->sharedStorage->set('pimcore_definition_class', get_class($collectionDefinition));
+        $this->sharedStorage->set('pimcore_definition_class', $collectionDefinition::class);
     }
 
     /**
@@ -617,7 +610,7 @@ final class PimcoreClassContext implements Context
     public function definitionHasABrickField($definition, $name): void
     {
         if (!$definition instanceof ClassDefinition) {
-            throw new \InvalidArgumentException(sprintf('Bricks are only allowed in ClassDefinitions, given %s', null !== $definition ? get_class($definition) : 'null'));
+            throw new \InvalidArgumentException(sprintf('Bricks are only allowed in ClassDefinitions, given %s', null !== $definition ? $definition::class : 'null'));
         }
 
         $jsonDefinition = sprintf('
@@ -652,7 +645,7 @@ final class PimcoreClassContext implements Context
     public function definitionHasAFieldCollectionField($definition, $name, Fieldcollection\Definition $fieldCollectionDefinition): void
     {
         if (!$definition instanceof ClassDefinition) {
-            throw new \InvalidArgumentException(sprintf('Fieldcollections are only allowed in ClassDefinitions, given %s', null !== $definition ? get_class($definition) : 'null'));
+            throw new \InvalidArgumentException(sprintf('Fieldcollections are only allowed in ClassDefinitions, given %s', null !== $definition ? $definition::class : 'null'));
         }
 
         $jsonDefinition = sprintf('
@@ -820,8 +813,6 @@ final class PimcoreClassContext implements Context
 
                 default:
                     throw new \InvalidArgumentException(sprintf('Type %s not yet supported', $row['type']));
-
-                    break;
             }
         }
     }
@@ -848,7 +839,7 @@ final class PimcoreClassContext implements Context
         }
 
         if (!$definitionUpdater instanceof ClassUpdateInterface) {
-            throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', null !== $definition ? get_class($definition) : 'null'));
+            throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', null !== $definition ? $definition::class : 'null'));
         }
 
         return $definitionUpdater;

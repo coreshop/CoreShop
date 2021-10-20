@@ -23,18 +23,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class DebugStoreContext implements StoreContextInterface
 {
-    private DebugStoreProviderInterface $debugStoreProvider;
-    private StoreRepositoryInterface $storeRepository;
-    private RequestStack $requestStack;
-
-    public function __construct(
-        DebugStoreProviderInterface $debugStoreProvider,
-        StoreRepositoryInterface $storeRepository,
-        RequestStack $requestStack
-    ) {
-        $this->debugStoreProvider = $debugStoreProvider;
-        $this->storeRepository = $storeRepository;
-        $this->requestStack = $requestStack;
+    public function __construct(private DebugStoreProviderInterface $debugStoreProvider, private StoreRepositoryInterface $storeRepository, private RequestStack $requestStack)
+    {
     }
 
     public function getStore(): StoreInterface

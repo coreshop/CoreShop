@@ -23,15 +23,11 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class InstallDatabaseCommand extends AbstractInstallCommand
 {
-    protected DatabaseSetupCommandsProviderInterface $databaseSetupCommand;
-
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
-        DatabaseSetupCommandsProviderInterface $databaseSetupCommand
+        protected DatabaseSetupCommandsProviderInterface $databaseSetupCommand
     ) {
-        $this->databaseSetupCommand = $databaseSetupCommand;
-
         parent::__construct($kernel, $directoryChecker);
     }
 

@@ -20,9 +20,6 @@ use Doctrine\ORM\QueryBuilder;
 
 interface StoreRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @return QueryBuilder
-     */
     public function createListQueryBuilder(): QueryBuilder;
 
     public function findOneBySite(int $siteId): ?StoreInterface;

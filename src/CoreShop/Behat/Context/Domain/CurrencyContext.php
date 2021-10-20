@@ -25,21 +25,8 @@ use Webmozart\Assert\Assert;
 
 final class CurrencyContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private CurrencyRepositoryInterface $currencyRepository;
-    private CurrencyContextInterface $currencyContext;
-    private MoneyFormatterInterface $moneyFormatter;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CurrencyRepositoryInterface $currencyRepository,
-        CurrencyContextInterface $currencyContext,
-        MoneyFormatterInterface $moneyFormatter
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->currencyRepository = $currencyRepository;
-        $this->currencyContext = $currencyContext;
-        $this->moneyFormatter = $moneyFormatter;
+    public function __construct(private CurrencyRepositoryInterface $currencyRepository, private CurrencyContextInterface $currencyContext, private MoneyFormatterInterface $moneyFormatter)
+    {
     }
 
     /**

@@ -43,7 +43,7 @@ final class CompositeRequestResolver implements RequestResolverInterface
             try {
                 return $requestResolver->findCountry($request);
             }
-            catch (CountryNotFoundException $ex)
+            catch (CountryNotFoundException)
             {
                 //Silently ignore and continue
             }

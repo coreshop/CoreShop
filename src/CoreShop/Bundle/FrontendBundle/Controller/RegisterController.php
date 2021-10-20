@@ -141,7 +141,7 @@ class RegisterController extends FrontendController
             $customer = $this->get(CustomerContextInterface::class)->getCustomer();
 
             return $customer;
-        } catch (\Exception $ex) {
+        } catch (\Exception) {
         }
 
         return null;
@@ -149,7 +149,7 @@ class RegisterController extends FrontendController
 
     protected function generateResetPasswordHash(UserInterface $customer): string
     {
-        $resetIdentifier = $this->container->getParameter('coreshop.customer.security.login_identifier');
+        $this->container->getParameter('coreshop.customer.security.login_identifier');
 
         return hash('md5', $customer->getId() . $customer->getLoginIdentifier() . mt_rand() . time());
     }

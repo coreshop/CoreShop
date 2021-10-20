@@ -19,10 +19,5 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface RequestResolverInterface
 {
-    /**
-     * @param Request $request
-     *
-     * @return CountryInterface|null
-     */
     public function findCountry(Request $request): ?CountryInterface;
 }

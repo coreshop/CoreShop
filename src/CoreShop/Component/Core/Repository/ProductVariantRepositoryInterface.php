@@ -22,18 +22,10 @@ use Pimcore\Model\DataObject\Listing;
 interface ProductVariantRepositoryInterface extends BaseProductRepositoryInterface
 {
     /**
-     * @param ProductInterface $product
-     * @param bool             $recursive
      *
      * @return ProductInterface[]
      */
     public function findAllVariants(ProductInterface $product, bool $recursive = true): array;
 
-    /**
-     * @param ProductInterface $product
-     * @param StoreInterface   $store
-     *
-     * @return array|Listing
-     */
-    public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store);
+    public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array|\Pimcore\Model\DataObject\Listing;
 }

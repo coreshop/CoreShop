@@ -61,39 +61,8 @@ final class CartPriceRuleContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    private SharedStorageInterface $sharedStorage;
-    private ObjectManager $objectManager;
-    private FormFactoryInterface $formFactory;
-    private FormTypeRegistryInterface $conditionFormTypeRegistry;
-    private FormTypeRegistryInterface $actionFormTypeRegistry;
-    private FactoryInterface $cartPriceRuleFactory;
-    private CartPriceRuleVoucherRepositoryInterface $cartPriceRuleVoucherRepository;
-    private CartPriceRuleProcessorInterface $cartPriceRuleProcessor;
-    private CartManagerInterface $cartManager;
-    private FactoryInterface $cartPriceRuleVoucherCodeFactory;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FormFactoryInterface $formFactory,
-        FormTypeRegistryInterface $conditionFormTypeRegistry,
-        FormTypeRegistryInterface $actionFormTypeRegistry,
-        FactoryInterface $cartPriceRuleFactory,
-        CartPriceRuleVoucherRepositoryInterface $cartPriceRuleVoucherRepository,
-        CartPriceRuleProcessorInterface $cartPriceRuleProcessor,
-        CartManagerInterface $cartManager,
-        FactoryInterface $cartPriceRuleVoucherCodeFactory
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->formFactory = $formFactory;
-        $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
-        $this->actionFormTypeRegistry = $actionFormTypeRegistry;
-        $this->cartPriceRuleFactory = $cartPriceRuleFactory;
-        $this->cartPriceRuleVoucherRepository = $cartPriceRuleVoucherRepository;
-        $this->cartPriceRuleProcessor = $cartPriceRuleProcessor;
-        $this->cartManager = $cartManager;
-        $this->cartPriceRuleVoucherCodeFactory = $cartPriceRuleVoucherCodeFactory;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FormFactoryInterface $formFactory, private FormTypeRegistryInterface $conditionFormTypeRegistry, private FormTypeRegistryInterface $actionFormTypeRegistry, private FactoryInterface $cartPriceRuleFactory, private CartPriceRuleVoucherRepositoryInterface $cartPriceRuleVoucherRepository, private CartPriceRuleProcessorInterface $cartPriceRuleProcessor, private CartManagerInterface $cartManager, private FactoryInterface $cartPriceRuleVoucherCodeFactory)
+    {
     }
 
     /**
@@ -504,10 +473,6 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @param CartPriceRuleInterface $rule
-     * @param ConditionInterface     $condition
-     */
     private function addCondition(CartPriceRuleInterface $rule, ConditionInterface $condition): void
     {
         $rule->addCondition($condition);
@@ -516,10 +481,6 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @param CartPriceRuleInterface $rule
-     * @param ActionInterface        $action
-     */
     private function addAction(CartPriceRuleInterface $rule, ActionInterface $action): void
     {
         $rule->addAction($action);

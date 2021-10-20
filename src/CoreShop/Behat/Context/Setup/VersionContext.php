@@ -22,11 +22,8 @@ use Pimcore\Model\Version;
 
 final class VersionContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-
-    public function __construct(SharedStorageInterface $sharedStorage)
+    public function __construct(private SharedStorageInterface $sharedStorage)
     {
-        $this->sharedStorage = $sharedStorage;
     }
 
     /**

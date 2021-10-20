@@ -25,24 +25,8 @@ use Doctrine\Persistence\ObjectManager;
 
 final class CurrencyContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ObjectManager $objectManager;
-    private FactoryInterface $currencyFactory;
-    private CurrencyRepositoryInterface $currencyRepository;
-    private FixedCurrencyContext $fixedCurrencyContext;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FactoryInterface $currencyFactory,
-        CurrencyRepositoryInterface $currencyRepository,
-        FixedCurrencyContext $fixedCurrencyContext
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->currencyFactory = $currencyFactory;
-        $this->currencyRepository = $currencyRepository;
-        $this->fixedCurrencyContext = $fixedCurrencyContext;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FactoryInterface $currencyFactory, private CurrencyRepositoryInterface $currencyRepository, private FixedCurrencyContext $fixedCurrencyContext)
+    {
     }
 
     /**
@@ -95,9 +79,6 @@ final class CurrencyContext implements Context
         }
     }
 
-    /**
-     * @param CurrencyInterface $currency
-     */
     private function saveCurrency(CurrencyInterface $currency): void
     {
         $this->objectManager->persist($currency);

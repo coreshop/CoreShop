@@ -25,11 +25,8 @@ use Webmozart\Assert\Assert;
 
 final class CartMaximumQuantityValidator extends ConstraintValidator
 {
-    private QuantityValidatorService $quantityValidatorService;
-
-    public function __construct(QuantityValidatorService $quantityValidatorService)
+    public function __construct(private QuantityValidatorService $quantityValidatorService)
     {
-        $this->quantityValidatorService = $quantityValidatorService;
     }
 
     public function validate($value, Constraint $constraint): void
@@ -72,7 +69,7 @@ final class CartMaximumQuantityValidator extends ConstraintValidator
                 continue;
             }
 
-            $maxLimit = (int)$product->getMaximumQuantityToOrder();
+            $maxLimit = $product->getMaximumQuantityToOrder();
             $higherThenMaximum = $this->quantityValidatorService->isHigherThenMaxLimit(
                 $maxLimit,
                 $this->getExistingCartItemQuantityFromCart($value, $cartItem)
