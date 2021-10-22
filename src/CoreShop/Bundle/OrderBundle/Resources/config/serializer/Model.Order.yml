@@ -120,8 +120,8 @@ CoreShop\Component\Order\Model\Order:
             exp: object.getSubtotal(false)
             type: integer
             groups: [Detailed]
-        subtotaGross:
-            serialized_name: subtotaGross
+        subtotalGross:
+            serialized_name: subtotalGross
             exp: object.getSubtotal(true)
             type: integer
             groups: [Detailed]
@@ -130,8 +130,8 @@ CoreShop\Component\Order\Model\Order:
             exp: object.getConvertedSubtotal(false)
             type: integer
             groups: [Detailed]
-        convertedSubtotaGross:
-            serialized_name: convertedSubtotaGross
+        convertedSubtotalGross:
+            serialized_name: convertedSubtotalGross
             exp: object.getConvertedSubtotal(true)
             type: integer
             groups: [Detailed]
