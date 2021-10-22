@@ -197,7 +197,7 @@ final class TrackingContext implements Context
     {
         $tracker = $this->trackerRegistry->get($trackerIdentifier);
 
-        /*
+        /**
          * @var $tracker TrackerInterface
          */
         Assert::isInstanceOf($tracker, TrackerInterface::class);

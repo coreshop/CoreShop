@@ -57,7 +57,7 @@ class UnitVolumeCalculator implements CalculatorInterface
 
         $price = $this->inner->calculateRangePrice($locatedRange, $subject, $originalPrice, $context);
 
-        if (0 === $price) {
+        if ($price === 0) {
             throw new NoPriceFoundException(__CLASS__);
         }
 

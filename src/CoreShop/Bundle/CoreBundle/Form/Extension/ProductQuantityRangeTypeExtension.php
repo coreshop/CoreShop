@@ -48,7 +48,7 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
         $parentForm = $form->getParent();
 
         $scale = $this->getScale($parentForm);
-        if (null === $scale) {
+        if ($scale === null) {
             return;
         }
 

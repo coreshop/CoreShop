@@ -36,7 +36,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
 
     public function getAdminJavascript(PathsEvent $event): void
     {
-        if (0 === count($this->jsResources)) {
+        if (count($this->jsResources) === 0) {
             return;
         }
 
@@ -45,7 +45,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
 
     public function getAdminCss(PathsEvent $event): void
     {
-        if (0 === count($this->cssResources)) {
+        if (count($this->cssResources) === 0) {
             return;
         }
 
@@ -54,7 +54,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
 
     public function getEditmodeAdminJavascript(PathsEvent $event): void
     {
-        if (0 === count($this->editmodeJsResources)) {
+        if (count($this->editmodeJsResources) === 0) {
             return;
         }
 
@@ -63,7 +63,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
 
     public function getEditmodeAdminCSS(PathsEvent $event): void
     {
-        if (0 === count($this->editmodeCssResources)) {
+        if (count($this->editmodeCssResources) === 0) {
             return;
         }
 

@@ -215,6 +215,11 @@ class SEOMetadata implements SEOMetadataInterface
             return iterator_to_array($data);
         }
 
-        throw new \InvalidArgumentException(sprintf('Expected array or Traversable, got "%s"', get_debug_type($data)));
+        throw new \InvalidArgumentException(
+            sprintf(
+                'Expected array or Traversable, got "%s"',
+                get_debug_type($data)
+            )
+        );
     }
 }

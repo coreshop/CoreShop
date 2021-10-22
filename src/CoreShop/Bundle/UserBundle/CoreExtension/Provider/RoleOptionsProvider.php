@@ -39,7 +39,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
     {
         $roles = [];
 
-        /*
+        /**
          * Get all unique roles.
          */
         foreach ($this->originalRoles as $originalRole => $inheritedRoles) {

@@ -39,7 +39,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
         AddressInterface $address,
         int $shippingAmount
     ): array {
-        /*
+        /**
          * @var StoreAwareInterface $shippable
          * @var ShippableInterface $shippable
          */
@@ -47,7 +47,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
 
         $store = $shippable->getStore();
 
-        /*
+        /**
          * @var StoreInterface $store
          */
         Assert::isInstanceOf($store, StoreInterface::class);
@@ -73,7 +73,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
          */
         foreach ($cart->getItems() as $item) {
             if ($item instanceof \CoreShop\Component\Core\Model\OrderItemInterface &&
-                true === $item->getDigitalProduct()
+                $item->getDigitalProduct() === true
             ) {
                 continue;
             }

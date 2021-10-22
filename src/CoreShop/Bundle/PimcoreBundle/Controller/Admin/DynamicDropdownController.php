@@ -37,7 +37,7 @@ final class DynamicDropdownController extends AdminController
 
         if ($parentFolderPath) {
             // remove trailing slash
-            if ('/' !== $parentFolderPath) {
+            if ($parentFolderPath !== '/') {
                 $parentFolderPath = rtrim($parentFolderPath, '/ ');
             }
 
@@ -63,7 +63,7 @@ final class DynamicDropdownController extends AdminController
             static function (array $a, array $b) use ($sort) {
                 $field = 'value';
 
-                if ('byvalue' === strtolower($sort)) {
+                if (strtolower($sort) === 'byvalue') {
                     $field = 'key';
                 }
 
@@ -140,8 +140,8 @@ final class DynamicDropdownController extends AdminController
                 /**
                  * @var DataObject\Folder $child
                  */
-                $key = '' !== $child->getProperty('Taglabel') ? $child->getProperty('Taglabel') : $child->getKey();
-                if ('true' === $request->get('recursive')) {
+                $key = $child->getProperty('Taglabel') !== '' ? $child->getProperty('Taglabel') : $child->getKey();
+                if ($request->get('recursive') === 'true') {
                     $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                 }
             } elseif ($child instanceof $fqcn) {
@@ -152,7 +152,7 @@ final class DynamicDropdownController extends AdminController
                     'published' => $child instanceof DataObject\Concrete && $child->getPublished(),
                 ];
 
-                if ('true' === $request->get('recursive')) {
+                if ($request->get('recursive') === 'true') {
                     $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                 }
             }
@@ -176,10 +176,10 @@ final class DynamicDropdownController extends AdminController
         if ($tree instanceof DataObject\ClassDefinition\Layout || $tree instanceof DataObject\ClassDefinition\Data\Localizedfields) { // Did I forget something?
             $children = $tree->getChildren();
             foreach ($children as $child) {
-                /*
+                /**
                  * @psalm-suppress InternalProperty, UndefinedPropertyFetch
                  */
-                $definition['get' . ucfirst($child->name)] = 'localizedfields' === $tree->fieldtype;
+                $definition['get' . ucfirst($child->name)] = $tree->fieldtype === 'localizedfields';
                 $definition = $this->parseTree($child, $definition);
             }
         }

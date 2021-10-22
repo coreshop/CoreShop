@@ -34,7 +34,7 @@ class CustomerTransformerController extends AdminController
         $foundObjects = [];
         $value = $request->query->get('value', null);
 
-        if (null !== $value) {
+        if ($value !== null) {
             $list = $this->getCompanyRepository()->getList();
             $list->addConditionParam(sprintf('name LIKE "%%%s%%"', (string)$value));
             $foundObjects = $list->getData();
@@ -62,9 +62,9 @@ class CustomerTransformerController extends AdminController
         $message = null;
         $data = null;
 
-        $object = 'customer' === $type ? $this->getCustomerRepository()->find($objectId) : $this->getCompanyRepository()->find($objectId);
+        $object = $type === 'customer' ? $this->getCustomerRepository()->find($objectId) : $this->getCompanyRepository()->find($objectId);
 
-        if ('customer' === $type) {
+        if ($type === 'customer') {
             if (!$object instanceof CustomerInterface) {
                 $error = true;
                 $message = 'Invalid Customer Object. Please choose a valid customer.';
@@ -75,7 +75,7 @@ class CustomerTransformerController extends AdminController
                     'id' => $object->getId(),
                 ];
             }
-        } elseif ('company' === $type) {
+        } elseif ($type === 'company') {
             if (!$object instanceof CompanyInterface) {
                 $error = true;
                 $message = 'Invalid Customer Object. Please choose a valid company.';
@@ -102,7 +102,7 @@ class CustomerTransformerController extends AdminController
         $data = null;
 
         $customer = $this->getCustomerRepository()->find($customerId);
-        $company = null === $companyId ? null : $this->getCompanyRepository()->find($companyId);
+        $company = $companyId === null ? null : $this->getCompanyRepository()->find($companyId);
 
         if (!$customer instanceof CustomerInterface) {
             $error = true;
@@ -115,7 +115,7 @@ class CustomerTransformerController extends AdminController
             ]);
         }
 
-        if (null !== $companyId && !$company instanceof CompanyInterface) {
+        if ($companyId !== null && !$company instanceof CompanyInterface) {
             $error = true;
             $message = 'Invalid Company Object. Please choose a valid company.';
 
@@ -133,7 +133,7 @@ class CustomerTransformerController extends AdminController
 
         $availableCustomerAddresses = [];
 
-        if (false === $error) {
+        if ($error === false) {
             foreach ($customer->getAddresses() as $address) {
                 $availableCustomerAddresses[] = [
                     'id' => $address->getId(),

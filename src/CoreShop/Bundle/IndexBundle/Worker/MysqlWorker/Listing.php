@@ -115,7 +115,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     public function getObjects()
     {
-        if (null === $this->objects) {
+        if ($this->objects === null) {
             $this->load();
         }
 
@@ -375,7 +375,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     protected function addQueryFromConditions(QueryBuilder $queryBuilder, $excludeConditions = false, $excludedFieldName = null, $variantMode = null)
     {
-        if (null == $variantMode) {
+        if ($variantMode == null) {
             $variantMode = $this->getVariantMode();
         }
 
@@ -397,12 +397,12 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         }
 
         //variant handling and userspecific conditions
-        if (AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT == $variantMode) {
+        if ($variantMode == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             if (!$excludeConditions) {
                 $this->addUserSpecificConditions($queryBuilder, $excludedFieldName);
             }
         } else {
-            if (AbstractListing::VARIANT_MODE_HIDE == $variantMode) {
+            if ($variantMode == AbstractListing::VARIANT_MODE_HIDE) {
                 $queryBuilder->andWhere('q.o_type != \'variant\'');
             }
             if (!$excludeConditions) {
@@ -494,7 +494,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     public function count()
     {
-        if (null === $this->totalCount) {
+        if ($this->totalCount === null) {
             $queryBuilder = $this->dao->createQueryBuilder();
             $this->addQueryFromConditions($queryBuilder);
             $this->addJoins($queryBuilder);
@@ -550,6 +550,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     public function valid()
     {
-        return false !== $this->current();
+        return $this->current() !== false;
     }
 }

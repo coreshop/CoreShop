@@ -45,7 +45,7 @@ class CategoriesReport implements ReportInterface
 
         $page = $parameterBag->get('page', 1);
         $limit = $parameterBag->get('limit', 25);
-        $offset = $parameterBag->get('offset', 1 === $page ? 0 : ($page - 1) * $limit);
+        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
 
         $orderClassId = $this->orderRepository->getClassId();
         $categoryClassId = $this->categoryRepository->getClassId();

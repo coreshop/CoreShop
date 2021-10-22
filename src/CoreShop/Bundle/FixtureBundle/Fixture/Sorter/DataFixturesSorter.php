@@ -33,6 +33,7 @@ final class DataFixturesSorter
     /**
      * Returns the array of data fixtures to execute.
      *
+     *
      * @return array $fixtures
      */
     public function sort(array $fixtures)
@@ -76,11 +77,11 @@ final class DataFixturesSorter
                 }
 
                 if ($a instanceof OrderedFixtureInterface) {
-                    return 0 === $a->getOrder() ? 0 : 1;
+                    return $a->getOrder() === 0 ? 0 : 1;
                 }
 
                 if ($b instanceof OrderedFixtureInterface) {
-                    return 0 === $b->getOrder() ? 0 : -1;
+                    return $b->getOrder() === 0 ? 0 : -1;
                 }
 
                 return 0;
@@ -147,7 +148,7 @@ final class DataFixturesSorter
                 $dependencies = $fixture->getDependencies();
                 $unsequencedDependencies = $this->getUnsequencedClasses($sequenceForClasses, $dependencies);
 
-                if (0 === count($unsequencedDependencies)) {
+                if (count($unsequencedDependencies) === 0) {
                     $sequenceForClasses[$class] = $sequence++;
                 }
             }
@@ -185,17 +186,31 @@ final class DataFixturesSorter
     private function validateDependencies($fixtureClass, $dependenciesClasses)
     {
         if (!is_array($dependenciesClasses) || empty($dependenciesClasses)) {
-            throw new \InvalidArgumentException(sprintf('Method "%s" in class "%s" must return an array of classes which are' . ' dependencies for the fixture, and it must be NOT empty.', 'getDependencies', $fixtureClass));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Method "%s" in class "%s" must return an array of classes which are'
+                    . ' dependencies for the fixture, and it must be NOT empty.',
+                    'getDependencies',
+                    $fixtureClass
+                )
+            );
         }
 
         if (in_array($fixtureClass, $dependenciesClasses)) {
-            throw new \InvalidArgumentException(sprintf('Class "%s" can\'t have itself as a dependency', $fixtureClass));
+            throw new \InvalidArgumentException(
+                sprintf('Class "%s" can\'t have itself as a dependency', $fixtureClass)
+            );
         }
 
         $loadedFixtureClasses = array_keys($this->fixtures);
         foreach ($dependenciesClasses as $class) {
             if (!in_array($class, $loadedFixtureClasses)) {
-                throw new \RuntimeException(sprintf('Fixture "%s" was declared as a dependency, but it should be added in fixture loader first.', $class));
+                throw new \RuntimeException(
+                    sprintf(
+                        'Fixture "%s" was declared as a dependency, but it should be added in fixture loader first.',
+                        $class
+                    )
+                );
             }
         }
 
@@ -215,7 +230,7 @@ final class DataFixturesSorter
 
         foreach ($classes as $class) {
             // might not be set if depends on ordered fixture
-            if (isset($sequences[$class]) && -1 === $sequences[$class]) {
+            if (isset($sequences[$class]) && $sequences[$class] === -1) {
                 $unsequencedClasses[] = $class;
             }
         }

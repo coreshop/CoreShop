@@ -58,7 +58,10 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
             return new $listClass();
         }
 
-        throw new \InvalidArgumentException(sprintf('Class %s has no getList or a Listing Class function and thus is not supported here', $className));
+        throw new \InvalidArgumentException(sprintf(
+            'Class %s has no getList or a Listing Class function and thus is not supported here',
+            $className
+        ));
     }
 
     public function findAll()
@@ -76,7 +79,12 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
         $class = $this->metadata->getClass('model');
 
         if (!method_exists($class, 'getById')) {
-            throw new \InvalidArgumentException(sprintf('Class %s has no getById function and is therefore not considered as a valid Pimcore DAO Object', $class));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Class %s has no getById function and is therefore not considered as a valid Pimcore DAO Object',
+                    $class
+                )
+            );
         }
 
         return $class::getById($id, $force);

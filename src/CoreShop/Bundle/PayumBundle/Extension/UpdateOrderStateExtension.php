@@ -51,7 +51,7 @@ final class UpdateOrderStateExtension implements ExtensionInterface
             return;
         }
 
-        if (1 === $previousStackSize) {
+        if ($previousStackSize === 1) {
             $previousActionClassName = $previousStack[0]->getAction()::class;
             if (false === stripos($previousActionClassName, 'NotifyNullAction')) {
                 return;
@@ -81,8 +81,8 @@ final class UpdateOrderStateExtension implements ExtensionInterface
             return;
         }
 
-        if (PaymentInterface::STATE_COMPLETED === $value ||
-            PaymentInterface::STATE_AUTHORIZED === $value
+        if ($value === PaymentInterface::STATE_COMPLETED ||
+            $value === PaymentInterface::STATE_AUTHORIZED
         ) {
             $order = $payment->getOrder();
             $this->confirmOrderState($order);

@@ -34,7 +34,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
      */
     public function find($className, $id): ?Concrete
     {
-        /*
+        /**
          * @var Concrete $className
          * @psalm-suppress InvalidReturnStatement
          */
@@ -43,7 +43,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
 
     public function persist($object): void
     {
-        /*
+        /**
          * @var AbstractModel $object
          */
         Assert::isInstanceOf($object, AbstractModel::class);

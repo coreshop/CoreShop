@@ -20,7 +20,7 @@ final class Factory implements FactoryInterface
      * @psalm-param class-string $className
      */
     public function __construct(
-        /*
+        /**
          * @psalm-var class-string
          */
         private string $className

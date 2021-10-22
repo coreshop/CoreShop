@@ -85,7 +85,7 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
              * @var Config\Dao $dao
              */
             $dao = $thumbnailConfig->getDao();
-            /*
+            /**
              * @psalm-suppress InternalMethod
              */
             $dao->getByName($name);

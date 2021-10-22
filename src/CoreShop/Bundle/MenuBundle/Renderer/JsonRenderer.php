@@ -100,7 +100,7 @@ class JsonRenderer implements RendererInterface
 
             $orderNumber = $menuItem->getExtra('order');
 
-            if (null != $orderNumber) {
+            if ($orderNumber != null) {
                 if (!isset($menuOrderArray[$orderNumber])) {
                     $menuOrderArray[$orderNumber] = $menuItem->getName();
                 } else {
@@ -123,7 +123,7 @@ class JsonRenderer implements RendererInterface
 
                 $position = array_search($key, $keysArray);
 
-                if (false === $position) {
+                if ($position === false) {
                     continue;
                 }
 

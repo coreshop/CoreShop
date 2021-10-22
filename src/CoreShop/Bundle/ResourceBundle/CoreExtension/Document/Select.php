@@ -122,7 +122,13 @@ class Select extends Editable
         $getter = 'get' . ucfirst($this->nameProperty);
 
         if (!method_exists($resource, $getter)) {
-            throw new \InvalidArgumentException(sprintf('Property with Name %s does not exist in resource %s', $this->nameProperty, $resource::class));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Property with Name %s does not exist in resource %s',
+                    $this->nameProperty,
+                    $resource::class
+                )
+            );
         }
 
         return $resource->$getter();

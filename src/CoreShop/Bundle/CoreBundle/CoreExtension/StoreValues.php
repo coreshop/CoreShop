@@ -33,7 +33,9 @@ use Webmozart\Assert\Assert;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
  */
-class StoreValues extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface, Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface
+class StoreValues extends Model\DataObject\ClassDefinition\Data implements
+    Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface,
+    Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -582,20 +584,20 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Model
         $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
         $productStoreValuesRepository = $this->getProductStoreValuesRepositoryFactory()->createNewRepository($tempEntityManager);
 
-        /*
+        /**
          * @var ProductStoreValuesRepositoryInterface $productStoreValuesRepository
          */
         Assert::isInstanceOf($productStoreValuesRepository, ProductStoreValuesRepositoryInterface::class);
 
         foreach ($data as $storeId => $storeData) {
-            if (0 === $storeId) {
+            if ($storeId === 0) {
                 continue;
             }
 
             $storeValuesEntity = null;
             $storeValuesId = isset($storeData['id']) && is_numeric($storeData['id']) ? $storeData['id'] : null;
 
-            if (null !== $storeValuesId) {
+            if ($storeValuesId !== null) {
                 $storeValuesEntity = $productStoreValuesRepository->find($storeValuesId);
             }
 
@@ -661,10 +663,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Model
             throw new \Exception('This version of Pimcore is not supported for store values import.');
         }
 
-        $data = '' == $importValue ? [] : json_decode($importValue, true);
+        $data = $importValue == '' ? [] : json_decode($importValue, true);
 
-        if (\JSON_ERROR_NONE !== json_last_error()) {
-            throw new \InvalidArgumentException(sprintf('Error decoding Store Price JSON `%s`: %s', $importValue, json_last_error_msg()));
+        if (json_last_error() !== \JSON_ERROR_NONE) {
+            throw new \InvalidArgumentException(sprintf(
+                'Error decoding Store Price JSON `%s`: %s',
+                $importValue,
+                json_last_error_msg()
+            ));
         }
 
         if (is_array($data) && !empty($data)) {
@@ -720,12 +726,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Model
 
     public function isEmpty($data)
     {
-        return null === $data || (is_array($data) && 0 === count($data));
+        return null === $data || (is_array($data) && count($data) === 0);
     }
 
     /**
      * Removes already deleted ProductUnitDefinitions from the serialized StoreValues for Versions. Otherwise, these
-     * Additional Unit Definitions would get restored on unmarshall.
+     * Additional Unit Definitions would get restored on unmarshall
      *
      * @return array
      */

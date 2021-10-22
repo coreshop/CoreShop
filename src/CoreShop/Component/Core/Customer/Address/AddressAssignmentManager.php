@@ -28,7 +28,7 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
 
     public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true): ?array
     {
-        if (CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY !== $customer->getAddressAccessType()) {
+        if ($customer->getAddressAccessType() !== CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY) {
             return null;
         }
 
@@ -43,7 +43,7 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
 
     public function detectAddressAffiliationForCustomer(CustomerInterface $customer, AddressInterface $address): ?string
     {
-        if (0 === $address->getId()) {
+        if ($address->getId() === 0) {
             return null;
         }
 
@@ -64,7 +64,7 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
 
     public function checkAddressAffiliationPermissionForCustomer(CustomerInterface $customer, AddressInterface $address): bool
     {
-        if (0 === $address->getId()) {
+        if ($address->getId() === 0) {
             return true;
         }
 
@@ -72,16 +72,16 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
             return $customer->hasAddress($address);
         }
 
-        if (CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY === $customer->getAddressAccessType()) {
+        if ($customer->getAddressAccessType() === CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY) {
             return $customer->hasAddress($address);
         }
 
         $company = $customer->getCompany();
-        if (CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_COMPANY_ONLY === $customer->getAddressAccessType()) {
+        if ($customer->getAddressAccessType() === CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_COMPANY_ONLY) {
             return $company instanceof CompanyInterface && $company->hasAddress($address);
         }
 
-        if (CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY === $customer->getAddressAccessType()) {
+        if ($customer->getAddressAccessType() === CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY) {
             return $customer->hasAddress($address) || ($company instanceof CompanyInterface && $company->hasAddress($address));
         }
 
@@ -92,23 +92,25 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
     {
         $company = $customer->getCompany();
 
-        if (!$company instanceof CompanyInterface || null === $affiliation) {
+        if (!$company instanceof CompanyInterface || $affiliation === null) {
             $affiliation = CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN;
         }
 
         $relationEntity = null;
-        if (CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN === $affiliation) {
+        if ($affiliation === CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN) {
             $relationEntity = $customer;
-        } elseif (CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_COMPANY === $affiliation) {
+        } elseif ($affiliation === CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_COMPANY) {
             $relationEntity = $company;
         }
 
-        if (null === $relationEntity) {
-            throw new \InvalidArgumentException(sprintf('Could not determine address path for customer with id %d with affiliation "%s"', $customer->getId(), $affiliation));
+        if ($relationEntity === null) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not determine address path for customer with id %d with affiliation "%s"', $customer->getId(), $affiliation)
+            );
         }
 
         //If it's a customer address, and the customer doesn't have one yet, use this address as default and allow it for all types
-        if (CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN === $affiliation && 0 === count($customer->getAddresses())) {
+        if ($affiliation === CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN && 0 === count($customer->getAddresses())) {
             $address->setAddressIdentifier(null);
             $customer->setDefaultAddress($address);
         }

@@ -42,7 +42,7 @@ class OrderController extends FrontendController
         }
 
         foreach ($this->getPaymentRepository()->findForPayable($order) as $payment) {
-            if (PaymentInterface::STATE_COMPLETED === $payment->getState()) {
+            if ($payment->getState() === PaymentInterface::STATE_COMPLETED) {
                 $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.order_already_paid'));
 
                 return $this->redirectToRoute('coreshop_index');

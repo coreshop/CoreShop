@@ -36,7 +36,7 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
         $existingPriceRule = null !== $priceRuleItem;
         $result = false;
 
-        if (null === $priceRuleItem) {
+        if ($priceRuleItem === null) {
             /**
              * @var ProposalCartPriceRuleItemInterface $priceRuleItem
              */
@@ -55,7 +55,7 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
             if ($action instanceof ActionInterface) {
                 $actionCommand = $this->actionServiceRegistry->get($action->getType());
 
-                /*
+                /**
                  * @var CartPriceRuleActionProcessorInterface $actionCommand
                  */
                 Assert::isInstanceOf($actionCommand, CartPriceRuleActionProcessorInterface::class);

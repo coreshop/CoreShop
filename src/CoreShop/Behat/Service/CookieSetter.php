@@ -43,7 +43,7 @@ class CookieSetter implements CookieSetterInterface
         $driver = $session->getDriver();
 
         try {
-            if ($driver instanceof PantherDriver && null === $driver->getClient()) {
+            if ($driver instanceof PantherDriver && $driver->getClient() === null) {
                 return true;
             }
         } catch (DriverException) {

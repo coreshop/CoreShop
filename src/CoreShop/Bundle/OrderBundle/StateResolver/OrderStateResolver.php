@@ -41,10 +41,10 @@ final class OrderStateResolver implements StateResolverInterface
         $coreStates = OrderPaymentStates::STATE_PAID === $order->getPaymentState() &&
             OrderShipmentStates::STATE_SHIPPED === $order->getShippingState();
 
-        if (true === $this->includeInvoiceStateToComplete) {
-            return true === $coreStates && OrderInvoiceStates::STATE_INVOICED === $order->getInvoiceState();
+        if ($this->includeInvoiceStateToComplete === true) {
+            return $coreStates === true && OrderInvoiceStates::STATE_INVOICED === $order->getInvoiceState();
         }
 
-        return true === $coreStates;
+        return $coreStates === true;
     }
 }

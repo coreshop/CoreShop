@@ -269,7 +269,7 @@ final class CartContext implements Context
     {
         $cart = $this->cartContext->getCart();
 
-        /*
+        /**
          * @var OrderInterface $cart
          */
         Assert::isInstanceOf($cart, OrderInterface::class);

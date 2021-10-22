@@ -56,7 +56,7 @@ class CustomerRegistrationType extends AbstractResourceType
             ->add('user', UserRegistrationType::class, [
                 'label' => false,
                 'constraints' => [new Valid(['groups' => $this->validationGroups])],
-                'allow_username' => 'username' === $this->loginIdentifier,
+                'allow_username' => $this->loginIdentifier === 'username',
             ])
             ->add('salutation', SalutationChoiceType::class, [
                 'label' => 'coreshop.form.customer.salutation',
@@ -102,7 +102,7 @@ class CustomerRegistrationType extends AbstractResourceType
             ])
             ->add('submit', SubmitType::class);
 
-        if ('username' !== $this->loginIdentifier) {
+        if ($this->loginIdentifier !== 'username') {
             $builder->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event) {
                 $data = $event->getData();
 

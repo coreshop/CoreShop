@@ -81,11 +81,11 @@ class ProcessableOrderItems implements ProcessableInterface
 
     public function isFullyProcessed(OrderInterface $order): bool
     {
-        return 0 === count($this->getProcessableItems($order));
+        return count($this->getProcessableItems($order)) === 0;
     }
 
     public function isProcessable(OrderInterface $order): bool
     {
-        return !$this->isFullyProcessed($order) && OrderStates::STATE_CANCELLED !== $order->getOrderState();
+        return !$this->isFullyProcessed($order) && $order->getOrderState() !== OrderStates::STATE_CANCELLED;
     }
 }

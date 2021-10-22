@@ -54,7 +54,7 @@ class ProductValidationController extends AdminController
 
         $hasQuantityPriceRules = count($object->getQuantityPriceRules()) > 0;
 
-        if (false === $hasQuantityPriceRules) {
+        if ($hasQuantityPriceRules === false) {
             return new JsonResponse([
                 'success' => $success,
                 'message' => $message,

@@ -102,7 +102,7 @@ class PaymentController extends AbstractController
         /** @var GatewayConfigInterface $gatewayConfig */
         $gatewayConfig = $paymentMethod->getGatewayConfig();
 
-        if (isset($gatewayConfig->getConfig()['use_authorize']) && true === $gatewayConfig->getConfig()['use_authorize']) {
+        if (isset($gatewayConfig->getConfig()['use_authorize']) && $gatewayConfig->getConfig()['use_authorize'] === true) {
             $token = $this->getPayum()->getTokenFactory()->createAuthorizeToken(
                 $gatewayConfig->getGatewayName(),
                 $payment,

@@ -28,7 +28,11 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
     public function generate(Concrete $object, array $params = []): string
     {
         if (!$object instanceof SluggableInterface) {
-            throw new \InvalidArgumentException(sprintf('Object with Path "%s" must implement %s', $object->getFullPath(), SluggableInterface::class));
+            throw new \InvalidArgumentException(sprintf(
+                'Object with Path "%s" must implement %s',
+                $object->getFullPath(),
+                SluggableInterface::class
+            ));
         }
 
         $slugs = $object->getSlug($params['_locale'] ?? null);

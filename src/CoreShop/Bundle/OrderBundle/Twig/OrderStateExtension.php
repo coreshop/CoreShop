@@ -48,12 +48,12 @@ final class OrderStateExtension extends AbstractExtension
         $calculatedState = $orderState['state'];
 
         // order has been canceled or is done.
-        if (OrderStates::STATE_NEW !== $calculatedState) {
+        if ($calculatedState !== OrderStates::STATE_NEW) {
             $calculatedState = $orderState['label'];
         } else {
-            if (OrderPaymentStates::STATE_PAID !== $paymentState['state']) {
+            if ($paymentState['state'] !== OrderPaymentStates::STATE_PAID) {
                 $calculatedState = $paymentState['label'];
-            } elseif (OrderShipmentStates::STATE_SHIPPED !== $shippingState['state']) {
+            } elseif ($shippingState['state'] !== OrderShipmentStates::STATE_SHIPPED) {
                 $calculatedState = $shippingState['label'];
             }
         }

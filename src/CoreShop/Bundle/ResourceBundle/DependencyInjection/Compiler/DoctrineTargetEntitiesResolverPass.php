@@ -58,7 +58,7 @@ final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
             $model = $this->getModel($alias, $configuration);
 
             foreach (class_implements($model) as $interface) {
-                if (ResourceInterface::class === $interface) {
+                if ($interface === ResourceInterface::class) {
                     continue;
                 }
 
@@ -67,7 +67,7 @@ final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
         }
 
         $interfaces = array_filter($interfaces, static function (array $classes): bool {
-            return 1 === count($classes);
+            return count($classes) === 1;
         });
 
         $interfaces = array_map(static function (array $classes): string {

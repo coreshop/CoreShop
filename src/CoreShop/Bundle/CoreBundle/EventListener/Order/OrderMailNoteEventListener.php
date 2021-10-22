@@ -45,7 +45,7 @@ final class OrderMailNoteEventListener
         $noteInstance->setTitle('Order Mail');
 
         $noteInstance->addData('document', 'text', $emailDocument->getId());
-        /* @psalm-suppress InternalMethod */
+        /** @psalm-suppress InternalMethod */
         $noteInstance->addData('subject', 'text', $mail->getSubjectRendered());
 
         $mailTos = [];

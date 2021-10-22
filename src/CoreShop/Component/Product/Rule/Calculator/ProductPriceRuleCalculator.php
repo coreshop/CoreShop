@@ -28,7 +28,10 @@ use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 
-final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInterface, ProductRetailPriceCalculatorInterface, ProductDiscountPriceCalculatorInterface
+final class ProductPriceRuleCalculator implements
+    ProductDiscountCalculatorInterface,
+    ProductRetailPriceCalculatorInterface,
+    ProductDiscountPriceCalculatorInterface
 {
     public function __construct(private ValidRulesFetcherInterface $validRulesFetcher, private ServiceRegistryInterface $actionServiceRegistry)
     {

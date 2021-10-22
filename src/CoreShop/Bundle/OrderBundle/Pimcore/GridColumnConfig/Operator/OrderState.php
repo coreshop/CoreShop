@@ -73,10 +73,10 @@ class OrderState extends AbstractOperator
         $state = $this->workflowManager->getStateInfo($workflow, $result->value, false);
 
         $rgb = $this->hex2rgb($state['color']);
-        $opacity = 'coreshop_order' === $workflow ? '1' : '0.3';
+        $opacity = $workflow === 'coreshop_order' ? '1' : '0.3';
 
-        if (true === $this->highlightLabel) {
-            $textColor = 'coreshop_order' === $workflow ? $this->getContrastColor($rgb[0], $rgb[1], $rgb[2]) : 'black';
+        if ($this->highlightLabel === true) {
+            $textColor = $workflow === 'coreshop_order' ? $this->getContrastColor($rgb[0], $rgb[1], $rgb[2]) : 'black';
             $backgroundColor = implode(',', $rgb);
             $result->value = '<span class="rounded-color" style="background-color: rgba(' . $backgroundColor . ', ' . $opacity . '); color: ' . $textColor . ';">' . $state['label'] . '</span>';
         } else {
@@ -90,7 +90,7 @@ class OrderState extends AbstractOperator
     {
         $hex = str_replace('#', '', $hex);
 
-        if (3 == strlen($hex)) {
+        if (strlen($hex) == 3) {
             $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
             $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
             $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));

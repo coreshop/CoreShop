@@ -109,7 +109,7 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
              */
             $user = $this->container->get('coreshop.factory.user')->createNew();
             $user->setLoginIdentifier(
-                'username' === $this->container->getParameter('coreshop.customer.security.login_identifier') && method_exists($customer, 'getUsername') ?
+                $this->container->getParameter('coreshop.customer.security.login_identifier') === 'username' && method_exists($customer, 'getUsername') ?
                     $customer->getUsername() :
                     $customer->getEmail()
             );

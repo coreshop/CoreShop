@@ -35,7 +35,9 @@ use Webmozart\Assert\Assert;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
  */
-class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface, Data\CustomVersionMarshalInterface
+class ProductQuantityPriceRules extends Data implements
+    Data\CustomResourcePersistingInterface,
+    Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -245,7 +247,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
 
             $ruleId = isset($rule['id']) && is_numeric($rule['id']) ? $rule['id'] : null;
 
-            if (null !== $ruleId) {
+            if ($ruleId !== null) {
                 $storedRule = $specificPriceRuleRepository->find($ruleId);
             }
 
@@ -410,7 +412,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
 
         $keepIds = [];
         foreach ($currentRanges as $currentRange) {
-            if (isset($currentRange['id']) && null !== $currentRange['id']) {
+            if (isset($currentRange['id']) && $currentRange['id'] !== null) {
                 $keepIds[] = (int)$currentRange['id'];
             }
         }

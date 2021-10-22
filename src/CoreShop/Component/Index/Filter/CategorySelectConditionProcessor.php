@@ -27,7 +27,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
     {
         $field = 'categoryIds';
         $includeSubCategories = $condition->getConfiguration()['includeSubCategories'];
-        if (true === $includeSubCategories) {
+        if ($includeSubCategories === true) {
             $field = 'parentCategoryIds';
         }
 
@@ -76,7 +76,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
     {
         $field = 'categoryIds';
         $includeSubCategories = $condition->getConfiguration()['includeSubCategories'];
-        if (true === $includeSubCategories) {
+        if ($includeSubCategories === true) {
             $field = 'parentCategoryIds';
         }
 

@@ -71,7 +71,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
         }
 
         $payments = $this->paymentRepository->findForPayable($order);
-        if ((count($completedPayments) > 0 && $completedPaymentTotal >= $order->getPaymentTotal()) || 0 === count($payments)) {
+        if ((count($completedPayments) > 0 && $completedPaymentTotal >= $order->getPaymentTotal()) || count($payments) === 0) {
             return OrderPaymentTransitions::TRANSITION_PAY;
         }
 

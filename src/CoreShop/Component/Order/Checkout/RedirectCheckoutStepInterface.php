@@ -23,6 +23,7 @@ interface RedirectCheckoutStepInterface
     /**
      * Get Next Route for Step.
      *
+     *
      **/
     public function getResponse(OrderInterface $cart, Request $request): RedirectResponse;
 }

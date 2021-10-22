@@ -140,7 +140,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
         if (!Document\Service::pathExists($path)) {
             $class = 'Pimcore\\Model\\Document\\' . ucfirst($properties['type']);
 
-            /*
+            /**
              * @psalm-suppress InternalMethod
              */
             if (\Pimcore\Tool::classExists($class)) {
@@ -183,7 +183,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                                 }
 
                                 if (!empty($content)) {
-                                    if ('objectProperty' === $type) {
+                                    if ($type === 'objectProperty') {
                                         $document->setValue($key, $content);
                                     } else {
                                         $document->setRawEditable($key, $type, $content);

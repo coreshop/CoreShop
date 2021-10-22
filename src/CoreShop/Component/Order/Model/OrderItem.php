@@ -187,7 +187,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
             }
 
             $parent = $parent->getParent();
-        } while (null !== $parent);
+        } while ($parent !== null);
 
         throw new \Exception('Order Item does not have a valid Order');
     }

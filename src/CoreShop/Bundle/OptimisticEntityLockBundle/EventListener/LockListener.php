@@ -50,7 +50,7 @@ class LockListener implements EventSubscriberInterface
             return;
         }
 
-        /*
+        /**
          * @var Concrete $object
          * @var OptimisticLockedInterface $object
          */
@@ -69,7 +69,7 @@ class LockListener implements EventSubscriberInterface
             return;
         }
 
-        /*
+        /**
          * @var Concrete $object
          */
         $this->lockManager->updateLock($object);
@@ -89,7 +89,7 @@ class LockListener implements EventSubscriberInterface
 
         $this->ensureVersionMatch($object);
 
-        /*
+        /**
          * @var Concrete $object
          * @var OptimisticLockedInterface $object
          */
@@ -116,6 +116,10 @@ class LockListener implements EventSubscriberInterface
             return;
         }
 
-        throw OptimisticLockException::lockFailedVersionMismatch($object, $object->getOptimisticLockVersion(), $currentVersion);
+        throw OptimisticLockException::lockFailedVersionMismatch(
+            $object,
+            $object->getOptimisticLockVersion(),
+            $currentVersion
+        );
     }
 }

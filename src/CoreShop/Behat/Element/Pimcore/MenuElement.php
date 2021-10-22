@@ -30,7 +30,7 @@ class MenuElement extends AbstractElement implements MenuElementInterface
 
     public function aMenuIsOpen(): bool
     {
-        return null !== $this->getOpenMenu();
+        return $this->getOpenMenu() !== null;
     }
 
     public function openMenuHasItems(int $count): bool
@@ -68,7 +68,7 @@ class MenuElement extends AbstractElement implements MenuElementInterface
             }
         }
 
-        return 2 === $count;
+        return $count === 2;
     }
 
     protected function getOpenMenu()

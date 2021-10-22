@@ -32,7 +32,7 @@ final class UniqueTokenGenerator
 
         $this->numbers = implode(range(0, 9));
 
-        if (false === $onlyNumbers) {
+        if ($onlyNumbers === false) {
             $this->keys = $this->alphabet . $this->numbers;
         } else {
             $this->keys = $this->numbers;

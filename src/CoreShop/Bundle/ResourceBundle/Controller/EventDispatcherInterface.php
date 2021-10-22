@@ -21,22 +21,22 @@ use Symfony\Component\HttpFoundation\Request;
 interface EventDispatcherInterface
 {
     /**
-     * @param string $eventName
+     * @param string            $eventName
      */
     public function dispatch($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 
     /**
-     * @param string $eventName
+     * @param string            $eventName
      */
     public function dispatchPreEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 
     /**
-     * @param string $eventName
+     * @param string            $eventName
      */
     public function dispatchPostEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 
     /**
-     * @param string $eventName
+     * @param string            $eventName
      */
     public function dispatchInitializeEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 }

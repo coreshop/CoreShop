@@ -24,14 +24,14 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
 {
     public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void
     {
-        if (null === $product->getId()) {
+        if ($product->getId() === null) {
             throw new \Exception(sprintf('cannot clone quantity price rules on a un-stored product (reference product id: %d.', $referenceProduct->getId()));
         }
 
         $quantityPriceRules = $referenceProduct->getQuantityPriceRules();
         $hasQuantityPriceRules = count($quantityPriceRules) > 0;
 
-        if (true === $hasQuantityPriceRules && false === $resetExistingData) {
+        if ($hasQuantityPriceRules === true && $resetExistingData === false) {
             return;
         }
 
@@ -98,7 +98,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
 
     protected function findMatchingUnitDefinitionByUnitName(ProductInterface $product, string $unitName): ?ProductUnitDefinitionInterface
     {
-        if (false === $product->hasUnitDefinitions()) {
+        if ($product->hasUnitDefinitions() === false) {
             return null;
         }
 

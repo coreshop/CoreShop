@@ -53,11 +53,11 @@ final class PimcoreDependantBundleInstaller implements ResourceInstallerInterfac
                      */
                     $bundle = $this->bundleManager->getActiveBundle($bundleName, false);
 
-                    /*
+                    /**
                      * @psalm-suppress InternalMethod
                      */
                     if ($this->bundleManager->canBeInstalled($bundle)) {
-                        /*
+                        /**
                          * @psalm-suppress InternalMethod
                          */
                         $this->bundleManager->install($bundle);

@@ -108,7 +108,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     }
 
     /**
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addGetterConfigurationFields(FormInterface $form, $configurationType): void
     {
@@ -116,7 +116,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     }
 
     /**
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addInterpreterConfigurationFields(FormInterface $form, $configurationType): void
     {
@@ -124,7 +124,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     }
 
     /**
-     * @param mixed $data
+     * @param mixed         $data
      */
     protected function getGetterRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
@@ -136,7 +136,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     }
 
     /**
-     * @param mixed $data
+     * @param mixed         $data
      */
     protected function getInterpreterRegistryIdentifier(FormInterface $form, $data = null): ?string
     {

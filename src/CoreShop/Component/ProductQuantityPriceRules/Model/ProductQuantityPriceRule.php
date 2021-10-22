@@ -219,7 +219,7 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
 
     public function __clone()
     {
-        if (null === $this->id) {
+        if ($this->id === null) {
             return;
         }
 

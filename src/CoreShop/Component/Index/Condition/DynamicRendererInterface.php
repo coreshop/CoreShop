@@ -21,6 +21,7 @@ interface DynamicRendererInterface
     /**
      * Renders the condition.
      *
+     *
      * @return mixed
      */
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null);

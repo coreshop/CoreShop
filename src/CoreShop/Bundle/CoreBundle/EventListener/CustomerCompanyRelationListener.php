@@ -43,7 +43,7 @@ final class CustomerCompanyRelationListener
             if (empty($accessType)) {
                 continue;
             }
-            if (CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY === $accessType) {
+            if ($accessType === CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY) {
                 continue;
             }
 

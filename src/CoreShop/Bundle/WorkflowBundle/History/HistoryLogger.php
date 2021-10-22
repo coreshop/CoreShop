@@ -34,7 +34,7 @@ class HistoryLogger implements HistoryLoggerInterface
 
         $message = strip_tags($message);
 
-        if (true === $translate) {
+        if ($translate === true) {
             $message = $this->translator->trans($message, [], 'admin');
         }
 

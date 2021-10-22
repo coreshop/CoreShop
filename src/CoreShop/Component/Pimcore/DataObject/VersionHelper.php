@@ -23,6 +23,7 @@ class VersionHelper
      * This function enables usage of versioning in Pimcore and resets the state of versioning automatically
      * after your functions is finished.
      *
+     *
      * @return mixed
      */
     public static function useVersioning(\Closure $function, bool $enabled = true)

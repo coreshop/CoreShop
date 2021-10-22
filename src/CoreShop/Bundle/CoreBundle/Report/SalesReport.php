@@ -134,7 +134,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
     }
 
     /**
-     * {@inheritd}.
+     * {@inheritd}
      */
     public function getTotal(): int
     {

@@ -117,12 +117,12 @@ class VersionObjectConstructor implements ObjectConstructorInterface
     private function isIdentifierFieldExcluded(PropertyMetadata $propertyMetadata, DeserializationContext $context): bool
     {
         $exclusionStrategy = $context->getExclusionStrategy();
-        /* @psalm-suppress InternalMethod */
+        /** @psalm-suppress InternalMethod */
         if (null !== $exclusionStrategy && $exclusionStrategy->shouldSkipProperty($propertyMetadata, $context)) {
             return true;
         }
 
-        /* @psalm-suppress InternalMethod */
+        /** @psalm-suppress InternalMethod */
         return null !== $this->expressionLanguageExclusionStrategy && $this->expressionLanguageExclusionStrategy->shouldSkipProperty($propertyMetadata, $context);
     }
 }

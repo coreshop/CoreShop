@@ -60,7 +60,7 @@ class DoctrineToMany
         $listType = $this->typeProvider->getType($this->graphName);
         $outputTypeName = $listType->name . '__List';
 
-        if (null === $this->typeProvider->getType($outputTypeName)) {
+        if ($this->typeProvider->getType($outputTypeName) === null) {
             $outputType = $this->getListType($outputTypeName, $listType);
 
             $this->typeProvider->addType($outputTypeName, $outputType);

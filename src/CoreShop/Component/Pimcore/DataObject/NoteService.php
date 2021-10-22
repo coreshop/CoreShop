@@ -74,7 +74,7 @@ class NoteService implements NoteServiceInterface
         $logData = $listing->load();
 
         if (isset($logData[0]) && $logData[0] instanceof Log) {
-            /* @psalm-suppress InternalMethod */
+            /** @psalm-suppress InternalMethod */
             $note->addData('email-log', 'text', $logData[0]->getId());
         }
 

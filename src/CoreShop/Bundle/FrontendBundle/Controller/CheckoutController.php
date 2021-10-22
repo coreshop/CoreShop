@@ -112,7 +112,7 @@ class CheckoutController extends FrontendController
             }
         }
 
-        $isFirstStep = false === $checkoutManager->hasPreviousStep($stepIdentifier);
+        $isFirstStep = $checkoutManager->hasPreviousStep($stepIdentifier) === false;
         $this->get(TrackerInterface::class)->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
 
         $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));

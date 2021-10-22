@@ -40,7 +40,7 @@ class ProductExtractor implements TrackingExtractorInterface
             $categories = $object->getCategories();
         }
 
-        /*
+        /**
          * @var PurchasableInterface $object
          */
         return array_merge($data, [

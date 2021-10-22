@@ -66,7 +66,7 @@ class OrderCreationController extends BaseOrderCreationController
 
     public function getCarrierDetails(OrderInterface $cart): array
     {
-        /*
+        /**
          * @var \CoreShop\Component\Core\Model\OrderInterface $cart
          */
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -103,7 +103,7 @@ class OrderCreationController extends BaseOrderCreationController
 
     protected function getCartSummary(OrderInterface $cart): array
     {
-        /*
+        /**
          * @var \CoreShop\Component\Core\Model\OrderInterface $cart
          */
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);

@@ -30,11 +30,8 @@ use Webmozart\Assert\Assert;
 
 final class PaymentController implements Context
 {
-    public function __construct(
-        private Payum $payum,
-        private RouterInterface $router,
-        private WorkflowStateInfoManagerInterface $workflowStateInfoManager
-    ) {
+    public function __construct(private Payum $payum, private RouterInterface $router, private WorkflowStateInfoManagerInterface $workflowStateInfoManager)
+    {
     }
 
     /**

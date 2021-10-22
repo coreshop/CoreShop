@@ -27,7 +27,7 @@ class ShippingRuleCarrierValidator implements ShippableCarrierValidatorInterface
 
     public function isCarrierValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): bool
     {
-        if (0 === count($carrier->getShippingRules())) {
+        if (count($carrier->getShippingRules()) === 0) {
             return true;
         }
 

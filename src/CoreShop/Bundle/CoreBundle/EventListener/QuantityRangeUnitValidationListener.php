@@ -38,7 +38,7 @@ final class QuantityRangeUnitValidationListener
         }
 
         // this listener only validates variant data
-        if (AbstractObject::OBJECT_TYPE_VARIANT !== $object->getType()) {
+        if ($object->getType() !== AbstractObject::OBJECT_TYPE_VARIANT) {
             return;
         }
 

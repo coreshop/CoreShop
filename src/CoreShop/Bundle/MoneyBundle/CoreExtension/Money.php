@@ -22,7 +22,11 @@ use Pimcore\Model\Element\ValidationException;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement, MissingConstructor
  */
-class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface, Data\CustomVersionMarshalInterface, Data\CustomRecyclingMarshalInterface
+class Money extends DataObject\ClassDefinition\Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    Data\CustomVersionMarshalInterface,
+    Data\CustomRecyclingMarshalInterface
 {
     /**
      * Static type of this element.
@@ -103,7 +107,7 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
      */
     public function getDefaultValue()
     {
-        if (null !== $this->defaultValue) {
+        if ($this->defaultValue !== null) {
             return $this->toNumeric($this->defaultValue);
         }
 
@@ -638,7 +642,7 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
      */
     public function isEmpty($data)
     {
-        return null === $data || '' === $data;
+        return null === $data || $data === '';
     }
 
     /**

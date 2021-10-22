@@ -75,7 +75,7 @@ final class FilterContext implements Context
         $condition->setType('category_select');
         $condition->setConfiguration([
             'preSelect' => $category ? $category->getId() : null,
-            'includeSubCategories' => 'includes all subcategories' === $includeAllChilds,
+            'includeSubCategories' => $includeAllChilds === 'includes all subcategories',
         ]);
         $condition->setLabel('Category');
 
@@ -87,7 +87,7 @@ final class FilterContext implements Context
     }
 
     /**
-     * @param string $name
+     * @param string         $name
      */
     private function createFilter($name, IndexInterface $index): void
     {
