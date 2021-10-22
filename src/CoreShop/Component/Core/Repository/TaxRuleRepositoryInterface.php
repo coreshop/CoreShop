@@ -23,10 +23,8 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 interface TaxRuleRepositoryInterface extends BaseTaxRuleRepositoryInterface
 {
     /**
-     * @param TaxRuleGroupInterface $taxRuleGroup
      * @param CountryInterface|null $country
      * @param StateInterface|null   $state
-     *
      * @return TaxRuleInterface[]
      */
     public function findForCountryAndState(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country = null, StateInterface $state = null): array;

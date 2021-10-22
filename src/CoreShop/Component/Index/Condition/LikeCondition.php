@@ -16,17 +16,10 @@ namespace CoreShop\Component\Index\Condition;
 
 class LikeCondition implements ConditionInterface
 {
-    private string $fieldName;
-    private string $pattern;
-    private string $value;
     private array $allowedPatterns = ['left', 'right', 'both'];
 
-    public function __construct(string $fieldName, string $pattern, string $value)
+    public function __construct(private string $fieldName, private string $pattern, private string $value)
     {
-        $this->fieldName = $fieldName;
-        $this->pattern = $pattern;
-        $this->value = $value;
-
         if (!in_array($pattern, $this->allowedPatterns, true)) {
             throw new \InvalidArgumentException(sprintf('Pattern %s not allowed, allowed are %s', $pattern, implode(', ', $this->allowedPatterns)));
         }

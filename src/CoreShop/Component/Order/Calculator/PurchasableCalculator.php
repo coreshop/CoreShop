@@ -21,28 +21,15 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 
 final class PurchasableCalculator implements PurchasableCalculatorInterface
 {
-    private PurchasablePriceCalculatorInterface $purchasablePriceCalculator;
-    private PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator;
-    private PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator;
-    private PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator;
-
-    public function __construct(
-        PurchasablePriceCalculatorInterface $purchasablePriceCalculator,
-        PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator,
-        PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator,
-        PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator
-    ) {
-        $this->purchasablePriceCalculator = $purchasablePriceCalculator;
-        $this->purchasableRetailPriceCalculator = $purchasableRetailPriceCalculator;
-        $this->purchasableDiscountPriceCalculator = $purchasableDiscountPriceCalculator;
-        $this->purchasableDiscountCalculator = $purchasableDiscountCalculator;
+    public function __construct(private PurchasablePriceCalculatorInterface $purchasablePriceCalculator, private PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator, private PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator, private PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator)
+    {
     }
 
     public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int
     {
         try {
             return $this->purchasablePriceCalculator->getPrice($purchasable, $context, $includingDiscounts);
-        } catch (NoPurchasablePriceFoundException $ex) {
+        } catch (NoPurchasablePriceFoundException) {
         }
 
         return 0;
@@ -57,7 +44,7 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
     {
         try {
             return $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable, $context);
-        } catch (NoPurchasableDiscountPriceFoundException $ex) {
+        } catch (NoPurchasableDiscountPriceFoundException) {
         }
 
         return 0;
@@ -67,7 +54,7 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
     {
         try {
             return $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable, $context);
-        } catch (NoPurchasableRetailPriceFoundException $ex) {
+        } catch (NoPurchasableRetailPriceFoundException) {
         }
 
         return 0;

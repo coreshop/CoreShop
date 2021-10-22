@@ -33,15 +33,8 @@ final class ProductPriceRuleCalculator implements
     ProductRetailPriceCalculatorInterface,
     ProductDiscountPriceCalculatorInterface
 {
-    private ValidRulesFetcherInterface $validRulesFetcher;
-    private ServiceRegistryInterface $actionServiceRegistry;
-
-    public function __construct(
-        ValidRulesFetcherInterface $validRulesFetcher,
-        ServiceRegistryInterface $actionServiceRegistry
-    ) {
-        $this->validRulesFetcher = $validRulesFetcher;
-        $this->actionServiceRegistry = $actionServiceRegistry;
+    public function __construct(private ValidRulesFetcherInterface $validRulesFetcher, private ServiceRegistryInterface $actionServiceRegistry)
+    {
     }
 
     public function getRetailPrice(ProductInterface $product, array $context): int
@@ -68,7 +61,7 @@ final class ProductPriceRuleCalculator implements
                     $actionPrice = $processor->getPrice($product, $context, $action->getConfiguration());
 
                     $price = $actionPrice;
-                } catch (NoRetailPriceFoundException $ex) {
+                } catch (NoRetailPriceFoundException) {
                     //Silently ignore the error
                 }
             }
@@ -108,7 +101,7 @@ final class ProductPriceRuleCalculator implements
                 try {
                     $actionPrice = $processor->getDiscountPrice($product, $context, $action->getConfiguration());
                     $price = $actionPrice;
-                } catch (NoDiscountPriceFoundException $ex) {
+                } catch (NoDiscountPriceFoundException) {
                     //Silently ignore the error
                 }
             }

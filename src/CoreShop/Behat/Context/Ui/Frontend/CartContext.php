@@ -27,22 +27,8 @@ use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private NotificationCheckerInterface $notificationChecker;
-    private CartPageInterface $cartPage;
-    private ProductPageInterface $productPage;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        NotificationCheckerInterface $notificationChecker,
-        CartPageInterface $cartPage,
-        ProductPageInterface $productPage
-    )
+    public function __construct(private SharedStorageInterface $sharedStorage, private NotificationCheckerInterface $notificationChecker, private CartPageInterface $cartPage, private ProductPageInterface $productPage)
     {
-        $this->sharedStorage = $sharedStorage;
-        $this->notificationChecker = $notificationChecker;
-        $this->cartPage = $cartPage;
-        $this->productPage = $productPage;
     }
 
     /**

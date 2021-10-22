@@ -21,8 +21,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface CarrierRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param StoreInterface $store
-     *
      * @return CarrierInterface[]
      */
     public function findForStore(StoreInterface $store): array;

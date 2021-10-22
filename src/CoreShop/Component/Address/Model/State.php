@@ -22,7 +22,7 @@ use CoreShop\Component\Resource\Model\TranslatableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class State extends AbstractResource implements StateInterface
+class State extends AbstractResource implements StateInterface, \Stringable
 {
     use ToggleableTrait;
     use TimestampableTrait;
@@ -51,10 +51,7 @@ class State extends AbstractResource implements StateInterface
         $this->initializeTranslationsCollection();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }

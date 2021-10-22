@@ -23,9 +23,6 @@ interface ObjectServiceInterface
 
     /**
      * Copy all fields from $from to $to.
-     *
-     * @param Concrete $fromObject
-     * @param Concrete $toObject
      */
     public function copyObject(Concrete $fromObject, Concrete $toObject): void;
 }

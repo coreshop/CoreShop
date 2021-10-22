@@ -18,9 +18,6 @@ use CoreShop\Component\Payment\Model\PaymentProviderInterface as BasePaymentProv
 
 interface PaymentProviderInterface extends BasePaymentProviderInterface
 {
-    /**
-     * @param GatewayConfig $gatewayConfig
-     */
     public function setGatewayConfig(GatewayConfig $gatewayConfig);
 
     /**

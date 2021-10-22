@@ -20,11 +20,8 @@ use Pimcore\DataObject\GridColumnConfig\Operator\Factory\OperatorFactoryInterfac
 
 class OrderStateFactory implements OperatorFactoryInterface
 {
-    private WorkflowStateInfoManagerInterface $workflowManager;
-
-    public function __construct(WorkflowStateInfoManagerInterface $workflowManager)
+    public function __construct(private WorkflowStateInfoManagerInterface $workflowManager)
     {
-        $this->workflowManager = $workflowManager;
     }
 
     public function build(\stdClass $configElement, array $context = []): OrderState

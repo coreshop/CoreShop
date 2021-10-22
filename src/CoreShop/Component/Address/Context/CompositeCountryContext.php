@@ -40,7 +40,7 @@ final class CompositeCountryContext implements CountryContextInterface
         foreach ($this->countryContexts as $countryContexts) {
             try {
                 return $countryContexts->getCountry();
-            } catch (CountryNotFoundException $exception) {
+            } catch (CountryNotFoundException) {
                 continue;
             }
         }

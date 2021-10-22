@@ -70,19 +70,11 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
      */
     public function hasPreConditions();
 
-    /**
-     * @param FilterConditionInterface $preCondition
-     */
     public function addPreCondition(FilterConditionInterface $preCondition);
 
-    /**
-     * @param FilterConditionInterface $preCondition
-     */
     public function removePreCondition(FilterConditionInterface $preCondition);
 
     /**
-     * @param FilterConditionInterface $preCondition
-     *
      * @return bool
      */
     public function hasPreCondition(FilterConditionInterface $preCondition);
@@ -97,19 +89,11 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
      */
     public function hasConditions();
 
-    /**
-     * @param FilterConditionInterface $condition
-     */
     public function addCondition(FilterConditionInterface $condition);
 
-    /**
-     * @param FilterConditionInterface $condition
-     */
     public function removeCondition(FilterConditionInterface $condition);
 
     /**
-     * @param FilterConditionInterface $condition
-     *
      * @return bool
      */
     public function hasCondition(FilterConditionInterface $condition);
@@ -119,8 +103,5 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
      */
     public function getIndex();
 
-    /**
-     * @param IndexInterface $index
-     */
     public function setIndex(IndexInterface $index);
 }

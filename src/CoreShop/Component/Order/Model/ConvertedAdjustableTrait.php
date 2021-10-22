@@ -202,9 +202,6 @@ trait ConvertedAdjustableTrait
         $this->recalculateConvertedAfterAdjustmentChange();
     }
 
-    /**
-     * @param AdjustmentInterface $adjustment
-     */
     protected function addToConvertedAdjustmentsTotal(AdjustmentInterface $adjustment)
     {
         if (!$adjustment->getNeutral()) {
@@ -213,9 +210,6 @@ trait ConvertedAdjustableTrait
         }
     }
 
-    /**
-     * @param AdjustmentInterface $adjustment
-     */
     protected function subtractFromConvertedAdjustmentsTotal(AdjustmentInterface $adjustment)
     {
         if (!$adjustment->getNeutral()) {

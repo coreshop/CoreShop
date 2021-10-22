@@ -16,13 +16,5 @@ namespace CoreShop\Bundle\OrderBundle\Renderer\Pdf;
 
 interface PdfRendererInterface
 {
-    /**
-     * @param string $string
-     * @param string $header
-     * @param string $footer
-     * @param array  $config
-     *
-     * @return string
-     */
     public function fromString(string $string, string $header = '', string $footer = '', array $config = []): string;
 }

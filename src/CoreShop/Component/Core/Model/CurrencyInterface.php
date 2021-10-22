@@ -29,19 +29,11 @@ interface CurrencyInterface extends BaseCurrencyInterface
      */
     public function hasCountries();
 
-    /**
-     * @param CountryInterface $country
-     */
     public function addCountry(CountryInterface $country);
 
-    /**
-     * @param CountryInterface $country
-     */
     public function removeCountry(CountryInterface $country);
 
     /**
-     * @param CountryInterface $country
-     *
      * @return bool
      */
     public function hasCountry(CountryInterface $country);

@@ -27,24 +27,8 @@ use Pimcore\Tool;
 
 final class PaymentContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private EntityManagerInterface $entityManager;
-    private FactoryInterface $paymentFactory;
-    private FactoryInterface $paymentProviderFactory;
-    private FactoryInterface $gatewayConfigFactory;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        EntityManagerInterface $entityManager,
-        FactoryInterface $paymentFactory,
-        FactoryInterface $paymentProviderFactory,
-        FactoryInterface $gatewayConfigFactory
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->entityManager = $entityManager;
-        $this->paymentFactory = $paymentFactory;
-        $this->paymentProviderFactory = $paymentProviderFactory;
-        $this->gatewayConfigFactory = $gatewayConfigFactory;
+    public function __construct(private SharedStorageInterface $sharedStorage, private EntityManagerInterface $entityManager, private FactoryInterface $paymentFactory, private FactoryInterface $paymentProviderFactory, private FactoryInterface $gatewayConfigFactory)
+    {
     }
 
     /**

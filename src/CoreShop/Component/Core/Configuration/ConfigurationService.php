@@ -26,18 +26,16 @@ use Doctrine\ORM\EntityManagerInterface;
 class ConfigurationService extends BaseConfigurationService implements ConfigurationServiceInterface
 {
     protected ConfigurationRepositoryInterface $myConfigurationRepository;
-    protected StoreContextInterface $storeContext;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         ConfigurationRepositoryInterface $configurationRepository,
         FactoryInterface $configurationFactory,
-        StoreContextInterface $storeContext
+        protected StoreContextInterface $storeContext
     ) {
         parent::__construct($entityManager, $configurationRepository, $configurationFactory);
 
         $this->myConfigurationRepository = $configurationRepository;
-        $this->storeContext = $storeContext;
     }
 
     public function getForStore(string $key, StoreInterface $store = null, $returnObject = false): mixed
@@ -103,7 +101,7 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     {
         try {
             return $this->storeContext->getStore();
-        } catch (StoreNotFoundException $ex) {
+        } catch (StoreNotFoundException) {
             //if we don't have a store, do nothing and return false
         }
 

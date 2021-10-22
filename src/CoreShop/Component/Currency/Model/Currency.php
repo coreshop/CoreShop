@@ -20,7 +20,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class Currency extends AbstractResource implements CurrencyInterface
+class Currency extends AbstractResource implements CurrencyInterface, \Stringable
 {
     use TimestampableTrait;
 
@@ -49,10 +49,7 @@ class Currency extends AbstractResource implements CurrencyInterface
      */
     protected $symbol;
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }

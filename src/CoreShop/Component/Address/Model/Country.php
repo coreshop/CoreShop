@@ -23,7 +23,7 @@ use Doctrine\Common\Collections\Collection;
 /**
  * @psalm-suppress MissingConstructor
  */
-class Country extends AbstractResource implements CountryInterface
+class Country extends AbstractResource implements CountryInterface, \Stringable
 {
     use ToggleableTrait;
     use TimestampableTrait;
@@ -67,10 +67,7 @@ class Country extends AbstractResource implements CountryInterface
         $this->initializeTranslationsCollection();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->getName();
     }

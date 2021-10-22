@@ -40,7 +40,6 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
     public function getDescription(?string $language = null);
 
     /**
-     * @param string $description
      * @param null $language
      */
     public function setDescription(string $description, ?string $language = null);
@@ -52,10 +51,6 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
      */
     public function getTitle(?string $language = null);
 
-    /**
-     * @param string $title
-     * @param string|null $language
-     */
     public function setTitle(string $title, ?string $language = null);
 
     /**
@@ -118,19 +113,11 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
      */
     public function hasShippingRules();
 
-    /**
-     * @param ShippingRuleGroupInterface $shippingRuleGroup
-     */
     public function addShippingRule(ShippingRuleGroupInterface $shippingRuleGroup);
 
-    /**
-     * @param ShippingRuleGroupInterface $shippingRuleGroup
-     */
     public function removeShippingRule(ShippingRuleGroupInterface $shippingRuleGroup);
 
     /**
-     * @param ShippingRuleGroupInterface $shippingRuleGroup
-     *
      * @return bool
      */
     public function hasShippingRule(ShippingRuleGroupInterface $shippingRuleGroup);

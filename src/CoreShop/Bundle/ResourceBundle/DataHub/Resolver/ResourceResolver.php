@@ -20,17 +20,8 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class ResourceResolver
 {
-    /**
-     * @var Data
-     */
-    public $fieldDefinition;
-
-    /**
-     * @param Data $fieldDefinition
-     */
-    public function __construct(Data $fieldDefinition)
+    public function __construct(public Data $fieldDefinition)
     {
-        $this->fieldDefinition = $fieldDefinition;
     }
 
     public function resolve($value = null, $args = [], $context = [], ResolveInfo $resolveInfo = null)

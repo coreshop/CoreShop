@@ -28,27 +28,8 @@ use Symfony\Component\Process\Process;
 
 final class CountryContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ObjectManager $objectManager;
-    private FactoryInterface $countryFactory;
-    private CountryRepositoryInterface $countryRepository;
-    private FixedCountryContext $fixedCountryContext;
-    private string $kernelRootDirectory;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FactoryInterface $countryFactory,
-        CountryRepositoryInterface $countryRepository,
-        FixedCountryContext $fixedCountryContext,
-        string $kernelRootDirectory
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->countryFactory = $countryFactory;
-        $this->countryRepository = $countryRepository;
-        $this->fixedCountryContext = $fixedCountryContext;
-        $this->kernelRootDirectory = $kernelRootDirectory;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FactoryInterface $countryFactory, private CountryRepositoryInterface $countryRepository, private FixedCountryContext $fixedCountryContext, private string $kernelRootDirectory)
+    {
     }
 
     /**
@@ -159,9 +140,6 @@ final class CountryContext implements Context
         }
     }
 
-    /**
-     * @param CountryInterface $country
-     */
     private function saveCountry(CountryInterface $country): void
     {
         $this->objectManager->persist($country);

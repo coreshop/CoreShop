@@ -20,11 +20,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class FilterUserConditionChoiceType extends AbstractType
 {
-    private array $types;
-
-    public function __construct(array $types)
+    public function __construct(private array $types)
     {
-        $this->types = $types;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

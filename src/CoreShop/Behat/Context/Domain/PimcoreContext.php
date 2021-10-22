@@ -20,27 +20,8 @@ use Webmozart\Assert\Assert;
 
 final class PimcoreContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private string $webRoot;
-    private array $adminJs;
-    private array $adminCss;
-    private array $editmodeJs;
-    private array $editmodeCss;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        string $webRoot,
-        array $adminJs,
-        array $adminCss,
-        array $editmodeJs,
-        array $editmodeCss
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->webRoot = $webRoot;
-        $this->adminJs = $adminJs;
-        $this->adminCss = $adminCss;
-        $this->editmodeJs = $editmodeJs;
-        $this->editmodeCss = $editmodeCss;
+    public function __construct(private string $webRoot, private array $adminJs, private array $adminCss, private array $editmodeJs, private array $editmodeCss)
+    {
     }
 
     /**

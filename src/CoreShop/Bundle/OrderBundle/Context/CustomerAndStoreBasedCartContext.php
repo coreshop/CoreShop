@@ -26,21 +26,8 @@ use Pimcore\Http\RequestHelper;
 
 final class CustomerAndStoreBasedCartContext implements CartContextInterface
 {
-    private CustomerContextInterface $customerContext;
-    private StoreContextInterface $storeContext;
-    private OrderRepositoryInterface $cartRepository;
-    private RequestHelper $pimcoreRequestHelper;
-
-    public function __construct(
-        CustomerContextInterface $customerContext,
-        StoreContextInterface $storeContext,
-        OrderRepositoryInterface $cartRepository,
-        RequestHelper $pimcoreRequestHelper
-    ) {
-        $this->customerContext = $customerContext;
-        $this->storeContext = $storeContext;
-        $this->cartRepository = $cartRepository;
-        $this->pimcoreRequestHelper = $pimcoreRequestHelper;
+    public function __construct(private CustomerContextInterface $customerContext, private StoreContextInterface $storeContext, private OrderRepositoryInterface $cartRepository, private RequestHelper $pimcoreRequestHelper)
+    {
     }
 
     public function getCart(): OrderInterface
@@ -57,13 +44,13 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
 
         try {
             $store = $this->storeContext->getStore();
-        } catch (StoreNotFoundException $exception) {
+        } catch (StoreNotFoundException) {
             throw new CartNotFoundException('CoreShop was not able to find the cart, as there is no current store.');
         }
 
         try {
             $customer = $this->customerContext->getCustomer();
-        } catch (CustomerNotFoundException $exception) {
+        } catch (CustomerNotFoundException) {
             throw new CartNotFoundException('CoreShop was not able to find the cart, as there is no logged in user.');
         }
 

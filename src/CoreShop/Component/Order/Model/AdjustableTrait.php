@@ -202,9 +202,6 @@ trait AdjustableTrait
         $this->recalculateAfterAdjustmentChange();
     }
 
-    /**
-     * @param AdjustmentInterface $adjustment
-     */
     protected function addToAdjustmentsTotal(AdjustmentInterface $adjustment)
     {
         if (!$adjustment->getNeutral()) {
@@ -213,9 +210,6 @@ trait AdjustableTrait
         }
     }
 
-    /**
-     * @param AdjustmentInterface $adjustment
-     */
     protected function subtractFromAdjustmentsTotal(AdjustmentInterface $adjustment)
     {
         if (!$adjustment->getNeutral()) {

@@ -20,11 +20,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class IndexColumnGetterChoiceType extends AbstractType
 {
-    private array $getters;
-
-    public function __construct(array $getters)
+    public function __construct(private array $getters)
     {
-        $this->getters = $getters;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

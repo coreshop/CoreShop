@@ -21,11 +21,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class ObjectListFilterListener
 {
-    private ServiceRegistryInterface $filterServiceRegistry;
-
-    public function __construct(ServiceRegistryInterface $filterServiceRegistry)
+    public function __construct(private ServiceRegistryInterface $filterServiceRegistry)
     {
-        $this->filterServiceRegistry = $filterServiceRegistry;
     }
 
     public function checkObjectList(GenericEvent $event): void

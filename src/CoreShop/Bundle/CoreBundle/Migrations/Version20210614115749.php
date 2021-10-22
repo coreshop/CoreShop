@@ -19,9 +19,6 @@ use Doctrine\Migrations\AbstractMigration;
 
 class Version20210614115749 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void
     {
         if (!$schema->getTable('coreshop_rule_condition')->hasColumn('sort')) {
@@ -37,9 +34,6 @@ class Version20210614115749 extends AbstractMigration
         }
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void
     {
 

@@ -20,55 +20,25 @@ use Pimcore\Model\Element\Note;
 
 interface NoteServiceInterface
 {
-    /**
-     * @param int $id
-     *
-     * @return Note|null
-     */
     public function getNoteById(int $id): ?Note;
 
-    /**
-     * @param Concrete $object
-     * @param string   $noteType
-     *
-     * @return Note
-     */
     public function createPimcoreNoteInstance(Concrete $object, string $noteType): Note;
 
-    /**
-     * @param string $noteType
-     *
-     * @return Note
-     */
     public function createAnonymousNoteInstance(string $noteType): Note;
 
     /**
-     * @param Concrete $object
-     * @param string   $noteType
      *
      * @return Note[]
      */
     public function getObjectNotes(Concrete $object, string $noteType): array;
 
-    /**
-     * @param Note           $note
-     * @param Document\Email $emailDocument
-     *
-     * @return Note
-     */
     public function storeNoteForEmail(Note $note, Document\Email $emailDocument): Note;
 
     /**
-     * @param Note  $note
-     * @param array $eventParams
      *
      * @return Note
      */
     public function storeNote(Note $note, array $eventParams = []): ?Note;
 
-    /**
-     * @param int   $noteId
-     * @param array $eventParams
-     */
     public function deleteNote(int $noteId, array $eventParams = []): void;
 }

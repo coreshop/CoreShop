@@ -22,13 +22,8 @@ use Pimcore\DataObject\GridColumnConfig\Operator\OperatorInterface;
 
 final class StorePriceFactory implements OperatorFactoryInterface
 {
-    private StoreRepositoryInterface $storeRepository;
-    private MoneyFormatterInterface $moneyFormatter;
-
-    public function __construct(StoreRepositoryInterface $storeRepository, MoneyFormatterInterface $moneyFormatter)
+    public function __construct(private StoreRepositoryInterface $storeRepository, private MoneyFormatterInterface $moneyFormatter)
     {
-        $this->storeRepository = $storeRepository;
-        $this->moneyFormatter = $moneyFormatter;
     }
 
     public function build(\stdClass $configElement, $context = null): OperatorInterface

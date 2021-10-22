@@ -20,11 +20,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 final class DebugStorePersister
 {
-    private DebugStoreProviderInterface $debugStoreProvider;
-
-    public function __construct(DebugStoreProviderInterface $debugStoreProvider)
+    public function __construct(private DebugStoreProviderInterface $debugStoreProvider)
     {
-        $this->debugStoreProvider = $debugStoreProvider;
     }
 
     public function onKernelResponse(ResponseEvent $filterResponseEvent): void

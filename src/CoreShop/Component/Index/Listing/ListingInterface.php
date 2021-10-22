@@ -42,11 +42,6 @@ interface ListingInterface extends \Countable, \IteratorAggregate
      */
     public const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
 
-    /**
-     * @param IndexInterface  $index
-     * @param WorkerInterface $worker
-     * @param Connection $connection
-     */
     public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection);
 
     /**
@@ -57,8 +52,6 @@ interface ListingInterface extends \Countable, \IteratorAggregate
     public function getObjects();
 
     /**
-     * @param int $offset
-     * @param int $itemCountPerPage
      * @return PimcoreModelInterface[]
      */
     public function getItems(int $offset, int $itemCountPerPage);
@@ -68,7 +61,6 @@ interface ListingInterface extends \Countable, \IteratorAggregate
      * Fieldname is optional but highly recommended - needed for resetting condition based on fieldname
      * and exclude functionality in group by results.
      *
-     * @param ConditionInterface $condition
      * @param string             $fieldName
      */
     public function addCondition(ConditionInterface $condition, $fieldName);
@@ -78,7 +70,6 @@ interface ListingInterface extends \Countable, \IteratorAggregate
      * Fieldname is optional but highly recommended - needed for resetting condition based on fieldname
      * and exclude functionality in group by results.
      *
-     * @param ConditionInterface $condition
      * @param string             $fieldName
      */
     public function addQueryCondition(ConditionInterface $condition, $fieldName);
@@ -86,7 +77,6 @@ interface ListingInterface extends \Countable, \IteratorAggregate
     /**
      * Adds relation condition to product list.
      *
-     * @param ConditionInterface $condition
      * @param string             $fieldName
      */
     public function addRelationCondition(ConditionInterface $condition, $fieldName);
@@ -156,9 +146,6 @@ interface ListingInterface extends \Countable, \IteratorAggregate
      */
     public function getOffset();
 
-    /**
-     * @param PimcoreModelInterface $category
-     */
     public function setCategory(PimcoreModelInterface $category);
 
     /**
@@ -189,7 +176,6 @@ interface ListingInterface extends \Countable, \IteratorAggregate
     /**
      * loads search results from index and returns them.
      *
-     * @param array $options
      *
      * @return Concrete[]
      */

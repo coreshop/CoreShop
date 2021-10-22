@@ -39,7 +39,7 @@ final class StackClassesPass implements CompilerPassInterface
             $classStackPimcoreClassName[$alias] = [];
             $classStackPimcoreClassId[$alias] = [];
 
-            foreach ($classes as $key => $definition) {
+            foreach ($classes as $definition) {
                 if (!@interface_exists($definition['classes']['interface'])) {
                     continue;
                 }

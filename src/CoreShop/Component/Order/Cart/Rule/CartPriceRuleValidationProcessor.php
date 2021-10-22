@@ -23,11 +23,8 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcessorInterface
 {
-    private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor;
-
-    public function __construct(RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
+    public function __construct(private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
     {
-        $this->ruleConditionsValidationProcessor = $ruleConditionsValidationProcessor;
     }
 
     public function isValidCartRule(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool

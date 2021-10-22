@@ -47,7 +47,7 @@ final class CapturePaymentAction implements ActionInterface, GatewayAwareInterfa
             try {
                 $this->gateway->execute($convert = new Convert($payment, 'array', $request->getToken()));
                 $payment->setDetails($convert->getResult());
-            } catch (RequestNotSupportedException $e) {
+            } catch (RequestNotSupportedException) {
                 $payumPayment = new PayumPayment();
                 $payumPayment->setNumber($payment->getNumber());
                 $payumPayment->setTotalAmount($payment->getTotalAmount());

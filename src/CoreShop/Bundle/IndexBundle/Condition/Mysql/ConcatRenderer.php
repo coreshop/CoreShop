@@ -24,13 +24,9 @@ use Webmozart\Assert\Assert;
 
 class ConcatRenderer extends AbstractMysqlDynamicRenderer
 {
-    private ConditionRendererInterface $renderer;
-
-    public function __construct(Connection $connection, ConditionRendererInterface $renderer)
+    public function __construct(Connection $connection, private ConditionRendererInterface $renderer)
     {
         parent::__construct($connection);
-
-        $this->renderer = $renderer;
     }
 
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): string

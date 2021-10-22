@@ -21,11 +21,8 @@ use Pimcore\Model\Document\Editable\EditableInterface;
 
 class DependencyInjectionImplementationLoader implements LoaderInterface
 {
-    private ServiceRegistryInterface $factories;
-
-    public function __construct(ServiceRegistryInterface $factories)
+    public function __construct(private ServiceRegistryInterface $factories)
     {
-        $this->factories = $factories;
     }
 
     public function supports(string $name): bool

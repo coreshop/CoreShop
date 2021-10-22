@@ -20,11 +20,8 @@ use CoreShop\Component\Core\Model\UserInterface;
 
 final class CustomerLoginListener
 {
-    private CustomerLoginServiceInterface $customerLoginService;
-
-    public function __construct(CustomerLoginServiceInterface $customerLoginService)
+    public function __construct(private CustomerLoginServiceInterface $customerLoginService)
     {
-        $this->customerLoginService = $customerLoginService;
     }
 
     public function onCustomerRegister(CustomerRegistrationEvent $customerRegistrationEvent): void

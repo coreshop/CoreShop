@@ -22,18 +22,8 @@ use Doctrine\Persistence\ObjectManager;
 
 final class TaxRateContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ObjectManager $objectManager;
-    private FactoryInterface $taxRateFactory;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FactoryInterface $taxRateFactory
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->taxRateFactory = $taxRateFactory;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FactoryInterface $taxRateFactory)
+    {
     }
 
     /**
@@ -54,10 +44,6 @@ final class TaxRateContext implements Context
         $this->saveTaxRate($taxRate);
     }
 
-    /**
-     * @param string $name
-     * @param float  $rate
-     */
     private function createTaxRate(string $name, float $rate): void
     {
         /**
@@ -70,9 +56,6 @@ final class TaxRateContext implements Context
         $this->saveTaxRate($taxRate);
     }
 
-    /**
-     * @param TaxRateInterface $taxRate
-     */
     private function saveTaxRate(TaxRateInterface $taxRate): void
     {
         $this->objectManager->persist($taxRate);

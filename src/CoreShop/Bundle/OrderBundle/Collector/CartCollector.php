@@ -24,19 +24,11 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class CartCollector extends DataCollector
 {
-    private CartContextInterface $cartContext;
-    private LocaleContextInterface $localeContext;
-    private PimcoreContextResolver $pimcoreContext;
-
     public function __construct(
-        CartContextInterface $cartContext,
-        LocaleContextInterface $localeContext,
-        PimcoreContextResolver $pimcoreContext
+        private CartContextInterface $cartContext,
+        private LocaleContextInterface $localeContext,
+        private PimcoreContextResolver $pimcoreContext
     ) {
-        $this->cartContext = $cartContext;
-        $this->localeContext = $localeContext;
-        $this->pimcoreContext = $pimcoreContext;
-
         $this->data = [
             'cart' => null,
             'locale' => 'en',
@@ -70,7 +62,7 @@ final class CartCollector extends DataCollector
         try {
             $this->data['cart'] = $this->cartContext->getCart();
             $this->data['locale'] = $this->localeContext->getLocaleCode();
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             //If something went wrong, we don't have any cart, which we can safely ignore
         }
     }

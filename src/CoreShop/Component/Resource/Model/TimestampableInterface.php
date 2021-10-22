@@ -21,9 +21,6 @@ interface TimestampableInterface
      */
     public function getCreationDate();
 
-    /**
-     * @param \DateTime $creationDate
-     */
     public function setCreationDate(\DateTime $creationDate);
 
     /**
@@ -31,8 +28,5 @@ interface TimestampableInterface
      */
     public function getModificationDate();
 
-    /**
-     * @param \DateTime $modificationDate
-     */
     public function setModificationDate(\DateTime $modificationDate);
 }

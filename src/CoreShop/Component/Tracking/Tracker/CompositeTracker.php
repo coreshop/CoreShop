@@ -19,13 +19,8 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class CompositeTracker implements TrackerInterface
 {
-    private TrackingExtractorInterface $extractor;
-    private ServiceRegistryInterface $trackerRegistry;
-
-    public function __construct(TrackingExtractorInterface $extractor, ServiceRegistryInterface $trackerRegistry)
+    public function __construct(private TrackingExtractorInterface $extractor, private ServiceRegistryInterface $trackerRegistry)
     {
-        $this->extractor = $extractor;
-        $this->trackerRegistry = $trackerRegistry;
     }
 
     public function isEnabled(): bool
@@ -81,10 +76,6 @@ class CompositeTracker implements TrackerInterface
         $this->compositeTrackerCall('trackCheckoutComplete', [$order]);
     }
 
-    /**
-     * @param string $function
-     * @param array    $data
-     */
     private function compositeTrackerCall(string $function, array $data): void
     {
         /**

@@ -21,15 +21,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 {
-    private string $type;
-    private string $routeName;
-    private UrlGeneratorInterface $urlGenerator;
-
-    public function __construct(string $type, string $routeName, UrlGeneratorInterface $urlGenerator)
+    public function __construct(private string $type, private string $routeName, private UrlGeneratorInterface $urlGenerator)
     {
-        $this->type = $type;
-        $this->routeName = $routeName;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function generate(Concrete $object, array $params = []): string

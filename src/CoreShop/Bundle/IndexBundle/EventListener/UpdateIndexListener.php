@@ -22,11 +22,8 @@ use Symfony\Component\Intl\Exception\InvalidArgumentException;
 
 final class UpdateIndexListener
 {
-    private ServiceRegistryInterface $workerServiceRegistry;
-
-    public function __construct(ServiceRegistryInterface $workerServiceRegistry)
+    public function __construct(private ServiceRegistryInterface $workerServiceRegistry)
     {
-        $this->workerServiceRegistry = $workerServiceRegistry;
     }
 
     public function onPreUpdate(IndexInterface $index, PreUpdateEventArgs $event): void

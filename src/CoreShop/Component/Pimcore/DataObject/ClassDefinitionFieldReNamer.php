@@ -29,16 +29,10 @@ use Pimcore\Tool;
  */
 class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 {
-    private ClassDefinition $definition;
-    private string $oldFieldName;
-    private string $newFieldName;
     private Connection $database;
 
-    public function __construct(ClassDefinition $definition, string $oldFieldName, string $newFieldName)
+    public function __construct(private ClassDefinition $definition, private string $oldFieldName, private string $newFieldName)
     {
-        $this->definition = $definition;
-        $this->newFieldName = $newFieldName;
-        $this->oldFieldName = $oldFieldName;
         $this->database = Db::getDoctrineConnection();
     }
 

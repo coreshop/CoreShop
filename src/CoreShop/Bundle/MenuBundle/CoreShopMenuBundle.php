@@ -48,9 +48,6 @@ final class CoreShopMenuBundle extends AbstractPimcoreBundle implements Dependen
         return 'CoreShop - Menu Bundle';
     }
 
-    /**
-     * @return string
-     */
     public function getVersion(): string
     {
         $bundleName = 'coreshop/pimcore-bundle';

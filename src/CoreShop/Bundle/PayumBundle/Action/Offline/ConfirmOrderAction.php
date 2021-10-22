@@ -23,11 +23,8 @@ use Payum\Core\Action\ActionInterface;
 
 final class ConfirmOrderAction implements ActionInterface
 {
-    private StateMachineApplier $stateMachineApplier;
-
-    public function __construct(StateMachineApplier $stateMachineApplier)
+    public function __construct(private StateMachineApplier $stateMachineApplier)
     {
-        $this->stateMachineApplier = $stateMachineApplier;
     }
 
     public function execute($request): void

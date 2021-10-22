@@ -22,18 +22,13 @@ use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
 
 class PriceFormatter extends AbstractOperator
 {
-    private MoneyFormatterInterface $moneyFormatter;
-    private LocaleContextInterface $localeService;
-
     public function __construct(
-        MoneyFormatterInterface $moneyFormatter,
-        LocaleContextInterface $localeService,
+        private MoneyFormatterInterface $moneyFormatter,
+        private LocaleContextInterface $localeService,
         \stdClass $config,
         $context = null
     ) {
         parent::__construct($config, $context);
-        $this->moneyFormatter = $moneyFormatter;
-        $this->localeService = $localeService;
     }
 
     /**

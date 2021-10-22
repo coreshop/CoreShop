@@ -26,16 +26,10 @@ use Pimcore\Model\FactoryInterface;
 
 final class ProductAvailabilityEventListener
 {
-    private OrderItemRepositoryInterface $cartItemRepository;
-    private FactoryInterface $pimcoreModelFactory;
     private array $productIdsToCheck = [];
 
-    public function __construct(
-        OrderItemRepositoryInterface $cartItemRepository,
-        FactoryInterface $pimcoreModelFactory
-    ) {
-        $this->cartItemRepository = $cartItemRepository;
-        $this->pimcoreModelFactory = $pimcoreModelFactory;
+    public function __construct(private OrderItemRepositoryInterface $cartItemRepository, private FactoryInterface $pimcoreModelFactory)
+    {
     }
 
     public function preUpdateListener(DataObjectEvent $event): void
@@ -55,7 +49,7 @@ final class ProductAvailabilityEventListener
         }
 
         /** @psalm-suppress InternalMethod */
-        $originalItem = $this->pimcoreModelFactory->build(get_class($object));
+        $originalItem = $this->pimcoreModelFactory->build($object::class);
         $originalItem->getDao()->getById($object->getId());
 
         if (!$originalItem instanceof PurchasableInterface) {

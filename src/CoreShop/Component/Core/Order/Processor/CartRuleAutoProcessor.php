@@ -22,18 +22,8 @@ use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 
 final class CartRuleAutoProcessor implements CartProcessorInterface
 {
-    private CartPriceRuleRepositoryInterface $cartPriceRuleRepository;
-    private CartPriceRuleProcessorInterface $cartPriceRuleProcessor;
-    private CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor;
-
-    public function __construct(
-        CartPriceRuleRepositoryInterface $cartPriceRuleRepository,
-        CartPriceRuleProcessorInterface $cartPriceRuleProcessor,
-        CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
-    ) {
-        $this->cartPriceRuleRepository = $cartPriceRuleRepository;
-        $this->cartPriceRuleProcessor = $cartPriceRuleProcessor;
-        $this->cartPriceRuleUnProcessor = $cartPriceRuleUnProcessor;
+    public function __construct(private CartPriceRuleRepositoryInterface $cartPriceRuleRepository, private CartPriceRuleProcessorInterface $cartPriceRuleProcessor, private CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor)
+    {
     }
 
     public function process(OrderInterface $cart): void

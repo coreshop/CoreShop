@@ -27,16 +27,8 @@ use Webmozart\Assert\Assert;
 
 final class AddToCartAvailabilityValidator extends ConstraintValidator
 {
-    private AvailabilityCheckerInterface $availabilityChecker;
-    private StorageListItemResolverInterface $cartItemResolver;
-
-    public function __construct(
-        AvailabilityCheckerInterface $availabilityChecker,
-        StorageListItemResolverInterface $cartItemResolver
-    )
+    public function __construct(private AvailabilityCheckerInterface $availabilityChecker, private StorageListItemResolverInterface $cartItemResolver)
     {
-        $this->availabilityChecker = $availabilityChecker;
-        $this->cartItemResolver = $cartItemResolver;
     }
 
     public function validate($value, Constraint $constraint): void

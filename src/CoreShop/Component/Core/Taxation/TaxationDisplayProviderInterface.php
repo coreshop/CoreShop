@@ -16,9 +16,5 @@ namespace CoreShop\Component\Core\Taxation;
 
 interface TaxationDisplayProviderInterface
 {
-    /**
-     * @param array $context
-     * @return bool
-     */
     public function displayWithTax(array $context): bool;
 }

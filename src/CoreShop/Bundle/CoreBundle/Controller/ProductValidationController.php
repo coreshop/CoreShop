@@ -69,7 +69,7 @@ class ProductValidationController extends AdminController
                 continue;
             }
 
-            foreach ($ranges as $index => $range) {
+            foreach ($ranges as $range) {
 
                 if (!$range instanceof QuantityRangeInterface) {
                     continue;

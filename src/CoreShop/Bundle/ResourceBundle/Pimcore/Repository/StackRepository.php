@@ -22,17 +22,12 @@ use Pimcore\Model\DataObject;
 class StackRepository extends PimcoreRepository
 {
     private array $classNames = [];
-    private array $fqnStackClasses = [];
-    private string $interface;
 
-    public function __construct(MetadataInterface $metadata, Connection $connection, string $interface, array $stackClasses)
+    public function __construct(MetadataInterface $metadata, Connection $connection, private string $interface, private array $fqnStackClasses)
     {
         parent::__construct($metadata, $connection);
 
-        $this->interface = $interface;
-        $this->fqnStackClasses = $stackClasses;
-
-        foreach ($stackClasses as $class) {
+        foreach ($fqnStackClasses as $class) {
             $namespaces = explode('\\', $class);
 
             $this->classNames[] = '"'.end($namespaces).'"';

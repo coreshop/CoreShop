@@ -26,21 +26,8 @@ use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 
 class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
-    private FragmentRendererInterface $fragmentRenderer;
-    private EventDispatcherInterface $eventDispatcher;
-    private PdfRendererInterface $renderer;
-    private ThemeHelperInterface $themeHelper;
-
-    public function __construct(
-        FragmentRendererInterface $fragmentRenderer,
-        EventDispatcherInterface $eventDispatcher,
-        PdfRendererInterface $renderer,
-        ThemeHelperInterface $themeHelper
-    ) {
-        $this->fragmentRenderer = $fragmentRenderer;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->renderer = $renderer;
-        $this->themeHelper = $themeHelper;
+    public function __construct(private FragmentRendererInterface $fragmentRenderer, private EventDispatcherInterface $eventDispatcher, private PdfRendererInterface $renderer, private ThemeHelperInterface $themeHelper)
+    {
     }
 
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string

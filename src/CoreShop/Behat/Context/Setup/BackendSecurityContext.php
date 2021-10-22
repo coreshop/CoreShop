@@ -21,15 +21,8 @@ use Pimcore\Model\User;
 
 final class BackendSecurityContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private PimcoreSecurityServiceInterface $securityService;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        PimcoreSecurityServiceInterface $securityService
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->securityService = $securityService;
+    public function __construct(private SharedStorageInterface $sharedStorage, private PimcoreSecurityServiceInterface $securityService)
+    {
     }
 
     /**

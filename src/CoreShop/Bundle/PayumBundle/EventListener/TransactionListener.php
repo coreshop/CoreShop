@@ -24,11 +24,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class TransactionListener implements EventSubscriberInterface
 {
-    protected Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(protected Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public static function getSubscribedEvents(): array

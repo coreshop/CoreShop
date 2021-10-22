@@ -23,21 +23,13 @@ interface ConvertedAdjustableInterface
      */
     public function getConvertedAdjustments(string $type = null);
 
-    /**
-     * @param AdjustmentInterface $adjustment
-     */
     public function addConvertedAdjustment(AdjustmentInterface $adjustment);
 
-    /**
-     * @param AdjustmentInterface $adjustment
-     */
     public function removeConvertedAdjustment(AdjustmentInterface $adjustment);
 
     /**
      * @param string|null $type
-     * @param bool        $withTax
      *
-     * @return int
      */
     public function getConvertedAdjustmentsTotal(string $type = null, bool $withTax = true): int;
 

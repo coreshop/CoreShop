@@ -21,24 +21,8 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class MultiResourceResolver
 {
-    /**
-     * @var Data
-     */
-    protected $fieldDefinition;
-
-    /**
-     * @var RepositoryInterface
-     */
-    protected $repository;
-
-    /**
-     * @param Data                $fieldDefinition
-     * @param RepositoryInterface $repository
-     */
-    public function __construct(Data $fieldDefinition, RepositoryInterface $repository)
+    public function __construct(protected Data $fieldDefinition, protected RepositoryInterface $repository)
     {
-        $this->fieldDefinition = $fieldDefinition;
-        $this->repository = $repository;
     }
 
     public function resolve($value = null, $args = [], $context = [], ResolveInfo $resolveInfo = null)

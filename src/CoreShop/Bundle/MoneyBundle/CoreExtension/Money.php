@@ -265,7 +265,7 @@ class Money extends DataObject\ClassDefinition\Data implements
     {
         $returnType = 'mixed';
 
-        switch (get_class($class)) {
+        switch ($class::class) {
             case DataObject\Objectbrick\Definition::class:
                 $returnType = '\\Pimcore\\Model\\DataObject\\Objectbrick\\Data\\' . ucfirst($class->getKey());
                 break;
@@ -661,12 +661,10 @@ class Money extends DataObject\ClassDefinition\Data implements
 
     /**
      * @param mixed $value
-     *
-     * @return float|int
      */
-    protected function toNumeric($value)
+    protected function toNumeric($value): float|int
     {
-        if (strpos((string) $value, '.') === false) {
+        if (!str_contains((string) $value, '.')) {
             return (int) $value;
         }
 

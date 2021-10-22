@@ -20,18 +20,8 @@ use CoreShop\Component\Product\Model\ProductInterface;
 
 final class ProductPriceCalculator implements ProductPriceCalculatorInterface
 {
-    private ProductRetailPriceCalculatorInterface $retailPriceCalculator;
-    private ProductDiscountPriceCalculatorInterface $discountPriceCalculator;
-    private ProductDiscountCalculatorInterface $discountCalculator;
-
-    public function __construct(
-        ProductRetailPriceCalculatorInterface $retailPriceCalculator,
-        ProductDiscountPriceCalculatorInterface $discountPriceCalculator,
-        ProductDiscountCalculatorInterface $discountCalculator
-    ) {
-        $this->retailPriceCalculator = $retailPriceCalculator;
-        $this->discountPriceCalculator = $discountPriceCalculator;
-        $this->discountCalculator = $discountCalculator;
+    public function __construct(private ProductRetailPriceCalculatorInterface $retailPriceCalculator, private ProductDiscountPriceCalculatorInterface $discountPriceCalculator, private ProductDiscountCalculatorInterface $discountCalculator)
+    {
     }
 
     public function getPrice(ProductInterface $product, array $context, bool $withDiscount = false): int
@@ -56,7 +46,7 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
     {
         try {
             return $this->retailPriceCalculator->getRetailPrice($product, $context);
-        } catch (NoRetailPriceFoundException $ex) {
+        } catch (NoRetailPriceFoundException) {
         }
 
         return 0;
@@ -66,7 +56,7 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
     {
         try {
             return $this->discountPriceCalculator->getDiscountPrice($product, $context);
-        } catch (NoDiscountPriceFoundException $ex) {
+        } catch (NoDiscountPriceFoundException) {
         }
 
         return 0;

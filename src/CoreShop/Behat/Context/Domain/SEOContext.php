@@ -24,22 +24,8 @@ use Webmozart\Assert\Assert;
 
 final class SEOContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private SEOPresentationInterface $seoPresentation;
-    private HeadTitle $headTitle;
-    private HeadMeta $headMeta;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        SEOPresentationInterface $seoPresentation,
-        HeadTitle $headTitle,
-        HeadMeta $headMeta
-    )
+    public function __construct(private SEOPresentationInterface $seoPresentation, private HeadTitle $headTitle, private HeadMeta $headMeta)
     {
-        $this->sharedStorage = $sharedStorage;
-        $this->seoPresentation = $seoPresentation;
-        $this->headTitle = $headTitle;
-        $this->headMeta = $headMeta;
     }
 
     /**

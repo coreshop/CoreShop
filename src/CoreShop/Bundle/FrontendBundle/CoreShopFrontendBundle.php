@@ -50,9 +50,6 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
         return 'CoreShop - Frontend Bundle';
     }
 
-    /**
-     * @return string
-     */
     public function getVersion(): string
     {
         $bundleName = 'coreshop/frontend-bundle';

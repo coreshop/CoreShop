@@ -21,11 +21,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class SqlInstaller implements ResourceInstallerInterface
 {
-    private KernelInterface $kernel;
-
-    public function __construct(KernelInterface $kernel)
+    public function __construct(private KernelInterface $kernel)
     {
-        $this->kernel = $kernel;
     }
 
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void

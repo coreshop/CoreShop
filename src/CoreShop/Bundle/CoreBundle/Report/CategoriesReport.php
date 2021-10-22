@@ -28,30 +28,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class CategoriesReport implements ReportInterface
 {
     private int $totalRecords = 0;
-    private RepositoryInterface $storeRepository;
-    private Connection $db;
-    private MoneyFormatterInterface $moneyFormatter;
-    private LocaleContextInterface $localeService;
-    private PimcoreRepositoryInterface $orderRepository;
-    private PimcoreRepositoryInterface$categoryRepository;
-    private PimcoreRepositoryInterface $orderItemRepository;
 
-    public function __construct(
-        RepositoryInterface $storeRepository,
-        Connection $db,
-        MoneyFormatterInterface $moneyFormatter,
-        LocaleContextInterface $localeService,
-        PimcoreRepositoryInterface $orderRepository,
-        PimcoreRepositoryInterface $categoryRepository,
-        PimcoreRepositoryInterface $orderItemRepository
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->db = $db;
-        $this->moneyFormatter = $moneyFormatter;
-        $this->localeService = $localeService;
-        $this->orderRepository = $orderRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->orderItemRepository = $orderItemRepository;
+    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeService, private PimcoreRepositoryInterface $orderRepository, private PimcoreRepositoryInterface $categoryRepository, private PimcoreRepositoryInterface $orderItemRepository)
+    {
     }
 
     public function getReportData(ParameterBag $parameterBag): array

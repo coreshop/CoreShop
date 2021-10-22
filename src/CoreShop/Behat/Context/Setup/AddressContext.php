@@ -24,18 +24,8 @@ use Pimcore\Model\DataObject\Folder;
 
 final class AddressContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private FactoryInterface $addressFactory;
-    private PimcoreRepositoryInterface $addressRepository;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        FactoryInterface $addressFactory,
-        PimcoreRepositoryInterface $addressRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->addressFactory = $addressFactory;
-        $this->addressRepository = $addressRepository;
+    public function __construct(private SharedStorageInterface $sharedStorage, private FactoryInterface $addressFactory)
+    {
     }
 
     /**

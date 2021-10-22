@@ -21,13 +21,8 @@ use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 
 class ProcessableOrderItems implements ProcessableInterface
 {
-    protected OrderDocumentRepositoryInterface $documentsRepository;
-    protected string $stateCancelled;
-
-    public function __construct(OrderDocumentRepositoryInterface $documentsRepository, string $stateCancelled)
+    public function __construct(protected OrderDocumentRepositoryInterface $documentsRepository, protected string $stateCancelled)
     {
-        $this->documentsRepository = $documentsRepository;
-        $this->stateCancelled = $stateCancelled;
     }
 
     public function getProcessableItems(OrderInterface $order): array

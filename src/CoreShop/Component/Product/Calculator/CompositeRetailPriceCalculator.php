@@ -20,11 +20,8 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositeRetailPriceCalculator implements ProductRetailPriceCalculatorInterface
 {
-    protected PrioritizedServiceRegistryInterface $retailPriceCalculator;
-
-    public function __construct(PrioritizedServiceRegistryInterface $retailPriceCalculator)
+    public function __construct(protected PrioritizedServiceRegistryInterface $retailPriceCalculator)
     {
-        $this->retailPriceCalculator = $retailPriceCalculator;
     }
 
     public function getRetailPrice(ProductInterface $product, array $context): int
@@ -38,7 +35,7 @@ class CompositeRetailPriceCalculator implements ProductRetailPriceCalculatorInte
             try {
                 $actionPrice = $calculator->getRetailPrice($product, $context);
                 $price = $actionPrice;
-            } catch (NoRetailPriceFoundException $exception) {
+            } catch (NoRetailPriceFoundException) {
             }
         }
 

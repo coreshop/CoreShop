@@ -24,13 +24,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CustomerType extends AbstractResourceType
 {
-    protected array $guestValidationGroups = [];
-
-    public function __construct(string $dataClass, array $validationGroups = [], array $guestValidationGroups = [])
+    public function __construct(string $dataClass, array $validationGroups = [], protected array $guestValidationGroups = [])
     {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->guestValidationGroups = $guestValidationGroups;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

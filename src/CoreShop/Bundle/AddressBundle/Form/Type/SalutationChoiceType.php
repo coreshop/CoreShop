@@ -23,11 +23,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class SalutationChoiceType extends AbstractType
 {
-    private CountryContextInterface $countryContext;
-
-    public function __construct(CountryContextInterface $countryContext)
+    public function __construct(private CountryContextInterface $countryContext)
     {
-        $this->countryContext = $countryContext;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

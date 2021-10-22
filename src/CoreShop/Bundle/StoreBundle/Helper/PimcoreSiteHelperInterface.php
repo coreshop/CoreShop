@@ -18,13 +18,7 @@ use Pimcore\Model\Site;
 
 interface PimcoreSiteHelperInterface
 {
-    /**
-     * @return bool
-     */
     public function isSiteRequest(): bool;
 
-    /**
-     * @return Site
-     */
     public function getCurrentSite(): Site;
 }

@@ -21,38 +21,28 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
 {
     /**
-     * @param StoreInterface $store
-     *
      * @return CategoryInterface[]
      */
     public function findForStore(StoreInterface $store): array;
 
     /**
-     * @param StoreInterface $store
-     *
      * @return CategoryInterface[]
      */
     public function findFirstLevelForStore(StoreInterface $store): array;
 
     /**
-     * @param CategoryInterface $category
-     * @param StoreInterface    $store
      *
      * @return CategoryInterface[]
      */
     public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array;
 
     /**
-     * @param CategoryInterface $category
-     * @param StoreInterface    $store
      *
      * @return int[]
      */
     public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store): array;
 
     /**
-     * @param CategoryInterface $category
-     * @param StoreInterface    $store
      *
      * @return CategoryInterface[]
      */

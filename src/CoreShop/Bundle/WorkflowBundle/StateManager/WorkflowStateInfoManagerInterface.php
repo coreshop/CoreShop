@@ -20,8 +20,6 @@ use Pimcore\Model\Element\Note;
 interface WorkflowStateInfoManagerInterface
 {
     /**
-     * @param DataObject\Concrete $object
-     *
      * @return Note[]
      */
     public function getStateHistory(DataObject\Concrete $object): array;

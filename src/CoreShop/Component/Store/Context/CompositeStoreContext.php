@@ -40,7 +40,7 @@ final class CompositeStoreContext implements StoreContextInterface
         foreach ($this->storeContexts as $storeContext) {
             try {
                 return $storeContext->getStore();
-            } catch (StoreNotFoundException $exception) {
+            } catch (StoreNotFoundException) {
                 continue;
             }
         }

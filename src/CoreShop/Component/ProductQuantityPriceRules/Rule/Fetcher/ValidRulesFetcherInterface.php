@@ -20,8 +20,6 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 interface ValidRulesFetcherInterface
 {
     /**
-     * @param QuantityRangePriceAwareInterface $product
-     * @param array                            $context
      *
      * @return RuleInterface[]
      */

@@ -39,7 +39,7 @@ final class CompositeRequestResolver implements RequestResolverInterface
             try {
                 return $requestResolver->findStore($request);
             }
-            catch (StoreNotFoundException $ex) {
+            catch (StoreNotFoundException) {
                 //Ignore and continue
             }
         }

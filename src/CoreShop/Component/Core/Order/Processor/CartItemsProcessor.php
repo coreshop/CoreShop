@@ -28,21 +28,8 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 
 final class CartItemsProcessor implements CartProcessorInterface
 {
-    private PurchasableCalculatorInterface $productPriceCalculator;
-    private QuantityReferenceDetectorInterface $quantityReferenceDetector;
-    private CartItemProcessorInterface $cartItemProcessor;
-    private CartContextResolverInterface $cartContextResolver;
-
-    public function __construct(
-        PurchasableCalculatorInterface $productPriceCalculator,
-        QuantityReferenceDetectorInterface $quantityReferenceDetector,
-        CartItemProcessorInterface $cartItemProcessor,
-        CartContextResolverInterface $cartContextResolver
-    ) {
-        $this->productPriceCalculator = $productPriceCalculator;
-        $this->quantityReferenceDetector = $quantityReferenceDetector;
-        $this->cartItemProcessor = $cartItemProcessor;
-        $this->cartContextResolver = $cartContextResolver;
+    public function __construct(private PurchasableCalculatorInterface $productPriceCalculator, private QuantityReferenceDetectorInterface $quantityReferenceDetector, private CartItemProcessorInterface $cartItemProcessor, private CartContextResolverInterface $cartContextResolver)
+    {
     }
 
     public function process(OrderInterface $cart): void
@@ -83,15 +70,15 @@ final class CartItemsProcessor implements CartProcessorInterface
 
             // respect item quantity factor
             if ($product instanceof ProductInterface && is_numeric($product->getItemQuantityFactor()) && $product->getItemQuantityFactor() > 1) {
-                $itemPrice = (int)round($itemPrice / (int)$product->getItemQuantityFactor());
+                $itemPrice = (int)round($itemPrice / $product->getItemQuantityFactor());
             }
 
             if ($product instanceof QuantityRangePriceAwareInterface) {
                 try {
                     $itemPrice = $this->quantityReferenceDetector->detectQuantityPrice($product, $item->getQuantity(),
                         $itemPrice, $context);
-                } catch (NoRuleFoundException $exception) {
-                } catch (NoPriceFoundException $exception) {
+                } catch (NoRuleFoundException) {
+                } catch (NoPriceFoundException) {
                 }
             }
 

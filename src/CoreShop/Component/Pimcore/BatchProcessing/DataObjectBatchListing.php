@@ -20,8 +20,6 @@ use Pimcore\Model\DataObject;
 
 final class DataObjectBatchListing implements Iterator, Countable
 {
-    private DataObject\Listing $list;
-    private int $batchSize;
     private int $index = 0;
     private int $loop = 0;
     private int $currentLoopLoaded = -1;
@@ -29,10 +27,8 @@ final class DataObjectBatchListing implements Iterator, Countable
     private array $items = [];
     private ?array $ids = null;
 
-    public function __construct(DataObject\Listing $list, int $batchSize)
+    public function __construct(private DataObject\Listing $list, private int $batchSize)
     {
-        $this->list = $list;
-        $this->batchSize = $batchSize;
     }
 
     public function current(): DataObject
@@ -78,7 +74,7 @@ final class DataObjectBatchListing implements Iterator, Countable
 
             if (!method_exists($dao, 'getTotalCount')) {
                 throw new \InvalidArgumentException(sprintf('%s listing class does not support count.',
-                    get_class($this->list)));
+                    $this->list::class));
             }
 
             /** @psalm-suppress InternalMethod */
@@ -100,7 +96,7 @@ final class DataObjectBatchListing implements Iterator, Countable
                 throw new \InvalidArgumentException(
                     sprintf(
                         '%s listing class does not support loadIdList.',
-                        get_class($this->list)
+                        $this->list::class
                     )
                 );
             }

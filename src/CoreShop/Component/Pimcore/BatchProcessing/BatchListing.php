@@ -21,18 +21,13 @@ use Pimcore\Model\ModelInterface;
 
 final class BatchListing implements Iterator, Countable
 {
-    private AbstractListing $list;
-    private int $batchSize;
     private int $index = 0;
     private int $loop = 0;
     private int $total = 0;
     private array $items = [];
 
-    public function __construct(AbstractListing $list, int $batchSize)
+    public function __construct(private AbstractListing $list, private int $batchSize)
     {
-        $this->list = $list;
-        $this->batchSize = $batchSize;
-
         $this->list->setLimit($batchSize);
     }
 
@@ -77,7 +72,7 @@ final class BatchListing implements Iterator, Countable
             $dao = $this->list->getDao();
 
             if (!method_exists($dao, 'getTotalCount')) {
-                throw new \InvalidArgumentException(sprintf('%s listing class does not support count.', get_class($this->list)));
+                throw new \InvalidArgumentException(sprintf('%s listing class does not support count.', $this->list::class));
             }
 
             $this->total = $dao->getTotalCount();
@@ -96,7 +91,7 @@ final class BatchListing implements Iterator, Countable
         $dao = $this->list->getDao();
 
         if (!method_exists($dao, 'load')) {
-            throw new \InvalidArgumentException(sprintf('%s listing class does not support load.', get_class($this->list)));
+            throw new \InvalidArgumentException(sprintf('%s listing class does not support load.', $this->list::class));
         }
 
         $this->items = $dao->load();

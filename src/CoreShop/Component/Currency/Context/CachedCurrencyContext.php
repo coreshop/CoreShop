@@ -20,14 +20,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CachedCurrencyContext implements CurrencyContextInterface
 {
-    private CurrencyContextInterface $inner;
-    private RequestStack $requestStack;
     private ?CurrencyInterface $currency = null;
 
-    public function __construct(CurrencyContextInterface $inner, RequestStack $requestStack)
+    public function __construct(private CurrencyContextInterface $inner, private RequestStack $requestStack)
     {
-        $this->inner = $inner;
-        $this->requestStack = $requestStack;
     }
 
     public function getCurrency(): CurrencyInterface

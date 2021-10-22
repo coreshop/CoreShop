@@ -22,10 +22,6 @@ use CoreShop\Component\Taxation\Model\TaxItemInterface;
 interface TaxCalculationStrategyInterface
 {
     /**
-     * @param ShippableInterface $shippable
-     * @param CarrierInterface   $carrier
-     * @param AddressInterface   $address
-     * @param int                $shippingAmount
      * @return TaxItemInterface[]
      */
     public function calculateShippingTax(

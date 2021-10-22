@@ -19,13 +19,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 
 interface AddToCartInterface
 {
-    /**
-     * @return OrderInterface
-     */
     public function getCart(): OrderInterface;
 
-    /**
-     * @return OrderItemInterface
-     */
     public function getCartItem(): OrderItemInterface;
 }

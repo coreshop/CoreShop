@@ -19,12 +19,10 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 final class CachedStoreContext implements StoreContextInterface
 {
-    private StoreContextInterface $requestBasedStoreContext;
     private ?StoreInterface $cachedStore = null;
 
-    public function __construct(StoreContextInterface $requestBasedStoreContext)
+    public function __construct(private StoreContextInterface $requestBasedStoreContext)
     {
-        $this->requestBasedStoreContext = $requestBasedStoreContext;
     }
 
     public function getStore(): StoreInterface

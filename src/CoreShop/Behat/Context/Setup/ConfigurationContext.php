@@ -21,15 +21,8 @@ use CoreShop\Component\Core\Model\StoreInterface;
 
 final class ConfigurationContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ConfigurationService $configurationService;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ConfigurationService $configurationService
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->configurationService = $configurationService;
+    public function __construct(private ConfigurationService $configurationService)
+    {
     }
 
     /**

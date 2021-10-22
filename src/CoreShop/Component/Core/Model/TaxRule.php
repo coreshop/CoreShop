@@ -21,7 +21,7 @@ use CoreShop\Component\Taxation\Model\TaxRule as BaseTaxRule;
 /**
  * @psalm-suppress MissingConstructor
  */
-class TaxRule extends BaseTaxRule implements TaxRuleInterface
+class TaxRule extends BaseTaxRule implements TaxRuleInterface, \Stringable
 {
     /**
      * @var CountryInterface
@@ -33,10 +33,7 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface
      */
     protected $state;
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $country = $this->getCountry() instanceof CountryInterface ? $this->getCountry()->getName() : 'none';
         $state = $this->getState() instanceof StateInterface ? $this->getState()->getName() : 'none';

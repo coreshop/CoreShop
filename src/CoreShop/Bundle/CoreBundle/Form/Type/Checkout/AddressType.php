@@ -31,19 +31,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddressType extends AbstractResourceType
 {
-    private AddressFormatterInterface $addressFormatHelper;
-    private TranslatorInterface $translator;
-
     public function __construct(
         string $dataClass,
         array $validationGroups,
-        AddressFormatterInterface $addressFormatHelper,
-        TranslatorInterface $translator
+        private AddressFormatterInterface $addressFormatHelper,
+        private TranslatorInterface $translator
     ) {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->addressFormatHelper = $addressFormatHelper;
-        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

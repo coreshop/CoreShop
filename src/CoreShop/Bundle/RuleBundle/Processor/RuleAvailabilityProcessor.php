@@ -24,18 +24,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterface
 {
-    private EventDispatcherInterface $eventDispatcher;
-    private EntityManagerInterface $entityManager;
-    private ServiceRegistryInterface $ruleRegistry;
-
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        EntityManagerInterface $entityManager,
-        ServiceRegistryInterface $ruleRegistry
-    ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->entityManager = $entityManager;
-        $this->ruleRegistry = $ruleRegistry;
+    public function __construct(private EventDispatcherInterface $eventDispatcher, private EntityManagerInterface $entityManager, private ServiceRegistryInterface $ruleRegistry)
+    {
     }
 
     public function process(): void
@@ -55,15 +45,13 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
     {
         /** @var RuleAvailabilityCheckEvent $event */
         $event = $this->eventDispatcher->dispatch(
-            new RuleAvailabilityCheckEvent($rule, get_class($rule), $ruleIsAvailable),
+            new RuleAvailabilityCheckEvent($rule, $rule::class, $ruleIsAvailable),
             'coreshop.rule.availability_check'
         );
 
         if ($event->isAvailable() === false) {
-            if ($rule instanceof ToggleableInterface) {
-                $rule->setActive(false);
-                $this->entityManager->persist($rule);
-            }
+            $rule->setActive(false);
+            $this->entityManager->persist($rule);
         }
     }
 }

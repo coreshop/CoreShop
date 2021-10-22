@@ -28,16 +28,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDaoContext implements Context
 {
-    private KernelInterface $kernel;
-    private OrderRepositoryInterface $orderRepository;
-
-    public function __construct(
-        KernelInterface $kernel,
-        OrderRepositoryInterface $orderRepository
-    )
+    public function __construct(private KernelInterface $kernel, private OrderRepositoryInterface $orderRepository)
     {
-        $this->kernel = $kernel;
-        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -95,7 +87,7 @@ final class PimcoreDaoContext implements Context
                 continue;
             }
 
-            if (strpos($brick->getKey(), 'Behat') === 0) {
+            if (str_starts_with($brick->getKey(), 'Behat')) {
                 $brick->delete();
             }
         }
@@ -121,7 +113,7 @@ final class PimcoreDaoContext implements Context
         $keepItems = [];
 
         foreach ($copy as $key => $value) {
-            if (strpos($key, 'object_') === 0) {
+            if (str_starts_with($key, 'object_')) {
                 $keepItems[] = $key;
             }
         }
@@ -180,7 +172,7 @@ final class PimcoreDaoContext implements Context
                 continue;
             }
 
-            if (strpos($collection->getKey(), 'Behat') === 0) {
+            if (str_starts_with($collection->getKey(), 'Behat')) {
                 $collection->delete();
             }
         }

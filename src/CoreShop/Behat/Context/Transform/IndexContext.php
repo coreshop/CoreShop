@@ -22,13 +22,8 @@ use Webmozart\Assert\Assert;
 
 final class IndexContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private RepositoryInterface $indexRepository;
-
-    public function __construct(SharedStorageInterface $sharedStorage, RepositoryInterface $indexRepository)
+    public function __construct(private SharedStorageInterface $sharedStorage, private RepositoryInterface $indexRepository)
     {
-        $this->sharedStorage = $sharedStorage;
-        $this->indexRepository = $indexRepository;
     }
 
     /**

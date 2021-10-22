@@ -24,12 +24,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class InstallResourcesCommand extends Command
 {
-    protected ResourceInstallerInterface $resourceInstaller;
-
-    public function __construct(ResourceInstallerInterface $resourceInstaller)
+    public function __construct(protected ResourceInstallerInterface $resourceInstaller)
     {
-        $this->resourceInstaller = $resourceInstaller;
-
         parent::__construct();
     }
 

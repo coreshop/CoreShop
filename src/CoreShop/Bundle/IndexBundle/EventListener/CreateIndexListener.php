@@ -23,11 +23,8 @@ use Webmozart\Assert\Assert;
 
 final class CreateIndexListener
 {
-    private ServiceRegistryInterface $workerServiceRegistry;
-
-    public function __construct(ServiceRegistryInterface $workerServiceRegistry)
+    public function __construct(private ServiceRegistryInterface $workerServiceRegistry)
     {
-        $this->workerServiceRegistry = $workerServiceRegistry;
     }
 
     public function onIndexSavePost(ResourceControllerEvent $event): void
@@ -42,9 +39,6 @@ final class CreateIndexListener
             throw new InvalidArgumentException(sprintf('%s Worker not found', $worker));
         }
 
-        /**
-         * @var WorkerInterface
-         */
         $worker = $this->workerServiceRegistry->get($worker);
         $worker->createOrUpdateIndexStructures($resource);
     }

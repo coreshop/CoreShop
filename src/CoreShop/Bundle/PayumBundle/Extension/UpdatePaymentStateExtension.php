@@ -26,11 +26,8 @@ use Payum\Core\Request\Notify;
 
 final class UpdatePaymentStateExtension implements ExtensionInterface
 {
-    private StateMachineManager $stateMachineManager;
-
-    public function __construct(StateMachineManager $stateMachineManager)
+    public function __construct(private StateMachineManager $stateMachineManager)
     {
-        $this->stateMachineManager = $stateMachineManager;
     }
 
     public function onPreExecute(Context $context): void
@@ -55,7 +52,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
         }
 
         if ($previousStackSize === 1) {
-            $previousActionClassName = get_class($previousStack[0]->getAction());
+            $previousActionClassName = $previousStack[0]->getAction()::class;
             if (false === stripos($previousActionClassName, 'NotifyNullAction')) {
                 return;
             }

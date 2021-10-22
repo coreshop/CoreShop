@@ -70,10 +70,6 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
         $ranges = $newQuantityPriceRule->getRanges();
         $referenceRanges = $quantityPriceRule->getRanges();
 
-        if (!$ranges instanceof Collection) {
-            return $newQuantityPriceRule;
-        }
-
         foreach ($ranges as $index => $range) {
 
             if (!$range instanceof QuantityRangeInterface) {

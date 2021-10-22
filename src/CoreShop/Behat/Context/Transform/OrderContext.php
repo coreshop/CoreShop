@@ -23,11 +23,8 @@ use CoreShop\Component\Order\Model\OrderPaymentInterface;
 
 final class OrderContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-
-    public function __construct(SharedStorageInterface $sharedStorage)
+    public function __construct(private SharedStorageInterface $sharedStorage)
     {
-        $this->sharedStorage = $sharedStorage;
     }
 
     /**

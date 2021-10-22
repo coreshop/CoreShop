@@ -25,11 +25,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class SluggableListener implements EventSubscriberInterface
 {
-    protected SluggerInterface $slugger;
-
-    public function __construct(SluggerInterface $slugger)
+    public function __construct(protected SluggerInterface $slugger)
     {
-        $this->slugger = $slugger;
     }
 
     public static function getSubscribedEvents(): array

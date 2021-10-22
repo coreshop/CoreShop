@@ -20,15 +20,8 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
 class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 {
-    private CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator;
-    private ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator;
-
-    public function __construct(
-        CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
-        ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
-    ) {
-        $this->cartPriceRuleValidator = $cartPriceRuleValidator;
-        $this->proposalCartPriceRuleCalculator = $proposalCartPriceRuleCalculator;
+    public function __construct(private CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator, private ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator)
+    {
     }
 
     public function process(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool

@@ -38,10 +38,6 @@ class SimpleStorageListModifier implements StorageListModifierInterface
         $storageList->removeItem($item);
     }
 
-    /**
-     * @param StorageListInterface     $storageList
-     * @param StorageListItemInterface $storageListItem
-     */
     private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem): void
     {
         foreach ($storageList->getItems() as $item) {

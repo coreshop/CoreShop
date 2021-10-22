@@ -20,13 +20,8 @@ use Behat\Mink\Session;
 
 class CookieSetter implements CookieSetterInterface
 {
-    protected Session $minkSession;
-    protected array|\ArrayAccess $minkParameters;
-
-    public function __construct(Session $minkSession, array|\ArrayAccess $minkParameters)
+    public function __construct(protected Session $minkSession, protected array|\ArrayAccess $minkParameters)
     {
-        $this->minkSession = $minkSession;
-        $this->minkParameters = $minkParameters;
     }
 
     public function setCookie(string $name, string $value): void
@@ -52,10 +47,10 @@ class CookieSetter implements CookieSetterInterface
                 return true;
             }
         }
-        catch (DriverException $e) {
+        catch (DriverException) {
             return true;
         }
 
-        return !(false !== strpos($session->getCurrentUrl(), $this->minkParameters['base_url']));
+        return !(str_contains($session->getCurrentUrl(), $this->minkParameters['base_url']));
     }
 }

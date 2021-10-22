@@ -16,13 +16,8 @@ namespace CoreShop\Component\Index\Condition;
 
 class IsCondition implements ConditionInterface
 {
-    private string $fieldName;
-    private string $value;
-
-    public function __construct(string $fieldName, string $value)
+    public function __construct(private string $fieldName, private string $value)
     {
-        $this->fieldName = $fieldName;
-        $this->value = $value;
     }
 
     public function getFieldName(): string

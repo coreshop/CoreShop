@@ -22,12 +22,10 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {
-    private TaxCalculatorFactoryInterface $taxCalculatorFactory;
     private array $cache = [];
 
-    public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory)
+    public function __construct(private TaxCalculatorFactoryInterface $taxCalculatorFactory)
     {
-        $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
 
     public function getTaxCalculatorForAddress(

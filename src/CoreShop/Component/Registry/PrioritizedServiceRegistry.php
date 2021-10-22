@@ -17,13 +17,9 @@ namespace CoreShop\Component\Registry;
 final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInterface
 {
     private PriorityMap $priortyMap;
-    private string $interface;
-    private string $context;
 
-    public function __construct(string $interface, string $context = 'service')
+    public function __construct(private string $interface, private string $context = 'service')
     {
-        $this->interface = $interface;
-        $this->context = $context;
         $this->priortyMap = new PriorityMap();
     }
 
@@ -40,7 +36,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
 
         if (!in_array($this->interface, class_implements($service), true)) {
             throw new \InvalidArgumentException(
-                sprintf('%s needs to implement "%s", "%s" given.', ucfirst($this->context), $this->interface, get_class($service))
+                sprintf('%s needs to implement "%s", "%s" given.', ucfirst($this->context), $this->interface, $service::class)
             );
         }
 

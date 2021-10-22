@@ -41,19 +41,11 @@ interface TaxRuleGroupInterface extends ResourceInterface, TimestampableInterfac
      */
     public function hasTaxRules();
 
-    /**
-     * @param TaxRuleInterface $taxRule
-     */
     public function addTaxRule(TaxRuleInterface $taxRule);
 
-    /**
-     * @param TaxRuleInterface $taxRule
-     */
     public function removeTaxRule(TaxRuleInterface $taxRule);
 
     /**
-     * @param TaxRuleInterface $taxRule
-     *
      * @return bool
      */
     public function hasTaxRule(TaxRuleInterface $taxRule);

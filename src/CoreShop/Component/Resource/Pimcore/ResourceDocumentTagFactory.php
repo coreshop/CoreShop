@@ -20,20 +20,17 @@ use Pimcore\Model\Document\Editable\EditableInterface;
 class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
 {
     /**
-     * @psalm-var class-string
-     */
-    private string $class;
-    private string $repositoryName;
-    private string $nameProperty;
-
-    /**
      * @psalm-param class-string $class
      */
-    public function __construct(string $class, string $repositoryName, string $nameProperty)
+    public function __construct(
+        /**
+         * @psalm-var class-string
+         */
+        private string $class,
+        private string $repositoryName,
+        private string $nameProperty
+    )
     {
-        $this->class = $class;
-        $this->repositoryName = $repositoryName;
-        $this->nameProperty = $nameProperty;
     }
 
     public function create(string $type, array $params): EditableInterface

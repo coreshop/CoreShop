@@ -24,12 +24,10 @@ use Pimcore\Model\DataObject\ClassDefinition;
 
 final class IndexObjectListener
 {
-    private IndexUpdaterServiceInterface $indexUpdaterService;
     private array $validObjectTypes = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
 
-    public function __construct(IndexUpdaterServiceInterface $indexUpdaterService)
+    public function __construct(private IndexUpdaterServiceInterface $indexUpdaterService)
     {
-        $this->indexUpdaterService = $indexUpdaterService;
     }
 
     public function onPostUpdate(ElementEventInterface $event): void
@@ -63,7 +61,7 @@ final class IndexObjectListener
         $children = $object->getChildren($this->validObjectTypes);
         /** @var AbstractObject $child */
         foreach ($children as $child) {
-            if ($child instanceof IndexableInterface && get_class($child) === get_class($object)) {
+            if ($child instanceof IndexableInterface && $child::class === $object::class) {
                 InheritanceHelper::useInheritedValues(function () use ($child, $isVersionChange) {
                     $this->indexUpdaterService->updateIndices($child, $isVersionChange);
                 });

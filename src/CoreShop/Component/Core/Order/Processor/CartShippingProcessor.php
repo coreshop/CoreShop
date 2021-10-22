@@ -32,27 +32,8 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CartShippingProcessor implements CartProcessorInterface
 {
-    private TaxedShippingCalculatorInterface $carrierPriceCalculator;
-    private ShippableCarrierValidatorInterface $carrierValidator;
-    private DefaultCarrierResolverInterface $defaultCarrierResolver;
-    private AddressProviderInterface $defaultAddressProvider;
-    private AdjustmentFactoryInterface $adjustmentFactory;
-    private CartContextResolverInterface $cartContextResolver;
-
-    public function __construct(
-        TaxedShippingCalculatorInterface $carrierPriceCalculator,
-        ShippableCarrierValidatorInterface $carrierValidator,
-        DefaultCarrierResolverInterface $defaultCarrierResolver,
-        AddressProviderInterface $defaultAddressProvider,
-        AdjustmentFactoryInterface $adjustmentFactory,
-        CartContextResolverInterface $cartContextResolver
-    ) {
-        $this->carrierPriceCalculator = $carrierPriceCalculator;
-        $this->carrierValidator = $carrierValidator;
-        $this->defaultCarrierResolver = $defaultCarrierResolver;
-        $this->defaultAddressProvider = $defaultAddressProvider;
-        $this->adjustmentFactory = $adjustmentFactory;
-        $this->cartContextResolver = $cartContextResolver;
+    public function __construct(private TaxedShippingCalculatorInterface $carrierPriceCalculator, private ShippableCarrierValidatorInterface $carrierValidator, private DefaultCarrierResolverInterface $defaultCarrierResolver, private AddressProviderInterface $defaultAddressProvider, private AdjustmentFactoryInterface $adjustmentFactory, private CartContextResolverInterface $cartContextResolver)
+    {
     }
 
     public function process(OrderInterface $cart): void
@@ -132,10 +113,6 @@ final class CartShippingProcessor implements CartProcessorInterface
         );
     }
 
-    /**
-     * @param OrderInterface   $cart
-     * @param AddressInterface $address
-     */
     private function resolveDefaultCarrier(OrderInterface $cart, AddressInterface $address): void
     {
         if (!$cart instanceof CoreOrderInterface) {
@@ -144,7 +121,7 @@ final class CartShippingProcessor implements CartProcessorInterface
 
         try {
             $cart->setCarrier($this->defaultCarrierResolver->getDefaultCarrier($cart, $address));
-        } catch (UnresolvedDefaultCarrierException $ex) {
+        } catch (UnresolvedDefaultCarrierException) {
         }
     }
 }

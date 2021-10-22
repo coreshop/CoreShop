@@ -22,15 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class OrderExpireCommand extends Command
 {
-    protected OrderExpirationInterface $orderExpiration;
-    protected int $days;
-
-    public function __construct(OrderExpirationInterface $orderExpiration, int $days = 0)
+    public function __construct(protected OrderExpirationInterface $orderExpiration, protected int $days = 0)
     {
         parent::__construct();
-
-        $this->orderExpiration = $orderExpiration;
-        $this->days = $days;
     }
 
     protected function configure(): void

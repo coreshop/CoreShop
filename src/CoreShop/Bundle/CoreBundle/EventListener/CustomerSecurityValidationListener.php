@@ -23,18 +23,8 @@ use Pimcore\Model\Element\ValidationException;
 
 final class CustomerSecurityValidationListener
 {
-    protected RequestHelper $requestHelper;
-    protected CustomerRepositoryInterface $customerRepository;
-    protected string $className;
-
-    public function __construct(
-        RequestHelper $requestHelper,
-        CustomerRepositoryInterface $customerRepository,
-        string $className
-    ) {
-        $this->requestHelper = $requestHelper;
-        $this->customerRepository = $customerRepository;
-        $this->className = $className;
+    public function __construct(protected RequestHelper $requestHelper, protected CustomerRepositoryInterface $customerRepository, protected string $className)
+    {
     }
 
     public function checkCustomerSecurityDataBeforeUpdate(DataObjectEvent $event): void

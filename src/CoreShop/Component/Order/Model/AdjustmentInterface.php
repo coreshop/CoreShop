@@ -41,15 +41,11 @@ interface AdjustmentInterface extends ResourceInterface
 
     /**
      * Adjustments with amount < 0 are called "charges".
-     *
-     * @return bool
      */
     public function isCharge(): bool;
 
     /**
      * Adjustments with amount > 0 are called "credits".
-     *
-     * @return bool
      */
     public function isCredit(): bool;
 }

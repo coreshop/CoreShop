@@ -25,18 +25,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInterface
 {
-    private StoreRepositoryInterface $storeRepository;
-    private RequestHelper $requestHelper;
-    private Service $documentService;
-
-    public function __construct(
-        StoreRepositoryInterface $storeRepository,
-        RequestHelper $requestHelper,
-        Service $documentService
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->requestHelper = $requestHelper;
-        $this->documentService = $documentService;
+    public function __construct(private StoreRepositoryInterface $storeRepository, private RequestHelper $requestHelper, private Service $documentService)
+    {
     }
 
     public function findStore(Request $request): ?StoreInterface
@@ -53,7 +43,7 @@ final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInter
                         if ($site instanceof Site) {
                             return $this->storeRepository->findOneBySite($site->getId());
                         }
-                    } catch (\Exception $x) {
+                    } catch (\Exception) {
                         //Ignore Exception and continue
                     }
 

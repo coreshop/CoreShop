@@ -35,9 +35,6 @@ interface StoreInterface extends BaseStoreInterface, CountriesAwareInterface
      */
     public function getBaseCountry();
 
-    /**
-     * @param CountryInterface $baseCountry
-     */
     public function setBaseCountry(CountryInterface $baseCountry);
 
     /**
@@ -50,19 +47,11 @@ interface StoreInterface extends BaseStoreInterface, CountriesAwareInterface
      */
     public function hasConfigurations();
 
-    /**
-     * @param ConfigurationInterface $configuration
-     */
     public function addConfiguration(ConfigurationInterface $configuration);
 
-    /**
-     * @param ConfigurationInterface $configuration
-     */
     public function removeConfiguration(ConfigurationInterface $configuration);
 
     /**
-     * @param ConfigurationInterface $configuration
-     *
      * @return bool
      */
     public function hasConfiguration(ConfigurationInterface $configuration);

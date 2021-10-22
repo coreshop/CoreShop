@@ -22,13 +22,8 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class StoreAwareCountryContext implements CountryContextInterface
 {
-    private CountryContextInterface $countryContext;
-    private StoreContextInterface $storeContext;
-
-    public function __construct(CountryContextInterface $countryContext, StoreContextInterface $storeContext)
+    public function __construct(private CountryContextInterface $countryContext, private StoreContextInterface $storeContext)
     {
-        $this->countryContext = $countryContext;
-        $this->storeContext = $storeContext;
     }
 
     public function getCountry(): \CoreShop\Component\Address\Model\CountryInterface
@@ -44,7 +39,7 @@ final class StoreAwareCountryContext implements CountryContextInterface
             }
 
             return $country;
-        } catch (CountryNotFoundException $exception) {
+        } catch (CountryNotFoundException) {
             return $store->getBaseCountry();
         }
     }

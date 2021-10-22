@@ -24,11 +24,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProductStoreValuesSelectionType extends AbstractType
 {
-    private ProductStoreValuesRepositoryInterface $productStoreValuesRepository;
-
-    public function __construct(ProductStoreValuesRepositoryInterface $productStoreValuesRepository)
+    public function __construct(private ProductStoreValuesRepositoryInterface $productStoreValuesRepository)
     {
-        $this->productStoreValuesRepository = $productStoreValuesRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

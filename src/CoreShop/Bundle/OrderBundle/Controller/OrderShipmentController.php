@@ -118,9 +118,6 @@ class OrderShipmentController extends PimcoreController
                     $workflow->apply($order, OrderShipmentTransitions::TRANSITION_REQUEST_SHIPMENT);
                 }
 
-                /**
-                 * @var OrderShipmentInterface
-                 */
                 $shipment = $this->getShipmentFactory()->createNew();
                 $shipment->setState(ShipmentStates::STATE_NEW);
 

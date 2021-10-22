@@ -19,13 +19,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DoctrineField
 {
-    private string $name;
-    private Type $type;
-
-    public function __construct(string $name, Type $type)
+    public function __construct(private string $name, private Type $type)
     {
-        $this->name = $name;
-        $this->type = $type;
     }
 
     public function getDefinition(): array

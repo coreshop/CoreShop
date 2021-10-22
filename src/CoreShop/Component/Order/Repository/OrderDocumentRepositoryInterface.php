@@ -21,23 +21,17 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 interface OrderDocumentRepositoryInterface extends PimcoreRepositoryInterface
 {
     /**
-     * @param OrderInterface $order
-     *
      * @return OrderDocumentInterface[]
      */
     public function getDocuments(OrderInterface $order): array;
 
     /**
-     * @param OrderInterface $order
-     * @param string         $state
      *
      * @return OrderDocumentInterface[]
      */
     public function getDocumentsInState(OrderInterface $order, string $state): array;
 
     /**
-     * @param OrderInterface $order
-     * @param string         $state
      *
      * @return OrderDocumentInterface[]
      */

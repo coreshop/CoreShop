@@ -24,13 +24,8 @@ use Psr\Log\InvalidArgumentException;
 
 final class IndexUpdaterService implements IndexUpdaterServiceInterface
 {
-    private RepositoryInterface $indexRepository;
-    private ServiceRegistryInterface $workerServiceRegistry;
-
-    public function __construct(RepositoryInterface $indexRepository, ServiceRegistryInterface $workerServiceRegistry)
+    public function __construct(private RepositoryInterface $indexRepository, private ServiceRegistryInterface $workerServiceRegistry)
     {
-        $this->indexRepository = $indexRepository;
-        $this->workerServiceRegistry = $workerServiceRegistry;
     }
 
     public function updateIndices(IndexableInterface $subject, bool $isVersionChange = false): void
@@ -61,9 +56,6 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
                 continue;
             }
 
-            /**
-             * @var IndexableInterface $subject
-             */
             $worker = $index->getWorker();
 
             if (!$this->workerServiceRegistry->has($worker)) {

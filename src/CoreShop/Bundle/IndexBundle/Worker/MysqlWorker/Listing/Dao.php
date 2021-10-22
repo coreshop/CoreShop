@@ -21,17 +21,10 @@ use Doctrine\DBAL\Query\QueryBuilder;
 
 class Dao
 {
-    private Connection $database;
-    private MysqlWorker\Listing $model;
     private int $lastRecordCount = 0;
 
-    /**
-     * @param MysqlWorker\Listing $model
-     */
-    public function __construct(MysqlWorker\Listing $model, Connection $connection)
+    public function __construct(private MysqlWorker\Listing $model, private Connection $database)
     {
-        $this->model = $model;
-        $this->database = $connection;
     }
 
     /**
@@ -45,7 +38,6 @@ class Dao
     /**
      * Load objects.
      *
-     * @param QueryBuilder $queryBuilder
      *
      * @return array
      */
@@ -73,10 +65,8 @@ class Dao
     /**
      * Load Group by values.
      *
-     * @param QueryBuilder $queryBuilder
      * @param string       $fieldName
      * @param bool         $countValues
-     *
      * @return array
      */
     public function loadGroupByValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
@@ -112,10 +102,8 @@ class Dao
     /**
      * Load Grouo by Relation values.
      *
-     * @param QueryBuilder $queryBuilder
      * @param string       $fieldName
      * @param bool         $countValues
-     *
      * @return array
      */
     public function loadGroupByRelationValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
@@ -188,7 +176,6 @@ class Dao
     /**
      * Get Count.
      *
-     * @param QueryBuilder $queryBuilder
      *
      * @return int
      */
@@ -310,8 +297,6 @@ class Dao
 
     /**
      * get the record count for the last select query.
-     *
-     * @return int
      */
     public function getLastRecordCount(): int
     {

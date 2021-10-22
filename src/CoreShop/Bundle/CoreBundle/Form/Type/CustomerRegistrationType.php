@@ -37,22 +37,14 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 class CustomerRegistrationType extends AbstractResourceType
 {
-    private DataMapperInterface $dataMapper;
-    private CustomerRepositoryInterface $customerRepository;
-    private string $loginIdentifier;
-
     public function __construct(
         string $dataClass,
         array $validationGroups,
-        string $loginIdentifier,
-        DataMapperInterface $dataMapper,
-        CustomerRepositoryInterface $customerRepository
+        private string $loginIdentifier,
+        private DataMapperInterface $dataMapper,
+        private CustomerRepositoryInterface $customerRepository
     ) {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->dataMapper = $dataMapper;
-        $this->loginIdentifier = $loginIdentifier;
-        $this->customerRepository = $customerRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

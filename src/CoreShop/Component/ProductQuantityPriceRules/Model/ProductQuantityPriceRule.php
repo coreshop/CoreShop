@@ -26,7 +26,7 @@ use Doctrine\Common\Collections\Collection;
 /**
  * @psalm-suppress MissingConstructor
  */
-class ProductQuantityPriceRule extends AbstractResource implements ProductQuantityPriceRuleInterface
+class ProductQuantityPriceRule extends AbstractResource implements ProductQuantityPriceRuleInterface, \Stringable
 {
     use TimestampableTrait;
     use SetValuesTrait;
@@ -211,10 +211,7 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
@@ -233,21 +230,17 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
         $this->conditions = new ArrayCollection();
         $this->ranges = new ArrayCollection();
 
-        if ($conditions instanceof Collection) {
-            /** @var ConditionInterface $condition */
-            foreach ($conditions as $condition) {
-                $newCondition = clone $condition;
-                $this->addCondition($newCondition);
-            }
+        /** @var ConditionInterface $condition */
+        foreach ($conditions as $condition) {
+            $newCondition = clone $condition;
+            $this->addCondition($newCondition);
         }
 
-        if ($ranges instanceof Collection) {
-            /** @var QuantityRangeInterface $range */
-            foreach ($ranges as $range) {
-                $newRange = clone $range;
-                $newRange->setRule($this);
-                $this->addRange($newRange);
-            }
+        /** @var QuantityRangeInterface $range */
+        foreach ($ranges as $range) {
+            $newRange = clone $range;
+            $newRange->setRule($this);
+            $this->addRange($newRange);
         }
     }
 }

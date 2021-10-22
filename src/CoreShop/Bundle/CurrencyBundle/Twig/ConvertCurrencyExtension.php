@@ -20,11 +20,8 @@ use Twig\TwigFilter;
 
 final class ConvertCurrencyExtension extends AbstractExtension
 {
-    private CurrencyConverterInterface $currencyConverter;
-
-    public function __construct(CurrencyConverterInterface $currencyConverter)
+    public function __construct(private CurrencyConverterInterface $currencyConverter)
     {
-        $this->currencyConverter = $currencyConverter;
     }
 
     public function getFilters(): array

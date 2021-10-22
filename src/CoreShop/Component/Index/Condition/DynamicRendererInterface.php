@@ -21,19 +21,10 @@ interface DynamicRendererInterface
     /**
      * Renders the condition.
      *
-     * @param WorkerInterface    $worker
-     * @param ConditionInterface $condition
-     * @param string             $prefix
      *
      * @return mixed
      */
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null);
 
-    /**
-     * @param WorkerInterface    $worker
-     * @param ConditionInterface $condition
-     *
-     * @return bool
-     */
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool;
 }

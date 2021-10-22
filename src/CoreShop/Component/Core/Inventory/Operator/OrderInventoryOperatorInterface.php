@@ -18,28 +18,19 @@ use CoreShop\Component\Core\Model\OrderInterface;
 
 interface OrderInventoryOperatorInterface
 {
-    /**
-     * @param OrderInterface $order
-     */
     public function hold(OrderInterface $order): void;
 
     /**
-     * @param OrderInterface $order
-     *
      * @throws \InvalidArgumentException
      */
     public function sell(OrderInterface $order): void;
 
     /**
-     * @param OrderInterface $order
-     *
      * @throws \InvalidArgumentException
      */
     public function release(OrderInterface $order): void;
 
     /**
-     * @param OrderInterface $order
-     *
      * @throws \InvalidArgumentException
      */
     public function giveBack(OrderInterface $order): void;

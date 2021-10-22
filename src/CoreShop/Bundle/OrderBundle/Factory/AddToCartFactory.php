@@ -21,16 +21,15 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 class AddToCartFactory implements AddToCartFactoryInterface
 {
     /**
-     * @psalm-var class-string
-     */
-    protected string $addToCartClass;
-
-    /**
      * @psalm-param class-string $addToCartClass
      */
-    public function __construct(string $addToCartClass)
+    public function __construct(
+        /**
+         * @psalm-var class-string
+         */
+        protected string $addToCartClass
+    )
     {
-        $this->addToCartClass = $addToCartClass;
     }
 
     public function createWithCartAndCartItem(OrderInterface $cart, OrderItemInterface $cartItem): AddToCartInterface
@@ -39,7 +38,7 @@ class AddToCartFactory implements AddToCartFactoryInterface
 
         if (!in_array(AddToCartInterface::class, class_implements($class), true)) {
             throw new \InvalidArgumentException(
-                sprintf('%s needs to implement "%s".', get_class($class), AddToCartInterface::class)
+                sprintf('%s needs to implement "%s".', $class::class, AddToCartInterface::class)
             );
         }
 

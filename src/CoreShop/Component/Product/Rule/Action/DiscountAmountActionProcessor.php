@@ -21,16 +21,8 @@ use Webmozart\Assert\Assert;
 
 class DiscountAmountActionProcessor implements ProductDiscountActionProcessorInterface
 {
-    protected CurrencyRepositoryInterface $currencyRepository;
-    protected CurrencyConverterInterface $moneyConverter;
-
-    public function __construct(
-        CurrencyRepositoryInterface $currencyRepository,
-        CurrencyConverterInterface $moneyConverter
-    )
+    public function __construct(protected CurrencyRepositoryInterface $currencyRepository, protected CurrencyConverterInterface $moneyConverter)
     {
-        $this->currencyRepository = $currencyRepository;
-        $this->moneyConverter = $moneyConverter;
     }
 
     public function getDiscount($subject, int $price, array $context, array $configuration): int

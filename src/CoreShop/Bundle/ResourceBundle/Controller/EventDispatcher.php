@@ -22,11 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class EventDispatcher implements EventDispatcherInterface
 {
-    private SymfonyEventDispatcherInterface $eventDispatcher;
-
-    public function __construct(SymfonyEventDispatcherInterface $eventDispatcher)
+    public function __construct(private SymfonyEventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function dispatch($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void

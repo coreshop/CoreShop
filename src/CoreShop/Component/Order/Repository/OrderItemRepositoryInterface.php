@@ -20,7 +20,6 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 interface OrderItemRepositoryInterface extends PimcoreRepositoryInterface
 {
     /**
-     * @param int $productId
      * @return OrderItemInterface[]
      */
     public function findOrderItemsByProductId(int $productId): array;

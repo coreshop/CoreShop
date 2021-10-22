@@ -19,13 +19,9 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 class SessionStorageListModifier extends SimpleStorageListModifier
 {
-    private StorageListManagerInterface $manager;
-
-    public function __construct(StorageListManagerInterface $manager)
+    public function __construct(private StorageListManagerInterface $manager)
     {
         parent::__construct();
-
-        $this->manager = $manager;
     }
 
     public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void

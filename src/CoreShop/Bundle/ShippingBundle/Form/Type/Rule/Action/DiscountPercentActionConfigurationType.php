@@ -24,16 +24,10 @@ use Symfony\Component\Validator\Constraints\Type;
 class DiscountPercentActionConfigurationType extends AbstractType
 {
     /**
-     * @var string[]
-     */
-    protected array $validationGroups = [];
-
-    /**
      * @param string[] $validationGroups
      */
-    public function __construct(array $validationGroups)
+    public function __construct(protected array $validationGroups)
     {
-        $this->validationGroups = $validationGroups;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

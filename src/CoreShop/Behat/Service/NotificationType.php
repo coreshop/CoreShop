@@ -15,17 +15,13 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Service;
 
 
-final class NotificationType
+final class NotificationType implements \Stringable
 {
-    /** @var string */
-    private string $value;
-
     /** @var array */
     private static array $types = [];
 
-    private function __construct(string $value)
+    private function __construct(private string $value)
     {
-        $this->value = $value;
     }
 
     public function __toString(): string

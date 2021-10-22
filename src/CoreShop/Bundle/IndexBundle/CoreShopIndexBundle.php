@@ -81,9 +81,6 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         return 'CoreShop - Index Bundle';
     }
 
-    /**
-     * @return string
-     */
     public function getVersion(): string
     {
         $bundleName = 'coreshop/pimcore-bundle';

@@ -21,11 +21,8 @@ use Webmozart\Assert\Assert;
 
 class CheckoutCartLocaleAssignerListener
 {
-    private LocaleContextInterface $localeContext;
-
-    public function __construct(LocaleContextInterface $localeContext)
+    public function __construct(private LocaleContextInterface $localeContext)
     {
-        $this->localeContext = $localeContext;
     }
 
     public function assignLocaleOnCheckout(CheckoutEvent $event): void

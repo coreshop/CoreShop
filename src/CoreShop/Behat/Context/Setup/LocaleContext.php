@@ -20,15 +20,8 @@ use CoreShop\Component\Locale\Context\FixedLocaleContext;
 
 final class LocaleContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private FixedLocaleContext $fixedLocaleContext;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        FixedLocaleContext $fixedLocaleContext
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->fixedLocaleContext = $fixedLocaleContext;
+    public function __construct(private FixedLocaleContext $fixedLocaleContext)
+    {
     }
 
     /**

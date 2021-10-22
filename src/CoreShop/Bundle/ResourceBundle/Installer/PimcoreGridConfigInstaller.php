@@ -28,24 +28,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
 {
-    private KernelInterface $kernel;
-    private RegistryInterface $metaDataRegistry;
-    private ObjectManager $objectManager;
-    private GridConfigInstallerInterface $gridConfigInstaller;
-    private PimcoreClassInstallerInterface $pimcoreClassInstaller;
-
-    public function __construct(
-        KernelInterface $kernel,
-        RegistryInterface $metaDataRegistry,
-        ObjectManager $objectManager,
-        GridConfigInstallerInterface $gridConfigInstaller,
-        PimcoreClassInstallerInterface $classInstaller
-    ) {
-        $this->kernel = $kernel;
-        $this->metaDataRegistry = $metaDataRegistry;
-        $this->objectManager = $objectManager;
-        $this->gridConfigInstaller = $gridConfigInstaller;
-        $this->pimcoreClassInstaller = $classInstaller;
+    public function __construct(private KernelInterface $kernel, private RegistryInterface $metaDataRegistry, private ObjectManager $objectManager, private GridConfigInstallerInterface $gridConfigInstaller, private PimcoreClassInstallerInterface $pimcoreClassInstaller)
+    {
     }
 
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
@@ -103,10 +87,8 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
         try {
             $repository = $this->objectManager->getRepository($metadata->getParameter('model'));
 
-            if ($repository instanceof PimcoreRepositoryInterface) {
-                return $repository->getClassId();
-            }
-        } catch (\InvalidArgumentException $ex) {
+            return $repository->getClassId();
+        } catch (\InvalidArgumentException) {
         }
 
         $freshlyInstalledClasses = $this->pimcoreClassInstaller->getInstalledClasses();

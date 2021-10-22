@@ -16,9 +16,5 @@ namespace CoreShop\Bundle\OrderBundle\Expiration;
 
 interface OrderExpirationInterface
 {
-    /**
-     * @param int   $days
-     * @param array $params
-     */
     public function expire(int $days, array $params = []): void;
 }

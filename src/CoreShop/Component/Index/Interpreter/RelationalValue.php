@@ -16,14 +16,10 @@ namespace CoreShop\Component\Index\Interpreter;
 
 class RelationalValue implements RelationalValueInterface
 {
-    protected int $destinationId;
-    protected string $type;
     protected array $params;
 
-    public function __construct(int $destinationId, string $type, array $params = [])
+    public function __construct(protected int $destinationId, protected string $type, array $params = [])
     {
-        $this->destinationId = $destinationId;
-        $this->type = $type;
         $this->params = $params;
     }
 

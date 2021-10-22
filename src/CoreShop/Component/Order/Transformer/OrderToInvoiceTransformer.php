@@ -33,33 +33,8 @@ use Webmozart\Assert\Assert;
 
 class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 {
-    protected OrderDocumentItemTransformerInterface $orderItemToInvoiceItemTransformer;
-    protected NumberGeneratorInterface $numberGenerator;
-    protected FolderCreationServiceInterface $folderCreationService;
-    protected PimcoreRepositoryInterface $orderItemRepository;
-    protected PimcoreFactoryInterface $invoiceItemFactory;
-    protected OrderInvoiceRepositoryInterface $invoiceRepository;
-    protected TransformerEventDispatcherInterface $eventDispatcher;
-    protected AdjustmentFactoryInterface $adjustmentFactory;
-
-    public function __construct(
-        OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
-        NumberGeneratorInterface $numberGenerator,
-        FolderCreationServiceInterface $folderCreationService,
-        PimcoreRepositoryInterface $orderItemRepository,
-        PimcoreFactoryInterface $invoiceItemFactory,
-        OrderInvoiceRepositoryInterface $invoiceRepository,
-        TransformerEventDispatcherInterface $eventDispatcher,
-        AdjustmentFactoryInterface $adjustmentFactory
-    ) {
-        $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
-        $this->numberGenerator = $numberGenerator;
-        $this->folderCreationService = $folderCreationService;
-        $this->orderItemRepository = $orderItemRepository;
-        $this->invoiceItemFactory = $invoiceItemFactory;
-        $this->invoiceRepository = $invoiceRepository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->adjustmentFactory = $adjustmentFactory;
+    public function __construct(protected OrderDocumentItemTransformerInterface $orderItemToInvoiceItemTransformer, protected NumberGeneratorInterface $numberGenerator, protected FolderCreationServiceInterface $folderCreationService, protected PimcoreRepositoryInterface $orderItemRepository, protected PimcoreFactoryInterface $invoiceItemFactory, protected OrderInvoiceRepositoryInterface $invoiceRepository, protected TransformerEventDispatcherInterface $eventDispatcher, protected AdjustmentFactoryInterface $adjustmentFactory)
+    {
     }
 
     public function transform(
@@ -116,7 +91,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
                     $document,
                     $orderItem,
                     $documentItem,
-                    $quantity,
+                    (int)$quantity,
                     $item
                 );
             }

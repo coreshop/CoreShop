@@ -20,11 +20,8 @@ use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterfa
 
 class NotificationRuleEventListener
 {
-    private NotificationRuleRepositoryInterface $repository;
-
-    public function __construct(NotificationRuleRepositoryInterface $repository)
+    public function __construct(private NotificationRuleRepositoryInterface $repository)
     {
-        $this->repository = $repository;
     }
 
     public function preCreate(ResourceControllerEvent $event): void

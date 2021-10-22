@@ -25,24 +25,8 @@ use Webmozart\Assert\Assert;
 
 class CustomerProfileContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ChangePasswordPageInterface $changePasswordPage;
-    private ProfilePageInterface $profilePage;
-    private ChangeProfilePageInterface $changeProfilePage;
-    private NotificationCheckerInterface $notificationChecker;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ChangePasswordPageInterface $changePasswordPage,
-        ProfilePageInterface $profilePage,
-        ChangeProfilePageInterface $changeProfilePage,
-        NotificationCheckerInterface $notificationChecker
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->changePasswordPage = $changePasswordPage;
-        $this->profilePage = $profilePage;
-        $this->changeProfilePage = $changeProfilePage;
-        $this->notificationChecker = $notificationChecker;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ChangePasswordPageInterface $changePasswordPage, private ProfilePageInterface $profilePage, private ChangeProfilePageInterface $changeProfilePage, private NotificationCheckerInterface $notificationChecker)
+    {
     }
 
     /**

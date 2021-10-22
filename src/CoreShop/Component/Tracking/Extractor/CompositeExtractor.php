@@ -18,11 +18,8 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 class CompositeExtractor implements TrackingExtractorInterface
 {
-    private ServiceRegistryInterface $extractorRegistry;
-
-    public function __construct(ServiceRegistryInterface $extractorRegistry)
+    public function __construct(private ServiceRegistryInterface $extractorRegistry)
     {
-        $this->extractorRegistry = $extractorRegistry;
     }
 
     public function supports($object): bool

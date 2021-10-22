@@ -26,21 +26,8 @@ use Doctrine\Persistence\ObjectManager;
 
 final class FilterContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ObjectManager $objectManager;
-    private FactoryInterface $filterFactory;
-    private FactoryInterface $filterConditionFactory;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FactoryInterface $filterFactory,
-        FactoryInterface $filterConditionFactory
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->filterFactory = $filterFactory;
-        $this->filterConditionFactory = $filterConditionFactory;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FactoryInterface $filterFactory, private FactoryInterface $filterConditionFactory)
+    {
     }
 
     /**
@@ -101,7 +88,6 @@ final class FilterContext implements Context
 
     /**
      * @param string         $name
-     * @param IndexInterface $index
      */
     private function createFilter($name, IndexInterface $index): void
     {
@@ -115,9 +101,6 @@ final class FilterContext implements Context
         $this->saveFilter($filter);
     }
 
-    /**
-     * @param FilterInterface $filter
-     */
     private function saveFilter(FilterInterface $filter): void
     {
         $this->objectManager->persist($filter);

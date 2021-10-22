@@ -32,21 +32,8 @@ use Webmozart\Assert\Assert;
 
 final class FilterContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private RepositoryInterface $filterRepository;
-    private FilteredListingFactoryInterface $filterListFactory;
-    private FilterProcessorInterface $filterProcessor;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        RepositoryInterface $filterRepository,
-        FilteredListingFactoryInterface $filterListFactory,
-        FilterProcessorInterface $filterProcessor
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->filterRepository = $filterRepository;
-        $this->filterListFactory = $filterListFactory;
-        $this->filterProcessor = $filterProcessor;
+    public function __construct(private RepositoryInterface $filterRepository, private FilteredListingFactoryInterface $filterListFactory, private FilterProcessorInterface $filterProcessor)
+    {
     }
 
     /**
@@ -191,10 +178,10 @@ final class FilterContext implements Context
             $value = $value->getId();
         }
 
-        if (strpos($field, '[]') !== false) {
+        if (str_contains($field, '[]')) {
             $field = str_replace('[]', '', $field);
 
-            if (is_string($value) && strpos($value, ',') !== false) {
+            if (is_string($value) && str_contains($value, ',')) {
                 $value = explode(',', $value);
             } else {
                 $value = [$value];

@@ -24,18 +24,8 @@ use Doctrine\DBAL\Connection;
 
 final class CartManager implements CartManagerInterface
 {
-    private CartProcessorInterface $cartProcessor;
-    private FolderCreationServiceInterface $folderCreationService;
-    private Connection $connection;
-
-    public function __construct(
-        CartProcessorInterface $cartProcessor,
-        FolderCreationServiceInterface $folderCreationService,
-        Connection $connection
-    ) {
-        $this->cartProcessor = $cartProcessor;
-        $this->folderCreationService = $folderCreationService;
-        $this->connection = $connection;
+    public function __construct(private CartProcessorInterface $cartProcessor, private FolderCreationServiceInterface $folderCreationService, private Connection $connection)
+    {
     }
 
     public function persistCart(OrderInterface $cart): void

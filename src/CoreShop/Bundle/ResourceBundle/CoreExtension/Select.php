@@ -39,48 +39,27 @@ abstract class Select extends Data implements
      */
     abstract protected function getRepository();
 
-    /**
-     * @return string
-     */
     abstract protected function getModel(): string;
 
-    /**
-     * @return string
-     */
     abstract protected function getInterface(): string;
 
-    /**
-     * @return bool
-     */
     abstract protected function getNullable(): bool;
 
-    /**
-     * @return string|null
-     */
     public function getParameterTypeDeclaration(): ?string
     {
         return ($this->getNullable() ? '?' : '') . $this->getInterface();
     }
 
-    /**
-     * @return string|null
-     */
     public function getReturnTypeDeclaration(): ?string
     {
         return ($this->getNullable() ? '?' : '') . $this->getInterface();
     }
 
-    /**
-     * @return string|null
-     */
     public function getPhpdocInputType(): ?string
     {
         return ($this->getNullable() ? 'null|' : '') . $this->getInterface();
     }
 
-    /**
-     * @return string|null
-     */
     public function getPhpdocReturnType(): ?string
     {
         return ($this->getNullable() ? 'null|' : '') . $this->getInterface();

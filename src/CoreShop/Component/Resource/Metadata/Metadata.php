@@ -18,17 +18,12 @@ use Doctrine\Inflector\InflectorFactory;
 
 final class Metadata implements MetadataInterface
 {
-    private string $name;
-    private string $applicationName;
     private string $driver;
     private ?string $templatesNamespace;
     private array $parameters = [];
 
-    private function __construct(string $name, string $applicationName, array $parameters)
+    private function __construct(private string $name, private string $applicationName, array $parameters)
     {
-        $this->name = $name;
-        $this->applicationName = $applicationName;
-
         $this->driver = $parameters['driver'];
         $this->templatesNamespace = array_key_exists('templates', $parameters) ? $parameters['templates'] : null;
 
@@ -124,12 +119,10 @@ final class Metadata implements MetadataInterface
 
     /**
      * @param string $alias
-     *
-     * @return array
      */
     private static function parseAlias($alias): array
     {
-        if (false === strpos($alias, '.')) {
+        if (!str_contains($alias, '.')) {
             throw new \InvalidArgumentException('Invalid alias supplied, it should conform to the following format "<applicationName>.<name>".');
         }
 

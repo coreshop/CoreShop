@@ -25,13 +25,9 @@ use Symfony\Component\DependencyInjection\Reference;
 
 abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
 {
-    protected string $type;
-
-    public function __construct($registry, $formRegistry, $parameter, $tag, $type)
+    public function __construct($registry, $formRegistry, $parameter, $tag, protected $type)
     {
         parent::__construct($registry, $formRegistry, $parameter, $tag);
-
-        $this->type = $type;
     }
 
     public function process(ContainerBuilder $container): void

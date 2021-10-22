@@ -19,8 +19,6 @@ use CoreShop\Component\Order\Model\OrderInterface;
 interface CartContextInterface
 {
     /**
-     * @return OrderInterface
-     *
      * @throws CartNotFoundException
      */
     public function getCart(): OrderInterface;

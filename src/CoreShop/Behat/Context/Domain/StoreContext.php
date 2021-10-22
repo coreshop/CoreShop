@@ -19,10 +19,4 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 
 final class StoreContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-
-    public function __construct(SharedStorageInterface $sharedStorage)
-    {
-        $this->sharedStorage = $sharedStorage;
-    }
 }

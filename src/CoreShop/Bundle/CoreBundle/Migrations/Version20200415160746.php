@@ -25,9 +25,6 @@ class Version20200415160746 extends AbstractMigration implements ContainerAwareI
 {
     use ContainerAwareTrait;
 
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void
     {
         $orderInvoiceItemList = $this->container->get('coreshop.repository.order_invoice_item')->getList();
@@ -71,9 +68,6 @@ class Version20200415160746 extends AbstractMigration implements ContainerAwareI
         }
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

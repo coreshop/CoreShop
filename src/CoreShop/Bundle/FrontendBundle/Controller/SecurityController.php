@@ -23,18 +23,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends FrontendController
 {
-    protected AuthenticationUtils $authenticationUtils;
-    protected FormFactoryInterface $formFactory;
-    protected ShopperContextInterface $shopperContext;
-
-    public function __construct(
-        AuthenticationUtils $authenticationUtils,
-        FormFactoryInterface $formFactory,
-        ShopperContextInterface $shopperContext
-    ) {
-        $this->authenticationUtils = $authenticationUtils;
-        $this->formFactory = $formFactory;
-        $this->shopperContext = $shopperContext;
+    public function __construct(protected AuthenticationUtils $authenticationUtils, protected FormFactoryInterface $formFactory, protected ShopperContextInterface $shopperContext)
+    {
     }
 
     public function loginAction(Request $request): Response

@@ -19,10 +19,5 @@ use Knp\Menu\ItemInterface;
 
 interface MenuBuilderInterface
 {
-    /**
-     * @param ItemInterface    $menuItem
-     * @param FactoryInterface $factory
-     * @param string           $type
-     */
     public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type): void;
 }

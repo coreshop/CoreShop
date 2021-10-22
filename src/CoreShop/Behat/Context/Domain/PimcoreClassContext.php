@@ -24,15 +24,8 @@ use Webmozart\Assert\Assert;
 
 final class PimcoreClassContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ClassStorageInterface $classStorage;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ClassStorageInterface $classStorage
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->classStorage = $classStorage;
+    public function __construct(private ClassStorageInterface $classStorage)
+    {
     }
 
     /**
@@ -86,7 +79,7 @@ final class PimcoreClassContext implements Context
         } elseif ($definition instanceof ClassDefinition) {
             $field = $definition->getFieldDefinition($name);
         } else {
-            throw new \InvalidArgumentException(sprintf('Definition with type %s is not supported', null !== $definition ? get_class($definition) : 'null'));
+            throw new \InvalidArgumentException(sprintf('Definition with type %s is not supported', null !== $definition ? $definition::class : 'null'));
         }
 
         Assert::isInstanceOf(

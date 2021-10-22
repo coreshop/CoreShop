@@ -26,11 +26,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStepInterface
 {
-    private FormFactoryInterface $formFactory;
-
-    public function __construct(FormFactoryInterface $formFactory)
+    public function __construct(private FormFactoryInterface $formFactory)
     {
-        $this->formFactory = $formFactory;
     }
 
     public function getIdentifier(): string

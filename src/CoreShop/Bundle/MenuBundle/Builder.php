@@ -21,15 +21,8 @@ use Knp\Menu\ItemInterface;
 
 class Builder
 {
-    protected FactoryInterface $factory;
-    protected string $type;
-    protected ServiceRegistryInterface $registry;
-
-    public function __construct(FactoryInterface $factory, string $type, ServiceRegistryInterface $registry)
+    public function __construct(protected FactoryInterface $factory, protected string $type, protected ServiceRegistryInterface $registry)
     {
-        $this->factory = $factory;
-        $this->type = $type;
-        $this->registry = $registry;
     }
 
     public function createMenu(): ItemInterface

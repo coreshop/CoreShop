@@ -22,18 +22,12 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
 {
-    private KernelInterface $kernel;
-    private ClassInstallerInterface $classInstaller;
     private array $installedClasses = [];
     private array $installedCollections = [];
     private array $installedBricks = [];
 
-    public function __construct(
-        KernelInterface $kernel,
-        ClassInstallerInterface $classInstaller
-    ) {
-        $this->kernel = $kernel;
-        $this->classInstaller = $classInstaller;
+    public function __construct(private KernelInterface $kernel, private ClassInstallerInterface $classInstaller)
+    {
     }
 
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
@@ -73,7 +67,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
                                 'file' => $file,
                             ];
                         }
-                    } catch (\InvalidArgumentException $ex) {
+                    } catch (\InvalidArgumentException) {
                         //File not found, continue with next, maybe add some logging?
                     }
                 }

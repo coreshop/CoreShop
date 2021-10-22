@@ -22,9 +22,6 @@ class LocalizedNestedInterpreter implements LocalizedInterpreterInterface
 {
     use NestedTrait;
 
-    /**
-     * @param ServiceRegistryInterface $interpreterRegistry
-     */
     public function __construct(ServiceRegistryInterface $interpreterRegistry)
     {
         $this->interpreterRegistry = $interpreterRegistry;

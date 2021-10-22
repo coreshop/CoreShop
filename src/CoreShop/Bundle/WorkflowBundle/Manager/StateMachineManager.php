@@ -20,11 +20,8 @@ use Symfony\Component\Workflow\Workflow;
 
 final class StateMachineManager implements StateMachineManagerInterface
 {
-    private Registry $registry;
-
-    public function __construct(Registry $registry)
+    public function __construct(private Registry $registry)
     {
-        $this->registry = $registry;
     }
 
     public function get(object $subject, string $workflowName = null): Workflow

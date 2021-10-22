@@ -18,7 +18,6 @@ class PriorityMap implements \Iterator, \Countable
 {
     const ORDER_ASC = 'asc';
     const ORDER_DESC = 'desc';
-
     private int $lastSequence = 0;
     private array $list = [];
     private string $order = self::ORDER_ASC;

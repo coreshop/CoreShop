@@ -32,7 +32,6 @@ final class DataFixturesSorter
     /**
      * Returns the array of data fixtures to execute.
      *
-     * @param array $fixtures
      *
      * @return array $fixtures
      */
@@ -117,7 +116,7 @@ final class DataFixturesSorter
 
         // First we determine which classes has dependencies and which don't
         foreach ($this->fixtures as $fixture) {
-            $fixtureClass = get_class($fixture);
+            $fixtureClass = $fixture::class;
 
             if ($fixture instanceof OrderedFixtureInterface) {
                 continue;
@@ -142,7 +141,7 @@ final class DataFixturesSorter
 
         while (($count = count($unsequencedClasses = $this->getUnsequencedClasses($sequenceForClasses))) > 0
             && $count !== $lastCount) {
-            foreach ($unsequencedClasses as $key => $class) {
+            foreach ($unsequencedClasses as $class) {
                 $fixture = $this->fixtures[$class];
                 $dependencies = $fixture->getDependencies();
                 $unsequencedDependencies = $this->getUnsequencedClasses($sequenceForClasses, $dependencies);
@@ -218,9 +217,7 @@ final class DataFixturesSorter
     }
 
     /**
-     * @param array      $sequences
      * @param null|array $classes
-     *
      * @return array
      */
     private function getUnsequencedClasses(array $sequences, array $classes = null)

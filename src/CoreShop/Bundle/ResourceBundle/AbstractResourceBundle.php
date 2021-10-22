@@ -108,7 +108,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
 
     protected function getBundlePrefix(): string
     {
-        return Container::underscore(substr(strrchr(get_class($this), '\\'), 1, -6));
+        return Container::underscore(substr(strrchr($this::class, '\\'), 1, -6));
     }
 
     protected function getDoctrineMappingDirectory(): string

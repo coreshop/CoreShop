@@ -73,7 +73,7 @@ class ProductPreviewController extends AdminController
                 if (!empty($value) && (is_string($value) || is_numeric($value))) {
                     $url = str_replace('%' . $key, urlencode($value), $url);
                 } else {
-                    if (strpos($url, '%' . $key) !== false) {
+                    if (str_contains($url, '%' . $key)) {
                         return new Response('No preview available, please ensure that all fields which are required for the preview are filled correctly.');
                     }
                 }

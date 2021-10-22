@@ -20,11 +20,8 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class RuleCollector extends DataCollector
 {
-    private array $validationProcessors;
-
-    public function __construct(array $validationProcessors)
+    public function __construct(private array $validationProcessors)
     {
-        $this->validationProcessors = $validationProcessors;
     }
 
     public function getProcessedConditions(): array
@@ -54,7 +51,7 @@ final class RuleCollector extends DataCollector
             $processedConditions[$validationProcessor->getType()] = $processedSubjects;
 
             foreach ($processedSubjects as $subject) {
-                foreach ($subject['rules'] as $ruleId => $rule) {
+                foreach ($subject['rules'] as $rule) {
                     $processedRules[] = $rule['rule'];
                 }
             }

@@ -41,9 +41,6 @@ final class CookieStorage implements StorageInterface, EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param RequestEvent $event
-     */
     public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
@@ -54,9 +51,6 @@ final class CookieStorage implements StorageInterface, EventSubscriberInterface
         $this->responseCookies = new ParameterBag();
     }
 
-    /**
-     * @param ResponseEvent $event
-     */
     public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->isMainRequest()) {

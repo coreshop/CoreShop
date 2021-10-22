@@ -20,17 +20,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class DataFixturesEvent extends Event
 {
-    private ObjectManager $manager;
-    private string $fixturesType;
-
-    /** @var callable|null */
-    private $logger;
-
-    public function __construct(ObjectManager $manager, $fixturesType, $logger = null)
+    public function __construct(private ObjectManager $manager, private $fixturesType, private $logger = null)
     {
-        $this->manager = $manager;
-        $this->fixturesType = $fixturesType;
-        $this->logger = $logger;
     }
 
     /**
@@ -62,7 +53,10 @@ class DataFixturesEvent extends Event
     {
         if (null !== $this->logger) {
             $logger = $this->logger;
-            $logger($message);
+
+            if (is_callable($logger)) {
+                $logger($message);
+            }
         }
     }
 

@@ -21,8 +21,6 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 interface ProductQuantityPriceRuleRepositoryInterface extends RuleRepositoryInterface
 {
     /**
-     * @param QuantityRangePriceAwareInterface $product
-     *
      * @return ProductQuantityPriceRuleInterface[]
      */
     public function findForProduct(QuantityRangePriceAwareInterface $product): array;

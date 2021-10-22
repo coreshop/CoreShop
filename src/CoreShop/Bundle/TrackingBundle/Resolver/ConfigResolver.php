@@ -20,16 +20,10 @@ use Pimcore\Config\Config as ConfigObject;
 
 class ConfigResolver implements ConfigResolverInterface
 {
-    private SiteIdProvider $siteIdProvider;
-    private GoogleConfigProvider $goggleConfigProvider;
     private ?ConfigObject $googleConfig;
 
-    public function __construct(
-        SiteIdProvider $siteIdProvider,
-        GoogleConfigProvider $goggleConfigProvider
-    ) {
-        $this->siteIdProvider = $siteIdProvider;
-        $this->goggleConfigProvider = $goggleConfigProvider;
+    public function __construct(private SiteIdProvider $siteIdProvider, private GoogleConfigProvider $goggleConfigProvider)
+    {
     }
 
     public function getGoogleConfig(): ?ConfigObject

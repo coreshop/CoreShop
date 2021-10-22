@@ -24,11 +24,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PriceActionConfigurationType extends AbstractType
 {
-    protected array $validationGroups = [];
-
-    public function __construct(array $validationGroups)
+    public function __construct(protected array $validationGroups)
     {
-        $this->validationGroups = $validationGroups;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

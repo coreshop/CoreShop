@@ -28,24 +28,8 @@ use Webmozart\Assert\Assert;
 
 final class CountryContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private CountryRepositoryInterface $countryRepository;
-    private CountryContextInterface $countryContext;
-    private AddressFormatterInterface $addressFormatter;
-    private GeoLiteBasedRequestResolver $geoLiteResolver;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CountryRepositoryInterface $countryRepository,
-        CountryContextInterface $countryContext,
-        AddressFormatterInterface $addressFormatter,
-        GeoLiteBasedRequestResolver $geoLiteResolver
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->countryRepository = $countryRepository;
-        $this->countryContext = $countryContext;
-        $this->addressFormatter = $addressFormatter;
-        $this->geoLiteResolver = $geoLiteResolver;
+    public function __construct(private CountryRepositoryInterface $countryRepository, private CountryContextInterface $countryContext, private AddressFormatterInterface $addressFormatter, private GeoLiteBasedRequestResolver $geoLiteResolver)
+    {
     }
 
     /**

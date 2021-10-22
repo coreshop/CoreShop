@@ -22,11 +22,8 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 
 class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterface
 {
-    private TaxCalculatorFactoryInterface $taxCalculatorFactory;
-
-    public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory)
+    public function __construct(private TaxCalculatorFactoryInterface $taxCalculatorFactory)
     {
-        $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
 
     public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address): ?TaxCalculatorInterface

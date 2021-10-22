@@ -28,15 +28,8 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 final class ORMTranslatableListener implements EventSubscriber
 {
-    private RegistryInterface $resourceMetadataRegistry;
-    private TranslatableEntityLocaleAssignerInterface $translatableEntityLocaleAssigner;
-
-    public function __construct(
-        RegistryInterface $resourceMetadataRegistry,
-        TranslatableEntityLocaleAssignerInterface $translatableEntityLocaleAssigner
-    ) {
-        $this->resourceMetadataRegistry = $resourceMetadataRegistry;
-        $this->translatableEntityLocaleAssigner = $translatableEntityLocaleAssigner;
+    public function __construct(private RegistryInterface $resourceMetadataRegistry, private TranslatableEntityLocaleAssignerInterface $translatableEntityLocaleAssigner)
+    {
     }
 
     public function getSubscribedEvents(): array
@@ -82,7 +75,7 @@ final class ORMTranslatableListener implements EventSubscriber
 
         try {
             $resourceMetadata = $this->resourceMetadataRegistry->getByClass($className);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             return;
         }
 
@@ -112,7 +105,7 @@ final class ORMTranslatableListener implements EventSubscriber
 
         try {
             $resourceMetadata = $this->resourceMetadataRegistry->getByClass($className);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             return;
         }
 

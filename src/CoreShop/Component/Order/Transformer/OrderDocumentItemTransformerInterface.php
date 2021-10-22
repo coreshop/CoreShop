@@ -24,7 +24,7 @@ interface OrderDocumentItemTransformerInterface
         OrderDocumentInterface $orderDocument,
         OrderItemInterface $orderItem,
         OrderDocumentItemInterface $documentItem,
-        float $quantity,
+        int $quantity,
         array $options = []
     ): OrderDocumentItemInterface;
 }

@@ -26,16 +26,8 @@ use Webmozart\Assert\Assert;
 
 final class CartPriceRuleValidator extends ConstraintValidator
 {
-    private CartPriceRuleValidationProcessorInterface $ruleValidationProcessor;
-    private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
-
-    public function __construct(
-        CartPriceRuleValidationProcessorInterface $ruleValidationProcessor,
-        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
-    )
+    public function __construct(private CartPriceRuleValidationProcessorInterface $ruleValidationProcessor, private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
     {
-        $this->ruleValidationProcessor = $ruleValidationProcessor;
-        $this->voucherCodeRepository = $voucherCodeRepository;
     }
 
     public function validate($value, Constraint $constraint): void

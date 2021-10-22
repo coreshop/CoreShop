@@ -33,9 +33,6 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
      */
     public function getPaymentProvider();
 
-    /**
-     * @param PaymentProviderInterface $paymentProvider
-     */
     public function setPaymentProvider(PaymentProviderInterface $paymentProvider);
 
     /**

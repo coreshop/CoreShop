@@ -47,30 +47,8 @@ final class ProductQuantityPriceRuleContext implements Context
 {
     use ConditionFormTrait;
 
-    private SharedStorageInterface $sharedStorage;
-    private ObjectManager $objectManager;
-    private FactoryInterface $rangeFactory;
-    private FormFactoryInterface $formFactory;
-    private FormTypeRegistryInterface $conditionFormTypeRegistry;
-    private FactoryInterface $productQuantityPriceRuleFactory;
-    private ProductRepositoryInterface $productRepository;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FactoryInterface $rangeFactory,
-        FormFactoryInterface $formFactory,
-        FormTypeRegistryInterface $conditionFormTypeRegistry,
-        FactoryInterface $productQuantityPriceRuleFactory,
-        ProductRepositoryInterface $productRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->rangeFactory = $rangeFactory;
-        $this->formFactory = $formFactory;
-        $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
-        $this->productQuantityPriceRuleFactory = $productQuantityPriceRuleFactory;
-        $this->productRepository = $productRepository;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FactoryInterface $rangeFactory, private FormFactoryInterface $formFactory, private FormTypeRegistryInterface $conditionFormTypeRegistry, private FactoryInterface $productQuantityPriceRuleFactory, private ProductRepositoryInterface $productRepository)
+    {
     }
 
     /**
@@ -591,10 +569,6 @@ final class ProductQuantityPriceRuleContext implements Context
             $product->getId()));
     }
 
-    /**
-     * @param ProductQuantityPriceRuleInterface $rule
-     * @param ConditionInterface                $condition
-     */
     private function addCondition(ProductQuantityPriceRuleInterface $rule, ConditionInterface $condition): void
     {
         $rule->addCondition($condition);
@@ -603,10 +577,6 @@ final class ProductQuantityPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @param ProductQuantityPriceRuleInterface $rule
-     * @param QuantityRangeInterface            $range
-     */
     private function addRange(ProductQuantityPriceRuleInterface $rule, QuantityRangeInterface $range): void
     {
         $rule->addRange($range);

@@ -24,19 +24,8 @@ use Twig\TwigFilter;
 
 final class ProductTaxExtension extends AbstractExtension
 {
-    private TaxedProductPriceCalculatorInterface $productPriceCalculator;
-    private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
-    private DefaultTaxAddressProviderInterface $defaultAddressProvider;
-
-    public function __construct(
-        TaxedProductPriceCalculatorInterface $productPriceCalculator,
-        ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
-        DefaultTaxAddressProviderInterface $defaultAddressProvider
-    )
+    public function __construct(private TaxedProductPriceCalculatorInterface $productPriceCalculator, private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory, private DefaultTaxAddressProviderInterface $defaultAddressProvider)
     {
-        $this->productPriceCalculator = $productPriceCalculator;
-        $this->taxCalculatorFactory = $taxCalculatorFactory;
-        $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
     public function getFilters(): array

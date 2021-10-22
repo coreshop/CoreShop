@@ -18,12 +18,9 @@ use Pimcore\Model\DataObject\Concrete;
 
 class OptimisticLockException extends \Exception
 {
-    private ?Concrete $entity;
-
-    public function __construct(string $msg, Concrete $entity = null)
+    public function __construct(string $msg, private ?\Pimcore\Model\DataObject\Concrete $entity = null)
     {
         parent::__construct($msg);
-        $this->entity = $entity;
     }
     public function getEntity(): ?Concrete
     {

@@ -19,9 +19,6 @@ use Doctrine\Migrations\AbstractMigration;
 
 class Version20200617120130 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void
     {
         if (!$schema->getTable('coreshop_cart_price_rule_voucher_code')->hasColumn('creditUsed')) {
@@ -44,9 +41,6 @@ class Version20200617120130 extends AbstractMigration
         }
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

@@ -26,21 +26,8 @@ use Doctrine\Persistence\ObjectManager;
 
 final class TaxRuleGroupContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ObjectManager $objectManager;
-    private FactoryInterface $taxRuleGroupFactory;
-    private FactoryInterface $taxRuleFactory;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FactoryInterface $taxRuleGroupFactory,
-        FactoryInterface $taxRuleFactory
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->taxRuleGroupFactory = $taxRuleGroupFactory;
-        $this->taxRuleFactory = $taxRuleFactory;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FactoryInterface $taxRuleGroupFactory, private FactoryInterface $taxRuleFactory)
+    {
     }
 
     /**
@@ -122,9 +109,6 @@ final class TaxRuleGroupContext implements Context
         $this->saveTaxRuleGroup($taxRule);
     }
 
-    /**
-     * @param TaxRuleGroupInterface $taxRuleGroup
-     */
     private function saveTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup): void
     {
         $this->objectManager->persist($taxRuleGroup);

@@ -26,15 +26,8 @@ use Webmozart\Assert\Assert;
 
 final class OrderContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private StateMachineManager $stateMachineManager;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        StateMachineManager $stateMachineManager
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->stateMachineManager = $stateMachineManager;
+    public function __construct(private StateMachineManager $stateMachineManager)
+    {
     }
 
     /**

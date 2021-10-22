@@ -23,15 +23,8 @@ use Webmozart\Assert\Assert;
 
 final class UniqueCustomerValidator extends ConstraintValidator
 {
-    private UserRepositoryInterface $userRepository;
-    private string $loginIdentifier;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        string $loginIdentifier
-    ) {
-        $this->userRepository = $userRepository;
-        $this->loginIdentifier = $loginIdentifier;
+    public function __construct(private UserRepositoryInterface $userRepository, private string $loginIdentifier)
+    {
     }
 
 
@@ -66,7 +59,6 @@ final class UniqueCustomerValidator extends ConstraintValidator
                 }
 
                 $this->context->buildViolation($message)->atPath($path)->addViolation();
-                return;
             }
         }
     }

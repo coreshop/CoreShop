@@ -26,24 +26,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class CustomersReport implements ReportInterface
 {
     private int $totalRecords = 0;
-    private Connection $db;
-    private MoneyFormatterInterface $moneyFormatter;
-    private LocaleContextInterface $localeContext;
-    private PimcoreRepositoryInterface $orderRepository;
-    private PimcoreRepositoryInterface $customerRepository;
 
-    public function __construct(
-        Connection $db,
-        MoneyFormatterInterface $moneyFormatter,
-        LocaleContextInterface $localeContext,
-        PimcoreRepositoryInterface $orderRepository,
-        PimcoreRepositoryInterface $customerRepository
-    ) {
-        $this->db = $db;
-        $this->moneyFormatter = $moneyFormatter;
-        $this->localeContext = $localeContext;
-        $this->orderRepository = $orderRepository;
-        $this->customerRepository = $customerRepository;
+    public function __construct(private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeContext, private PimcoreRepositoryInterface $orderRepository, private PimcoreRepositoryInterface $customerRepository)
+    {
     }
 
     public function getReportData(ParameterBag $parameterBag): array

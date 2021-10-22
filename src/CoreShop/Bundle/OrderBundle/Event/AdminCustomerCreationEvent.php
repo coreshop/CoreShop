@@ -19,12 +19,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class AdminCustomerCreationEvent extends Event
 {
-    private CustomerInterface $customer;
     private array $data;
 
-    public function __construct(CustomerInterface $customer, array $data)
+    public function __construct(private CustomerInterface $customer, array $data)
     {
-        $this->customer = $customer;
         $this->data = $data;
     }
 

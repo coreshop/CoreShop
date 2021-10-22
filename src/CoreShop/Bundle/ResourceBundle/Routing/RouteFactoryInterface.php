@@ -19,9 +19,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 interface RouteFactoryInterface
 {
-    /**
-     * @return RouteCollection
-     */
     public function createRouteCollection(): RouteCollection;
 
     /**
@@ -33,8 +30,6 @@ interface RouteFactoryInterface
      * @param string|array $schemes      A required URI scheme or an array of restricted schemes
      * @param string|array $methods      A required HTTP method or an array of restricted methods
      * @param string       $condition    A condition that should evaluate to true for the route to match
-     *
-     * @return Route
      */
-    public function createRoute($path, array $defaults = [], array $requirements = [], array $options = [], $host = '', $schemes = [], $methods = [], $condition = ''): Route;
+    public function createRoute($path, array $defaults = [], array $requirements = [], array $options = [], $host = '', string|array $schemes = [], string|array $methods = [], $condition = ''): Route;
 }

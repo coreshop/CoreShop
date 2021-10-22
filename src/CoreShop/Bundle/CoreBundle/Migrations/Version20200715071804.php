@@ -30,9 +30,6 @@ class Version20200715071804 extends AbstractMigration implements ContainerAwareI
         $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void
     {
     }

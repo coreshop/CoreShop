@@ -12,7 +12,6 @@ services:
         arguments:
             - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
             - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
-            - '@CoreShop\Component\Order\Distributor\FloatDistributorInterface'
             - '@coreshop.repository.tax_rate'
             - '@coreshop.factory.tax_item'
 

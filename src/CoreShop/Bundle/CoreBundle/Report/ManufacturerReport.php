@@ -28,30 +28,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class ManufacturerReport implements ReportInterface
 {
     private int $totalRecords = 0;
-    private RepositoryInterface $storeRepository;
-    private Connection $db;
-    private MoneyFormatterInterface $moneyFormatter;
-    private LocaleContextInterface $localeService;
-    private PimcoreRepositoryInterface $orderRepository;
-    private PimcoreRepositoryInterface $manufacturerRepository;
-    private PimcoreRepositoryInterface $orderItemRepository;
 
-    public function __construct(
-        RepositoryInterface $storeRepository,
-        Connection $db,
-        MoneyFormatterInterface $moneyFormatter,
-        LocaleContextInterface $localeService,
-        PimcoreRepositoryInterface $manufacturerRepository,
-        PimcoreRepositoryInterface $orderRepository,
-        PimcoreRepositoryInterface $orderItemRepository
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->db = $db;
-        $this->moneyFormatter = $moneyFormatter;
-        $this->localeService = $localeService;
-        $this->manufacturerRepository = $manufacturerRepository;
-        $this->orderRepository = $orderRepository;
-        $this->orderItemRepository = $orderItemRepository;
+    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeService, private PimcoreRepositoryInterface $manufacturerRepository, private PimcoreRepositoryInterface $orderRepository, private PimcoreRepositoryInterface $orderItemRepository)
+    {
     }
 
     public function getReportData(ParameterBag $parameterBag): array

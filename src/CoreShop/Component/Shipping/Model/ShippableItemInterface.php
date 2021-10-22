@@ -17,15 +17,10 @@ namespace CoreShop\Component\Shipping\Model;
 interface ShippableItemInterface
 {
     /**
-     * @param bool $withTax
      * @return int
      */
     public function getTotal(bool $withTax = true);
 
-    /**
-     * @param int  $total
-     * @param bool $withTax
-     */
     public function setTotal(int $total, bool $withTax = true);
 
     /**

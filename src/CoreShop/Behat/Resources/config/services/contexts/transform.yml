@@ -90,7 +90,6 @@ services:
     coreshop.behat.context.transform.store:
         class: CoreShop\Behat\Context\Transform\StoreContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.store'
         tags:
             - { name: fob.context_service }

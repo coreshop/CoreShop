@@ -18,9 +18,6 @@ use CoreShop\Component\Index\Order\OrderInterface;
 
 interface OrderAwareListingInterface
 {
-    /**
-     * @param OrderInterface $order
-     */
     public function addOrder(OrderInterface $order);
 
     public function resetOrder();

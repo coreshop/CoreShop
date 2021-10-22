@@ -25,18 +25,8 @@ use Webmozart\Assert\Assert;
 
 class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    protected CurrencyConverterInterface $moneyConverter;
-    protected CurrencyRepositoryInterface $currencyRepository;
-    protected CartRuleApplierInterface $cartRuleApplier;
-
-    public function __construct(
-        CurrencyConverterInterface $moneyConverter,
-        CurrencyRepositoryInterface $currencyRepository,
-        CartRuleApplierInterface $cartRuleApplier
-    ) {
-        $this->moneyConverter = $moneyConverter;
-        $this->currencyRepository = $currencyRepository;
-        $this->cartRuleApplier = $cartRuleApplier;
+    public function __construct(protected CurrencyConverterInterface $moneyConverter, protected CurrencyRepositoryInterface $currencyRepository, protected CartRuleApplierInterface $cartRuleApplier)
+    {
     }
 
     public function applyRule(

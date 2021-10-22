@@ -37,24 +37,8 @@ use Webmozart\Assert\Assert;
 
 class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
 {
-    protected CartManagerInterface $cartManager;
-    protected FolderCreationServiceInterface $folderCreationService;
-    protected NumberGeneratorInterface $numberGenerator;
-    protected ObjectClonerInterface $objectCloner;
-    protected StateMachineApplierInterface $stateMachineApplier;
-
-    public function __construct(
-        CartManagerInterface $cartManager,
-        FolderCreationServiceInterface $folderCreationService,
-        NumberGeneratorInterface $numberGenerator,
-        ObjectClonerInterface $objectCloner,
-        StateMachineApplierInterface $stateMachineApplier,
-    ) {
-        $this->cartManager = $cartManager;
-        $this->folderCreationService = $folderCreationService;
-        $this->numberGenerator = $numberGenerator;
-        $this->objectCloner = $objectCloner;
-        $this->stateMachineApplier = $stateMachineApplier;
+    public function __construct(protected CartManagerInterface $cartManager, protected FolderCreationServiceInterface $folderCreationService, protected NumberGeneratorInterface $numberGenerator, protected ObjectClonerInterface $objectCloner, protected StateMachineApplierInterface $stateMachineApplier)
+    {
     }
 
     public function commitOrder(OrderInterface $order): void

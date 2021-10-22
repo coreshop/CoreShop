@@ -35,10 +35,6 @@ class OrderController extends FrontendController
         /** @var OrderInterface $order */
         $order = $this->getOrderRepository()->findOneBy(['token' => $token]);
 
-        if (!$order instanceof OrderInterface) {
-            throw new NotFoundHttpException();
-        }
-
         if ($request->query->has('paymentId')) {
             $paymentObject = $this->getPaymentRepository()->find($request->query->get('paymentId'));
             if ($paymentObject instanceof PaymentInterface) {
@@ -65,33 +61,6 @@ class OrderController extends FrontendController
 
             if ($cancelButton instanceof ClickableInterface && $form->isSubmitted() && $cancelButton->isClicked()) {
                 throw new \Exception('fix me');
-//
-//                $this->get('coreshop.state_machine_applier')->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CANCEL);
-//
-//                if ($order instanceof Concrete) {
-//                    $this->get(HistoryLogger::class)->log(
-//                        $order,
-//                        'User Cart Revise Cancellation'
-//                    );
-//                }
-//
-//                $cart = $this->get('coreshop.repository.cart')->findCartByOrder($order);
-//
-//                if ($cart instanceof CartInterface) {
-//                    $cart->setOrder(null);
-//
-//                    $this->get('coreshop.cart.manager')->persistCart($cart);
-//
-//                    $session = $request->getSession();
-//                    $session->set(
-//                        sprintf('%s.%s', $this->container->getParameter('coreshop.session.cart'), $cart->getStore()->getId()),
-//                        $cart->getId()
-//                    );
-//
-//                    return $this->redirectToRoute('coreshop_cart_summary');
-//                }
-
-                return $this->redirectToRoute('coreshop_index');
             }
 
             if ($form->isValid()) {

@@ -17,11 +17,8 @@ namespace CoreShop\Component\Notification\Processor;
 interface RulesProcessorInterface
 {
     /**
-     * @param string $type
      * @param mixed  $subject
-     * @param array  $params
      *
-     * @return void
      */
     public function applyRules(string $type, $subject, array $params = []): void;
 }

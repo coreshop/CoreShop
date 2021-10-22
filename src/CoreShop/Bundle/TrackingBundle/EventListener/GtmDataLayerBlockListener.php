@@ -23,21 +23,8 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class GtmDataLayerBlockListener
 {
-    protected PimcoreContextResolver $pimcoreContextResolver;
-    protected ResponseHelper $responseHelper;
-    protected SiteIdProvider $siteIdProvider;
-    protected CodeTracker $codeTracker;
-
-    public function __construct(
-        PimcoreContextResolver $pimcoreContextResolver,
-        ResponseHelper $responseHelper,
-        SiteIdProvider $siteIdProvider,
-        CodeTracker $codeTracker
-    ) {
-        $this->pimcoreContextResolver = $pimcoreContextResolver;
-        $this->responseHelper = $responseHelper;
-        $this->siteIdProvider = $siteIdProvider;
-        $this->codeTracker = $codeTracker;
+    public function __construct(protected PimcoreContextResolver $pimcoreContextResolver, protected ResponseHelper $responseHelper, protected SiteIdProvider $siteIdProvider, protected CodeTracker $codeTracker)
+    {
     }
 
     public function onKernelResponse(ResponseEvent $event): void

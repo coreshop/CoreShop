@@ -21,16 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class TaxRateContext implements Context
 {
-    private PWAPageInterface $pwaPage;
-    private TaxRatePageInterface $taxRatePage;
-
-    public function __construct(
-        PWAPageInterface $pwaPage,
-        TaxRatePageInterface $taxRatePage
-    )
+    public function __construct(private TaxRatePageInterface $taxRatePage)
     {
-        $this->pwaPage = $pwaPage;
-        $this->taxRatePage = $taxRatePage;
     }
 
     /**

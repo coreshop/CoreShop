@@ -33,9 +33,6 @@ final class TableIndex
         return $this->columns;
     }
 
-    /**
-     * @param array $columns
-     */
     public function setColumns(array $columns)
     {
         $this->columns = $columns;
@@ -49,9 +46,6 @@ final class TableIndex
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     */
     public function setType(string $type)
     {
         $this->type = $type;

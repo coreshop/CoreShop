@@ -26,24 +26,8 @@ use Webmozart\Assert\Assert;
 
 final class FrontendSecurityContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private SecurityServiceInterface $securityService;
-    private UserRepositoryInterface $userRepository;
-    private FactoryInterface $customerFactory;
-    private FactoryInterface $userFactory;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        SecurityServiceInterface $securityService,
-        UserRepositoryInterface $userRepository,
-        FactoryInterface $customerFactory,
-        FactoryInterface $userFactory
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->securityService = $securityService;
-        $this->userRepository = $userRepository;
-        $this->customerFactory = $customerFactory;
-        $this->userFactory = $userFactory;
+    public function __construct(private SharedStorageInterface $sharedStorage, private SecurityServiceInterface $securityService, private UserRepositoryInterface $userRepository, private FactoryInterface $customerFactory, private FactoryInterface $userFactory)
+    {
     }
 
     /**

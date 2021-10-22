@@ -20,13 +20,8 @@ use Twig\Environment;
 
 class AddressFormatter implements AddressFormatterInterface
 {
-    private Environment $twig;
-    private TranslatorInterface $translator;
-
-    public function __construct(Environment $twig, TranslatorInterface $translator)
+    public function __construct(private Environment $twig, private TranslatorInterface $translator)
     {
-        $this->twig = $twig;
-        $this->translator = $translator;
     }
 
     public function formatAddress(AddressInterface $address, bool $asHtml = true): string

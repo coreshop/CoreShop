@@ -20,23 +20,20 @@ use Doctrine\Persistence\ObjectManager;
 class RepositoryFactory implements RepositoryFactoryInterface
 {
     /**
-     * @psalm-var class-string
-     */
-    private string $className;
-
-    /**
-     * @psalm-var class-string
-     */
-    private string $repositoryClassName;
-
-    /**
      * @psalm-param class-string $className
      * @psalm-param class-string $repositoryClassName
      */
-    public function __construct(string $className, string $repositoryClassName)
+    public function __construct(
+        /**
+         * @psalm-var class-string
+         */
+        private string $className,
+        /**
+         * @psalm-var class-string
+         */
+        private string $repositoryClassName
+    )
     {
-        $this->className = $className;
-        $this->repositoryClassName = $repositoryClassName;
     }
 
     public function createNewRepository(ObjectManager $objectManager): RepositoryInterface

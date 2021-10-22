@@ -22,16 +22,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class CartExpireCommand extends Command
 {
-    protected OrderExpirationInterface $cartExpiration;
-    protected int $days;
-    protected array $params;
-
-    public function __construct(OrderExpirationInterface $cartExpiration, int $days = 0, array $params = [])
+    public function __construct(protected OrderExpirationInterface $cartExpiration, protected int $days = 0, protected array $params = [])
     {
-        $this->cartExpiration = $cartExpiration;
-        $this->days = $days;
-        $this->params = $params;
-
         parent::__construct();
     }
 

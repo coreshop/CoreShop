@@ -54,8 +54,5 @@ interface ShippingRuleGroupInterface extends ResourceInterface, TimestampableInt
      */
     public function getShippingRule();
 
-    /**
-     * @param ShippingRuleInterface $shippingRule
-     */
     public function setShippingRule(ShippingRuleInterface $shippingRule);
 }

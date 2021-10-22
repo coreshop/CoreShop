@@ -53,7 +53,7 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                 ];
             }
 
-            foreach ($dataCheck as $unitName => $quantityRangesToCheck) {
+            foreach ($dataCheck as $quantityRangesToCheck) {
                 $lastEnd = -1;
 
                 /**

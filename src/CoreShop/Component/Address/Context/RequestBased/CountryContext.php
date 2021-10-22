@@ -22,13 +22,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CountryContext implements CountryContextInterface
 {
-    private RequestResolverInterface $requestResolver;
-    private RequestStack $requestStack;
-
-    public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
+    public function __construct(private RequestResolverInterface $requestResolver, private RequestStack $requestStack)
     {
-        $this->requestResolver = $requestResolver;
-        $this->requestStack = $requestStack;
     }
 
     public function getCountry(): CountryInterface

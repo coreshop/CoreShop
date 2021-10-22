@@ -20,11 +20,8 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositePurchasableWholesalePriceCalculator implements PurchasableWholesalePriceCalculatorInterface
 {
-    protected PrioritizedServiceRegistryInterface $wholesalePriceCalculators;
-
-    public function __construct(PrioritizedServiceRegistryInterface $wholesalePriceCalculators)
+    public function __construct(protected PrioritizedServiceRegistryInterface $wholesalePriceCalculators)
     {
-        $this->wholesalePriceCalculators = $wholesalePriceCalculators;
     }
 
     public function getPurchasableWholesalePrice(PurchasableInterface $purchasable, array $context): int
@@ -38,7 +35,7 @@ class CompositePurchasableWholesalePriceCalculator implements PurchasableWholesa
             try {
                 $actionPrice = $calculator->getPurchasableWholesalePrice($purchasable, $context);
                 $price = $actionPrice;
-            } catch (NoPurchasableWholesalePriceFoundException $ex) {
+            } catch (NoPurchasableWholesalePriceFoundException) {
             }
         }
 

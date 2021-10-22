@@ -20,8 +20,6 @@ interface ConfirmOrderFactoryInterface
 {
     /**
      * @param mixed $model
-     *
-     * @return ConfirmOrderInterface
      */
     public function createNewWithModel($model): ConfirmOrderInterface;
 }

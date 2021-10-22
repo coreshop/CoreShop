@@ -20,9 +20,6 @@ use Doctrine\ORM\QueryBuilder;
 
 interface CurrencyRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @return QueryBuilder
-     */
     public function createListQueryBuilder(): QueryBuilder;
 
     /**
@@ -31,8 +28,6 @@ interface CurrencyRepositoryInterface extends RepositoryInterface
     public function findActive(): array;
 
     /**
-     * @param string $currencyCode
-     *
      * @return CurrencyInterface
      */
     public function getByCode(string $currencyCode): ?CurrencyInterface;

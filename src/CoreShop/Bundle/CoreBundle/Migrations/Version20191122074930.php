@@ -23,9 +23,6 @@ class Version20191122074930 extends AbstractMigration implements ContainerAwareI
 {
     use ContainerAwareTrait;
 
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void
     {
         if (!$schema->getTable('coreshop_carrier')->hasColumn('taxCalculationStrategy')) {
@@ -36,9 +33,6 @@ class Version20191122074930 extends AbstractMigration implements ContainerAwareI
         }
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void
     {
         // do nothing due to potential data loss

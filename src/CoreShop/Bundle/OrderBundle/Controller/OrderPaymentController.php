@@ -123,36 +123,6 @@ class OrderPaymentController extends PimcoreController
                 'success' => true,
                 'totalPayed' => $totalPayed,
             ]);
-
-            $tokenGenerator = new UniqueTokenGenerator(true);
-            $uniqueId = $tokenGenerator->generate(15);
-            $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
-
-            /**
-             * @var PaymentInterface $payment
-             */
-            $payment = $this->getPaymentFactory()->createNew();
-            $payment->setNumber($orderNumber);
-            $payment->setPaymentProvider($paymentProvider);
-            $payment->setCurrency($order->getCurrency());
-            $payment->setTotalAmount($amount);
-            $payment->setState(PaymentInterface::STATE_NEW);
-            $payment->setDatePayment(Carbon::now());
-
-            if ($payment instanceof OrderPaymentInterface) {
-                $payment->setOrder($order);
-            }
-
-            $this->getEntityManager()->persist($payment);
-            $this->getEntityManager()->flush();
-
-            $workflow = $this->getStateMachineManager()->get($payment, 'coreshop_payment');
-            $workflow->apply($payment, PaymentTransitions::TRANSITION_PROCESS);
-
-            return $this->viewHandler->handle([
-                'success' => true,
-                'totalPayed' => $totalPayed,
-            ]);
         }
 
         return $this->viewHandler->handle(

@@ -25,18 +25,8 @@ use Webmozart\Assert\Assert;
 
 final class IndexContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private RepositoryInterface $indexRepository;
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        RepositoryInterface $indexRepository,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->indexRepository = $indexRepository;
-        $this->entityManager = $entityManager;
+    public function __construct(private RepositoryInterface $indexRepository, private EntityManagerInterface $entityManager)
+    {
     }
 
     /**
@@ -223,10 +213,6 @@ final class IndexContext implements Context
         return $this->entityManager->getConnection()->fetchAllAssociative(sprintf('SELECT * FROM %s', $tableName));
     }
 
-    /**
-     * @param string $tableName
-     * @param array  $columns
-     */
     private function indexShouldHaveColumnsInTable(string $tableName, array $columns): void
     {
         $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
@@ -250,11 +236,6 @@ final class IndexContext implements Context
         }
     }
 
-    /**
-     * @param string $tableName
-     * @param string $column
-     * @param string $type
-     */
     private function indexShouldHaveColumnOfType(string $tableName, string $column, string $type): void
     {
         $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
@@ -267,10 +248,6 @@ final class IndexContext implements Context
         Assert::eq($type, $actualType);
     }
 
-    /**
-     * @param string $tableName
-     * @param array  $columns
-     */
     private function indexShouldHaveIndexInTable(string $tableName, array $columns): void
     {
         $schemaManager = $this->entityManager->getConnection()->getSchemaManager();

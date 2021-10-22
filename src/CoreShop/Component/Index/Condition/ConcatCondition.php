@@ -16,14 +16,10 @@ namespace CoreShop\Component\Index\Condition;
 
 class ConcatCondition implements ConditionInterface
 {
-    private string $fieldName;
-    private string $operator;
     private array $conditions;
 
-    public function __construct(string $fieldName, string $operator, array $conditions)
+    public function __construct(private string $fieldName, private string $operator, array $conditions)
     {
-        $this->fieldName = $fieldName;
-        $this->operator = $operator;
         $this->conditions = $conditions;
     }
 

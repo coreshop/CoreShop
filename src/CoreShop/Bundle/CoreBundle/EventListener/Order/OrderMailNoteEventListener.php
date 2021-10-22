@@ -23,11 +23,8 @@ use Pimcore\Model\Document\Email;
 
 final class OrderMailNoteEventListener
 {
-    private NoteServiceInterface $noteService;
-
-    public function __construct(NoteServiceInterface $noteService)
+    public function __construct(private NoteServiceInterface $noteService)
     {
-        $this->noteService = $noteService;
     }
 
     public function onOrderMailSent(MailEvent $mailEvent): void

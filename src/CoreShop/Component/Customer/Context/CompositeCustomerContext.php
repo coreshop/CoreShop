@@ -40,7 +40,7 @@ final class CompositeCustomerContext implements CustomerContextInterface
         foreach ($this->customerContexts as $customerContext) {
             try {
                 return $customerContext->getCustomer();
-            } catch (CustomerNotFoundException $exception) {
+            } catch (CustomerNotFoundException) {
                 continue;
             }
         }

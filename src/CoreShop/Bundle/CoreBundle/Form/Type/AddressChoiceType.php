@@ -25,16 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddressChoiceType extends AbstractType
 {
-    private PimcoreRepositoryInterface $customerRepository;
-    private CustomerAddressAllocatorInterface $customerAddressAllocator;
-
-    public function __construct(
-        PimcoreRepositoryInterface $customerRepository,
-        CustomerAddressAllocatorInterface $customerAddressAllocator
-    )
+    public function __construct(private PimcoreRepositoryInterface $customerRepository, private CustomerAddressAllocatorInterface $customerAddressAllocator)
     {
-        $this->customerRepository = $customerRepository;
-        $this->customerAddressAllocator = $customerAddressAllocator;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

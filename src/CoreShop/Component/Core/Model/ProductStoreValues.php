@@ -22,7 +22,7 @@ use Doctrine\Common\Collections\Collection;
 /**
  * @psalm-suppress MissingConstructor
  */
-class ProductStoreValues extends AbstractResource implements ProductStoreValuesInterface
+class ProductStoreValues extends AbstractResource implements ProductStoreValuesInterface, \Stringable
 {
     use StoreAwareTrait;
 
@@ -101,10 +101,7 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
         $this->product = $product;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('Price: %s (Store: %d)', $this->getPrice(), $this->getStore()->getId());
     }

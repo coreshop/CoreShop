@@ -19,12 +19,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class CachedCountryContext implements RequestResolverInterface
 {
-    private RequestResolverInterface$inner;
     private ?CountryInterface $country = null;
 
-    public function __construct(RequestResolverInterface $inner)
+    public function __construct(private RequestResolverInterface $inner)
     {
-        $this->inner = $inner;
     }
 
     public function findCountry(Request $request): CountryInterface

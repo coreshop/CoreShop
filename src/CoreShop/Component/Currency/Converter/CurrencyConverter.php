@@ -20,14 +20,10 @@ use CoreShop\Component\Currency\Repository\ExchangeRateRepositoryInterface;
 
 final class CurrencyConverter implements CurrencyConverterInterface
 {
-    private ExchangeRateRepositoryInterface $exchangeRateRepository;
-    private CurrencyRepositoryInterface $currencyRepository;
     private array $cache = [];
 
-    public function __construct(ExchangeRateRepositoryInterface $exchangeRateRepository, CurrencyRepositoryInterface $currencyRepository)
+    public function __construct(private ExchangeRateRepositoryInterface $exchangeRateRepository, private CurrencyRepositoryInterface $currencyRepository)
     {
-        $this->exchangeRateRepository = $exchangeRateRepository;
-        $this->currencyRepository = $currencyRepository;
     }
 
     public function convert(int $value, string $fromCurrencyCode, string $toCurrencyCode): int

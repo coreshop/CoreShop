@@ -27,18 +27,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class CartsReport implements ReportInterface, PortletInterface
 {
     private int $totalRecords = 0;
-    private RepositoryInterface $storeRepository;
-    private Connection $db;
-    private PimcoreRepositoryInterface $orderRepository;
 
-    public function __construct(
-        RepositoryInterface $storeRepository,
-        Connection $db,
-        PimcoreRepositoryInterface $orderRepository
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->db = $db;
-        $this->orderRepository = $orderRepository;
+    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private PimcoreRepositoryInterface $orderRepository)
+    {
     }
 
     public function getReportData(ParameterBag $parameterBag): array

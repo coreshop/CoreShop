@@ -22,11 +22,8 @@ use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterface
 {
-    private RuleRepositoryInterface $ruleRepository;
-
-    public function __construct(RuleRepositoryInterface $ruleRepository)
+    public function __construct(private RuleRepositoryInterface $ruleRepository)
     {
-        $this->ruleRepository = $ruleRepository;
     }
 
     public function getRules(): array
@@ -37,7 +34,7 @@ final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterfac
     public function isValid(RuleInterface $rule): bool
     {
         /** @var Condition $condition */
-        foreach ($rule->getConditions() as $id => $condition) {
+        foreach ($rule->getConditions() as $condition) {
             if ($condition->getType() !== 'timespan') {
                 continue;
             }

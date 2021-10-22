@@ -21,11 +21,8 @@ use CoreShop\Component\Store\Context\StoreNotFoundException;
 
 final class StoreThemeResolver implements ThemeResolverInterface
 {
-    private StoreContextInterface $storeContext;
-
-    public function __construct(StoreContextInterface $storeContext)
+    public function __construct(private StoreContextInterface $storeContext)
     {
-        $this->storeContext = $storeContext;
     }
 
     public function resolveTheme(): string

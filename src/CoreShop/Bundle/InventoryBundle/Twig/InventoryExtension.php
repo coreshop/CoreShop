@@ -21,11 +21,8 @@ use Twig\TwigFunction;
 
 final class InventoryExtension extends AbstractExtension
 {
-    private AvailabilityCheckerInterface $checker;
-
-    public function __construct(AvailabilityCheckerInterface $checker)
+    public function __construct(private AvailabilityCheckerInterface $checker)
     {
-        $this->checker = $checker;
     }
 
     public function getFunctions(): array

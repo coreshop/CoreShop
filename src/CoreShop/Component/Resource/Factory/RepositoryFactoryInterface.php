@@ -19,10 +19,5 @@ use Doctrine\Persistence\ObjectManager;
 
 interface RepositoryFactoryInterface
 {
-    /**
-     * @param ObjectManager $objectManager
-     *
-     * @return RepositoryInterface
-     */
     public function createNewRepository(ObjectManager $objectManager): RepositoryInterface;
 }

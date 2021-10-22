@@ -20,18 +20,8 @@ use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
 
 final class PurchasablePriceCalculator implements PurchasablePriceCalculatorInterface
 {
-    private PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator;
-    private PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator;
-    private PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator;
-
-    public function __construct(
-        PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator,
-        PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator,
-        PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator
-    ) {
-        $this->purchasableRetailPriceCalculator = $purchasableRetailPriceCalculator;
-        $this->purchasableDiscountPriceCalculator = $purchasableDiscountPriceCalculator;
-        $this->purchasableDiscountCalculator = $purchasableDiscountCalculator;
+    public function __construct(private PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator, private PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator, private PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator)
+    {
     }
 
     public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int
@@ -41,7 +31,7 @@ final class PurchasablePriceCalculator implements PurchasablePriceCalculatorInte
         try {
             $retailPrice = $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable, $context);
             $price = $retailPrice;
-        } catch (NoRetailPriceFoundException $ex) {
+        } catch (NoRetailPriceFoundException) {
         }
 
         try {
@@ -50,7 +40,7 @@ final class PurchasablePriceCalculator implements PurchasablePriceCalculatorInte
             if ($discountPrice > 0 && $discountPrice < $price) {
                 $price = $discountPrice;
             }
-        } catch (NoPurchasableDiscountPriceFoundException $ex) {
+        } catch (NoPurchasableDiscountPriceFoundException) {
         }
 
         if ($includingDiscounts) {

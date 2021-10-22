@@ -35,15 +35,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CustomerTransformHelper implements CustomerTransformHelperInterface
 {
-    protected FactoryInterface $companyFactory;
-    protected FolderCreationServiceInterface $folderCreationService;
-
-    public function __construct(
-        FactoryInterface $companyFactory,
-        FolderCreationServiceInterface $folderCreationService,
-    ) {
-        $this->companyFactory = $companyFactory;
-        $this->folderCreationService = $folderCreationService;
+    public function __construct(protected FactoryInterface $companyFactory, protected FolderCreationServiceInterface $folderCreationService)
+    {
     }
 
     public function getEntityAddressFolderPath(AddressInterface $address, string $rootPath): DataObject\Folder

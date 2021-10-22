@@ -26,18 +26,13 @@ use Doctrine\ORM\Utility\IdentifierFlattener;
 
 class EntityMerger
 {
-    private EntityManagerInterface $em;
     private IdentifierFlattener $identifierFlattener;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(private EntityManagerInterface $em)
     {
-        $this->em = $em;
         $this->identifierFlattener = new IdentifierFlattener($em->getUnitOfWork(), $em->getMetadataFactory());
     }
 
-    /**
-     * @param ResourceInterface $entity
-     */
     public function merge(ResourceInterface $entity): void
     {
         $visited = [];
@@ -47,7 +42,6 @@ class EntityMerger
 
     /**
      * @param mixed $entity
-     * @param array $visited
      */
     private function doMerge($entity, array &$visited): void
     {
@@ -63,7 +57,7 @@ class EntityMerger
             $entity->__load();
         }
 
-        $class = $this->em->getClassMetadata(get_class($entity));
+        $class = $this->em->getClassMetadata($entity::class);
 
         if ($this->em->getUnitOfWork()->getEntityState($entity, UnitOfWork::STATE_DETACHED) !== UnitOfWork::STATE_MANAGED) {
             $id = $class->getIdentifierValues($entity);
@@ -103,11 +97,10 @@ class EntityMerger
     /**
      * @param mixed $entity
      * @param mixed $managedCopy
-     * @param array $visited
      */
     private function checkAssociations($entity, $managedCopy, array &$visited): void
     {
-        $class = $this->em->getClassMetadata(get_class($entity));
+        $class = $this->em->getClassMetadata($entity::class);
 
         foreach ($class->associationMappings as $assoc) {
             $origData = $class->reflFields[$assoc['fieldName']]->getValue($managedCopy);
@@ -224,11 +217,10 @@ class EntityMerger
 
     /**
      * @param mixed $entity
-     * @param array $visited
      */
     private function cascadeMerge($entity, array &$visited): void
     {
-        $class = $this->em->getClassMetadata(get_class($entity));
+        $class = $this->em->getClassMetadata($entity::class);
 
         foreach ($class->associationMappings as $assoc) {
             $relatedEntities = $class->reflFields[$assoc['fieldName']]->getValue($entity);
@@ -252,13 +244,11 @@ class EntityMerger
 
     /**
      * @param mixed $entity
-     *
-     * @return array
      */
     private function getData($entity): array
     {
         $actualData = [];
-        $class = $this->em->getClassMetadata(get_class($entity));
+        $class = $this->em->getClassMetadata($entity::class);
 
         foreach ($class->reflFields as $name => $refProp) {
             $value = $refProp->getValue($entity);

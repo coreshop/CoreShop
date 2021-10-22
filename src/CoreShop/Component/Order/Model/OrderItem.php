@@ -176,9 +176,6 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         return $totalTax;
     }
 
-    /**
-     * @return OrderInterface
-     */
     public function getOrder(): OrderInterface
     {
         $parent = $this->getParent();

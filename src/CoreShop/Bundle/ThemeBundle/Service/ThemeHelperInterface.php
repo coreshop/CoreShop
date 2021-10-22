@@ -16,9 +16,5 @@ namespace CoreShop\Bundle\ThemeBundle\Service;
 
 interface ThemeHelperInterface
 {
-    /**
-     * @param string   $themeName
-     * @param \Closure $function
-     */
     public function useTheme(string $themeName, \Closure $function);
 }

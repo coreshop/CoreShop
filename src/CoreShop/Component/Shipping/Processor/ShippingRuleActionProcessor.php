@@ -25,11 +25,8 @@ use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterf
 
 class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterface
 {
-    protected ServiceRegistryInterface $actionServiceRegistry;
-
-    public function __construct(ServiceRegistryInterface $actionServiceRegistry)
+    public function __construct(protected ServiceRegistryInterface $actionServiceRegistry)
     {
-        $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
     public function getPrice(

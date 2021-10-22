@@ -20,11 +20,8 @@ use Twig\TwigFunction;
 
 final class DisplayFractionExtension extends AbstractExtension
 {
-    private DisplayFractionProviderInterface $displayFractionProvider;
-
-    public function __construct(DisplayFractionProviderInterface $displayFractionProvider)
+    public function __construct(private DisplayFractionProviderInterface $displayFractionProvider)
     {
-        $this->displayFractionProvider = $displayFractionProvider;
     }
 
     public function getFunctions(): array

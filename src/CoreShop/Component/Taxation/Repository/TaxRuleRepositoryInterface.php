@@ -21,8 +21,6 @@ use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 interface TaxRuleRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param TaxRuleGroupInterface $group
-     *
      * @return TaxRuleInterface[]
      */
     public function findByGroup(TaxRuleGroupInterface $group): array;

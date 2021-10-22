@@ -21,13 +21,8 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 class ExpressionInterpreter implements InterpreterInterface
 {
-    protected ExpressionLanguage $expressionLanguage;
-    protected ContainerInterface $container;
-
-    public function __construct(ExpressionLanguage $expressionLanguage, ContainerInterface $container)
+    public function __construct(protected ExpressionLanguage $expressionLanguage, protected ContainerInterface $container)
     {
-        $this->expressionLanguage = $expressionLanguage;
-        $this->container = $container;
     }
 
     public function interpret(

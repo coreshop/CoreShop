@@ -22,16 +22,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class DataFixturesExecutor implements DataFixturesExecutorInterface
 {
-    private EntityManager $em;
-    private EventDispatcherInterface $eventDispatcher;
-
     /** @var callable|null */
     private $logger;
 
-    public function __construct(EntityManager $em, EventDispatcherInterface $eventDispatcher)
+    public function __construct(private EntityManager $em, private EventDispatcherInterface $eventDispatcher)
     {
-        $this->em = $em;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function execute(array $fixtures, $fixturesType)

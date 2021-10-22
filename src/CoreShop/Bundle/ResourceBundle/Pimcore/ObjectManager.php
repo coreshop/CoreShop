@@ -107,14 +107,14 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
 
     public function flush(): void
     {
-        foreach ($this->modelsToRemove as $className => $classTypeModels) {
+        foreach ($this->modelsToRemove as $classTypeModels) {
             foreach ($classTypeModels as $model) {
                 $model->delete();
             }
         }
 
         foreach ([$this->modelsToInsert, $this->modelsToUpdate] as $modelsToSave) {
-            foreach ($modelsToSave as $className => $classTypeModels) {
+            foreach ($modelsToSave as $classTypeModels) {
                 foreach ($classTypeModels as $model) {
                     if (($model instanceof Concrete) && !$model->getPublished()) {
                         $model->setOmitMandatoryCheck(true);
@@ -177,7 +177,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
 
     private function getResourceClassName(object $resource): string
     {
-        $className = get_class($resource);
+        $className = $resource::class;
 
         if ($resource instanceof Concrete) {
             $className = $resource->getClassName();

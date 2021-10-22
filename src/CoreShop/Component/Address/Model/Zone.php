@@ -23,7 +23,7 @@ use Doctrine\Common\Collections\Collection;
 /**
  * @psalm-suppress MissingConstructor
  */
-class Zone extends AbstractResource implements ZoneInterface
+class Zone extends AbstractResource implements ZoneInterface, \Stringable
 {
     use ToggleableTrait;
     use TimestampableTrait;
@@ -48,10 +48,7 @@ class Zone extends AbstractResource implements ZoneInterface
         $this->countries = new ArrayCollection();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }

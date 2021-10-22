@@ -19,11 +19,8 @@ use Doctrine\DBAL\Connection;
 
 abstract class AbstractMysqlDynamicRenderer implements DynamicOrderRendererInterface
 {
-    protected Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(protected Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     protected function quoteIdentifier(string $identifier): string

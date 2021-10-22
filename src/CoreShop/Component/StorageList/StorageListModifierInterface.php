@@ -19,15 +19,7 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 interface StorageListModifierInterface
 {
-    /**
-     * @param StorageListInterface     $storageList
-     * @param StorageListItemInterface $item
-     */
     public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void;
 
-    /**
-     * @param StorageListInterface     $storageList
-     * @param StorageListItemInterface $item
-     */
     public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void;
 }

@@ -114,7 +114,6 @@ services:
     coreshop.behat.context.setup.exchange_rate:
         class: CoreShop\Behat\Context\Setup\ExchangeRateContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@doctrine.orm.entity_manager'
             - '@coreshop.factory.exchange_rate'
         tags:
@@ -238,7 +237,6 @@ services:
     coreshop.behat.context.setup.locale:
         class: CoreShop\Behat\Context\Setup\LocaleContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@CoreShop\Component\Locale\Context\FixedLocaleContext'
         tags:
             - { name: fob.context_service }
@@ -343,7 +341,6 @@ services:
     coreshop.behat.context.setup.optimistic_entity_lock:
         class: CoreShop\Behat\Context\Setup\OptimisticEntityLockContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@CoreShop\Bundle\OptimisticEntityLockBundle\Manager\EntityLockManagerInterface'
         tags:
             - { name: fob.context_service }
@@ -359,7 +356,6 @@ services:
     coreshop.behat.context.setup.configuration:
         class: CoreShop\Behat\Context\Setup\ConfigurationContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.configuration.service'
         tags:
             - { name: fob.context_service }

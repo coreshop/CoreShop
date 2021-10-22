@@ -20,16 +20,10 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 interface PriceRuleInterface extends RuleInterface, TranslatableInterface
 {
     /**
-     * @param string|null $language
-     *
      * @return string
      */
     public function getLabel(?string $language = null);
 
-    /**
-     * @param string      $label
-     * @param string|null $language
-     */
     public function setLabel(string $label, ?string $language = null);
 
     /**

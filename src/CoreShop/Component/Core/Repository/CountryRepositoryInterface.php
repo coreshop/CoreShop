@@ -21,8 +21,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface CountryRepositoryInterface extends BaseCountryRepositoryInterface
 {
     /**
-     * @param StoreInterface $store
-     *
      * @return CountryInterface[]
      */
     public function findForStore(StoreInterface $store): array;

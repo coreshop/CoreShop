@@ -53,9 +53,6 @@ class ZoneFixture extends AbstractFixture implements ContainerAwareInterface, Ve
         }
 
         foreach ($continents as $continent) {
-            /**
-             * @var ZoneInterface
-             */
             $zone = $this->container->get('coreshop.factory.zone')->createNew();
             $zone->setName($continent);
             $zone->setActive(true);

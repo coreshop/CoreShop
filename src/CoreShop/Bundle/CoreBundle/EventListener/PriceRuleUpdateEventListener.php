@@ -21,11 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class PriceRuleUpdateEventListener
 {
-    private ConfigurationServiceInterface $configurationService;
-
-    public function __construct(ConfigurationServiceInterface $configurationService)
+    public function __construct(private ConfigurationServiceInterface $configurationService)
     {
-        $this->configurationService = $configurationService;
     }
 
     public function storeConfigurationThatPriceRulesChanged(ResourceControllerEvent $event): void

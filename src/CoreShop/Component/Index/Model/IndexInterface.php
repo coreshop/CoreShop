@@ -60,19 +60,11 @@ interface IndexInterface extends ResourceInterface, TimestampableInterface
      */
     public function hasColumns();
 
-    /**
-     * @param IndexColumnInterface $column
-     */
     public function addColumn(IndexColumnInterface $column);
 
-    /**
-     * @param IndexColumnInterface $column
-     */
     public function removeColumn(IndexColumnInterface $column);
 
     /**
-     * @param IndexColumnInterface $column
-     *
      * @return bool
      */
     public function hasColumn(IndexColumnInterface $column);

@@ -22,21 +22,8 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class RequestCartRecalculation
 {
-    private CartManagerInterface $cartManager;
-    private ShopperContextInterface $shopperContext;
-    private ConfigurationServiceInterface $configurationService;
-    private RequestHelper $pimcoreRequestHelper;
-
-    public function __construct(
-        CartManagerInterface $cartManager,
-        ShopperContextInterface $shopperContext,
-        ConfigurationServiceInterface $configurationService,
-        RequestHelper $pimcoreRequestHelper
-    ) {
-        $this->cartManager = $cartManager;
-        $this->shopperContext = $shopperContext;
-        $this->configurationService = $configurationService;
-        $this->pimcoreRequestHelper = $pimcoreRequestHelper;
+    public function __construct(private CartManagerInterface $cartManager, private ShopperContextInterface $shopperContext, private ConfigurationServiceInterface $configurationService, private RequestHelper $pimcoreRequestHelper)
+    {
     }
 
     public function checkPriceRuleState(RequestEvent $event): void

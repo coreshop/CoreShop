@@ -22,16 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FolderCreationService implements FolderCreationServiceInterface
 {
-    protected RegistryInterface $metadataRegistry;
-    protected ObjectServiceInterface $objectService;
-
-    public function __construct(
-        RegistryInterface $metadataRegistry,
-        ObjectServiceInterface $objectService
-    )
+    public function __construct(protected RegistryInterface $metadataRegistry, protected ObjectServiceInterface $objectService)
     {
-        $this->metadataRegistry = $metadataRegistry;
-        $this->objectService = $objectService;
     }
 
     public function createFolderForResource(ResourceInterface $resource, array $options): Folder
@@ -41,7 +33,7 @@ class FolderCreationService implements FolderCreationServiceInterface
         $optionsResolver->setDefault('suffix', null);
         $optionsResolver->setDefault('path', null);
 
-        $resourceConfig = $this->metadataRegistry->getByClass(get_class($resource))->getParameter('path');
+        $resourceConfig = $this->metadataRegistry->getByClass($resource::class)->getParameter('path');
 
         $options = $optionsResolver->resolve($options);
 

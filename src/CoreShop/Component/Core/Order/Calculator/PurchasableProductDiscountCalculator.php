@@ -21,19 +21,14 @@ use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 
 final class PurchasableProductDiscountCalculator implements PurchasableDiscountCalculatorInterface
 {
-    private ProductPriceCalculatorInterface $productPriceCalculator;
-
-    public function __construct(ProductPriceCalculatorInterface $productPriceCalculator)
+    public function __construct(private ProductPriceCalculatorInterface $productPriceCalculator)
     {
-        $this->productPriceCalculator = $productPriceCalculator;
     }
 
     public function getDiscount(PurchasableInterface $purchasable, array $context, int $basePrice): int
     {
         if ($purchasable instanceof ProductInterface) {
-            $discount = $this->productPriceCalculator->getDiscount($purchasable, $context, $basePrice);
-
-            return $discount;
+            return $this->productPriceCalculator->getDiscount($purchasable, $context, $basePrice);
         }
 
         return 0;

@@ -23,11 +23,8 @@ use Symfony\Component\Intl\Exception\InvalidArgumentException;
 
 class ListingFactory implements ListingFactoryInterface
 {
-    private ServiceRegistryInterface $workerServiceRegistry;
-
-    public function __construct(ServiceRegistryInterface $workerServiceRegistry)
+    public function __construct(private ServiceRegistryInterface $workerServiceRegistry)
     {
-        $this->workerServiceRegistry = $workerServiceRegistry;
     }
 
     public function createList(IndexInterface $index): ListingInterface

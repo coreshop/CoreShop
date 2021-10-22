@@ -22,11 +22,6 @@ abstract class AbstractFrontendPage extends SymfonyPage implements FrontendPageI
 {
     protected static $additionalParameters = ['_locale' => 'en'];
 
-    public function __construct(Session $session, $minkParameters, RouterInterface $router)
-    {
-        parent::__construct($session, $minkParameters, $router);
-    }
-
     public function isOpenWithUri(string $uri): bool
     {
         return $this->getSession()->getCurrentUrl() !== $uri;

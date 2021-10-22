@@ -21,16 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class TaxRuleGroupContext implements Context
 {
-    private PWAPageInterface $pwaPage;
-    private TaxRuleGroupPageInterface $taxRuleGroupPage;
-
-    public function __construct(
-        PWAPageInterface $pwaPage,
-        TaxRuleGroupPageInterface $taxRuleGroupPage
-    )
+    public function __construct(private TaxRuleGroupPageInterface $taxRuleGroupPage)
     {
-        $this->pwaPage = $pwaPage;
-        $this->taxRuleGroupPage= $taxRuleGroupPage;
     }
 
     /**

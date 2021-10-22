@@ -23,7 +23,7 @@ use Doctrine\Common\Collections\Collection;
 /**
  * @psalm-suppress MissingConstructor
  */
-class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
+class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface, \Stringable
 {
     use ToggleableTrait;
     use TimestampableTrait;
@@ -48,10 +48,7 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
         $this->taxRules = new ArrayCollection();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }

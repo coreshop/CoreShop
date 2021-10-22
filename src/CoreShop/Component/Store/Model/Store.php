@@ -21,7 +21,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class Store extends AbstractResource implements StoreInterface
+class Store extends AbstractResource implements StoreInterface, \Stringable
 {
     use TimestampableTrait;
     use CurrencyAwareTrait;
@@ -51,10 +51,7 @@ class Store extends AbstractResource implements StoreInterface
      */
     protected $siteId = 0;
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }

@@ -21,15 +21,11 @@ use Behat\Mink\Session;
 
 abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
 {
-    protected Session $session;
-    protected array|\ArrayAccess $parameters;
     protected ?DocumentElement $document = null;
     protected ?NodeElement $tabElement = null;
 
-    public function __construct(Session $session, array|\ArrayAccess $minkParameters = [])
+    public function __construct(protected Session $session, protected array|\ArrayAccess $minkParameters = [])
     {
-        $this->session = $session;
-        $this->parameters = $minkParameters;
     }
 
     abstract protected function getLayoutId(): string;
@@ -54,7 +50,7 @@ abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
 
     public function isActiveOpen(): bool
     {
-        return strpos($this->getTabElement()->getAttribute('class'), 'x-hidden-offsets') === false;
+        return !str_contains($this->getTabElement()->getAttribute('class'), 'x-hidden-offsets');
     }
 
     public function makeActive(): void

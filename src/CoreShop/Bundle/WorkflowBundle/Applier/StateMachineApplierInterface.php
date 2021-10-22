@@ -18,9 +18,6 @@ interface StateMachineApplierInterface
 {
     /**
      * @param mixed       $subject
-     * @param string|null $workflowName
-     * @param string|null $transition
-     * @param bool        $soft
      */
     public function apply($subject, ?string $workflowName = null, ?string $transition = null, bool $soft = true): void;
 }

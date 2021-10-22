@@ -36,33 +36,8 @@ use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private CartContextInterface $cartContext;
-    private StorageListModifierInterface $cartModifier;
-    private StorageListItemQuantityModifierInterface $cartQuantityModifier;
-    private CartManagerInterface $cartManager;
-    private AddToCartFactoryInterface $addToCartFactory;
-    private OrderItemFactoryInterface $factory;
-    private FormFactoryInterface $formFactory;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CartContextInterface $cartContext,
-        StorageListModifierInterface $cartModifier,
-        StorageListItemQuantityModifierInterface $cartQuantityModifier,
-        CartManagerInterface $cartManager,
-        AddToCartFactoryInterface $addToCartFactory,
-        OrderItemFactoryInterface $factory,
-        FormFactoryInterface $formFactory
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->cartContext = $cartContext;
-        $this->cartModifier = $cartModifier;
-        $this->cartQuantityModifier = $cartQuantityModifier;
-        $this->cartManager = $cartManager;
-        $this->addToCartFactory = $addToCartFactory;
-        $this->factory = $factory;
-        $this->formFactory = $formFactory;
+    public function __construct(private SharedStorageInterface $sharedStorage, private CartContextInterface $cartContext, private StorageListModifierInterface $cartModifier, private StorageListItemQuantityModifierInterface $cartQuantityModifier, private CartManagerInterface $cartManager, private AddToCartFactoryInterface $addToCartFactory, private OrderItemFactoryInterface $factory, private FormFactoryInterface $formFactory)
+    {
     }
 
     /**

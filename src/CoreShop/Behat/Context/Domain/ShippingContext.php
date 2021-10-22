@@ -29,30 +29,8 @@ use Webmozart\Assert\Assert;
 
 final class ShippingContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private CarrierRepositoryInterface $carrierRepository;
-    private RuleValidationProcessorInterface $ruleValidationProcessor;
-    private FactoryInterface $addressFactory;
-    private CarrierPriceCalculatorInterface $carrierPriceCalculator;
-    private ShippableCarrierValidatorInterface $shippingRuleValidator;
-    private CartContextResolverInterface $cartContextResolver;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CarrierRepositoryInterface $carrierRepository,
-        RuleValidationProcessorInterface $ruleValidationProcessor,
-        FactoryInterface $addressFactory,
-        CarrierPriceCalculatorInterface $carrierPriceCalculator,
-        ShippableCarrierValidatorInterface $shippingRuleValidator,
-        CartContextResolverInterface $cartContextResolver
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->carrierRepository = $carrierRepository;
-        $this->ruleValidationProcessor = $ruleValidationProcessor;
-        $this->addressFactory = $addressFactory;
-        $this->carrierPriceCalculator = $carrierPriceCalculator;
-        $this->shippingRuleValidator = $shippingRuleValidator;
-        $this->cartContextResolver = $cartContextResolver;
+    public function __construct(private CarrierRepositoryInterface $carrierRepository, private RuleValidationProcessorInterface $ruleValidationProcessor, private FactoryInterface $addressFactory, private CarrierPriceCalculatorInterface $carrierPriceCalculator, private ShippableCarrierValidatorInterface $shippingRuleValidator, private CartContextResolverInterface $cartContextResolver)
+    {
     }
 
     /**
@@ -104,7 +82,7 @@ final class ShippingContext implements Context
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
-        Assert::same((int)$price, $this->carrierPriceCalculator->getPrice($carrier, $cart, $address, $this->cartContextResolver->resolveCartContext($cart)));
+        Assert::same($price, $this->carrierPriceCalculator->getPrice($carrier, $cart, $address, $this->cartContextResolver->resolveCartContext($cart)));
     }
 
     /**

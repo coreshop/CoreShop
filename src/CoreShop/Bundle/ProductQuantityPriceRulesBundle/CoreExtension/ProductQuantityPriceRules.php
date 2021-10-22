@@ -399,8 +399,6 @@ class ProductQuantityPriceRules extends Data implements
     }
 
     /**
-     * @param ProductQuantityPriceRuleInterface $storedRule
-     * @param array                             $currentRule
      *
      * @return ProductQuantityPriceRuleInterface
      *

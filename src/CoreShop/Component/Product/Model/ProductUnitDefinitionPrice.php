@@ -19,7 +19,7 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 /**
  * @psalm-suppress MissingConstructor
  */
-class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnitDefinitionPriceInterface
+class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnitDefinitionPriceInterface, \Stringable
 {
     /**
      * @var int
@@ -66,7 +66,7 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
         $this->unitDefinition = $unitDefinition;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $definitionId = $this->getUnitDefinition() instanceof ProductUnitDefinitionInterface ? $this->getUnitDefinition()->getUnitName() : '--';
 

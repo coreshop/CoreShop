@@ -23,9 +23,6 @@ interface ProductUnitDefinitionInterface extends ResourceInterface
      */
     public function getUnit();
 
-    /**
-     * @param ProductUnitInterface $unit
-     */
     public function setUnit(ProductUnitInterface $unit);
 
     /**
@@ -33,9 +30,6 @@ interface ProductUnitDefinitionInterface extends ResourceInterface
      */
     public function getConversionRate();
 
-    /**
-     * @param float $conversionRate
-     */
     public function setConversionRate(float $conversionRate = null);
 
     /**
@@ -43,9 +37,6 @@ interface ProductUnitDefinitionInterface extends ResourceInterface
      */
     public function getPrecision();
 
-    /**
-     * @param int $precision
-     */
     public function setPrecision(int $precision);
 
     /**

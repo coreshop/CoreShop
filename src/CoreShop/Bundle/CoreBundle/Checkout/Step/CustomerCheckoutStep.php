@@ -28,18 +28,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private FormFactoryInterface $formFactory;
-    private CustomerManagerInterface $customerManager;
-    private LocaleContextInterface $localeContext;
-
-    public function __construct(
-        FormFactoryInterface $formFactory,
-        CustomerManagerInterface $customerManager,
-        LocaleContextInterface $localeContext
-    ) {
-        $this->formFactory = $formFactory;
-        $this->customerManager = $customerManager;
-        $this->localeContext = $localeContext;
+    public function __construct(private FormFactoryInterface $formFactory, private CustomerManagerInterface $customerManager, private LocaleContextInterface $localeContext)
+    {
     }
 
     public function getIdentifier(): string

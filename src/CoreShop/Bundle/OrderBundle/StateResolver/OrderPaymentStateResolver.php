@@ -24,16 +24,8 @@ use Symfony\Component\Workflow\Workflow;
 
 final class OrderPaymentStateResolver implements StateResolverInterface
 {
-    private StateMachineManager $stateMachineManager;
-    private PaymentRepositoryInterface $paymentRepository;
-
-    public function __construct(
-        StateMachineManager $stateMachineManager,
-        PaymentRepositoryInterface $paymentRepository
-    )
+    public function __construct(private StateMachineManager $stateMachineManager, private PaymentRepositoryInterface $paymentRepository)
     {
-        $this->stateMachineManager = $stateMachineManager;
-        $this->paymentRepository = $paymentRepository;
     }
 
     public function resolve(OrderInterface $order): void
@@ -106,8 +98,6 @@ final class OrderPaymentStateResolver implements StateResolverInterface
     }
 
     /**
-     * @param OrderInterface $order
-     * @param string         $state
      *
      * @return PaymentInterface[]
      */

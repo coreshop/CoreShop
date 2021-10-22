@@ -24,21 +24,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
 {
-    private FactoryInterface $paymentFactory;
-    private int $decimalFactor;
-    private int $decimalPrecision;
-    private TranslatorInterface $translator;
-
-    public function __construct(
-        FactoryInterface $paymentFactory,
-        int $decimalFactor,
-        int $decimalPrecision,
-        TranslatorInterface $translator
-    ) {
-        $this->paymentFactory = $paymentFactory;
-        $this->decimalFactor = $decimalFactor;
-        $this->decimalPrecision = $decimalPrecision;
-        $this->translator = $translator;
+    public function __construct(private FactoryInterface $paymentFactory, private int $decimalFactor, private int $decimalPrecision, private TranslatorInterface $translator)
+    {
     }
 
     public function provideOrderPayment(OrderInterface $order): PaymentInterface

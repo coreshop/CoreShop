@@ -39,9 +39,6 @@ final class ProductUnitDefinitionsType extends AbstractResourceType
             ]);
     }
 
-    /**
-     * @param FormEvent $event
-     */
     public function onSubmit(FormEvent $event): void
     {
         /** @var ProductUnitDefinitionsInterface $unitDefinitions */

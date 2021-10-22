@@ -27,18 +27,8 @@ use Webmozart\Assert\Assert;
 
 class CustomerManager implements CustomerManagerInterface
 {
-    private EventDispatcherInterface $eventDispatcher;
-    private FolderCreationServiceInterface $folderCreationService;
-    private string $loginIdentifier;
-
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        FolderCreationServiceInterface $folderCreationService,
-        string $loginIdentifier,
-    ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->folderCreationService = $folderCreationService;
-        $this->loginIdentifier = $loginIdentifier;
+    public function __construct(private EventDispatcherInterface $eventDispatcher, private FolderCreationServiceInterface $folderCreationService, private string $loginIdentifier)
+    {
     }
 
     public function persistCustomer(CustomerInterface $customer): void

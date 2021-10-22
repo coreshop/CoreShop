@@ -30,30 +30,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class ProductsReport implements ReportInterface, ExportReportInterface
 {
     private int $totalRecords = 0;
-    private RepositoryInterface $storeRepository;
-    private Connection $db;
-    private MoneyFormatterInterface $moneyFormatter;
-    private LocaleContextInterface $localeContext;
-    private PimcoreRepositoryInterface $orderRepository;
-    private PimcoreRepositoryInterface $orderItemRepository;
-    private StackRepository $productStackRepository;
 
-    public function __construct(
-        RepositoryInterface $storeRepository,
-        Connection $db,
-        MoneyFormatterInterface $moneyFormatter,
-        LocaleContextInterface $localeContext,
-        PimcoreRepositoryInterface $orderRepository,
-        PimcoreRepositoryInterface $orderItemRepository,
-        StackRepository $productStackRepository
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->db = $db;
-        $this->moneyFormatter = $moneyFormatter;
-        $this->localeContext = $localeContext;
-        $this->orderRepository = $orderRepository;
-        $this->orderItemRepository = $orderItemRepository;
-        $this->productStackRepository = $productStackRepository;
+    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeContext, private PimcoreRepositoryInterface $orderRepository, private PimcoreRepositoryInterface $orderItemRepository, private StackRepository $productStackRepository)
+    {
     }
 
     public function getReportData(ParameterBag $parameterBag): array

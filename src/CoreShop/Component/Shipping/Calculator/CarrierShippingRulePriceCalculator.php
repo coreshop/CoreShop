@@ -23,15 +23,8 @@ use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterf
 
 class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterface
 {
-    protected CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker;
-    protected ShippingRuleActionProcessorInterface $shippingRuleProcessor;
-
-    public function __construct(
-        CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker,
-        ShippingRuleActionProcessorInterface $shippingRuleProcessor
-    ) {
-        $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
-        $this->shippingRuleProcessor = $shippingRuleProcessor;
+    public function __construct(protected CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker, protected ShippingRuleActionProcessorInterface $shippingRuleProcessor)
+    {
     }
 
     public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int

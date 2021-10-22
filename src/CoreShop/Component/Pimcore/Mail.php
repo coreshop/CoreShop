@@ -18,10 +18,7 @@ use Pimcore\Model\Document\Email;
 
 class Mail extends \Pimcore\Mail
 {
-    /**
-     * @param array|string $recipients
-     */
-    public function addRecipients($recipients = null)
+    public function addRecipients(array|string $recipients = null)
     {
         $toRecipients = [];
 

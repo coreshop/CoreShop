@@ -21,13 +21,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class SluggableLinkGenerator implements LinkGeneratorInterface
 {
-    private SiteResolver $siteResolver;
-    private RequestStack $requestStack;
-
-    public function __construct(SiteResolver $siteResolver, RequestStack $requestStack)
+    public function __construct(private SiteResolver $siteResolver, private RequestStack $requestStack)
     {
-        $this->siteResolver = $siteResolver;
-        $this->requestStack = $requestStack;
     }
 
     public function generate(Concrete $object, array $params = []): string

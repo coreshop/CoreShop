@@ -21,7 +21,7 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 /**
  * @psalm-suppress MissingConstructor
  */
-class Carrier extends BaseCarrier implements CarrierInterface
+class Carrier extends BaseCarrier implements CarrierInterface, \Stringable
 {
     use StoresAwareTrait {
         __construct as storesAwareConstructor;
@@ -48,10 +48,7 @@ class Carrier extends BaseCarrier implements CarrierInterface
         $this->taxRule = $taxRule;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s', $this->getIdentifier());
     }

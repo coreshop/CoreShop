@@ -26,13 +26,8 @@ use Webmozart\Assert\Assert;
 
 class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculatorInterface
 {
-    private FactoryInterface $cartPriceRuleItemFactory;
-    private ServiceRegistryInterface $actionServiceRegistry;
-
-    public function __construct(FactoryInterface $cartPriceRuleItemFactory, ServiceRegistryInterface $actionServiceRegistry)
+    public function __construct(private FactoryInterface $cartPriceRuleItemFactory, private ServiceRegistryInterface $actionServiceRegistry)
     {
-        $this->cartPriceRuleItemFactory = $cartPriceRuleItemFactory;
-        $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
     public function calculatePriceRule(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): ?ProposalCartPriceRuleItemInterface

@@ -22,13 +22,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDependantBundleInstaller implements ResourceInstallerInterface
 {
-    private KernelInterface $kernel;
-    private PimcoreBundleManager $bundleManager;
-
-    public function __construct(KernelInterface $kernel, PimcoreBundleManager $bundleManager)
+    public function __construct(private KernelInterface $kernel, private PimcoreBundleManager $bundleManager)
     {
-        $this->kernel = $kernel;
-        $this->bundleManager = $bundleManager;
     }
 
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
@@ -67,7 +62,7 @@ final class PimcoreDependantBundleInstaller implements ResourceInstallerInterfac
                          */
                         $this->bundleManager->install($bundle);
                     }
-                } catch (BundleNotFoundException $ex) {
+                } catch (BundleNotFoundException) {
                     $progress->setMessage(sprintf('<error>Bundle not found "%s"</error>', $bundleName));
                 }
 

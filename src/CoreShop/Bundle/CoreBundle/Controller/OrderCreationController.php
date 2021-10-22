@@ -30,9 +30,6 @@ class OrderCreationController extends BaseOrderCreationController
     {
         $itemFlat = parent::prepareCartItem($cart, $item);
 
-        /**
-         * @var \CoreShop\Component\Core\Model\OrderItemInterface $item
-         */
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
         Assert::isInstanceOf($item, \CoreShop\Component\Core\Model\OrderItemInterface::class);
 

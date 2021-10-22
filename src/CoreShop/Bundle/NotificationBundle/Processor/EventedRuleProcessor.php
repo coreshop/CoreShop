@@ -21,15 +21,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class EventedRuleProcessor implements RulesProcessorInterface
 {
-    private RulesProcessorInterface $rulesProcessor;
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(
-        RulesProcessorInterface $rulesProcessor,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->rulesProcessor = $rulesProcessor;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(private RulesProcessorInterface $rulesProcessor, private EventDispatcherInterface $eventDispatcher)
+    {
     }
 
     public function applyRules(string $type, $subject, array $params = []): void

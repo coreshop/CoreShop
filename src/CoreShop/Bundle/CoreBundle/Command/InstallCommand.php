@@ -71,7 +71,7 @@ EOT
                     $command['message']
                 ));
                 $this->commandExecutor->runCommand('coreshop:install:' . $command['command'], [], $output);
-            } catch (RuntimeException $exception) {
+            } catch (RuntimeException) {
                 $errored = true;
             }
         }

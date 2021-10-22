@@ -23,11 +23,8 @@ use Webmozart\Assert\Assert;
 
 class AmountIncreaseAction implements ProductQuantityPriceRuleActionInterface
 {
-    private CurrencyConverterInterface $currencyConverter;
-
-    public function __construct(CurrencyConverterInterface $currencyConverter)
+    public function __construct(private CurrencyConverterInterface $currencyConverter)
     {
-        $this->currencyConverter = $currencyConverter;
     }
 
     public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context): int

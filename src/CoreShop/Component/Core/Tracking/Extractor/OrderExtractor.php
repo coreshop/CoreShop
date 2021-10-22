@@ -20,15 +20,8 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class OrderExtractor implements TrackingExtractorInterface
 {
-    protected TrackingExtractorInterface $extractor;
-    protected int $decimalFactor;
-    protected int $decimalPrecision;
-
-    public function __construct(TrackingExtractorInterface $extractor, int $decimalFactor, int $decimalPrecision)
+    public function __construct(protected TrackingExtractorInterface $extractor, protected int $decimalFactor, protected int $decimalPrecision)
     {
-        $this->extractor = $extractor;
-        $this->decimalFactor = $decimalFactor;
-        $this->decimalPrecision = $decimalPrecision;
     }
 
     public function supports($object): bool
@@ -38,9 +31,6 @@ class OrderExtractor implements TrackingExtractorInterface
 
     public function updateMetadata($object, $data = []): array
     {
-        /**
-         * @var OrderInterface $object
-         */
         $items = [];
 
         foreach ($object->getItems() as $item) {

@@ -42,27 +42,8 @@ abstract class AbstractWorker implements WorkerInterface
 {
     use LoggerAwareTrait;
 
-    protected ServiceRegistryInterface $extensions;
-    protected ServiceRegistryInterface $getterServiceRegistry;
-    protected ServiceRegistryInterface $interpreterServiceRegistry;
-    protected FilterGroupHelperInterface $filterGroupHelper;
-    protected ConditionRendererInterface $conditionRenderer;
-    protected OrderRendererInterface $orderRenderer;
-
-    public function __construct(
-        ServiceRegistryInterface $extensions,
-        ServiceRegistryInterface $getterServiceRegistry,
-        ServiceRegistryInterface $interpreterServiceRegistry,
-        FilterGroupHelperInterface $filterGroupHelper,
-        ConditionRendererInterface $conditionRenderer,
-        OrderRendererInterface $orderRenderer
-    ) {
-        $this->extensions = $extensions;
-        $this->getterServiceRegistry = $getterServiceRegistry;
-        $this->interpreterServiceRegistry = $interpreterServiceRegistry;
-        $this->filterGroupHelper = $filterGroupHelper;
-        $this->conditionRenderer = $conditionRenderer;
-        $this->orderRenderer = $orderRenderer;
+    public function __construct(protected ServiceRegistryInterface $extensions, protected ServiceRegistryInterface $getterServiceRegistry, protected ServiceRegistryInterface $interpreterServiceRegistry, protected FilterGroupHelperInterface $filterGroupHelper, protected ConditionRendererInterface $conditionRenderer, protected OrderRendererInterface $orderRenderer)
+    {
     }
 
     public function getExtensions(IndexInterface $index): array

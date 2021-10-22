@@ -20,18 +20,8 @@ use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
 class RulesProcessor implements RulesProcessorInterface
 {
-    private NotificationRuleRepositoryInterface $ruleRepository;
-    private RuleValidationProcessorInterface $ruleValidationProcessor;
-    private RuleApplierInterface $ruleApplier;
-
-    public function __construct(
-        NotificationRuleRepositoryInterface $ruleRepository,
-        RuleValidationProcessorInterface $ruleValidationProcessor,
-        RuleApplierInterface $ruleApplier
-    ) {
-        $this->ruleRepository = $ruleRepository;
-        $this->ruleValidationProcessor = $ruleValidationProcessor;
-        $this->ruleApplier = $ruleApplier;
+    public function __construct(private NotificationRuleRepositoryInterface $ruleRepository, private RuleValidationProcessorInterface $ruleValidationProcessor, private RuleApplierInterface $ruleApplier)
+    {
     }
 
     public function applyRules(string $type, $subject, array $params = []): void

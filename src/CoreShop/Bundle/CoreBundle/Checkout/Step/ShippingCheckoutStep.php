@@ -31,18 +31,8 @@ use Webmozart\Assert\Assert;
 
 class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private ShippableCarrierValidatorInterface $shippableCarrierValidator;
-    private FormFactoryInterface $formFactory;
-    private CartManagerInterface $cartManager;
-
-    public function __construct(
-        ShippableCarrierValidatorInterface $shippableCarrierValidator,
-        FormFactoryInterface $formFactory,
-        CartManagerInterface $cartManager
-    ) {
-        $this->shippableCarrierValidator = $shippableCarrierValidator;
-        $this->formFactory = $formFactory;
-        $this->cartManager = $cartManager;
+    public function __construct(private ShippableCarrierValidatorInterface $shippableCarrierValidator, private FormFactoryInterface $formFactory, private CartManagerInterface $cartManager)
+    {
     }
 
     public function getIdentifier(): string

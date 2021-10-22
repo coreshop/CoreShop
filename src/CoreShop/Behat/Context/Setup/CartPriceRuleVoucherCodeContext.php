@@ -22,15 +22,8 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherGenerator;
 
 final class CartPriceRuleVoucherCodeContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private CodeGeneratorCheckerInterface $cartPriceRuleGeneratorChecker;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CodeGeneratorCheckerInterface $cartPriceRuleGeneratorChecker
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->cartPriceRuleGeneratorChecker = $cartPriceRuleGeneratorChecker;
+    public function __construct(private SharedStorageInterface $sharedStorage, private CodeGeneratorCheckerInterface $cartPriceRuleGeneratorChecker)
+    {
     }
 
     /**

@@ -23,21 +23,8 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterface
 {
-    private PurchasableCalculatorInterface $purchasableCalculator;
-    private DefaultTaxAddressProviderInterface $defaultTaxAddressProvider;
-    private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
-    private TaxApplicatorInterface $taxApplicator;
-
-    public function __construct(
-        PurchasableCalculatorInterface $purchasableCalculator,
-        DefaultTaxAddressProviderInterface $defaultTaxAddressProvider,
-        ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
-        TaxApplicatorInterface $taxApplicator
-    ) {
-        $this->purchasableCalculator = $purchasableCalculator;
-        $this->defaultTaxAddressProvider = $defaultTaxAddressProvider;
-        $this->taxCalculatorFactory = $taxCalculatorFactory;
-        $this->taxApplicator = $taxApplicator;
+    public function __construct(private PurchasableCalculatorInterface $purchasableCalculator, private DefaultTaxAddressProviderInterface $defaultTaxAddressProvider, private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory, private TaxApplicatorInterface $taxApplicator)
+    {
     }
 
     public function getPrice(PurchasableInterface $product, array $context, bool $withTax = true): int

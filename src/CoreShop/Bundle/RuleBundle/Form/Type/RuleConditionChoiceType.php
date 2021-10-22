@@ -20,11 +20,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleConditionChoiceType extends AbstractType
 {
-    private array $conditions;
-
-    public function __construct(array $conditions)
+    public function __construct(private array $conditions)
     {
-        $this->conditions = $conditions;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

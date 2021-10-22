@@ -29,31 +29,8 @@ use Webmozart\Assert\Assert;
 
 final class CheckoutContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private CustomerPageInterface $customerPage;
-    private AddressPageInterface $addressPage;
-    private ShippingPageInterface $shippingPage;
-    private PaymentPageInterface $paymentPage;
-    private SummaryPageInterface $summaryPage;
-    private ThankYouPageInterface $thankYouPage;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CustomerPageInterface $customerPage,
-        AddressPageInterface $addressPage,
-        ShippingPageInterface $shippingPage,
-        PaymentPageInterface $paymentPage,
-        SummaryPageInterface $summaryPage,
-        ThankYouPageInterface $thankYouPage
-    )
+    public function __construct(private CustomerPageInterface $customerPage, private AddressPageInterface $addressPage, private ShippingPageInterface $shippingPage, private PaymentPageInterface $paymentPage, private SummaryPageInterface $summaryPage, private ThankYouPageInterface $thankYouPage)
     {
-        $this->sharedStorage = $sharedStorage;
-        $this->customerPage = $customerPage;
-        $this->addressPage = $addressPage;
-        $this->shippingPage = $shippingPage;
-        $this->paymentPage = $paymentPage;
-        $this->summaryPage = $summaryPage;
-        $this->thankYouPage = $thankYouPage;
     }
 
     /**

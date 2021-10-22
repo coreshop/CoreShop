@@ -24,13 +24,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class ResourceLoader implements LoaderInterface
 {
-    private RegistryInterface $modelRegistry;
-    private RouteFactoryInterface $routeFactory;
-
-    public function __construct(RegistryInterface $modelRegistry, RouteFactoryInterface $routeFactory)
+    public function __construct(private RegistryInterface $modelRegistry, private RouteFactoryInterface $routeFactory)
     {
-        $this->modelRegistry = $modelRegistry;
-        $this->routeFactory = $routeFactory;
     }
 
     public function load($resource, $type = null)

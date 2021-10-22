@@ -23,11 +23,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PimcoreAssetChoiceType extends AbstractType
 {
-    private PimcoreAssetDataTransformer $transformer;
-
-    public function __construct(PimcoreAssetDataTransformer $transformer)
+    public function __construct(private PimcoreAssetDataTransformer $transformer)
     {
-        $this->transformer = $transformer;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

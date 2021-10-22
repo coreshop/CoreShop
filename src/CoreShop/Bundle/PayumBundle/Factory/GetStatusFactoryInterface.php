@@ -20,8 +20,6 @@ interface GetStatusFactoryInterface
 {
     /**
      * @param mixed $model
-     *
-     * @return GetStatusInterface
      */
     public function createNewWithModel($model): GetStatusInterface;
 }

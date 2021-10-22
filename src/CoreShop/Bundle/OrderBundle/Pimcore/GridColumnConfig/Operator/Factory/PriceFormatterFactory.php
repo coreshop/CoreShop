@@ -21,15 +21,8 @@ use Pimcore\DataObject\GridColumnConfig\Operator\Factory\OperatorFactoryInterfac
 
 class PriceFormatterFactory implements OperatorFactoryInterface
 {
-    private MoneyFormatterInterface $moneyFormatter;
-    private LocaleContextInterface $localeService;
-
-    public function __construct(
-        MoneyFormatterInterface $moneyFormatter,
-        LocaleContextInterface $localeService
-    ) {
-        $this->moneyFormatter = $moneyFormatter;
-        $this->localeService = $localeService;
+    public function __construct(private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeService)
+    {
     }
 
     public function build(\stdClass $configElement, array $context = []): PriceFormatter

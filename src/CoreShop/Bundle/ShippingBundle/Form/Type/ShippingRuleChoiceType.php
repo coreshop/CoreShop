@@ -23,11 +23,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ShippingRuleChoiceType extends AbstractType
 {
-    private RepositoryInterface $shippingRuleRepository;
-
-    public function __construct(RepositoryInterface $shippingRuleRepository)
+    public function __construct(private RepositoryInterface $shippingRuleRepository)
     {
-        $this->shippingRuleRepository = $shippingRuleRepository;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

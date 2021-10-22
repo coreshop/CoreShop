@@ -29,19 +29,11 @@ interface CountriesAwareInterface
     public function hasCountries();
 
     /**
-     * @param CountryInterface $country
-     *
      * @return bool
      */
     public function hasCountry(CountryInterface $country);
 
-    /**
-     * @param CountryInterface $country
-     */
     public function addCountry(CountryInterface $country);
 
-    /**
-     * @param CountryInterface $country
-     */
     public function removeCountry(CountryInterface $country);
 }

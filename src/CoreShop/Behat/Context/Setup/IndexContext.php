@@ -29,27 +29,8 @@ use Pimcore\Model\DataObject\ClassDefinition;
 
 final class IndexContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private ClassStorageInterface $classStorage;
-    private ObjectManager $objectManager;
-    private FactoryInterface $indexFactory;
-    private ServiceRegistryInterface $workerServiceRegistry;
-    private FactoryInterface $indexColumnFactory;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ClassStorageInterface $classStorage,
-        ObjectManager $objectManager,
-        FactoryInterface $indexFactory,
-        ServiceRegistryInterface $workerServiceRegistry,
-        FactoryInterface $indexColumnFactory
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->classStorage = $classStorage;
-        $this->objectManager = $objectManager;
-        $this->indexFactory = $indexFactory;
-        $this->workerServiceRegistry = $workerServiceRegistry;
-        $this->indexColumnFactory = $indexColumnFactory;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ClassStorageInterface $classStorage, private ObjectManager $objectManager, private FactoryInterface $indexFactory, private ServiceRegistryInterface $workerServiceRegistry, private FactoryInterface $indexColumnFactory)
+    {
     }
 
     /**
@@ -147,8 +128,6 @@ final class IndexContext implements Context
     }
 
     /**
-     * @param IndexInterface $index
-     * @param TableIndex     $tableIndex
      * @param bool           $localized
      */
     private function addIndexToIndex(IndexInterface $index, TableIndex $tableIndex, $localized = false): void
@@ -186,9 +165,6 @@ final class IndexContext implements Context
         $this->saveIndex($index);
     }
 
-    /**
-     * @param IndexInterface $index
-     */
     private function saveIndex(IndexInterface $index): void
     {
         $worker = $index->getWorker();

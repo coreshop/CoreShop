@@ -22,15 +22,11 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface ProductStoreValuesRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param ProductInterface $product
-     *
      * @return ProductStoreValuesInterface[]
      */
     public function findForProduct(ProductInterface $product): array;
 
     /**
-     * @param ProductInterface $product
-     * @param StoreInterface   $store
      *
      * @return ProductStoreValuesInterface[]
      */

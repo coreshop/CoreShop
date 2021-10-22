@@ -24,8 +24,5 @@ interface OrderPaymentInterface extends PaymentInterface, CurrencyAwareInterface
      */
     public function getOrder();
 
-    /**
-     * @param OrderInterface $order
-     */
     public function setOrder(OrderInterface $order);
 }

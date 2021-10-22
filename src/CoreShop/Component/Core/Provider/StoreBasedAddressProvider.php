@@ -24,13 +24,8 @@ use CoreShop\Component\Store\Context\StoreNotFoundException;
 
 class StoreBasedAddressProvider implements AddressProviderInterface
 {
-    private FactoryInterface $addressFactory;
-    private ShopperContextInterface $shopperContext;
-
-    public function __construct(FactoryInterface $addressFactory, ShopperContextInterface $shopperContext)
+    public function __construct(private FactoryInterface $addressFactory, private ShopperContextInterface $shopperContext)
     {
-        $this->addressFactory = $addressFactory;
-        $this->shopperContext = $shopperContext;
     }
 
     public function getAddress(OrderInterface $cart): ?AddressInterface
@@ -41,9 +36,9 @@ class StoreBasedAddressProvider implements AddressProviderInterface
 
             try {
                 $address->setCountry($this->shopperContext->getCountry());
-            } catch (StoreNotFoundException $ex) {
+            } catch (StoreNotFoundException) {
                 $address->setCountry($store->getBaseCountry());
-            } catch (CountryNotFoundException $ex) {
+            } catch (CountryNotFoundException) {
                 $address->setCountry($store->getBaseCountry());
             }
 

@@ -51,9 +51,6 @@ interface StateInterface extends ResourceInterface, TranslatableInterface, Times
      */
     public function getCountry();
 
-    /**
-     * @param CountryInterface $country
-     */
     public function setCountry(CountryInterface $country);
 
     /**

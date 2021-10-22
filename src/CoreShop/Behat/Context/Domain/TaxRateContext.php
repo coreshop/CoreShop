@@ -21,15 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class TaxRateContext implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private TaxRateRepositoryInterface $taxRateRepository;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        TaxRateRepositoryInterface $taxRateRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->taxRateRepository = $taxRateRepository;
+    public function __construct(private TaxRateRepositoryInterface $taxRateRepository)
+    {
     }
 
     /**

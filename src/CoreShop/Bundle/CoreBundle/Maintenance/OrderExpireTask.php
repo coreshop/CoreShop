@@ -20,24 +20,8 @@ use Pimcore\Maintenance\TaskInterface;
 
 final class OrderExpireTask implements TaskInterface
 {
-    private ConfigurationServiceInterface $configurationService;
-    private OrderExpirationInterface $proposalExpiration;
-    private string $type;
-    private int $days;
-    private array $params;
-
-    public function __construct(
-        ConfigurationServiceInterface $configurationService,
-        OrderExpirationInterface $proposalExpiration,
-        string $type,
-        int $days = 0,
-        array $params = []
-    ) {
-        $this->configurationService = $configurationService;
-        $this->proposalExpiration = $proposalExpiration;
-        $this->type = $type;
-        $this->days = $days;
-        $this->params = $params;
+    public function __construct(private ConfigurationServiceInterface $configurationService, private OrderExpirationInterface $proposalExpiration, private string $type, private int $days = 0, private array $params = [])
+    {
     }
 
     public function execute(): void

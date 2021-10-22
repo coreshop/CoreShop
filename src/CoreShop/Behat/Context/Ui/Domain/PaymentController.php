@@ -31,21 +31,8 @@ use Webmozart\Assert\Assert;
 
 final class PaymentController implements Context
 {
-    private SharedStorageInterface $sharedStorage;
-    private Payum $payum;
-    private RouterInterface $router;
-    private WorkflowStateInfoManagerInterface $workflowStateInfoManager;
-
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        Payum $payum,
-        RouterInterface $router,
-        WorkflowStateInfoManagerInterface $workflowStateInfoManager
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->payum = $payum;
-        $this->router = $router;
-        $this->workflowStateInfoManager = $workflowStateInfoManager;
+    public function __construct(private Payum $payum, private RouterInterface $router, private WorkflowStateInfoManagerInterface $workflowStateInfoManager)
+    {
     }
 
     /**
@@ -54,7 +41,7 @@ final class PaymentController implements Context
     public function iOpenCartSummaryPage(PaymentInterface $payment): void
     {
         $context = RequestContext::fromUri(getenv('PANTHER_EXTERNAL_BASE_URI'));
-        $originalContext = $this->router->getContext();
+        $this->router->getContext();
 
         $this->router->setContext($context);
 

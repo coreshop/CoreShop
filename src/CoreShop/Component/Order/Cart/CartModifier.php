@@ -27,18 +27,8 @@ use Webmozart\Assert\Assert;
 
 class CartModifier implements CartModifierInterface
 {
-    protected StorageListItemQuantityModifierInterface $cartItemQuantityModifier;
-    protected EventDispatcherInterface $eventDispatcher;
-    protected ?StorageListItemResolverInterface $cartItemResolver;
-
-    public function __construct(
-        StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
-        EventDispatcherInterface $eventDispatcher,
-        StorageListItemResolverInterface $cartItemResolver = null
-    ) {
-        $this->cartItemQuantityModifier = $cartItemQuantityModifier;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->cartItemResolver = $cartItemResolver;
+    public function __construct(protected StorageListItemQuantityModifierInterface $cartItemQuantityModifier, protected EventDispatcherInterface $eventDispatcher, protected ?\CoreShop\Component\StorageList\StorageListItemResolverInterface $cartItemResolver = null)
+    {
     }
 
     public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void
@@ -69,10 +59,6 @@ class CartModifier implements CartModifierInterface
         );
     }
 
-    /**
-     * @param StorageListInterface     $storageList
-     * @param StorageListItemInterface $storageListItem
-     */
     private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem): void
     {
         foreach ($storageList->getItems() as $item) {

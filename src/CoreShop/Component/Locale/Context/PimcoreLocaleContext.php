@@ -19,11 +19,8 @@ use Pimcore\Tool;
 
 class PimcoreLocaleContext implements LocaleContextInterface
 {
-    private LocaleServiceInterface $pimcoreLocaleService;
-
-    public function __construct(LocaleServiceInterface $pimcoreLocaleService)
+    public function __construct(private LocaleServiceInterface $pimcoreLocaleService)
     {
-        $this->pimcoreLocaleService = $pimcoreLocaleService;
     }
 
     public function getLocaleCode(): string

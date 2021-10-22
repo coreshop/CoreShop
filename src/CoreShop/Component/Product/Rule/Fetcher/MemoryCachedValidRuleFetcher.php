@@ -20,17 +20,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
 {
-    private ValidRulesFetcherInterface $validRuleFetcher;
-    private RequestStack $requestStack;
     private array $checkedProducts = [];
 
-    public function __construct(
-        ValidRulesFetcherInterface $validRuleFetcher,
-        RequestStack $requestStack
-    )
+    public function __construct(private ValidRulesFetcherInterface $validRuleFetcher, private RequestStack $requestStack)
     {
-        $this->validRuleFetcher = $validRuleFetcher;
-        $this->requestStack = $requestStack;
     }
 
     public function getValidRules(ProductInterface $product, array $context): array

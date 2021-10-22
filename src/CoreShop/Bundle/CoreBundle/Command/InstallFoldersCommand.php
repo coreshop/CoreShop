@@ -23,15 +23,11 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class InstallFoldersCommand extends AbstractInstallCommand
 {
-    protected FolderInstallerProvider $folderInstaller;
-
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
-        FolderInstallerProvider $folderInstaller
+        protected FolderInstallerProvider $folderInstaller
     ) {
-        $this->folderInstaller = $folderInstaller;
-
         parent::__construct($kernel, $directoryChecker);
     }
 
