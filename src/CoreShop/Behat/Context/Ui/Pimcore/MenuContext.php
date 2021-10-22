@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Ui\Pimcore;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Element\Pimcore\MenuElementInterface;
+use CoreShop\Behat\Page\Pimcore\PWAPageInterface;
 use Webmozart\Assert\Assert;
 
 final class MenuContext implements Context
@@ -111,4 +112,5 @@ final class MenuContext implements Context
     {
         Assert::true($this->menuElement->twoMenusShouldBeOpen());
     }
+
 }

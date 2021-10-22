@@ -77,7 +77,6 @@ final class PimcoreDriver extends AbstractDriver
         foreach ($classes as $parent) {
             if ($container->hasDefinition($parent)) {
                 $definition = new ChildDefinition($parent);
-
                 break;
             }
         }
@@ -110,7 +109,8 @@ final class PimcoreDriver extends AbstractDriver
 
         if (!is_array($folder)) {
             $folders = [$metadata->getName() => $folder];
-        } else {
+        }
+        else {
             $folders = $folder;
         }
 

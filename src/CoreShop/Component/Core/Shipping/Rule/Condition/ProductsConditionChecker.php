@@ -45,11 +45,8 @@ class ProductsConditionChecker extends AbstractConditionChecker
             return false;
         }
 
-        $productIdsToCheck = $this->getProductsToCheck(
-            $configuration['products'],
-            $shippable->getStore(),
-            $configuration['include_variants'] ?: false
-        );
+        $productIdsToCheck = $this->getProductsToCheck($configuration['products'], $shippable->getStore(),
+            $configuration['include_variants'] ?: false);
 
         $cartItems = $shippable->getItems();
 

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
 use Webmozart\Assert\Assert;
 

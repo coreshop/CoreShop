@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
 
 class AmountConditionChecker extends AbstractConditionChecker
 {

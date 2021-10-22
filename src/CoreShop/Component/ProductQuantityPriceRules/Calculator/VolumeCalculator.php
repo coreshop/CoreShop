@@ -16,11 +16,11 @@ namespace CoreShop\Component\ProductQuantityPriceRules\Calculator;
 
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
+use Doctrine\Common\Collections\Collection;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Rule\Action\ProductQuantityPriceRuleActionInterface;
-use CoreShop\Component\Registry\ServiceRegistryInterface;
-use Doctrine\Common\Collections\Collection;
 
 class VolumeCalculator implements CalculatorInterface
 {

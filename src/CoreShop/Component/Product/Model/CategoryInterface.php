@@ -25,11 +25,11 @@ interface CategoryInterface extends PimcoreModelInterface, SluggableInterface
 
     public function getDescription(?string $language = null): ?string;
 
-    public function setDescription(?string $description, ?string $language = null);
+    public function setDescription(?string$description, ?string $language = null);
 
-    public function getParentCategory(): ?self;
+    public function getParentCategory(): ?CategoryInterface;
 
-    public function setParentCategory(?self $parentCategory);
+    public function setParentCategory(?CategoryInterface $parentCategory);
 
     /**
      * @return CategoryInterface[]

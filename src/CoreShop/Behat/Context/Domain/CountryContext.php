@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
@@ -53,12 +54,8 @@ final class CountryContext implements Context
         Assert::eq(
             $country->getCurrency()->getId(),
             $currency->getId(),
-            sprintf(
-                '%s country should use currency %s but uses %s instead.',
-                $country->getName(),
-                $currency->getIsoCode(),
-                $country->getCurrency()->getIsoCode()
-            )
+            sprintf('%s country should use currency %s but uses %s instead.', $country->getName(),
+                $currency->getIsoCode(), $country->getCurrency()->getIsoCode())
         );
     }
 
@@ -113,7 +110,7 @@ final class CountryContext implements Context
             [],
             [],
             [
-                'REMOTE_ADDR' => $ipAddress,
+                'REMOTE_ADDR' => $ipAddress
             ]
         );
 

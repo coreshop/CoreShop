@@ -37,7 +37,7 @@ class PimcoreAdminLocaleContext implements LocaleContextInterface
             throw new LocaleNotFoundException('No Request in RequestStack, cannot determine Pimcore Context');
         }
 
-        if (PimcoreContextResolver::CONTEXT_ADMIN !== $this->pimcoreContextResolver->getPimcoreContext($request)) {
+        if ($this->pimcoreContextResolver->getPimcoreContext($request) !== PimcoreContextResolver::CONTEXT_ADMIN) {
             throw new LocaleNotFoundException('Not in Admin Mode');
         }
 

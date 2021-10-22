@@ -78,7 +78,7 @@ final class VersionContext implements Context
         $this->sharedStorage->set('product', $product::getById($id, true));
     }
 
-    private function restoreVersion(Concrete $concrete, string $key): Concrete
+    protected function restoreVersion(Concrete $concrete, string $key): Concrete
     {
         if (!$this->sharedStorage->has($key)) {
             throw new \InvalidArgumentException('No Version remembered');

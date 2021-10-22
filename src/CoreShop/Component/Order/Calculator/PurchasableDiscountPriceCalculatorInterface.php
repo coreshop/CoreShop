@@ -21,6 +21,7 @@ interface PurchasableDiscountPriceCalculatorInterface
 {
     /**
      * @throws NoPurchasableDiscountPriceFoundException
+     *
      */
     public function getDiscountPrice(PurchasableInterface $purchasable, array $context): int;
 }

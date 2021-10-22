@@ -37,7 +37,8 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         OrderInterface $order,
         OrderDocumentInterface $document,
         array $itemsToTransform
-    ): OrderDocumentInterface {
+    ): OrderDocumentInterface
+    {
         Assert::isInstanceOf($document, OrderShipmentInterface::class);
 
         $this->eventDispatcher->dispatchPreEvent('shipment', $document, ['order' => $order, 'items' => $itemsToTransform]);
@@ -48,7 +49,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
         $documentNumber = $this->numberGenerator->generate($document);
 
-        /*
+        /**
          * @var OrderShipmentInterface $document
          * @var OrderInterface $order
          */

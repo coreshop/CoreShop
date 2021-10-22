@@ -25,21 +25,19 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackClassesPass
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackRepositoryPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\ValidatorAutoMappingFixPass;
 use JMS\SerializerBundle\JMSSerializerBundle;
+use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopResourceBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
     public const DRIVER_DOCTRINE_ORM = 'doctrine/orm';
-
     public const DRIVER_PIMCORE = 'pimcore';
 
     public const PIMCORE_MODEL_TYPE_OBJECT = 'object';
-
     public const PIMCORE_MODEL_TYPE_FIELD_COLLECTION = 'fieldcollection';
-
     public const PIMCORE_MODEL_TYPE_BRICK = 'brick';
 
     public function build(ContainerBuilder $container): void

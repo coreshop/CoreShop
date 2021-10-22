@@ -22,6 +22,7 @@ class UnpublishedHelper
      * This function enables usage of unpublished/published in Pimcore and resets the state hideUnpublished
      * after your functions is finished.
      *
+     *
      * @return mixed
      */
     public static function hideUnpublished(\Closure $function, bool $hide = false)

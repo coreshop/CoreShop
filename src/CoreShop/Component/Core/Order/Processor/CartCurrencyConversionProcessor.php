@@ -81,7 +81,7 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
                         $convertedItem = clone $taxItem;
                         $convertedItem->setAmount($this->convert($taxItem->getAmount(), $cart));
 
-                        /* @psalm-suppress InvalidArgument */
+                        /** @psalm-suppress InvalidArgument */
                         $convertedItemTaxesFieldCollection->add($convertedItem);
                     }
                 }
@@ -116,7 +116,7 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
         $cart->setConvertedTaxes($convertedTaxesFieldCollection);
     }
 
-    private function convert(?int $value, OrderInterface $cart): int
+    protected function convert(?int $value, OrderInterface $cart): int
     {
         if (null === $value) {
             return 0;

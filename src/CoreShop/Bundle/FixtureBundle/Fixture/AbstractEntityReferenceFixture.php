@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FixtureBundle\Fixture;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\Persistence\ObjectManager;
 
 abstract class AbstractEntityReferenceFixture extends AbstractFixture
 {

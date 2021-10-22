@@ -56,17 +56,17 @@ class CustomerRegistrationType extends AbstractResourceType
             ->add('user', UserRegistrationType::class, [
                 'label' => false,
                 'constraints' => [new Valid(['groups' => $this->validationGroups])],
-                'allow_username' => 'username' === $this->loginIdentifier,
+                'allow_username' => $this->loginIdentifier === 'username',
             ])
             ->add('salutation', SalutationChoiceType::class, [
                 'label' => 'coreshop.form.customer.salutation',
             ])
             ->add('gender', ChoiceType::class, [
                 'label' => 'coreshop.form.customer.gender',
-                'choices' => [
+                'choices' => array(
                     'coreshop.form.customer.gender.male' => 'male',
                     'coreshop.form.customer.gender.female' => 'female',
-                ],
+                ),
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'coreshop.form.customer.firstname',
@@ -102,7 +102,8 @@ class CustomerRegistrationType extends AbstractResourceType
             ])
             ->add('submit', SubmitType::class);
 
-        if ('username' !== $this->loginIdentifier) {
+
+        if ($this->loginIdentifier !== 'username') {
             $builder->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event) {
                 $data = $event->getData();
 
@@ -132,7 +133,7 @@ class CustomerRegistrationType extends AbstractResourceType
 
         $resolver->setDefaults([
             'csrf_protection' => true,
-            'allow_extra_fields' => false,
+            'allow_extra_fields' => false
         ]);
     }
 }

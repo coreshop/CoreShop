@@ -20,7 +20,6 @@ use Pimcore\Model\DataObject\ClassDefinition\DynamicOptionsProvider\MultiSelectO
 class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
 {
     protected array $originalRoles;
-
     protected array $invalidRoles = [
         'ROLE_PIMCORE_ADMIN',
     ];
@@ -39,7 +38,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
     {
         $roles = [];
 
-        /*
+        /**
          * Get all unique roles.
          */
         foreach ($this->originalRoles as $originalRole => $inheritedRoles) {

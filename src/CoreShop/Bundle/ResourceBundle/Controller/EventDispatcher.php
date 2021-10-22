@@ -17,8 +17,8 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 final class EventDispatcher implements EventDispatcherInterface
 {

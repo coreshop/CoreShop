@@ -20,7 +20,6 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 {
     protected array $jsonDefinition;
-
     protected array $fieldDefinitions;
 
     abstract public function save(): bool;
@@ -71,7 +70,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
             $fieldName,
             false,
             function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
-                if (0 === $index) {
+                if ($index === 0) {
                     $index = 1;
                 }
 
@@ -129,7 +128,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
             $fieldName,
             true,
             function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
-                if (0 === $index) {
+                if ($index === 0) {
                     $index = 1;
                 }
 

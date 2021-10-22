@@ -93,7 +93,7 @@ class OrderShipmentController extends PimcoreController
 
         $handledForm = $form->handleRequest($request);
 
-        if ('POST' === $request->getMethod()) {
+        if ($request->getMethod() === 'POST') {
             if (!$handledForm->isValid()) {
                 return $this->viewHandler->handle(
                     [

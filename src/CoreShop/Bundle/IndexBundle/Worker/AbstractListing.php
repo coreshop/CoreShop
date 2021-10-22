@@ -96,7 +96,7 @@ abstract class AbstractListing implements ListingInterface
     public function getLocale(): ?string
     {
         //TODO: Use Locale Services
-        if (null === $this->locale) {
+        if (is_null($this->locale)) {
             $this->locale = Tool::getDefaultLanguage();
         }
 

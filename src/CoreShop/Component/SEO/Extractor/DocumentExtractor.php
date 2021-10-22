@@ -27,7 +27,7 @@ final class DocumentExtractor implements ExtractorInterface
 
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
-        /*
+        /**
          * @var Page $object
          */
         Assert::isInstanceOf($object, Page::class);

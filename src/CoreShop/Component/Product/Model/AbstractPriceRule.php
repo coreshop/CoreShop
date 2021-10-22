@@ -22,10 +22,8 @@ abstract class AbstractPriceRule implements PriceRuleInterface
     use RuleTrait  {
         initializeRuleCollections as private initializeRules;
     }
-
     use TranslatableTrait {
         initializeTranslationCollection as private initializeTranslationsCollection;
-
         getTranslation as private doGetTranslation;
     }
 

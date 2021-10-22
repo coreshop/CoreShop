@@ -22,10 +22,9 @@ use Behat\Mink\Session;
 abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
 {
     protected ?DocumentElement $document = null;
-
     protected ?NodeElement $tabElement = null;
 
-    public function __construct(protected Session $session, protected array | \ArrayAccess $minkParameters = [])
+    public function __construct(protected Session $session, protected array|\ArrayAccess $minkParameters = [])
     {
     }
 
@@ -43,7 +42,7 @@ abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
     protected function getTabElement(): NodeElement
     {
         if (null === $this->tabElement) {
-            $this->tabElement = $this->getDocument()->find('css', '#pimcore_panel_tabs #' . $this->getLayoutId());
+            $this->tabElement = $this->getDocument()->find('css', '#pimcore_panel_tabs #'.$this->getLayoutId());
         }
 
         return $this->tabElement;
@@ -72,12 +71,12 @@ abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
 
     protected function extjsComponentQuery(string $query, string $componentId = null): NodeElement
     {
-        $js = "Elements.DOMPath.xPath(Ext.getCmp('" . ($componentId ?? $this->getLayoutId()) . "').query('" . $query . "')[0].el.dom, true)";
+        $js = "Elements.DOMPath.xPath(Ext.getCmp('".($componentId ?? $this->getLayoutId())."').query('".$query."')[0].el.dom, true)";
 
         $xpath = $this->session->evaluateScript($js);
 
         if (!$this->getDocument()->has('xpath', $xpath)) {
-            throw new ElementNotFoundException($this->session, 'Element add-button not found', 'xpath', $js);
+            throw new ElementNotFoundException($this->session ,'Element add-button not found', 'xpath', $js);
         }
 
         return $this->getDocument()->find('xpath', $xpath);
@@ -85,12 +84,12 @@ abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
 
     protected function extsDocumentQuery(string $query): NodeElement
     {
-        $js = "Elements.DOMPath.xPath(Ext.ComponentQuery.query('" . $query . "')[0].el.dom, true)";
+        $js = "Elements.DOMPath.xPath(Ext.ComponentQuery.query('".$query."')[0].el.dom, true)";
 
         $xpath = $this->session->evaluateScript($js);
 
         if (!$this->getDocument()->has('xpath', $xpath)) {
-            throw new ElementNotFoundException($this->session, 'Element add-button not found', 'xpath', $js);
+            throw new ElementNotFoundException($this->session ,'Element add-button not found', 'xpath', $js);
         }
 
         return $this->getDocument()->find('xpath', $xpath);

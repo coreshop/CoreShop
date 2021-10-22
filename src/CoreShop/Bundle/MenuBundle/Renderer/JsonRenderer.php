@@ -29,16 +29,16 @@ class JsonRenderer implements RendererInterface
         private PimcoreGuard $guard,
         array $defaultOptions = []
     ) {
-        $this->defaultOptions = array_merge([
+        $this->defaultOptions = array_merge(array(
             'depth' => null,
             'matchingDepth' => null,
             'template' => $template,
             'compressed' => false,
             'clear_matcher' => true,
-        ], $defaultOptions);
+        ), $defaultOptions);
     }
 
-    public function render(ItemInterface $item, array $options = []): string
+    public function render(ItemInterface $item, array $options = array()): string
     {
         $options = array_merge($this->defaultOptions, $options);
 
@@ -89,9 +89,9 @@ class JsonRenderer implements RendererInterface
 
     public function reorderMenuItems(ItemInterface $menu): void
     {
-        $menuOrderArray = [];
-        $addLast = [];
-        $alreadyTaken = [];
+        $menuOrderArray = array();
+        $addLast = array();
+        $alreadyTaken = array();
 
         foreach ($menu->getChildren() as $menuItem) {
             if ($menuItem->hasChildren()) {
@@ -100,7 +100,7 @@ class JsonRenderer implements RendererInterface
 
             $orderNumber = $menuItem->getExtra('order');
 
-            if (null != $orderNumber) {
+            if ($orderNumber != null) {
                 if (!isset($menuOrderArray[$orderNumber])) {
                     $menuOrderArray[$orderNumber] = $menuItem->getName();
                 } else {
@@ -123,15 +123,15 @@ class JsonRenderer implements RendererInterface
 
                 $position = array_search($key, $keysArray);
 
-                if (false === $position) {
+                if ($position === false) {
                     continue;
                 }
 
                 $menuOrderArray = array_merge(
                     array_slice($menuOrderArray, 0, $position),
-                    [$value],
-                    array_slice($menuOrderArray, $position)
-                );
+                    array($value),
+                array_slice($menuOrderArray, $position)
+                    );
             }
         }
 

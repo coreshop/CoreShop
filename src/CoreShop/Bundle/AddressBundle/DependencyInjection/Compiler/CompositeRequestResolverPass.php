@@ -25,7 +25,7 @@ final class CompositeRequestResolverPass extends PrioritizedCompositeServicePass
     public function __construct()
     {
         parent::__construct(
-            RequestResolverInterface::class,
+                    RequestResolverInterface::class,
             CompositeRequestResolver::class,
             self::COUNTRY_REQUEST_RESOLVER_SERVICE_TAG,
             'addResolver'

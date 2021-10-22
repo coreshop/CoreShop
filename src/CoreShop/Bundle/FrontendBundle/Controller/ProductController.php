@@ -73,7 +73,7 @@ class ProductController extends FrontendController
             $isFrontendRequestByAdmin = true;
         }
 
-        if (false === $isFrontendRequestByAdmin && (!$product->isPublished() || true !== $product->getActive())) {
+        if ($isFrontendRequestByAdmin === false && (!$product->isPublished() || $product->getActive() !== true)) {
             throw new NotFoundHttpException('product not found');
         }
 

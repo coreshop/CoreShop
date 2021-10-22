@@ -20,7 +20,7 @@ interface PimcoreSEOAwareInterface extends SEOAwareInterface
 
     public function setPimcoreMetaTitle(?string $pimcoreMetaTitle, ?string $language = null);
 
-    public function getPimcoreMetaDescription(?string $language = null): ?string;
+    public function getPimcoreMetaDescription(?string$language = null): ?string;
 
     public function setPimcoreMetaDescription(?string $pimcoreMetaDescription, ?string $language = null);
 }

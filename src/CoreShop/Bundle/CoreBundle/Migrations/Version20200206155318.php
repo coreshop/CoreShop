@@ -44,9 +44,12 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
             'documentsAllowed' => false,
             'width' => null,
             'assetUploadPath' => null,
-            'assetTypes' => [],
-            'documentTypes' => [],
-            'classes' => [],
+            'assetTypes' =>
+                array(),
+            'documentTypes' =>
+                array(),
+            'classes' =>
+                array(),
             'pathFormatterClass' => '',
             'name' => 'user',
             'title' => 'coreshop.customer.user',
@@ -109,7 +112,7 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
              */
             $user = $this->container->get('coreshop.factory.user')->createNew();
             $user->setLoginIdentifier(
-                'username' === $this->container->getParameter('coreshop.customer.security.login_identifier') && method_exists($customer, 'getUsername') ?
+                $this->container->getParameter('coreshop.customer.security.login_identifier') === 'username' && method_exists($customer, 'getUsername') ?
                     $customer->getUsername() :
                     $customer->getEmail()
             );

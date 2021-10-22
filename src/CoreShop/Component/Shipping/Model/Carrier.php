@@ -27,10 +27,8 @@ use Pimcore\Model\Asset;
 class Carrier extends AbstractResource implements CarrierInterface
 {
     use TimestampableTrait;
-
     use TranslatableTrait {
         __construct as initializeTranslationsCollection;
-
         getTranslation as private doGetTranslation;
     }
 

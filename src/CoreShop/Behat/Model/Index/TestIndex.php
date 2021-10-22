@@ -1,7 +1,5 @@
-<?php
-
-/** @noinspection ReturnTypeCanBeDeclaredInspection */
-/*
+<?php /** @noinspection ReturnTypeCanBeDeclaredInspection */
+/**
  * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)

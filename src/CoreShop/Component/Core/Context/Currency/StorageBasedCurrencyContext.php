@@ -20,6 +20,7 @@ use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 final class StorageBasedCurrencyContext implements CurrencyContextInterface
 {
@@ -37,7 +38,8 @@ final class StorageBasedCurrencyContext implements CurrencyContextInterface
 
         try {
             $currency = $this->currencyStorage->get($store);
-        } catch (CurrencyNotFoundException $ex) {
+        }
+        catch (CurrencyNotFoundException $ex) {
             throw new CurrencyNotFoundException(null, $ex);
         }
 

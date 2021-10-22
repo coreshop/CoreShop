@@ -25,7 +25,8 @@ class ObjectIdSumInterpreter implements InterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed {
+    ): mixed
+    {
         $sum = 0;
         if (is_array($value)) {
             foreach ($value as $v) {

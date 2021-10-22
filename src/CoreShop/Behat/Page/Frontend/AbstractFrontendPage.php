@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
+use Behat\Mink\Session;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
+use Symfony\Component\Routing\RouterInterface;
 
 abstract class AbstractFrontendPage extends SymfonyPage implements FrontendPageInterface
 {

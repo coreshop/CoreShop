@@ -64,7 +64,7 @@ class TaxCollector implements TaxCollectorInterface
          */
         $tax = $this->taxRateRepository->find($taxId);
 
-        if (0 === $amount) {
+        if ($amount === 0) {
             return;
         }
 

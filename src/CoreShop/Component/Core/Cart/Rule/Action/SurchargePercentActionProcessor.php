@@ -46,7 +46,7 @@ class SurchargePercentActionProcessor implements CartPriceRuleActionProcessorInt
     protected function getDiscount(OrderInterface $cart, array $configuration): int
     {
         $total = $cart->getSubtotal(false);
-        $amount = (int)round(($configuration['percent'] / 100) * $total);
+        $amount = (int) round(($configuration['percent'] / 100) * $total);
 
         return $this->getApplicableAmount($amount, $amount);
     }

@@ -16,21 +16,13 @@ namespace CoreShop\Component\Order;
 
 final class OrderPaymentStates
 {
-    public const STATE_NEW = 'new';
-
-    public const STATE_PARTIALLY_AUTHORIZED = 'partially_authorized';
-
-    public const STATE_AUTHORIZED = 'authorized';
-
-    public const STATE_AWAITING_PAYMENT = 'awaiting_payment';
-
-    public const STATE_PARTIALLY_PAID = 'partially_paid';
-
-    public const STATE_CANCELLED = 'cancelled';
-
-    public const STATE_PAID = 'paid';
-
-    public const STATE_PARTIALLY_REFUNDED = 'partially_refunded';
-
-    public const STATE_REFUNDED = 'refunded';
+    const STATE_NEW = 'new';
+    const STATE_PARTIALLY_AUTHORIZED = 'partially_authorized';
+    const STATE_AUTHORIZED = 'authorized';
+    const STATE_AWAITING_PAYMENT = 'awaiting_payment';
+    const STATE_PARTIALLY_PAID = 'partially_paid';
+    const STATE_CANCELLED = 'cancelled';
+    const STATE_PAID = 'paid';
+    const STATE_PARTIALLY_REFUNDED = 'partially_refunded';
+    const STATE_REFUNDED = 'refunded';
 }

@@ -35,7 +35,7 @@ final class PaymentProviderType extends AbstractResourceType
                 'required' => false,
             ])
             ->add('logo', PimcoreAssetChoiceType::class, [
-                'required' => false,
+                'required' => false
             ])
             ->add('active', CheckboxType::class, [
                 'required' => false,

@@ -52,7 +52,8 @@ abstract class RegisterSimpleRegistryTypePass implements CompilerPassInterface
 
                 if ($isPrioritizedRegistry) {
                     $registry->addMethodCall('register', [$tag['type'], $tag['priority'] ?? 1000, new Reference($id)]);
-                } else {
+                }
+                else {
                     $registry->addMethodCall('register', [$tag['type'], new Reference($id)]);
                 }
             }

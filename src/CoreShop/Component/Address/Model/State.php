@@ -25,12 +25,9 @@ use CoreShop\Component\Resource\Model\TranslatableTrait;
 class State extends AbstractResource implements StateInterface, \Stringable
 {
     use ToggleableTrait;
-
     use TimestampableTrait;
-
     use TranslatableTrait {
         TranslatableTrait::__construct as private initializeTranslationsCollection;
-
         TranslatableTrait::getTranslation as private doGetTranslation;
     }
 

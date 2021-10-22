@@ -18,6 +18,7 @@ use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Exception\UnknownDriverException;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use PackageVersions\Versions;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -33,11 +34,13 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
     {
         if (null !== $this->getModelNamespace()) {
             foreach ($this->getSupportedDrivers() as $driver) {
-                [$compilerPassClassName, $compilerPassMethod] = $this->getMappingCompilerPassInfo($driver);
+                list($compilerPassClassName, $compilerPassMethod) = $this->getMappingCompilerPassInfo($driver);
 
                 if (class_exists($compilerPassClassName)) {
                     if (!method_exists($compilerPassClassName, $compilerPassMethod)) {
-                        throw new InvalidConfigurationException("The 'mappingFormat' value is invalid, must be 'xml', 'yml' or 'annotation'.");
+                        throw new InvalidConfigurationException(
+                            "The 'mappingFormat' value is invalid, must be 'xml', 'yml' or 'annotation'."
+                        );
                     }
 
                     switch ($this->mappingFormat) {
@@ -50,6 +53,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
                             ));
 
                             break;
+
                         case ResourceBundleInterface::MAPPING_ANNOTATION:
                             $container->addCompilerPass($compilerPassClassName::$compilerPassMethod(
                                 [$this->getModelNamespace()],
@@ -73,7 +77,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
     public function getVersion(): string
     {
         if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
-            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion().' ('.$this->getComposerVersion().')';
         }
 
         return $this->getComposerVersion();

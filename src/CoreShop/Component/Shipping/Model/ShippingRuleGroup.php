@@ -23,7 +23,6 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 class ShippingRuleGroup implements ShippingRuleGroupInterface
 {
     use TimestampableTrait;
-
     use SetValuesTrait;
 
     /**

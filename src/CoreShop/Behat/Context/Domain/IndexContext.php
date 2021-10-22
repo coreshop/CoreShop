@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -96,11 +97,11 @@ final class IndexContext implements Context
         Assert::isArray($productEntry, sprintf('Could not find index entry for object %s', $object->getId()));
 
         Assert::same(
-            (int)$productEntry['o_id'],
+            (int) $productEntry['o_id'],
             $object->getId(),
             sprintf(
                 'Expected to find id %s in index but found %s instead',
-                (int)$productEntry['o_id'],
+                (int) $productEntry['o_id'],
                 $object->getId()
             )
         );
@@ -137,7 +138,7 @@ final class IndexContext implements Context
         $this->indexEntryShouldHaveValue($index, $object, $column, $value, true);
     }
 
-    /**
+        /**
      * @Then /^the (index) relational column "([^"]+)" for (product "[^"]+") should have value "([^"]+)"$/
      * @Then /^the (index) relational column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
      * @Then /^the (index) relational column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/

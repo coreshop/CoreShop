@@ -24,7 +24,7 @@ class CompareRenderer extends AbstractMysqlDynamicRenderer
 {
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): string
     {
-        /*
+        /**
          * @var CompareCondition $condition
          */
         Assert::isInstanceOf($condition, CompareCondition::class);

@@ -21,20 +21,17 @@ use CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner;
 use CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
-use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductVariantUnitSolidifierController extends AdminController
 {
-    public const STATUS_ERROR_NO_VARIANTS = 'error_no_variants';
-
-    public const STATUS_ERROR_NO_UNIT_DEFINITIONS = 'error_nno_unit_definitions';
-
-    public const DISPATCH_STRATEGY_ONLY_UNIT_DEFINITIONS = 'strategy_only_unit_definitions';
-
-    public const DISPATCH_STRATEGY_UNIT_DEFINITIONS_AND_QPR = 'strategy_only_unit_definitions_and_qpr';
+    const STATUS_ERROR_NO_VARIANTS = 'error_no_variants';
+    const STATUS_ERROR_NO_UNIT_DEFINITIONS = 'error_nno_unit_definitions';
+    const DISPATCH_STRATEGY_ONLY_UNIT_DEFINITIONS = 'strategy_only_unit_definitions';
+    const DISPATCH_STRATEGY_UNIT_DEFINITIONS_AND_QPR = 'strategy_only_unit_definitions_and_qpr';
 
     public function checkStatusAction(Request $request, int $objectId): Response
     {
@@ -44,7 +41,7 @@ class ProductVariantUnitSolidifierController extends AdminController
         if (!$object instanceof ProductInterface) {
             return new JsonResponse([
                 'success' => false,
-                'message' => sprintf('%s is not a valid product', $objectId),
+                'message' => sprintf('%s is not a valid product', $objectId)
             ]);
         }
 
@@ -53,13 +50,13 @@ class ProductVariantUnitSolidifierController extends AdminController
 
         $variants = $object->getChildren([AbstractObject::OBJECT_TYPE_VARIANT], true);
 
-        if (0 === count($variants)) {
+        if (count($variants) === 0) {
             $errorStatus = self::STATUS_ERROR_NO_VARIANTS;
-        } elseif (false === $object->hasUnitDefinitions()) {
+        } elseif ($object->hasUnitDefinitions() === false) {
             $errorStatus = self::STATUS_ERROR_NO_UNIT_DEFINITIONS;
         }
 
-        if (false === $errorStatus) {
+        if ($errorStatus === false) {
             $strategy = self::DISPATCH_STRATEGY_ONLY_UNIT_DEFINITIONS;
             if (count($object->getQuantityPriceRules()) > 0) {
                 $strategy = self::DISPATCH_STRATEGY_UNIT_DEFINITIONS_AND_QPR;
@@ -67,9 +64,9 @@ class ProductVariantUnitSolidifierController extends AdminController
         }
 
         return new JsonResponse([
-            'success' => true,
+            'success'     => true,
             'errorStatus' => $errorStatus,
-            'strategy' => $strategy,
+            'strategy'    => $strategy
         ]);
     }
 
@@ -84,13 +81,14 @@ class ProductVariantUnitSolidifierController extends AdminController
         if (!$object instanceof ProductInterface) {
             return new JsonResponse([
                 'success' => false,
-                'message' => sprintf('%s is not a valid product', $objectId),
+                'message' => sprintf('%s is not a valid product', $objectId)
             ]);
         }
 
         $dispatchedVariants = [];
 
         foreach ($object->getChildren([AbstractObject::OBJECT_TYPE_VARIANT], true) as $variant) {
+
             if (!$variant instanceof ProductInterface) {
                 continue;
             }
@@ -101,11 +99,7 @@ class ProductVariantUnitSolidifierController extends AdminController
                 $success = false;
                 $message = sprintf(
                     'error while cloning unit definition from product %d to variant %d. Error was: %s',
-                    $object->getId(),
-                    $variant->getId(),
-                    $e->getMessage()
-                );
-
+                    $object->getId(), $variant->getId(), $e->getMessage());
                 break;
             }
 
@@ -115,11 +109,7 @@ class ProductVariantUnitSolidifierController extends AdminController
                 $success = false;
                 $message = sprintf(
                     'error while cloning quantity price rules from product %d to variant %d. Error was: %s',
-                    $object->getId(),
-                    $variant->getId(),
-                    $e->getMessage()
-                );
-
+                    $object->getId(), $variant->getId(), $e->getMessage());
                 break;
             }
 
@@ -128,18 +118,19 @@ class ProductVariantUnitSolidifierController extends AdminController
             } catch (\Throwable $e) {
                 $success = false;
                 $message = sprintf('error while saving variant %d. Error was: %s', $variant->getId(), $e->getMessage());
-
                 break;
             }
 
             $dispatchedVariants[] = $variant->getId();
+
         }
 
         return new JsonResponse([
-            'success' => $success,
-            'message' => $message,
-            'affectedVariants' => $dispatchedVariants,
+            'success'          => $success,
+            'message'          => $message,
+            'affectedVariants' => $dispatchedVariants
         ]);
+
     }
 
     protected function getProductRepository(): ProductRepositoryInterface
@@ -156,4 +147,5 @@ class ProductVariantUnitSolidifierController extends AdminController
     {
         return $this->get(ProductUnitDefinitionsCloner::class);
     }
+
 }

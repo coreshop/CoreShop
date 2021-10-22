@@ -95,7 +95,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         );
 
         $confirmLink = $event->getConfirmLink();
-        $confirmLink .= (parse_url($confirmLink, \PHP_URL_QUERY) ? '&' : '?') . 'token=' . $customer->getNewsletterToken();
+        $confirmLink .= (parse_url($confirmLink, PHP_URL_QUERY) ? '&' : '?').'token='.$customer->getNewsletterToken();
 
         $params = $this->prepareUserParameters($user);
         $params = array_merge(

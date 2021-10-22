@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\TrackingBundle\Resolver;
 
-use Pimcore\Analytics\Google\Config\ConfigProvider as GoogleConfigProvider;
 use Pimcore\Analytics\SiteId\SiteIdProvider;
+use Pimcore\Analytics\Google\Config\ConfigProvider as GoogleConfigProvider;
 use Pimcore\Config\Config as ConfigObject;
 
 class ConfigResolver implements ConfigResolverInterface

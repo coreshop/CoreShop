@@ -16,14 +16,12 @@ namespace CoreShop\Bundle\ResourceBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
+
 final class UniqueEntity extends Constraint
 {
     public string $message = 'This entity already exists.';
-
     public array $fields = [];
-
     public array $values = [];
-
     public bool $allowSameEntity = false;
 
     public function validatedBy(): string

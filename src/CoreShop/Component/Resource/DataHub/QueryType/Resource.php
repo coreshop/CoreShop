@@ -22,7 +22,6 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 class Resource extends Input
 {
     protected DoctrineProvider $doctrineProvider;
-
     protected string $className;
 
     public function __construct(Service $graphQlService, DoctrineProvider $doctrineProvider, string $className)
@@ -45,7 +44,7 @@ class Resource extends Input
             'resolve' => $this->getResolver($attribute, $fieldDefinition, $class),
         ],
             $container
-        );
+            );
     }
 
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)

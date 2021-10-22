@@ -37,7 +37,7 @@ final class NestedConfigurationType extends AbstractNestedConfigurationType
         $builder
             ->add('conditions', ShippingRuleConditionCollectionType::class, [
                 'constraints' => [new Valid(['groups' => $this->validationGroups])],
-                'nested' => true,
+                'nested' => true
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

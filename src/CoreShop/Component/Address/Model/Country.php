@@ -26,12 +26,9 @@ use Doctrine\Common\Collections\Collection;
 class Country extends AbstractResource implements CountryInterface, \Stringable
 {
     use ToggleableTrait;
-
     use TimestampableTrait;
-
     use TranslatableTrait {
         TranslatableTrait::__construct as private initializeTranslationsCollection;
-
         TranslatableTrait::getTranslation as private doGetTranslation;
     }
 

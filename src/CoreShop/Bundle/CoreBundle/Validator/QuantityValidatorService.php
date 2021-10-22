@@ -18,6 +18,7 @@ class QuantityValidatorService
 {
     /**
      * @param mixed $minimumLimit
+     *
      */
     public function isLowerThenMinLimit($minimumLimit, float $quantity): bool
     {
@@ -30,6 +31,7 @@ class QuantityValidatorService
 
     /**
      * @param mixed $maximumLimit
+     *
      */
     public function isHigherThenMaxLimit($maximumLimit, float $quantity): bool
     {

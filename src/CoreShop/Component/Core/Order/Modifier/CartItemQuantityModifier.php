@@ -25,7 +25,7 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
 {
     public function modify(StorageListItemInterface $item, float $targetQuantity): void
     {
-        /*
+        /**
          * @var OrderItemInterface $item
          */
         Assert::isInstanceOf($item, OrderItemInterface::class);
@@ -57,12 +57,12 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         }
 
         $scale = $this->getScale($item);
-        if (null === $scale) {
+        if ($scale === null) {
             return $targetQuantity;
         }
 
-        $quantity = (float)str_replace(',', '.', (string)$targetQuantity);
-        $formattedQuantity = round($quantity, $scale, \PHP_ROUND_HALF_UP);
+        $quantity = (float) str_replace(',', '.', (string)$targetQuantity);
+        $formattedQuantity = round($quantity, $scale, PHP_ROUND_HALF_UP);
 
         if ($quantity !== $formattedQuantity) {
             return $formattedQuantity;

@@ -48,6 +48,7 @@ final class MenuBuilderPass implements CompilerPassInterface
         $map = [];
         foreach ($container->findTaggedServiceIds(self::MENU_BUILDER_TAG) as $id => $attributes) {
             foreach ($attributes as $tag) {
+
                 $definition = $container->findDefinition($id);
 
                 if (!isset($tag['type'])) {

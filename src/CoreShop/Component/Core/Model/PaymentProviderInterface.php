@@ -19,4 +19,5 @@ use CoreShop\Component\Store\Model\StoresAwareInterface;
 
 interface PaymentProviderInterface extends BasePaymentProviderInterface, StoresAwareInterface
 {
+
 }

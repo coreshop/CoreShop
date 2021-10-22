@@ -23,7 +23,6 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 class Payment implements PaymentInterface
 {
     use SetValuesTrait;
-
     use TimestampableTrait;
 
     /**

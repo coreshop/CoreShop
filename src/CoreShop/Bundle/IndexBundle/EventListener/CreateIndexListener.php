@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\IndexBundle\EventListener;
 
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\Intl\Exception\InvalidArgumentException;
 use Webmozart\Assert\Assert;

@@ -17,7 +17,6 @@ namespace CoreShop\Component\Index\Condition;
 class InCondition implements ConditionInterface
 {
     private string $fieldName;
-
     private array $values;
 
     public function __construct(string $fieldName, array $values)

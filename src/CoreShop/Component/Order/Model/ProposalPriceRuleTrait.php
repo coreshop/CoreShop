@@ -52,7 +52,7 @@ trait ProposalPriceRuleTrait
             }
         }
 
-        /*
+        /**
          * @var ProposalCartPriceRuleItemInterface[] $rules
          */
         return $rules;
@@ -87,7 +87,7 @@ trait ProposalPriceRuleTrait
         $items = $this->getPriceRuleItems();
 
         if ($items instanceof Fieldcollection) {
-            for ($i = 0, $c = $items->getCount(); $i < $c; ++$i) {
+            for ($i = 0, $c = $items->getCount(); $i < $c; $i++) {
                 $item = $items->get($i);
 
                 if (!$item instanceof ProposalCartPriceRuleItem) {

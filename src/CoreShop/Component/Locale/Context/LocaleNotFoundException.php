@@ -24,15 +24,16 @@ final class LocaleNotFoundException extends \RuntimeException
     /**
      * @param string $localeCode
      */
-    public static function notFound($localeCode): self
+    public static function notFound($localeCode): LocaleNotFoundException
     {
         return new self(sprintf('Locale "%s" cannot be found!', $localeCode));
     }
 
     /**
      * @param string $localeCode
+     *
      */
-    public static function notAvailable($localeCode, array $availableLocalesCodes): self
+    public static function notAvailable($localeCode, array $availableLocalesCodes): LocaleNotFoundException
     {
         return new self(sprintf(
             'Locale "%s" is not available! The available ones are: "%s".',

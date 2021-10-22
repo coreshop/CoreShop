@@ -12,6 +12,7 @@
 
 declare(strict_types=1);
 
+
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\DataTransformer\PimcoreAssetDataTransformer;
@@ -34,7 +35,7 @@ class PimcoreAssetChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'invalid_message' => 'Pimcore Asset does not exist',
+            'invalid_message' => 'Pimcore Asset does not exist'
         ]);
     }
 

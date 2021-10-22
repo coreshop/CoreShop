@@ -41,7 +41,11 @@ final class CommandDirectoryChecker
             $output->writeln('<error>Cannot run command due to unexisting directory (tried to create it automatically, failed).</error>');
             $output->writeln('');
 
-            throw new \RuntimeException(sprintf('Create directory "%s" and run command "<comment>%s</comment>"', realpath($directory), $this->name));
+            throw new \RuntimeException(sprintf(
+                'Create directory "%s" and run command "<comment>%s</comment>"',
+                realpath($directory),
+                $this->name
+            ));
         }
     }
 
@@ -60,7 +64,11 @@ final class CommandDirectoryChecker
             $output->writeln('<error>Cannot run command due to bad directory permissions (tried to change permissions to 0755).</error>');
             $output->writeln('');
 
-            throw new \RuntimeException(sprintf('Set "%s" writable and run command "<comment>%s</comment>"', realpath(dirname($directory)), $this->name));
+            throw new \RuntimeException(sprintf(
+                'Set "%s" writable and run command "<comment>%s</comment>"',
+                realpath(dirname($directory)),
+                $this->name
+            ));
         }
     }
 

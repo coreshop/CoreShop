@@ -20,6 +20,8 @@ interface ExportReportInterface
 {
     /**
      * Get data for exporting report.
+     *
+     *
      */
     public function getExportReportData(ParameterBag $parameterBag): array;
 }

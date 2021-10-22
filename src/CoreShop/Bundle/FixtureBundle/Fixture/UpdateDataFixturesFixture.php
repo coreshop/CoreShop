@@ -41,7 +41,7 @@ class UpdateDataFixturesFixture extends AbstractFixture
             $loadedAt = new \DateTime('now', new \DateTimeZone('UTC'));
             foreach ($this->dataFixturesClassNames as $className => $version) {
                 $dataFixture = null;
-                if (null !== $version) {
+                if ($version !== null) {
                     $dataFixture = $this->fixtureRepository->findOneBy(['className' => $className]);
                 }
                 if (!$dataFixture) {

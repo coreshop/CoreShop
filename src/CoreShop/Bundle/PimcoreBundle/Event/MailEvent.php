@@ -21,7 +21,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 final class MailEvent extends GenericEvent
 {
     protected array $params;
-
     protected bool $shouldSendMail = true;
 
     public function __construct($subject, protected Email $emailDocument, protected Mail $mail, array $params = [])

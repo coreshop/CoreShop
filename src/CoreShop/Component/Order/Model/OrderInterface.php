@@ -28,7 +28,16 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Objectbrick;
 
-interface OrderInterface extends PimcoreModelInterface, CurrencyAwareInterface, StoreAwareInterface, LocaleAwareInterface, AdjustableInterface, ConvertedAdjustableInterface, CustomerAwareInterface, PayableInterface, StorageListInterface
+interface OrderInterface extends
+    PimcoreModelInterface,
+    CurrencyAwareInterface,
+    StoreAwareInterface,
+    LocaleAwareInterface,
+    AdjustableInterface,
+    ConvertedAdjustableInterface,
+    CustomerAwareInterface,
+    PayableInterface,
+    StorageListInterface
 {
     public function getToken(): ?string;
 
@@ -68,7 +77,7 @@ interface OrderInterface extends PimcoreModelInterface, CurrencyAwareInterface, 
 
     public function getBaseCurrency(): ?CurrencyInterface;
 
-    public function setBaseCurrency(?CurrencyInterface $currency);
+    public function setBaseCurrency(?CurrencyInterface  $currency);
 
     public function getPaymentTotal(): ?int;
 

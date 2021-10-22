@@ -18,4 +18,5 @@ use CoreShop\Behat\Page\Pimcore\PimcoreTabPageInterface;
 
 interface ExchangeRatePageInterface extends PimcoreTabPageInterface
 {
+
 }

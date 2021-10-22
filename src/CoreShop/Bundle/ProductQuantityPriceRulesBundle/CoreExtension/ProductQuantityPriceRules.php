@@ -35,7 +35,9 @@ use Webmozart\Assert\Assert;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
  */
-class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface, Data\CustomVersionMarshalInterface
+class ProductQuantityPriceRules extends Data implements
+    Data\CustomResourcePersistingInterface,
+    Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -240,12 +242,13 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         $this->getEventDispatcher()->dispatch($event, Events::RULES_DATA_FROM_EDITMODE_VALIDATION);
 
         foreach ($event->getData() as $rule) {
+
             $storedRule = null;
             $ruleData = null;
 
             $ruleId = isset($rule['id']) && is_numeric($rule['id']) ? $rule['id'] : null;
 
-            if (null !== $ruleId) {
+            if ($ruleId !== null) {
                 $storedRule = $specificPriceRuleRepository->find($ruleId);
             }
 
@@ -271,7 +274,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
                     $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
                 }
 
-                throw new \Exception(implode(\PHP_EOL, $errors));
+                throw new \Exception(implode(PHP_EOL, $errors));
             }
         }
 
@@ -372,12 +375,12 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
                     $array[$key] = $this->arrayCastRecursive($value);
                 }
                 if ($value instanceof \stdClass) {
-                    $array[$key] = $this->arrayCastRecursive((array)$value);
+                    $array[$key] = $this->arrayCastRecursive((array) $value);
                 }
             }
         }
         if ($array instanceof \stdClass) {
-            return $this->arrayCastRecursive((array)$array);
+            return $this->arrayCastRecursive((array) $array);
         }
 
         return $array;
@@ -396,6 +399,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     }
 
     /**
+     *
      * @return ProductQuantityPriceRuleInterface
      *
      * @throws \Doctrine\ORM\ORMException
@@ -410,8 +414,8 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
 
         $keepIds = [];
         foreach ($currentRanges as $currentRange) {
-            if (isset($currentRange['id']) && null !== $currentRange['id']) {
-                $keepIds[] = (int)$currentRange['id'];
+            if (isset($currentRange['id']) && $currentRange['id'] !== null) {
+                $keepIds[] = (int) $currentRange['id'];
             }
         }
 
@@ -462,7 +466,6 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     {
         return $this->getContainer()->get('coreshop.repository.product_quantity_price_rule');
     }
-
     /**
      * @return RepositoryFactoryInterface
      */

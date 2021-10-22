@@ -50,6 +50,6 @@ class ExchangeRateController extends ResourceController
 
         $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
 
-        return $this->viewHandler->handle(['success' => false, 'message' => implode(\PHP_EOL, $errors)]);
+        return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
     }
 }

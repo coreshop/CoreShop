@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\User\Repository;
 
-use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\User\Model\UserInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 interface UserRepositoryInterface extends PimcoreRepositoryInterface
 {

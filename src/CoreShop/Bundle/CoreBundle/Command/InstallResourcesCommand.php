@@ -24,8 +24,7 @@ final class InstallResourcesCommand extends AbstractInstallCommand
         $this
             ->setName('coreshop:install:resources')
             ->setDescription('Install CoreShop Resources.')
-            ->setHelp(
-                <<<EOT
+            ->setHelp(<<<EOT
 The <info>%command.name%</info> command creates CoreShop Resources.
 EOT
             );

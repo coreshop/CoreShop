@@ -69,7 +69,7 @@ class ProductUnitDefinitionsController extends ResourceController
 
         if ($product->hasUnitDefinitions()) {
             $productUnitDefinitions = $product->getUnitDefinitions();
-            $definitions = 'additional' === $type
+            $definitions = $type === 'additional'
                 ? $productUnitDefinitions->getAdditionalUnitDefinitions()
                 : $productUnitDefinitions->getUnitDefinitions();
         } else {
@@ -80,7 +80,7 @@ class ProductUnitDefinitionsController extends ResourceController
             }
         }
 
-        return $definitions->filter(function (ProductUnitDefinitionInterface $unitDefinition) {
+        return $definitions->filter(function(ProductUnitDefinitionInterface $unitDefinition) {
             return null !== $unitDefinition->getId();
         });
     }

@@ -18,14 +18,14 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Reply\HttpResponse;
-use Payum\Core\Request\Capture;
 use Payum\Core\Request\Notify;
+use Payum\Core\Request\Capture;
 
 class NotifyAction implements ActionInterface
 {
     public function execute($request): void
     {
-        /* @var $request Capture */
+        /** @var $request Capture */
         RequestNotSupportedException::assertSupports($this, $request);
         $model = ArrayObject::ensureArrayObject($request->getModel());
 

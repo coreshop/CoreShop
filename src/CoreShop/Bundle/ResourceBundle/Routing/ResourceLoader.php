@@ -63,8 +63,8 @@ final class ResourceLoader implements LoaderInterface
                 'action' => $route,
                 'methods' => $methods,
                 'options' => [
-                    'expose' => $configuration['expose'],
-                ],
+                    'expose' => $configuration['expose']
+                ]
             ];
         }
 

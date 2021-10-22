@@ -72,7 +72,8 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
         $ruleResult = false,
         ConditionInterface $condition = null,
         $conditionResult = false
-    ): void {
+    ): void
+    {
         if (!isset($this->processed[$subject->getId()])) {
             $this->processed[$subject->getId()] = [
                 'subject' => $subject,

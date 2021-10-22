@@ -34,12 +34,13 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             $permissionGroups = $this->kernel->getContainer()->getParameter($parameter);
 
-            if ('coreshop.all.permissions' !== $parameter) {
+            if ($parameter !== 'coreshop.all.permissions') {
                 if (null !== $applicationName) {
                     $permissionGroups = [
                         $applicationName => $permissionGroups,
                     ];
-                } else {
+                }
+                else {
                     $permissionGroups = [
                         'all' => $permissionGroups,
                     ];
@@ -51,7 +52,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
             $progress->setEmptyBarCharacter(' ');
             $progress->setProgressCharacter('<comment>░</comment>');
             $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
-            $progress->start(count($permissionGroups, \COUNT_RECURSIVE));
+            $progress->start(count($permissionGroups, COUNT_RECURSIVE));
 
             $columns = array_map(function (Column $column) {
                 return $column->getName();

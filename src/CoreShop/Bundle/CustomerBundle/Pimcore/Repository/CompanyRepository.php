@@ -26,7 +26,7 @@ class CompanyRepository extends PimcoreRepository implements CompanyRepositoryIn
         $list->setCondition('name = ?', [$name]);
         $objects = $list->load();
 
-        if (1 === count($objects) && $objects[0] instanceof CompanyInterface) {
+        if (count($objects) === 1 && $objects[0] instanceof CompanyInterface) {
             return $objects[0];
         }
 

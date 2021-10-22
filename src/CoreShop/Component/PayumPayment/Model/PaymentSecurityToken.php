@@ -18,6 +18,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use Payum\Core\Security\TokenInterface;
 use Payum\Core\Security\Util\Random;
+use Payum\Core\Storage\IdentityInterface;
 
 /**
  * @psalm-suppress MissingConstructor

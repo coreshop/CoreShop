@@ -50,7 +50,7 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
         if (strpos($postcode, '-') > 0) {
             $splitted = explode('-', $postcode); //We should now have 2 elements
 
-            if (2 === count($splitted)) {
+            if (count($splitted) === 2) {
                 $fromPart = $splitted[0];
                 $toPart = $splitted[1];
 
@@ -64,7 +64,7 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
                     if ($fromNumber < $toNumber) {
                         $postcodes = [];
 
-                        for ($i = $fromNumber; $i <= $toNumber; ++$i) {
+                        for ($i = $fromNumber; $i <= $toNumber; $i++) {
                             $postcodes[] = $fromText . $i;
                         }
                     }

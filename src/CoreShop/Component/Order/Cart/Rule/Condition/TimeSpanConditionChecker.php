@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
 use Carbon\Carbon;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
 
 class TimeSpanConditionChecker extends AbstractConditionChecker
 {

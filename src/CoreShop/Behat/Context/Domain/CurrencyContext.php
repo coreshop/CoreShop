@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
@@ -53,11 +54,11 @@ final class CurrencyContext implements Context
 
         Assert::same(
             count($validCurrencies),
-            (int)$countOfCurrencies,
+            (int) $countOfCurrencies,
             sprintf(
                 'Found "%s" valid currencies instead of of "%s"',
                 count($validCurrencies),
-                (int)$countOfCurrencies
+                (int) $countOfCurrencies
             )
         );
     }
@@ -67,7 +68,7 @@ final class CurrencyContext implements Context
      */
     public function currencyShouldBeFormatted($amount, CurrencyInterface $currency, $locale, $shouldBeFormat): void
     {
-        $format = $this->moneyFormatter->format((int)$amount, $currency->getIsoCode(), $locale);
+        $format = $this->moneyFormatter->format((int) $amount, $currency->getIsoCode(), $locale);
 
         Assert::eq(
             $format,

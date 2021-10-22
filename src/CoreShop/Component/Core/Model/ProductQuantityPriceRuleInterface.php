@@ -18,4 +18,5 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleI
 
 interface ProductQuantityPriceRuleInterface extends BaseProductQuantityPriceRuleInterface
 {
+
 }

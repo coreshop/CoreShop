@@ -52,7 +52,7 @@ class AddressPage extends AbstractFrontendPage implements AddressPageInterface
     protected function getAdditionalParameters(): array
     {
         return [
-            'stepIdentifier' => 'address',
+            'stepIdentifier' => 'address'
         ];
     }
 

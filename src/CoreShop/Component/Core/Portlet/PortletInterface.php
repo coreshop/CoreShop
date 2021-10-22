@@ -20,6 +20,8 @@ interface PortletInterface
 {
     /**
      * Get data for portlet.
+     *
+     *
      */
     public function getPortletData(ParameterBag $parameterBag): array;
 }

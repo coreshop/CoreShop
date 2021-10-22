@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\TestBundle;
 
 use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\Application\Version;
+use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
 class CoreShopTestBundle extends AbstractPimcoreBundle

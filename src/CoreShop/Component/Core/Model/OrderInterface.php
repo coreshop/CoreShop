@@ -19,7 +19,11 @@ use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
-interface OrderInterface extends BaseOrderInterface, CarrierAwareInterface, PaymentSettingsAwareInterface, ShippableInterface
+interface OrderInterface extends
+    BaseOrderInterface,
+    CarrierAwareInterface,
+    PaymentSettingsAwareInterface,
+    ShippableInterface
 {
     /**
      * @return OrderItemInterface[]|null

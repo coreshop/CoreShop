@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule as BaseProductQuantityPriceRule;
+use \CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule as BaseProductQuantityPriceRule;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 

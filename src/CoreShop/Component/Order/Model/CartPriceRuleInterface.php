@@ -21,10 +21,15 @@ use Doctrine\Common\Collections\Collection;
 interface CartPriceRuleInterface extends RuleInterface, TranslatableInterface
 {
     /**
+     * @param string|null $language
+     *
      * @return string
      */
     public function getLabel(string $language = null);
 
+    /**
+     * @param string|null $language
+     */
     public function setLabel(string $label, string $language = null);
 
     /**

@@ -16,6 +16,9 @@ namespace CoreShop\Behat\Service;
 
 class ClassStorage implements ClassStorageInterface
 {
+    /**
+     * @var array
+     */
     private array $storage = [];
 
     public function get(string $className): string

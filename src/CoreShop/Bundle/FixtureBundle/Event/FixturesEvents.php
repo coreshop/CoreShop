@@ -21,12 +21,12 @@ final class FixturesEvents
      *
      * @var string
      */
-    public const DATA_FIXTURES_PRE_LOAD = 'coreshop.data_fixtures.pre_load';
+    const DATA_FIXTURES_PRE_LOAD = 'coreshop.data_fixtures.pre_load';
 
     /**
      * This event is raised after data fixtures are loaded.
      *
      * @var string
      */
-    public const DATA_FIXTURES_POST_LOAD = 'coreshop.data_fixtures.post_load';
+    const DATA_FIXTURES_POST_LOAD = 'coreshop.data_fixtures.post_load';
 }

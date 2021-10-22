@@ -24,10 +24,8 @@ use CoreShop\Component\Resource\Model\TranslatableTrait;
 class ProductUnit extends AbstractResource implements ProductUnitInterface, \Stringable
 {
     use TimestampableTrait;
-
     use TranslatableTrait {
         TranslatableTrait::__construct as private initializeTranslationsCollection;
-
         TranslatableTrait::getTranslation as private doGetTranslation;
     }
 

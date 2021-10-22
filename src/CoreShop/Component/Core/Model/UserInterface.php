@@ -19,4 +19,5 @@ use CoreShop\Component\User\Model\UserInterface as BaseUserInterface;
 
 interface UserInterface extends BaseUserInterface, CustomerAwareInterface
 {
+
 }

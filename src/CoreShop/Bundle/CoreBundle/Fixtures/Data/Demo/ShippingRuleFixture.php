@@ -52,7 +52,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                                 'minAmount' => 0,
                                 'maxAmount' => 15000,
                             ],
-                        ],
+                        ]
                     ],
                     'actions' => [
                         [

@@ -33,7 +33,6 @@ class Version20200415151505 extends AbstractMigration implements ContainerAwareI
 
         if ($classUpdater->hasField('saleState')) {
             $this->write('Field "saleState" already found, skipping');
-
             return;
         }
 
@@ -60,7 +59,7 @@ class Version20200415151505 extends AbstractMigration implements ContainerAwareI
             'relationType' => false,
             'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch' => false,
+            'visibleSearch' => false
         ];
 
         $classUpdater->insertFieldAfter('orderNumber', $saleStateField);
@@ -70,5 +69,6 @@ class Version20200415151505 extends AbstractMigration implements ContainerAwareI
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+
     }
 }

@@ -105,7 +105,7 @@ final class HttpFoundationRequestHandler implements RequestHandlerInterface
             }
         }
 
-        /* @psalm-suppress InvalidScalarArgument */
+        /** @psalm-suppress InvalidScalarArgument */
         $form->submit($data, 'PATCH' !== $method);
     }
 

@@ -31,14 +31,14 @@ class BodyListener
         $content = $request->getContent();
 
         if ($this->isDecodeable($request)) {
-            if ('json' === $format) {
+            if ($format === 'json') {
                 if (!empty($content)) {
                     $data = @json_decode($content, true);
 
                     if (is_array($data)) {
                         $request->request = new InputBag($data);
                     } else {
-                        throw new BadRequestHttpException('Invalid ' . $format . ' message received');
+                        throw new BadRequestHttpException('Invalid '.$format.' message received');
                     }
                 }
             }

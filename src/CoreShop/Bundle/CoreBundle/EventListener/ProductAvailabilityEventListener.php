@@ -87,7 +87,7 @@ final class ProductAvailabilityEventListener
 
         $cartItems = $this->cartItemRepository->findOrderItemsByProductId($object->getId());
 
-        if (0 === count($cartItems)) {
+        if (count($cartItems) === 0) {
             return;
         }
 
@@ -104,7 +104,7 @@ final class ProductAvailabilityEventListener
 
         $cartItems = $this->cartItemRepository->findOrderItemsByProductId($object->getId());
 
-        if (0 === count($cartItems)) {
+        if (count($cartItems) === 0) {
             return;
         }
 
@@ -120,7 +120,7 @@ final class ProductAvailabilityEventListener
                 continue;
             }
 
-            if (OrderSaleStates::STATE_CART !== $cart->getSaleState()) {
+            if ($cart->getSaleState() !== OrderSaleStates::STATE_CART) {
                 continue;
             }
 

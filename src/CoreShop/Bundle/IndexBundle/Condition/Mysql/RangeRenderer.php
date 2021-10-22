@@ -24,7 +24,7 @@ class RangeRenderer extends AbstractMysqlDynamicRenderer
 {
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): string
     {
-        /*
+        /**
          * @var RangeCondition $condition
          */
         Assert::isInstanceOf($condition, RangeCondition::class);

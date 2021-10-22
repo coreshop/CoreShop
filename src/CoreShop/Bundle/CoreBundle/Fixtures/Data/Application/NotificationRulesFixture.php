@@ -83,7 +83,7 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
 
                         $this->container->get('doctrine.orm.entity_manager')->persist($notificationRule);
 
-                        ++$totalImported;
+                        $totalImported++;
                     } catch (\Exception) {
                         //If some goes wrong, we just ignore it
                     }

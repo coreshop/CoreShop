@@ -25,7 +25,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class ResourceTranslationsType extends AbstractType
 {
     private array $definedLocalesCodes;
-
     private string $defaultLocaleCode;
 
     public function __construct(TranslationLocaleProviderInterface $localeProvider)

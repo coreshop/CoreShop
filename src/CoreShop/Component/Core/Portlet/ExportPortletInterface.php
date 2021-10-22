@@ -20,6 +20,8 @@ interface ExportPortletInterface
 {
     /**
      * Get data for exporting portlet.
+     *
+     *
      */
     public function getExportPortletData(ParameterBag $parameterBag): array;
 }

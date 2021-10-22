@@ -25,7 +25,7 @@ final class ExpressionLanguageServicePass implements CompilerPassInterface
         if ($container->has('coreshop.expression_language')) {
             $definition = $container->findDefinition('coreshop.expression_language');
             foreach ($container->findTaggedServiceIds('coreshop.expression_language_provider', true) as $id => $attributes) {
-                $definition->addMethodCall('registerProvider', [new Reference($id)]);
+                $definition->addMethodCall('registerProvider', array(new Reference($id)));
             }
         }
     }

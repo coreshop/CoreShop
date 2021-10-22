@@ -45,7 +45,7 @@ class FilterGroupHelper implements FilterGroupHelperInterface
                 $values = $list->getGroupByRelationValues($field);
 
                 foreach ($values as &$id) {
-                    $id = (int)$id;
+                    $id = (int) $id;
                     $obj = Concrete::getById($id);
 
                     if ($obj) {
@@ -63,6 +63,7 @@ class FilterGroupHelper implements FilterGroupHelperInterface
                 }
 
                 break;
+
             default:
                 $rawValues = $list->getGroupByValues($field, true);
                 $values = [];
@@ -77,7 +78,6 @@ class FilterGroupHelper implements FilterGroupHelperInterface
 
                         if (array_key_exists($e, $values)) {
                             $values[$e]['count'] += $v['count'];
-
                             continue;
                         }
 

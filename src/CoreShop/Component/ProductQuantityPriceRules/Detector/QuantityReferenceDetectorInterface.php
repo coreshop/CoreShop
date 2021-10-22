@@ -24,16 +24,21 @@ interface QuantityReferenceDetectorInterface
 {
     /**
      * @throws NoRuleFoundException
+     *
      */
     public function detectRule(QuantityRangePriceAwareInterface $subject, array $context): ProductQuantityPriceRuleInterface;
 
     /**
+     *
      * @throws NoPriceFoundException
+     *
      */
     public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, float $quantity, int $originalPrice, array $context): int;
 
     /**
+     *
      * @throws NoPriceFoundException
+     *
      */
     public function detectRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context): int;
 }

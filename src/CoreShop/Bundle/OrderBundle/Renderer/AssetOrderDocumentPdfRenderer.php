@@ -27,7 +27,7 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string
     {
         // if in dev mode, do not store document
-        if ('dev' === $this->environment) {
+        if ($this->environment === 'dev') {
             return $this->decoratedService->renderDocumentPdf($orderDocument);
         }
 

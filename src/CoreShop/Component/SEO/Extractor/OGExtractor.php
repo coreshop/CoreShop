@@ -27,7 +27,7 @@ final class OGExtractor implements ExtractorInterface
 
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
-        /*
+        /**
          * @var SEOOpenGraphAwareInterface $object
          */
         Assert::isInstanceOf($object, SEOOpenGraphAwareInterface::class);

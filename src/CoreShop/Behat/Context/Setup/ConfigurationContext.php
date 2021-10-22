@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationService;
 use CoreShop\Component\Core\Model\StoreInterface;
 
@@ -30,9 +31,10 @@ final class ConfigurationContext implements Context
      */
     public function configurationGuestCheckoutIsEnabled(?StoreInterface $store = null): void
     {
-        if (null !== $store) {
+        if ($store !== null) {
             $this->configurationService->setForStore('system.guest.checkout', true, $store);
-        } else {
+        }
+        else {
             $this->configurationService->set('system.guest.checkout', true);
         }
     }

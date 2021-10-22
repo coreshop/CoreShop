@@ -30,7 +30,7 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
-        /*
+        /**
          * @var OrderInterface        $value
          * @var CartStockAvailability $constraint
          */

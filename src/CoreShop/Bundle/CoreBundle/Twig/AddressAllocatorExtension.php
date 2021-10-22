@@ -28,10 +28,9 @@ final class AddressAllocatorExtension extends AbstractExtension
     public function getTests(): array
     {
         return [
-            new TwigTest('coreshop_address_owner_of', [$this->customerAddressAllocator, 'isOwnerOfAddress']),
+            new TwigTest('coreshop_address_owner_of', [$this->customerAddressAllocator, 'isOwnerOfAddress'])
         ];
     }
-
     public function getFilters(): array
     {
         return [

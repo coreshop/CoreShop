@@ -27,12 +27,12 @@ class DoctrineToMany
 
     public function getDefinition(): array
     {
-        $args = [];
+        $args = array();
 
         $outputType = $this->getOutputType();
 
         // Create and return the definition array
-        return [
+        return array(
             'name' => $this->name,
             'type' => $outputType,
             'args' => $args,
@@ -52,7 +52,7 @@ class DoctrineToMany
 
                 return ['items' => $result, 'total' => count($result)];
             },
-        ];
+        );
     }
 
     public function getOutputType()
@@ -60,7 +60,7 @@ class DoctrineToMany
         $listType = $this->typeProvider->getType($this->graphName);
         $outputTypeName = $listType->name . '__List';
 
-        if (null === $this->typeProvider->getType($outputTypeName)) {
+        if ($this->typeProvider->getType($outputTypeName) === null) {
             $outputType = $this->getListType($outputTypeName, $listType);
 
             $this->typeProvider->addType($outputTypeName, $outputType);
@@ -73,18 +73,18 @@ class DoctrineToMany
 
     protected function getListType($name, $listType)
     {
-        $resultFields = [];
+        $resultFields = array();
 
-        $resultFields[] = [
+        $resultFields[] = array(
             'name' => 'total',
             'type' => Type::int(),
-        ];
+        );
 
-        $resultFields[] = [
+        $resultFields[] = array(
             'name' => 'items',
             'type' => Type::listOf($listType),
-        ];
+        );
 
-        return new ObjectType(['name' => $name, 'fields' => $resultFields]);
+        return new ObjectType(array('name' => $name, 'fields' => $resultFields));
     }
 }

@@ -28,13 +28,13 @@ interface ActionInterface extends ResourceInterface
      */
     public function setType($type);
 
-    /**
+        /**
      * @return int
      */
     public function getSort();
 
     /**
-     * @param int $sort
+    * @param int $sort
      */
     public function setSort($sort);
 

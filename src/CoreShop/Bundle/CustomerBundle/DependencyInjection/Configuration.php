@@ -159,7 +159,7 @@ final class Configuration implements ConfigurationInterface
                         ->cannotBeOverwritten()
                         ->defaultValue([
                             'customer_list',
-                            'customer_group_list',
+                            'customer_group_list'
                         ])
                     ->end()
                     ->arrayNode('install')

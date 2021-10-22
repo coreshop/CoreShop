@@ -16,14 +16,10 @@ namespace CoreShop\Component\Registry;
 
 class PriorityMap implements \Iterator, \Countable
 {
-    public const ORDER_ASC = 'asc';
-
-    public const ORDER_DESC = 'desc';
-
+    const ORDER_ASC = 'asc';
+    const ORDER_DESC = 'desc';
     private int $lastSequence = 0;
-
     private array $list = [];
-
     private string $order = self::ORDER_ASC;
 
     /**

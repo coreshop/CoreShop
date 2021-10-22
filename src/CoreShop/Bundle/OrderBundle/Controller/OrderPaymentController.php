@@ -59,7 +59,7 @@ class OrderPaymentController extends PimcoreController
 
         $orderId = $request->get('o_id');
         $order = $this->getSaleRepository()->find($orderId);
-        $amount = (int)round($request->get('amount', 0) * $this->container->getParameter('coreshop.currency.decimal_factor'));
+        $amount = (int) round($request->get('amount', 0) * $this->container->getParameter('coreshop.currency.decimal_factor'));
 
         $paymentProviderId = $request->get('paymentProvider');
 
@@ -71,9 +71,9 @@ class OrderPaymentController extends PimcoreController
         $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
         $totalPayed = array_sum(array_map(static function (PaymentInterface $payment) {
             $state = $payment->getState();
-            if (PaymentInterface::STATE_CANCELLED === $state ||
-                PaymentInterface::STATE_FAILED === $state ||
-                PaymentInterface::STATE_REFUNDED === $state) {
+            if ($state === PaymentInterface::STATE_CANCELLED ||
+                $state === PaymentInterface::STATE_FAILED ||
+                $state === PaymentInterface::STATE_REFUNDED) {
                 return 0;
             }
 
@@ -86,7 +86,7 @@ class OrderPaymentController extends PimcoreController
             if ($totalPaymentWouldBe > $order->getTotal()) {
                 return $this->viewHandler->handle([
                     'success' => false,
-                    'message' => 'Payed Amount is greater than order amount',
+                    'message' => 'Payed Amount is greater than order amount'
                 ]);
             }
 

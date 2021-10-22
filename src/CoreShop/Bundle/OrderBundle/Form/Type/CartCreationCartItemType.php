@@ -50,11 +50,11 @@ final class CartCreationCartItemType extends AbstractResourceType
             $builder
                 ->add('customItemDiscount', NumberType::class, [
                     'required' => false,
-                    'data' => 0,
+                    'data' => 0
                 ])
                 ->add('customItemPrice', IntegerType::class, [
                     'required' => false,
-                    'data' => 0,
+                    'data' => 0
                 ])
             ;
 

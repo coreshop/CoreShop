@@ -84,7 +84,7 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
 
     public function hasPseudoPrice()
     {
-        return null !== $this->getPseudoPrice() && 0 !== $this->getPseudoPrice();
+        return null !== $this->getPseudoPrice() && $this->getPseudoPrice() !== 0;
     }
 
     public function setPseudoPrice(int $pseudoPrice)
@@ -96,7 +96,7 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
     {
         parent::__clone();
 
-        if (null === $this->unitDefinition) {
+        if ($this->unitDefinition === null) {
             return;
         }
 

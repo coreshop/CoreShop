@@ -37,17 +37,11 @@ use Pimcore\Model\DataObject\Concrete;
 class Listing extends AbstractListing implements OrderAwareListingInterface, ExtendedListingInterface
 {
     protected ?array $objects = null;
-
     protected ?int $totalCount = null;
-
     protected string $variantMode = ListingInterface::VARIANT_MODE_INCLUDE;
-
     protected ?int $limit = null;
-
     protected ?int $offset = null;
-
     protected ?PimcoreModelInterface $category = null;
-
     protected Dao $dao;
 
     /**
@@ -56,10 +50,9 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     protected $order;
 
     /**
-     * @var string|array
+     * @var string | array
      */
     protected $orderKey;
-
     protected bool $enabled = true;
 
     /**
@@ -115,7 +108,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     public function getObjects()
     {
-        if (null === $this->objects) {
+        if ($this->objects === null) {
             $this->load();
         }
 
@@ -375,7 +368,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     protected function addQueryFromConditions(QueryBuilder $queryBuilder, $excludeConditions = false, $excludedFieldName = null, $variantMode = null)
     {
-        if (null == $variantMode) {
+        if ($variantMode == null) {
             $variantMode = $this->getVariantMode();
         }
 
@@ -397,18 +390,19 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         }
 
         //variant handling and userspecific conditions
-        if (AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT == $variantMode) {
+        if ($variantMode == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             if (!$excludeConditions) {
                 $this->addUserSpecificConditions($queryBuilder, $excludedFieldName);
             }
         } else {
-            if (AbstractListing::VARIANT_MODE_HIDE == $variantMode) {
+            if ($variantMode == AbstractListing::VARIANT_MODE_HIDE) {
                 $queryBuilder->andWhere('q.o_type != \'variant\'');
             }
             if (!$excludeConditions) {
                 $this->addUserSpecificConditions($queryBuilder, $excludedFieldName);
             }
         }
+
 
 //        $searchString = '';
 //        foreach ($this->queryConditions as $condition) {
@@ -458,7 +452,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
                 continue;
             }
             $joinName = $tableJoins['joinTableAlias'];
-            $objectKeyField = $tableJoins['objectKeyField'] ?? 'o_id';
+            $objectKeyField = isset($tableJoins['objectKeyField']) ? $tableJoins['objectKeyField'] : 'o_id';
 
             $function = 'join';
             switch (strtolower($joinType)) {
@@ -494,7 +488,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     public function count()
     {
-        if (null === $this->totalCount) {
+        if ($this->totalCount === null) {
             $queryBuilder = $this->dao->createQueryBuilder();
             $this->addQueryFromConditions($queryBuilder);
             $this->addJoins($queryBuilder);
@@ -550,6 +544,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     public function valid()
     {
-        return false !== $this->current();
+        return $this->current() !== false;
     }
 }

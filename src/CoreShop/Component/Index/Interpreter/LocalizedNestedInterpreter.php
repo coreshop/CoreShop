@@ -32,7 +32,8 @@ class LocalizedNestedInterpreter implements LocalizedInterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed {
+    ): mixed
+    {
         throw new \Exception('method "interpret" in Localized Interpreter not allowed. Please use "interpretForLanguage" instead.');
     }
 
@@ -42,7 +43,8 @@ class LocalizedNestedInterpreter implements LocalizedInterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed {
+    ): mixed
+    {
         $this->assert($interpreterConfig);
 
         return $this->loop($value, $interpreterConfig, static function (mixed $value, InterpreterInterface $interpreter, array $interpreterConfig) use ($language, $indexable, $config): mixed {

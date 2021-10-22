@@ -44,6 +44,6 @@ class ProfilePage extends AbstractFrontendPage implements ProfilePageInterface
     {
         $customerText = $this->getElement('customer')->getText();
 
-        return false !== stripos($customerText, $value);
+        return stripos($customerText, $value) !== false;
     }
 }

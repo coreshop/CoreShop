@@ -28,7 +28,6 @@ class AdditionAmountActionProcessor implements CarrierPriceModificationActionPro
     public function __construct(protected CurrencyRepositoryInterface $currencyRepository, protected CurrencyConverterInterface $moneyConverter)
     {
     }
-
     public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration, array $context): int
     {
         Assert::keyExists($context, 'currency');

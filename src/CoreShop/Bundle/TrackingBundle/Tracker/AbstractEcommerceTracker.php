@@ -21,9 +21,7 @@ use Twig\Environment;
 abstract class AbstractEcommerceTracker implements TrackerInterface
 {
     protected bool $enabled = false;
-
     protected ?string $templatePrefix = null;
-
     protected ?string $templateExtension = null;
 
     public function __construct(
@@ -84,6 +82,8 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
 
     /**
      * Remove null values from an object, keep protected keys in any case.
+     *
+     *
      */
     protected function filterNullValues(array $data, array $protectedKeys = []): array
     {

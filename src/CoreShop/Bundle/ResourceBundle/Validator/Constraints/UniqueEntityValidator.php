@@ -19,6 +19,7 @@ use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\SyntaxError;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -41,13 +42,13 @@ final class UniqueEntityValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
-        /*
+        /**
          * @var Concrete $value
          */
         Assert::isInstanceOf($value, Concrete::class);
 
         if (!$constraint instanceof UniqueEntity) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\UniqueEntity');
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\UniqueEntity');
         }
 
         $fields = $this->evaluateExpression($constraint->fields);
@@ -59,9 +60,14 @@ final class UniqueEntityValidator extends ConstraintValidator
         $errorPath = $fields[0];
         $criteria = [];
         foreach ($fields as $fieldName) {
-            $getter = 'get' . ucfirst($fieldName);
+            $getter = 'get'.ucfirst($fieldName);
             if (!method_exists($value, $getter)) {
-                throw new ConstraintDefinitionException(sprintf('The field "%s" is not mapped by Concrete, so it cannot be validated for uniqueness.', $fieldName));
+                throw new ConstraintDefinitionException(
+                    sprintf(
+                        'The field "%s" is not mapped by Concrete, so it cannot be validated for uniqueness.',
+                    $fieldName
+                    )
+                );
             }
             $criteria[$fieldName] = $value->$getter();
         }
@@ -80,16 +86,16 @@ final class UniqueEntityValidator extends ConstraintValidator
 
                 foreach ($criteriaValue as $criteriaSubValue) {
                     if (null === $criteriaSubValue) {
-                        $subConditions[] = $criteriaName . ' IS NULL';
+                        $subConditions[] = $criteriaName.' IS NULL';
                     } else {
-                        $subConditions[] = $criteriaName . ' = ?';
+                        $subConditions[] = $criteriaName.' = ?';
                         $values[] = $criteriaSubValue;
                     }
                 }
 
-                $condition[] = '(' . implode(' OR ', $subConditions) . ')';
+                $condition[] = '('.implode(' OR ', $subConditions).')';
             } else {
-                $condition[] = $criteriaName . ' = ?';
+                $condition[] = $criteriaName.' = ?';
                 $values[] = $criteriaValue;
             }
         }
@@ -105,7 +111,7 @@ final class UniqueEntityValidator extends ConstraintValidator
         if (count($elements) > 0) {
             $foundElement = $elements[0];
 
-            if ($constraint->allowSameEntity && 1 === count($elements) && $value->getId() === $foundElement->getId()) {
+            if ($constraint->allowSameEntity && count($elements) === 1 && $value->getId() === $foundElement->getId()) {
                 return;
             }
 

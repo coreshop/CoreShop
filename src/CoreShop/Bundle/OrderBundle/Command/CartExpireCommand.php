@@ -58,7 +58,7 @@ final class CartExpireCommand extends Command
         $params = $this->params;
 
         if ($input->getOption('days')) {
-            $days = (int)$input->getOption('days');
+            $days = (int) $input->getOption('days');
         }
 
         if ($input->getOption('anonymous')) {

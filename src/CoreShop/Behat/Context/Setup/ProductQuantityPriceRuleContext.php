@@ -565,7 +565,8 @@ final class ProductQuantityPriceRuleContext implements Context
             }
         }
 
-        throw new \Exception(sprintf('Unit %s in product %s (%s) not found', $unit->getName(), $product->getName(), $product->getId()));
+        throw new \Exception(sprintf('Unit %s in product %s (%s) not found', $unit->getName(), $product->getName(),
+            $product->getId()));
     }
 
     private function addCondition(ProductQuantityPriceRuleInterface $rule, ConditionInterface $condition): void
@@ -593,7 +594,6 @@ final class ProductQuantityPriceRuleContext implements Context
         foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $definition) {
             if ($definition->getUnit()->getId() === $unit->getId()) {
                 $unitDefinition = $definition;
-
                 break;
             }
         }

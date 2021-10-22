@@ -18,6 +18,7 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreDaoRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
 {
@@ -52,13 +53,14 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
         }
 
         /** @psalm-var class-string $listClass */
-        $listClass = $className . '\\Listing';
+        $listClass = $className.'\\Listing';
 
         if (class_exists($className)) {
             return new $listClass();
         }
 
-        throw new \InvalidArgumentException(sprintf('Class %s has no getList or a Listing Class function and thus is not supported here', $className));
+        throw new \InvalidArgumentException(sprintf('Class %s has no getList or a Listing Class function and thus is not supported here',
+            $className));
     }
 
     public function findAll()
@@ -76,7 +78,12 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
         $class = $this->metadata->getClass('model');
 
         if (!method_exists($class, 'getById')) {
-            throw new \InvalidArgumentException(sprintf('Class %s has no getById function and is therefore not considered as a valid Pimcore DAO Object', $class));
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Class %s has no getById function and is therefore not considered as a valid Pimcore DAO Object',
+                    $class
+                )
+            );
         }
 
         return $class::getById($id, $force);
@@ -177,7 +184,7 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
                         $normalizedCriterion['condition'] = $criterion;
                     }
                 } else {
-                    $normalizedCriterion['condition'] = $key . ' = ?';
+                    $normalizedCriterion['condition'] = $key.' = ?';
                     $normalizedCriterion['variable'] = [$criterion];
                 }
 

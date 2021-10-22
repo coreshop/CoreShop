@@ -16,13 +16,9 @@ namespace CoreShop\Component\Order;
 
 final class OrderInvoiceStates
 {
-    public const STATE_NEW = 'new';
-
-    public const STATE_READY = 'ready';
-
-    public const STATE_CANCELLED = 'cancelled';
-
-    public const STATE_PARTIALLY_INVOICED = 'partially_invoiced';
-
-    public const STATE_INVOICED = 'invoiced';
+    const STATE_NEW = 'new';
+    const STATE_READY = 'ready';
+    const STATE_CANCELLED = 'cancelled';
+    const STATE_PARTIALLY_INVOICED = 'partially_invoiced';
+    const STATE_INVOICED = 'invoiced';
 }

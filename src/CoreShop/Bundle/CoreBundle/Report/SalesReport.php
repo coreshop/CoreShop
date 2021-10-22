@@ -64,7 +64,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
         $dateFormatter = null;
         $groupSelector = '';
 
-        if (null === $storeId) {
+        if (is_null($storeId)) {
             return [];
         }
 
@@ -122,7 +122,8 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
         foreach ($data as &$entry) {
             $entry['timestamp'] = $formatter->format($entry['timestamp']);
 
-            unset($entry['datetext'], $entry['sales']);
+            unset($entry['datetext']);
+            unset($entry['sales']);
         }
 
         return $data;
@@ -134,7 +135,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
     }
 
     /**
-     * {@inheritd}.
+     * {@inheritd}
      */
     public function getTotal(): int
     {

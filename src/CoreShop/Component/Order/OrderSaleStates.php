@@ -16,9 +16,7 @@ namespace CoreShop\Component\Order;
 
 final class OrderSaleStates
 {
-    public const STATE_CART = 'cart';
-
-    public const STATE_ORDER = 'order';
-
-    public const STATE_QUOTE = 'quote';
+    const STATE_CART = 'cart';
+    const STATE_ORDER = 'order';
+    const STATE_QUOTE = 'quote';
 }

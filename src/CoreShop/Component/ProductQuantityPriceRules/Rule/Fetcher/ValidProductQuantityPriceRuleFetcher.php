@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher;
 
-use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 
 final class ValidProductQuantityPriceRuleFetcher implements ValidRulesFetcherInterface
 {

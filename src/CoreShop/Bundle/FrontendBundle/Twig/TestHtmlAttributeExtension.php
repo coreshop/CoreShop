@@ -30,7 +30,7 @@ final class TestHtmlAttributeExtension extends AbstractExtension
                 'coreshop_test_html_attribute',
                 function (string $name, ?string $value = null): string {
                     if (str_starts_with($this->env, 'test')) {
-                        return sprintf('data-test-%s="%s"', $name, (string)$value);
+                        return sprintf('data-test-%s="%s"', $name, (string) $value);
                     }
 
                     return '';

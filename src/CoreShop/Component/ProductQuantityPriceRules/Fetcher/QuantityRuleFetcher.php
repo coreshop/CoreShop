@@ -29,7 +29,7 @@ class QuantityRuleFetcher implements QuantityRuleFetcherInterface
     {
         $quantityPriceRules = $this->getQuantityPriceRulesForSubject($subject, $context);
 
-        if (0 === count($quantityPriceRules)) {
+        if (count($quantityPriceRules) === 0) {
             throw new NoRuleFoundException();
         }
 

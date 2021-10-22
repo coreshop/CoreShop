@@ -34,7 +34,7 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
     ): ?ShippingRuleInterface {
         $shippingRules = $carrier->getShippingRules();
 
-        if (0 === count($shippingRules)) {
+        if (count($shippingRules) === 0) {
             return null;
         }
 
@@ -45,11 +45,11 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
                 'address' => $address,
             ]);
 
-            if (false === $isValid && ($rule instanceof ShippingRuleGroupInterface && true === $rule->getStopPropagation())) {
+            if ($isValid === false && ($rule instanceof ShippingRuleGroupInterface && $rule->getStopPropagation() === true)) {
                 return null;
             }
 
-            if (true === $isValid) {
+            if ($isValid === true) {
                 return $rule instanceof ShippingRuleInterface ? $rule : $rule->getShippingRule();
             }
         }

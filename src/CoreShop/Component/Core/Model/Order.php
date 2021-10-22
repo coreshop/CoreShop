@@ -37,7 +37,7 @@ abstract class Order extends BaseOrder implements OrderInterface
         $shippable = false;
         /** @var OrderItemInterface $item */
         foreach ($this->getItems() as $item) {
-            if (true !== $item->getDigitalProduct()) {
+            if ($item->getDigitalProduct() !== true) {
                 $shippable = true;
 
                 break;

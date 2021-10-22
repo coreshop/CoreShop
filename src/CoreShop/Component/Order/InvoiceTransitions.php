@@ -16,11 +16,9 @@ namespace CoreShop\Component\Order;
 
 final class InvoiceTransitions
 {
-    public const IDENTIFIER = 'coreshop_invoice';
+    const IDENTIFIER = 'coreshop_invoice';
 
-    public const TRANSITION_CREATE = 'create';
-
-    public const TRANSITION_COMPLETE = 'complete';
-
-    public const TRANSITION_CANCEL = 'cancel';
+    const TRANSITION_CREATE = 'create';
+    const TRANSITION_COMPLETE = 'complete';
+    const TRANSITION_CANCEL = 'cancel';
 }

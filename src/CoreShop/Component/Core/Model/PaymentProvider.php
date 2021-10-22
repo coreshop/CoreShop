@@ -32,4 +32,5 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
 
         $this->storesAwareConstructor();
     }
+
 }

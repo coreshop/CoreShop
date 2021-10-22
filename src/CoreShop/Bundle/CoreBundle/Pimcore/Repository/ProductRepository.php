@@ -33,7 +33,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             ['condition' => 'stores LIKE ?', 'variable' => '%,' . $store->getId() . ',%'],
         ];
 
-        /* @psalm-suppress InvalidScalarArgument */
+        /** @psalm-suppress InvalidScalarArgument */
         return $this->findBy($conditions, ['o_creationDate' => 'DESC'], $count);
     }
 
@@ -67,6 +67,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             ->setParameter('path', $product->getRealFullPath() . '/%')
             ->setParameter('stores', '%,' . $store->getId() . ',%')
             ->setParameter('variant', 'variant');
+
 
         $variantIds = [];
 
@@ -120,19 +121,18 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
                 AbstractObject::OBJECT_TYPE_OBJECT,
                 AbstractObject::OBJECT_TYPE_VARIANT,
             ];
-
-            return null === $value || !array_diff($value, $valid);
+            return $value === null || !array_diff($value, $valid);
         });
 
         $listOptions = $resolver->resolve($options);
 
         $list = $this->getList();
 
-        if (null !== $listOptions['object_types']) {
+        if ($listOptions['object_types'] !== null) {
             $list->setObjectTypes($listOptions['object_types']);
         }
 
-        if (true === $listOptions['only_active']) {
+        if ($listOptions['only_active'] === true) {
             $list->addConditionParam('active = ?', 1);
         }
 
@@ -145,7 +145,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
                 }
             }
             if (count($categoryIds) > 0) {
-                $list->addConditionParam('(o_id IN (SELECT DISTINCT src_id FROM object_relations_' . $classId . ' WHERE fieldname = "categories" AND dest_id IN (' . implode(',', $categoryIds) . ')))');
+                $list->addConditionParam('(o_id IN (SELECT DISTINCT src_id FROM object_relations_' . $classId . ' WHERE fieldname = "categories" AND dest_id IN (' . join(',', $categoryIds) . ')))');
             }
         }
 

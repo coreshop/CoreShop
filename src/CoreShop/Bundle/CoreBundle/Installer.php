@@ -66,4 +66,5 @@ class Installer implements InstallerInterface
     {
         return new NullOutput();
     }
+
 }

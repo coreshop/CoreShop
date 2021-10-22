@@ -16,13 +16,14 @@ namespace CoreShop\Bundle\PayumBundle\Action;
 
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Core\Model\PaymentInterface;
 use Payum\Core\Action\ActionInterface;
 
 final class ResolveNextRouteAction implements ActionInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @param ResolveNextRoute $request
      */
@@ -37,8 +38,8 @@ final class ResolveNextRouteAction implements ActionInterface
                 '_locale' => $order->getLocaleCode(),
             ]);
 
-            if (PaymentInterface::STATE_COMPLETED === $payment->getState() ||
-                PaymentInterface::STATE_AUTHORIZED === $payment->getState()
+            if ($payment->getState() === PaymentInterface::STATE_COMPLETED ||
+                $payment->getState() === PaymentInterface::STATE_AUTHORIZED
             ) {
                 $request->setRouteName('coreshop_checkout_confirmation');
 

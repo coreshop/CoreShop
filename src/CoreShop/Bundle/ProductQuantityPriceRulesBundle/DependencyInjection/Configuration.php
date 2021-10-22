@@ -14,16 +14,16 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection;
 
-use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Doctrine\ORM\ProductQuantityPriceRuleRepository;
-use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
-use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule;
-use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
-use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange;
-use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
-use CoreShop\Component\Resource\Factory\Factory;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use CoreShop\Component\Resource\Factory\Factory;
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Doctrine\ORM\ProductQuantityPriceRuleRepository;
+use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange;
+use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule;
+use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 
 final class Configuration implements ConfigurationInterface
 {

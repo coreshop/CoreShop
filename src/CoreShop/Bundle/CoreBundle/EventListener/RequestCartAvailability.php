@@ -38,7 +38,7 @@ final class RequestCartAvailability
             return;
         }
 
-        if ('_wdt' === $event->getRequest()->attributes->get('_route')) {
+        if ($event->getRequest()->attributes->get('_route') === '_wdt') {
             return;
         }
 

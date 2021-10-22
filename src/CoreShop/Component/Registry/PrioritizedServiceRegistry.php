@@ -35,7 +35,9 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         }
 
         if (!in_array($this->interface, class_implements($service), true)) {
-            throw new \InvalidArgumentException(sprintf('%s needs to implement "%s", "%s" given.', ucfirst($this->context), $this->interface, $service::class));
+            throw new \InvalidArgumentException(
+                sprintf('%s needs to implement "%s", "%s" given.', ucfirst($this->context), $this->interface, $service::class)
+            );
         }
 
         $this->priortyMap->set($identifier, $service, $priority);
@@ -147,7 +149,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         if ($prevIndex >= 0) {
             $previousElements = [];
 
-            for ($i = $prevIndex; $i > 0; --$i) {
+            for ($i = $prevIndex; $i > 0; $i--) {
                 $previousElements[] = $this->get($keys[$i]);
             }
 

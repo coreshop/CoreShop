@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
-use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRuleValidationEvent;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRuleValidationEvent;
 use Pimcore\Model\Element\ValidationException;
 
 final class QuantityRangeUnitValidationListener
@@ -38,7 +38,7 @@ final class QuantityRangeUnitValidationListener
         }
 
         // this listener only validates variant data
-        if (AbstractObject::OBJECT_TYPE_VARIANT !== $object->getType()) {
+        if ($object->getType() !== AbstractObject::OBJECT_TYPE_VARIANT) {
             return;
         }
 
@@ -47,7 +47,7 @@ final class QuantityRangeUnitValidationListener
         }
     }
 
-    private function validateRule(array $rule, ProductInterface $product): void
+    protected function validateRule(array $rule, ProductInterface $product): void
     {
         if (!isset($rule['ranges']) || !is_array($rule['ranges'])) {
             return;
@@ -56,6 +56,7 @@ final class QuantityRangeUnitValidationListener
         $ranges = $rule['ranges'];
 
         foreach ($ranges as $range) {
+
             if (!isset($range['unitDefinition']) || !is_int($range['unitDefinition'])) {
                 continue;
             }

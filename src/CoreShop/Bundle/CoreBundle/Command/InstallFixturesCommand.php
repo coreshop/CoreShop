@@ -24,8 +24,7 @@ final class InstallFixturesCommand extends AbstractInstallCommand
         $this
             ->setName('coreshop:install:fixtures')
             ->setDescription('Install CoreShop Main Fixtures.')
-            ->setHelp(
-                <<<EOT
+            ->setHelp(<<<EOT
 The <info>%command.name%</info> command install CoreShop Main Fixtures.
 EOT
             );

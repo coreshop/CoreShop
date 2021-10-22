@@ -22,9 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 {
     protected CodeTracker $codeTracker;
-
     protected ConfigResolverInterface $config;
-
     protected bool $dataLayerIncluded = false;
 
     public function setTracker(TrackerInterface $tracker): void
@@ -111,9 +109,9 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         $actionData['products'] = $cart['items'];
         $actionField = [];
 
-        if (null !== $stepIdentifier || null !== $checkoutOption) {
+        if (!is_null($stepIdentifier) || !is_null($checkoutOption)) {
             $actionField['step'] = $stepIdentifier + 1;
-            if (null !== $checkoutOption) {
+            if (!is_null($checkoutOption)) {
                 $actionField['option'] = $checkoutOption;
             }
         }
@@ -158,7 +156,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $actionData = [$action => []];
 
-        if ('add' === $action) {
+        if ($action === 'add') {
             $actionData['currencyCode'] = $product['currency'];
         }
 
@@ -166,7 +164,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $parameters = [];
         $parameters['actionData'] = $actionData;
-        $parameters['event'] = 'remove' === $action ? 'csRemoveFromCart' : 'csAddToCart';
+        $parameters['event'] = $action === 'remove' ? 'csRemoveFromCart' : 'csAddToCart';
 
         $result = $this->renderTemplate('product_action', $parameters);
         $this->codeTracker->addCodePart($result);

@@ -33,7 +33,9 @@ use Webmozart\Assert\Assert;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
  */
-class ProductUnitDefinitions extends Data implements Data\CustomResourcePersistingInterface, Data\CustomVersionMarshalInterface
+class ProductUnitDefinitions extends Data implements
+    Data\CustomResourcePersistingInterface,
+    Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -102,7 +104,7 @@ class ProductUnitDefinitions extends Data implements Data\CustomResourcePersisti
      */
     public function getDefaultValue()
     {
-        if (null !== $this->defaultValue) {
+        if ($this->defaultValue !== null) {
             return $this->toNumeric($this->defaultValue);
         }
 
@@ -116,7 +118,7 @@ class ProductUnitDefinitions extends Data implements Data\CustomResourcePersisti
      */
     public function setDefaultValue($defaultValue)
     {
-        if (strlen((string)$defaultValue) > 0) {
+        if (strlen(strval($defaultValue)) > 0) {
             $this->defaultValue = $defaultValue;
         }
 
@@ -243,7 +245,7 @@ class ProductUnitDefinitions extends Data implements Data\CustomResourcePersisti
         if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
-            $setter = 'set' . ucfirst($this->getName());
+            $setter = 'set'.ucfirst($this->getName());
             if (method_exists($object, $setter)) {
                 $object->$setter($data);
             }
@@ -302,7 +304,7 @@ class ProductUnitDefinitions extends Data implements Data\CustomResourcePersisti
         }
 
         $productUnitDefinitions = $this->load($object, ['force' => true]);
-        if (null === $productUnitDefinitions) {
+        if ($productUnitDefinitions === null) {
             return;
         }
 
@@ -344,7 +346,7 @@ class ProductUnitDefinitions extends Data implements Data\CustomResourcePersisti
 
         Assert::isInstanceOf($tempStoreValuesRepository, ProductUnitDefinitionsRepositoryInterface::class);
 
-        if (null !== $unitDefinitionsId) {
+        if ($unitDefinitionsId !== null) {
             $unitDefinitionsEntity = $tempStoreValuesRepository->findOneForProduct($object);
         }
 
@@ -367,7 +369,7 @@ class ProductUnitDefinitions extends Data implements Data\CustomResourcePersisti
                 $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
             }
 
-            throw new \Exception(implode(\PHP_EOL, $errors));
+            throw new \Exception(implode(PHP_EOL, $errors));
         }
 
         return $productUnitDefinitionsValues;
@@ -381,11 +383,8 @@ class ProductUnitDefinitions extends Data implements Data\CustomResourcePersisti
 
         $defaultUnit = $data->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface && $data->getDefaultUnitDefinition()->getUnit() instanceof ProductUnitInterface ? $data->getDefaultUnitDefinition()->getUnit()->getName() : '--';
 
-        return sprintf(
-            'Default Unit: %s, additional units: %d',
-            $defaultUnit,
-            $data->getAdditionalUnitDefinitions()->count()
-        );
+        return sprintf('Default Unit: %s, additional units: %d', $defaultUnit,
+            $data->getAdditionalUnitDefinitions()->count());
     }
 
     public function getForCsvExport($object, $params = [])
@@ -405,10 +404,11 @@ class ProductUnitDefinitions extends Data implements Data\CustomResourcePersisti
             throw new \Exception('This version of Pimcore is not supported for product unit definitions import.');
         }
 
-        $data = '' == $importValue ? [] : json_decode($importValue, true);
+        $data = $importValue == '' ? [] : json_decode($importValue, true);
 
-        if (\JSON_ERROR_NONE !== json_last_error()) {
-            throw new \InvalidArgumentException(sprintf('Error decoding Product Unit Definitions JSON `%s`: %s', $importValue, json_last_error_msg()));
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \InvalidArgumentException(sprintf('Error decoding Product Unit Definitions JSON `%s`: %s',
+                $importValue, json_last_error_msg()));
         }
 
         return $data;
@@ -449,7 +449,7 @@ class ProductUnitDefinitions extends Data implements Data\CustomResourcePersisti
             unset($array[$key]);
 
             if (str_contains($key, '.')) {
-                [$base, $ext] = explode('.', $key, 2);
+                list($base, $ext) = explode('.', $key, 2);
                 if (!array_key_exists($base, $array)) {
                     $array[$base] = [];
                 }

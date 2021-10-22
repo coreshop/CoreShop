@@ -51,13 +51,11 @@ class Version20200415160854 extends AbstractMigration implements ContainerAwareI
 
                 if (!method_exists($orderShipmentItem, $getterFrom)) {
                     $fieldsNotMigrated[$from] = $to;
-
                     continue;
                 }
 
                 if (!method_exists($orderShipmentItem, $setterTo)) {
                     $fieldsNotMigrated[$from] = $to;
-
                     continue;
                 }
 
@@ -73,5 +71,6 @@ class Version20200415160854 extends AbstractMigration implements ContainerAwareI
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+
     }
 }

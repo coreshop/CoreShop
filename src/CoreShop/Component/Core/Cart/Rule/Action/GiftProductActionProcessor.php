@@ -110,7 +110,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     {
         $cart->removeItem($cartItem);
 
-        if (0 !== $cartItem->getId()) {
+        if ($cartItem->getId() !== 0) {
             $cartItem->delete();
         }
     }

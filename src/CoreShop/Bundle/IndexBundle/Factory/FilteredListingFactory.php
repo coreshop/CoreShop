@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\IndexBundle\Factory;
 
 use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
 use CoreShop\Component\Index\Factory\ListingFactoryInterface;
+use CoreShop\Component\Index\Filter\FilterProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;

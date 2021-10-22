@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Calculator;
 
+use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
 use CoreShop\Component\Product\Model\ProductInterface;
 
 interface ProductDiscountPriceCalculatorInterface

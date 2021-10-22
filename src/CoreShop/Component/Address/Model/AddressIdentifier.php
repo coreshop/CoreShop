@@ -24,7 +24,6 @@ use CoreShop\Component\Resource\Model\ToggleableTrait;
 class AddressIdentifier extends AbstractResource implements AddressIdentifierInterface, \Stringable
 {
     use ToggleableTrait;
-
     use TimestampableTrait;
 
     /**

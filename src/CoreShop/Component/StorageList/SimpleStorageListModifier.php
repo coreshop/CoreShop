@@ -20,7 +20,6 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 class SimpleStorageListModifier implements StorageListModifierInterface
 {
     protected StorageListItemQuantityModifier $storageListItemQuantityModifier;
-
     protected StorageListItemModelEqualsResolver $storageListItemFinder;
 
     public function __construct()

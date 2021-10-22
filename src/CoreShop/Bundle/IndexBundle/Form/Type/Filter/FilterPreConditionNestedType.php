@@ -35,7 +35,7 @@ final class FilterPreConditionNestedType extends AbstractType
         $builder
             ->add('conditions', FilterPreConditionCollectionType::class, [
                 'constraints' => [new Valid(['groups' => $this->validationGroups])],
-                'nested' => true,
+                'nested' => true
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

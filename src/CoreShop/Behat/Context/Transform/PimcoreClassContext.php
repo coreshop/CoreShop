@@ -80,6 +80,7 @@ final class PimcoreClassContext implements Context
         return $this->sharedStorage->get('object-instance');
     }
 
+
     /**
      * @Transform /^object-instance-2$/
      */
@@ -107,7 +108,7 @@ final class PimcoreClassContext implements Context
         $name = $this->sharedStorage->get('pimcore_definition_name');
         $class = $this->sharedStorage->get('pimcore_definition_class');
 
-        if (ClassDefinition::class === $class) {
+        if ($class === ClassDefinition::class) {
             return ClassDefinition::getByName($this->classStorage->get($name));
         }
 

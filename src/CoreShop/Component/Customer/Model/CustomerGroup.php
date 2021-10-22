@@ -18,4 +18,5 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class CustomerGroup extends AbstractPimcoreModel implements CustomerGroupInterface
 {
+
 }

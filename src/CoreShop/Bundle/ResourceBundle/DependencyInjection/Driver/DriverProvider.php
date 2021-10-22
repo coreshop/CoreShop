@@ -34,7 +34,6 @@ final class DriverProvider
         if (isset(self::$drivers[$type])) {
             return self::$drivers[$type];
         }
-
         return match ($type) {
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM => new DoctrineORMDriver(),
             CoreShopResourceBundle::DRIVER_PIMCORE => new PimcoreDriver(),

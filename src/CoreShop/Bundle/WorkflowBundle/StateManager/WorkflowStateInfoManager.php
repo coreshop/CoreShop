@@ -32,7 +32,7 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.state.' : 'coreshop_workflow_state_';
         $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $value;
 
-        $color = $this->stateColors[$workflowName]['place_colors'][$value] ?? '#f6f1de';
+        $color = isset($this->stateColors[$workflowName]['place_colors'][$value]) ? $this->stateColors[$workflowName]['place_colors'][$value] : '#f6f1de';
 
         return [
             'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),

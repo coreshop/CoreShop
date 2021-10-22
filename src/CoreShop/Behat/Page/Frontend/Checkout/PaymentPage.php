@@ -37,7 +37,7 @@ class PaymentPage extends AbstractFrontendPage implements PaymentPageInterface
     protected function getAdditionalParameters(): array
     {
         return [
-            'stepIdentifier' => 'payment',
+            'stepIdentifier' => 'payment'
         ];
     }
 

@@ -24,12 +24,12 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationTy
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
-use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\AdditionAmountActionConfigurationType;
-use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType;
-use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\AdditionAmountActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType;
@@ -57,7 +57,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 final class ShippingContext implements Context
 {
     use ConditionFormTrait;
-
     use ActionFormTrait;
 
     public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FormFactoryInterface $formFactory, private FormTypeRegistryInterface $conditionFormTypeRegistry, private FormTypeRegistryInterface $actionFormTypeRegistry, private FactoryInterface $carrierFactory, private FactoryInterface $shippingRuleFactory, private FactoryInterface $shippingRuleGroupFactory)
@@ -118,7 +117,6 @@ final class ShippingContext implements Context
 
         $this->saveCarrier($carrier);
     }
-
     /**
      * @Given /^the (carrier "[^"]+") is enabled for (store "[^"]+")$/
      * @Given /^the (carrier) is enabled for  (store "[^"]+")$/
@@ -476,7 +474,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(PriceActionConfigurationType::class, 'price');
 
         $this->addAction($rule, $this->createActionWithForm('price', [
-            'price' => (int)$price,
+            'price' => (int) $price,
             'currency' => $currency->getId(),
         ]));
     }
@@ -490,7 +488,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(AdditionAmountActionConfigurationType::class, 'additionAmount');
 
         $this->addAction($rule, $this->createActionWithForm('additionAmount', [
-            'amount' => (int)$amount,
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -504,7 +502,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(AdditionPercentActionConfigurationType::class, 'additionPercent');
 
         $this->addAction($rule, $this->createActionWithForm('additionPercent', [
-            'percent' => (int)$amount,
+            'percent' => (int) $amount,
         ]));
     }
 
@@ -517,7 +515,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(DiscountAmountActionConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
-            'amount' => (int)$amount,
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -531,7 +529,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(DiscountPercentActionConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => (int)$amount,
+            'percent' => (int) $amount,
         ]));
     }
 

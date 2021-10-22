@@ -30,7 +30,7 @@ class MenuElement extends AbstractElement implements MenuElementInterface
 
     public function aMenuIsOpen(): bool
     {
-        return null !== $this->getOpenMenu();
+        return $this->getOpenMenu() !== null;
     }
 
     public function openMenuHasItems(int $count): bool
@@ -64,11 +64,11 @@ class MenuElement extends AbstractElement implements MenuElementInterface
 
         foreach ($this->getDocument()->findAll('css', '.pimcore_navigation_flyout') as $element) {
             if (!str_contains($element->getAttribute('style'), 'visiblity')) {
-                ++$count;
+                $count++;
             }
         }
 
-        return 2 === $count;
+        return $count === 2;
     }
 
     protected function getOpenMenu()

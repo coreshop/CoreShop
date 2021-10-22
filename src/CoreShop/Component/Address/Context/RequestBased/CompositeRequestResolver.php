@@ -16,8 +16,8 @@ namespace CoreShop\Component\Address\Context\RequestBased;
 
 use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\CountryInterface;
-use Laminas\Stdlib\PriorityQueue;
 use Symfony\Component\HttpFoundation\Request;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeRequestResolver implements RequestResolverInterface
 {
@@ -42,7 +42,9 @@ final class CompositeRequestResolver implements RequestResolverInterface
         foreach ($this->requestResolvers as $requestResolver) {
             try {
                 return $requestResolver->findCountry($request);
-            } catch (CountryNotFoundException) {
+            }
+            catch (CountryNotFoundException)
+            {
                 //Silently ignore and continue
             }
         }

@@ -71,7 +71,7 @@ class WorkflowListener implements EventSubscriberInterface
     public function applyTransition(string $transitionName, Event $event, array $actions): void
     {
         foreach ($actions as $callback) {
-            if (false === $callback['enabled']) {
+            if ($callback['enabled'] === false) {
                 continue;
             }
 
@@ -101,7 +101,8 @@ class WorkflowListener implements EventSubscriberInterface
         } else {
             $expr = new ExpressionLanguage();
             $args = array_map(
-                function (mixed $arg) use ($expr, $event): mixed {
+                function (mixed $arg) use ($expr, $event): mixed
+                {
                     if (!is_string($arg)) {
                         return $arg;
                     }

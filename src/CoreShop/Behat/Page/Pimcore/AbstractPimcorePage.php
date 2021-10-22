@@ -28,7 +28,12 @@ abstract class AbstractPimcorePage extends SymfonyPage implements PimcorePageInt
         $element = $this->getDocument()->find($selector, $locator);
 
         if (null === $element) {
-            throw new ElementNotFoundException($this->getSession(), null, $selector, $locator);
+            throw new ElementNotFoundException(
+                $this->getSession(),
+                null,
+                $selector,
+                $locator
+            );
         }
 
         return $element;
@@ -39,7 +44,7 @@ abstract class AbstractPimcorePage extends SymfonyPage implements PimcorePageInt
         $start = microtime(true);
         $end = $start + $time / 1000.0;
         $conditions = [];
-        if (null === $condition) {
+        if ($condition === null) {
             $defaultCondition = true;
             $conditions = [
                 "document.readyState == 'complete'",
@@ -53,12 +58,18 @@ abstract class AbstractPimcorePage extends SymfonyPage implements PimcorePageInt
         $this->getSession()->wait(100, false);
         $this->getSession()->wait($time, $condition);
         // Check if we reached the timeout unless the condition is false to explicitly wait the specified time
-        if (false !== $condition && microtime(true) > $end) {
+        if ($condition !== false && microtime(true) > $end) {
             if ($defaultCondition) {
                 foreach ($conditions as $condition_item) {
                     $result = $this->getSession()->evaluateScript($condition_item);
                     if (!$result) {
-                        throw new DriverException(sprintf('Timeout of %d reached when checking on "%s"', $time, $condition_item));
+                        throw new DriverException(
+                            sprintf(
+                                'Timeout of %d reached when checking on "%s"',
+                                $time,
+                                $condition_item
+                            )
+                        );
                     }
                 }
 

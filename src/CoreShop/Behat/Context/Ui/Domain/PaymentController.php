@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Domain;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Core\Model\PaymentProvider;
@@ -30,11 +31,8 @@ use Webmozart\Assert\Assert;
 
 final class PaymentController implements Context
 {
-    public function __construct(
-        private Payum $payum,
-        private RouterInterface $router,
-        private WorkflowStateInfoManagerInterface $workflowStateInfoManager
-    ) {
+    public function __construct(private Payum $payum, private RouterInterface $router, private WorkflowStateInfoManagerInterface $workflowStateInfoManager)
+    {
     }
 
     /**
@@ -77,8 +75,7 @@ final class PaymentController implements Context
                 $result->getStatusCode(),
                 200,
                 sprintf(
-                    'Status Code should be 200, but a %s found for request %s',
-                    $result->getStatusCode(),
+                    'Status Code should be 200, but a %s found for request %s', $result->getStatusCode(),
                     $requests[$index]->getUri()
                 )
             );

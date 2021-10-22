@@ -75,7 +75,7 @@ class CoreShopRelation extends Data\ManyToOneRelation
 
         foreach ($classes as $cl) {
             $return[] = [
-                'classes' => $cl,
+                'classes' => $cl
             ];
         }
 
@@ -107,6 +107,7 @@ class CoreShopRelation extends Data\ManyToOneRelation
     }
 
     /**
+     *
      * @return bool
      */
     public function getAssetsAllowed()

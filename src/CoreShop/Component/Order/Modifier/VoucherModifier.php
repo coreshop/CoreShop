@@ -73,12 +73,12 @@ class VoucherModifier implements VoucherModifierInterface
 
             $voucherCode = $this->voucherCodeRepository->findByCode($item->getVoucherCode());
             if ($voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-                if (0 !== $voucherCode->getUses()) {
+                if ($voucherCode->getUses() !== 0) {
                     $voucherCode->setUses($voucherCode->getUses() - 1);
-                    $voucherCode->setUsed(0 !== $voucherCode->getUses());
+                    $voucherCode->setUsed($voucherCode->getUses() !== 0);
 
                     if ($voucherCode->isCreditCode()) {
-                        $voucherCode->setCreditUsed(max(0, $voucherCode->getCreditUsed() - (-1 * $item->getDiscount(true))));
+                        $voucherCode->setCreditUsed(max(0,$voucherCode->getCreditUsed() - (-1 * $item->getDiscount(true))));
                     }
 
                     $this->entityManager->persist($voucherCode);

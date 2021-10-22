@@ -235,16 +235,22 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         }
 
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
-            if ($data->getValue() >= \PHP_INT_MAX) {
-                throw new Model\Element\ValidationException('Value exceeds PHP_INT_MAX please use an input data type instead of numeric!');
+            if ($data->getValue() >= PHP_INT_MAX) {
+                throw new Model\Element\ValidationException(
+                    'Value exceeds PHP_INT_MAX please use an input data type instead of numeric!'
+                );
             }
 
-            if ('' !== (string)$this->getMinValue() && $this->getMinValue() > $data->getValue()) {
-                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue());
+            if ((string)$this->getMinValue() !== '' && $this->getMinValue() > $data->getValue()) {
+                throw new Model\Element\ValidationException(
+                    'Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue()
+                );
             }
 
-            if ('' !== (string)$this->getMaxValue() && $data->getValue() > $this->getMaxValue()) {
-                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue());
+            if ((string)$this->getMaxValue() !== '' && $data->getValue() > $this->getMaxValue()) {
+                throw new Model\Element\ValidationException(
+                    'Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue()
+                );
             }
         }
     }
@@ -295,7 +301,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
     /**
      * @param int $currencyId
      *
-     * @return CurrencyInterface|null
+     * @return null|CurrencyInterface
      */
     protected function getCurrencyById($currencyId)
     {
@@ -315,11 +321,11 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return \Pimcore::getContainer()->getParameter('coreshop.currency.decimal_factor');
     }
 
-    /**
+        /**
      * @param mixed $value
      */
     protected function toNumeric($value): float|int
     {
-        return (int)round($value * $this->getDecimalFactor());
+        return (int) round($value * $this->getDecimalFactor());
     }
 }

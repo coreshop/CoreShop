@@ -56,7 +56,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
 
     protected function getDiscount(OrderInterface $cart, array $configuration): int
     {
-        $applyOn = $configuration['applyOn'] ?? 'total';
+        $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
         if ('total' === $applyOn) {
             $cartAmount = $cart->getTotal($configuration['gross']);

@@ -109,6 +109,7 @@ final class IndexCommand extends Command
         foreach ($classesToUpdate as $class) {
             $class = ucfirst($class);
 
+
             /**
              * @psalm-var class-string $list
              */

@@ -54,8 +54,8 @@ final class AddressType extends AbstractResourceType
                 $defaultShippingAddress = $address;
                 $defaultInvoiceAddress = $address;
             } else {
-                $defaultShippingAddress = 'shipping' === $addressIdentifier->getName() ? $address : null;
-                $defaultInvoiceAddress = 'invoice' === $addressIdentifier->getName() ? $address : null;
+                $defaultShippingAddress = $addressIdentifier->getName() === 'shipping' ? $address : null;
+                $defaultInvoiceAddress = $addressIdentifier->getName() === 'invoice' ? $address : null;
             }
         }
 
@@ -97,7 +97,7 @@ final class AddressType extends AbstractResourceType
                 ) {
                     $choiceList = $event->getForm()->get('shippingAddress')->getConfig()->getOption('choices');
 
-                    if (!is_array($choiceList) || 0 === count($choiceList)) {
+                    if (!is_array($choiceList) || count($choiceList) === 0) {
                         $checkboxData = null;
                         $checkboxDisabled = true;
                     }
@@ -132,18 +132,19 @@ final class AddressType extends AbstractResourceType
 
                         if (is_array($choiceList) && count($choiceList) > 0) {
                             $valid = count(array_filter($choiceList, static function (AddressInterface $address) use ($invoiceAddressId) {
-                                return $address->getId() === (int)$invoiceAddressId;
-                            })) > 0;
+                                    return $address->getId() === (int) $invoiceAddressId;
+                                })) > 0;
                         }
                     }
 
-                    if (true === $valid) {
+                    if ($valid === true) {
                         $formData['shippingAddress'] = $formData['invoiceAddress'];
                         $event->setData($formData);
                     } else {
                         $message = $this->translator->trans('coreshop.checkout.address.invoice_as_shipping_invalid');
                         $event->getForm()->addError(new FormError($message));
                     }
+
                 }
             });
     }

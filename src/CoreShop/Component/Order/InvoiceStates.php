@@ -16,13 +16,10 @@ namespace CoreShop\Component\Order;
 
 final class InvoiceStates
 {
-    public const IDENTIFIER = 'coreshop_invoice';
+    const IDENTIFIER = 'coreshop_invoice';
 
-    public const STATE_NEW = 'new';
-
-    public const STATE_READY = 'ready';
-
-    public const STATE_CANCELLED = 'cancelled';
-
-    public const STATE_COMPLETE = 'complete';
+    const STATE_NEW = 'new';
+    const STATE_READY = 'ready';
+    const STATE_CANCELLED = 'cancelled';
+    const STATE_COMPLETE = 'complete';
 }

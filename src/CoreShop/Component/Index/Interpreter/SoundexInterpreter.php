@@ -24,7 +24,8 @@ class SoundexInterpreter implements InterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed {
+    ): mixed
+    {
         if (null === $value) {
             return null;
         }
@@ -33,7 +34,7 @@ class SoundexInterpreter implements InterpreterInterface
             sort($value);
             $string = implode(' ', $value);
         } else {
-            $string = (string)$value;
+            $string = (string) $value;
         }
 
         $soundEx = soundex($string);

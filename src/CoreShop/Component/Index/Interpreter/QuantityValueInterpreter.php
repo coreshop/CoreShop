@@ -25,7 +25,8 @@ class QuantityValueInterpreter implements InterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed {
+    ): mixed
+    {
         if ($value instanceof QuantityValue) {
             return $value->getValue();
         }

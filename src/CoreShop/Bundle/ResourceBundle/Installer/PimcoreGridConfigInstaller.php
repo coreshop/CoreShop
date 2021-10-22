@@ -18,6 +18,7 @@ use CoreShop\Bundle\ResourceBundle\Installer\Configuration\GridConfigConfigurati
 use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
 use CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;

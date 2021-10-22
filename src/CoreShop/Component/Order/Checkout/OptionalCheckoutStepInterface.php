@@ -20,6 +20,8 @@ interface OptionalCheckoutStepInterface
 {
     /**
      * Determines if this step is required and will therefore be listed.
+     *
+     *
      */
     public function isRequired(OrderInterface $cart): bool;
 }

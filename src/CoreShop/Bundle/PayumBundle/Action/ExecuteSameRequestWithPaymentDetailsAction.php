@@ -27,7 +27,7 @@ final class ExecuteSameRequestWithPaymentDetailsAction implements ActionInterfac
     use GatewayAwareTrait;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @param Generic $request
      */
@@ -49,7 +49,7 @@ final class ExecuteSameRequestWithPaymentDetailsAction implements ActionInterfac
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

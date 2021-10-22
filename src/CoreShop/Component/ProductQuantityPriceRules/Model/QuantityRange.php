@@ -98,7 +98,7 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
 
     public function isHighlighted()
     {
-        return true === $this->highlighted;
+        return $this->highlighted === true;
     }
 
     public function setHighlighted(bool $highlighted)
@@ -118,7 +118,7 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
 
     public function __clone()
     {
-        if (null === $this->id) {
+        if ($this->id === null) {
             return;
         }
 

@@ -23,11 +23,12 @@ class SequenceFactory implements SequenceFactoryInterface
      * @psalm-param class-string $className
      */
     public function __construct(
-        /*
+        /**
          * @psalm-var class-string
          */
         private string $className
-    ) {
+    )
+    {
     }
 
     public function createNew()

@@ -22,9 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TagManagerClassicEcommerce extends AbstractEcommerceTracker
 {
     public CodeTracker $codeTracker;
-
     public ConfigResolverInterface $config;
-
     protected bool $dataLayerIncluded = false;
 
     public function setTracker(TrackerInterface $tracker): void

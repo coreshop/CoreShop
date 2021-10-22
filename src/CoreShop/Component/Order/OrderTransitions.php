@@ -16,13 +16,10 @@ namespace CoreShop\Component\Order;
 
 final class OrderTransitions
 {
-    public const IDENTIFIER = 'coreshop_order';
+    const IDENTIFIER = 'coreshop_order';
 
-    public const TRANSITION_CREATE = 'create';
-
-    public const TRANSITION_CONFIRM = 'confirm';
-
-    public const TRANSITION_CANCEL = 'cancel';
-
-    public const TRANSITION_COMPLETE = 'complete';
+    const TRANSITION_CREATE = 'create';
+    const TRANSITION_CONFIRM = 'confirm';
+    const TRANSITION_CANCEL = 'cancel';
+    const TRANSITION_COMPLETE = 'complete';
 }

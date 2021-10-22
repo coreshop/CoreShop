@@ -60,7 +60,7 @@ final class SurchargeAmountConfigurationType extends AbstractType
 
                 return null;
             },
-            function (mixed $currency) {
+            function (mixed$currency) {
                 if ($currency instanceof CurrencyInterface) {
                     return $currency->getId();
                 }

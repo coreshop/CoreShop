@@ -73,12 +73,12 @@ class OrderCreationController extends PimcoreController
             'customer' => $request->get('customer'),
         ]);
 
-        if ('POST' === $request->getMethod()) {
+        if ($request->getMethod() === 'POST') {
             $handledForm = $form->handleRequest($request);
 
             $cart = $handledForm->getData();
 
-            InheritanceHelper::useInheritedValues(static function () use ($cartProcessor, $cart) {
+            InheritanceHelper::useInheritedValues(static function() use ($cartProcessor, $cart) {
                 $cartProcessor->process($cart);
             });
 
@@ -107,7 +107,7 @@ class OrderCreationController extends PimcoreController
             'customer' => $request->get('customer'),
         ]);
 
-        if ('POST' === $request->getMethod()) {
+        if ($request->getMethod() === 'POST') {
             $handledForm = $form->handleRequest($request);
 
             if (!$handledForm->isValid()) {
@@ -131,7 +131,7 @@ class OrderCreationController extends PimcoreController
                 throw new HttpException(500);
             }
 
-            InheritanceHelper::useInheritedValues(static function () use ($workflow, $cart, $type, $cartManager) {
+            InheritanceHelper::useInheritedValues(static function() use ($workflow, $cart, $type, $cartManager) {
                 $workflow->apply($cart, $type);
 
                 $cartManager->persistCart($cart);
@@ -146,8 +146,10 @@ class OrderCreationController extends PimcoreController
         return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
     }
 
+
     protected function getCartDetails(OrderInterface $cart): array
     {
+
         $jsonCart = $this->getDataForObject($cart);
 
         $jsonCart['o_id'] = $cart->getId();
@@ -207,7 +209,7 @@ class OrderCreationController extends PimcoreController
             'convertedTotal' => $item->getConvertedTotal(),
             'customItemPrice' => $item->getCustomItemPrice(),
             'customItemDiscount' => $item->getCustomItemDiscount(),
-            'convertedCustomItemPrice' => $item->getConvertedCustomItemPrice(),
+            'convertedCustomItemPrice' => $item->getConvertedCustomItemPrice()
         ];
     }
 
@@ -267,7 +269,7 @@ class OrderCreationController extends PimcoreController
         return [
             'name' => $currency->getName(),
             'symbol' => $currency->getSymbol(),
-            'isoCode' => $currency->getIsoCode(),
+            'isoCode' => $currency->getIsoCode()
         ];
     }
 

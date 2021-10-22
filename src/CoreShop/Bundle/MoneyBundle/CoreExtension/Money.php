@@ -22,7 +22,11 @@ use Pimcore\Model\Element\ValidationException;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement, MissingConstructor
  */
-class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface, Data\CustomVersionMarshalInterface, Data\CustomRecyclingMarshalInterface
+class Money extends DataObject\ClassDefinition\Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    Data\CustomVersionMarshalInterface,
+    Data\CustomRecyclingMarshalInterface
 {
     /**
      * Static type of this element.
@@ -103,7 +107,7 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
      */
     public function getDefaultValue()
     {
-        if (null !== $this->defaultValue) {
+        if ($this->defaultValue !== null) {
             return $this->toNumeric($this->defaultValue);
         }
 
@@ -117,7 +121,7 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
      */
     public function setDefaultValue($defaultValue)
     {
-        if (strlen((string)$defaultValue) > 0) {
+        if (strlen(strval($defaultValue)) > 0) {
             $this->defaultValue = $defaultValue;
         }
 
@@ -189,7 +193,7 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
     public function getDataForResource($data, $object = null, $params = [])
     {
         if (is_numeric($data) && !is_int($data)) {
-            $data = (int)$data;
+            $data = (int) $data;
         }
 
         if (is_int($data)) {
@@ -264,15 +268,12 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
         switch ($class::class) {
             case DataObject\Objectbrick\Definition::class:
                 $returnType = '\\Pimcore\\Model\\DataObject\\Objectbrick\\Data\\' . ucfirst($class->getKey());
-
                 break;
             case DataObject\Fieldcollection\Definition::class:
                 $returnType = '\\Pimcore\\Model\\DataObject\\FieldCollection\\Data\\' . ucfirst($class->getKey());
-
                 break;
             case DataObject\ClassDefinition::class:
                 $returnType = '\\Pimcore\\Model\\DataObject\\FieldCollection\\Data\\' . ucfirst($class->getName());
-
                 break;
         }
 
@@ -502,7 +503,8 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
         if ($class instanceof DataObject\Objectbrick\Definition) {
             $classname = 'Objectbrick\\Data\\' . ucfirst($class->getKey());
             $containerGetter = 'getDefinition';
-        } elseif ($class instanceof DataObject\Fieldcollection\Definition) {
+        }
+        else if ($class instanceof DataObject\Fieldcollection\Definition) {
             $classname = 'FieldCollection\\Data\\' . ucfirst($class->getKey());
             $containerGetter = 'getDefinition';
         } else {
@@ -571,7 +573,7 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (is_numeric($data)) {
-            return (int)round((round((float)$data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
+            return (int) round((round((float) $data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
         }
 
         return $data;
@@ -595,7 +597,7 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
             $data = $this->toNumeric($data);
 
-            if ($data >= \PHP_INT_MAX) {
+            if ($data >= PHP_INT_MAX) {
                 throw new ValidationException('Value exceeds PHP_INT_MAX please use an input data type instead of numeric!');
             }
 
@@ -613,7 +615,7 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
     {
         $data = $this->getDataFromObjectParam($object, $params);
 
-        return (string)$data;
+        return strval($data);
     }
 
     public function getFromCsvImport($importValue, $object = null, $params = [])
@@ -638,7 +640,7 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
      */
     public function isEmpty($data)
     {
-        return null === $data || '' === $data;
+        return null === $data || $data === '';
     }
 
     /**
@@ -662,10 +664,10 @@ class Money extends DataObject\ClassDefinition\Data implements Data\ResourcePers
      */
     protected function toNumeric($value): float|int
     {
-        if (!str_contains((string)$value, '.')) {
-            return (int)$value;
+        if (!str_contains((string) $value, '.')) {
+            return (int) $value;
         }
 
-        return (float)$value;
+        return (float) $value;
     }
 }

@@ -50,6 +50,7 @@ final class PaypalGatewayConfigurationType extends AbstractType
                 ],
             ])
             ->add('sandbox', CheckboxType::class, [
+
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $data = $event->getData();

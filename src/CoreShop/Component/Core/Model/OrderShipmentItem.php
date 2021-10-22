@@ -18,4 +18,5 @@ use CoreShop\Component\Order\Model\OrderShipmentItem as BaseOrderShipmentItem;
 
 abstract class OrderShipmentItem extends BaseOrderShipmentItem implements OrderShipmentItemInterface
 {
+
 }

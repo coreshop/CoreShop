@@ -24,7 +24,7 @@ final class StoreProductPriceCalculator implements ProductRetailPriceCalculatorI
 {
     public function getRetailPrice(ProductInterface $product, array $context): int
     {
-        /*
+        /**
          * @var \CoreShop\Component\Core\Model\ProductInterface $product
          */
         Assert::isInstanceOf($product, \CoreShop\Component\Core\Model\ProductInterface::class);

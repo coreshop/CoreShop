@@ -32,7 +32,8 @@ class NestedInterpreter implements InterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed {
+    ): mixed
+    {
         $this->assert($interpreterConfig);
 
         return $this->loop($value, $interpreterConfig, function (mixed $value, InterpreterInterface $interpreter, array $interpreterConfig) use ($indexable, $config): mixed {

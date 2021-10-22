@@ -26,12 +26,9 @@ use Pimcore\Model\Asset;
 class PaymentProvider extends AbstractResource implements PaymentProviderInterface, \Stringable
 {
     use TimestampableTrait;
-
     use ToggleableTrait;
-
     use TranslatableTrait {
         __construct as initializeTranslationsCollection;
-
         getTranslation as private doGetTranslation;
     }
 
@@ -53,7 +50,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     /**
      * @var Asset|null
      */
-    protected $logo;
+     protected $logo;
 
     public function __construct()
     {

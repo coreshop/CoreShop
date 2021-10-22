@@ -30,7 +30,7 @@ class GridController extends AdminController
         $services = [];
         /** @var GridFilterInterface $service */
         foreach ($gridFilterRepository->all() as $id => $service) {
-            if (true !== $service->supports($listType)) {
+            if ($service->supports($listType) !== true) {
                 continue;
             }
 
@@ -51,7 +51,7 @@ class GridController extends AdminController
         $services = [];
         /** @var GridActionInterface $service */
         foreach ($gridActionRepository->all() as $id => $service) {
-            if (true !== $service->supports($listType)) {
+            if ($service->supports($listType) !== true) {
                 continue;
             }
 

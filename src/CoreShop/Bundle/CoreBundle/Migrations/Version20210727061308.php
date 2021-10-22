@@ -17,25 +17,25 @@ final class Version20210727061308 extends AbstractMigration implements Container
     public function up(Schema $schema): void
     {
         $slugField = [
-            'fieldtype' => 'urlSlug',
-            'width' => '',
-            'domainLabelWidth' => null,
-            'action' => 'CoreShop\\Bundle\\FrontendBundle\\Controller\\ProductController:detailSlugAction',
-            'availableSites' => [],
-            'name' => 'slug',
-            'title' => 'coreshop.product.slug',
-            'tooltip' => '',
-            'mandatory' => false,
-            'noteditable' => false,
-            'index' => false,
-            'locked' => false,
-            'style' => '',
-            'permissions' => null,
-            'datatype' => 'data',
-            'relationType' => false,
-            'invisible' => false,
-            'visibleGridView' => false,
-            'visibleSearch' => false,
+            "fieldtype" => "urlSlug",
+            "width" => "",
+            "domainLabelWidth" => null,
+            "action" => "CoreShop\\Bundle\\FrontendBundle\\Controller\\ProductController:detailSlugAction",
+            "availableSites" => [],
+            "name" => "slug",
+            "title" => "coreshop.product.slug",
+            "tooltip" => "",
+            "mandatory" => false,
+            "noteditable" => false,
+            "index" => false,
+            "locked" => false,
+            "style" => "",
+            "permissions" => null,
+            "datatype" => "data",
+            "relationType" => false,
+            "invisible" => false,
+            "visibleGridView" => false,
+            "visibleSearch" => false
         ];
 
         $classUpdater = new ClassUpdate($this->container->getParameter('coreshop.model.product.pimcore_class_name'));
@@ -51,5 +51,6 @@ final class Version20210727061308 extends AbstractMigration implements Container
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+
     }
 }

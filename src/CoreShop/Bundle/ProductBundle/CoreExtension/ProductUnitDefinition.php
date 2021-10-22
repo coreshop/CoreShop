@@ -23,7 +23,10 @@ use Pimcore\Model\DataObject\Concrete;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
  */
-class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface, Data\CustomVersionMarshalInterface
+class ProductUnitDefinition extends Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    Data\CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.
@@ -87,7 +90,7 @@ class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwar
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
-            if ((int)$data) {
+            if ((int) $data) {
                 return $this->getDataFromResource($data, $object, $params);
             }
         }
@@ -130,7 +133,7 @@ class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwar
 
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        if ((int)$data > 0) {
+        if ((int) $data > 0) {
             return $this->getRepository()->find($data);
         }
 

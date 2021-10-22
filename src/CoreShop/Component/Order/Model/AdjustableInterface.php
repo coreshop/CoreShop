@@ -17,6 +17,8 @@ namespace CoreShop\Component\Order\Model;
 interface AdjustableInterface
 {
     /**
+     * @param string|null $type
+     *
      * @return AdjustmentInterface[]
      */
     public function getAdjustments(string $type = null);
@@ -27,8 +29,14 @@ interface AdjustableInterface
 
     public function getAdjustmentsTotal(?string $type = null, bool $withTax = true): int;
 
+    /**
+     * @param string|null $type
+     */
     public function removeAdjustments(string $type = null);
 
+    /**
+     * @param string|null $type
+     */
     public function removeAdjustmentsRecursively(string $type = null);
 
     /**

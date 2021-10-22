@@ -29,7 +29,6 @@ class CompareCondition implements ConditionInterface
     {
         $this->fieldName = $fieldName;
     }
-
     public function getOperator(): string
     {
         return $this->operator;

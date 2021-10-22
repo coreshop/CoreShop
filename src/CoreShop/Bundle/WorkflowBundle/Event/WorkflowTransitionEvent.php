@@ -45,3 +45,4 @@ final class WorkflowTransitionEvent extends Event
         return $this->allowedTransitions;
     }
 }
+

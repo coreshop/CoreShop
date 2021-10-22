@@ -92,7 +92,7 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         $definition->setPublic(true);
         $definition->setArguments([
             $metadata->getClass('model'),
-            $repositoryClass,
+            $repositoryClass
         ]);
 
         $container->setDefinition($metadata->getServiceId('repository.factory'), $definition);

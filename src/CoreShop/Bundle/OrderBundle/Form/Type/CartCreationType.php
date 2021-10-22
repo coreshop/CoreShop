@@ -51,7 +51,7 @@ final class CartCreationType extends AbstractResourceType
         $resolver->setDefaults([
             'csrf_protection' => false,
             'customer' => null,
-            'sales_state' => OrderSaleStates::STATE_CART,
+            'sales_state' => OrderSaleStates::STATE_CART
         ]);
     }
 }

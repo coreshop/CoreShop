@@ -33,7 +33,7 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
 
         foreach ($controllers as $key => $value) {
             $controllerKey = sprintf('coreshop.frontend.controller.%s', $key);
-            $controllerClass = (string)$container->getParameter($controllerKey);
+            $controllerClass = (string) $container->getParameter($controllerKey);
 
             if ($container->hasDefinition($controllerClass)) {
                 $customController = $container->getDefinition($controllerClass);
@@ -58,17 +58,17 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
                         new Reference('form.factory'),
                         new Reference(ShopperContextInterface::class),
                     ]);
-
                 break;
+
                 case 'checkout':
                     $controllerDefinition->setArguments([
-                        new Reference('coreshop.checkout_manager.factory'),
+                        new Reference('coreshop.checkout_manager.factory')
                     ]);
-
                     break;
+
                 case 'payment':
                     $controllerDefinition->setMethodCalls([
-                        ['setContainer', [new Reference('service_container')]],
+                        ['setContainer', [new Reference('service_container')]]
                     ]);
                     $controllerDefinition->setArguments([
                         new Reference(OrderPaymentProviderInterface::class),
@@ -77,7 +77,6 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
                         new Reference(ResolveNextRouteFactoryInterface::class),
                         new Reference(ConfirmOrderFactoryInterface::class),
                     ]);
-
                     break;
             }
 

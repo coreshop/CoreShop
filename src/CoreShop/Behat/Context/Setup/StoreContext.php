@@ -104,7 +104,8 @@ final class StoreContext implements Context
         CurrencyInterface $currency = null,
         CountryInterface $country = null,
         $grossValues = false
-    ): StoreInterface {
+    ): StoreInterface
+    {
         /**
          * @var StoreInterface $store
          */

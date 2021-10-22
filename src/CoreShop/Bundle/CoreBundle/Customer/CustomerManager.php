@@ -33,7 +33,7 @@ class CustomerManager implements CustomerManagerInterface
 
     public function persistCustomer(CustomerInterface $customer): void
     {
-        /*
+        /**
          * @var Concrete $customer
          */
         Assert::isInstanceOf($customer, Concrete::class);
@@ -48,7 +48,7 @@ class CustomerManager implements CustomerManagerInterface
          */
         $userBackup = $customer->getObjectVar('user');
 
-        /*
+        /**
          * @var CustomerInterface $customer
          */
         $customer->setUser(null);
@@ -57,12 +57,12 @@ class CustomerManager implements CustomerManagerInterface
         $customer->setParent(
             $this->folderCreationService->createFolderForResource($customer, [
                 'path' => ($userBackup ? 'customer' : 'guest'),
-                'suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1)),
+                'suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
             ])
         );
-        /* @psalm-suppress InternalMethod */
+        /** @psalm-suppress InternalMethod */
         $customer->setKey(File::getValidFilename($customer->getEmail()));
-        /* @psalm-suppress InvalidArgument */
+        /** @psalm-suppress InvalidArgument */
         $customer->setKey(Service::getUniqueKey($customer));
         $customer->save();
 
@@ -78,7 +78,7 @@ class CustomerManager implements CustomerManagerInterface
         }
 
         if ($userBackup) {
-            if ('email' === $this->loginIdentifier) {
+            if ($this->loginIdentifier === 'email') {
                 $userBackup->setLoginIdentifier($customer->getEmail());
             }
             $userBackup->setCustomer($customer);
@@ -86,12 +86,12 @@ class CustomerManager implements CustomerManagerInterface
             $userBackup->setPublished(true);
             $userBackup->setParent(
                 $this->folderCreationService->createFolderForResource($userBackup, [
-                    'prefix' => $customer->getFullPath(),
+                    'prefix' => $customer->getFullPath()
                 ])
             );
-            /* @psalm-suppress InternalMethod */
+            /** @psalm-suppress InternalMethod */
             $userBackup->setKey(File::getValidFilename($customer->getEmail()));
-            /* @psalm-suppress InvalidArgument */
+            /** @psalm-suppress InvalidArgument */
             $userBackup->setKey(Service::getUniqueKey($userBackup));
             $userBackup->save();
         }

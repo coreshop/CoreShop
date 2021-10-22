@@ -22,7 +22,6 @@ class AbstractTranslation implements TranslationInterface
     use SetValuesTrait;
 
     protected string $locale;
-
     protected ?TranslatableInterface $translatable = null;
 
     public function getTranslatable()

@@ -22,7 +22,10 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
  */
-abstract class Select extends Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface, Data\CustomRecyclingMarshalInterface
+abstract class Select extends Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    Data\CustomRecyclingMarshalInterface
 {
     use Model\DataObject\Traits\SimpleComparisonTrait;
 
@@ -113,7 +116,7 @@ abstract class Select extends Data implements Data\ResourcePersistenceAwareInter
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
-            if ((int)$data) {
+            if ((int) $data) {
                 return $this->getDataFromResource($data, $object, $params);
             }
         }
@@ -150,12 +153,11 @@ abstract class Select extends Data implements Data\ResourcePersistenceAwareInter
      * @param string $data
      * @param null   $object
      * @param array  $params
-     *
      * @return int|string|null
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
-        if (null !== $data && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
+        if ($data !== null && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 
@@ -166,12 +168,11 @@ abstract class Select extends Data implements Data\ResourcePersistenceAwareInter
      * @param string $data
      * @param null   $object
      * @param array  $params
-     *
      * @return ResourceInterface|object|null
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        if ((int)$data > 0) {
+        if ((int) $data > 0) {
             return $this->getRepository()->find($data);
         }
 
@@ -182,12 +183,11 @@ abstract class Select extends Data implements Data\ResourcePersistenceAwareInter
      * @param string $data
      * @param null   $object
      * @param array  $params
-     *
      * @return int|null
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
-        if (null !== $data && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
+        if ($data !== null && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 

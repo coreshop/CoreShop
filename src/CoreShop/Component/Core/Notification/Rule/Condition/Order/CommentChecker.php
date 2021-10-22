@@ -28,7 +28,7 @@ class CommentChecker extends AbstractConditionChecker
         $commentAction = $configuration['commentAction'];
 
         if ($comment instanceof Note) {
-            return true === $submitAsEmail && $commentAction === $type;
+            return $submitAsEmail === true && $commentAction === $type;
         }
 
         return false;

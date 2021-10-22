@@ -16,5 +16,5 @@ namespace CoreShop\Bundle\PayumPaymentBundle;
 
 final class Events
 {
-    public const SUPPORTS_PAYMENT_PROVIDER = 'coreshop.payment_provider.supports';
+    const SUPPORTS_PAYMENT_PROVIDER = 'coreshop.payment_provider.supports';
 }

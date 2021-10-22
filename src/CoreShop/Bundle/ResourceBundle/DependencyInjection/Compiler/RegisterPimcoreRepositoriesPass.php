@@ -32,7 +32,7 @@ final class RegisterPimcoreRepositoriesPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('coreshop.pimcore.repository') as $id => $attributes) {
             foreach ($attributes as $tag) {
                 if (!isset($tag['alias'])) {
-                    throw new \InvalidArgumentException('Tagged Repository `' . $id . '` needs to have `type` and `priority` attributes.');
+                    throw new \InvalidArgumentException('Tagged Repository `'.$id.'` needs to have `type` and `priority` attributes.');
                 }
 
                 $metadata = $registry->get($tag['alias']);

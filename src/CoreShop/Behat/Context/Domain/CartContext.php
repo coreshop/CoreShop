@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
@@ -269,7 +270,7 @@ final class CartContext implements Context
     {
         $cart = $this->cartContext->getCart();
 
-        /*
+        /**
          * @var OrderInterface $cart
          */
         Assert::isInstanceOf($cart, OrderInterface::class);
@@ -847,7 +848,7 @@ final class CartContext implements Context
         );
     }
 
-    private function findCartItemByProduct(OrderInterface $cart, ProductInterface $product)
+    protected function findCartItemByProduct(OrderInterface $cart, ProductInterface $product)
     {
         foreach ($cart->getItems() as $cartItem) {
             if ($cartItem->getProduct()->getId() === $product->getId()) {

@@ -18,4 +18,5 @@ use CoreShop\Component\StorageList\StorageListModifierInterface;
 
 interface CartModifierInterface extends StorageListModifierInterface
 {
+
 }

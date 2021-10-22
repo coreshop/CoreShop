@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator;
 
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
 use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
 
 class PriceFormatter extends AbstractOperator
@@ -34,7 +34,7 @@ class PriceFormatter extends AbstractOperator
     /**
      * @param \Pimcore\Model\Element\ElementInterface $element
      *
-     * @return \stdClass|string|null
+     * @return null|\stdClass|string
      */
     public function getLabeledValue($element)
     {

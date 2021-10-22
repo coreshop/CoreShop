@@ -86,7 +86,8 @@ final class CartBlamerListener
     {
         try {
             return $this->cartContext->getCart();
-        } catch (CartNotFoundException) {
+        }
+        catch (CartNotFoundException) {
             return null;
         }
     }

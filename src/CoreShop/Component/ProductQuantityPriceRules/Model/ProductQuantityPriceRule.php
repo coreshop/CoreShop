@@ -15,12 +15,13 @@ declare(strict_types=1);
 namespace CoreShop\Component\ProductQuantityPriceRules\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Rule\Model\ActionInterface;
+use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
-use CoreShop\Component\Rule\Model\ActionInterface;
-use CoreShop\Component\Rule\Model\ConditionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @psalm-suppress MissingConstructor
@@ -28,9 +29,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ProductQuantityPriceRule extends AbstractResource implements ProductQuantityPriceRuleInterface, \Stringable
 {
     use TimestampableTrait;
-
     use SetValuesTrait;
-
     use ToggleableTrait;
 
     /**
@@ -219,7 +218,7 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
 
     public function __clone()
     {
-        if (null === $this->id) {
+        if ($this->id === null) {
             return;
         }
 

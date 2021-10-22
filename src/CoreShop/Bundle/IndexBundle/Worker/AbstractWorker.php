@@ -82,13 +82,13 @@ abstract class AbstractWorker implements WorkerInterface
         $virtualObjectId = $object->getId();
         $virtualObjectActive = $object->getIndexableEnabled($index);
 
-        if (Concrete::OBJECT_TYPE_VARIANT === $object->getType()) {
+        if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
             /**
              * @var Concrete $parent
              */
             $parent = $object->getParent();
 
-            while (Concrete::OBJECT_TYPE_VARIANT === $parent->getType() && $parent instanceof $object) {
+            while ($parent->getType() === Concrete::OBJECT_TYPE_VARIANT && $parent instanceof $object) {
                 $parent = $parent->getParent();
             }
 
@@ -140,7 +140,7 @@ abstract class AbstractWorker implements WorkerInterface
                     }
                 }
 
-                [$columnLocalizedData, $columnRelationData, $value, $isLocalizedValue] = $this->processInterpreter($column, $object, $value, $virtualObjectId);
+                list($columnLocalizedData, $columnRelationData, $value, $isLocalizedValue) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
 
                 $relationData = array_merge_recursive($relationData, $columnRelationData);
                 $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
@@ -266,7 +266,9 @@ abstract class AbstractWorker implements WorkerInterface
                 return $interpreterObject;
             }
 
-            throw new \InvalidArgumentException(sprintf('%s needs to implement "%s", "%s" given.', $column->getInterpreter(), InterpreterInterface::class, $interpreter));
+            throw new \InvalidArgumentException(
+                sprintf('%s needs to implement "%s", "%s" given.', $column->getInterpreter(), InterpreterInterface::class, $interpreter)
+            );
         }
 
         return null;

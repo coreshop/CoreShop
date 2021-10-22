@@ -19,6 +19,7 @@ interface PimcoreStoresAwareInterface
     /**
      * @return StoreInterface[]
      */
+
     public function getStores(): ?array;
 
     /**

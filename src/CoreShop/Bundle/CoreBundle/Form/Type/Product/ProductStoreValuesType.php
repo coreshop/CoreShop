@@ -40,7 +40,7 @@ final class ProductStoreValuesType extends AbstractResourceType
     {
         /** @var ProductStoreValuesInterface $data */
         $data = $event->getData();
-        if ($data->getPrice() >= \PHP_INT_MAX) {
+        if ($data->getPrice() >= PHP_INT_MAX) {
             $event->getForm()->addError(new FormError('Value exceeds PHP_INT_MAX please use an input data type instead of numeric!'));
         }
     }

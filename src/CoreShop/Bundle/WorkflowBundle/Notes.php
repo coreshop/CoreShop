@@ -19,5 +19,5 @@ final class Notes
     /**
      * Note Identifier for History State Log.
      */
-    public const HISTORY_STATE_LOG = 'history_state_change';
+    const HISTORY_STATE_LOG = 'history_state_change';
 }

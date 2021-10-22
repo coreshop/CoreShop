@@ -21,7 +21,7 @@ abstract class AbstractCoreShopResourcePage extends AbstractPimcoreTabPage
         $addButton = $this->extjsComponentQuery('[itemId=add-button]');
         $addButton->click();
 
-        $newDialog = $this->extsDocumentQuery('[itemId=' . $this->getLayoutId() . '-new-dialog]');
+        $newDialog = $this->extsDocumentQuery('[itemId='.$this->getLayoutId().'-new-dialog]');
         $newDialog->find('css', 'input')->setValue($name);
 
         $okButton = $this->extjsComponentQuery('[itemId=ok]', $newDialog->getAttribute('id'));

@@ -48,6 +48,7 @@ class Installer implements InstallerInterface
         $application->run(new ArrayInput($options));
     }
 
+
     public function uninstall(): bool
     {
         return false;

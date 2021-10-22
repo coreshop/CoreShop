@@ -17,7 +17,7 @@ namespace CoreShop\Bundle\ThemeBundle\Service;
 interface ThemeResolverInterface
 {
     /**
-     * Resolve Current Theme.
+     * Resolve Current Theme
      */
     public function resolveTheme(): string;
 }

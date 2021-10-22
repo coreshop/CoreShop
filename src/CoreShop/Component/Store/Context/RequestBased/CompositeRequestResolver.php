@@ -16,8 +16,8 @@ namespace CoreShop\Component\Store\Context\RequestBased;
 
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreInterface;
-use Laminas\Stdlib\PriorityQueue;
 use Symfony\Component\HttpFoundation\Request;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeRequestResolver implements RequestResolverInterface
 {
@@ -38,7 +38,8 @@ final class CompositeRequestResolver implements RequestResolverInterface
         foreach ($this->requestResolvers as $requestResolver) {
             try {
                 return $requestResolver->findStore($request);
-            } catch (StoreNotFoundException) {
+            }
+            catch (StoreNotFoundException) {
                 //Ignore and continue
             }
         }

@@ -34,8 +34,7 @@ final class InstallResourcesCommand extends Command
         $this
             ->setName('coreshop:resources:install')
             ->setDescription('Install Resources.')
-            ->setHelp(
-                <<<EOT
+            ->setHelp(<<<EOT
 The <info>%command.name%</info> command install Resources. (Like Static Routes or Pimcore Classes)
 EOT
             )

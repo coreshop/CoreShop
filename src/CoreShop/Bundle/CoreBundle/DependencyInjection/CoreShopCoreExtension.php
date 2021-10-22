@@ -33,6 +33,9 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 
 final class CoreShopCoreExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
+    /**
+     * @var array
+     */
     private static array $bundles = [
         'coreshop_address',
         'coreshop_currency',

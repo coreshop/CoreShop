@@ -34,7 +34,7 @@ final class StackRepositoryPass implements CompilerPassInterface
         $stackConfig = $container->getParameter('coreshop.all.stack');
 
         foreach ($container->getParameter('coreshop.all.stack.fqcns') as $alias => $classes) {
-            [$applicationName, $name] = explode('.', $alias);
+            list($applicationName, $name) = explode('.', $alias);
 
             $definition = new Definition(Metadata::class);
             $definition

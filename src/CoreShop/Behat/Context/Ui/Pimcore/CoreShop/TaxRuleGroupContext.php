@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Ui\Pimcore\CoreShop;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Pimcore\CoreShop\TaxRuleGroupPageInterface;
+use CoreShop\Behat\Page\Pimcore\PWAPageInterface;
 use Webmozart\Assert\Assert;
 
 final class TaxRuleGroupContext implements Context

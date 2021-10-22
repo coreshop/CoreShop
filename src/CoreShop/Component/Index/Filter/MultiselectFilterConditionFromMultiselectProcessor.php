@@ -40,7 +40,6 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
 
                 if (array_key_exists($e, $values)) {
                     $values[$e]['count'] += $v['count'];
-
                     continue;
                 }
 
@@ -51,7 +50,7 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
         return [
             'type' => 'multiselect',
             'label' => $condition->getLabel(),
-            'currentValues' => array_map(static function (string $value) {
+            'currentValues' => array_map(static function(string $value) {
                 return trim($value, ',');
             }, $currentFilter[$field] ?: []),
             'values' => array_values($values),
@@ -81,12 +80,12 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
             $likeConditions = [];
 
             foreach ($values as $v) {
-                $v = ',' . $v . ',';
+                $v = ',' . $v . ',' ;
 
                 $likeConditions[] = new LikeCondition($field, 'both', $v);
             }
 
-            unset($v);
+            unset ($v);
 
             $list->addCondition(new ConcatCondition($field, 'OR', $likeConditions), $fieldName);
         }

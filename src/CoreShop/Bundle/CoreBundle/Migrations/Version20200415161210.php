@@ -62,7 +62,7 @@ class Version20200415161210 extends AbstractMigration implements ContainerAwareI
             'customer',
             'shippingAddress',
             'invoiceAddress',
-            'currency',
+            'currency'
         ];
 
         $fieldsNotMigrated = [];
@@ -84,13 +84,11 @@ class Version20200415161210 extends AbstractMigration implements ContainerAwareI
 
                 if (!method_exists($order, $getterFrom)) {
                     $fieldsNotMigrated[] = $field;
-
                     continue;
                 }
 
                 if (!method_exists($order, $setterTo)) {
                     $fieldsNotMigrated[] = $field;
-
                     continue;
                 }
 
@@ -100,18 +98,16 @@ class Version20200415161210 extends AbstractMigration implements ContainerAwareI
 
             foreach ($withTaxFields as $field) {
                 foreach ([true, false] as $withTax) {
-                    $getterFrom = 'get' . ucfirst($field);
-                    $setterTo = 'set' . ucfirst($field);
+                    $getterFrom = 'get'.ucfirst($field);
+                    $setterTo = 'set'.ucfirst($field);
 
                     if (!method_exists($order, $getterFrom)) {
                         $fieldsNotMigrated[] = $field;
-
                         continue;
                     }
 
                     if (!method_exists($order, $setterTo)) {
                         $fieldsNotMigrated[] = $field;
-
                         continue;
                     }
 
@@ -156,7 +152,8 @@ class Version20200415161210 extends AbstractMigration implements ContainerAwareI
 
         $orderItems = [];
 
-        foreach ($items as $cartItem) {
+        foreach ($items as $cartItem)
+        {
             /**
              * @var OrderItemInterface $orderItem
              */
@@ -183,8 +180,8 @@ class Version20200415161210 extends AbstractMigration implements ContainerAwareI
 
             foreach ($withTaxFields as $field) {
                 foreach ([true, false] as $withTax) {
-                    $getterFrom = 'get' . ucfirst($field);
-                    $setterTo = 'set' . ucfirst($field);
+                    $getterFrom = 'get'.ucfirst($field);
+                    $setterTo = 'set'.ucfirst($field);
 
                     if (!method_exists($orderItem, $getterFrom)) {
                         continue;
@@ -210,5 +207,6 @@ class Version20200415161210 extends AbstractMigration implements ContainerAwareI
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+
     }
 }

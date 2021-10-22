@@ -24,7 +24,7 @@ final class CurrencyNotFoundException extends \RuntimeException
     /**
      * @param string $currencyCode
      */
-    public static function notFound($currencyCode): self
+    public static function notFound($currencyCode): CurrencyNotFoundException
     {
         return new self(sprintf('Currency "%s" cannot be found!', $currencyCode));
     }
@@ -32,15 +32,16 @@ final class CurrencyNotFoundException extends \RuntimeException
     /**
      * @param string $currencyCode
      */
-    public static function disabled($currencyCode): self
+    public static function disabled($currencyCode): CurrencyNotFoundException
     {
         return new self(sprintf('Currency "%s" is disabled!', $currencyCode));
     }
 
     /**
      * @param string $currencyCode
+     *
      */
-    public static function notAvailable($currencyCode, array $availableCurrenciesCodes): self
+    public static function notAvailable($currencyCode, array $availableCurrenciesCodes): CurrencyNotFoundException
     {
         return new self(sprintf(
             'Currency "%s" is not available! The available ones are: "%s".',

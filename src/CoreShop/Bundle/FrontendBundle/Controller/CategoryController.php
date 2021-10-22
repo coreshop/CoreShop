@@ -37,13 +37,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CategoryController extends FrontendController
 {
     protected array $validSortProperties = ['name'];
-
     protected string $repositoryIdentifier = 'oo_id';
-
     protected string $requestIdentifier = 'category';
-
     protected string $defaultSortName = 'name';
-
     protected string $defaultSortDirection = 'asc';
 
     public function menuAction(): Response
@@ -102,8 +98,8 @@ class CategoryController extends FrontendController
         $page = (int)$request->get('page', 1) ?: 1;
         $type = $request->get('type', $listModeDefault);
 
-        $defaultPerPage = 'list' === $type ? $listPerPageDefault : $gridPerPageDefault;
-        $allowedPerPage = 'list' === $type ? $listPerPageAllowed : $gridPerPageAllowed;
+        $defaultPerPage = $type === 'list' ? $listPerPageDefault : $gridPerPageDefault;
+        $allowedPerPage = $type === 'list' ? $listPerPageAllowed : $gridPerPageAllowed;
 
         $perPage = (int)$request->get('perPage', $defaultPerPage) ?: 10;
 
@@ -148,7 +144,7 @@ class CategoryController extends FrontendController
             $sortParsed = $this->parseSorting($sort);
 
             $categories = [$category];
-            if (true === $displaySubCategories) {
+            if ($displaySubCategories === true) {
                 foreach ($this->getRepository()->findRecursiveChildCategoriesForStore($category, $this->getContext()->getStore()) as $subCategory) {
                     $categories[] = $subCategory;
                 }
@@ -162,7 +158,7 @@ class CategoryController extends FrontendController
                 'return_type' => 'list',
             ];
 
-            if (ListingInterface::VARIANT_MODE_HIDE !== $variantMode) {
+            if ($variantMode !== ListingInterface::VARIANT_MODE_HIDE) {
                 $options['object_types'] = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
             }
 
@@ -202,7 +198,7 @@ class CategoryController extends FrontendController
             $isFrontendRequestByAdmin = true;
         }
 
-        if (false === $isFrontendRequestByAdmin && !$category->isPublished()) {
+        if ($isFrontendRequestByAdmin === false && !$category->isPublished()) {
             throw new NotFoundHttpException('category not found');
         }
 

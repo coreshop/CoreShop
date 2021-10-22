@@ -40,13 +40,8 @@ class UnitVolumeCalculator implements CalculatorInterface
         array $context
     ): int {
         if (!isset($context['unitDefinition']) || !$context['unitDefinition'] instanceof ProductUnitDefinitionInterface) {
-            return $this->inner->calculateForQuantity(
-                $quantityPriceRule,
-                $subject,
-                $quantity,
-                $originalPrice,
-                $context
-            );
+            return $this->inner->calculateForQuantity($quantityPriceRule, $subject, $quantity, $originalPrice,
+                $context);
         }
 
         $locatedRange = $this->locate($quantityPriceRule->getRanges(), $quantity, $context['unitDefinition']);
@@ -57,7 +52,7 @@ class UnitVolumeCalculator implements CalculatorInterface
 
         $price = $this->inner->calculateRangePrice($locatedRange, $subject, $originalPrice, $context);
 
-        if (0 === $price) {
+        if ($price === 0) {
             throw new NoPriceFoundException(__CLASS__);
         }
 
@@ -87,8 +82,7 @@ class UnitVolumeCalculator implements CalculatorInterface
         }
 
         $cheapestRangePrice = null;
-        $unitFilteredRanges = array_filter(
-            $ranges->toArray(),
+        $unitFilteredRanges = array_filter($ranges->toArray(),
             static function (CoreQuantityRangeInterface $range) use ($unitDefinition) {
                 if (!$range->getUnitDefinition() instanceof ProductUnitDefinitionInterface) {
                     return false;
@@ -98,8 +92,7 @@ class UnitVolumeCalculator implements CalculatorInterface
                 }
 
                 return true;
-            }
-        );
+            });
 
         // reset array index
         $unitFilteredRanges = array_values($unitFilteredRanges);

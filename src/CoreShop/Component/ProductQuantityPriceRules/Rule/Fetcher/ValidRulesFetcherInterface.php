@@ -14,12 +14,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher;
 
-use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 
 interface ValidRulesFetcherInterface
 {
     /**
+     *
      * @return RuleInterface[]
      */
     public function getValidRules(QuantityRangePriceAwareInterface $product, array $context): array;

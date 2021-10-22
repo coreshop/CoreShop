@@ -45,7 +45,7 @@ final class OrderExpireCommand extends Command
         $days = $this->days;
 
         if ($input->getOption('days')) {
-            $days = (int)$input->getOption('days');
+            $days = (int) $input->getOption('days');
         }
 
         $output->writeln('Running order expire job, this could take some time.');

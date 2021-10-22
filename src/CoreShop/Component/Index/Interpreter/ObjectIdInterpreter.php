@@ -25,7 +25,8 @@ class ObjectIdInterpreter implements InterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed {
+    ): mixed
+    {
         if ($value instanceof AbstractObject) {
             return $value->getId();
         }

@@ -37,7 +37,7 @@ class CustomRelationalIndexInterpreter implements RelationInterpreterInterface
         array $interpreterConfig = []
     ): array {
         return [
-            new RelationalValue($indexable->getId(), 'test', ['custom_col' => 'blub']),
+            new RelationalValue($indexable->getId(), 'test', ['custom_col' => 'blub'])
         ];
     }
 

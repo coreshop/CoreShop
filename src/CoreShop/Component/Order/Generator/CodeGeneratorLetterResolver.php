@@ -23,7 +23,7 @@ class CodeGeneratorLetterResolver
         return match ($generator->getFormat()) {
             CartPriceRuleVoucherCodeGenerator::FORMAT_ALPHABETIC => implode('', range(chr(65), chr(90))),
             CartPriceRuleVoucherCodeGenerator::FORMAT_NUMERIC => implode('', range(chr(48), chr(57))),
-            default => implode('', range(chr(65), chr(90))) . implode('', range(chr(48), chr(57))),
+            default => implode('', range(chr(65), chr(90))).implode('', range(chr(48), chr(57))),
         };
     }
 }

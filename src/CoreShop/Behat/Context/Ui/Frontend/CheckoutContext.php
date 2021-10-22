@@ -21,6 +21,7 @@ use CoreShop\Behat\Page\Frontend\Checkout\PaymentPageInterface;
 use CoreShop\Behat\Page\Frontend\Checkout\ShippingPageInterface;
 use CoreShop\Behat\Page\Frontend\Checkout\SummaryPageInterface;
 use CoreShop\Behat\Page\Frontend\Checkout\ThankYouPageInterface;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
@@ -309,4 +310,5 @@ final class CheckoutContext implements Context
     {
         $this->customerPage->submitGuestCheckout();
     }
+
 }

@@ -20,7 +20,6 @@ use Doctrine\DBAL\DriverManager;
 class Setup
 {
     private static bool $pimcoreSetupDone = false;
-
     private static bool $coreShopSetupDone = false;
 
     public static function setupPimcore(): void
@@ -39,7 +38,8 @@ class Setup
         $params = $connection->getParams();
         $config = $connection->getConfiguration();
 
-        unset($params['url'], $params['dbname']);
+        unset($params['url']);
+        unset($params['dbname']);
 
         // use a dedicated setup connection as the framework connection is bound to the DB and will
         // fail if the DB doesn't exist
@@ -52,6 +52,7 @@ class Setup
         }
 
         $schemaManager->createDatabase($connection->quoteIdentifier($dbName));
+
 
         if (!$connection->isConnected()) {
             $connection->connect();

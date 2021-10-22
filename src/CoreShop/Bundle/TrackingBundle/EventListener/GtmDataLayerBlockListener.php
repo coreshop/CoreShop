@@ -14,11 +14,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\TrackingBundle\EventListener;
 
-use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker;
+use Pimcore\Tool;
+use Pimcore\Http\ResponseHelper;
 use Pimcore\Analytics\SiteId\SiteIdProvider;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
-use Pimcore\Http\ResponseHelper;
-use Pimcore\Tool;
+use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class GtmDataLayerBlockListener
@@ -39,7 +39,7 @@ class GtmDataLayerBlockListener
             return;
         }
 
-        /*
+        /**
          * @psalm-suppress InternalMethod
          */
         if (!Tool::useFrontendOutputFilters()) {
@@ -47,12 +47,12 @@ class GtmDataLayerBlockListener
         }
 
         $serverVars = $event->getRequest()->server;
-        if ('preview' === $serverVars->get('HTTP_X_PURPOSE')) {
+        if ($serverVars->get('HTTP_X_PURPOSE') === 'preview') {
             return;
         }
 
         $response = $event->getResponse();
-        /*
+        /**
          * @psalm-suppress InternalMethod
          */
         if (!$this->responseHelper->isHtmlResponse($response)) {
@@ -68,7 +68,7 @@ class GtmDataLayerBlockListener
 
         if (!empty($codeHead)) {
             $headEndPosition = stripos($content, '</head>');
-            if (false !== $headEndPosition) {
+            if ($headEndPosition !== false) {
                 $content = substr_replace($content, $codeHead . '</head>', $headEndPosition, 7);
             }
         }

@@ -23,6 +23,7 @@ interface CountryRepositoryInterface extends RepositoryInterface
     public function createListQueryBuilder(): QueryBuilder;
 
     /**
+     *
      * @return CountryInterface[]
      */
     public function findByName(string $name, string $locale): array;

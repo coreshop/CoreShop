@@ -16,13 +16,9 @@ namespace CoreShop\Component\Order;
 
 final class OrderStates
 {
-    public const STATE_INITIALIZED = 'initialized';
-
-    public const STATE_NEW = 'new';
-
-    public const STATE_CONFIRMED = 'confirmed';
-
-    public const STATE_CANCELLED = 'cancelled';
-
-    public const STATE_COMPLETE = 'complete';
+    const STATE_INITIALIZED = 'initialized';
+    const STATE_NEW = 'new';
+    const STATE_CONFIRMED = 'confirmed';
+    const STATE_CANCELLED = 'cancelled';
+    const STATE_COMPLETE = 'complete';
 }

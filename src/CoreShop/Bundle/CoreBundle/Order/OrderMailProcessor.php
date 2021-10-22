@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\CoreBundle\Order;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
 use CoreShop\Component\Core\Order\OrderMailProcessorInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Pimcore\Mail\MailProcessorInterface;
 use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
@@ -25,9 +26,9 @@ use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
-use CoreShop\Component\Pimcore\Mail\MailProcessorInterface;
 use Monolog\Logger;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\Document;
 use Pimcore\Model\Document\Email;
 
 class OrderMailProcessor implements OrderMailProcessorInterface
@@ -76,7 +77,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
                         $attachments[] = [
                             'body' => $data,
                             'name' => sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber()),
-                            'content-type' => 'application/pdf',
+                            'content-type' => 'application/pdf'
                         ];
                     } catch (\Exception $e) {
                         $this->logger->error('Error while attaching invoice to order mail. Messages was: ' . $e->getMessage(), [$e]);
@@ -95,7 +96,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
                         $attachments[] = [
                             'body' => $data,
                             'name' => sprintf('shipment-%s.pdf', $shipment->getShipmentNumber()),
-                            'content-type' => 'application/pdf',
+                            'content-type' => 'application/pdf'
                         ];
                     } catch (\Exception $e) {
                         $this->logger->error('Error while attaching packing slip to order mail. Messages was: ' . $e->getMessage(), [$e]);

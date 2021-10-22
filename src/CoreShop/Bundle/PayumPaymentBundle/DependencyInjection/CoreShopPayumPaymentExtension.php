@@ -24,7 +24,7 @@ class CoreShopPayumPaymentExtension extends AbstractModelExtension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $this->registerResources('coreshop', $configs['driver'], $configs['resources'], $container);
 

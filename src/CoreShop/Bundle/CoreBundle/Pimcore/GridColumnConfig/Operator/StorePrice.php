@@ -37,7 +37,7 @@ class StorePrice extends AbstractOperator
     /**
      * @param \Pimcore\Model\Element\ElementInterface $element
      *
-     * @return \stdClass|string|null
+     * @return null|\stdClass|string
      */
     public function getLabeledValue($element)
     {

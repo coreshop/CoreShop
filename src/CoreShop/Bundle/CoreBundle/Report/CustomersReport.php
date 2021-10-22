@@ -40,7 +40,7 @@ class CustomersReport implements ReportInterface
 
         $page = $parameterBag->get('page', 1);
         $limit = $parameterBag->get('limit', 25);
-        $offset = $parameterBag->get('offset', 1 === $page ? 0 : ($page - 1) * $limit);
+        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
 
         $orderClassId = $this->orderRepository->getClassId();
         $customerClassId = $this->customerRepository->getClassId();
@@ -60,7 +60,7 @@ class CustomersReport implements ReportInterface
             LIMIT $offset,$limit";
 
         $results = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
-        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($results as &$result) {
             $result['salesFormatted'] = $this->moneyFormatter->format(

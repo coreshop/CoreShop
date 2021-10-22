@@ -26,7 +26,7 @@ use Payum\Offline\Constants;
 final class ConvertPaymentAction implements ActionInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @param Convert $request
      */
@@ -44,6 +44,6 @@ final class ConvertPaymentAction implements ActionInterface
         return
             $request instanceof Convert &&
             $request->getSource() instanceof PaymentInterface &&
-            'array' === $request->getTo();
+            $request->getTo() === 'array';
     }
 }

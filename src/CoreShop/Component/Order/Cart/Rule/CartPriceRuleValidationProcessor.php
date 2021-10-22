@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;

@@ -66,7 +66,7 @@ final class QuantityType extends AbstractType
             }
         }
 
-        if (true === $options['html5']) {
+        if ($options['html5'] === true) {
             $view->vars['type'] = 'number';
         }
     }

@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Order\NumberGenerator;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
-use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;

@@ -64,8 +64,8 @@ class PaymentProviderFixture extends AbstractFixture implements ContainerAwareIn
 
             foreach (Tool::getValidLanguages() as $lang) {
                 $provider->setTitle('Bankwire', $lang);
-                $provider->setDescription(implode(\PHP_EOL, $faker->paragraphs(3)), $lang);
-                $provider->setInstructions(implode(\PHP_EOL, $faker->paragraphs(3)), $lang);
+                $provider->setDescription(implode(PHP_EOL, $faker->paragraphs(3)), $lang);
+                $provider->setInstructions(implode(PHP_EOL, $faker->paragraphs(3)), $lang);
             }
 
             $manager->persist($provider);

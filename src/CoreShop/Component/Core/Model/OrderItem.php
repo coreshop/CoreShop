@@ -55,7 +55,7 @@ abstract class OrderItem extends BaseOrderItem implements OrderItemInterface
     {
         $coreEquals = parent::equals($storageListItem);
 
-        if (false === $coreEquals) {
+        if ($coreEquals === false) {
             return false;
         }
 

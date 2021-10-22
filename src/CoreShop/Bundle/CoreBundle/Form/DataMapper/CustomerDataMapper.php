@@ -32,7 +32,7 @@ class CustomerDataMapper implements DataMapperInterface
         $formsOtherThanAddress = [];
 
         foreach ($forms as $key => $form) {
-            if ($viewData instanceof CustomerInterface && 'address' === $key) {
+            if ($viewData instanceof CustomerInterface && $key === 'address') {
                 $address = $viewData->getAddresses();
 
                 if (count($address) > 0) {
@@ -55,7 +55,7 @@ class CustomerDataMapper implements DataMapperInterface
         $formsOtherThanAddress = [];
 
         foreach ($forms as $key => $form) {
-            if ('address' === $key) {
+            if ($key === 'address') {
                 $address = $form->getData();
 
                 if (null !== $address) {

@@ -23,9 +23,9 @@ class CoreGatewayFactory extends ContainerAwareCoreGatewayFactory
     public function createConfig(array $config = []): array
     {
         return parent::createConfig([
-            'httplug.client' => function (ArrayObject $config) {
+            'httplug.client'=>function (ArrayObject $config) {
                 return new Client();
-            },
+            }
         ]);
     }
 }

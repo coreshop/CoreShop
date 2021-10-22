@@ -21,6 +21,7 @@ interface PurchasableRetailPriceCalculatorInterface
 {
     /**
      * @throws NoPurchasableRetailPriceFoundException
+     *
      */
     public function getRetailPrice(PurchasableInterface $purchasable, array $context): int;
 }

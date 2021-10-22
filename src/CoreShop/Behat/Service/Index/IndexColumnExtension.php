@@ -24,7 +24,7 @@ class IndexColumnExtension implements IndexColumnTypeConfigExtension
     {
         $config = [];
 
-        if (IndexColumnInterface::FIELD_TYPE_DOUBLE === $column->getColumnType()) {
+        if ($column->getColumnType() === IndexColumnInterface::FIELD_TYPE_DOUBLE) {
             return ['scale' => 20, 'precision' => 20];
         }
 
@@ -33,6 +33,6 @@ class IndexColumnExtension implements IndexColumnTypeConfigExtension
 
     public function supports(IndexInterface $index): bool
     {
-        return 'extension_column_config' === $index->getName();
+        return $index->getName() === 'extension_column_config';
     }
 }

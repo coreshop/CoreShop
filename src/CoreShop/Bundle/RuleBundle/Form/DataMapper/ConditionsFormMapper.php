@@ -59,7 +59,6 @@ class ConditionsFormMapper implements DataMapperInterface
                         $this->propertyMapper->mapFormsToData($form, $entry);
 
                         $actualData[] = $entry;
-
                         continue 2;
                     }
                 }

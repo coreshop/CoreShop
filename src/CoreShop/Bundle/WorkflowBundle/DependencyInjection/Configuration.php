@@ -92,7 +92,7 @@ final class Configuration implements ConfigurationInterface
                             ->beforeNormalization()
                                 ->ifString()
                                 ->then(function (mixed $v) {
-                                    return [$v];
+                                    return array($v);
                                 })
                             ->end()
                             ->requiresAtLeastOneElement()
@@ -105,7 +105,7 @@ final class Configuration implements ConfigurationInterface
                             ->beforeNormalization()
                                 ->ifString()
                                 ->then(function (mixed $v) {
-                                    return [$v];
+                                    return array($v);
                                 })
                             ->end()
                             ->requiresAtLeastOneElement()

@@ -50,7 +50,7 @@ class Version20200415152858 extends AbstractMigration implements ContainerAwareI
                 'relationType' => false,
                 'invisible' => false,
                 'visibleGridView' => false,
-                'visibleSearch' => false,
+                'visibleSearch' => false
             ],
             [
                 'fieldtype' => 'coreShopMoney',
@@ -71,7 +71,7 @@ class Version20200415152858 extends AbstractMigration implements ContainerAwareI
                 'relationType' => false,
                 'invisible' => false,
                 'visibleGridView' => false,
-                'visibleSearch' => false,
+                'visibleSearch' => false
             ],
         ];
 
@@ -99,5 +99,6 @@ class Version20200415152858 extends AbstractMigration implements ContainerAwareI
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+
     }
 }

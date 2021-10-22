@@ -15,13 +15,14 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
-use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
+use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
@@ -168,7 +169,7 @@ final class ProductContext implements Context
         $found = false;
 
         foreach ($additionalUnitDefinitions as $unitDefinition) {
-            if ($unitDefinition->getUnit() === $unit && (float)$conversionRate === $unitDefinition->getConversionRate()) {
+            if ($unitDefinition->getUnit() === $unit && (float) $conversionRate === $unitDefinition->getConversionRate()) {
                 $found = true;
             }
         }

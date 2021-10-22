@@ -41,8 +41,9 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         OrderInterface $order,
         OrderDocumentInterface $document,
         array $itemsToTransform
-    ): OrderDocumentInterface {
-        /*
+    ): OrderDocumentInterface
+    {
+        /**
          * @var OrderInterface $order
          */
         Assert::isInstanceOf($order, OrderInterface::class);
@@ -56,7 +57,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $documentNumber = $this->numberGenerator->generate($document);
 
-        /*
+        /**
          * @var OrderInvoiceInterface $document
          */
         $document->setKey(Service::getValidKey($documentNumber, 'object'));

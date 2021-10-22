@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
-use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
@@ -24,8 +24,7 @@ class CartPriceRuleVoucherRepository extends EntityRepository implements CartPri
 {
     public function findAllPaginator(CartPriceRuleInterface $cartPriceRule, int $offset, int $limit): Paginator
     {
-        return new Paginator(
-            $this->createQueryBuilder('o')
+        return new Paginator($this->createQueryBuilder('o')
             ->where('o.cartPriceRule = :cartPriceRule')
             ->setParameter('cartPriceRule', $cartPriceRule)
             ->setMaxResults($limit)
@@ -44,17 +43,17 @@ class CartPriceRuleVoucherRepository extends EntityRepository implements CartPri
 
     public function countCodes(int $length, ?string $prefix = null, ?string $suffix = null): int
     {
-        if (null !== $prefix) {
+        if ($prefix !== null) {
             $length += strlen($prefix);
         }
 
-        if (null !== $suffix) {
+        if ($suffix !== null) {
             $length += strlen($suffix);
         }
 
         $code = $prefix . '%' . $suffix;
 
-        return (int)$this->createQueryBuilder('o')
+        return (int) $this->createQueryBuilder('o')
             ->select('COUNT(o.id)')
             ->andWhere('LENGTH(o.code) = :length')
             ->andWhere('o.code LIKE :code')

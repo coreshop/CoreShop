@@ -21,6 +21,8 @@ interface ObjectClonerInterface
 {
     /**
      * Clones an object and returns it unsaved.
+     *
+     *
      */
     public function cloneObject(Concrete $object, AbstractObject $parent, string $key, bool $saveDirectly = true): Concrete;
 }
