@@ -25,8 +25,7 @@ class ObjectPropertyInterpreter implements InterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed
-    {
+    ): mixed {
         if (($value instanceof AbstractObject) && array_key_exists('property', $interpreterConfig)) {
             $name = $interpreterConfig['property'];
             $getter = 'get' . ucfirst($name);

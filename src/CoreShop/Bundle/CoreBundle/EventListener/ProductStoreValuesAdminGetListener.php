@@ -66,7 +66,7 @@ final class ProductStoreValuesAdminGetListener implements EventSubscriberInterfa
             }
         }
 
-        unset ($storeValues);
+        unset($storeValues);
 
         $event->setArgument('data', $data);
     }

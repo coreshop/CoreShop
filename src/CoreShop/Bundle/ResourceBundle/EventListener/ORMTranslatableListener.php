@@ -142,7 +142,7 @@ final class ORMTranslatableListener implements EventSubscriber
         ];
 
         if (!$this->hasUniqueConstraint($metadata, $columns)) {
-            $constraints = isset($metadata->table['uniqueConstraints']) ? $metadata->table['uniqueConstraints'] : [];
+            $constraints = $metadata->table['uniqueConstraints'] ?? [];
 
             $constraints[$metadata->getTableName() . '_uniq_trans'] = [
                 'columns' => $columns,

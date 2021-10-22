@@ -27,11 +27,11 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 final class DataFixturesSorter
 {
     private array $orderedFixtures = [];
+
     private array $fixtures = [];
 
     /**
      * Returns the array of data fixtures to execute.
-     *
      *
      * @return array $fixtures
      */
@@ -76,11 +76,11 @@ final class DataFixturesSorter
                 }
 
                 if ($a instanceof OrderedFixtureInterface) {
-                    return $a->getOrder() === 0 ? 0 : 1;
+                    return 0 === $a->getOrder() ? 0 : 1;
                 }
 
                 if ($b instanceof OrderedFixtureInterface) {
-                    return $b->getOrder() === 0 ? 0 : -1;
+                    return 0 === $b->getOrder() ? 0 : -1;
                 }
 
                 return 0;
@@ -120,7 +120,8 @@ final class DataFixturesSorter
 
             if ($fixture instanceof OrderedFixtureInterface) {
                 continue;
-            } elseif ($fixture instanceof DependentFixtureInterface) {
+            }
+            if ($fixture instanceof DependentFixtureInterface) {
                 $dependenciesClasses = $fixture->getDependencies();
 
                 $this->validateDependencies($fixtureClass, $dependenciesClasses);
@@ -146,7 +147,7 @@ final class DataFixturesSorter
                 $dependencies = $fixture->getDependencies();
                 $unsequencedDependencies = $this->getUnsequencedClasses($sequenceForClasses, $dependencies);
 
-                if (count($unsequencedDependencies) === 0) {
+                if (0 === count($unsequencedDependencies)) {
                     $sequenceForClasses[$class] = $sequence++;
                 }
             }
@@ -163,14 +164,13 @@ final class DataFixturesSorter
             $msg .= 'This case would produce a CircularReferenceException.';
 
             throw new CircularReferenceException(sprintf($msg, implode(',', $unsequencedClasses)));
-        } else {
-            // We order the classes by sequence
-            asort($sequenceForClasses);
+        }
+        // We order the classes by sequence
+        asort($sequenceForClasses);
 
-            foreach ($sequenceForClasses as $class => $sequence) {
-                // If fixtures were ordered
-                $orderedFixtures[] = $this->fixtures[$class];
-            }
+        foreach ($sequenceForClasses as $class => $sequence) {
+            // If fixtures were ordered
+            $orderedFixtures[] = $this->fixtures[$class];
         }
 
         $this->orderedFixtures = array_merge($this->orderedFixtures, $orderedFixtures);
@@ -185,31 +185,17 @@ final class DataFixturesSorter
     private function validateDependencies($fixtureClass, $dependenciesClasses)
     {
         if (!is_array($dependenciesClasses) || empty($dependenciesClasses)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Method "%s" in class "%s" must return an array of classes which are'
-                    . ' dependencies for the fixture, and it must be NOT empty.',
-                    'getDependencies',
-                    $fixtureClass
-                )
-            );
+            throw new \InvalidArgumentException(sprintf('Method "%s" in class "%s" must return an array of classes which are' . ' dependencies for the fixture, and it must be NOT empty.', 'getDependencies', $fixtureClass));
         }
 
         if (in_array($fixtureClass, $dependenciesClasses)) {
-            throw new \InvalidArgumentException(
-                sprintf('Class "%s" can\'t have itself as a dependency', $fixtureClass)
-            );
+            throw new \InvalidArgumentException(sprintf('Class "%s" can\'t have itself as a dependency', $fixtureClass));
         }
 
         $loadedFixtureClasses = array_keys($this->fixtures);
         foreach ($dependenciesClasses as $class) {
             if (!in_array($class, $loadedFixtureClasses)) {
-                throw new \RuntimeException(
-                    sprintf(
-                        'Fixture "%s" was declared as a dependency, but it should be added in fixture loader first.',
-                        $class
-                    )
-                );
+                throw new \RuntimeException(sprintf('Fixture "%s" was declared as a dependency, but it should be added in fixture loader first.', $class));
             }
         }
 
@@ -217,20 +203,19 @@ final class DataFixturesSorter
     }
 
     /**
-     * @param null|array $classes
      * @return array
      */
     private function getUnsequencedClasses(array $sequences, array $classes = null)
     {
-        $unsequencedClasses = array();
+        $unsequencedClasses = [];
 
-        if (is_null($classes)) {
+        if (null === $classes) {
             $classes = array_keys($sequences);
         }
 
         foreach ($classes as $class) {
             // might not be set if depends on ordered fixture
-            if (isset($sequences[$class]) && $sequences[$class] === -1) {
+            if (isset($sequences[$class]) && -1 === $sequences[$class]) {
                 $unsequencedClasses[] = $class;
             }
         }

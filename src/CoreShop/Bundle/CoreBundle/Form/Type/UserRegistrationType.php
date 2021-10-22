@@ -40,7 +40,7 @@ final class UserRegistrationType extends AbstractResourceType
             ]);
     }
 
-     public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 

@@ -20,9 +20,7 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 interface PurchasablePriceCalculatorInterface
 {
     /**
-     *
      * @throws NoPurchasablePriceFoundException
-     *
      */
     public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int;
 }

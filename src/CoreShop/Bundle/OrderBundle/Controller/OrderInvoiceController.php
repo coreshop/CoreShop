@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
@@ -28,7 +29,6 @@ use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,7 +92,7 @@ class OrderInvoiceController extends PimcoreController
 
         $handledForm = $form->handleRequest($request);
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             if (!$handledForm->isValid()) {
                 return $this->viewHandler->handle(
                     [

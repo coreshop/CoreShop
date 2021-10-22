@@ -16,7 +16,6 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
 use CoreShop\Component\Index\Filter\FilterProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;

@@ -27,7 +27,7 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
 {
     public function getRetailPrice(ProductInterface $product, array $context): int
     {
-        /**
+        /*
          * @var \CoreShop\Component\Core\Model\ProductInterface $product
          */
         Assert::isInstanceOf($product, \CoreShop\Component\Core\Model\ProductInterface::class);
@@ -48,7 +48,7 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
 
         $unitDefinitionPrices = $storeValues->getProductUnitDefinitionPrices();
 
-        if ($unitDefinitionPrices->count() === 0) {
+        if (0 === $unitDefinitionPrices->count()) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }
 
@@ -56,7 +56,7 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
             return $unitDefinitionPrice->getUnitDefinition()->getId() === $contextUnitDefinition->getId();
         });
 
-        if ($filteredDefinitionPrices->count() === 0) {
+        if (0 === $filteredDefinitionPrices->count()) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }
 

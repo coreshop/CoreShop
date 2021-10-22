@@ -20,11 +20,7 @@ use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 use Pimcore\Model\Asset;
 
-interface PaymentProviderInterface extends
-    ResourceInterface,
-    ToggleableInterface,
-    TranslatableInterface,
-    TimestampableInterface
+interface PaymentProviderInterface extends ResourceInterface, ToggleableInterface, TranslatableInterface, TimestampableInterface
 {
     /**
      * @return mixed
@@ -44,7 +40,7 @@ interface PaymentProviderInterface extends
     public function getTitle($language = null);
 
     /**
-     * @param string $title
+     * @param string      $title
      * @param string|null $language
      */
     public function setTitle($title, $language = null);
@@ -57,7 +53,7 @@ interface PaymentProviderInterface extends
     public function getDescription($language = null);
 
     /**
-     * @param string $description
+     * @param string      $description
      * @param string|null $language
      */
     public function setDescription($description, $language = null);
@@ -70,7 +66,7 @@ interface PaymentProviderInterface extends
     public function getInstructions($language = null);
 
     /**
-     * @param string $instructions
+     * @param string      $instructions
      * @param string|null $language
      */
     public function setInstructions($instructions, $language = null);

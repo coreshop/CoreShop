@@ -77,16 +77,15 @@ final class SluggableListener implements EventSubscriberInterface
                     if ($existingSlug->getSiteId() === $newSlug->getSiteId()) {
                         if ($existingSlug->getSlug() === $newSlug->getSlug()) {
                             $actualSlugs[] = $existingSlug;
-                        }
-                        else {
-                            /**
+                        } else {
+                            /*
                              * @psalm-suppress InternalMethod
                              */
                             $newSlug->setPreviousSlug($existingSlug->getSlug());
                             $actualSlugs[] = $newSlug;
-
                         }
                         $found = true;
+
                         break;
                     }
                 }

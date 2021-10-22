@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\RuleBundle\Processor;
 
 use CoreShop\Bundle\RuleBundle\Event\RuleAvailabilityCheckEvent;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,7 +48,7 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
             'coreshop.rule.availability_check'
         );
 
-        if ($event->isAvailable() === false) {
+        if (false === $event->isAvailable()) {
             $rule->setActive(false);
             $this->entityManager->persist($rule);
         }

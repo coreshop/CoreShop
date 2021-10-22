@@ -54,7 +54,7 @@ class ProductValidationController extends AdminController
 
         $hasQuantityPriceRules = count($object->getQuantityPriceRules()) > 0;
 
-        if ($hasQuantityPriceRules === false) {
+        if (false === $hasQuantityPriceRules) {
             return new JsonResponse([
                 'success' => $success,
                 'message' => $message,
@@ -63,14 +63,12 @@ class ProductValidationController extends AdminController
         }
 
         foreach ($object->getQuantityPriceRules() as $quantityPriceRule) {
-
             $ranges = $quantityPriceRule->getRanges();
             if (!$ranges instanceof Collection) {
                 continue;
             }
 
             foreach ($ranges as $range) {
-
                 if (!$range instanceof QuantityRangeInterface) {
                     continue;
                 }
@@ -81,6 +79,7 @@ class ProductValidationController extends AdminController
 
                 if ((int)$unitDefinitionId === $range->getUnitDefinition()->getId()) {
                     $status = 'locked';
+
                     break 2;
                 }
             }
@@ -97,5 +96,4 @@ class ProductValidationController extends AdminController
     {
         return $this->get('coreshop.repository.stack.product');
     }
-
 }

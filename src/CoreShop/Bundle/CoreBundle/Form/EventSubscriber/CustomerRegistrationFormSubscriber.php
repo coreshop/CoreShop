@@ -40,7 +40,7 @@ final class CustomerRegistrationFormSubscriber implements EventSubscriberInterfa
         $form = $event->getForm();
         $data = $form->getData();
 
-        /**
+        /*
          * @var CustomerInterface $data
          */
         Assert::isInstanceOf($data, CustomerInterface::class);

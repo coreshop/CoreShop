@@ -18,8 +18,8 @@ use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Tool\Email\Log;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class NoteService implements NoteServiceInterface
 {
@@ -74,7 +74,7 @@ class NoteService implements NoteServiceInterface
         $logData = $listing->load();
 
         if (isset($logData[0]) && $logData[0] instanceof Log) {
-            /** @psalm-suppress InternalMethod */
+            /* @psalm-suppress InternalMethod */
             $note->addData('email-log', 'text', $logData[0]->getId());
         }
 

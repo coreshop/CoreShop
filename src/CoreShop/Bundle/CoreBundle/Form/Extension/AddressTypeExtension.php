@@ -26,15 +26,15 @@ final class AddressTypeExtension extends AbstractTypeExtension
     {
         $availableAffiliations = $options['available_affiliations'];
 
-        if ($availableAffiliations === null) {
+        if (null === $availableAffiliations) {
             return;
         }
 
         $builder->add('addressAffiliation', ChoiceType::class, [
-            'mapped'  => false,
-            'label'   => 'coreshop.form.customer.address_affiliation',
-            'data'    => $options['selected_affiliation'],
-            'choices' => $availableAffiliations
+            'mapped' => false,
+            'label' => 'coreshop.form.customer.address_affiliation',
+            'data' => $options['selected_affiliation'],
+            'choices' => $availableAffiliations,
         ]);
     }
 

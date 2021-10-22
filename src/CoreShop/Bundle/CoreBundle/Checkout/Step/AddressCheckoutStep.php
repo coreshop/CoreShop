@@ -48,7 +48,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
         return $cart->hasItems()
-            && ($cart->hasShippableItems() === false || $cart->getShippingAddress() instanceof AddressInterface)
+            && (false === $cart->hasShippableItems() || $cart->getShippingAddress() instanceof AddressInterface)
             && $cart->getInvoiceAddress() instanceof AddressInterface;
     }
 
@@ -101,7 +101,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
 
         $form = $this->formFactory->createNamed('coreshop', AddressType::class, $cart, $options);
 
-        if ($cart->hasShippableItems() === false) {
+        if (false === $cart->hasShippableItems()) {
             $form->remove('shippingAddress');
             $form->remove('useInvoiceAsShipping');
         }

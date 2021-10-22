@@ -25,7 +25,7 @@ final class StoresConfigurationType extends AbstractType
         $builder
             ->add('stores', CollectionType::class, [
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
             ]);
     }
 

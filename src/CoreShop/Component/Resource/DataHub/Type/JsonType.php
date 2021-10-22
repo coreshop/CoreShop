@@ -47,19 +47,19 @@ class JsonType extends ScalarType
     private function parseNodeAsList(&$result, $currentPath, $valueNode)
     {
         foreach ($valueNode->fields as $childNode) {
-            if ($childNode->kind === 'ObjectField') {
+            if ('ObjectField' === $childNode->kind) {
                 $subPath = $currentPath;
-                if ($subPath !== '') {
+                if ('' !== $subPath) {
                     $subPath .= '.';
                 }
                 $subPath .= $childNode->name->value;
-                if ($childNode->value->kind === 'ObjectValue') {
+                if ('ObjectValue' === $childNode->value->kind) {
                     $this->parseNodeAsList($result, $subPath, $childNode->value);
                 } else {
-                    $result[$subPath] = array(
+                    $result[$subPath] = [
                         'value' => $this->mapValue($childNode->value->kind, $childNode->value->value),
                         'type' => $this->mapType($childNode->value->kind),
-                    );
+                    ];
                 }
             }
         }
@@ -69,7 +69,7 @@ class JsonType extends ScalarType
 
     public function mapValue($kind, $value)
     {
-        if ($kind === 'BooleanValue') {
+        if ('BooleanValue' === $kind) {
             $value = ($value ? 'true' : 'false');
         }
 
@@ -80,7 +80,7 @@ class JsonType extends ScalarType
     {
         $type = 'text';
 
-        if ($kind === 'BooleanValue') {
+        if ('BooleanValue' === $kind) {
             $type = 'boolean';
         }
 

@@ -136,7 +136,7 @@ final class Configuration implements ConfigurationInterface
                                 ->ifTrue(function (array $array) {
                                     $notValid = false;
                                     foreach ($array as $key => $value) {
-                                        if ($key === 'cart') {
+                                        if ('cart' === $key) {
                                             $notValid = true;
 
                                             break;

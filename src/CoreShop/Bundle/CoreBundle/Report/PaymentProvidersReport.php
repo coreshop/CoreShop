@@ -42,7 +42,7 @@ class PaymentProvidersReport implements ReportInterface
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();
 
-        if (is_null($storeId)) {
+        if (null === $storeId) {
             return [];
         }
 
@@ -82,7 +82,7 @@ class PaymentProvidersReport implements ReportInterface
 
             $data[] = [
                 'provider' => $paymentProvider instanceof PaymentProviderInterface ? $paymentProvider->getTitle() : 'unkown',
-                'data' => (float) $result['percentage'],
+                'data' => (float)$result['percentage'],
             ];
         }
 

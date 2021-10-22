@@ -17,17 +17,17 @@ namespace CoreShop\Bundle\OrderBundle;
 final class Events
 {
     /**
-     * Fired before a Sale (Cart, Order, Quote) is passed to the client
+     * Fired before a Sale (Cart, Order, Quote) is passed to the client.
      */
-    const SALE_DETAIL_PREPARE = 'coreshop.sale.detail.prepare';
+    public const SALE_DETAIL_PREPARE = 'coreshop.sale.detail.prepare';
 
     /**
-     * Fired when an Admin creates a new Customer via a CoreShop UI
+     * Fired when an Admin creates a new Customer via a CoreShop UI.
      */
-    const ADMIN_CUSTOMER_CREATION = 'coreshop.customer.admin_creation';
+    public const ADMIN_CUSTOMER_CREATION = 'coreshop.customer.admin_creation';
 
     /**
-     * Fired when an Admin creates a new Address via a CoreShop UI
+     * Fired when an Admin creates a new Address via a CoreShop UI.
      */
-    const ADMIN_ADDRESS_CREATION = 'coreshop.address.admin_creation';
+    public const ADMIN_ADDRESS_CREATION = 'coreshop.address.admin_creation';
 }

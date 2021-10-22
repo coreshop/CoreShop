@@ -22,8 +22,11 @@ use Webmozart\Assert\Assert;
 final class ObjectManager implements \Doctrine\Persistence\ObjectManager
 {
     private array $repositories = [];
+
     private array $modelsToUpdate = [];
+
     private array $modelsToInsert = [];
+
     private array $modelsToRemove = [];
 
     /**
@@ -31,7 +34,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
      */
     public function find($className, $id): ?Concrete
     {
-        /**
+        /*
          * @var Concrete $className
          * @psalm-suppress InvalidReturnStatement
          */
@@ -40,7 +43,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
 
     public function persist($object): void
     {
-        /**
+        /*
          * @var AbstractModel $object
          */
         Assert::isInstanceOf($object, AbstractModel::class);

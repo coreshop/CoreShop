@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use Pimcore\Twig\Extension\Templating\HeadMeta;
@@ -59,7 +58,7 @@ final class SEOContext implements Context
                 continue;
             }
 
-            if ($item->name === 'description') {
+            if ('description' === $item->name) {
                 $descriptionItem = $item;
 
                 break;

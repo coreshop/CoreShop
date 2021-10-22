@@ -86,8 +86,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
     }
 
     /**
-     * @param mixed         $data
-     *
+     * @param mixed $data
      */
     protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {

@@ -31,9 +31,7 @@ use Webmozart\Assert\Assert;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
  */
-class ProductSpecificPriceRules extends Data implements
-    Data\CustomResourcePersistingInterface,
-    Data\CustomVersionMarshalInterface
+class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersistingInterface, Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -186,6 +184,7 @@ class ProductSpecificPriceRules extends Data implements
      * @param array $data
      * @param null  $object
      * @param array $params
+     *
      * @return string
      */
     public function getVersionPreview($data, $object = null, $params = [])
@@ -248,7 +247,7 @@ class ProductSpecificPriceRules extends Data implements
 
                 $storedRule = null;
 
-                if ($ruleId !== null) {
+                if (null !== $ruleId) {
                     $storedRule = $specificPriceRuleRepository->find($ruleId);
                 }
 
@@ -271,7 +270,7 @@ class ProductSpecificPriceRules extends Data implements
                         $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
                     }
 
-                    throw new \Exception(implode(PHP_EOL, $errors));
+                    throw new \Exception(implode(\PHP_EOL, $errors));
                 }
             }
         }
@@ -367,12 +366,12 @@ class ProductSpecificPriceRules extends Data implements
                     $array[$key] = $this->arrayCastRecursive($value);
                 }
                 if ($value instanceof \stdClass) {
-                    $array[$key] = $this->arrayCastRecursive((array) $value);
+                    $array[$key] = $this->arrayCastRecursive((array)$value);
                 }
             }
         }
         if ($array instanceof \stdClass) {
-            return $this->arrayCastRecursive((array) $array);
+            return $this->arrayCastRecursive((array)$array);
         }
 
         return $array;

@@ -48,15 +48,15 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
         $parentForm = $form->getParent();
 
         $scale = $this->getScale($parentForm);
-        if ($scale === null) {
+        if (null === $scale) {
             return;
         }
 
-        $quantity = (float) str_replace(',', '.', $event->getData());
-        $formattedQuantity = round($quantity, $scale, PHP_ROUND_HALF_UP);
+        $quantity = (float)str_replace(',', '.', $event->getData());
+        $formattedQuantity = round($quantity, $scale, \PHP_ROUND_HALF_UP);
 
         if ($quantity !== $formattedQuantity) {
-            $event->setData((string) $formattedQuantity);
+            $event->setData((string)$formattedQuantity);
         }
     }
 

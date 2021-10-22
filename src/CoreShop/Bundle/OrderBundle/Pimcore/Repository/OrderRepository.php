@@ -65,7 +65,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
 
         $objects = $list->getObjects();
 
-        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
+        if (1 === count($objects) && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
@@ -142,7 +142,6 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     {
         $daysTimestamp = Carbon::now();
         $daysTimestamp->subDays($days);
-
 
         $conditions = ['o_creationDate < ? AND saleState = ? AND orderState IN (?, ?, ?) AND paymentState <> ?'];
         $params = [];

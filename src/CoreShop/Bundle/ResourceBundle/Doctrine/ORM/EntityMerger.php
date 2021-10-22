@@ -17,12 +17,12 @@ namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Persistence\Proxy;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\Utility\IdentifierFlattener;
+use Doctrine\Persistence\Proxy;
 
 class EntityMerger
 {
@@ -59,7 +59,7 @@ class EntityMerger
 
         $class = $this->em->getClassMetadata($entity::class);
 
-        if ($this->em->getUnitOfWork()->getEntityState($entity, UnitOfWork::STATE_DETACHED) !== UnitOfWork::STATE_MANAGED) {
+        if (UnitOfWork::STATE_MANAGED !== $this->em->getUnitOfWork()->getEntityState($entity, UnitOfWork::STATE_DETACHED)) {
             $id = $class->getIdentifierValues($entity);
 
             // If there is no ID, it is actually NEW.
@@ -114,13 +114,13 @@ class EntityMerger
                 $origData->initialize();
             }
 
-            if ($assoc['type'] === ClassMetadata::MANY_TO_MANY) {
+            if (ClassMetadata::MANY_TO_MANY === $assoc['type']) {
                 $newCollection = $origData;
 
                 //Reset new Data, for some reason the line above resets newData
                 $newData = $class->reflFields[$assoc['fieldName']]->getValue($entity);
 
-                /** @psalm-suppress TypeDoesNotContainType */
+                /* @psalm-suppress TypeDoesNotContainType */
                 if (!$newCollection instanceof PersistentCollection) {
                     $newCollection = new PersistentCollection(
                         $this->em,
@@ -139,6 +139,7 @@ class EntityMerger
                     foreach ($newCollection as $entry) {
                         if (spl_object_hash($entry) === spl_object_hash($foundEntry)) {
                             $found = true;
+
                             break;
                         }
                     }
@@ -235,7 +236,7 @@ class EntityMerger
                     $this->doMerge($relatedEntity, $visited);
                 }
             } else {
-                if ($relatedEntities !== null) {
+                if (null !== $relatedEntities) {
                     $this->doMerge($relatedEntities, $visited);
                 }
             }
@@ -253,7 +254,7 @@ class EntityMerger
         foreach ($class->reflFields as $name => $refProp) {
             $value = $refProp->getValue($entity);
 
-            if ($class->isCollectionValuedAssociation($name) && $value !== null) {
+            if ($class->isCollectionValuedAssociation($name) && null !== $value) {
                 if ($value instanceof PersistentCollection) {
                     if ($value->getOwner() === $entity) {
                         continue;

@@ -53,7 +53,6 @@ interface WorkerInterface
     /**
      * returns product list implementation valid and configured for this worker/tenant.
      *
-     *
      * @return ListingInterface
      */
     public function getList(IndexInterface $index);
@@ -61,14 +60,14 @@ interface WorkerInterface
     /**
      * Renders the condition to fit the service.
      *
-     * @param string             $prefix
+     * @param string $prefix
+     *
      * @return mixed
      */
     public function renderCondition(ConditionInterface $condition, $prefix = null);
 
     /**
      * Renders field type for the service.
-     *
      *
      * @return mixed
      */

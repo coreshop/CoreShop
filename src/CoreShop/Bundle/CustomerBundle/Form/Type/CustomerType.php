@@ -34,10 +34,10 @@ class CustomerType extends AbstractResourceType
         $builder
             ->add('gender', ChoiceType::class, [
                 'label' => 'coreshop.form.customer.gender',
-                'choices' => array(
+                'choices' => [
                     'coreshop.form.customer.gender.male' => 'male',
                     'coreshop.form.customer.gender.female' => 'female',
-                ),
+                ],
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'coreshop.form.customer.firstname',

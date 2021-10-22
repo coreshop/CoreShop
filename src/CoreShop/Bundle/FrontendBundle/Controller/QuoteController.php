@@ -18,7 +18,6 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use CoreShop\Component\Order\Model\QuoteInterface;
 use CoreShop\Component\Order\OrderSaleStates;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -34,7 +33,7 @@ class QuoteController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        if (!$quote instanceof OrderInterface || $quote->getSaleState() !== OrderSaleStates::STATE_QUOTE) {
+        if (!$quote instanceof OrderInterface || OrderSaleStates::STATE_QUOTE !== $quote->getSaleState()) {
             return $this->redirectToRoute('coreshop_index');
         }
 

@@ -26,7 +26,7 @@ class UserRepository extends PimcoreRepository implements UserRepositoryInterfac
         $list->setCondition('passwordResetHash = ?', [$resetToken]);
         $objects = $list->load();
 
-        if (count($objects) === 1 && $objects[0] instanceof UserInterface) {
+        if (1 === count($objects) && $objects[0] instanceof UserInterface) {
             return $objects[0];
         }
 

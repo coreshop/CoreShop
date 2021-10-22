@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\OrderShipmentStates;
@@ -22,7 +23,6 @@ use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderShippingStateResolver implements StateResolverInterface
 {
@@ -32,7 +32,7 @@ final class OrderShippingStateResolver implements StateResolverInterface
 
     public function resolve(OrderInterface $order): void
     {
-        if ($order->getShippingState() === OrderShipmentStates::STATE_SHIPPED) {
+        if (OrderShipmentStates::STATE_SHIPPED === $order->getShippingState()) {
             return;
         }
 
@@ -55,7 +55,7 @@ final class OrderShippingStateResolver implements StateResolverInterface
         /** @var OrderShipmentInterface $shipment */
         foreach ($shipments as $shipment) {
             if ($shipment->getState() === $shipmentState) {
-                $items++;
+                ++$items;
             }
         }
 

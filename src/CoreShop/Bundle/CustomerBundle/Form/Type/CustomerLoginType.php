@@ -38,7 +38,7 @@ class CustomerLoginType extends AbstractType
                 'label' => 'coreshop.form.login.password',
             ])
             ->add('_remember_me', CheckboxType::class, [
-                'label'    => 'coreshop.form.login.remember_me',
+                'label' => 'coreshop.form.login.remember_me',
                 'required' => false,
             ]);
     }

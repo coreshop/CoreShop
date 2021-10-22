@@ -43,7 +43,7 @@ final class GatewayConfigType extends AbstractResourceType
                     return;
                 }
 
-                /** @psalm-suppress DeprecatedMethod */
+                /* @psalm-suppress DeprecatedMethod */
                 if (!$this->gatewayConfigurationTypeRegistry->has('gateway_config', $gatewayConfig->getFactoryName())) {
                     return;
                 }

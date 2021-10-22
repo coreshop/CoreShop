@@ -32,8 +32,7 @@ final class CountryAwareCurrencyContext implements CurrencyContextInterface
         try {
             /** @var CountryInterface $country */
             $country = $this->countryContext->getCountry();
-        }
-        catch (CountryNotFoundException $ex) {
+        } catch (CountryNotFoundException $ex) {
             throw new CurrencyNotFoundException(null, $ex);
         }
 

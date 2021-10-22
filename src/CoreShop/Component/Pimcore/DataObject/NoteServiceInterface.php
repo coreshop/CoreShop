@@ -27,7 +27,6 @@ interface NoteServiceInterface
     public function createAnonymousNoteInstance(string $noteType): Note;
 
     /**
-     *
      * @return Note[]
      */
     public function getObjectNotes(Concrete $object, string $noteType): array;
@@ -35,7 +34,6 @@ interface NoteServiceInterface
     public function storeNoteForEmail(Note $note, Document\Email $emailDocument): Note;
 
     /**
-     *
      * @return Note
      */
     public function storeNote(Note $note, array $eventParams = []): ?Note;

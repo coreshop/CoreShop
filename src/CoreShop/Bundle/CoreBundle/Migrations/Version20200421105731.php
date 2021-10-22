@@ -57,7 +57,7 @@ class Version20200421105731 extends AbstractMigration implements ContainerAwareI
             'invisible' => false,
             'visibleGridView' => false,
             'visibleSearch' => false,
-            'defaultValueGenerator' => ''
+            'defaultValueGenerator' => '',
         ];
 
         $fieldCustomItemPrice = [
@@ -80,7 +80,7 @@ class Version20200421105731 extends AbstractMigration implements ContainerAwareI
             'relationType' => false,
             'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch' => false
+            'visibleSearch' => false,
         ];
 
         $fieldConvertedCustomItemPrice = [
@@ -103,7 +103,7 @@ class Version20200421105731 extends AbstractMigration implements ContainerAwareI
             'relationType' => false,
             'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch' => false
+            'visibleSearch' => false,
         ];
 
         if (!$classUpdater->hasField('customItemDiscount')) {
@@ -124,6 +124,5 @@ class Version20200421105731 extends AbstractMigration implements ContainerAwareI
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

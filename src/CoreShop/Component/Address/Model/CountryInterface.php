@@ -19,11 +19,7 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 
-interface CountryInterface extends
-    ResourceInterface,
-    TranslatableInterface,
-    TimestampableInterface,
-    ToggleableInterface
+interface CountryInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface, ToggleableInterface
 {
     /**
      * @return string
@@ -55,9 +51,6 @@ interface CountryInterface extends
      */
     public function getZone();
 
-    /**
-     * @param ZoneInterface|null $zone
-     */
     public function setZone(ZoneInterface $zone = null);
 
     /**

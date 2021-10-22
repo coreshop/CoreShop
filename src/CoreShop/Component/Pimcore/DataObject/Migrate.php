@@ -30,7 +30,6 @@ use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 final class Migrate
 {
     /**
-     *
      * @throws ClassDefinitionAlreadyExistsException
      * @throws ClassDefinitionNotFoundException
      */
@@ -122,7 +121,6 @@ final class Migrate
 
     /**
      * Migrates all the data from $oldClassDefinition to $newClassDefinition.
-     *
      *
      * @throws \Exception
      */

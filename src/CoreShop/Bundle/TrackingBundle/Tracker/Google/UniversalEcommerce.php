@@ -23,6 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class UniversalEcommerce extends AbstractEcommerceTracker
 {
     public TrackerInterface $tracker;
+
     public ConfigResolverInterface $config;
 
     public function setTracker(TrackerInterface $tracker): void
@@ -71,7 +72,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
 
     public function trackCheckoutComplete($order): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -102,11 +103,11 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     protected function isGlobalSiteTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();
-        if ($config === null) {
+        if (null === $config) {
             return false;
         }
 
-        return (bool) $config->get('gtagcode');
+        return (bool)$config->get('gtagcode');
     }
 
     protected function transformOrder(array $actionData): array

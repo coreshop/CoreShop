@@ -90,9 +90,6 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
         return $data;
     }
 
-    /**
-     * @return null
-     */
     public function getQueryColumnType()
     {
         return null;
@@ -113,7 +110,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
 
     public function isEmpty($data)
     {
-        return is_null($data);
+        return null === $data;
     }
 
     public function getForWebserviceExport($object, $params = [])

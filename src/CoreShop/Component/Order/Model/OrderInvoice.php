@@ -21,6 +21,7 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
 {
     use AdjustableTrait;
+
     use ConvertedAdjustableTrait;
 
     public static function getDocumentType(): string

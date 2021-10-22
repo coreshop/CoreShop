@@ -24,9 +24,13 @@ use Webmozart\Assert\Assert;
 abstract class Order extends AbstractPimcoreModel implements OrderInterface
 {
     use StoreAwareTrait;
+
     use CurrencyAwareTrait;
+
     use AdjustableTrait;
+
     use ProposalPriceRuleTrait;
+
     use ConvertedAdjustableTrait;
 
     public function hasItems(): bool

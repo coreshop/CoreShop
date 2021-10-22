@@ -32,8 +32,7 @@ class RelationalNestedInterpreter implements RelationInterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): array
-    {
+    ): array {
         $this->assert($interpreterConfig);
 
         return $this->loop($value, $interpreterConfig, static function (mixed $value, InterpreterInterface $interpreter, array $interpreterConfig) use ($indexable, $config): mixed {
@@ -50,8 +49,7 @@ class RelationalNestedInterpreter implements RelationInterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed
-    {
+    ): mixed {
         $this->assert($interpreterConfig);
 
         return $this->loop($value, $interpreterConfig, static function (mixed $value, InterpreterInterface $interpreter, array $interpreterConfig) use ($indexable, $config): mixed {

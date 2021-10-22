@@ -23,8 +23,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 {
     public TrackerInterface $tracker;
+
     public ConfigResolverInterface $config;
+
     protected array $dependencies = ['ec'];
+
     protected bool $dependenciesIncluded = false;
 
     public function setTracker(TrackerInterface $tracker): void
@@ -48,7 +51,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackProduct($product): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -65,7 +68,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackProductImpression($product): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -81,7 +84,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -91,7 +94,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -101,7 +104,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -127,7 +130,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackCheckoutComplete($order): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -153,7 +156,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
     protected function trackCartAction($product, $action, float $quantity = 1): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -226,10 +229,10 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
     protected function isGlobalSiteTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();
-        if ($config === null) {
+        if (null === $config) {
             return false;
         }
 
-        return (bool) $config->get('gtagcode');
+        return (bool)$config->get('gtagcode');
     }
 }

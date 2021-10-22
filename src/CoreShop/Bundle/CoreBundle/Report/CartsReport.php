@@ -56,7 +56,7 @@ class CartsReport implements ReportInterface, PortletInterface
 
         $orderClassId = $this->orderRepository->getClassId();
 
-        if ($storeId === null) {
+        if (null === $storeId) {
             return [];
         }
 
@@ -78,7 +78,7 @@ class CartsReport implements ReportInterface, PortletInterface
                     COUNT(*) as orderCount,
                     DATE(FROM_UNIXTIME(orderDate)) as orderDateTimestamp
                   FROM object_query_$orderClassId AS orders
-                  WHERE store = $storeId AND orderDate > $fromTimestamp AND orderDate < $toTimestamp and orders.saleState === '".OrderSaleStates::STATE_ORDER."'
+                  WHERE store = $storeId AND orderDate > $fromTimestamp AND orderDate < $toTimestamp and orders.saleState === '" . OrderSaleStates::STATE_ORDER . "'
                   GROUP BY DATE(FROM_UNIXTIME(orderDate))
                 ) as ordersQuery
                 $join OUTER JOIN (
@@ -86,13 +86,13 @@ class CartsReport implements ReportInterface, PortletInterface
                     COUNT(*) as cartCount,
                     DATE(FROM_UNIXTIME(o_creationDate)) as cartDateTimestamp
                   FROM object_$orderClassId AS carts
-                  WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp and carts-saleState === '".OrderSaleStates::STATE_CART."'
+                  WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp and carts-saleState === '" . OrderSaleStates::STATE_CART . "'
                   GROUP BY DATE(FROM_UNIXTIME(o_creationDate))
                 ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp
             ";
         }
 
-        $data = $this->db->fetchAllAssociative(implode(PHP_EOL . 'UNION ALL' . PHP_EOL, $queries) . '  ORDER BY timestamp ASC');
+        $data = $this->db->fetchAllAssociative(implode(\PHP_EOL . 'UNION ALL' . \PHP_EOL, $queries) . '  ORDER BY timestamp ASC');
 
         foreach ($data as &$day) {
             $date = Carbon::createFromTimestamp(strtotime($day['timestamp']));

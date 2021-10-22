@@ -28,7 +28,7 @@ final class EntityLockManager implements EntityLockManagerInterface
             throw OptimisticLockException::notVersioned($dataObject::class);
         }
 
-        if ($lockVersion === null) {
+        if (null === $lockVersion) {
             return;
         }
 

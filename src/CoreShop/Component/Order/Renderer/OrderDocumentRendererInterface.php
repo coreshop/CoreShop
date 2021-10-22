@@ -20,8 +20,6 @@ interface OrderDocumentRendererInterface
 {
     /**
      * Renders a Order Document as PDF.
-     *
-     *
      */
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string;
 }

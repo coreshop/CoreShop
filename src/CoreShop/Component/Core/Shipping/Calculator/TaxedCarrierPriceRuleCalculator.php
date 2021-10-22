@@ -38,9 +38,8 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
         AddressInterface $address,
         bool $withTax = true,
         array $context = []
-    ): int
-    {
-        /**
+    ): int {
+        /*
          * @var StoreAwareInterface $shippable
          * @var ShippableInterface $shippable
          */
@@ -48,7 +47,7 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
 
         $store = $shippable->getStore();
 
-        /**
+        /*
          * @var StoreInterface $store
          */
         Assert::isInstanceOf($store, StoreInterface::class);
@@ -77,7 +76,7 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
         $taxCalculationService = $this->taxCalculatorStrategyRegistry->get($shippingTaxCalculationStrategy);
         $cartTaxes = $taxCalculationService->calculateShippingTax($shippable, $carrier, $address, $price);
 
-        $cartTax = array_sum(array_map(static function(TaxItemInterface $taxItem) {
+        $cartTax = array_sum(array_map(static function (TaxItemInterface $taxItem) {
             return $taxItem->getAmount();
         }, $cartTaxes));
 

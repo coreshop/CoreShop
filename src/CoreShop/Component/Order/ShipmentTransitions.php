@@ -16,9 +16,11 @@ namespace CoreShop\Component\Order;
 
 final class ShipmentTransitions
 {
-    const IDENTIFIER = 'coreshop_shipment';
+    public const IDENTIFIER = 'coreshop_shipment';
 
-    const TRANSITION_CREATE = 'create';
-    const TRANSITION_SHIP = 'ship';
-    const TRANSITION_CANCEL = 'cancel';
+    public const TRANSITION_CREATE = 'create';
+
+    public const TRANSITION_SHIP = 'ship';
+
+    public const TRANSITION_CANCEL = 'cancel';
 }

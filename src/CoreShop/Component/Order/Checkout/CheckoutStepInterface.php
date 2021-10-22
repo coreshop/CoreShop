@@ -23,15 +23,11 @@ interface CheckoutStepInterface
 
     /**
      * Determines if this step should be forward if valid.
-     *
-     *
      */
     public function doAutoForward(OrderInterface $cart): bool;
 
     /**
      * Commit Step from Request (validate form or whatever).
-     *
-     *
      *
      * @throws CheckoutException
      */
@@ -39,7 +35,6 @@ interface CheckoutStepInterface
 
     /**
      * Prepare Checkout Step.
-     *
      *
      * @return array $params for the view
      */

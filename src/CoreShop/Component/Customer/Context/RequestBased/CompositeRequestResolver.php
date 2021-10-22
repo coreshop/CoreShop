@@ -16,8 +16,8 @@ namespace CoreShop\Component\Customer\Context\RequestBased;
 
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Laminas\Stdlib\PriorityQueue;
+use Symfony\Component\HttpFoundation\Request;
 
 final class CompositeRequestResolver implements RequestResolverInterface
 {
@@ -42,8 +42,7 @@ final class CompositeRequestResolver implements RequestResolverInterface
         foreach ($this->requestResolvers as $requestResolver) {
             try {
                 return $requestResolver->findCustomer($request);
-            }
-            catch (CustomerNotFoundException) {
+            } catch (CustomerNotFoundException) {
                 //Ignore and continue
             }
         }

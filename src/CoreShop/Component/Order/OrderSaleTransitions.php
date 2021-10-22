@@ -16,9 +16,11 @@ namespace CoreShop\Component\Order;
 
 final class OrderSaleTransitions
 {
-    const IDENTIFIER = 'coreshop_order_sales_type';
+    public const IDENTIFIER = 'coreshop_order_sales_type';
 
-    const TRANSITION_ORDER = 'order';
-    const TRANSITION_CART = 'cart';
-    const TRANSITION_QUOTE = 'quote';
+    public const TRANSITION_ORDER = 'order';
+
+    public const TRANSITION_CART = 'cart';
+
+    public const TRANSITION_QUOTE = 'quote';
 }

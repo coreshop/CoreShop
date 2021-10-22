@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Getter;
 
-use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Pimcore\Model\DataObject;
 

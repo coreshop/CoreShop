@@ -27,7 +27,7 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
 
         $builder->add('cartItem', CartItemType::class, [
             'allow_units' => true,
-            'constraints' => $originalCartItem->getOption('constraints')
+            'constraints' => $originalCartItem->getOption('constraints'),
         ]);
     }
 

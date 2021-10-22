@@ -20,6 +20,7 @@ use Pimcore\Model\DataObject;
 class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameInterface
 {
     private DataObject\ClassDefinition $classDefinition;
+
     private array $fieldsToRename = [];
 
     public function __construct(string $className)

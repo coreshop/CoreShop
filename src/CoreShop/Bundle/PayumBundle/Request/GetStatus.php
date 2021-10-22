@@ -32,7 +32,7 @@ class GetStatus extends BaseGetStatus
 
     public function isNew(): bool
     {
-        return $this->status === PaymentInterface::STATE_NEW;
+        return PaymentInterface::STATE_NEW === $this->status;
     }
 
     public function markSuspended(): void
@@ -42,7 +42,7 @@ class GetStatus extends BaseGetStatus
 
     public function isSuspended(): bool
     {
-        return $this->status === PaymentInterface::STATE_PROCESSING;
+        return PaymentInterface::STATE_PROCESSING === $this->status;
     }
 
     public function markExpired(): void
@@ -52,7 +52,7 @@ class GetStatus extends BaseGetStatus
 
     public function isExpired(): bool
     {
-        return $this->status === PaymentInterface::STATE_FAILED;
+        return PaymentInterface::STATE_FAILED === $this->status;
     }
 
     public function markCanceled(): void
@@ -62,7 +62,7 @@ class GetStatus extends BaseGetStatus
 
     public function isCanceled(): bool
     {
-        return $this->status === PaymentInterface::STATE_CANCELLED;
+        return PaymentInterface::STATE_CANCELLED === $this->status;
     }
 
     public function markPending(): void
@@ -72,7 +72,7 @@ class GetStatus extends BaseGetStatus
 
     public function isPending(): bool
     {
-        return $this->status === PaymentInterface::STATE_PROCESSING;
+        return PaymentInterface::STATE_PROCESSING === $this->status;
     }
 
     public function markFailed(): void
@@ -82,7 +82,7 @@ class GetStatus extends BaseGetStatus
 
     public function isFailed(): bool
     {
-        return $this->status === PaymentInterface::STATE_FAILED;
+        return PaymentInterface::STATE_FAILED === $this->status;
     }
 
     public function markUnknown(): void
@@ -92,7 +92,7 @@ class GetStatus extends BaseGetStatus
 
     public function isUnknown(): bool
     {
-        return $this->status === PaymentInterface::STATE_UNKNOWN;
+        return PaymentInterface::STATE_UNKNOWN === $this->status;
     }
 
     public function markCaptured(): void
@@ -102,12 +102,12 @@ class GetStatus extends BaseGetStatus
 
     public function isCaptured(): bool
     {
-        return $this->status === PaymentInterface::STATE_COMPLETED;
+        return PaymentInterface::STATE_COMPLETED === $this->status;
     }
 
     public function isAuthorized(): bool
     {
-        return $this->status === PaymentInterface::STATE_AUTHORIZED;
+        return PaymentInterface::STATE_AUTHORIZED === $this->status;
     }
 
     public function markAuthorized(): void
@@ -117,7 +117,7 @@ class GetStatus extends BaseGetStatus
 
     public function isRefunded(): bool
     {
-        return $this->status === PaymentInterface::STATE_REFUNDED;
+        return PaymentInterface::STATE_REFUNDED === $this->status;
     }
 
     public function markRefunded(): void
@@ -127,7 +127,7 @@ class GetStatus extends BaseGetStatus
 
     public function isPayedout(): bool
     {
-        return $this->status === PaymentInterface::STATE_REFUNDED;
+        return PaymentInterface::STATE_REFUNDED === $this->status;
     }
 
     public function markPayedout(): void

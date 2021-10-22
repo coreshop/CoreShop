@@ -86,7 +86,7 @@ final class IndexContext implements Context
                 $configuration = json_decode($row['configuration'], true);
 
                 foreach ($configuration as $key => &$value) {
-                    if ($key === 'className') {
+                    if ('className' === $key) {
                         $value = $this->classStorage->get($value);
                     }
                 }
@@ -128,7 +128,7 @@ final class IndexContext implements Context
     }
 
     /**
-     * @param bool           $localized
+     * @param bool $localized
      */
     private function addIndexToIndex(IndexInterface $index, TableIndex $tableIndex, $localized = false): void
     {

@@ -28,14 +28,14 @@ class CarrierController extends ResourceController
             $convertedStrategies[] = [
                 'value' => $strategy,
                 // key length has a maximum
-                'label' => 'coreshop_shipping_tax_strategy_' . $strategy
+                'label' => 'coreshop_shipping_tax_strategy_' . $strategy,
             ];
         }
 
         return $this->viewHandler->handle(
             [
                 'success' => true,
-                'taxCalculationStrategies' => $convertedStrategies
+                'taxCalculationStrategies' => $convertedStrategies,
             ]
         );
     }

@@ -27,15 +27,14 @@ final class UniqueCustomerValidator extends ConstraintValidator
     {
     }
 
-
     public function validate($value, Constraint $constraint): void
     {
-        /**
+        /*
          * @var CustomerInterface $value
          */
         Assert::isInstanceOf($value, CustomerInterface::class);
 
-        /**
+        /*
          * @var UniqueCustomer $constraint
          */
         Assert::isInstanceOf($constraint, UniqueCustomer::class);
@@ -53,7 +52,7 @@ final class UniqueCustomerValidator extends ConstraintValidator
                 $path = 'email';
                 $message = $constraint->messageEmail;
 
-                if ($this->loginIdentifier === 'username') {
+                if ('username' === $this->loginIdentifier) {
                     $path = 'user.loginIdentifier';
                     $message = $constraint->messageUsername;
                 }

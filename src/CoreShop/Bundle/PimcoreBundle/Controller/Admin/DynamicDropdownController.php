@@ -18,7 +18,6 @@ use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Element\Service;
 use Pimcore\Model\Factory;
-use Pimcore\Tool;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -31,14 +30,14 @@ final class DynamicDropdownController extends AdminController
         $folderName = $request->get('folderName');
         $parts = array_map(static function (string $part) {
             return Service::getValidKey($part, 'object');
-        }, preg_split('/\//', $folderName, 0, PREG_SPLIT_NO_EMPTY));
+        }, preg_split('/\//', $folderName, 0, \PREG_SPLIT_NO_EMPTY));
         $parentFolderPath = sprintf('/%s', implode('/', $parts));
         $sort = $request->get('sortBy');
         $options = [];
 
         if ($parentFolderPath) {
             // remove trailing slash
-            if ($parentFolderPath !== '/') {
+            if ('/' !== $parentFolderPath) {
                 $parentFolderPath = rtrim($parentFolderPath, '/ ');
             }
 
@@ -64,7 +63,7 @@ final class DynamicDropdownController extends AdminController
             static function (array $a, array $b) use ($sort) {
                 $field = 'value';
 
-                if (strtolower($sort) === 'byvalue') {
+                if ('byvalue' === strtolower($sort)) {
                     $field = 'key';
                 }
 
@@ -141,12 +140,11 @@ final class DynamicDropdownController extends AdminController
                 /**
                  * @var DataObject\Folder $child
                  */
-                $key = $child->getProperty('Taglabel') !== '' ? $child->getProperty('Taglabel') : $child->getKey();
-                if ($request->get('recursive') === 'true') {
+                $key = '' !== $child->getProperty('Taglabel') ? $child->getProperty('Taglabel') : $child->getKey();
+                if ('true' === $request->get('recursive')) {
                     $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                 }
-            }
-            else if ($child instanceof $fqcn) {
+            } elseif ($child instanceof $fqcn) {
                 $key = $usesI18n ? $child->$source($currentLang) : $child->$source();
                 $options[] = [
                     'value' => $child->getId(),
@@ -154,7 +152,7 @@ final class DynamicDropdownController extends AdminController
                     'published' => $child instanceof DataObject\Concrete && $child->getPublished(),
                 ];
 
-                if ($request->get('recursive') === 'true') {
+                if ('true' === $request->get('recursive')) {
                     $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                 }
             }
@@ -171,7 +169,6 @@ final class DynamicDropdownController extends AdminController
     }
 
     /**
-     *
      * @return mixed
      */
     private function parseTree(mixed $tree, mixed $definition)
@@ -179,10 +176,10 @@ final class DynamicDropdownController extends AdminController
         if ($tree instanceof DataObject\ClassDefinition\Layout || $tree instanceof DataObject\ClassDefinition\Data\Localizedfields) { // Did I forget something?
             $children = $tree->getChildren();
             foreach ($children as $child) {
-                /**
+                /*
                  * @psalm-suppress InternalProperty, UndefinedPropertyFetch
                  */
-                $definition['get' . ucfirst($child->name)] = $tree->fieldtype === 'localizedfields';
+                $definition['get' . ucfirst($child->name)] = 'localizedfields' === $tree->fieldtype;
                 $definition = $this->parseTree($child, $definition);
             }
         }

@@ -27,7 +27,7 @@ final class CommandExecutor
     {
     }
 
-    public function runCommand($command, $parameters = [], OutputInterface $output = null): CommandExecutor
+    public function runCommand($command, $parameters = [], OutputInterface $output = null): self
     {
         $parameters = array_merge(
             ['command' => $command],

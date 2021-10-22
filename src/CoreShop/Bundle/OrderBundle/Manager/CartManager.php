@@ -32,10 +32,10 @@ final class CartManager implements CartManagerInterface
     {
         $cartsFolder = $this->folderCreationService->createFolderForResource($cart, [
             'suffix' => date('Y/m/d'),
-            'path' => 'cart'
+            'path' => 'cart',
         ]);
 
-        $this->connection->transactional(function()  use ($cart, $cartsFolder) {
+        $this->connection->transactional(function () use ($cart, $cartsFolder) {
             VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
                 $tempItems = $cart->getItems();
 
@@ -60,7 +60,7 @@ final class CartManager implements CartManagerInterface
                         )
                     );
                     $item->setPublished(true);
-                    $item->setKey($index+1);
+                    $item->setKey($index + 1);
                     $item->save();
                 }
 

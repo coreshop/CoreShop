@@ -36,7 +36,7 @@ final class PaymentProviderTypeExtension extends AbstractTypeExtension
                 }
 
                 $gatewayConfig = $paymentMethod->getGatewayConfig();
-                /** @psalm-suppress DocblockTypeContradiction */
+                /* @psalm-suppress DocblockTypeContradiction */
                 if (null === $gatewayConfig->getGatewayName()) {
                     $gatewayConfig->setGatewayName($paymentMethod->getIdentifier());
                 }

@@ -33,7 +33,7 @@ final class ProductUnitDefinitionsChoiceType extends AbstractType
             'choices' => function (Options $options) {
                 /** @var ProductInterface $product */
                 $product = $options['product'];
-                if ($product->hasUnitDefinitions() === false) {
+                if (false === $product->hasUnitDefinitions()) {
                     return [];
                 }
 

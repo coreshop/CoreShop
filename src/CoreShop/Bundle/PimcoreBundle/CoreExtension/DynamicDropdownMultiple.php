@@ -34,7 +34,7 @@ class DynamicDropdownMultiple extends ManyToManyObjectRelation
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         //if not set, return null
-        if ($data === null || $data === false) {
+        if (null === $data || false === $data) {
             return null;
         }
 

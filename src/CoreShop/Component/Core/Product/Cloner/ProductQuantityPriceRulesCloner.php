@@ -24,14 +24,14 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
 {
     public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void
     {
-        if ($product->getId() === null) {
+        if (null === $product->getId()) {
             throw new \Exception(sprintf('cannot clone quantity price rules on a un-stored product (reference product id: %d.', $referenceProduct->getId()));
         }
 
         $quantityPriceRules = $referenceProduct->getQuantityPriceRules();
         $hasQuantityPriceRules = count($quantityPriceRules) > 0;
 
-        if ($hasQuantityPriceRules === true && $resetExistingData === false) {
+        if (true === $hasQuantityPriceRules && false === $resetExistingData) {
             return;
         }
 
@@ -50,7 +50,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
     {
         $newQuantityPriceRule = clone $quantityPriceRule;
 
-         //Hack to get rid of the ID
+        //Hack to get rid of the ID
         $reflectionClass = new \ReflectionClass($newQuantityPriceRule);
         $property = $reflectionClass->getProperty('id');
         $property->setAccessible(true);
@@ -71,7 +71,6 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
         $referenceRanges = $quantityPriceRule->getRanges();
 
         foreach ($ranges as $index => $range) {
-
             if (!$range instanceof QuantityRangeInterface) {
                 continue;
             }
@@ -92,7 +91,6 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
             }
 
             $range->setUnitDefinition($allocatedUnitDefinition);
-
         }
 
         return $newQuantityPriceRule;
@@ -100,7 +98,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
 
     protected function findMatchingUnitDefinitionByUnitName(ProductInterface $product, string $unitName): ?ProductUnitDefinitionInterface
     {
-        if ($product->hasUnitDefinitions() === false) {
+        if (false === $product->hasUnitDefinitions()) {
             return null;
         }
 

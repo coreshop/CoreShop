@@ -119,7 +119,8 @@
     "symfony/panther": "^1.0",
     "dbrekelmans/bdi": "^0.3.0",
     "vimeo/psalm": "^4.10",
-    "rector/rector": "^0.11.60"
+    "rector/rector": "^0.11.60",
+    "symplify/easy-coding-standard": "^9.4"
   },
   "conflict": {
     "pimcore/pimcore": "10.2.0 || 10.2.1"

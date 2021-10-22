@@ -83,7 +83,7 @@ final class InterpreterType extends AbstractType
     }
 
     /**
-     * @param string        $configurationType
+     * @param string $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType): void
     {
@@ -91,8 +91,7 @@ final class InterpreterType extends AbstractType
     }
 
     /**
-     * @param mixed         $data
-     *
+     * @param mixed $data
      */
     protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {

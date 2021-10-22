@@ -62,7 +62,7 @@ final class AddressType extends AbstractResourceType
                 'mapped' => false,
             ]);
 
-        if ($options['show_address_identifier_choice'] === true) {
+        if (true === $options['show_address_identifier_choice']) {
             $builder->add('addressIdentifier', AddressIdentifierChoiceType::class, [
                 'label' => false,
                 'required' => false,

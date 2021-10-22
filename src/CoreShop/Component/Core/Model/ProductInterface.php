@@ -24,25 +24,16 @@ use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
-interface ProductInterface extends
-    BaseProductInterface,
-    IndexableInterface,
-    PurchasableInterface,
-    StockableInterface,
-    PimcoreSEOAwareInterface,
-    SEOImageAwareInterface,
-    SEOOpenGraphAwareInterface,
-    QuantityRangePriceAwareInterface,
-    PimcoreStoresAwareInterface
+interface ProductInterface extends BaseProductInterface, IndexableInterface, PurchasableInterface, StockableInterface, PimcoreSEOAwareInterface, SEOImageAwareInterface, SEOOpenGraphAwareInterface, QuantityRangePriceAwareInterface, PimcoreStoresAwareInterface
 {
     /**
      * @return \CoreShop\Component\Core\Model\ProductStoreValuesInterface[]
      */
-    public function getStoreValues (): array;
+    public function getStoreValues(): array;
 
-    public function setStoreValues (array $storeValues): self;
+    public function setStoreValues(array $storeValues): self;
 
-    public function getStoreValuesForStore (\CoreShop\Component\Store\Model\StoreInterface $store): ?\CoreShop\Component\Core\Model\ProductStoreValuesInterface;
+    public function getStoreValuesForStore(\CoreShop\Component\Store\Model\StoreInterface $store): ?\CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 
     public function setStoreValuesForStore(ProductStoreValuesInterface $storeValues, \CoreShop\Component\Store\Model\StoreInterface $store): self;
 

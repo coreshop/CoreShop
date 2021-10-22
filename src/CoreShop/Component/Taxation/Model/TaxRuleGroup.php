@@ -26,6 +26,7 @@ use Doctrine\Common\Collections\Collection;
 class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface, \Stringable
 {
     use ToggleableTrait;
+
     use TimestampableTrait;
 
     /**

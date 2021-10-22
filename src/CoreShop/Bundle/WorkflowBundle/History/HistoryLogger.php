@@ -29,13 +29,12 @@ class HistoryLogger implements HistoryLoggerInterface
         ?string $message = null,
         ?string $description = null,
         bool $translate = false
-    ): void
-    {
+    ): void {
         $note = $this->noteService->createPimcoreNoteInstance($object, $this->noteIdentifier);
 
         $message = strip_tags($message);
 
-        if ($translate === true) {
+        if (true === $translate) {
             $message = $this->translator->trans($message, [], 'admin');
         }
 

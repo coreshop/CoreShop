@@ -23,6 +23,7 @@ use Pimcore\Model\DataObject\Fieldcollection;
 abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterface
 {
     use AdjustableTrait;
+
     use ConvertedAdjustableTrait;
 
     public function equals(StorageListItemInterface $storageListItem): bool
@@ -186,7 +187,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
             }
 
             $parent = $parent->getParent();
-        } while ($parent !== null);
+        } while (null !== $parent);
 
         throw new \Exception('Order Item does not have a valid Order');
     }
@@ -470,7 +471,6 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
 
     public function getConvertedItemDiscountNet(): int
     {

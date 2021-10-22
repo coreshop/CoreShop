@@ -78,11 +78,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension
     {
         foreach ($resources as $alias => $resource) {
             if (!in_array($resource['driver'], $drivers, true)) {
-                throw new InvalidArgumentException(sprintf(
-                    'Resource "%s" uses driver "%s", but this driver has not been enabled.',
-                    $alias,
-                    $resource['driver']
-                ));
+                throw new InvalidArgumentException(sprintf('Resource "%s" uses driver "%s", but this driver has not been enabled.', $alias, $resource['driver']));
             }
         }
 

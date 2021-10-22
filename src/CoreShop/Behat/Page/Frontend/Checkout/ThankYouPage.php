@@ -26,7 +26,6 @@ class ThankYouPage extends AbstractFrontendPage implements ThankYouPageInterface
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
-
         ]);
     }
 }

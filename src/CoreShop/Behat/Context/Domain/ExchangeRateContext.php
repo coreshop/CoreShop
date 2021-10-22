@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use Webmozart\Assert\Assert;
@@ -32,8 +31,8 @@ final class ExchangeRateContext implements Context
     public function priceOfCurrencyShouldExchangeToPriceInCurrency($fromPrice, CurrencyInterface $fromCurrency, $toPrice, CurrencyInterface $toCurrency): void
     {
         Assert::same(
-            $this->currencyConverter->convert((int) $fromPrice, $fromCurrency->getIsoCode(), $toCurrency->getIsoCode()),
-            (int) $toPrice,
+            $this->currencyConverter->convert((int)$fromPrice, $fromCurrency->getIsoCode(), $toCurrency->getIsoCode()),
+            (int)$toPrice,
             sprintf(
                 'Given exchanged value (%s %s) is different from actual value (%s %s)',
                 $fromPrice,

@@ -44,7 +44,7 @@ class OrderCommentController extends PimcoreController
                 'text' => $note->getDescription(),
                 'date' => $note->getDate(),
                 'userName' => $user ? $user->getName() : 'anonymous',
-                'submitAsEmail' => isset($noteData['submitAsEmail']) && $noteData['submitAsEmail']['data'] === true,
+                'submitAsEmail' => isset($noteData['submitAsEmail']) && true === $noteData['submitAsEmail']['data'],
             ];
         }
 
@@ -54,7 +54,7 @@ class OrderCommentController extends PimcoreController
     public function addAction(Request $request): JsonResponse
     {
         $comment = $request->get('comment');
-        $submitAsEmail = $request->get('submitAsEmail') === 'true';
+        $submitAsEmail = 'true' === $request->get('submitAsEmail');
         $orderId = $request->get('id');
 
         $order = $this->getOrderRepository()->find($orderId);
@@ -84,7 +84,7 @@ class OrderCommentController extends PimcoreController
         $commentEntity = $objectNoteService->getNoteById($commentId);
 
         if ($commentEntity instanceof Note) {
-            /** @psalm-suppress InternalMethod */
+            /* @psalm-suppress InternalMethod */
             $commentEntity->getDao()->delete();
         }
 

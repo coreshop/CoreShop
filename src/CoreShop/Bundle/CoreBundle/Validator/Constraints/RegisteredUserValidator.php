@@ -26,15 +26,14 @@ final class RegisteredUserValidator extends ConstraintValidator
     {
     }
 
-
     public function validate($value, Constraint $constraint): void
     {
-        /**
+        /*
          * @var CustomerInterface $value
          */
         Assert::isInstanceOf($value, CustomerInterface::class);
 
-        /**
+        /*
          * @var UniqueCustomer $constraint
          */
         Assert::isInstanceOf($constraint, UniqueCustomer::class);

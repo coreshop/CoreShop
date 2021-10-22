@@ -21,6 +21,6 @@ class PercentageDecreaseAction implements ProductQuantityPriceRuleActionInterfac
 {
     public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context): int
     {
-        return max($realItemPrice - ((int) round(($range->getPercentage() / 100) * $realItemPrice)), 0);
+        return max($realItemPrice - ((int)round(($range->getPercentage() / 100) * $realItemPrice)), 0);
     }
 }

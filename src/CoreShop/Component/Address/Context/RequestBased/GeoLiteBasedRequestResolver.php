@@ -42,7 +42,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
 
         $cacheKey = sprintf('geo_lite_ip_%s', md5($clientIp));
 
-        /** @psalm-suppress InternalMethod */
+        /* @psalm-suppress InternalMethod */
         if ($countryIsoCode = $this->cache->load($cacheKey)) {
             $country = $this->countryRepository->findByCode($countryIsoCode);
 
@@ -53,7 +53,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
 
         $countryIsoCode = $this->guessCountryByGeoLite($clientIp, $geoDbFileLocation);
 
-        if ($countryIsoCode === null) {
+        if (null === $countryIsoCode) {
             throw new CountryNotFoundException();
         }
 
@@ -63,7 +63,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             throw new CountryNotFoundException();
         }
 
-        /** @psalm-suppress InternalMethod */
+        /* @psalm-suppress InternalMethod */
         $this->cache->save($cacheKey, $countryIsoCode, [], 24 * 60 * 60);
 
         return $country;
@@ -103,9 +103,9 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
         ];
 
         $longIp = ip2long($clientIp);
-        if ($longIp !== -1) {
+        if (-1 !== $longIp) {
             foreach ($privateAddresses as $priAddr) {
-                list($start, $end) = explode('|', $priAddr);
+                [$start, $end] = explode('|', $priAddr);
 
                 // IF IS PRIVATE
                 if ($longIp >= ip2long($start) && $longIp <= ip2long($end)) {

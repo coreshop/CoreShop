@@ -108,7 +108,7 @@ class MysqlWorker extends AbstractWorker
             if ($column instanceof IndexColumnInterface) {
                 $type = $column->getObjectType();
                 $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
-                if ($type !== 'localizedfields' && !$interpreterClass instanceof LocalizedInterpreterInterface) {
+                if ('localizedfields' !== $type && !$interpreterClass instanceof LocalizedInterpreterInterface) {
                     $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), $this->getFieldTypeConfig($column));
                 }
             }
@@ -127,7 +127,7 @@ class MysqlWorker extends AbstractWorker
              * @var TableIndex $tableIndex
              */
             foreach ($index->getConfiguration()['indexes'] as $tableIndex) {
-                if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
+                if (TableIndex::TABLE_INDEX_TYPE_UNIQUE === $tableIndex->getType()) {
                     $table->addUniqueIndex($tableIndex->getColumns());
                 } else {
                     $table->addIndex($tableIndex->getColumns());
@@ -153,7 +153,7 @@ class MysqlWorker extends AbstractWorker
         foreach ($index->getColumns() as $column) {
             $type = $column->getObjectType();
             $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
-            if ($type === 'localizedfields' || $interpreterClass instanceof LocalizedInterpreterInterface) {
+            if ('localizedfields' === $type || $interpreterClass instanceof LocalizedInterpreterInterface) {
                 $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), $this->getFieldTypeConfig($column));
             }
         }
@@ -177,7 +177,7 @@ class MysqlWorker extends AbstractWorker
              * @var TableIndex $tableIndex
              */
             foreach ($index->getConfiguration()['localizedIndexes'] as $tableIndex) {
-                if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
+                if (TableIndex::TABLE_INDEX_TYPE_UNIQUE === $tableIndex->getType()) {
                     $table->addUniqueIndex($tableIndex->getColumns());
                 } else {
                     $table->addIndex($tableIndex->getColumns());
@@ -293,7 +293,7 @@ QUERY;
             $potentialTables = [
                 $this->getTablename($oldName) => $this->getTablename($newName),
                 $this->getLocalizedTablename($oldName) => $this->getLocalizedTablename($newName),
-                $this->getRelationTablename($oldName) => $this->getRelationTablename($newName)
+                $this->getRelationTablename($oldName) => $this->getRelationTablename($newName),
             ];
             $allViews = $this->database->getSchemaManager()->listViews();
 
@@ -366,7 +366,9 @@ QUERY;
         $insertStatement = [];
 
         $columns = $index->getColumns()->toArray();
-        $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $columns);
+        $columnNames = array_map(function (IndexColumnInterface $column) {
+            return $column->getName();
+        }, $columns);
 
         foreach ($data as $key => $value) {
             if (in_array($key, $columnNames)) {
@@ -408,7 +410,9 @@ QUERY;
     protected function doInsertLocalizedData(IndexInterface $index, array $data): void
     {
         $columns = $index->getColumns()->toArray();
-        $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $columns);
+        $columnNames = array_map(function (IndexColumnInterface $column) {
+            return $column->getName();
+        }, $columns);
 
         foreach ($data['values'] as $language => $values) {
             $dataKeys = [
@@ -446,10 +450,10 @@ QUERY;
 
                 $value = $values[$column->getName()];
 
-                $dataKeys[$this->database->quoteIdentifier($column->getName())] = $this->typeCastValueSQLDecleration($column);;
+                $dataKeys[$this->database->quoteIdentifier($column->getName())] = $this->typeCastValueSQLDecleration($column);
                 $updateData[] = $value;
 
-                $insertStatement[] = $this->database->quoteIdentifier($column->getName()) . ' = ' . $this->typeCastValueSQLDecleration($column);;
+                $insertStatement[] = $this->database->quoteIdentifier($column->getName()) . ' = ' . $this->typeCastValueSQLDecleration($column);
                 $insertData[] = $value;
             }
 

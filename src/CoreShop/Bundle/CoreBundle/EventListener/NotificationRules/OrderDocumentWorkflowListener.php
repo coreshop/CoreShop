@@ -31,7 +31,7 @@ final class OrderDocumentWorkflowListener extends AbstractNotificationRuleListen
     {
         $subject = $event->getSubject();
 
-        /**
+        /*
          * @var OrderDocumentInterface $subject
          */
         Assert::implementsInterface($subject, OrderDocumentInterface::class);

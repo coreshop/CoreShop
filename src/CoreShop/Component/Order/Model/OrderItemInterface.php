@@ -18,11 +18,7 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-interface OrderItemInterface extends
-    PimcoreModelInterface,
-    AdjustableInterface,
-    ConvertedAdjustableInterface,
-    StorageListItemInterface
+interface OrderItemInterface extends PimcoreModelInterface, AdjustableInterface, ConvertedAdjustableInterface, StorageListItemInterface
 {
     public function getOrder(): OrderInterface;
 

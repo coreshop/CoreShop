@@ -61,7 +61,7 @@ interface ListingInterface extends \Countable, \IteratorAggregate
      * Fieldname is optional but highly recommended - needed for resetting condition based on fieldname
      * and exclude functionality in group by results.
      *
-     * @param string             $fieldName
+     * @param string $fieldName
      */
     public function addCondition(ConditionInterface $condition, $fieldName);
 
@@ -70,14 +70,14 @@ interface ListingInterface extends \Countable, \IteratorAggregate
      * Fieldname is optional but highly recommended - needed for resetting condition based on fieldname
      * and exclude functionality in group by results.
      *
-     * @param string             $fieldName
+     * @param string $fieldName
      */
     public function addQueryCondition(ConditionInterface $condition, $fieldName);
 
     /**
      * Adds relation condition to product list.
      *
-     * @param string             $fieldName
+     * @param string $fieldName
      */
     public function addRelationCondition(ConditionInterface $condition, $fieldName);
 
@@ -175,7 +175,6 @@ interface ListingInterface extends \Countable, \IteratorAggregate
 
     /**
      * loads search results from index and returns them.
-     *
      *
      * @return Concrete[]
      */

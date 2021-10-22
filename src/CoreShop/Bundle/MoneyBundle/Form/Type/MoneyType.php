@@ -35,9 +35,9 @@ class MoneyType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'grouping' => false,
-        ));
+        ]);
     }
 
     public function getParent(): string

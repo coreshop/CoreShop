@@ -58,8 +58,6 @@ trait ConvertedAdjustableTrait
     }
 
     /**
-     * @param string|null $type
-     *
      * @return AdjustmentInterface[]
      */
     public function getConvertedAdjustments(string $type = null)
@@ -127,7 +125,7 @@ trait ConvertedAdjustableTrait
         $items = $this->getConvertedAdjustmentItems();
 
         if ($items instanceof Fieldcollection) {
-            for ($i = 0, $c = $items->getCount(); $i < $c; $i++) {
+            for ($i = 0, $c = $items->getCount(); $i < $c; ++$i) {
                 $arrayItem = $items->get($i);
 
                 if ($arrayItem === $adjustment) {

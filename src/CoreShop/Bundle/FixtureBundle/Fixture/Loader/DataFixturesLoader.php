@@ -27,6 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DataFixturesLoader extends ContainerAwareLoader
 {
     protected array $loadedFixtures = [];
+
     protected ?\ReflectionProperty $ref = null;
 
     public function __construct(
@@ -78,7 +79,7 @@ class DataFixturesLoader extends ContainerAwareLoader
      */
     protected function isFixtureAlreadyLoaded($fixtureObject)
     {
-        if (count($this->loadedFixtures) === 0) {
+        if (0 === count($this->loadedFixtures)) {
             $this->loadedFixtures = [];
 
             $loadedFixtures = $this->dataFixtureRepository->findAll();
@@ -94,7 +95,7 @@ class DataFixturesLoader extends ContainerAwareLoader
             $alreadyLoaded = true;
             $loadedVersion = $this->loadedFixtures[$fixtureObject::class];
             if ($fixtureObject instanceof VersionedFixtureInterface
-                && version_compare($loadedVersion, $fixtureObject->getVersion()) == -1
+                && -1 == version_compare($loadedVersion, $fixtureObject->getVersion())
             ) {
                 if ($fixtureObject instanceof LoadedFixtureVersionAwareInterface) {
                     $fixtureObject->setLoadedVersion($loadedVersion);

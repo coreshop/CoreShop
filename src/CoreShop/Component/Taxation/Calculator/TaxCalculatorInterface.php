@@ -21,37 +21,32 @@ interface TaxCalculatorInterface
     /**
      * DISABLE_METHOD only use this tax.
      */
-    const DISABLE_METHOD = 0;
+    public const DISABLE_METHOD = 0;
 
     /**
      * COMBINE_METHOD sum taxes
      * eg: 100€ * (10% + 15%).
      */
-    const COMBINE_METHOD = 1;
+    public const COMBINE_METHOD = 1;
 
     /**
      * ONE_AFTER_ANOTHER_METHOD apply taxes one after another
      * eg: (100€ * 10%) * 15%.
      */
-    const ONE_AFTER_ANOTHER_METHOD = 2;
+    public const ONE_AFTER_ANOTHER_METHOD = 2;
 
     /**
      * Compute and add the taxes to the specified price.
-     *
-     *
      */
     public function applyTaxes(int $price): int;
 
     /**
      * Compute and remove the taxes to the specified price.
-     *
-     *
      */
     public function removeTaxes(int $price): int;
 
     /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
-     *
      *
      * @return int $taxes_amount
      */
@@ -60,22 +55,17 @@ interface TaxCalculatorInterface
     /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
      *
-     *
      * @return int[] $taxes_amount
      */
     public function getTaxesAmountFromGrossAsArray(int $price): array;
 
     /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
-     *
-     *
      */
     public function getTaxesAmount(int $price): int;
 
     /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
-     *
-     *
      */
     public function getTaxesAmountAsArray(int $price): array;
 

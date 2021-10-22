@@ -34,9 +34,7 @@ class ServiceRegistry implements ServiceRegistryInterface
         }
 
         if (!in_array($this->interface, class_implements($service), true)) {
-            throw new \InvalidArgumentException(
-                sprintf('%s needs to implement "%s", "%s" given.', ucfirst($this->context), $this->interface, $service::class)
-            );
+            throw new \InvalidArgumentException(sprintf('%s needs to implement "%s", "%s" given.', ucfirst($this->context), $this->interface, $service::class));
         }
 
         $this->services[$identifier] = $service;

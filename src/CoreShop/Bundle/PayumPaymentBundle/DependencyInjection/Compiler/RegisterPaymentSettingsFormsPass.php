@@ -31,14 +31,13 @@ class RegisterPaymentSettingsFormsPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('coreshop.payment.form.settings') as $id => $attributes) {
             foreach ($attributes as $tag) {
                 if (!isset($tag['payum-factory'])) {
-                    throw new \InvalidArgumentException('Tagged Service `'.$id.'` needs to have `payum-factory` attribute.');
+                    throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `payum-factory` attribute.');
                 }
 
                 $payumFactory = $tag['payum-factory'];
 
                 if (!array_key_exists($payumFactory, $payumFactories)) {
-                    throw new \InvalidArgumentException(sprintf('You are trying to register a frontend-from for payum-factory %s which does not exist',
-                        $payumFactory));
+                    throw new \InvalidArgumentException(sprintf('You are trying to register a frontend-from for payum-factory %s which does not exist', $payumFactory));
                 }
 
                 $formRegistry

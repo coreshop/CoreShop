@@ -23,7 +23,6 @@ use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderController extends FrontendController
 {
@@ -43,7 +42,7 @@ class OrderController extends FrontendController
         }
 
         foreach ($this->getPaymentRepository()->findForPayable($order) as $payment) {
-            if ($payment->getState() === PaymentInterface::STATE_COMPLETED) {
+            if (PaymentInterface::STATE_COMPLETED === $payment->getState()) {
                 $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.order_already_paid'));
 
                 return $this->redirectToRoute('coreshop_index');

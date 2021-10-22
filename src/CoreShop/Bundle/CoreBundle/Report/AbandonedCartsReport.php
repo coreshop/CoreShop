@@ -51,7 +51,7 @@ final class AbandonedCartsReport implements ReportInterface, ExportReportInterfa
 
         $page = $parameterBag->get('page', 1);
         $limit = $parameterBag->get('limit', 50);
-        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
+        $offset = $parameterBag->get('offset', 1 === $page ? 0 : ($page - 1) * $limit);
 
         $userClassId = $this->customerRepository->getClassId();
         $cartClassId = $this->cartRepository->getClassId();
@@ -92,13 +92,13 @@ final class AbandonedCartsReport implements ReportInterface, ExportReportInterfa
                           AND cart.order__id IS NULL
                           AND cart.o_creationDate > ?
                           AND cart.o_creationDate < ?
-                          AND cart.saleState === '".OrderSaleStates::STATE_CART."'
+                          AND cart.saleState === '" . OrderSaleStates::STATE_CART . "'
                      GROUP BY cart.oo_id
                      ORDER BY cart.o_creationDate DESC
                      LIMIT $offset,$limit";
 
         $data = $this->db->fetchAllAssociative($sqlQuery, [$fromTimestamp, $toTimestamp]);
-        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($data as &$entry) {
             $entry['itemsInCart'] = count(array_filter(explode(',', $entry['items'])));

@@ -75,8 +75,12 @@ final class CartItemsProcessor implements CartProcessorInterface
 
             if ($product instanceof QuantityRangePriceAwareInterface) {
                 try {
-                    $itemPrice = $this->quantityReferenceDetector->detectQuantityPrice($product, $item->getQuantity(),
-                        $itemPrice, $context);
+                    $itemPrice = $this->quantityReferenceDetector->detectQuantityPrice(
+                        $product,
+                        $item->getQuantity(),
+                        $itemPrice,
+                        $context
+                    );
                 } catch (NoRuleFoundException) {
                 } catch (NoPriceFoundException) {
                 }
@@ -93,8 +97,7 @@ final class CartItemsProcessor implements CartProcessorInterface
 
             if ($item->getCustomItemPrice()) {
                 $itemPrice = $item->getCustomItemPrice();
-            }
-            else {
+            } else {
                 $item->setCustomItemPrice(0);
             }
 

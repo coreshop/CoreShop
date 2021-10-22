@@ -45,7 +45,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         $objects = $list->getObjects();
 
-        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
+        if (1 === count($objects) && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
@@ -62,7 +62,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         $objects = $list->getObjects();
 
-        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
+        if (1 === count($objects) && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
@@ -77,7 +77,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         $objects = $list->getObjects();
 
-        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
+        if (1 === count($objects) && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
@@ -93,7 +93,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         $objects = $list->getObjects();
 
-        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
+        if (1 === count($objects) && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 

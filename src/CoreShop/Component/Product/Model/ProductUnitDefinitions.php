@@ -182,7 +182,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
 
     public function __clone()
     {
-        if ($this->id === null) {
+        if (null === $this->id) {
             return;
         }
 
@@ -198,7 +198,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         $additionalUnits = $this->getAdditionalUnitDefinitions();
 
         $this->id = null;
-        $this->unitDefinitions =  new ArrayCollection();
+        $this->unitDefinitions = new ArrayCollection();
         $this->defaultUnitDefinition = null;
 
         $this->setDefaultUnitDefinition($newDefaultUnitDefinition);

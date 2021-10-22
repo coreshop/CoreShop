@@ -23,14 +23,13 @@ class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
      * @psalm-param class-string $class
      */
     public function __construct(
-        /**
+        /*
          * @psalm-var class-string
          */
         private string $class,
         private string $repositoryName,
         private string $nameProperty
-    )
-    {
+    ) {
     }
 
     public function create(string $type, array $params): EditableInterface

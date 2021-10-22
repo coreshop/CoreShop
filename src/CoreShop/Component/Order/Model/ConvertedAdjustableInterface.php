@@ -17,8 +17,6 @@ namespace CoreShop\Component\Order\Model;
 interface ConvertedAdjustableInterface
 {
     /**
-     * @param string|null $type
-     *
      * @return AdjustmentInterface[]
      */
     public function getConvertedAdjustments(string $type = null);
@@ -27,20 +25,10 @@ interface ConvertedAdjustableInterface
 
     public function removeConvertedAdjustment(AdjustmentInterface $adjustment);
 
-    /**
-     * @param string|null $type
-     *
-     */
     public function getConvertedAdjustmentsTotal(string $type = null, bool $withTax = true): int;
 
-    /**
-     * @param string|null $type
-     */
     public function removeConvertedAdjustments(string $type = null);
 
-    /**
-     * @param string|null $type
-     */
     public function removeConvertedAdjustmentsRecursively(string $type = null);
 
     /**

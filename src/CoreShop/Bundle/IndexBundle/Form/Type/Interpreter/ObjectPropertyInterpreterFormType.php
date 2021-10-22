@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class ObjectPropertyInterpreterFormType extends AbstractType
 {
-     /**
+    /**
      * @param string[] $validationGroups
      */
     public function __construct(protected array $validationGroups)

@@ -61,7 +61,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         $addressFormatReplaces = [
             'recipient' => [
                 '{{ company }}',
-                PHP_EOL,
+                \PHP_EOL,
                 '{{ salutation }}',
                 '{{ firstname }}',
                 '{{ lastname }}',
@@ -77,7 +77,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 '{{ phoneNumber }}',
             ],
             'region' => '',
-            'region_short' => ''
+            'region_short' => '',
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
         $defaultSalutations = ['mrs', 'mr'];
@@ -111,7 +111,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 }
 
                 $newCountry->setIsoCode($country->getIsoAlpha2());
-                $newCountry->setActive($country->getIsoAlpha2() === 'AT' || $newCountry->getActive());
+                $newCountry->setActive('AT' === $country->getIsoAlpha2() || $newCountry->getActive());
                 $newCountry->setZone($this->container->get('coreshop.repository.zone')->findOneBy(['name' => $country->getContinent()]));
                 $newCountry->setCurrency($this->container->get('coreshop.repository.currency')->getByCode($country->getCurrency()['iso_4217_code']));
 
@@ -135,17 +135,17 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                     $addressFormat = str_replace($replaceFrom, $replaceTo, $addressFormat);
                 }
 
-                $addressFormat = explode(PHP_EOL, $addressFormat);
-                $addressFormat = array_map(function($entry) {
+                $addressFormat = explode(\PHP_EOL, $addressFormat);
+                $addressFormat = array_map(function ($entry) {
                     return trim($entry);
                 }, $addressFormat);
-                $addressFormat = implode(PHP_EOL, $addressFormat);
+                $addressFormat = implode(\PHP_EOL, $addressFormat);
 
                 $newCountry->setAddressFormat($addressFormat);
                 $newCountry->setSalutations($defaultSalutations);
                 $manager->persist($newCountry);
 
-                if ($country->getIsoAlpha2() === 'AT') {
+                if ('AT' === $country->getIsoAlpha2()) {
                     //States
                     $divisions = $country->getDivisions();
 

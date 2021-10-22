@@ -25,7 +25,7 @@ class CaptureAction implements ActionInterface
     {
         sleep(1);
 
-        /** @var $request Capture */
+        /* @var $request Capture */
         RequestNotSupportedException::assertSupports($this, $request);
 
         $model = ArrayObject::ensureArrayObject($request->getModel());

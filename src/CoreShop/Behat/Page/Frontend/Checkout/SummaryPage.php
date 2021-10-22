@@ -46,7 +46,7 @@ class SummaryPage extends AbstractFrontendPage implements SummaryPageInterface
     protected function getAdditionalParameters(): array
     {
         return [
-            'stepIdentifier' => 'summary'
+            'stepIdentifier' => 'summary',
         ];
     }
 

@@ -24,14 +24,13 @@ final class SimpleStateChecker extends AbstractConditionChecker
      * @psalm-param class-string $interface
      */
     public function __construct(
-        /**
+        /*
          * @psalm-var class-string
          */
         private string $interface,
         private string $stateField,
         private string $configurationField
-    )
-    {
+    ) {
     }
 
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool

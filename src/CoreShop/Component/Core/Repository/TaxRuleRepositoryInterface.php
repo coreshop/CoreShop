@@ -17,14 +17,12 @@ namespace CoreShop\Component\Core\Repository;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
-use CoreShop\Component\Taxation\Repository\TaxRuleRepositoryInterface as BaseTaxRuleRepositoryInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Repository\TaxRuleRepositoryInterface as BaseTaxRuleRepositoryInterface;
 
 interface TaxRuleRepositoryInterface extends BaseTaxRuleRepositoryInterface
 {
     /**
-     * @param CountryInterface|null $country
-     * @param StateInterface|null   $state
      * @return TaxRuleInterface[]
      */
     public function findForCountryAndState(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country = null, StateInterface $state = null): array;

@@ -29,7 +29,7 @@ abstract class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInv
             }
 
             $parent = $parent->getParent();
-        } while ($parent !== null);
+        } while (null !== $parent);
 
         throw new \InvalidArgumentException('Order Invoice could not be found!');
     }

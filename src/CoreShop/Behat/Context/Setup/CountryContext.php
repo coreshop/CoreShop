@@ -113,7 +113,7 @@ final class CountryContext implements Context
                 '-f',
                 sprintf('%s/etc/geoipupdate/GeoIP.conf', $this->kernelRootDirectory),
                 '-d',
-                sprintf('%s/var/config/', $this->kernelRootDirectory)
+                sprintf('%s/var/config/', $this->kernelRootDirectory),
             ]
         );
         $process->run();

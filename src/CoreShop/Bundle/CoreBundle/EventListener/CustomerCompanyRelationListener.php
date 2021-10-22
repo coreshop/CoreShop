@@ -39,12 +39,11 @@ final class CustomerCompanyRelationListener
 
         /** @var CustomerInterface $customer */
         foreach ($list->getData() as $customer) {
-
             $accessType = $customer->getAddressAccessType();
             if (empty($accessType)) {
                 continue;
             }
-            if ($accessType === CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY) {
+            if (CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY === $accessType) {
                 continue;
             }
 

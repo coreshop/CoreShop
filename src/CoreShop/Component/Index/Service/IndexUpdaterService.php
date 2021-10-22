@@ -67,7 +67,7 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
              */
             $worker = $this->workerServiceRegistry->get($worker);
 
-            if ($operation === 'update') {
+            if ('update' === $operation) {
                 $worker->updateIndex($index, $subject);
             } else {
                 $worker->deleteFromIndex($index, $subject);

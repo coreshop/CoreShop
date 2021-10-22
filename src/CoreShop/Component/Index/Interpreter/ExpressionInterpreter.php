@@ -30,8 +30,7 @@ class ExpressionInterpreter implements InterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed
-    {
+    ): mixed {
         $expression = $interpreterConfig['expression'];
 
         return $this->expressionLanguage->evaluate($expression, [

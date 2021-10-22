@@ -16,10 +16,7 @@ namespace CoreShop\Component\Order\Model;
 
 use Carbon\Carbon;
 
-interface OrderInvoiceInterface extends
-    OrderDocumentInterface,
-    AdjustableInterface,
-    ConvertedAdjustableInterface
+interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterface, ConvertedAdjustableInterface
 {
     public function getInvoiceDate(): ?Carbon;
 

@@ -28,10 +28,10 @@ final class VoucherAmountValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
-        /** @var CartPriceRuleVoucherGeneratorInterface $value */
+        /* @var CartPriceRuleVoucherGeneratorInterface $value */
         Assert::isInstanceOf($value, CartPriceRuleVoucherGeneratorInterface::class);
 
-        /** @var VoucherAmount $constraint */
+        /* @var VoucherAmount $constraint */
         Assert::isInstanceOf($constraint, VoucherAmount::class);
 
         if (null === $value->getLength() || null === $value->getAmount()) {

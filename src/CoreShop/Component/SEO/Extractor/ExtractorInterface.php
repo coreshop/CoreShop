@@ -37,7 +37,7 @@ interface ExtractorInterface
      *
      * This method should only be called if supports returned true.
      *
-     * @param object               $object
+     * @param object $object
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void;
 }

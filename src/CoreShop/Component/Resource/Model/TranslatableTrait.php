@@ -30,12 +30,14 @@ trait TranslatableTrait
      * @var array|TranslationInterface[]
      */
     protected array $translationsCache = [];
+
     protected ?string $currentLocale = null;
 
     /**
      * Cache current translation. Useful in Doctrine 2.4+.
      */
     protected ?TranslationInterface $currentTranslation = null;
+
     protected ?string $fallbackLocale = null;
 
     public function __construct()
@@ -119,7 +121,7 @@ trait TranslatableTrait
         $this->currentLocale = $locale;
     }
 
-    public function setFallbackLocale(string  $locale): void
+    public function setFallbackLocale(string $locale): void
     {
         $this->fallbackLocale = $locale;
     }

@@ -18,5 +18,4 @@ use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
 
 interface ThankYouPageInterface extends FrontendPageInterface
 {
-
 }

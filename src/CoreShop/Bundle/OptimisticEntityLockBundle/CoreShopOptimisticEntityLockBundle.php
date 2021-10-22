@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\OptimisticEntityLockBundle;
 
 use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\Application\Version;
-use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
 class CoreShopOptimisticEntityLockBundle extends AbstractPimcoreBundle

@@ -44,7 +44,7 @@ class ShippingPage extends AbstractFrontendPage implements ShippingPageInterface
     protected function getAdditionalParameters(): array
     {
         return [
-            'stepIdentifier' => 'shipping'
+            'stepIdentifier' => 'shipping',
         ];
     }
 

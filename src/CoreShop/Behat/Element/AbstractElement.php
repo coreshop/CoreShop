@@ -25,12 +25,7 @@ abstract class AbstractElement extends Element
         $element = $this->getDocument()->find($selector, $locator);
 
         if (null === $element) {
-            throw new ElementNotFoundException(
-                $this->getSession(),
-                null,
-                $selector,
-                $locator
-            );
+            throw new ElementNotFoundException($this->getSession(), null, $selector, $locator);
         }
 
         return $element;

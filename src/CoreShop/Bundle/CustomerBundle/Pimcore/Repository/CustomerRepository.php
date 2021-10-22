@@ -26,7 +26,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
         $list->setCondition('newsletterToken = ?', [$newsletterToken]);
         $objects = $list->load();
 
-        if (count($objects) === 1 && $objects[0] instanceof CustomerInterface) {
+        if (1 === count($objects) && $objects[0] instanceof CustomerInterface) {
             return $objects[0];
         }
 

@@ -30,8 +30,7 @@ final class IteratorInterpreter implements InterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed
-    {
+    ): mixed {
         Assert::isArray($value, 'IteratorInterpreter can only be used with array values');
 
         $interpreter = $interpreterConfig['interpreter'];

@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\OptimisticEntityLockBundle\Exception\OptimisticLockException;
 use CoreShop\Bundle\OptimisticEntityLockBundle\Manager\EntityLockManagerInterface;
 use Pimcore\Model\DataObject\Concrete;
@@ -56,6 +55,7 @@ final class OptimisticEntityLockContext implements Context
             $dataObject->save();
         }, OptimisticLockException::class);
     }
+
     /**
      * @Given /^I successfully save versioned (object-instance)$/
      * @Given /^I successfully save versioned (object-instance-2)$/

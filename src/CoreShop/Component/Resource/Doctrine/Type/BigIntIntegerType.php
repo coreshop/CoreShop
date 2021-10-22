@@ -39,7 +39,7 @@ class BigIntIntegerType extends Type
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return $value === null ? null : (int) $value;
+        return null === $value ? null : (int)$value;
     }
 
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool

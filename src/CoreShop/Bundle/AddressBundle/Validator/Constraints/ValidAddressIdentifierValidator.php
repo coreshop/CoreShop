@@ -32,7 +32,7 @@ final class ValidAddressIdentifierValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ValidAddressIdentifier::class);
         }
 
-        if ($value === null || $value === '') {
+        if (null === $value || '' === $value) {
             return;
         }
 

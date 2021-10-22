@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\PayumBundle\Extension;
 
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
 use Payum\Core\Request\Generic;
@@ -51,7 +51,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
             return;
         }
 
-        if ($previousStackSize === 1) {
+        if (1 === $previousStackSize) {
             $previousActionClassName = $previousStack[0]->getAction()::class;
             if (false === stripos($previousActionClassName, 'NotifyNullAction')) {
                 return;

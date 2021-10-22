@@ -31,7 +31,7 @@ final class CartMaximumQuantityValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
-        /**
+        /*
          * @var OrderInterface      $value
          * @var CartMaximumQuantity $constraint
          */
@@ -77,7 +77,7 @@ final class CartMaximumQuantityValidator extends ConstraintValidator
 
             $productsChecked[] = $product->getId();
 
-            if ($higherThenMaximum === true) {
+            if (true === $higherThenMaximum) {
                 $invalidProduct = $product;
 
                 break;

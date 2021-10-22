@@ -51,14 +51,14 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
-        return $cart->hasShippableItems() === false;
+        return false === $cart->hasShippableItems();
     }
 
     public function validate(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
-        return $cart->hasShippableItems() === false
+        return false === $cart->hasShippableItems()
             || ($cart->hasItems() &&
                 $cart->getCarrier() instanceof CarrierInterface &&
                 $cart->getShippingAddress() instanceof AddressInterface &&

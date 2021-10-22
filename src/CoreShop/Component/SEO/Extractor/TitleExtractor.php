@@ -27,7 +27,7 @@ final class TitleExtractor implements ExtractorInterface
 
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
-        /**
+        /*
          * @var SEOAwareInterface $object
          */
         Assert::isInstanceOf($object, SEOAwareInterface::class);

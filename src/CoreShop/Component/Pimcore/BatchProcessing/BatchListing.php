@@ -14,16 +14,19 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\BatchProcessing;
 
-use Iterator;
 use Countable;
+use Iterator;
 use Pimcore\Model\Listing\AbstractListing;
 use Pimcore\Model\ModelInterface;
 
 final class BatchListing implements Iterator, Countable
 {
     private int $index = 0;
+
     private int $loop = 0;
+
     private int $total = 0;
+
     private array $items = [];
 
     public function __construct(private AbstractListing $list, private int $batchSize)
@@ -38,11 +41,11 @@ final class BatchListing implements Iterator, Countable
 
     public function next(): void
     {
-        $this->index++;
+        ++$this->index;
 
         if ($this->index >= $this->batchSize) {
             $this->index = 0;
-            $this->loop++;
+            ++$this->loop;
 
             $this->load();
         }

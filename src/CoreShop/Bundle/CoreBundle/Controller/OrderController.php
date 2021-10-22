@@ -16,10 +16,10 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Controller\OrderController as BaseOrderController;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\OrderInterface as CoreOrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface as CoreOrderItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 
 class OrderController extends BaseOrderController
 {

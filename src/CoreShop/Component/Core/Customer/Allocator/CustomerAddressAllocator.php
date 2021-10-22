@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Customer\Allocator;
 
-use CoreShop\Component\Address\Model\AddressesAwareInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
@@ -25,7 +24,7 @@ final class CustomerAddressAllocator implements CustomerAddressAllocatorInterfac
     {
         $addressAccessType = $customer->getAddressAccessType();
 
-        if ($addressAccessType === null || $addressAccessType === self::ADDRESS_ACCESS_TYPE_OWN_ONLY) {
+        if (null === $addressAccessType || self::ADDRESS_ACCESS_TYPE_OWN_ONLY === $addressAccessType) {
             return $customer->getAddresses();
         }
 
@@ -35,11 +34,11 @@ final class CustomerAddressAllocator implements CustomerAddressAllocatorInterfac
             return $customer->getAddresses();
         }
 
-        if ($addressAccessType === self::ADDRESS_ACCESS_TYPE_COMPANY_ONLY) {
+        if (self::ADDRESS_ACCESS_TYPE_COMPANY_ONLY === $addressAccessType) {
             return $company->getAddresses();
         }
 
-        if ($addressAccessType === self::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY) {
+        if (self::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY === $addressAccessType) {
             return array_merge($customer->getAddresses(), $company->getAddresses());
         }
 

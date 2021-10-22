@@ -17,7 +17,9 @@ namespace CoreShop\Bundle\ResourceBundle;
 interface ResourceBundleInterface
 {
     public const MAPPING_XML = 'xml';
+
     public const MAPPING_YAML = 'yaml';
+
     public const MAPPING_ANNOTATION = 'annotation';
 
     /**

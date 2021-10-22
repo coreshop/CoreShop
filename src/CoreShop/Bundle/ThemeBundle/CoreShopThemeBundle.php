@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\ThemeBundle;
 use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\CompositeThemeResolverPass;
-use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;

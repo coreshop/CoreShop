@@ -111,7 +111,7 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
         $element = $this->getElement('product_quantity_price_rules');
 
         return array_map(
-            static function(NodeElement $element) {
+            static function (NodeElement $element) {
                 $startFromElement = $element->find('css', '[data-test-product-quantity-price-rule-start]');
                 $priceElement = $element->find('css', '[data-test-product-quantity-price-rule-price-inc]');
                 $priceExcElement = $element->find('css', '[data-test-product-quantity-price-rule-price-exc]');

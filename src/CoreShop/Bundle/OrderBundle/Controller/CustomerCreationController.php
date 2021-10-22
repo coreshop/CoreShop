@@ -25,7 +25,6 @@ use CoreShop\Component\Address\Model\DefaultAddressAwareInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\File;
-use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,11 +35,10 @@ class CustomerCreationController extends PimcoreController
         Request $request,
         FolderCreationServiceInterface $folderCreationService,
         ErrorSerializer $errorSerializer
-    ): Response
-    {
+    ): Response {
         $form = $this->get('form.factory')->createNamed('', AdminCustomerCreationType::class);
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $form = $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
@@ -61,15 +59,15 @@ class CustomerCreationController extends PimcoreController
                         $customer,
                         [
                             'path' => 'guest',
-                            'suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
+                            'suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1)),
                         ]
                     )
                 );
 
                 $customer->setPublished(true);
-                /** @psalm-suppress InternalMethod */
+                /* @psalm-suppress InternalMethod */
                 $customer->setKey(File::getValidFilename($customer->getEmail()));
-                /** @psalm-suppress InvalidArgument */
+                /* @psalm-suppress InvalidArgument */
                 $customer->setKey(Service::getUniqueKey($customer));
                 $customer->save();
 

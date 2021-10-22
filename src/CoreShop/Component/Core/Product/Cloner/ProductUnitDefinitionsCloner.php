@@ -20,11 +20,11 @@ class ProductUnitDefinitionsCloner implements ProductClonerInterface
 {
     public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void
     {
-        if ($resetExistingData === false && $product->hasUnitDefinitions() === true) {
+        if (false === $resetExistingData && true === $product->hasUnitDefinitions()) {
             return;
         }
 
-        $unitDefinitions =  $referenceProduct->getUnitDefinitions();
+        $unitDefinitions = $referenceProduct->getUnitDefinitions();
 
         if (null === $unitDefinitions) {
             return;

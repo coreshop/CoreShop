@@ -32,8 +32,7 @@ class CompositePriceCalculator implements CarrierPriceCalculatorInterface
         foreach ($this->calculators as $calculator) {
             try {
                 $price = $calculator->getPrice($carrier, $shippable, $address, $context);
-            }
-            catch (NoShippingPriceFoundException) {
+            } catch (NoShippingPriceFoundException) {
                 continue;
             }
         }

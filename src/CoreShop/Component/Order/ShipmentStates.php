@@ -16,10 +16,13 @@ namespace CoreShop\Component\Order;
 
 final class ShipmentStates
 {
-    const IDENTIFIER = 'coreshop_shipment';
+    public const IDENTIFIER = 'coreshop_shipment';
 
-    const STATE_NEW = 'new';
-    const STATE_READY = 'ready';
-    const STATE_CANCELLED = 'cancelled';
-    const STATE_SHIPPED = 'shipped';
+    public const STATE_NEW = 'new';
+
+    public const STATE_READY = 'ready';
+
+    public const STATE_CANCELLED = 'cancelled';
+
+    public const STATE_SHIPPED = 'shipped';
 }

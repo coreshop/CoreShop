@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Cart;
 
-use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use Webmozart\Assert\Assert;
 
@@ -31,7 +31,7 @@ final class CartContextResolver implements CartContextResolverInterface
 
         $store = $cart->getStore();
 
-        /**
+        /*
          * @var StoreInterface $store
          */
         Assert::isInstanceOf($store, StoreInterface::class);

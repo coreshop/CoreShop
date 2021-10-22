@@ -25,12 +25,12 @@ class FieldCollectionDefinitionUpdate extends AbstractDefinitionUpdate
     {
         $this->fieldCollectionDefinition = DataObject\Fieldcollection\Definition::getByKey($fieldCollectionKey);
 
-        if (is_null($this->fieldCollectionDefinition)) {
+        if (null === $this->fieldCollectionDefinition) {
             throw new ClassDefinitionNotFoundException(sprintf('Fieldcollection Definition %s not found', $fieldCollectionKey));
         }
 
         $this->fieldDefinitions = $this->fieldCollectionDefinition->getFieldDefinitions();
-        /** @psalm-suppress InvalidArgument */
+        /* @psalm-suppress InvalidArgument */
         $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->fieldCollectionDefinition), true);
     }
 

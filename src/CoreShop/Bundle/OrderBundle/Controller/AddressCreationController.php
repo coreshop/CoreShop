@@ -32,11 +32,10 @@ class AddressCreationController extends PimcoreController
         Request $request,
         ObjectServiceInterface $objectService,
         ErrorSerializer $errorSerializer
-    ): Response
-    {
+    ): Response {
         $form = $this->get('form.factory')->createNamed('', AdminAddressCreationType::class);
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $form = $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {

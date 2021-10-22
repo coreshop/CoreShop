@@ -30,10 +30,10 @@ class DoctrineToOne
     {
         $outputType = $this->typeProvider->getType($this->graphName);
 
-        $args = array();
+        $args = [];
 
         // Create and return the definition array
-        return array(
+        return [
             'name' => $this->name,
             'type' => $outputType,
             'args' => $args,
@@ -50,6 +50,6 @@ class DoctrineToOne
 
                 return $propertyAccessor->getValue($value, $this->name);
             },
-        );
+        ];
     }
 }

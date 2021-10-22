@@ -20,7 +20,6 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 interface PaymentProviderRepositoryInterface extends RepositoryInterface
 {
     /**
-     *
      * @return PaymentProviderInterface[]
      */
     public function findByTitle(string $title, string $locale): array;

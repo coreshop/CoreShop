@@ -32,12 +32,12 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
         $maxValue = count($rawValues) > 0 ? $rawValues[count($rawValues) - 1]['value'] : 0;
 
         $currentValueMin = $minValue;
-        if (isset($currentFilter["$field-min"]) && ('' !== (string)$currentFilter["$field-min"]) ) {
+        if (isset($currentFilter["$field-min"]) && ('' !== (string)$currentFilter["$field-min"])) {
             $currentValueMin = $currentFilter["$field-min"];
         }
 
         $currentValueMax = $maxValue;
-        if (isset($currentFilter["$field-max"]) && ('' !== (string)$currentFilter["$field-max"]) ) {
+        if (isset($currentFilter["$field-max"]) && ('' !== (string)$currentFilter["$field-max"])) {
             $currentValueMax = $currentFilter["$field-max"];
         }
 

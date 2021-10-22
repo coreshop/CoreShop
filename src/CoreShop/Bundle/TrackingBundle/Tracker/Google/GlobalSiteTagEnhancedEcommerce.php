@@ -23,6 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 {
     public TrackerInterface $tracker;
+
     public ConfigResolverInterface $config;
 
     public function setTracker(TrackerInterface $tracker): void
@@ -46,7 +47,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackProduct($product): void
     {
-        if ($this->isGoogleTagMode() === false) {
+        if (false === $this->isGoogleTagMode()) {
             return;
         }
 
@@ -65,7 +66,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackProductImpression($product): void
     {
-        if ($this->isGoogleTagMode() === false) {
+        if (false === $this->isGoogleTagMode()) {
             return;
         }
 
@@ -84,7 +85,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
-        if ($this->isGoogleTagMode() === false) {
+        if (false === $this->isGoogleTagMode()) {
             return;
         }
 
@@ -93,7 +94,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
-        if ($this->isGoogleTagMode() === false) {
+        if (false === $this->isGoogleTagMode()) {
             return;
         }
 
@@ -102,7 +103,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
-        if ($this->isGoogleTagMode() === false) {
+        if (false === $this->isGoogleTagMode()) {
             return;
         }
 
@@ -122,7 +123,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         }
 
         $parameters['actionData'] = $actionData;
-        $parameters['event'] = $isFirstStep === true ? 'begin_checkout' : 'checkout_progress';
+        $parameters['event'] = true === $isFirstStep ? 'begin_checkout' : 'checkout_progress';
 
         $result = $this->renderTemplate('checkout', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -130,7 +131,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackCheckoutComplete($order): void
     {
-        if ($this->isGoogleTagMode() === false) {
+        if (false === $this->isGoogleTagMode()) {
             return;
         }
 
@@ -160,7 +161,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         $actionData['items'][] = $product;
 
         $parameters['actionData'] = $actionData;
-        $parameters['event'] = $action === 'remove' ? 'remove_from_cart' : 'add_to_cart';
+        $parameters['event'] = 'remove' === $action ? 'remove_from_cart' : 'add_to_cart';
 
         $result = $this->renderTemplate('product_action', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -206,10 +207,10 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     protected function isGoogleTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();
-        if ($config === null) {
+        if (null === $config) {
             return false;
         }
 
-        return (bool) $config->get('gtagcode');
+        return (bool)$config->get('gtagcode');
     }
 }

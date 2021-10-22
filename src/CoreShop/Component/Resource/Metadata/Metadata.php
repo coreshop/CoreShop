@@ -19,7 +19,9 @@ use Doctrine\Inflector\InflectorFactory;
 final class Metadata implements MetadataInterface
 {
     private string $driver;
+
     private ?string $templatesNamespace;
+
     private array $parameters = [];
 
     private function __construct(private string $name, private string $applicationName, array $parameters)
@@ -30,9 +32,9 @@ final class Metadata implements MetadataInterface
         $this->parameters = $parameters;
     }
 
-    public static function fromAliasAndConfiguration(string $alias, array $parameters): Metadata
+    public static function fromAliasAndConfiguration(string $alias, array $parameters): self
     {
-        list($applicationName, $name) = self::parseAlias($alias);
+        [$applicationName, $name] = self::parseAlias($alias);
 
         return new self($name, $applicationName, $parameters);
     }

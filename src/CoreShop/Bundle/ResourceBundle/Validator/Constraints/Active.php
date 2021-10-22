@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 class Active extends Constraint
 {
-    const IS_NOT_ENABLED_ERROR = '20bc0272-8e0b-4693-89a1-feb4ceabcfac';
+    public const IS_NOT_ENABLED_ERROR = '20bc0272-8e0b-4693-89a1-feb4ceabcfac';
 
     public string $message = 'This selected value is not active.';
 }

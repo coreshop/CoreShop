@@ -23,7 +23,6 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -37,7 +36,7 @@ class CartPriceRuleController extends ResourceController
 
         return $this->viewHandler->handle([
             'actions' => array_keys($actions),
-            'conditions' => array_keys($conditions)
+            'conditions' => array_keys($conditions),
         ]);
     }
 
@@ -122,7 +121,7 @@ class CartPriceRuleController extends ResourceController
 
         $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
 
-        return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
+        return $this->viewHandler->handle(['success' => false, 'message' => implode(\PHP_EOL, $errors)]);
     }
 
     public function exportVoucherCodesAction(Request $request): void
@@ -154,7 +153,7 @@ class CartPriceRuleController extends ResourceController
                 $csvData[] = implode(',', $data);
             }
 
-            $csv = implode(PHP_EOL, $csvData);
+            $csv = implode(\PHP_EOL, $csvData);
 
             header('Content-Encoding: UTF-8');
             header('Content-type: text/csv; charset=UTF-8');

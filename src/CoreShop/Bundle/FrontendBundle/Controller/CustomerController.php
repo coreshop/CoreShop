@@ -137,13 +137,13 @@ class CustomerController extends FrontendController
             }
         }
 
-        if ($eventType === 'update' && $addressAssignmentManager->checkAddressAffiliationPermissionForCustomer($customer, $address) === false) {
+        if ('update' === $eventType && false === $addressAssignmentManager->checkAddressAffiliationPermissionForCustomer($customer, $address)) {
             return $this->redirectToRoute('coreshop_customer_addresses');
         }
 
         $addressFormOptions = [
             'available_affiliations' => $addressAssignmentManager->getAddressAffiliationTypesForCustomer($customer),
-            'selected_affiliation'   => $addressAssignmentManager->detectAddressAffiliationForCustomer($customer, $address)
+            'selected_affiliation' => $addressAssignmentManager->detectAddressAffiliationForCustomer($customer, $address),
         ];
 
         $form = $this->get('form.factory')->createNamed('coreshop', AddressType::class, $address, $addressFormOptions);
@@ -154,7 +154,6 @@ class CustomerController extends FrontendController
             $addressAffiliation = $form->has('addressAffiliation') ? $form->get('addressAffiliation')->getData() : null;
 
             if ($handledForm->isSubmitted() && $handledForm->isValid()) {
-
                 $address = $handledForm->getData();
                 $address->setPublished(true);
                 $address->setKey(uniqid());
@@ -162,7 +161,7 @@ class CustomerController extends FrontendController
                 $address = $addressAssignmentManager->allocateAddressByAffiliation($customer, $address, $addressAffiliation);
 
                 $this->fireEvent($request, $address, sprintf('%s.%s.%s_post', 'coreshop', 'address', $eventType));
-                $this->addFlash('success', $this->get('translator')->trans(sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated')));
+                $this->addFlash('success', $this->get('translator')->trans(sprintf('coreshop.ui.customer.address_successfully_%s', 'add' === $eventType ? 'added' : 'updated')));
 
                 return $this->redirect($request->get('_redirect', $this->generateUrl('coreshop_customer_addresses')));
             }
@@ -190,7 +189,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_customer_addresses');
         }
 
-        if ($addressAssignmentManager->checkAddressAffiliationPermissionForCustomer($customer, $address) === false) {
+        if (false === $addressAssignmentManager->checkAddressAffiliationPermissionForCustomer($customer, $address)) {
             return $this->redirectToRoute('coreshop_customer_addresses');
         }
 

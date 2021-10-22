@@ -25,13 +25,15 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 class LoadDataFixturesCommand extends Command
 {
-    const COMMAND_NAME = 'coreshop:fixture:data:load';
+    public const COMMAND_NAME = 'coreshop:fixture:data:load';
 
-    const MAIN_FIXTURES_TYPE = DataFixturesExecutorInterface::MAIN_FIXTURES;
-    const DEMO_FIXTURES_TYPE = DataFixturesExecutorInterface::DEMO_FIXTURES;
+    public const MAIN_FIXTURES_TYPE = DataFixturesExecutorInterface::MAIN_FIXTURES;
 
-    const MAIN_FIXTURES_PATH = 'Fixtures/Data/Application';
-    const DEMO_FIXTURES_PATH = 'Fixtures/Data/Demo';
+    public const DEMO_FIXTURES_TYPE = DataFixturesExecutorInterface::DEMO_FIXTURES;
+
+    public const MAIN_FIXTURES_PATH = 'Fixtures/Data/Application';
+
+    public const DEMO_FIXTURES_PATH = 'Fixtures/Data/Demo';
 
     public function __construct(protected DataFixturesLoader $fixtureLoader, protected DataFixturesExecutorInterface $fixtureExecutor)
     {
@@ -94,7 +96,6 @@ class LoadDataFixturesCommand extends Command
     }
 
     /**
-     *
      * @return array
      *
      * @throws \RuntimeException if loading of data fixtures should be terminated
@@ -130,7 +131,7 @@ class LoadDataFixturesCommand extends Command
     /**
      * Output list of fixtures.
      *
-     * @param array           $fixtures
+     * @param array $fixtures
      */
     protected function outputFixtures(InputInterface $input, OutputInterface $output, $fixtures)
     {
@@ -148,7 +149,7 @@ class LoadDataFixturesCommand extends Command
     /**
      * Process fixtures.
      *
-     * @param array           $fixtures
+     * @param array $fixtures
      */
     protected function processFixtures(InputInterface $input, OutputInterface $output, $fixtures)
     {
@@ -177,10 +178,10 @@ class LoadDataFixturesCommand extends Command
      */
     protected function getFixtureRelativePath(InputInterface $input)
     {
-        $fixtureRelativePath = $this->getTypeOfFixtures($input) == self::DEMO_FIXTURES_TYPE
+        $fixtureRelativePath = self::DEMO_FIXTURES_TYPE == $this->getTypeOfFixtures($input)
             ? self::DEMO_FIXTURES_PATH
             : self::MAIN_FIXTURES_PATH;
 
-        return str_replace('/', DIRECTORY_SEPARATOR, '/' . $fixtureRelativePath);
+        return str_replace('/', \DIRECTORY_SEPARATOR, '/' . $fixtureRelativePath);
     }
 }

@@ -94,14 +94,14 @@ class NotificationRuleController extends ResourceController
 
         $direction = $rule->getSort() < $toRule->getSort() ? 'down' : 'up';
 
-        if ($direction === 'down') {
+        if ('down' === $direction) {
             //Update all records in between and move one direction up.
 
             $fromSort = $rule->getSort() + 1;
             $toSort = $toRule->getSort();
 
-            if ($position === 'before') {
-                $toSort--;
+            if ('before' === $position) {
+                --$toSort;
             }
 
             $criteria = new Criteria();

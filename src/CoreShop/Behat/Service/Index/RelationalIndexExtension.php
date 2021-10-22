@@ -22,7 +22,7 @@ class RelationalIndexExtension implements IndexRelationalColumnsExtensionInterfa
 {
     public function supports(IndexInterface $index): bool
     {
-        return $index->getName() === 'relational_extension';
+        return 'relational_extension' === $index->getName();
     }
 
     public function getRelationalColumns(): array

@@ -47,4 +47,3 @@ final class CustomerGroupsConditionChecker implements ConditionCheckerInterface
         return false;
     }
 }
-

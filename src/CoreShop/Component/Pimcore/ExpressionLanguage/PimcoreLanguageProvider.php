@@ -24,7 +24,7 @@ class PimcoreLanguageProvider implements ExpressionFunctionProviderInterface
 {
     public function getFunctions(): array
     {
-        return array(
+        return [
             new ExpressionFunction('object', function (int $arg) {
                 return sprintf('\\Pimcore\\Model\\DataObject::getById(%s)', $arg);
             }, static function (array $variables, int $value) {
@@ -42,6 +42,6 @@ class PimcoreLanguageProvider implements ExpressionFunctionProviderInterface
             }, static function (array $variables, int $value) {
                 return Document::getById($value);
             }),
-        );
+        ];
     }
 }

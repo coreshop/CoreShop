@@ -20,7 +20,9 @@ use Pimcore\Model\DataObject\ClassDefinition\Data\Password;
 abstract class User extends AbstractPimcoreModel implements UserInterface
 {
     protected ?string $salt = null;
+
     private array $roles = [];
+
     protected ?string $plainPassword = null;
 
     public function setPlainPassword(string $password)
@@ -73,7 +75,7 @@ abstract class User extends AbstractPimcoreModel implements UserInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function isEqualTo(\Symfony\Component\Security\Core\User\UserInterface $user): bool
     {

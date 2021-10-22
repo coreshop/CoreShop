@@ -26,7 +26,7 @@ class CustomerPage extends AbstractFrontendPage implements CustomerPageInterface
     protected function getAdditionalParameters(): array
     {
         return [
-            'stepIdentifier' => 'customer'
+            'stepIdentifier' => 'customer',
         ];
     }
 
@@ -92,7 +92,7 @@ class CustomerPage extends AbstractFrontendPage implements CustomerPageInterface
 
     public function specifyGuestAddressCity(?string $city): void
     {
-     $this->getElement('address_city')->setValue($city);
+        $this->getElement('address_city')->setValue($city);
     }
 
     public function specifyGuestAddressPhoneNumber(?string $number): void

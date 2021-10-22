@@ -83,7 +83,7 @@ class IndexController extends ResourceController
 
         foreach ($classes as $class) {
             if ($class instanceof DataObject\ClassDefinition) {
-                $pimcoreClass = 'Pimcore\Model\DataObject\\'.ucfirst($class->getName());
+                $pimcoreClass = 'Pimcore\Model\DataObject\\' . ucfirst($class->getName());
 
                 if (in_array(IndexableInterface::class, class_implements($pimcoreClass), true)) {
                     $availableClasses[] = [
@@ -204,7 +204,7 @@ class IndexController extends ResourceController
                 'nodeLabel' => 'localizedfields',
                 'nodeType' => 'localizedfields',
                 'childs' => [],
-            ]
+            ],
         ];
 
         $localizedFields = $field->getFieldDefinitions();
@@ -283,7 +283,7 @@ class IndexController extends ResourceController
         $allowedGroupIds = $field->getAllowedGroupIds();
 
         if ($allowedGroupIds) {
-            $list->setCondition('ID in ('.implode(',', $allowedGroupIds).')');
+            $list->setCondition('ID in (' . implode(',', $allowedGroupIds) . ')');
         }
 
         $groupConfigList = $list->getList();
@@ -292,7 +292,7 @@ class IndexController extends ResourceController
          * @var DataObject\Classificationstore\GroupConfig $config
          */
         foreach ($groupConfigList as $config) {
-            $key = $config->getId().($config->getName() ? $config->getName() : 'EMPTY');
+            $key = $config->getId() . ($config->getName() ? $config->getName() : 'EMPTY');
 
             $result[$key] = $this->getClassificationStoreGroupConfiguration($config);
         }
@@ -300,7 +300,8 @@ class IndexController extends ResourceController
         return $result;
     }
 
-    protected function getClassificationStoreGroupConfiguration(DataObject\Classificationstore\GroupConfig $config
+    protected function getClassificationStoreGroupConfiguration(
+        DataObject\Classificationstore\GroupConfig $config
     ): array {
         $result = [];
         $result['nodeLabel'] = $config->getName();
