@@ -21,8 +21,9 @@ use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
 
 interface UserInterface extends ResourceInterface, PimcoreModelInterface, SymfonyUserInterface, EquatableInterface
 {
-    const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
-    const CORESHOP_ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    public const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
+
+    public const CORESHOP_ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
     public function getLoginIdentifier(): ?string;
 

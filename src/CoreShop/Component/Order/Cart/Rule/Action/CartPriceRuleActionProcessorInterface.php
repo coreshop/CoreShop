@@ -21,15 +21,11 @@ interface CartPriceRuleActionProcessorInterface
 {
     /**
      * Apply Rule to Cart.
-     *
-     *
      */
     public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool;
 
     /**
      * Remove Rule from Cart.
-     *
-     *
      */
     public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool;
 }

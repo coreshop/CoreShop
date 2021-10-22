@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\DataHub;
 
-use CoreShop\Component\Resource\DataHub\Type\ArrayType;
 use CoreShop\Component\Resource\DataHub\Resolver\DoctrineField;
 use CoreShop\Component\Resource\DataHub\Resolver\DoctrineToMany;
 use CoreShop\Component\Resource\DataHub\Resolver\DoctrineToOne;
+use CoreShop\Component\Resource\DataHub\Type\ArrayType;
 use CoreShop\Component\Resource\DataHub\Type\JsonType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -29,20 +29,29 @@ use GraphQL\Type\Definition\Type;
 class DoctrineProvider
 {
     public const JSON = 'Json';
+
     public const ARRAY = 'Array';
 
     /** @var Type[] */
     private static $standardTypes;
 
-    public array $doctrineMetadata = array();
-    private array $types = array();
-    private array $typeClass = array();
-    private array $doctrineToName = array();
-    private array $inputTypes = array();
-    private array $inputTypesToName = array();
-    private array $identifierFields = array();
+    public array $doctrineMetadata = [];
+
+    private array $types = [];
+
+    private array $typeClass = [];
+
+    private array $doctrineToName = [];
+
+    private array $inputTypes = [];
+
+    private array $inputTypesToName = [];
+
+    private array $identifierFields = [];
+
     private EntityManagerInterface $em;
-    private array $dataBuffers = array();
+
+    private array $dataBuffers = [];
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -63,7 +72,7 @@ class DoctrineProvider
 
     public function initializeObjectType(ClassMetadataInfo $entityMetaType)
     {
-        $config = array();
+        $config = [];
         $doctrineClass = $entityMetaType->getName();
         $name = $this->getGraphName($entityMetaType);
 
@@ -79,19 +88,19 @@ class DoctrineProvider
 
         $config['name'] = $name;
         $this->identifierFields[$name] = $entityMetaType->getIdentifier();
-        $fields = array();
+        $fields = [];
 
-        $inputFields = array();
+        $inputFields = [];
 
         foreach ($entityMetaType->getFieldNames() as $fieldName) {
             $fieldType = $this->mapFieldType($entityMetaType->getTypeOfField($fieldName));
 
             $resolver = new DoctrineField($fieldName, $fieldType);
             $fields[$fieldName] = $resolver->getDefinition();
-            $inputFields[$fieldName] = array(
+            $inputFields[$fieldName] = [
                 'name' => $fieldName,
                 'type' => $fieldType,
-            );
+            ];
         }
 
         $config['fields'] = function () use ($entityMetaType, $fields) {
@@ -160,10 +169,10 @@ class DoctrineProvider
                         $fieldName = $association['fieldName'];
                         $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
 
-                        $inputFields[$fieldName] = array(
+                        $inputFields[$fieldName] = [
                             'name' => $fieldName,
                             'type' => $fieldType,
-                        );
+                        ];
 
                         continue;
                     }
@@ -172,10 +181,10 @@ class DoctrineProvider
                         $fieldName = $association['fieldName'];
                         $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
 
-                        $inputFields[$fieldName] = array(
+                        $inputFields[$fieldName] = [
                             'name' => $fieldName,
                             'type' => Type::listOf($fieldType),
-                        );
+                        ];
                     }
                 }
 
@@ -329,7 +338,7 @@ class DoctrineProvider
 
     public function clearBuffers()
     {
-        $this->dataBuffers = array();
+        $this->dataBuffers = [];
     }
 
     public function getTypeClass($graphName)

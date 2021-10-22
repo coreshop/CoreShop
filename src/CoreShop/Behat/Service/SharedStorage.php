@@ -17,6 +17,7 @@ namespace CoreShop\Behat\Service;
 class SharedStorage implements SharedStorageInterface
 {
     private array $clipboard = [];
+
     private ?string $latestKey = null;
 
     public function get(string $key): mixed

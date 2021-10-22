@@ -24,6 +24,7 @@ use Webmozart\Assert\Assert;
 class Payment extends BasePayment implements PaymentInterface
 {
     protected ?OrderInterface $order = null;
+
     protected ?CurrencyInterface $currency = null;
 
     public function getOrder(): ?OrderInterface
@@ -41,7 +42,6 @@ class Payment extends BasePayment implements PaymentInterface
         $this->order = $order;
         $this->orderId = $order->getId();
     }
-
 
     public function getCurrency(): ?CurrencyInterface
     {

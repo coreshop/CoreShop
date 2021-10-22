@@ -54,9 +54,6 @@ final class StoreContext implements StoreContextInterface
         return $masterRequest;
     }
 
-    /**
-     * @param StoreInterface|null $store
-     */
     private function assertStoreWasFound(StoreInterface $store = null): void
     {
         if (null === $store) {

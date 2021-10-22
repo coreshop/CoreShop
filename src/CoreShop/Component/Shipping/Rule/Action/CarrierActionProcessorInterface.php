@@ -16,5 +16,4 @@ namespace CoreShop\Component\Shipping\Rule\Action;
 
 interface CarrierActionProcessorInterface
 {
-
 }

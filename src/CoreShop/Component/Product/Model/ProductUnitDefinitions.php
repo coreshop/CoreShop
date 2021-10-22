@@ -198,7 +198,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         $additionalUnits = $this->getAdditionalUnitDefinitions();
 
         $this->id = null;
-        $this->unitDefinitions =  new ArrayCollection();
+        $this->unitDefinitions = new ArrayCollection();
         $this->defaultUnitDefinition = null;
 
         $this->setDefaultUnitDefinition($newDefaultUnitDefinition);

@@ -38,11 +38,11 @@ interface ProductInterface extends
     /**
      * @return \CoreShop\Component\Core\Model\ProductStoreValuesInterface[]
      */
-    public function getStoreValues (): array;
+    public function getStoreValues(): array;
 
-    public function setStoreValues (array $storeValues): self;
+    public function setStoreValues(array $storeValues): self;
 
-    public function getStoreValuesForStore (\CoreShop\Component\Store\Model\StoreInterface $store): ?\CoreShop\Component\Core\Model\ProductStoreValuesInterface;
+    public function getStoreValuesForStore(\CoreShop\Component\Store\Model\StoreInterface $store): ?\CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 
     public function setStoreValuesForStore(ProductStoreValuesInterface $storeValues, \CoreShop\Component\Store\Model\StoreInterface $store): self;
 

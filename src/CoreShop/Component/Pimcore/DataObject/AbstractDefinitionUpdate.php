@@ -20,6 +20,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 {
     protected array $jsonDefinition;
+
     protected array $fieldDefinitions;
 
     abstract public function save(): bool;

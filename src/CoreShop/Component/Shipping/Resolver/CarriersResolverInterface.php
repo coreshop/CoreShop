@@ -21,7 +21,6 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 interface CarriersResolverInterface
 {
     /**
-     *
      * @return CarrierInterface[]
      */
     public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address): array;

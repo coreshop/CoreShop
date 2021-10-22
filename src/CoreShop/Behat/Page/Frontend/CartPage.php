@@ -43,12 +43,13 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
 
     public function hasProductInUnit(string $name, ProductUnitDefinitionInterface $unitDefinition): bool
     {
-        return null !== $this->getElement('cart_item_unit',
-                [
+        return null !== $this->getElement(
+            'cart_item_unit',
+            [
                     '%unitId%' => $unitDefinition->getId(),
                     '%name%' => $name,
                 ]
-            );
+        );
     }
 
     public function getItemUnitPrice(string $name): string

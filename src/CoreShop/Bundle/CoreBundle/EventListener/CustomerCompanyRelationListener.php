@@ -39,7 +39,6 @@ final class CustomerCompanyRelationListener
 
         /** @var CustomerInterface $customer */
         foreach ($list->getData() as $customer) {
-
             $accessType = $customer->getAddressAccessType();
             if (empty($accessType)) {
                 continue;

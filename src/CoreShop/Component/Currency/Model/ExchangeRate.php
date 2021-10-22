@@ -23,6 +23,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 class ExchangeRate implements ExchangeRateInterface
 {
     use SetValuesTrait;
+
     use TimestampableTrait;
 
     /**

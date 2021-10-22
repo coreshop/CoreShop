@@ -125,7 +125,6 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param mixed         $data
-     *
      */
     protected function getGetterRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
@@ -138,7 +137,6 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param mixed         $data
-     *
      */
     protected function getInterpreterRegistryIdentifier(FormInterface $form, $data = null): ?string
     {

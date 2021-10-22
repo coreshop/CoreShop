@@ -235,7 +235,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         }
 
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
-            if ($data->getValue() >= PHP_INT_MAX) {
+            if ($data->getValue() >= \PHP_INT_MAX) {
                 throw new Model\Element\ValidationException(
                     'Value exceeds PHP_INT_MAX please use an input data type instead of numeric!'
                 );
@@ -301,7 +301,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
     /**
      * @param int $currencyId
      *
-     * @return null|CurrencyInterface
+     * @return CurrencyInterface|null
      */
     protected function getCurrencyById($currencyId)
     {
@@ -321,11 +321,11 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return \Pimcore::getContainer()->getParameter('coreshop.currency.decimal_factor');
     }
 
-        /**
+    /**
      * @param mixed $value
      */
     protected function toNumeric($value): float|int
     {
-        return (int) round($value * $this->getDecimalFactor());
+        return (int)round($value * $this->getDecimalFactor());
     }
 }

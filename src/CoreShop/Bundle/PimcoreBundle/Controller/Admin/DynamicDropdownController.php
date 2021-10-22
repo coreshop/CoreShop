@@ -18,7 +18,6 @@ use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Element\Service;
 use Pimcore\Model\Factory;
-use Pimcore\Tool;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -31,7 +30,7 @@ final class DynamicDropdownController extends AdminController
         $folderName = $request->get('folderName');
         $parts = array_map(static function (string $part) {
             return Service::getValidKey($part, 'object');
-        }, preg_split('/\//', $folderName, 0, PREG_SPLIT_NO_EMPTY));
+        }, preg_split('/\//', $folderName, 0, \PREG_SPLIT_NO_EMPTY));
         $parentFolderPath = sprintf('/%s', implode('/', $parts));
         $sort = $request->get('sortBy');
         $options = [];
@@ -145,8 +144,7 @@ final class DynamicDropdownController extends AdminController
                 if ($request->get('recursive') === 'true') {
                     $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                 }
-            }
-            else if ($child instanceof $fqcn) {
+            } elseif ($child instanceof $fqcn) {
                 $key = $usesI18n ? $child->$source($currentLang) : $child->$source();
                 $options[] = [
                     'value' => $child->getId(),
@@ -171,7 +169,6 @@ final class DynamicDropdownController extends AdminController
     }
 
     /**
-     *
      * @return mixed
      */
     private function parseTree(mixed $tree, mixed $definition)

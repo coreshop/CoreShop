@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Generator;
 
 use CoreShop\Component\Order\Exception\FailedCodeGenerationException;
-use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherGeneratorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -23,9 +22,11 @@ use Webmozart\Assert\Assert;
 
 class CartPriceRuleVoucherCodeGenerator
 {
-    const FORMAT_ALPHANUMERIC = 'alphanumeric';
-    const FORMAT_ALPHABETIC = 'alphabetic';
-    const FORMAT_NUMERIC = 'numeric';
+    public const FORMAT_ALPHANUMERIC = 'alphanumeric';
+
+    public const FORMAT_ALPHABETIC = 'alphabetic';
+
+    public const FORMAT_NUMERIC = 'numeric';
 
     public function __construct(private FactoryInterface $voucherCodeFactory, private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository, private CodeGeneratorCheckerInterface $checker, private CodeGeneratorLetterResolver $letterResolver)
     {
@@ -38,7 +39,7 @@ class CartPriceRuleVoucherCodeGenerator
         $generatedVouchers = [];
         $lettersToUse = $this->letterResolver->findLetters($generator);
 
-        for ($i = 0; $i < $generator->getAmount(); $i++) {
+        for ($i = 0; $i < $generator->getAmount(); ++$i) {
             $code = $this->generateCode($lettersToUse, $generator->getLength(), $generator->getPrefix(), $generator->getSuffix(), $generatedVouchers);
 
             if ($generator->getHyphensOn() > 0) {
@@ -64,7 +65,7 @@ class CartPriceRuleVoucherCodeGenerator
 
     protected function generateCode(string $letters, int $length, ?string $prefix, ?string $suffix, array $generatedCoupons): string
     {
-         Assert::nullOrRange($length, 1, 40, 'Invalid %d code length should be between %d and %d');
+        Assert::nullOrRange($length, 1, 40, 'Invalid %d code length should be between %d and %d');
 
         do {
             $code = '';
@@ -74,14 +75,13 @@ class CartPriceRuleVoucherCodeGenerator
                 $code = $prefix;
             }
 
-            for ($i=0; $i < $length; $i++) {
+            for ($i = 0; $i < $length; ++$i) {
                 $code .= $letters[random_int(0, $max - 1)];
             }
 
             if (null !== $suffix) {
                 $code .= $suffix;
             }
-
         } while ($this->isUsedCode($code, $generatedCoupons));
 
         return $code;

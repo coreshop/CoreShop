@@ -25,9 +25,12 @@ use CoreShop\Component\Resource\Model\TranslatableTrait;
 class TaxRate extends AbstractResource implements TaxRateInterface, \Stringable
 {
     use ToggleableTrait;
+
     use TimestampableTrait;
+
     use TranslatableTrait {
         TranslatableTrait::__construct as private initializeTranslationsCollection;
+
         TranslatableTrait::getTranslation as private doGetTranslation;
     }
 

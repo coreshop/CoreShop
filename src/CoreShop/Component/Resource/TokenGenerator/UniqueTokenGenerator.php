@@ -17,8 +17,11 @@ namespace CoreShop\Component\Resource\TokenGenerator;
 final class UniqueTokenGenerator
 {
     private string $alphabet;
+
     private string $numbers;
+
     private string $keys;
+
     private int $keyLength;
 
     public function __construct(bool $onlyNumbers = false)
@@ -42,7 +45,7 @@ final class UniqueTokenGenerator
     {
         $token = '';
 
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $randomKey = $this->getRandomInteger($this->keyLength);
             $token .= $this->keys[$randomKey];
         }
@@ -59,8 +62,8 @@ final class UniqueTokenGenerator
         }
 
         $log = log($range, 2);
-        $bytes = (int) ($log / 8) + 1;
-        $bits = (int) $log + 1;
+        $bytes = (int)($log / 8) + 1;
+        $bits = (int)$log + 1;
         $filter = (1 << $bits) - 1;
 
         do {

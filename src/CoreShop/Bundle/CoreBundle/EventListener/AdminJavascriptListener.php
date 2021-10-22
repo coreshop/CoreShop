@@ -28,14 +28,14 @@ final class AdminJavascriptListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            BundleManagerEvents::JS_PATHS => 'getAdminJavascript'
+            BundleManagerEvents::JS_PATHS => 'getAdminJavascript',
         ];
     }
 
     public function getAdminJavascript(PathsEvent $event): void
     {
         $event->setPaths(array_merge($event->getPaths(), [
-            $this->router->generate('coreshop_menu', ['type' => 'coreshop.main'])
+            $this->router->generate('coreshop_menu', ['type' => 'coreshop.main']),
         ]));
     }
 }

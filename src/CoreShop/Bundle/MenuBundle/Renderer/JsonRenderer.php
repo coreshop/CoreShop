@@ -29,16 +29,16 @@ class JsonRenderer implements RendererInterface
         private PimcoreGuard $guard,
         array $defaultOptions = []
     ) {
-        $this->defaultOptions = array_merge(array(
+        $this->defaultOptions = array_merge([
             'depth' => null,
             'matchingDepth' => null,
             'template' => $template,
             'compressed' => false,
             'clear_matcher' => true,
-        ), $defaultOptions);
+        ], $defaultOptions);
     }
 
-    public function render(ItemInterface $item, array $options = array()): string
+    public function render(ItemInterface $item, array $options = []): string
     {
         $options = array_merge($this->defaultOptions, $options);
 
@@ -89,9 +89,9 @@ class JsonRenderer implements RendererInterface
 
     public function reorderMenuItems(ItemInterface $menu): void
     {
-        $menuOrderArray = array();
-        $addLast = array();
-        $alreadyTaken = array();
+        $menuOrderArray = [];
+        $addLast = [];
+        $alreadyTaken = [];
 
         foreach ($menu->getChildren() as $menuItem) {
             if ($menuItem->hasChildren()) {
@@ -129,9 +129,9 @@ class JsonRenderer implements RendererInterface
 
                 $menuOrderArray = array_merge(
                     array_slice($menuOrderArray, 0, $position),
-                    array($value),
-                array_slice($menuOrderArray, $position)
-                    );
+                    [$value],
+                    array_slice($menuOrderArray, $position)
+                );
             }
         }
 

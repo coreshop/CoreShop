@@ -37,9 +37,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CategoryController extends FrontendController
 {
     protected array $validSortProperties = ['name'];
+
     protected string $repositoryIdentifier = 'oo_id';
+
     protected string $requestIdentifier = 'category';
+
     protected string $defaultSortName = 'name';
+
     protected string $defaultSortDirection = 'asc';
 
     public function menuAction(): Response

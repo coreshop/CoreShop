@@ -43,16 +43,16 @@ class CustomerTransformerController extends AdminController
         /** @var CompanyInterface $maybeDuplicate */
         foreach ($foundObjects as $maybeDuplicate) {
             $objects[] = [
-                'id'   => $maybeDuplicate->getId(),
+                'id' => $maybeDuplicate->getId(),
                 'name' => $maybeDuplicate->getName(),
-                'path' => $maybeDuplicate->getFullPath()
+                'path' => $maybeDuplicate->getFullPath(),
             ];
         }
 
         return $this->json([
             'success' => !$error,
             'message' => $message,
-            'list'    => $objects
+            'list' => $objects,
         ]);
     }
 
@@ -72,7 +72,7 @@ class CustomerTransformerController extends AdminController
                 $data = [
                     'type' => $type,
                     'name' => sprintf('%s %s', $object->getFirstname(), $object->getLastname()),
-                    'id'   => $object->getId()
+                    'id' => $object->getId(),
                 ];
             }
         } elseif ($type === 'company') {
@@ -83,7 +83,7 @@ class CustomerTransformerController extends AdminController
                 $data = [
                     'type' => $type,
                     'name' => sprintf('%s', $object->getName()),
-                    'id'   => $object->getId()
+                    'id' => $object->getId(),
                 ];
             }
         }
@@ -91,7 +91,7 @@ class CustomerTransformerController extends AdminController
         return $this->json([
             'success' => !$error,
             'message' => $message,
-            'data'    => $data
+            'data' => $data,
         ]);
     }
 
@@ -111,7 +111,7 @@ class CustomerTransformerController extends AdminController
             return $this->json([
                 'success' => !$error,
                 'message' => $message,
-                'data'    => $data
+                'data' => $data,
             ]);
         }
 
@@ -122,7 +122,7 @@ class CustomerTransformerController extends AdminController
             return $this->json([
                 'success' => !$error,
                 'message' => $message,
-                'data'    => $data
+                'data' => $data,
             ]);
         }
 
@@ -136,20 +136,20 @@ class CustomerTransformerController extends AdminController
         if ($error === false) {
             foreach ($customer->getAddresses() as $address) {
                 $availableCustomerAddresses[] = [
-                    'id'   => $address->getId(),
+                    'id' => $address->getId(),
                     'path' => $address->getFullPath(),
                 ];
             }
 
             $data = [
-                'addresses' => $availableCustomerAddresses
+                'addresses' => $availableCustomerAddresses,
             ];
         }
 
         return $this->json([
             'success' => !$error,
             'message' => $message,
-            'data'    => $data
+            'data' => $data,
         ]);
     }
 
@@ -170,7 +170,7 @@ class CustomerTransformerController extends AdminController
 
         $options = [
             'addressAssignmentType' => $addressAssignmentType,
-            'addressAccessType'     => $addressAccessType,
+            'addressAccessType' => $addressAccessType,
         ];
 
         try {
@@ -185,11 +185,11 @@ class CustomerTransformerController extends AdminController
         }
 
         return $this->json([
-            'success'    => !$error && !$formError,
-            'formError'  => $formError,
-            'message'    => $message,
+            'success' => !$error && !$formError,
+            'formError' => $formError,
+            'message' => $message,
             'customerId' => $customerId,
-            'companyId'  => $companyId
+            'companyId' => $companyId,
         ]);
     }
 
@@ -210,10 +210,10 @@ class CustomerTransformerController extends AdminController
 
         $options = [
             'addressAssignmentType' => $addressAssignmentType,
-            'addressAccessType'     => $addressAccessType,
-            'companyData'           => [
-                'name' => $newCompanyName
-            ]
+            'addressAccessType' => $addressAccessType,
+            'companyData' => [
+                'name' => $newCompanyName,
+            ],
         ];
 
         try {
@@ -221,7 +221,6 @@ class CustomerTransformerController extends AdminController
 
             $customerId = $customer->getId();
             $companyId = $customer->getCompany()->getId();
-
         } catch (ValidationException $e) {
             $error = true;
             $formError = true;
@@ -232,11 +231,11 @@ class CustomerTransformerController extends AdminController
         }
 
         return $this->json([
-            'success'    => !$error && !$formError,
-            'formError'  => $formError,
-            'message'    => $message,
+            'success' => !$error && !$formError,
+            'formError' => $formError,
+            'message' => $message,
             'customerId' => $customerId,
-            'companyId'  => $companyId
+            'companyId' => $companyId,
         ]);
     }
 

@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Repository;
 
-use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
+use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 interface ProductQuantityPriceRuleRepositoryInterface extends RuleRepositoryInterface
 {

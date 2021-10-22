@@ -30,9 +30,9 @@ class SearchType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'csrf_protection' => false,
-        ));
+        ]);
     }
 
     public function getBlockPrefix(): string

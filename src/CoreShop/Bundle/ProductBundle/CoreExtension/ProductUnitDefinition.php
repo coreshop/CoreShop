@@ -90,7 +90,7 @@ class ProductUnitDefinition extends Data implements
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
-            if ((int) $data) {
+            if ((int)$data) {
                 return $this->getDataFromResource($data, $object, $params);
             }
         }
@@ -133,7 +133,7 @@ class ProductUnitDefinition extends Data implements
 
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        if ((int) $data > 0) {
+        if ((int)$data > 0) {
             return $this->getRepository()->find($data);
         }
 

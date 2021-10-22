@@ -19,7 +19,6 @@ use JMS\Serializer\Construction\ObjectConstructorInterface;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\Exception\InvalidArgumentException;
 use JMS\Serializer\Exception\ObjectConstructionException;
-use JMS\Serializer\Exclusion\ExpressionLanguageExclusionStrategy;
 use JMS\Serializer\Metadata\ClassMetadata;
 use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\Visitor\DeserializationVisitorInterface;
@@ -101,13 +100,10 @@ class VersionObjectConstructor implements ObjectConstructorInterface
             switch ($this->fallbackStrategy) {
                 case DoctrineObjectConstructor::ON_MISSING_NULL:
                     return null;
-
                 case DoctrineObjectConstructor::ON_MISSING_EXCEPTION:
                     throw new ObjectConstructionException(sprintf('Entity %s can not be found', $metadata->name));
-
                 case DoctrineObjectConstructor::ON_MISSING_FALLBACK:
                     return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
-
                 default:
                     throw new InvalidArgumentException('The provided fallback strategy for the object constructor is not valid');
             }

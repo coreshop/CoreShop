@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Processable;
 
-use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 
 class ProcessableOrderItems implements ProcessableInterface

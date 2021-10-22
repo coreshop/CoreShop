@@ -28,7 +28,7 @@ class DoctrineField
         /**
          * Value will be the parent object when it's passed in.
          */
-        return array(
+        return [
             'name' => $this->name,
             'type' => $this->type,
             'resolve' => function ($value, $args, $context, $info) {
@@ -44,6 +44,6 @@ class DoctrineField
 
                 return $propertyAccessor->getValue($value, $this->name);
             },
-        );
+        ];
     }
 }

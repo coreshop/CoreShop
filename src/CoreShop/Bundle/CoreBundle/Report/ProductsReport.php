@@ -70,7 +70,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
             }
 
-            $union = join(' UNION ALL ', $unionData);
+            $union = implode(' UNION ALL ', $unionData);
 
             $query = "
               SELECT SQL_CALC_FOUND_ROWS
@@ -119,7 +119,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
 
         $productSales = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($productSales as &$sale) {
             $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
@@ -136,9 +136,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         $data = $this->getReportData($parameterBag);
 
         foreach ($data as &$entry) {
-            unset($entry['salesPrice']);
-            unset($entry['sales']);
-            unset($entry['profit']);
+            unset($entry['salesPrice'], $entry['sales'], $entry['profit']);
         }
 
         return $data;

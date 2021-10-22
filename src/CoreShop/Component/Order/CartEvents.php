@@ -17,8 +17,10 @@ namespace CoreShop\Component\Order;
 class CartEvents
 {
     public const PRE_REMOVE_ITEM = 'coreshop.cart.pre_remove_item';
+
     public const POST_REMOVE_ITEM = 'coreshop.cart.post_remove_item';
 
     public const PRE_ADD_ITEM = 'coreshop.cart.pre_add_item';
+
     public const POST_ADD_ITEM = 'coreshop.cart.post_add_item';
 }

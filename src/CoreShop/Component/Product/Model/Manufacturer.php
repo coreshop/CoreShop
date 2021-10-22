@@ -18,5 +18,4 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class Manufacturer extends AbstractPimcoreModel implements ManufacturerInterface
 {
-
 }

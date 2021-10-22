@@ -18,7 +18,6 @@ use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\MenuBundle\DependencyInjection\CompilerPass\MenuBuilderPass;
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
-use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;

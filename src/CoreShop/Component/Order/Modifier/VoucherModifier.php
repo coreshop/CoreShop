@@ -78,7 +78,7 @@ class VoucherModifier implements VoucherModifierInterface
                     $voucherCode->setUsed($voucherCode->getUses() !== 0);
 
                     if ($voucherCode->isCreditCode()) {
-                        $voucherCode->setCreditUsed(max(0,$voucherCode->getCreditUsed() - (-1 * $item->getDiscount(true))));
+                        $voucherCode->setCreditUsed(max(0, $voucherCode->getCreditUsed() - (-1 * $item->getDiscount(true))));
                     }
 
                     $this->entityManager->persist($voucherCode);

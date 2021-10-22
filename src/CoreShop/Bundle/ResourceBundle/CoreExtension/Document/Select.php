@@ -48,7 +48,7 @@ class Select extends Editable
     }
 
     /**
-     * @return null|ResourceInterface
+     * @return ResourceInterface|null
      */
     public function getResourceObject()
     {

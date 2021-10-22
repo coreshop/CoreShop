@@ -48,8 +48,11 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
          */
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $params['store'],
-            $configuration['recursive'] ?: false);
+        $categoryIdsToCheck = $this->getCategoriesToCheck(
+            $configuration['categories'],
+            $params['store'],
+            $configuration['recursive'] ?: false
+        );
 
         if (!is_array($subject->getCategories())) {
             return false;

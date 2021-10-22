@@ -39,8 +39,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
                     $permissionGroups = [
                         $applicationName => $permissionGroups,
                     ];
-                }
-                else {
+                } else {
                     $permissionGroups = [
                         'all' => $permissionGroups,
                     ];
@@ -52,7 +51,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
             $progress->setEmptyBarCharacter(' ');
             $progress->setProgressCharacter('<comment>░</comment>');
             $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
-            $progress->start(count($permissionGroups, COUNT_RECURSIVE));
+            $progress->start(count($permissionGroups, \COUNT_RECURSIVE));
 
             $columns = array_map(function (Column $column) {
                 return $column->getName();

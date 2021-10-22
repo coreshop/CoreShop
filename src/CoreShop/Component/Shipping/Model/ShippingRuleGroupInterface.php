@@ -24,9 +24,6 @@ interface ShippingRuleGroupInterface extends ResourceInterface, TimestampableInt
      */
     public function getCarrier();
 
-    /**
-     * @param CarrierInterface|null $carrier
-     */
     public function setCarrier(CarrierInterface $carrier = null);
 
     /**

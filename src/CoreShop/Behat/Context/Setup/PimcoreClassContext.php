@@ -697,6 +697,7 @@ final class PimcoreClassContext implements Context
 
         $this->sharedStorage->set('object-instance', $instance);
     }
+
     /**
      * @Given /^I reload the (object-instance) into object-instance-2$/
      */
@@ -752,20 +753,17 @@ final class PimcoreClassContext implements Context
         foreach ($hash as $row) {
             switch ($row['type']) {
                 case 'checkbox':
-                    $object->setValue($row['key'], filter_var($row['value'], FILTER_VALIDATE_BOOLEAN));
+                    $object->setValue($row['key'], filter_var($row['value'], \FILTER_VALIDATE_BOOLEAN));
 
                     break;
-
                 case 'input':
                     $object->setValue($row['key'], $row['value']);
 
                     break;
-
                 case 'relation':
                     $object->setValue($row['key'], DataObject::getById($row['value']));
 
                     break;
-
                 case 'localized':
                     $setter = 'set' . ucfirst($row['key']);
 
@@ -774,7 +772,6 @@ final class PimcoreClassContext implements Context
                     }
 
                     break;
-
                 case 'brick':
                     $config = json_decode(stripslashes($row['value']), true);
                     $type = $this->classStorage->get($config['type']);
@@ -789,7 +786,6 @@ final class PimcoreClassContext implements Context
                     $object->{'get' . ucfirst($row['key'])}()->{'set' . ucfirst($type)}($brickInstance);
 
                     break;
-
                 case 'collection':
                     $config = json_decode(stripslashes($row['value']), true);
                     $type = $this->classStorage->get($config['type']);
@@ -810,7 +806,6 @@ final class PimcoreClassContext implements Context
                     $object->{'set' . ucfirst($row['key'])}($items);
 
                     break;
-
                 default:
                     throw new \InvalidArgumentException(sprintf('Type %s not yet supported', $row['type']));
             }
@@ -822,7 +817,7 @@ final class PimcoreClassContext implements Context
         string $fieldDefinition
     ): void {
         $definitionUpdater = $this->getUpdater($definition);
-        $definitionUpdater->insertField(json_decode(stripslashes($fieldDefinition), true, 512, JSON_THROW_ON_ERROR));
+        $definitionUpdater->insertField(json_decode(stripslashes($fieldDefinition), true, 512, \JSON_THROW_ON_ERROR));
         $definitionUpdater->save();
     }
 

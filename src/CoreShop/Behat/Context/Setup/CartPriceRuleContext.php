@@ -36,11 +36,11 @@ use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
-use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
@@ -59,6 +59,7 @@ use Webmozart\Assert\Assert;
 final class CartPriceRuleContext implements Context
 {
     use ConditionFormTrait;
+
     use ActionFormTrait;
 
     public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FormFactoryInterface $formFactory, private FormTypeRegistryInterface $conditionFormTypeRegistry, private FormTypeRegistryInterface $actionFormTypeRegistry, private FactoryInterface $cartPriceRuleFactory, private CartPriceRuleVoucherRepositoryInterface $cartPriceRuleVoucherRepository, private CartPriceRuleProcessorInterface $cartPriceRuleProcessor, private CartManagerInterface $cartManager, private FactoryInterface $cartPriceRuleVoucherCodeFactory)
@@ -366,7 +367,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => (int) $discount,
+            'percent' => (int)$discount,
         ]));
     }
 
@@ -381,9 +382,9 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
-            'amount' => (int) $amount,
+            'amount' => (int)$amount,
             'currency' => $currency->getId(),
-            'applyOn' => $appliedOn
+            'applyOn' => $appliedOn,
         ]));
     }
 
@@ -420,7 +421,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(SurchargePercentConfigurationType::class, 'surchargePercent');
 
         $this->addAction($rule, $this->createActionWithForm('surchargePercent', [
-            'percent' => (int) $surcharge,
+            'percent' => (int)$surcharge,
         ]));
     }
 
@@ -433,7 +434,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(SurchargeAmountConfigurationType::class, 'surchargeAmount');
 
         $this->addAction($rule, $this->createActionWithForm('surchargeAmount', [
-            'amount' => (int) $amount,
+            'amount' => (int)$amount,
             'currency' => $currency->getId(),
         ]));
     }

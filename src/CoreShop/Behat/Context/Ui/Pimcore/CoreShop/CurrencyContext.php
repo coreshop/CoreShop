@@ -16,7 +16,6 @@ namespace CoreShop\Behat\Context\Ui\Pimcore\CoreShop;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPageInterface;
-use CoreShop\Behat\Page\Pimcore\PWAPageInterface;
 use Webmozart\Assert\Assert;
 
 final class CurrencyContext implements Context

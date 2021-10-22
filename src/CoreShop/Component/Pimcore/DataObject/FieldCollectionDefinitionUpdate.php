@@ -25,7 +25,7 @@ class FieldCollectionDefinitionUpdate extends AbstractDefinitionUpdate
     {
         $this->fieldCollectionDefinition = DataObject\Fieldcollection\Definition::getByKey($fieldCollectionKey);
 
-        if (is_null($this->fieldCollectionDefinition)) {
+        if (null === $this->fieldCollectionDefinition) {
             throw new ClassDefinitionNotFoundException(sprintf('Fieldcollection Definition %s not found', $fieldCollectionKey));
         }
 

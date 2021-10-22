@@ -23,7 +23,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
 {
     private array $installedClasses = [];
+
     private array $installedCollections = [];
+
     private array $installedBricks = [];
 
     public function __construct(private KernelInterface $kernel, private ClassInstallerInterface $classInstaller)

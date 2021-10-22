@@ -16,8 +16,8 @@ namespace CoreShop\Component\Resource\Factory;
 
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
+use Doctrine\Persistence\ObjectManager;
 
 class PimcoreRepositoryFactory implements RepositoryFactoryInterface
 {
@@ -31,8 +31,7 @@ class PimcoreRepositoryFactory implements RepositoryFactoryInterface
         private string $repositoryClassName,
         private MetadataInterface $metadata,
         private Connection $connection
-    )
-    {
+    ) {
     }
 
     public function createNewRepository(ObjectManager $objectManager): RepositoryInterface

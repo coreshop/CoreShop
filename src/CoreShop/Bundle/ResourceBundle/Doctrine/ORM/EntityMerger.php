@@ -17,12 +17,12 @@ namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Persistence\Proxy;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\Utility\IdentifierFlattener;
+use Doctrine\Persistence\Proxy;
 
 class EntityMerger
 {
@@ -139,6 +139,7 @@ class EntityMerger
                     foreach ($newCollection as $entry) {
                         if (spl_object_hash($entry) === spl_object_hash($foundEntry)) {
                             $found = true;
+
                             break;
                         }
                     }

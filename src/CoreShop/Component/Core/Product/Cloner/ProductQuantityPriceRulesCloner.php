@@ -50,7 +50,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
     {
         $newQuantityPriceRule = clone $quantityPriceRule;
 
-         //Hack to get rid of the ID
+        //Hack to get rid of the ID
         $reflectionClass = new \ReflectionClass($newQuantityPriceRule);
         $property = $reflectionClass->getProperty('id');
         $property->setAccessible(true);
@@ -71,7 +71,6 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
         $referenceRanges = $quantityPriceRule->getRanges();
 
         foreach ($ranges as $index => $range) {
-
             if (!$range instanceof QuantityRangeInterface) {
                 continue;
             }
@@ -92,7 +91,6 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
             }
 
             $range->setUnitDefinition($allocatedUnitDefinition);
-
         }
 
         return $newQuantityPriceRule;

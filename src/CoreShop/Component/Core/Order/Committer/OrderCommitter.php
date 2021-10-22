@@ -50,7 +50,7 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
 
         $orderFolder = $this->folderCreationService->createFolderForResource($order, [
             'suffix' => date('Y/m/d'),
-            'path' => 'order'
+            'path' => 'order',
         ]);
         $orderNumber = $this->numberGenerator->generate($order);
 

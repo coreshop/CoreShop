@@ -62,6 +62,7 @@ interface WorkerInterface
      * Renders the condition to fit the service.
      *
      * @param string             $prefix
+     *
      * @return mixed
      */
     public function renderCondition(ConditionInterface $condition, $prefix = null);

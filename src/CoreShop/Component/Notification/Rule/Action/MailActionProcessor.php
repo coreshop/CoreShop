@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Notification\Rule\Action;
 
-use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Pimcore\Mail\MailProcessorInterface;
 use Pimcore\Model\Document;
 

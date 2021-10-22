@@ -104,7 +104,7 @@ class ResourceController extends AdminController
 
         $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
 
-        return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
+        return $this->viewHandler->handle(['success' => false, 'message' => implode(\PHP_EOL, $errors)]);
     }
 
     public function addAction(Request $request): JsonResponse
@@ -165,7 +165,7 @@ class ResourceController extends AdminController
 
         $repo = $this->repository;
 
-        if (!$repo instanceof PimcoreRepositoryInterface ) {
+        if (!$repo instanceof PimcoreRepositoryInterface) {
             throw new \InvalidArgumentException('Only Supported with Pimcore Repositories');
         }
 
@@ -180,7 +180,7 @@ class ResourceController extends AdminController
 
         $customerClassDefinition = DataObject\ClassDefinition::getById($repo->getClassId());
 
-        $folder = DataObject::getByPath('/'.$folderPath);
+        $folder = DataObject::getByPath('/' . $folderPath);
 
         if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
@@ -192,7 +192,6 @@ class ResourceController extends AdminController
 
         return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
     }
-
 
     protected function findOr404(int $id): ResourceInterface
     {

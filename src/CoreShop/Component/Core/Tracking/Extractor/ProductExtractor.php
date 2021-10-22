@@ -48,8 +48,10 @@ class ProductExtractor implements TrackingExtractorInterface
             'name' => $object->getName(),
             'category' => (is_array($categories) && count($categories) > 0) ? $categories[0]->getName() : '',
             'sku' => $object instanceof ProductInterface ? $object->getSku() : '',
-            'price' => $this->taxedPurchasablePriceCalculator->getPrice($object,
-                    $this->shopperContext->getContext()) / $this->decimalFactor,
+            'price' => $this->taxedPurchasablePriceCalculator->getPrice(
+                $object,
+                $this->shopperContext->getContext()
+            ) / $this->decimalFactor,
             'currency' => $this->shopperContext->getCurrency()->getIsoCode(),
             'categories' => array_map(static function (CategoryInterface $category) {
                 return [

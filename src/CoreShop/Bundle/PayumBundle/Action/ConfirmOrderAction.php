@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\PayumBundle\Action;
 use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Core\Model\PaymentInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderTransitions;
 use Payum\Core\Action\ActionInterface;
 
@@ -40,7 +39,6 @@ final class ConfirmOrderAction implements ActionInterface
             return;
         }
         //state stays new
-
     }
 
     public function supports($request): bool

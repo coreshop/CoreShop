@@ -47,6 +47,8 @@ interface IndexableInterface
     public function getParent();
 
     public function getIndexableEnabled(IndexInterface $index): bool;
+
     public function getIndexable(IndexInterface $index): bool;
+
     public function getIndexableName(IndexInterface $index, string $language): string;
 }

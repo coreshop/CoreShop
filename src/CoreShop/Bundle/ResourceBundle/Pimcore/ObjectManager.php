@@ -22,8 +22,11 @@ use Webmozart\Assert\Assert;
 final class ObjectManager implements \Doctrine\Persistence\ObjectManager
 {
     private array $repositories = [];
+
     private array $modelsToUpdate = [];
+
     private array $modelsToInsert = [];
+
     private array $modelsToRemove = [];
 
     /**

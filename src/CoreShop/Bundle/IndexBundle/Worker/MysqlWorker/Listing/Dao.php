@@ -45,7 +45,7 @@ class Dao
     {
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
         if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-            if (!is_null($queryBuilder->getQueryPart('orderBy'))) {
+            if (null !== $queryBuilder->getQueryPart('orderBy')) {
                 $queryBuilder->select('DISTINCT q.o_virtualObjectId as o_id');
                 $queryBuilder->addGroupBy('q.o_virtualObjectId');
             } else {
@@ -67,6 +67,7 @@ class Dao
      *
      * @param string       $fieldName
      * @param bool         $countValues
+     *
      * @return array
      */
     public function loadGroupByValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
@@ -104,6 +105,7 @@ class Dao
      *
      * @param string       $fieldName
      * @param bool         $countValues
+     *
      * @return array
      */
     public function loadGroupByRelationValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
@@ -136,7 +138,7 @@ class Dao
                 $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
 
                 if (null !== $type) {
-                    $queryBuilder->where('type = '.$this->quote($type));
+                    $queryBuilder->where('type = ' . $this->quote($type));
                 }
             }
 

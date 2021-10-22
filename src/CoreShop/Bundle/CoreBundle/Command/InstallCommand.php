@@ -44,7 +44,8 @@ final class InstallCommand extends AbstractInstallCommand
         $this
             ->setName('coreshop:install')
             ->setDescription('Installs CoreShop.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command installs CoreShop.
 EOT
             );

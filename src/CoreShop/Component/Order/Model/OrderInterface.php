@@ -77,7 +77,7 @@ interface OrderInterface extends
 
     public function getBaseCurrency(): ?CurrencyInterface;
 
-    public function setBaseCurrency(?CurrencyInterface  $currency);
+    public function setBaseCurrency(?CurrencyInterface $currency);
 
     public function getPaymentTotal(): ?int;
 

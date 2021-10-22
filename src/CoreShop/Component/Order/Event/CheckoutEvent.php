@@ -20,14 +20,21 @@ use Symfony\Component\HttpFoundation\Response;
 class CheckoutEvent extends GenericEvent
 {
     public const TYPE_ERROR = 'error';
+
     public const TYPE_WARNING = 'warning';
+
     public const TYPE_INFO = 'info';
+
     public const TYPE_SUCCESS = 'success';
 
     private string $messageType = '';
+
     private string $message = '';
+
     private array $messageParameters = [];
+
     private int $errorCode = 500;
+
     private ?Response $response = null;
 
     public function stop(string $message, string $type = self::TYPE_ERROR, array $parameters = [], int $errorCode = 500): void

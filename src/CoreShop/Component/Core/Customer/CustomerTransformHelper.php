@@ -21,11 +21,9 @@ use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Dependency;
 use Pimcore\Model\Element\ElementInterface;
@@ -42,7 +40,8 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
     public function getEntityAddressFolderPath(AddressInterface $address, string $rootPath): DataObject\Folder
     {
         return $this->folderCreationService->createFolderForResource(
-            $address, ['prefix' => $rootPath]
+            $address,
+            ['prefix' => $rootPath]
         );
     }
 
@@ -56,7 +55,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         while (Service::pathExists($newPath, 'object')) {
             $newKey = sprintf('%s-%d', $originalKey, $incrementId);
             $newPath = sprintf('%s/%s', $newParent->getFullPath(), $newKey);
-            $incrementId++;
+            ++$incrementId;
         }
 
         return $newKey;
@@ -146,7 +145,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $address;
     }
 
-    protected function moveCustomerToCompany(CustomerInterface $customer, CompanyInterface $company, array $options): CustomerInterface
+    private function moveCustomerToCompany(CustomerInterface $customer, CompanyInterface $company, array $options): CustomerInterface
     {
         $customer->setParent($company);
         $customer->setKey($this->getSaveKeyForMoving($customer, $company));
@@ -166,7 +165,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $customer;
     }
 
-    protected function removeAddressRelations(AddressInterface $address): void
+    private function removeAddressRelations(AddressInterface $address): void
     {
         // no need to search for dependencies: address is new.
         if ($this->isNewEntity($address)) {
@@ -210,12 +209,12 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }
     }
 
-    protected function getMoveOptionsResolver(): OptionsResolver
+    private function getMoveOptionsResolver(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'addressAssignmentType' => 'move',
-            'addressAccessType'     => 'own_only'
+            'addressAccessType' => 'own_only',
         ]);
 
         $resolver->setAllowedTypes('addressAssignmentType', 'string');
@@ -231,7 +230,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $resolver;
     }
 
-    protected function forceSave(mixed $element, bool $useVersioning = true): void
+    private function forceSave(mixed $element, bool $useVersioning = true): void
     {
         if ($element instanceof Concrete) {
             $element->setOmitMandatoryCheck(true);
@@ -244,8 +243,8 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }
     }
 
-    protected function isNewEntity(ElementInterface $element): bool
+    private function isNewEntity(ElementInterface $element): bool
     {
-        return is_null($element->getId()) || $element->getId() === 0;
+        return null === $element->getId() || $element->getId() === 0;
     }
 }

@@ -51,8 +51,7 @@ class ClassInstaller implements ClassInstallerInterface
             if ($id) {
                 $class = DataObject\ClassDefinition::getById($id);
             }
-        }
-        catch (NotFoundException $exception) {
+        } catch (NotFoundException $exception) {
             //Ignore
         }
 

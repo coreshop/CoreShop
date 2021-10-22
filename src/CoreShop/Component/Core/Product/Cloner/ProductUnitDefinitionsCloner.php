@@ -24,7 +24,7 @@ class ProductUnitDefinitionsCloner implements ProductClonerInterface
             return;
         }
 
-        $unitDefinitions =  $referenceProduct->getUnitDefinitions();
+        $unitDefinitions = $referenceProduct->getUnitDefinitions();
 
         if (null === $unitDefinitions) {
             return;

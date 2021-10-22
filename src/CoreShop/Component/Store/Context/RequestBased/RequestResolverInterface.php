@@ -21,8 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
 interface RequestResolverInterface
 {
     /**
-     *
      * @return StoreInterface
+     *
      * @throws StoreNotFoundException
      */
     public function findStore(Request $request): ?StoreInterface;

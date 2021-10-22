@@ -16,9 +16,9 @@ namespace CoreShop\Component\Core\Cart\Rule\Condition;
 
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Webmozart\Assert\Assert;
 
 final class CarriersConditionChecker extends AbstractConditionChecker

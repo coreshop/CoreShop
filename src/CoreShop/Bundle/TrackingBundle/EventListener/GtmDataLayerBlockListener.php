@@ -14,11 +14,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\TrackingBundle\EventListener;
 
-use Pimcore\Tool;
-use Pimcore\Http\ResponseHelper;
+use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker;
 use Pimcore\Analytics\SiteId\SiteIdProvider;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
-use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker;
+use Pimcore\Http\ResponseHelper;
+use Pimcore\Tool;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class GtmDataLayerBlockListener

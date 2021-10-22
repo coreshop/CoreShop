@@ -143,7 +143,7 @@ class CustomerController extends FrontendController
 
         $addressFormOptions = [
             'available_affiliations' => $addressAssignmentManager->getAddressAffiliationTypesForCustomer($customer),
-            'selected_affiliation'   => $addressAssignmentManager->detectAddressAffiliationForCustomer($customer, $address)
+            'selected_affiliation' => $addressAssignmentManager->detectAddressAffiliationForCustomer($customer, $address),
         ];
 
         $form = $this->get('form.factory')->createNamed('coreshop', AddressType::class, $address, $addressFormOptions);
@@ -154,7 +154,6 @@ class CustomerController extends FrontendController
             $addressAffiliation = $form->has('addressAffiliation') ? $form->get('addressAffiliation')->getData() : null;
 
             if ($handledForm->isSubmitted() && $handledForm->isValid()) {
-
                 $address = $handledForm->getData();
                 $address->setPublished(true);
                 $address->setKey(uniqid());

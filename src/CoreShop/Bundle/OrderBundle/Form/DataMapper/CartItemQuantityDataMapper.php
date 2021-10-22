@@ -42,7 +42,7 @@ class CartItemQuantityDataMapper implements DataMapperInterface
                 $quantityForm = $form;
 
                 $targetQuantity = $form->getData();
-                $this->cartItemQuantityModifier->modify($viewData, (float) $targetQuantity);
+                $this->cartItemQuantityModifier->modify($viewData, (float)$targetQuantity);
 
                 continue;
             }
@@ -56,7 +56,7 @@ class CartItemQuantityDataMapper implements DataMapperInterface
 
         if (null !== $quantityForm) {
             $targetQuantity = $quantityForm->getData();
-            $this->cartItemQuantityModifier->modify($viewData, (float) $targetQuantity);
+            $this->cartItemQuantityModifier->modify($viewData, (float)$targetQuantity);
         }
     }
 }

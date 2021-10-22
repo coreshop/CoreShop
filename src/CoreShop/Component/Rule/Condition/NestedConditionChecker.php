@@ -35,15 +35,18 @@ class NestedConditionChecker implements ConditionCheckerInterface
                 case 'and':
                     if (!$conditionValid) {
                         $valid = false;
+
                         break 2;
                     }
-                    break;
 
+                    break;
                 case 'or':
                     if ($conditionValid) {
                         $valid = true;
+
                         break 2;
                     }
+
                     break;
             }
         }

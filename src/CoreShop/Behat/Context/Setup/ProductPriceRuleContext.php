@@ -50,6 +50,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 final class ProductPriceRuleContext implements Context
 {
     use ConditionFormTrait;
+
     use ActionFormTrait;
 
     public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FormFactoryInterface $formFactory, private FormTypeRegistryInterface $conditionFormTypeRegistry, private FormTypeRegistryInterface $actionFormTypeRegistry, private FactoryInterface $productPriceRuleFactory)
@@ -340,7 +341,7 @@ final class ProductPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => (int) $discount,
+            'percent' => (int)$discount,
         ]));
     }
 
@@ -356,7 +357,7 @@ final class ProductPriceRuleContext implements Context
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
-            'amount' => (int) $amount,
+            'amount' => (int)$amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -373,7 +374,7 @@ final class ProductPriceRuleContext implements Context
         $this->assertActionForm(PriceConfigurationType::class, 'discountPrice');
 
         $this->addAction($rule, $this->createActionWithForm('discountPrice', [
-            'price' => (int) $price,
+            'price' => (int)$price,
             'currency' => $currency->getId(),
         ]));
     }
@@ -387,7 +388,7 @@ final class ProductPriceRuleContext implements Context
         $this->assertActionForm(PriceConfigurationType::class, 'price');
 
         $this->addAction($rule, $this->createActionWithForm('price', [
-            'price' => (int) $price,
+            'price' => (int)$price,
             'currency' => $currency->getId(),
         ]));
     }

@@ -112,8 +112,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
 
             if ($useGrossValues) {
                 $shippingTax = $this->taxCollector->collectTaxesFromGross($taxCalculator, $amount);
-            }
-            else {
+            } else {
                 $shippingTax = $this->taxCollector->collectTaxes($taxCalculator, $amount);
             }
             /** @psalm-suppress InvalidArgument */

@@ -25,6 +25,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 class MoneyCurrency extends Input
 {
     protected DoctrineProvider $doctrineProvider;
+
     protected string $currencyClass;
 
     public function __construct(Service $graphQlService, DoctrineProvider $doctrineProvider, string $currencyClass)
@@ -47,7 +48,7 @@ class MoneyCurrency extends Input
             'resolve' => $this->getResolver($attribute, $fieldDefinition, $class),
         ],
             $container
-            );
+        );
     }
 
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)

@@ -157,7 +157,6 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 $document->setProperty('language', $language, 'text', true);
 
                 if ($document instanceof Document\PageSnippet) {
-
                     if ($document instanceof Document\Page && isset($properties['title'])) {
                         $document->setTitle($properties['title']);
                     }

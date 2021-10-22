@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Customer\Allocator;
 
-use CoreShop\Component\Address\Model\AddressesAwareInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;

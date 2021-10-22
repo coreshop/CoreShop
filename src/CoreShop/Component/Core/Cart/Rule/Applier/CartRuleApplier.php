@@ -16,8 +16,6 @@ namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
-use CoreShop\Component\Order\Distributor\FloatDistributorInterface;
-use CoreShop\Component\Order\Distributor\IntegerDistributorInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
@@ -26,7 +24,6 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
-use Pimcore\Model\DataObject\Objectbrick\Data\AbstractData;
 
 class CartRuleApplier implements CartRuleApplierInterface
 {
@@ -103,16 +100,15 @@ class CartRuleApplier implements CartRuleApplierInterface
             $totalDiscountGross += $itemDiscountGross;
         }
 
-        $totalDiscountNet = (int) round($totalDiscountNet);
-        $totalDiscountGross = (int) round($totalDiscountGross);
-        $totalDiscountFloat = (int) round($totalDiscountFloat);
+        $totalDiscountNet = (int)round($totalDiscountNet);
+        $totalDiscountGross = (int)round($totalDiscountGross);
+        $totalDiscountFloat = (int)round($totalDiscountFloat);
 
         //Add missing cents caused by rounding issues
         if ($totalDiscountFloat > ($withTax ? $totalDiscountNet : $totalDiscountGross)) {
             if ($withTax) {
                 $totalDiscountNet += $totalDiscountFloat - $totalDiscountNet;
-            }
-            else {
+            } else {
                 $totalDiscountGross += $totalDiscountFloat - $totalDiscountGross;
             }
         }

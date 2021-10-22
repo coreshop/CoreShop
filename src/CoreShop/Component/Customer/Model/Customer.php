@@ -18,5 +18,4 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class Customer extends AbstractPimcoreModel implements CustomerInterface
 {
-
 }

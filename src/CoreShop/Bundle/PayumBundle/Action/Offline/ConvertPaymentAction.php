@@ -26,7 +26,7 @@ use Payum\Offline\Constants;
 final class ConvertPaymentAction implements ActionInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @param Convert $request
      */

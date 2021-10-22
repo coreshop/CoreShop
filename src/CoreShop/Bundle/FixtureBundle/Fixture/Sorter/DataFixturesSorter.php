@@ -27,6 +27,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 final class DataFixturesSorter
 {
     private array $orderedFixtures = [];
+
     private array $fixtures = [];
 
     /**
@@ -120,7 +121,8 @@ final class DataFixturesSorter
 
             if ($fixture instanceof OrderedFixtureInterface) {
                 continue;
-            } elseif ($fixture instanceof DependentFixtureInterface) {
+            }
+            if ($fixture instanceof DependentFixtureInterface) {
                 $dependenciesClasses = $fixture->getDependencies();
 
                 $this->validateDependencies($fixtureClass, $dependenciesClasses);
@@ -163,14 +165,13 @@ final class DataFixturesSorter
             $msg .= 'This case would produce a CircularReferenceException.';
 
             throw new CircularReferenceException(sprintf($msg, implode(',', $unsequencedClasses)));
-        } else {
-            // We order the classes by sequence
-            asort($sequenceForClasses);
+        }
+        // We order the classes by sequence
+        asort($sequenceForClasses);
 
-            foreach ($sequenceForClasses as $class => $sequence) {
-                // If fixtures were ordered
-                $orderedFixtures[] = $this->fixtures[$class];
-            }
+        foreach ($sequenceForClasses as $class => $sequence) {
+            // If fixtures were ordered
+            $orderedFixtures[] = $this->fixtures[$class];
         }
 
         $this->orderedFixtures = array_merge($this->orderedFixtures, $orderedFixtures);
@@ -217,14 +218,13 @@ final class DataFixturesSorter
     }
 
     /**
-     * @param null|array $classes
      * @return array
      */
     private function getUnsequencedClasses(array $sequences, array $classes = null)
     {
-        $unsequencedClasses = array();
+        $unsequencedClasses = [];
 
-        if (is_null($classes)) {
+        if (null === $classes) {
             $classes = array_keys($sequences);
         }
 

@@ -19,5 +19,4 @@ use CoreShop\Component\Customer\Model\CompanyInterface as BaseCompanyInterface;
 
 interface CompanyInterface extends BaseCompanyInterface, AddressesAwareInterface
 {
-
 }

@@ -34,7 +34,7 @@ interface ConditionInterface extends ResourceInterface
     public function getSort();
 
     /**
-    * @param int $sort
+     * @param int $sort
      */
     public function setSort($sort);
 

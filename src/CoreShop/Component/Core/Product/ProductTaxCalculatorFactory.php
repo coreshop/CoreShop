@@ -15,10 +15,10 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Product;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
-use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterface
 {

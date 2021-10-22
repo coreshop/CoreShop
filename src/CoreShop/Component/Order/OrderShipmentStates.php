@@ -16,9 +16,13 @@ namespace CoreShop\Component\Order;
 
 final class OrderShipmentStates
 {
-    const STATE_NEW = 'new';
-    const STATE_READY = 'ready';
-    const STATE_CANCELLED = 'cancelled';
-    const STATE_PARTIALLY_SHIPPED = 'partially_shipped';
-    const STATE_SHIPPED = 'shipped';
+    public const STATE_NEW = 'new';
+
+    public const STATE_READY = 'ready';
+
+    public const STATE_CANCELLED = 'cancelled';
+
+    public const STATE_PARTIALLY_SHIPPED = 'partially_shipped';
+
+    public const STATE_SHIPPED = 'shipped';
 }

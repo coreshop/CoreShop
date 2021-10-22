@@ -48,14 +48,16 @@ class PimcoreRepository extends PimcoreDaoRepository implements PimcoreRepositor
         }
 
         /** @psalm-var class-string $listClass */
-        $listClass = $className.'\\Listing';
+        $listClass = $className . '\\Listing';
 
         if (class_exists($className)) {
             return new $listClass();
         }
 
-        throw new \InvalidArgumentException(sprintf('Class %s has no getList or a Listing Class function and thus is not supported here',
-            $className));
+        throw new \InvalidArgumentException(sprintf(
+            'Class %s has no getList or a Listing Class function and thus is not supported here',
+            $className
+        ));
     }
 
     public function forceFind($id, bool $force = true)

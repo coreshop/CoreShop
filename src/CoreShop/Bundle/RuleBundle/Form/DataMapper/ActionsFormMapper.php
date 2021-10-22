@@ -59,6 +59,7 @@ class ActionsFormMapper implements DataMapperInterface
                         $this->propertyMapper->mapFormsToData($form, $entry);
 
                         $actualData[] = $entry;
+
                         continue 2;
                     }
                 }

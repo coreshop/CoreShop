@@ -140,7 +140,7 @@ abstract class AbstractWorker implements WorkerInterface
                     }
                 }
 
-                list($columnLocalizedData, $columnRelationData, $value, $isLocalizedValue) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
+                [$columnLocalizedData, $columnRelationData, $value, $isLocalizedValue] = $this->processInterpreter($column, $object, $value, $virtualObjectId);
 
                 $relationData = array_merge_recursive($relationData, $columnRelationData);
                 $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);

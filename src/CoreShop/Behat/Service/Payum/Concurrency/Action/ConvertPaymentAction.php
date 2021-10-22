@@ -23,7 +23,7 @@ use Payum\Core\Request\Convert;
 class ConvertPaymentAction implements ActionInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      *
      * @param Convert $request
      */
@@ -42,7 +42,7 @@ class ConvertPaymentAction implements ActionInterface
         $details['client_email'] = $payment->getClientEmail();
         $details['client_id'] = $payment->getClientId();
 
-        $request->setResult((array) $details);
+        $request->setResult((array)$details);
     }
 
     public function supports($request): bool

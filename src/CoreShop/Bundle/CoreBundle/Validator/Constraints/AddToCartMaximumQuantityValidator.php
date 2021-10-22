@@ -71,7 +71,7 @@ final class AddToCartMaximumQuantityValidator extends ConstraintValidator
             return;
         }
 
-        if($this->quantityValidatorService->isHigherThenMaxLimit($maxLimit, $quantity)) {
+        if ($this->quantityValidatorService->isHigherThenMaxLimit($maxLimit, $quantity)) {
             $this->context->addViolation(
                 $constraint->messageAboveMaximum,
                 [

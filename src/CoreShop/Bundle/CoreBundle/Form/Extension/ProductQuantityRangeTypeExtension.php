@@ -52,11 +52,11 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
             return;
         }
 
-        $quantity = (float) str_replace(',', '.', $event->getData());
-        $formattedQuantity = round($quantity, $scale, PHP_ROUND_HALF_UP);
+        $quantity = (float)str_replace(',', '.', $event->getData());
+        $formattedQuantity = round($quantity, $scale, \PHP_ROUND_HALF_UP);
 
         if ($quantity !== $formattedQuantity) {
-            $event->setData((string) $formattedQuantity);
+            $event->setData((string)$formattedQuantity);
         }
     }
 

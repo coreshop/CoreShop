@@ -19,5 +19,5 @@ final class Events
     /**
      * Fired before quantity price rule data passes form process
      */
-    const RULES_DATA_FROM_EDITMODE_VALIDATION = 'coreshop.product_quantity_price_rules.data_validation';
+    public const RULES_DATA_FROM_EDITMODE_VALIDATION = 'coreshop.product_quantity_price_rules.data_validation';
 }

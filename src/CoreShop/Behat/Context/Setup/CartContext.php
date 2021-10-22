@@ -21,13 +21,13 @@ use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
@@ -114,7 +114,6 @@ final class CartContext implements Context
          */
         $cartItem = $this->factory->createWithPurchasable($productAndUnit['product']);
         $cartItem->setUnitDefinition($productAndUnit['unit']);
-
 
         $this->cartQuantityModifier->modify($cartItem, $quantity);
         $this->cartModifier->addToList($cart, $cartItem);

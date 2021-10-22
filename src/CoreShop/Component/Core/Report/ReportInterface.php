@@ -20,8 +20,6 @@ interface ReportInterface
 {
     /**
      * Get data for report.
-     *
-     *
      */
     public function getReportData(ParameterBag $parameterBag): array;
 

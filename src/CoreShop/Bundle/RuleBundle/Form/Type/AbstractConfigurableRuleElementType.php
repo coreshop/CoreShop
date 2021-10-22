@@ -88,7 +88,6 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
 
     /**
      * @param mixed         $data
-     *
      */
     protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {

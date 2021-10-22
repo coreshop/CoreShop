@@ -90,7 +90,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
     {
         $validGuesser = ['get_first', 'get_previous', 'get_current', 'get_next', 'get_last'];
 
-        $getter = lcfirst(str_replace('_', '', ucwords($type, '_'))).'StepIdentifier';
+        $getter = lcfirst(str_replace('_', '', ucwords($type, '_'))) . 'StepIdentifier';
 
         if (!method_exists($this, $getter)) {
             throw new \InvalidArgumentException(
@@ -133,7 +133,6 @@ final class CheckoutIdentifierExtension extends AbstractExtension
 
         return null;
     }
-
 
     protected function getCurrentStepIdentifier(
         OrderInterface $cart,

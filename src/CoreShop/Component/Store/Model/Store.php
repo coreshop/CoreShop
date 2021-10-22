@@ -24,6 +24,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 class Store extends AbstractResource implements StoreInterface, \Stringable
 {
     use TimestampableTrait;
+
     use CurrencyAwareTrait;
 
     /**

@@ -25,8 +25,7 @@ class TimestampInterpreter implements InterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed
-    {
+    ): mixed {
         if ($value instanceof Carbon) {
             return $value;
         }

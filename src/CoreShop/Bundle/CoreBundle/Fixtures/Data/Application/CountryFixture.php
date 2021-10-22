@@ -61,7 +61,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         $addressFormatReplaces = [
             'recipient' => [
                 '{{ company }}',
-                PHP_EOL,
+                \PHP_EOL,
                 '{{ salutation }}',
                 '{{ firstname }}',
                 '{{ lastname }}',
@@ -77,7 +77,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 '{{ phoneNumber }}',
             ],
             'region' => '',
-            'region_short' => ''
+            'region_short' => '',
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
         $defaultSalutations = ['mrs', 'mr'];
@@ -135,11 +135,11 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                     $addressFormat = str_replace($replaceFrom, $replaceTo, $addressFormat);
                 }
 
-                $addressFormat = explode(PHP_EOL, $addressFormat);
-                $addressFormat = array_map(function($entry) {
+                $addressFormat = explode(\PHP_EOL, $addressFormat);
+                $addressFormat = array_map(function ($entry) {
                     return trim($entry);
                 }, $addressFormat);
-                $addressFormat = implode(PHP_EOL, $addressFormat);
+                $addressFormat = implode(\PHP_EOL, $addressFormat);
 
                 $newCountry->setAddressFormat($addressFormat);
                 $newCountry->setSalutations($defaultSalutations);

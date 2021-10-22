@@ -46,8 +46,11 @@ class ProductsConditionChecker implements ConditionCheckerInterface
             return false;
         }
 
-        $productIdsToCheck = $this->getProductsToCheck($configuration['products'], $params['store'],
-            $configuration['include_variants'] ?: false);
+        $productIdsToCheck = $this->getProductsToCheck(
+            $configuration['products'],
+            $params['store'],
+            $configuration['include_variants'] ?: false
+        );
 
         return in_array($subject->getId(), $productIdsToCheck);
     }

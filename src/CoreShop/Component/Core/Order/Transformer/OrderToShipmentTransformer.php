@@ -29,8 +29,7 @@ final class OrderToShipmentTransformer implements OrderDocumentTransformerInterf
         OrderInterface $order,
         OrderDocumentInterface $document,
         array $itemsToTransform
-    ): OrderDocumentInterface
-    {
+    ): OrderDocumentInterface {
         if ($document instanceof OrderShipmentInterface && $order instanceof \CoreShop\Component\Core\Model\OrderInterface) {
             $document->setWeight($order->getWeight());
         }

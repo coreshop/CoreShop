@@ -19,8 +19,9 @@ use Doctrine\Persistence\ObjectRepository;
 
 interface RepositoryInterface extends ObjectRepository
 {
-    const ORDER_ASCENDING = 'ASC';
-    const ORDER_DESCENDING = 'DESC';
+    public const ORDER_ASCENDING = 'ASC';
+
+    public const ORDER_DESCENDING = 'DESC';
 
     public function add(ResourceInterface $resource): void;
 

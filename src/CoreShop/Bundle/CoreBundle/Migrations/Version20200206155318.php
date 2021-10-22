@@ -44,12 +44,9 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
             'documentsAllowed' => false,
             'width' => null,
             'assetUploadPath' => null,
-            'assetTypes' =>
-                array(),
-            'documentTypes' =>
-                array(),
-            'classes' =>
-                array(),
+            'assetTypes' => [],
+            'documentTypes' => [],
+            'classes' => [],
             'pathFormatterClass' => '',
             'name' => 'user',
             'title' => 'coreshop.customer.user',

@@ -18,7 +18,6 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use CoreShop\Component\Order\Model\QuoteInterface;
 use CoreShop\Component\Order\OrderSaleStates;
 use Symfony\Component\HttpFoundation\Request;
 

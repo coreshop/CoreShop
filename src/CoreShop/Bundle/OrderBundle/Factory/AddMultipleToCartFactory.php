@@ -26,8 +26,7 @@ class AddMultipleToCartFactory implements AddMultipleToCartFactoryInterface
          * @psalm-var class-string
          */
         protected string $addMultipleToCartClass
-    )
-    {
+    ) {
     }
 
     public function createWithMultipleAddToCarts(array $addToCarts): AddMultipleToCartInterface

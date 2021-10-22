@@ -36,7 +36,8 @@ final class InstallFoldersCommand extends AbstractInstallCommand
         $this
             ->setName('coreshop:install:folders')
             ->setDescription('Install CoreShop Object Folders.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command creates CoreShop Object Folders.
 EOT
             );

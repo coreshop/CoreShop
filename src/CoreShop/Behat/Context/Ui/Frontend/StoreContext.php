@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Behat\Service\StoreContextSetterInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 

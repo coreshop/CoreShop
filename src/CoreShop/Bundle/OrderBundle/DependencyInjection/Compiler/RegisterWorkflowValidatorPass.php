@@ -34,7 +34,7 @@ class RegisterWorkflowValidatorPass implements CompilerPassInterface
                 }
 
                 if (!isset($tag['manager'])) {
-                    throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `manager` attribute.');
+                    throw new \InvalidArgumentException('Tagged Condition `' . $id . '` needs to have `manager` attribute.');
                 }
 
                 $manager = $container->getDefinition($tag['manager']);

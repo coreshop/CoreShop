@@ -31,7 +31,7 @@ class Money extends Input
             'type' => $this->getFieldType($fieldDefinition, $class, $container),
         ],
             $container
-            );
+        );
     }
 
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)

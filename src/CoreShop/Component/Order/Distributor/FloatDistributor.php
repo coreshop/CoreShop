@@ -31,7 +31,7 @@ final class FloatDistributor implements FloatDistributorInterface
         $floatAmountOfAmount = floor($amount / $numberOfTargets * $floatTargetAmount);
         $amount = $amount - $floatAmountOfAmount;
 
-        $low = (int) ($amount / $intTargetAmount);
+        $low = (int)($amount / $intTargetAmount);
         $high = $low + 1;
 
         $remainder = $amount % $intTargetAmount;
@@ -45,7 +45,7 @@ final class FloatDistributor implements FloatDistributorInterface
             $result[] = $low * $sign;
         }
 
-        $result[] = (int) $floatAmountOfAmount;
+        $result[] = (int)$floatAmountOfAmount;
 
         return $result;
     }

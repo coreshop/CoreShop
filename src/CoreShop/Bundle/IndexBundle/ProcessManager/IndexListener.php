@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\IndexBundle\ProcessManager;
 
 use Carbon\Carbon;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use ProcessManagerBundle\Factory\ProcessFactoryInterface;
 use ProcessManagerBundle\Logger\ProcessLogger;
 use ProcessManagerBundle\Model\ProcessInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

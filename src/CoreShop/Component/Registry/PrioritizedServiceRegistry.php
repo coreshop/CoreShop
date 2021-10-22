@@ -149,7 +149,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         if ($prevIndex >= 0) {
             $previousElements = [];
 
-            for ($i = $prevIndex; $i > 0; $i--) {
+            for ($i = $prevIndex; $i > 0; --$i) {
                 $previousElements[] = $this->get($keys[$i]);
             }
 

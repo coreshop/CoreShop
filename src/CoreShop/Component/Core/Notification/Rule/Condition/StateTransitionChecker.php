@@ -28,8 +28,7 @@ final class StateTransitionChecker extends AbstractConditionChecker
          */
         private string $interface,
         private string $workflowName
-    )
-    {
+    ) {
     }
 
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool

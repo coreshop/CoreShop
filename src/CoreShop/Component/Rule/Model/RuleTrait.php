@@ -23,7 +23,9 @@ use Doctrine\Common\Collections\Collection;
 trait RuleTrait
 {
     use TimestampableTrait;
+
     use SetValuesTrait;
+
     use ToggleableTrait;
 
     /**

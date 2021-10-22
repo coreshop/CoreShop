@@ -23,6 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 {
     public TrackerInterface $tracker;
+
     public ConfigResolverInterface $config;
 
     public function setTracker(TrackerInterface $tracker): void
@@ -210,6 +211,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
             return false;
         }
 
-        return (bool) $config->get('gtagcode');
+        return (bool)$config->get('gtagcode');
     }
 }

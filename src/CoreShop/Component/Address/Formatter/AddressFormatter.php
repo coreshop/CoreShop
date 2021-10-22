@@ -36,7 +36,7 @@ class AddressFormatter implements AddressFormatterInterface
 
         //translate salutation
         if (!empty($address->getSalutation())) {
-            $translationKey = 'coreshop.form.customer.salutation.'.$address->getSalutation();
+            $translationKey = 'coreshop.form.customer.salutation.' . $address->getSalutation();
             $objectVars['salutation'] = $this->translator->trans($translationKey);
         }
 

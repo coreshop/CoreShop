@@ -16,7 +16,6 @@ namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Frontend\HomePageInterface;
-use CoreShop\Behat\Service\SharedStorageInterface;
 
 final class CurrencyContext implements Context
 {

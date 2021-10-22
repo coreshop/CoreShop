@@ -17,12 +17,10 @@ namespace CoreShop\Component\Core\Repository;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Repository\ProductRepositoryInterface as BaseProductRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use Pimcore\Model\DataObject\Listing;
 
 interface ProductVariantRepositoryInterface extends BaseProductRepositoryInterface
 {
     /**
-     *
      * @return ProductInterface[]
      */
     public function findAllVariants(ProductInterface $product, bool $recursive = true): array;

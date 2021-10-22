@@ -80,7 +80,6 @@ final class PimcoreClassContext implements Context
         return $this->sharedStorage->get('object-instance');
     }
 
-
     /**
      * @Transform /^object-instance-2$/
      */

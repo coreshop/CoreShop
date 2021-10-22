@@ -45,7 +45,7 @@ class AdminCustomerCreationType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'csrf_protection' => false
+            'csrf_protection' => false,
         ]);
     }
 }

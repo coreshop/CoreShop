@@ -40,6 +40,7 @@ class SelectFilterConditionFromMultiselectProcessor implements FilterConditionPr
 
                 if (array_key_exists($e, $values)) {
                     $values[$e]['count'] += $v['count'];
+
                     continue;
                 }
 
@@ -69,7 +70,6 @@ class SelectFilterConditionFromMultiselectProcessor implements FilterConditionPr
         $value = trim($value);
 
         if (!empty($value)) {
-
             $value = ',' . $value . ',';
 
             $currentFilter[$field] = $value;

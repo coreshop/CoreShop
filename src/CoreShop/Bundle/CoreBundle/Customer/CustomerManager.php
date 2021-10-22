@@ -57,7 +57,7 @@ class CustomerManager implements CustomerManagerInterface
         $customer->setParent(
             $this->folderCreationService->createFolderForResource($customer, [
                 'path' => ($userBackup ? 'customer' : 'guest'),
-                'suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
+                'suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1)),
             ])
         );
         /** @psalm-suppress InternalMethod */
@@ -86,7 +86,7 @@ class CustomerManager implements CustomerManagerInterface
             $userBackup->setPublished(true);
             $userBackup->setParent(
                 $this->folderCreationService->createFolderForResource($userBackup, [
-                    'prefix' => $customer->getFullPath()
+                    'prefix' => $customer->getFullPath(),
                 ])
             );
             /** @psalm-suppress InternalMethod */

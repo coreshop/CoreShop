@@ -60,7 +60,7 @@ class CustomersReport implements ReportInterface
             LIMIT $offset,$limit";
 
         $results = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
-        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($results as &$result) {
             $result['salesFormatted'] = $this->moneyFormatter->format(

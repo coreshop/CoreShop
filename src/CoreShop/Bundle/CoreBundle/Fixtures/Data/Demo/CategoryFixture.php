@@ -66,7 +66,7 @@ class CategoryFixture extends AbstractFixture implements ContainerAwareInterface
         if (!count($this->container->get('coreshop.repository.category')->findAll())) {
             $categoriesCount = 5;
 
-            for ($i = 0; $i < $categoriesCount; $i++) {
+            for ($i = 0; $i < $categoriesCount; ++$i) {
                 /**
                  * @var CategoryInterface $category
                  */

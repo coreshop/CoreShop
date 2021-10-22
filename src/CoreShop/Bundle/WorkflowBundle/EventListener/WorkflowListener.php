@@ -101,8 +101,7 @@ class WorkflowListener implements EventSubscriberInterface
         } else {
             $expr = new ExpressionLanguage();
             $args = array_map(
-                function (mixed $arg) use ($expr, $event): mixed
-                {
+                function (mixed $arg) use ($expr, $event): mixed {
                     if (!is_string($arg)) {
                         return $arg;
                     }

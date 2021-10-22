@@ -18,5 +18,4 @@ use CoreShop\Behat\Page\Pimcore\PimcoreTabPageInterface;
 
 interface CurrencyPageInterface extends PimcoreTabPageInterface
 {
-
 }

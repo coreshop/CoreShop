@@ -35,8 +35,7 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
         ShippableInterface $shippable,
         AddressInterface $address,
         array $context
-    ): int
-    {
+    ): int {
         $price = 0;
 
         foreach ($shippingRule->getActions() as $action) {
@@ -63,8 +62,7 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
         AddressInterface $address,
         int $price,
         array $context
-    ): int
-    {
+    ): int {
         $modifications = 0;
 
         foreach ($shippingRule->getActions() as $action) {

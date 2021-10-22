@@ -21,7 +21,7 @@ class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
 {
     public function getFunctions(): array
     {
-        return array(
+        return [
             ExpressionFunction::fromPHP('sprintf'),
             ExpressionFunction::fromPHP('substr'),
             ExpressionFunction::fromPHP('strlen'),
@@ -47,6 +47,6 @@ class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
             ExpressionFunction::fromPHP('implode'),
             ExpressionFunction::fromPHP('is_array'),
             ExpressionFunction::fromPHP('count'),
-        );
+        ];
     }
 }

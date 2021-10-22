@@ -175,7 +175,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
             [
                 $command,
                 $httpSource,
-                $tmpPdfFile
+                $tmpPdfFile,
             ]
         );
         $process->run();
