@@ -122,7 +122,6 @@ final class Migrate
     /**
      * Migrates all the data from $oldClassDefinition to $newClassDefinition.
      *
-     *
      * @throws \Exception
      */
     public static function migrateData(string $oldPimcoreClass, string $newPimcoreClass): void

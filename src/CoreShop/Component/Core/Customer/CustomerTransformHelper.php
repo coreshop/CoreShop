@@ -86,7 +86,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
             )
         );
 
-        /** @psalm-suppress InternalMethod */
+        /* @psalm-suppress InternalMethod */
         $company->setKey(File::getValidFilename($company->getName()));
 
         if ($company instanceof Concrete) {
@@ -126,12 +126,12 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }
 
         // set new or changed parent
-        if ($this->isNewEntity($address) === true || $address->getParent()->getId() !== $newParent->getId()) {
+        if (true === $this->isNewEntity($address) || $address->getParent()->getId() !== $newParent->getId()) {
             $address->setParent($newParent);
             $address->setKey($this->getSaveKeyForMoving($address, $newParent));
 
             // remove old relations
-            if ($removeOldRelations === true) {
+            if (true === $removeOldRelations) {
                 $this->removeAddressRelations($address);
             }
         }
@@ -154,7 +154,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
 
         // @todo: fire pre event
 
-        if ($options['addressAssignmentType'] === 'move') {
+        if ('move' === $options['addressAssignmentType']) {
             foreach ($customer->getAddresses() as $address) {
                 $this->moveAddressToNewAddressStack($address, $company);
             }
@@ -176,9 +176,9 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         /** @psalm-suppress InternalClass,InternalMethod */
         $dependenciesResult = Dependency::getBySourceId((int)$address->getId(), 'object');
 
-        /** @psalm-suppress InternalMethod */
+        /* @psalm-suppress InternalMethod */
         foreach ($dependenciesResult->getRequiredBy() as $r) {
-            if ($r['type'] === 'object') {
+            if ('object' === $r['type']) {
                 $object = DataObject::getById($r['id']);
                 if ($object instanceof AddressesAwareInterface) {
                     $dependenciesObjects[] = $object;
@@ -203,7 +203,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
                 }
             }
 
-            if ($save === true) {
+            if (true === $save) {
                 $this->forceSave($dependenciesObject);
             }
         }
@@ -245,6 +245,6 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
 
     private function isNewEntity(ElementInterface $element): bool
     {
-        return null === $element->getId() || $element->getId() === 0;
+        return null === $element->getId() || 0 === $element->getId();
     }
 }

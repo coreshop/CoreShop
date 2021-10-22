@@ -21,7 +21,6 @@ interface OrderRendererInterface
     /**
      * Renders the condition.
      *
-     *
      * @return mixed
      */
     public function render(WorkerInterface $worker, OrderInterface $condition, string $prefix = null);

@@ -29,7 +29,7 @@ class AmountDecreaseAction implements ProductQuantityPriceRuleActionInterface
 
     public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context): int
     {
-        /**
+        /*
          * @var \CoreShop\Component\Core\Model\QuantityRangeInterface $range
          */
         Assert::isInstanceOf($range, \CoreShop\Component\Core\Model\QuantityRangeInterface::class);

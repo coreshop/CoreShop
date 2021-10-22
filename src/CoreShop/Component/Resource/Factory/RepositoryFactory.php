@@ -24,11 +24,11 @@ class RepositoryFactory implements RepositoryFactoryInterface
      * @psalm-param class-string $repositoryClassName
      */
     public function __construct(
-        /**
+        /*
          * @psalm-var class-string
          */
         private string $className,
-        /**
+        /*
          * @psalm-var class-string
          */
         private string $repositoryClassName

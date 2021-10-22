@@ -48,7 +48,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
         $documentNumber = $this->numberGenerator->generate($document);
 
-        /**
+        /*
          * @var OrderShipmentInterface $document
          * @var OrderInterface $order
          */

@@ -21,7 +21,6 @@ interface ValidationCheckoutStepInterface
     /**
      * Validates Step.
      *
-     *
      **/
     public function validate(OrderInterface $cart): bool;
 }

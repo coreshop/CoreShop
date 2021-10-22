@@ -43,13 +43,13 @@ class VoucherConditionChecker extends AbstractConditionChecker
 
         // max usage per code condition
         if (is_numeric($maxUsagePerCode)) {
-            if ($maxUsagePerCode != 0 && $storedCode->getUses() >= $maxUsagePerCode) {
+            if (0 != $maxUsagePerCode && $storedCode->getUses() >= $maxUsagePerCode) {
                 return false;
             }
         }
 
         // only once per cart condition
-        if ($onlyOnePerCart === true) {
+        if (true === $onlyOnePerCart) {
             $valid = true;
             if ($cart->hasPriceRules()) {
                 foreach ($cart->getPriceRuleItems() as $rule) {

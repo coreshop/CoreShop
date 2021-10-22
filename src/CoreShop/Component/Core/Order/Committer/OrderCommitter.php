@@ -43,7 +43,7 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
 
     public function commitOrder(OrderInterface $order): void
     {
-        /**
+        /*
          * @var \CoreShop\Component\Core\Model\OrderInterface $order
          */
         Assert::isInstanceOf($order, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -69,7 +69,7 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
 
         $this->cartManager->persistCart($order);
 
-        $originalShippingAddress = $order->hasShippableItems() === false ? $order->getInvoiceAddress() : $order->getShippingAddress();
+        $originalShippingAddress = false === $order->hasShippableItems() ? $order->getInvoiceAddress() : $order->getShippingAddress();
 
         /**
          * @var AddressInterface $shippingAddress

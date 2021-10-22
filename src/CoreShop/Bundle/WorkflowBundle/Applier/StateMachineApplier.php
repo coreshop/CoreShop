@@ -25,7 +25,7 @@ final class StateMachineApplier implements StateMachineApplierInterface
     public function apply($subject, ?string $workflowName = null, ?string $transition = null, bool $soft = true): void
     {
         $workflow = $this->stateMachineManager->get($subject, $workflowName);
-        if ($soft === true) {
+        if (true === $soft) {
             if (!$workflow->can($subject, $transition)) {
                 return;
             }

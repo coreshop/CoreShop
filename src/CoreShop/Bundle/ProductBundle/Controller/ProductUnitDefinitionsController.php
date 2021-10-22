@@ -69,7 +69,7 @@ class ProductUnitDefinitionsController extends ResourceController
 
         if ($product->hasUnitDefinitions()) {
             $productUnitDefinitions = $product->getUnitDefinitions();
-            $definitions = $type === 'additional'
+            $definitions = 'additional' === $type
                 ? $productUnitDefinitions->getAdditionalUnitDefinitions()
                 : $productUnitDefinitions->getUnitDefinitions();
         } else {

@@ -33,9 +33,7 @@ use Webmozart\Assert\Assert;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
  */
-class ProductUnitDefinitions extends Data implements
-    Data\CustomResourcePersistingInterface,
-    Data\CustomVersionMarshalInterface
+class ProductUnitDefinitions extends Data implements Data\CustomResourcePersistingInterface, Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -104,7 +102,7 @@ class ProductUnitDefinitions extends Data implements
      */
     public function getDefaultValue()
     {
-        if ($this->defaultValue !== null) {
+        if (null !== $this->defaultValue) {
             return $this->toNumeric($this->defaultValue);
         }
 
@@ -304,7 +302,7 @@ class ProductUnitDefinitions extends Data implements
         }
 
         $productUnitDefinitions = $this->load($object, ['force' => true]);
-        if ($productUnitDefinitions === null) {
+        if (null === $productUnitDefinitions) {
             return;
         }
 
@@ -346,7 +344,7 @@ class ProductUnitDefinitions extends Data implements
 
         Assert::isInstanceOf($tempStoreValuesRepository, ProductUnitDefinitionsRepositoryInterface::class);
 
-        if ($unitDefinitionsId !== null) {
+        if (null !== $unitDefinitionsId) {
             $unitDefinitionsEntity = $tempStoreValuesRepository->findOneForProduct($object);
         }
 
@@ -407,14 +405,10 @@ class ProductUnitDefinitions extends Data implements
             throw new \Exception('This version of Pimcore is not supported for product unit definitions import.');
         }
 
-        $data = $importValue == '' ? [] : json_decode($importValue, true);
+        $data = '' == $importValue ? [] : json_decode($importValue, true);
 
-        if (json_last_error() !== \JSON_ERROR_NONE) {
-            throw new \InvalidArgumentException(sprintf(
-                'Error decoding Product Unit Definitions JSON `%s`: %s',
-                $importValue,
-                json_last_error_msg()
-            ));
+        if (\JSON_ERROR_NONE !== json_last_error()) {
+            throw new \InvalidArgumentException(sprintf('Error decoding Product Unit Definitions JSON `%s`: %s', $importValue, json_last_error_msg()));
         }
 
         return $data;

@@ -37,7 +37,7 @@ class CartModifier implements CartModifierInterface
 
     public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
-        /**
+        /*
          * @var OrderInterface $storageList
          * @var OrderItemInterface $item
          */

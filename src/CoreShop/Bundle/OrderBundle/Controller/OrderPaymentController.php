@@ -71,9 +71,9 @@ class OrderPaymentController extends PimcoreController
         $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
         $totalPayed = array_sum(array_map(static function (PaymentInterface $payment) {
             $state = $payment->getState();
-            if ($state === PaymentInterface::STATE_CANCELLED ||
-                $state === PaymentInterface::STATE_FAILED ||
-                $state === PaymentInterface::STATE_REFUNDED) {
+            if (PaymentInterface::STATE_CANCELLED === $state ||
+                PaymentInterface::STATE_FAILED === $state ||
+                PaymentInterface::STATE_REFUNDED === $state) {
                 return 0;
             }
 

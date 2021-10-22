@@ -41,7 +41,7 @@ final class UniqueEntityValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
-        /**
+        /*
          * @var Concrete $value
          */
         Assert::isInstanceOf($value, Concrete::class);
@@ -61,12 +61,7 @@ final class UniqueEntityValidator extends ConstraintValidator
         foreach ($fields as $fieldName) {
             $getter = 'get' . ucfirst($fieldName);
             if (!method_exists($value, $getter)) {
-                throw new ConstraintDefinitionException(
-                    sprintf(
-                        'The field "%s" is not mapped by Concrete, so it cannot be validated for uniqueness.',
-                        $fieldName
-                    )
-                );
+                throw new ConstraintDefinitionException(sprintf('The field "%s" is not mapped by Concrete, so it cannot be validated for uniqueness.', $fieldName));
             }
             $criteria[$fieldName] = $value->$getter();
         }
@@ -110,7 +105,7 @@ final class UniqueEntityValidator extends ConstraintValidator
         if (count($elements) > 0) {
             $foundElement = $elements[0];
 
-            if ($constraint->allowSameEntity && count($elements) === 1 && $value->getId() === $foundElement->getId()) {
+            if ($constraint->allowSameEntity && 1 === count($elements) && $value->getId() === $foundElement->getId()) {
                 return;
             }
 

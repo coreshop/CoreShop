@@ -52,18 +52,18 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
                     try {
                         $file = $this->kernel->locateResource($pimcoreModel['classes']['install_file']);
 
-                        if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT) {
+                        if (CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT === $type) {
                             //$this->createClass($file, $modelName, true);
                             $classes[$identifier] = [
                                 'model' => $modelName,
                                 'file' => $file,
                             ];
-                        } elseif ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION) {
+                        } elseif (CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION === $type) {
                             $fieldCollections[$identifier] = [
                                 'model' => $modelName,
                                 'file' => $file,
                             ];
-                        } elseif ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK) {
+                        } elseif (CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK === $type) {
                             $bricks[$identifier] = [
                                 'model' => $modelName,
                                 'file' => $file,

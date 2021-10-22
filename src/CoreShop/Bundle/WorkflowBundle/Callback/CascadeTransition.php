@@ -36,7 +36,7 @@ class CascadeTransition
         }
         foreach ($objects as $object) {
             $workflow = $this->stateMachineManager->get($object, $workflowName);
-            if ($soft === true) {
+            if (true === $soft) {
                 if (!$workflow->can($object, $transition)) {
                     continue;
                 }

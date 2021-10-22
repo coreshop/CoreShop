@@ -30,7 +30,7 @@ final class ConfigurationContext implements Context
      */
     public function configurationGuestCheckoutIsEnabled(?StoreInterface $store = null): void
     {
-        if ($store !== null) {
+        if (null !== $store) {
             $this->configurationService->setForStore('system.guest.checkout', true, $store);
         } else {
             $this->configurationService->set('system.guest.checkout', true);

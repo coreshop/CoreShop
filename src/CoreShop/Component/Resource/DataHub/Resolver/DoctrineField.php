@@ -25,7 +25,7 @@ class DoctrineField
 
     public function getDefinition(): array
     {
-        /**
+        /*
          * Value will be the parent object when it's passed in.
          */
         return [

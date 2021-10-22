@@ -452,7 +452,7 @@ final class ProductContext implements Context
      */
     public function iCopyTheUnitDefinitionsAndQuantityPriceRulesToAllVariants(ProductInterface $product): void
     {
-        /**
+        /*
          * @var Concrete $product
          */
         Assert::isInstanceOf($product, Concrete::class);
@@ -547,7 +547,7 @@ final class ProductContext implements Context
     {
         $product->save();
 
-        if ($product->getType() === 'variant') {
+        if ('variant' === $product->getType()) {
             $this->sharedStorage->set('variant', $product);
         } else {
             $this->sharedStorage->set('product', $product);

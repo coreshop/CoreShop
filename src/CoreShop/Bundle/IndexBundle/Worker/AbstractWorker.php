@@ -82,13 +82,13 @@ abstract class AbstractWorker implements WorkerInterface
         $virtualObjectId = $object->getId();
         $virtualObjectActive = $object->getIndexableEnabled($index);
 
-        if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
+        if (Concrete::OBJECT_TYPE_VARIANT === $object->getType()) {
             /**
              * @var Concrete $parent
              */
             $parent = $object->getParent();
 
-            while ($parent->getType() === Concrete::OBJECT_TYPE_VARIANT && $parent instanceof $object) {
+            while (Concrete::OBJECT_TYPE_VARIANT === $parent->getType() && $parent instanceof $object) {
                 $parent = $parent->getParent();
             }
 
@@ -266,9 +266,7 @@ abstract class AbstractWorker implements WorkerInterface
                 return $interpreterObject;
             }
 
-            throw new \InvalidArgumentException(
-                sprintf('%s needs to implement "%s", "%s" given.', $column->getInterpreter(), InterpreterInterface::class, $interpreter)
-            );
+            throw new \InvalidArgumentException(sprintf('%s needs to implement "%s", "%s" given.', $column->getInterpreter(), InterpreterInterface::class, $interpreter));
         }
 
         return null;

@@ -24,7 +24,7 @@ class AddToCartFactory implements AddToCartFactoryInterface
      * @psalm-param class-string $addToCartClass
      */
     public function __construct(
-        /**
+        /*
          * @psalm-var class-string
          */
         protected string $addToCartClass
@@ -36,9 +36,7 @@ class AddToCartFactory implements AddToCartFactoryInterface
         $class = new $this->addToCartClass($cart, $cartItem);
 
         if (!in_array(AddToCartInterface::class, class_implements($class), true)) {
-            throw new \InvalidArgumentException(
-                sprintf('%s needs to implement "%s".', $class::class, AddToCartInterface::class)
-            );
+            throw new \InvalidArgumentException(sprintf('%s needs to implement "%s".', $class::class, AddToCartInterface::class));
         }
 
         return $class;

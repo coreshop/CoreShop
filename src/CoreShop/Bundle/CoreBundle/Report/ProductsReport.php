@@ -51,7 +51,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
 
         $page = $parameterBag->get('page', 1);
         $limit = $parameterBag->get('limit', 50);
-        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
+        $offset = $parameterBag->get('offset', 1 === $page ? 0 : ($page - 1) * $limit);
 
         $orderClassId = $this->orderRepository->getClassId();
         $orderItemClassId = $this->orderItemRepository->getClassId();
@@ -64,7 +64,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
             return [];
         }
 
-        if ($objectTypeFilter === 'container') {
+        if ('container' === $objectTypeFilter) {
             $unionData = [];
             foreach ($this->productStackRepository->getClassIds() as $id) {
                 $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
@@ -90,9 +90,9 @@ class ProductsReport implements ReportInterface, ExportReportInterface
             LIMIT $offset,$limit";
         } else {
             $productTypeCondition = '1=1';
-            if ($objectTypeFilter === 'object') {
+            if ('object' === $objectTypeFilter) {
                 $productTypeCondition = 'orderItems.mainObjectId = NULL';
-            } elseif ($objectTypeFilter === 'variant') {
+            } elseif ('variant' === $objectTypeFilter) {
                 $productTypeCondition = 'orderItems.mainObjectId IS NOT NULL';
             }
 

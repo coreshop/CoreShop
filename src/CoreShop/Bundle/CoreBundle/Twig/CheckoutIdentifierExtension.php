@@ -63,7 +63,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
             'cart' => [
                 'waiting' => false,
                 'done' => null !== $stepIdentifier,
-                'current' => $requestAttributes->get('_route') === 'coreshop_cart_summary',
+                'current' => 'coreshop_cart_summary' === $requestAttributes->get('_route'),
                 'valid' => null !== $stepIdentifier,
                 'url' => $this->router->generate('coreshop_cart_summary'),
             ],
@@ -93,13 +93,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         $getter = lcfirst(str_replace('_', '', ucwords($type, '_'))) . 'StepIdentifier';
 
         if (!method_exists($this, $getter)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'invalid identifier guess "%s", available guesses are: %s',
-                    $type,
-                    implode(', ', $validGuesser)
-                )
-            );
+            throw new \InvalidArgumentException(sprintf('invalid identifier guess "%s", available guesses are: %s', $type, implode(', ', $validGuesser)));
         }
 
         $cart = $this->cartContext->getCart();

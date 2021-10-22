@@ -131,7 +131,7 @@ class LoadDataFixturesCommand extends Command
     /**
      * Output list of fixtures.
      *
-     * @param array           $fixtures
+     * @param array $fixtures
      */
     protected function outputFixtures(InputInterface $input, OutputInterface $output, $fixtures)
     {
@@ -149,7 +149,7 @@ class LoadDataFixturesCommand extends Command
     /**
      * Process fixtures.
      *
-     * @param array           $fixtures
+     * @param array $fixtures
      */
     protected function processFixtures(InputInterface $input, OutputInterface $output, $fixtures)
     {
@@ -178,7 +178,7 @@ class LoadDataFixturesCommand extends Command
      */
     protected function getFixtureRelativePath(InputInterface $input)
     {
-        $fixtureRelativePath = $this->getTypeOfFixtures($input) == self::DEMO_FIXTURES_TYPE
+        $fixtureRelativePath = self::DEMO_FIXTURES_TYPE == $this->getTypeOfFixtures($input)
             ? self::DEMO_FIXTURES_PATH
             : self::MAIN_FIXTURES_PATH;
 

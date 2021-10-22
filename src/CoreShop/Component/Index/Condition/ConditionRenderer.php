@@ -34,8 +34,6 @@ final class ConditionRenderer implements ConditionRendererInterface
             }
         }
 
-        throw new \InvalidArgumentException(
-            sprintf('No Renderer found for condition with type %s', $condition::class)
-        );
+        throw new \InvalidArgumentException(sprintf('No Renderer found for condition with type %s', $condition::class));
     }
 }

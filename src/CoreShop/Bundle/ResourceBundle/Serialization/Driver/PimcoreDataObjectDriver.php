@@ -26,11 +26,11 @@ class PimcoreDataObjectDriver implements DriverInterface
     public function loadMetadataForClass(\ReflectionClass $class): ?ClassMetadata
     {
 //        //We don't want Pimcore entities to be serialized directly
-        if ($class->getNamespaceName() === \Pimcore\Model\DataObject::class) {
+        if (\Pimcore\Model\DataObject::class === $class->getNamespaceName()) {
             return new \JMS\Serializer\Metadata\ClassMetadata($name = $class->name);
         }
 
-        if ($class->getName() === \Pimcore\Model\DataObject\Fieldcollection::class) {
+        if (\Pimcore\Model\DataObject\Fieldcollection::class === $class->getName()) {
             return new \JMS\Serializer\Metadata\ClassMetadata($name = $class->name);
         }
 

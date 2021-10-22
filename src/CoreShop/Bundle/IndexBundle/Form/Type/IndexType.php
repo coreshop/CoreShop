@@ -78,7 +78,7 @@ class IndexType extends AbstractResourceType
     }
 
     /**
-     * @param string        $configurationType
+     * @param string $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType): void
     {
@@ -86,7 +86,7 @@ class IndexType extends AbstractResourceType
     }
 
     /**
-     * @param mixed         $data
+     * @param mixed $data
      */
     protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {

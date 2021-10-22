@@ -31,7 +31,7 @@ class CartMinimumQuantityValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
-        /**
+        /*
          * @var OrderInterface      $value
          * @var CartMinimumQuantity $constraint
          */
@@ -79,7 +79,7 @@ class CartMinimumQuantityValidator extends ConstraintValidator
                 $productsChecked[] = $product->getId();
             }
 
-            if ($lowerThenMinimum === true) {
+            if (true === $lowerThenMinimum) {
                 $invalidProduct = $product;
 
                 break;

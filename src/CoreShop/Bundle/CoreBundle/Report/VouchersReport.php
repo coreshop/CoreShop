@@ -46,7 +46,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
 
         $page = $parameterBag->get('page', 1);
         $limit = $parameterBag->get('limit', 25);
-        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
+        $offset = $parameterBag->get('offset', 1 === $page ? 0 : ($page - 1) * $limit);
 
         $classId = $this->orderRepository->getClassId();
 

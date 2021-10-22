@@ -23,10 +23,7 @@ use Pimcore\Model\DataObject\Concrete;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
  */
-class ProductUnitDefinition extends Data implements
-    Data\ResourcePersistenceAwareInterface,
-    Data\QueryResourcePersistenceAwareInterface,
-    Data\CustomVersionMarshalInterface
+class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface, Data\CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.

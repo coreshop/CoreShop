@@ -128,7 +128,7 @@ class CartRuleApplier implements CartRuleApplierInterface
             $amountNet = $distributedAmountNet[$index];
             $amountGross = $distributedAmountGross[$index];
 
-            if ($amountNet === 0) {
+            if (0 === $amountNet) {
                 continue;
             }
 
@@ -141,7 +141,7 @@ class CartRuleApplier implements CartRuleApplierInterface
                 $taxItems = $item->getTaxes() ?? new Fieldcollection();
 
                 if ($withTax) {
-                    /** @psalm-suppress InvalidArgument */
+                    /* @psalm-suppress InvalidArgument */
                     $taxItems->setItems(
                         $this->taxCollector->collectTaxesFromGross(
                             $taxCalculator,
@@ -150,7 +150,7 @@ class CartRuleApplier implements CartRuleApplierInterface
                         )
                     );
                 } else {
-                    /** @psalm-suppress InvalidArgument */
+                    /* @psalm-suppress InvalidArgument */
                     $taxItems->setItems(
                         $this->taxCollector->collectTaxes(
                             $taxCalculator,

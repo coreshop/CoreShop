@@ -29,15 +29,12 @@ interface CheckoutStepInterface
     /**
      * Commit Step from Request (validate form or whatever).
      *
-     *
-     *
      * @throws CheckoutException
      */
     public function commitStep(OrderInterface $cart, Request $request): bool;
 
     /**
      * Prepare Checkout Step.
-     *
      *
      * @return array $params for the view
      */

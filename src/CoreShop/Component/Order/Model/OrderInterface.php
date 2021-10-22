@@ -28,16 +28,7 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Objectbrick;
 
-interface OrderInterface extends
-    PimcoreModelInterface,
-    CurrencyAwareInterface,
-    StoreAwareInterface,
-    LocaleAwareInterface,
-    AdjustableInterface,
-    ConvertedAdjustableInterface,
-    CustomerAwareInterface,
-    PayableInterface,
-    StorageListInterface
+interface OrderInterface extends PimcoreModelInterface, CurrencyAwareInterface, StoreAwareInterface, LocaleAwareInterface, AdjustableInterface, ConvertedAdjustableInterface, CustomerAwareInterface, PayableInterface, StorageListInterface
 {
     public function getToken(): ?string;
 

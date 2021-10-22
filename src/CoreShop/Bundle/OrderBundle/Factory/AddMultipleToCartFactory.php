@@ -22,7 +22,7 @@ class AddMultipleToCartFactory implements AddMultipleToCartFactoryInterface
      * @psalm-param class-string $addMultipleToCartClass
      */
     public function __construct(
-        /**
+        /*
          * @psalm-var class-string
          */
         protected string $addMultipleToCartClass
@@ -34,9 +34,7 @@ class AddMultipleToCartFactory implements AddMultipleToCartFactoryInterface
         $class = new $this->addMultipleToCartClass($addToCarts);
 
         if (!in_array(AddMultipleToCartInterface::class, class_implements($class), true)) {
-            throw new \InvalidArgumentException(
-                sprintf('%s needs to implement "%s".', $class::class, AddMultipleToCartInterface::class)
-            );
+            throw new \InvalidArgumentException(sprintf('%s needs to implement "%s".', $class::class, AddMultipleToCartInterface::class));
         }
 
         return $class;

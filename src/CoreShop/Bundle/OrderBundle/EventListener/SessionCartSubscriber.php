@@ -45,7 +45,7 @@ final class SessionCartSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($event->getRequest()->attributes->get('_route') === '_wdt') {
+        if ('_wdt' === $event->getRequest()->attributes->get('_route')) {
             return;
         }
 

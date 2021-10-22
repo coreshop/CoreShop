@@ -78,13 +78,10 @@ final class DataObjectBatchListing implements Iterator, Countable
             $dao = $this->list->getDao();
 
             if (!method_exists($dao, 'getTotalCount')) {
-                throw new \InvalidArgumentException(sprintf(
-                    '%s listing class does not support count.',
-                    $this->list::class
-                ));
+                throw new \InvalidArgumentException(sprintf('%s listing class does not support count.', $this->list::class));
             }
 
-            /** @psalm-suppress InternalMethod */
+            /* @psalm-suppress InternalMethod */
             $this->total = $dao->getTotalCount();
         }
 
@@ -100,15 +97,10 @@ final class DataObjectBatchListing implements Iterator, Countable
             $dao = $this->list->getDao();
 
             if (!method_exists($dao, 'loadIdList')) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        '%s listing class does not support loadIdList.',
-                        $this->list::class
-                    )
-                );
+                throw new \InvalidArgumentException(sprintf('%s listing class does not support loadIdList.', $this->list::class));
             }
 
-            /** @psalm-suppress InternalMethod */
+            /* @psalm-suppress InternalMethod */
             $this->ids = $dao->loadIdList();
         }
 

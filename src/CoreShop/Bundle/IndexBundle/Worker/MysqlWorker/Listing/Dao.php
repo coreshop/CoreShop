@@ -38,13 +38,12 @@ class Dao
     /**
      * Load objects.
      *
-     *
      * @return array
      */
     public function load(QueryBuilder $queryBuilder)
     {
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
-        if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+        if (ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT == $this->model->getVariantMode()) {
             if (null !== $queryBuilder->getQueryPart('orderBy')) {
                 $queryBuilder->select('DISTINCT q.o_virtualObjectId as o_id');
                 $queryBuilder->addGroupBy('q.o_virtualObjectId');
@@ -65,8 +64,8 @@ class Dao
     /**
      * Load Group by values.
      *
-     * @param string       $fieldName
-     * @param bool         $countValues
+     * @param string $fieldName
+     * @param bool   $countValues
      *
      * @return array
      */
@@ -77,7 +76,7 @@ class Dao
         $queryBuilder->orderBy('q.' . $this->quoteIdentifier($fieldName));
 
         if ($countValues) {
-            if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+            if (ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT == $this->model->getVariantMode()) {
                 $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(DISTINCT o_virtualObjectId) AS count');
             } else {
                 $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(*) AS count');
@@ -103,8 +102,8 @@ class Dao
     /**
      * Load Grouo by Relation values.
      *
-     * @param string       $fieldName
-     * @param bool         $countValues
+     * @param string $fieldName
+     * @param bool   $countValues
      *
      * @return array
      */
@@ -126,7 +125,7 @@ class Dao
             $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
             $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
 
-            if ($this->model->getVariantMode() === ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+            if (ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT === $this->model->getVariantMode()) {
                 $queryBuilder->select($this->quoteIdentifier('dest') . ' AS ' . $this->quoteIdentifier('value') . ', count(DISTINCT src_virtualObjectId) AS ' . $this->quoteIdentifier('count'));
                 $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
 
@@ -178,13 +177,12 @@ class Dao
     /**
      * Get Count.
      *
-     *
      * @return int
      */
     public function getCount(QueryBuilder $queryBuilder)
     {
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
-        if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+        if (ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT == $this->model->getVariantMode()) {
             $queryBuilder->select('count(DISTINCT o_virtualObjectId)');
         } else {
             $queryBuilder->select('count(*)');

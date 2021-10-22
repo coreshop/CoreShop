@@ -23,7 +23,7 @@ final class StateTransitionChecker extends AbstractConditionChecker
      * @psalm-param class-string $interface
      */
     public function __construct(
-        /**
+        /*
          * @psalm-var class-string
          */
         private string $interface,

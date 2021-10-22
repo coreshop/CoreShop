@@ -73,7 +73,7 @@ final class CartPriceRuleContext implements Context
     {
         $voucherCode = $this->cartPriceRuleVoucherRepository->findByCode($voucherCode);
 
-        /**
+        /*
          * @var $voucherCode   CartPriceRuleVoucherCodeInterface
          * @var $cartPriceRule CartPriceRuleInterface
          */
@@ -456,7 +456,7 @@ final class CartPriceRuleContext implements Context
     {
         $voucherCode = $this->cartPriceRuleVoucherRepository->findByCode($voucherCode);
 
-        /**
+        /*
          * @var $voucherCode   CartPriceRuleVoucherCodeInterface
          * @var $cartPriceRule CartPriceRuleInterface
          */

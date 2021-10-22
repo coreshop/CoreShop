@@ -32,7 +32,7 @@ final class OrderShippingStateResolver implements StateResolverInterface
 
     public function resolve(OrderInterface $order): void
     {
-        if ($order->getShippingState() === OrderShipmentStates::STATE_SHIPPED) {
+        if (OrderShipmentStates::STATE_SHIPPED === $order->getShippingState()) {
             return;
         }
 

@@ -32,7 +32,7 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
 
     public function resolve(OrderInterface $order): void
     {
-        if ($order->getInvoiceState() === OrderInvoiceStates::STATE_INVOICED) {
+        if (OrderInvoiceStates::STATE_INVOICED === $order->getInvoiceState()) {
             return;
         }
 

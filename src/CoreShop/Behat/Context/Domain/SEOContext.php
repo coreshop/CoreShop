@@ -58,7 +58,7 @@ final class SEOContext implements Context
                 continue;
             }
 
-            if ($item->name === 'description') {
+            if ('description' === $item->name) {
                 $descriptionItem = $item;
 
                 break;

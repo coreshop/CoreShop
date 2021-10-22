@@ -23,8 +23,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 abstract class AbstractModelExtension extends AbstractPimcoreExtension
 {
     /**
-     * @param string           $applicationName
-     * @param string           $driver
+     * @param string $applicationName
+     * @param string $driver
      */
     protected function registerResources($applicationName, $driver, array $resources, ContainerBuilder $container): void
     {
@@ -59,7 +59,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
     }
 
     /**
-     * @param string           $applicationName
+     * @param string $applicationName
      */
     protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container): void
     {
@@ -178,8 +178,8 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
     }
 
     /**
-     * @param string           $applicationName
-     * @param array            $bundles
+     * @param string $applicationName
+     * @param array  $bundles
      */
     public function registerDependantBundles($applicationName, $bundles, ContainerBuilder $container): void
     {

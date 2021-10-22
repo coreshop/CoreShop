@@ -40,7 +40,7 @@ final class CartItemProcessor implements CartItemProcessorInterface
         int $itemDiscount,
         array $context
     ): void {
-        /**
+        /*
          * @var \CoreShop\Component\Core\Model\OrderItemInterface $cartItem
          */
         Assert::isInstanceOf($cartItem, \CoreShop\Component\Core\Model\OrderItemInterface::class);
@@ -126,7 +126,7 @@ final class CartItemProcessor implements CartItemProcessorInterface
         }
 
         if ($product instanceof ProductInterface) {
-            /**
+            /*
              * @var \CoreShop\Component\Core\Model\OrderItemInterface $cartItem
              */
             $cartItem->setDigitalProduct($product->getDigitalProduct());

@@ -32,7 +32,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
-        /** @var CartPriceRule $constraint */
+        /* @var CartPriceRule $constraint */
         Assert::isInstanceOf($constraint, CartPriceRule::class);
 
         if (!$value instanceof OrderInterface) {

@@ -98,7 +98,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
                     $absolutePath = $hostUrl . $absolutePath;
                 } else {
                     $absolutePath = $hostUrl . "/$path";
-                    if ($path[0] == '?') {
+                    if ('?' == $path[0]) {
                         $absolutePath = $hostUrl . $path;
                     }
                     $netUrl = new \Net_URL2($absolutePath);

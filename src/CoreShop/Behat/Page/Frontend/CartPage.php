@@ -61,7 +61,10 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
 
     public function getItemUnitPriceWithUnit(string $name, ProductUnitDefinitionInterface $unitDefinition): string
     {
-        $unitPrice = $this->getElement('item_unit_price_unit', ['%name%' => $name, '%unitId%' => $unitDefinition->getId()]);
+        $unitPrice = $this->getElement(
+            'item_unit_price_unit',
+            ['%name%' => $name, '%unitId%' => $unitDefinition->getId()]
+        );
 
         return trim($unitPrice->getText());
     }
@@ -75,7 +78,10 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
 
     public function getItemTotalPriceWithUnit(string $name, ProductUnitDefinitionInterface $unitDefinition): string
     {
-        $unitPrice = $this->getElement('item_total_price_unit', ['%name%' => $name, '%unitId%' => $unitDefinition->getId()]);
+        $unitPrice = $this->getElement(
+            'item_total_price_unit',
+            ['%name%' => $name, '%unitId%' => $unitDefinition->getId()]
+        );
 
         return trim($unitPrice->getText());
     }

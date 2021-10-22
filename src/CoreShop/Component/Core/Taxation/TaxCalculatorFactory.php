@@ -50,7 +50,7 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
                 $firstRow = false;
             }
 
-            if ($taxRule->getBehavior() === TaxCalculatorInterface::DISABLE_METHOD) {
+            if (TaxCalculatorInterface::DISABLE_METHOD === $taxRule->getBehavior()) {
                 break;
             }
         }

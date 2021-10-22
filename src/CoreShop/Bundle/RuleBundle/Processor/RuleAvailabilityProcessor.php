@@ -48,7 +48,7 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
             'coreshop.rule.availability_check'
         );
 
-        if ($event->isAvailable() === false) {
+        if (false === $event->isAvailable()) {
             $rule->setActive(false);
             $this->entityManager->persist($rule);
         }

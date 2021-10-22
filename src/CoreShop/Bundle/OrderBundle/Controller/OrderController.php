@@ -147,7 +147,7 @@ class OrderController extends PimcoreController
 
         $workflow->apply($order, $transition);
 
-        if ($order instanceof DataObject\Concrete && $transition === OrderTransitions::TRANSITION_CANCEL) {
+        if ($order instanceof DataObject\Concrete && OrderTransitions::TRANSITION_CANCEL === $transition) {
             $this->get(HistoryLogger::class)->log(
                 $order,
                 'Admin Order Cancellation'
@@ -196,12 +196,12 @@ class OrderController extends PimcoreController
             $gridHelper = new GridHelperService();
 
             $conditionFilters = [];
-            /** @psalm-suppress InternalMethod */
+            /* @psalm-suppress InternalMethod */
             $conditionFilters[] = $gridHelper->getFilterCondition(
                 $request->get('filter'),
                 DataObject\ClassDefinition::getByName((string)$this->container->getParameter('coreshop.model.order.pimcore_class_name'))
             );
-            if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
+            if (count($conditionFilters) > 0 && '(())' !== $conditionFilters[0]) {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
         }
@@ -215,7 +215,7 @@ class OrderController extends PimcoreController
         if ($sortingSettings['order']) {
             $order = $sortingSettings['order'];
         }
-        if ($sortingSettings['orderKey'] !== '') {
+        if ('' !== $sortingSettings['orderKey']) {
             $orderKey = $sortingSettings['orderKey'];
         }
 
@@ -514,7 +514,7 @@ class OrderController extends PimcoreController
     {
         $summary = [];
 
-        if ($order->getDiscount() !== 0) {
+        if (0 !== $order->getDiscount()) {
             $summary[] = [
                 'key' => $order->getDiscount() < 0 ? 'discount' : 'surcharge',
                 'value' => $order->getDiscount(),
@@ -617,7 +617,7 @@ class OrderController extends PimcoreController
         foreach ($payments as $payment) {
             $details = [];
             foreach ($payment->getDetails() as $detailName => $detailValue) {
-                if (empty($detailValue) && $detailValue != 0) {
+                if (empty($detailValue) && 0 != $detailValue) {
                     continue;
                 }
                 if (is_array($detailValue)) {

@@ -39,7 +39,7 @@ final class CustomerSecurityValidationListener
             return;
         }
 
-        if ($object->getUser() === null) {
+        if (null === $object->getUser()) {
             return;
         }
 
@@ -56,7 +56,7 @@ final class CustomerSecurityValidationListener
 
         $objects = $listing->getObjects();
 
-        if (count($objects) === 0) {
+        if (0 === count($objects)) {
             return;
         }
 

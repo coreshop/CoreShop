@@ -182,7 +182,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
 
     public function __clone()
     {
-        if ($this->id === null) {
+        if (null === $this->id) {
             return;
         }
 

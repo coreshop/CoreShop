@@ -115,7 +115,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     public function getObjects()
     {
-        if ($this->objects === null) {
+        if (null === $this->objects) {
             $this->load();
         }
 
@@ -375,7 +375,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     protected function addQueryFromConditions(QueryBuilder $queryBuilder, $excludeConditions = false, $excludedFieldName = null, $variantMode = null)
     {
-        if ($variantMode == null) {
+        if (null == $variantMode) {
             $variantMode = $this->getVariantMode();
         }
 
@@ -397,12 +397,12 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         }
 
         //variant handling and userspecific conditions
-        if ($variantMode == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+        if (AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT == $variantMode) {
             if (!$excludeConditions) {
                 $this->addUserSpecificConditions($queryBuilder, $excludedFieldName);
             }
         } else {
-            if ($variantMode == AbstractListing::VARIANT_MODE_HIDE) {
+            if (AbstractListing::VARIANT_MODE_HIDE == $variantMode) {
                 $queryBuilder->andWhere('q.o_type != \'variant\'');
             }
             if (!$excludeConditions) {
@@ -494,7 +494,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     public function count()
     {
-        if ($this->totalCount === null) {
+        if (null === $this->totalCount) {
             $queryBuilder = $this->dao->createQueryBuilder();
             $this->addQueryFromConditions($queryBuilder);
             $this->addJoins($queryBuilder);
@@ -550,6 +550,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     public function valid()
     {
-        return $this->current() !== false;
+        return false !== $this->current();
     }
 }

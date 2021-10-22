@@ -35,7 +35,7 @@ final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterfac
     {
         /** @var Condition $condition */
         foreach ($rule->getConditions() as $condition) {
-            if ($condition->getType() !== 'timespan') {
+            if ('timespan' !== $condition->getType()) {
                 continue;
             }
 

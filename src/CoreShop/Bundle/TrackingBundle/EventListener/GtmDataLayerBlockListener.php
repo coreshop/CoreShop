@@ -39,7 +39,7 @@ class GtmDataLayerBlockListener
             return;
         }
 
-        /**
+        /*
          * @psalm-suppress InternalMethod
          */
         if (!Tool::useFrontendOutputFilters()) {
@@ -47,12 +47,12 @@ class GtmDataLayerBlockListener
         }
 
         $serverVars = $event->getRequest()->server;
-        if ($serverVars->get('HTTP_X_PURPOSE') === 'preview') {
+        if ('preview' === $serverVars->get('HTTP_X_PURPOSE')) {
             return;
         }
 
         $response = $event->getResponse();
-        /**
+        /*
          * @psalm-suppress InternalMethod
          */
         if (!$this->responseHelper->isHtmlResponse($response)) {
@@ -68,7 +68,7 @@ class GtmDataLayerBlockListener
 
         if (!empty($codeHead)) {
             $headEndPosition = stripos($content, '</head>');
-            if ($headEndPosition !== false) {
+            if (false !== $headEndPosition) {
                 $content = substr_replace($content, $codeHead . '</head>', $headEndPosition, 7);
             }
         }

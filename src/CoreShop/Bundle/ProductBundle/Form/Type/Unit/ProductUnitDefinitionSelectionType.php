@@ -39,7 +39,7 @@ final class ProductUnitDefinitionSelectionType extends AbstractType
                 return null;
             },
             function (mixed $value) {
-                if ($value === null) {
+                if (null === $value) {
                     return null;
                 }
 

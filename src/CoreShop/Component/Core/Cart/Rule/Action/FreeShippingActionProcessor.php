@@ -32,7 +32,7 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
 
         // Don't apply FreeShipping Conditions multiple times
         foreach ($shippingAdjustments as $adjustment) {
-            if ($adjustment->getLabel() === 'FreeShipping') {
+            if ('FreeShipping' === $adjustment->getLabel()) {
                 return true;
             }
         }

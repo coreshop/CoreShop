@@ -31,7 +31,7 @@ final class CartContextResolver implements CartContextResolverInterface
 
         $store = $cart->getStore();
 
-        /**
+        /*
          * @var StoreInterface $store
          */
         Assert::isInstanceOf($store, StoreInterface::class);

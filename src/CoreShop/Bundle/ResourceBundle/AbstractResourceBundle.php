@@ -37,9 +37,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
 
                 if (class_exists($compilerPassClassName)) {
                     if (!method_exists($compilerPassClassName, $compilerPassMethod)) {
-                        throw new InvalidConfigurationException(
-                            "The 'mappingFormat' value is invalid, must be 'xml', 'yml' or 'annotation'."
-                        );
+                        throw new InvalidConfigurationException("The 'mappingFormat' value is invalid, must be 'xml', 'yml' or 'annotation'.");
                     }
 
                     switch ($this->mappingFormat) {

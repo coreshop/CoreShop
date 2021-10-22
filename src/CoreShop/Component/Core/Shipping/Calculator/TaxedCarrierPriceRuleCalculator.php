@@ -39,7 +39,7 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
         bool $withTax = true,
         array $context = []
     ): int {
-        /**
+        /*
          * @var StoreAwareInterface $shippable
          * @var ShippableInterface $shippable
          */
@@ -47,7 +47,7 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
 
         $store = $shippable->getStore();
 
-        /**
+        /*
          * @var StoreInterface $store
          */
         Assert::isInstanceOf($store, StoreInterface::class);

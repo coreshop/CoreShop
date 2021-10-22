@@ -17,7 +17,7 @@ namespace CoreShop\Bundle\WorkflowBundle\Applier;
 interface StateMachineApplierInterface
 {
     /**
-     * @param mixed       $subject
+     * @param mixed $subject
      */
     public function apply($subject, ?string $workflowName = null, ?string $transition = null, bool $soft = true): void;
 }

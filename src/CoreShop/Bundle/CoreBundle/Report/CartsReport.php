@@ -56,7 +56,7 @@ class CartsReport implements ReportInterface, PortletInterface
 
         $orderClassId = $this->orderRepository->getClassId();
 
-        if ($storeId === null) {
+        if (null === $storeId) {
             return [];
         }
 
