@@ -28,7 +28,7 @@ jobs:
     strategy:
       matrix:
         php: [ 8.0 ]
-        pimcore: [ ^10.1, ^10.2, 10.x-dev ]
+        pimcore: [ ^10.2, 10.x-dev ]
         database: [ 'mysql:8.0', 'mariadb:10.5' ]
         dependencies: [ highest, lowest ]
 

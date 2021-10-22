@@ -29,7 +29,7 @@
     "doctrine/common": "^3.1",
     "doctrine/orm": "^2.9",
     "webmozart/assert": "^1.10",
-    "pimcore/pimcore": "^10.1"
+    "pimcore/pimcore": "^10.2.2"
   },
   "require-dev": {
     "phpstan/phpstan": "^0.12",

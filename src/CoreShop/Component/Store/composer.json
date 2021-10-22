@@ -26,7 +26,7 @@
   "require": {
     "coreshop/resource": "^3.0",
     "coreshop/currency": "^3.0",
-    "pimcore/pimcore": "^10.1",
+    "pimcore/pimcore": "^10.2.2",
     "laminas/laminas-stdlib": "^3.6"
   },
   "require-dev": {

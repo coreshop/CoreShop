@@ -24,7 +24,7 @@
     }
   ],
   "require": {
-    "pimcore/pimcore": "^10.1"
+    "pimcore/pimcore": "^10.2.2"
   },
   "require-dev": {
     "phpstan/phpstan": "^0.12",

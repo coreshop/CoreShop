@@ -27,7 +27,7 @@
     "coreshop/registry": "^3.0",
     "coreshop/pimcore-bundle": "^3.0",
     "sylius/theme-bundle": "^2.2",
-    "pimcore/pimcore": "^10.1",
+    "pimcore/pimcore": "^10.2.2",
     "laminas/laminas-stdlib": "^3.6"
   },
   "require-dev": {

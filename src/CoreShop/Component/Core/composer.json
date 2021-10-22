@@ -44,7 +44,7 @@
     "coreshop/seo": "^3.0",
     "coreshop/user": "^3.0",
     "coreshop/tracking": "^3.0",
-    "pimcore/pimcore": "^10.1"
+    "pimcore/pimcore": "^10.2.2"
   },
   "require-dev": {
     "phpstan/phpstan": "^0.12",
