@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -45,6 +46,12 @@ class CustomerType extends AbstractResourceType
                 'label' => 'coreshop.form.customer.lastname',
             ]);
 
+        if ($options['allow_email']) {
+            $builder->add('email', EmailType::class, [
+                'label' => 'coreshop.form.customer.email',
+            ]);
+        }
+
         $builder
             ->add('newsletterActive', CheckboxType::class, [
                 'label' => 'coreshop.form.customer.newsletter.subscribe',
@@ -57,6 +64,7 @@ class CustomerType extends AbstractResourceType
         parent::configureOptions($resolver);
 
         $resolver->setDefault('customer', false);
+        $resolver->setDefault('allow_email', false);
         $resolver->setDefault('csrf_protection', true);
     }
 

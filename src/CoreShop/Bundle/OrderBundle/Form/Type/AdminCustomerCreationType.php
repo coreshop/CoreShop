@@ -27,9 +27,7 @@ class AdminCustomerCreationType extends AbstractType
     {
         $builder
             ->add('customer', CustomerType::class, [
-                'allow_password_field' => false,
-                'use_repeat_email' => false,
-                'guest' => true,
+                'allow_email' => true,
                 'constraints' => [
                     new Valid(['groups' => ['coreshop']]),
                 ],

@@ -15,7 +15,7 @@ CoreShop\Component\Order\Model\OrderShipment:
         shipmentDate:
             serialized_name: shipmentDate
             exp: object.getShipmentDate()
-            type: integer
+            type: carbon
             groups: [Detailed]
         shipmentNumber:
             serialized_name: shipmentNumber

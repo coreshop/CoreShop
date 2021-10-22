@@ -20,7 +20,7 @@ CoreShop\Component\Order\Model\OrderInvoice:
         invoiceDate:
             serialized_name: invoiceDate
             exp: object.getInvoiceDate()
-            type: integer
+            type: carbon
             groups: [Detailed]
         invoiceNumber:
             serialized_name: invoiceNumber
