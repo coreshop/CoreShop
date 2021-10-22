@@ -24,7 +24,7 @@ abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
     protected ?DocumentElement $document = null;
     protected ?NodeElement $tabElement = null;
 
-    public function __construct(protected Session $session, protected array|\ArrayAccess $parameters = [])
+    public function __construct(protected Session $session, protected array|\ArrayAccess $minkParameters = [])
     {
     }
 
