@@ -91,7 +91,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
                     $document,
                     $orderItem,
                     $documentItem,
-                    $quantity,
+                    (int)$quantity,
                     $item
                 );
             }

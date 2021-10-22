@@ -67,9 +67,6 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         }, false);
         $items = [];
 
-        /*
-         * @var $cartItem CartItemInterface
-         */
         foreach ($itemsToTransform as $item) {
             $documentItem = $this->shipmentItemFactory->createNew();
             $orderItem = $this->orderItemRepository->find($item['orderItemId']);
@@ -80,7 +77,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
                     $document,
                     $orderItem,
                     $documentItem,
-                    $quantity,
+                    (int)$quantity,
                     $item
                 );
             }

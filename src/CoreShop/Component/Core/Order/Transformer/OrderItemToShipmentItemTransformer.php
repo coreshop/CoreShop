@@ -30,7 +30,7 @@ final class OrderItemToShipmentItemTransformer implements OrderDocumentItemTrans
         OrderDocumentInterface $orderDocument,
         OrderItemInterface $orderItem,
         OrderDocumentItemInterface $documentItem,
-        float $quantity,
+        int $quantity,
         array $options = []
     ): OrderDocumentItemInterface {
         if ($documentItem instanceof OrderShipmentItemInterface && $orderItem instanceof \CoreShop\Component\Core\Model\OrderItemInterface) {

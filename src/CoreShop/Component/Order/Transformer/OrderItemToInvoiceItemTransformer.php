@@ -33,7 +33,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         OrderDocumentInterface $orderDocument,
         OrderItemInterface $orderItem,
         OrderDocumentItemInterface $documentItem,
-        float $quantity,
+        int $quantity,
         array $options = []
     ): OrderDocumentItemInterface
     {
