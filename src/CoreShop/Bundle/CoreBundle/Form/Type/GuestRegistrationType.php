@@ -51,10 +51,10 @@ class GuestRegistrationType extends AbstractResourceType
         $builder
             ->add('gender', ChoiceType::class, [
                 'label' => 'coreshop.form.customer.gender',
-                'choices' => array(
+                'choices' => [
                     'coreshop.form.customer.gender.male' => 'male',
                     'coreshop.form.customer.gender.female' => 'female',
-                ),
+                ],
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'coreshop.form.customer.firstname',
@@ -120,7 +120,6 @@ class GuestRegistrationType extends AbstractResourceType
 
         $resolver->setDefault('csrf_protection', true);
     }
-
 
     public function getBlockPrefix(): string
     {

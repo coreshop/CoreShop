@@ -1,4 +1,6 @@
-<?php /** @noinspection ReturnTypeCanBeDeclaredInspection */
+<?php
+
+/** @noinspection ReturnTypeCanBeDeclaredInspection */
 /**
  * CoreShop.
  *

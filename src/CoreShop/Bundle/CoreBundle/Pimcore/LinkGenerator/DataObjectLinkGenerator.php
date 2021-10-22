@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator;
 
-use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Pimcore\DataObject\AbstractSluggableLinkGenerator;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

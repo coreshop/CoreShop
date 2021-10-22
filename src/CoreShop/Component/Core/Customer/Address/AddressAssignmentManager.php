@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Customer\Address;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Customer\CustomerTransformHelperInterface;
 use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface;
+use CoreShop\Component\Core\Customer\CustomerTransformHelperInterface;
 use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 
@@ -36,7 +36,7 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
         $companyKey = $useTranslationKeys ? 'coreshop.form.customer.address_affiliation.company' : 'Company';
 
         return [
-            $ownKey     => CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN,
+            $ownKey => CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN,
             $companyKey => CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_COMPANY,
         ];
     }
@@ -54,12 +54,12 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
 
         if ($customer->hasAddress($address)) {
             return CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN;
-        } elseif ($company->hasAddress($address)) {
+        }
+        if ($company->hasAddress($address)) {
             return CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_COMPANY;
         }
 
         throw new \InvalidArgumentException(sprintf('Could not determine address affiliation for customer "%s"', $customer->getId()));
-
     }
 
     public function checkAddressAffiliationPermissionForCustomer(CustomerInterface $customer, AddressInterface $address): bool

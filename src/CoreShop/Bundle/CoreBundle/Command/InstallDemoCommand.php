@@ -24,7 +24,8 @@ final class InstallDemoCommand extends AbstractInstallCommand
         $this
             ->setName('coreshop:install:demo')
             ->setDescription('Install CoreShop Demo Data.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command install CoreShop Demo Data.
 EOT
             );

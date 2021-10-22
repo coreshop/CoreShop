@@ -39,10 +39,10 @@ final class CurrencyConverter implements CurrencyConverterInterface
         }
 
         if ($exchangeRate->getFromCurrency()->getIsoCode() === $fromCurrencyCode) {
-            return (int) round($value * $exchangeRate->getExchangeRate());
+            return (int)round($value * $exchangeRate->getExchangeRate());
         }
 
-        return (int) round($value / $exchangeRate->getExchangeRate());
+        return (int)round($value / $exchangeRate->getExchangeRate());
     }
 
     private function getExchangeRate(string $fromCode, string $toCode): ?ExchangeRateInterface

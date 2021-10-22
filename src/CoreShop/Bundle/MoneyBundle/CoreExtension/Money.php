@@ -121,7 +121,7 @@ class Money extends DataObject\ClassDefinition\Data implements
      */
     public function setDefaultValue($defaultValue)
     {
-        if (strlen(strval($defaultValue)) > 0) {
+        if (strlen((string)$defaultValue) > 0) {
             $this->defaultValue = $defaultValue;
         }
 
@@ -193,7 +193,7 @@ class Money extends DataObject\ClassDefinition\Data implements
     public function getDataForResource($data, $object = null, $params = [])
     {
         if (is_numeric($data) && !is_int($data)) {
-            $data = (int) $data;
+            $data = (int)$data;
         }
 
         if (is_int($data)) {
@@ -268,12 +268,15 @@ class Money extends DataObject\ClassDefinition\Data implements
         switch ($class::class) {
             case DataObject\Objectbrick\Definition::class:
                 $returnType = '\\Pimcore\\Model\\DataObject\\Objectbrick\\Data\\' . ucfirst($class->getKey());
+
                 break;
             case DataObject\Fieldcollection\Definition::class:
                 $returnType = '\\Pimcore\\Model\\DataObject\\FieldCollection\\Data\\' . ucfirst($class->getKey());
+
                 break;
             case DataObject\ClassDefinition::class:
                 $returnType = '\\Pimcore\\Model\\DataObject\\FieldCollection\\Data\\' . ucfirst($class->getName());
+
                 break;
         }
 
@@ -503,8 +506,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         if ($class instanceof DataObject\Objectbrick\Definition) {
             $classname = 'Objectbrick\\Data\\' . ucfirst($class->getKey());
             $containerGetter = 'getDefinition';
-        }
-        else if ($class instanceof DataObject\Fieldcollection\Definition) {
+        } elseif ($class instanceof DataObject\Fieldcollection\Definition) {
             $classname = 'FieldCollection\\Data\\' . ucfirst($class->getKey());
             $containerGetter = 'getDefinition';
         } else {
@@ -573,7 +575,7 @@ class Money extends DataObject\ClassDefinition\Data implements
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (is_numeric($data)) {
-            return (int) round((round((float) $data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
+            return (int)round((round((float)$data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
         }
 
         return $data;
@@ -597,7 +599,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
             $data = $this->toNumeric($data);
 
-            if ($data >= PHP_INT_MAX) {
+            if ($data >= \PHP_INT_MAX) {
                 throw new ValidationException('Value exceeds PHP_INT_MAX please use an input data type instead of numeric!');
             }
 
@@ -615,7 +617,7 @@ class Money extends DataObject\ClassDefinition\Data implements
     {
         $data = $this->getDataFromObjectParam($object, $params);
 
-        return strval($data);
+        return (string)$data;
     }
 
     public function getFromCsvImport($importValue, $object = null, $params = [])
@@ -664,10 +666,10 @@ class Money extends DataObject\ClassDefinition\Data implements
      */
     protected function toNumeric($value): float|int
     {
-        if (!str_contains((string) $value, '.')) {
-            return (int) $value;
+        if (!str_contains((string)$value, '.')) {
+            return (int)$value;
         }
 
-        return (float) $value;
+        return (float)$value;
     }
 }

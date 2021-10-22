@@ -23,8 +23,6 @@ interface CheckoutStepInterface
 
     /**
      * Determines if this step should be forward if valid.
-     *
-     *
      */
     public function doAutoForward(OrderInterface $cart): bool;
 

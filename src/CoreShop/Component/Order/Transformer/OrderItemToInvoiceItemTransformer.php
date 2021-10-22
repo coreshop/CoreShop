@@ -16,7 +16,6 @@ namespace CoreShop\Component\Order\Transformer;
 
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderDocumentItemInterface;
-use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
@@ -35,8 +34,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         OrderDocumentItemInterface $documentItem,
         int $quantity,
         array $options = []
-    ): OrderDocumentItemInterface
-    {
+    ): OrderDocumentItemInterface {
         Assert::isInstanceOf($documentItem, OrderInvoiceItemInterface::class);
 
         $this->eventDispatcher->dispatchPreEvent(

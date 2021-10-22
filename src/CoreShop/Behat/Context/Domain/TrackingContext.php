@@ -16,7 +16,6 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Behat\Service\Tracking\ConfigResolver;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce;
@@ -178,12 +177,12 @@ final class TrackingContext implements Context
 
             if ($tracker instanceof UniversalEcommerce) {
                 $code = implode(
-                    PHP_EOL,
+                    \PHP_EOL,
                     $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_AFTER_TRACK]['append']
                 );
             } else {
                 $code = implode(
-                    PHP_EOL,
+                    \PHP_EOL,
                     $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_BEFORE_TRACK]['append']
                 );
             }

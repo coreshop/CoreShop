@@ -143,7 +143,6 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         $daysTimestamp = Carbon::now();
         $daysTimestamp->subDays($days);
 
-
         $conditions = ['o_creationDate < ? AND saleState = ? AND orderState IN (?, ?, ?) AND paymentState <> ?'];
         $params = [];
         $params[] = $daysTimestamp->getTimestamp();

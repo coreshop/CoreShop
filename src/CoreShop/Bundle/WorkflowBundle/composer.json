@@ -35,7 +35,7 @@
     "symfony/config": "^5.2.0",
     "symfony/workflow": "^5.2.0",
     "symfony/yaml": "^5.2.0",
-    "pimcore/pimcore": "^10.1"
+    "pimcore/pimcore": "^10.2.2"
   },
   "require-dev": {
     "phpstan/phpstan": "^0.12",

@@ -45,8 +45,7 @@ final class MailProcessor implements Mail\MailProcessorInterface
         //BC Remove with 3.1
         if (method_exists($mail, 'setEnableLayoutOnPlaceholderRendering')) {
             $mail->setEnableLayoutOnPlaceholderRendering(false);
-        }
-        elseif (method_exists($mail, 'setEnableLayoutOnRendering')) {
+        } elseif (method_exists($mail, 'setEnableLayoutOnRendering')) {
             $mail->setEnableLayoutOnRendering(false);
         }
 

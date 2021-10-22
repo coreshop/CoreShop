@@ -52,7 +52,7 @@ final class NotificationRuleListener implements NotificationRuleListenerInterfac
     {
         $data = [
             'subject' => $type->getSubject(),
-            'arguments' => $type->getArguments()
+            'arguments' => $type->getArguments(),
         ];
 
         if (!is_dir($this->cacheDir)) {

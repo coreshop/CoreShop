@@ -101,7 +101,7 @@ class NotificationRuleController extends ResourceController
             $toSort = $toRule->getSort();
 
             if ($position === 'before') {
-                $toSort--;
+                --$toSort;
             }
 
             $criteria = new Criteria();

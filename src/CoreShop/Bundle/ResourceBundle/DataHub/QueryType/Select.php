@@ -33,7 +33,7 @@ class Select extends Input
             'resolve' => $this->getResolver($attribute, $fieldDefinition, $class),
         ],
             $container
-            );
+        );
     }
 
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)

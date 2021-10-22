@@ -23,8 +23,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 {
     public TrackerInterface $tracker;
+
     public ConfigResolverInterface $config;
+
     protected array $dependencies = ['ec'];
+
     protected bool $dependenciesIncluded = false;
 
     public function setTracker(TrackerInterface $tracker): void
@@ -230,6 +233,6 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
             return false;
         }
 
-        return (bool) $config->get('gtagcode');
+        return (bool)$config->get('gtagcode');
     }
 }

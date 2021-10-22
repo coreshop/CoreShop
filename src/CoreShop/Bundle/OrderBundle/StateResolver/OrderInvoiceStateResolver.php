@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
@@ -22,7 +23,6 @@ use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderInvoiceStateResolver implements StateResolverInterface
 {
@@ -55,7 +55,7 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         /** @var OrderInvoiceInterface $invoice */
         foreach ($invoices as $invoice) {
             if ($invoice->getState() === $invoiceState) {
-                $items++;
+                ++$items;
             }
         }
 

@@ -17,10 +17,10 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Core\Model\PimcoreStoresAwareInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Pimcore\Model\DataObject;
 use Pimcore\Model\Site;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Pimcore\Model\DataObject;
 
 class ProductPreviewController extends AdminController
 {

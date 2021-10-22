@@ -28,8 +28,7 @@ class AddToCartFactory implements AddToCartFactoryInterface
          * @psalm-var class-string
          */
         protected string $addToCartClass
-    )
-    {
+    ) {
     }
 
     public function createWithCartAndCartItem(OrderInterface $cart, OrderItemInterface $cartItem): AddToCartInterface

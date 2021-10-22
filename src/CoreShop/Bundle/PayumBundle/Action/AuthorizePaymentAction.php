@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\PayumBundle\Action;
 
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
+use CoreShop\Component\Core\Model\PaymentInterface as CoreShopPaymentInterface;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -23,14 +24,13 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Model\Payment as PayumPayment;
 use Payum\Core\Request\Authorize;
 use Payum\Core\Request\Convert;
-use CoreShop\Component\Core\Model\PaymentInterface as CoreShopPaymentInterface;
 
 final class AuthorizePaymentAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @param Authorize $request
      */
@@ -62,12 +62,12 @@ final class AuthorizePaymentAction implements ActionInterface, GatewayAwareInter
             $request->setModel($details);
             $this->gateway->execute($request);
         } finally {
-            $payment->setDetails((array) $details);
+            $payment->setDetails((array)$details);
         }
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function supports($request): bool
     {

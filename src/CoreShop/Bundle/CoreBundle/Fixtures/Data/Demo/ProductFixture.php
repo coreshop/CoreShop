@@ -23,7 +23,7 @@ class ProductFixture extends AbstractProductFixture
         if (!count($this->container->get('coreshop.repository.product')->findAll())) {
             $productsCount = 25;
 
-            for ($i = 0; $i < $productsCount; $i++) {
+            for ($i = 0; $i < $productsCount; ++$i) {
                 $product = $this->createProduct('products');
 
                 $product->save();

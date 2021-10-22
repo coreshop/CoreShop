@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Webmozart\Assert\Assert;

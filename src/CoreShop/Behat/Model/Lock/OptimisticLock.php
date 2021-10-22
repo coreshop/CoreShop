@@ -32,7 +32,7 @@ class OptimisticLock extends AbstractPimcoreModel implements OptimisticLockedInt
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getUser(): void
     {
@@ -40,7 +40,7 @@ class OptimisticLock extends AbstractPimcoreModel implements OptimisticLockedInt
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setUser($user): void
     {

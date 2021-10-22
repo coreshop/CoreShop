@@ -19,30 +19,30 @@ final class Notes
     /**
      * Note Identifier for Payment.
      */
-    const NOTE_PAYMENT = 'payment';
+    public const NOTE_PAYMENT = 'payment';
 
     /**
      * Note Identifier for Order History State Logging.
      */
-    const ORDER_HISTORY_STATE_LOG = 'order_state_change';
+    public const ORDER_HISTORY_STATE_LOG = 'order_state_change';
 
     /**
      * Note Identifier for Update Order.
      */
-    const NOTE_UPDATE_ORDER = 'update_order';
+    public const NOTE_UPDATE_ORDER = 'update_order';
 
     /**
      * Note Identifier for Update Order Item.
      */
-    const NOTE_UPDATE_ORDER_ITEM = 'update_order_item';
+    public const NOTE_UPDATE_ORDER_ITEM = 'update_order_item';
 
     /**
      * Note Identifier for emails.
      */
-    const NOTE_EMAIL = 'email';
+    public const NOTE_EMAIL = 'email';
 
     /**
      * Note Identifier for order comments.
      */
-    const NOTE_ORDER_COMMENT = 'order_comment';
+    public const NOTE_ORDER_COMMENT = 'order_comment';
 }

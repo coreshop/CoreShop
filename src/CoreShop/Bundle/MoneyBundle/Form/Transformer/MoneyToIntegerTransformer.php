@@ -37,6 +37,6 @@ class MoneyToIntegerTransformer implements DataTransformerInterface
             return null;
         }
 
-        return (int) round($value * $this->decimalFactor);
+        return (int)round($value * $this->decimalFactor);
     }
 }

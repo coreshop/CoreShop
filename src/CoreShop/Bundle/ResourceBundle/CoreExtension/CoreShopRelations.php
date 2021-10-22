@@ -80,7 +80,7 @@ class CoreShopRelations extends Data\ManyToManyRelation
 
         foreach ($classes as $cl) {
             $return[] = [
-                'classes' => $cl
+                'classes' => $cl,
             ];
         }
 
@@ -112,7 +112,6 @@ class CoreShopRelations extends Data\ManyToManyRelation
     }
 
     /**
-     *
      * @return bool
      */
     public function getAssetsAllowed()

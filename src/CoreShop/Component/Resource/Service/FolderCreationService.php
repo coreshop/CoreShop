@@ -59,11 +59,9 @@ class FolderCreationService implements FolderCreationServiceInterface
 
         if (count($resourceConfig) === 1) {
             $path = reset($resourceConfig);
-        }
-        elseif (!isset($options['path']) || null === $options['path']) {
+        } elseif (!isset($options['path']) || null === $options['path']) {
             throw new \InvalidArgumentException('Resource has multiple paths configured, please specify which one to use');
-        }
-        else {
+        } else {
             $path = $resourceConfig[$options['path']];
         }
 

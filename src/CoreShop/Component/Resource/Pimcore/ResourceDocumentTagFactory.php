@@ -29,8 +29,7 @@ class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
         private string $class,
         private string $repositoryName,
         private string $nameProperty
-    )
-    {
+    ) {
     }
 
     public function create(string $type, array $params): EditableInterface

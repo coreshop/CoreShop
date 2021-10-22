@@ -17,8 +17,6 @@ namespace CoreShop\Component\Core\Order\Processor;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
-use CoreShop\Component\Order\Distributor\FloatDistributorInterface;
-use CoreShop\Component\Order\Distributor\IntegerDistributor;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -52,7 +50,8 @@ final class CartItemProcessor implements CartItemProcessorInterface
         $store = $context['store'];
 
         $taxCalculator = $this->taxCalculator->getTaxCalculator(
-            $product, $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
+            $product,
+            $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
         );
 
         $quantity = $cartItem->getQuantity();
@@ -134,7 +133,7 @@ final class CartItemProcessor implements CartItemProcessorInterface
         }
     }
 
-    protected function collectTaxes(int $i, array $taxes)
+    private function collectTaxes(int $i, array $taxes)
     {
         $usedTaxes = [];
 
@@ -163,7 +162,7 @@ final class CartItemProcessor implements CartItemProcessorInterface
         return $usedTaxes;
     }
 
-    protected function collectItemTaxes(array $taxes)
+    private function collectItemTaxes(array $taxes)
     {
         $usedTaxes = [];
 

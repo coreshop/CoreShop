@@ -56,7 +56,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         $list = $this->getList();
         $dao = $list->getDao();
 
-
         $qb = $this->connection->createQueryBuilder();
         /** @psalm-suppress InternalMethod */
         $qb

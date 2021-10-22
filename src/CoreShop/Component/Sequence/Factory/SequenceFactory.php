@@ -27,8 +27,7 @@ class SequenceFactory implements SequenceFactoryInterface
          * @psalm-var class-string
          */
         private string $className
-    )
-    {
+    ) {
     }
 
     public function createNew()

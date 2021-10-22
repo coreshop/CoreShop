@@ -30,7 +30,7 @@ final class TestFormAttributeExtension extends AbstractExtension
                 'coreshop_test_form_attribute',
                 function (string $name, ?string $value = null): array {
                     if (str_starts_with($this->environment, 'test')) {
-                        return ['attr' => ['data-test-'.$name => (string)$value]];
+                        return ['attr' => ['data-test-' . $name => (string)$value]];
                     }
 
                     return [];

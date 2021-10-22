@@ -105,7 +105,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
         $longIp = ip2long($clientIp);
         if ($longIp !== -1) {
             foreach ($privateAddresses as $priAddr) {
-                list($start, $end) = explode('|', $priAddr);
+                [$start, $end] = explode('|', $priAddr);
 
                 // IF IS PRIVATE
                 if ($longIp >= ip2long($start) && $longIp <= ip2long($end)) {

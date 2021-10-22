@@ -32,8 +32,7 @@ class RepositoryFactory implements RepositoryFactoryInterface
          * @psalm-var class-string
          */
         private string $repositoryClassName
-    )
-    {
+    ) {
     }
 
     public function createNewRepository(ObjectManager $objectManager): RepositoryInterface

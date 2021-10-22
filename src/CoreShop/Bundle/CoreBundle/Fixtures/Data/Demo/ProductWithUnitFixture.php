@@ -35,7 +35,7 @@ class ProductWithUnitFixture extends AbstractProductFixture
         $faker->addProvider(new Lorem($faker));
         $faker->addProvider(new Barcode($faker));
 
-        for ($i = 0; $i < $productsCount; $i++) {
+        for ($i = 0; $i < $productsCount; ++$i) {
             $product = $this->createProduct('products-with-unit');
 
             $productUnitDefinitionFactory = $this->container->get('coreshop.factory.product_unit_definition');

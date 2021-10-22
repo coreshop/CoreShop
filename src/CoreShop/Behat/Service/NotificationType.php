@@ -14,10 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Service;
 
-
 final class NotificationType implements \Stringable
 {
-    /** @var array */
     private static array $types = [];
 
     private function __construct(private string $value)

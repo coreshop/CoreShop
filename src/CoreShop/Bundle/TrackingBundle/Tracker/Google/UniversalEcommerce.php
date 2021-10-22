@@ -23,6 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class UniversalEcommerce extends AbstractEcommerceTracker
 {
     public TrackerInterface $tracker;
+
     public ConfigResolverInterface $config;
 
     public function setTracker(TrackerInterface $tracker): void
@@ -106,7 +107,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
             return false;
         }
 
-        return (bool) $config->get('gtagcode');
+        return (bool)$config->get('gtagcode');
     }
 
     protected function transformOrder(array $actionData): array

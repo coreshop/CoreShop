@@ -28,9 +28,6 @@ class Multiselect extends Base
      */
     protected $repository;
 
-    /**
-     * @param Service $graphQlService
-     */
     public function __construct(Service $graphQlService, RepositoryInterface $repository)
     {
         parent::__construct($graphQlService);

@@ -68,7 +68,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             ->setParameter('stores', '%,' . $store->getId() . ',%')
             ->setParameter('variant', 'variant');
 
-
         $variantIds = [];
 
         $result = $this->connection->fetchAllAssociative($query->getSQL(), $query->getParameters());
@@ -121,6 +120,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
                 AbstractObject::OBJECT_TYPE_OBJECT,
                 AbstractObject::OBJECT_TYPE_VARIANT,
             ];
+
             return $value === null || !array_diff($value, $valid);
         });
 
@@ -145,7 +145,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
                 }
             }
             if (count($categoryIds) > 0) {
-                $list->addConditionParam('(o_id IN (SELECT DISTINCT src_id FROM object_relations_' . $classId . ' WHERE fieldname = "categories" AND dest_id IN (' . join(',', $categoryIds) . ')))');
+                $list->addConditionParam('(o_id IN (SELECT DISTINCT src_id FROM object_relations_' . $classId . ' WHERE fieldname = "categories" AND dest_id IN (' . implode(',', $categoryIds) . ')))');
             }
         }
 

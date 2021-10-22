@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\ExchangeRateInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;

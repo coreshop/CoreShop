@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FilterController extends ResourceController
 {
-
     public function getConfigAction(): Response
     {
         return $this->viewHandler->handle(

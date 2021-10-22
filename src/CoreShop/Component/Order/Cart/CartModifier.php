@@ -20,9 +20,8 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
-use CoreShop\Component\StorageList\StorageListItemResolverInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 class CartModifier implements CartModifierInterface

@@ -33,7 +33,7 @@ class PimcoreObjectHandler
 
     public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
     {
-        $className = isset($type['params'][0]['name']) ? $type['params'][0]['name'] : null;
+        $className = $type['params'][0]['name'] ?? null;
 
         if (is_array($relation)) {
             $result = [];

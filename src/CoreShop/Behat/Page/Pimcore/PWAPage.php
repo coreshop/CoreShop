@@ -34,7 +34,7 @@ class PWAPage extends AbstractPimcorePage implements PWAPageInterface
 
     public function waitTillLoaded(): void
     {
-        $this->getDocument()->waitFor(10000000, function() {
+        $this->getDocument()->waitFor(10000000, function () {
             return $this->getDocument()->find('css', 'body.coreshop_loaded') && $this->getDocument()->find('css', '#pimcore_menu_coreshop_main');
         });
     }

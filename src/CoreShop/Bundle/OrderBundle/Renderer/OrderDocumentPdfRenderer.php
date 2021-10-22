@@ -19,10 +19,10 @@ use CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
@@ -37,7 +37,7 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
                 'id' => $orderDocument->getId(),
                 'order' => $orderDocument->getOrder(),
                 'document' => $orderDocument,
-                'language' => (string) $orderDocument->getOrder()->getLocaleCode(),
+                'language' => (string)$orderDocument->getOrder()->getLocaleCode(),
                 'type' => $orderDocument::getDocumentType(),
                 $orderDocument::getDocumentType() => $orderDocument,
             ];

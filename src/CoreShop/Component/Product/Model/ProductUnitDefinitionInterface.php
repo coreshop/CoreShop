@@ -44,9 +44,6 @@ interface ProductUnitDefinitionInterface extends ResourceInterface
      */
     public function getProductUnitDefinitions();
 
-    /**
-     * @param ProductUnitDefinitionsInterface|null $productUnitDefinitions
-     */
     public function setProductUnitDefinitions(ProductUnitDefinitionsInterface $productUnitDefinitions = null);
 
     /**

@@ -41,8 +41,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         OrderInterface $order,
         OrderDocumentInterface $document,
         array $itemsToTransform
-    ): OrderDocumentInterface
-    {
+    ): OrderDocumentInterface {
         /**
          * @var OrderInterface $order
          */

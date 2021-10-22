@@ -31,7 +31,7 @@ final class RegisterTypeHintRegistriesPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('coreshop.registry') as $id => $attributes) {
             foreach ($attributes as $tag) {
                 if (!isset($tag['type_hint'])) {
-                    throw new \InvalidArgumentException('Tagged Repository `'.$id.'` needs to have `type_hint` attributes');
+                    throw new \InvalidArgumentException('Tagged Repository `' . $id . '` needs to have `type_hint` attributes');
                 }
 
                 $definition = $container->findDefinition($id);
@@ -55,15 +55,21 @@ final class RegisterTypeHintRegistriesPass implements CompilerPassInterface
                 $container->registerAliasForArgument(
                     $id,
                     ServiceRegistryInterface::class,
-                    strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '],
-                        $tag['type_hint']))).'Registry'
+                    strtolower(trim(preg_replace(
+                        ['/([A-Z])/', '/[_\s]+/'],
+                        ['_$1', ' '],
+                        $tag['type_hint']
+                    ))) . 'Registry'
                 );
 
                 $container->registerAliasForArgument(
                     $id,
                     ServiceRegistry::class,
-                    strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '],
-                        $tag['type_hint']))).'Registry'
+                    strtolower(trim(preg_replace(
+                        ['/([A-Z])/', '/[_\s]+/'],
+                        ['_$1', ' '],
+                        $tag['type_hint']
+                    ))) . 'Registry'
                 );
             }
         }

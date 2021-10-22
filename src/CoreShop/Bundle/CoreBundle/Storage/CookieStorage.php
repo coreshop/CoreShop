@@ -25,6 +25,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 final class CookieStorage implements StorageInterface, EventSubscriberInterface
 {
     private ParameterBag $requestCookies;
+
     private ParameterBag $responseCookies;
 
     public function __construct()

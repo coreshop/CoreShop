@@ -18,8 +18,9 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface AdjustmentInterface extends ResourceInterface
 {
-    const SHIPPING = 'shipping';
-    const CART_PRICE_RULE = 'cart_price_rule';
+    public const SHIPPING = 'shipping';
+
+    public const CART_PRICE_RULE = 'cart_price_rule';
 
     public function getAdjustable(): ?AdjustableInterface;
 

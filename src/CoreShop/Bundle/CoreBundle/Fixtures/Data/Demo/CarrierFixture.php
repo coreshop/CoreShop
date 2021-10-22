@@ -66,7 +66,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
             $carrier->addStore($defaultStore);
 
             foreach (Tool::getValidLanguages() as $lang) {
-                $carrier->setDescription(implode(PHP_EOL, $faker->paragraphs(3)), $lang);
+                $carrier->setDescription(implode(\PHP_EOL, $faker->paragraphs(3)), $lang);
                 $carrier->setTitle('Standard - ' . strtoupper($lang), $lang);
             }
 

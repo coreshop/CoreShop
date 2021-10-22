@@ -293,7 +293,7 @@ QUERY;
             $potentialTables = [
                 $this->getTablename($oldName) => $this->getTablename($newName),
                 $this->getLocalizedTablename($oldName) => $this->getLocalizedTablename($newName),
-                $this->getRelationTablename($oldName) => $this->getRelationTablename($newName)
+                $this->getRelationTablename($oldName) => $this->getRelationTablename($newName),
             ];
             $allViews = $this->database->getSchemaManager()->listViews();
 
@@ -366,7 +366,7 @@ QUERY;
         $insertStatement = [];
 
         $columns = $index->getColumns()->toArray();
-        $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $columns);
+        $columnNames = array_map(function (IndexColumnInterface $column) { return $column->getName(); }, $columns);
 
         foreach ($data as $key => $value) {
             if (in_array($key, $columnNames)) {
@@ -408,7 +408,7 @@ QUERY;
     protected function doInsertLocalizedData(IndexInterface $index, array $data): void
     {
         $columns = $index->getColumns()->toArray();
-        $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $columns);
+        $columnNames = array_map(function (IndexColumnInterface $column) { return $column->getName(); }, $columns);
 
         foreach ($data['values'] as $language => $values) {
             $dataKeys = [
@@ -446,10 +446,10 @@ QUERY;
 
                 $value = $values[$column->getName()];
 
-                $dataKeys[$this->database->quoteIdentifier($column->getName())] = $this->typeCastValueSQLDecleration($column);;
+                $dataKeys[$this->database->quoteIdentifier($column->getName())] = $this->typeCastValueSQLDecleration($column);
                 $updateData[] = $value;
 
-                $insertStatement[] = $this->database->quoteIdentifier($column->getName()) . ' = ' . $this->typeCastValueSQLDecleration($column);;
+                $insertStatement[] = $this->database->quoteIdentifier($column->getName()) . ' = ' . $this->typeCastValueSQLDecleration($column);
                 $insertData[] = $value;
             }
 

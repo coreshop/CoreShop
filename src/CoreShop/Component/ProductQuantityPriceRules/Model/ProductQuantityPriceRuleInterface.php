@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Model;
 
-use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\Common\Collections\Collection;
 

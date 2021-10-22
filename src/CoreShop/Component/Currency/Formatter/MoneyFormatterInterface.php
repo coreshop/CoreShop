@@ -17,8 +17,6 @@ namespace CoreShop\Component\Currency\Formatter;
 interface MoneyFormatterInterface
 {
     /**
-     *
-     *
      * @throws \InvalidArgumentException
      */
     public function format(int $amount, string $currencyCode, string $locale = 'en', int $fraction = 2, int $factor = null): string;

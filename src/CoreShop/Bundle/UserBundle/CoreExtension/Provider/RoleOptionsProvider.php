@@ -20,6 +20,7 @@ use Pimcore\Model\DataObject\ClassDefinition\DynamicOptionsProvider\MultiSelectO
 class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
 {
     protected array $originalRoles;
+
     protected array $invalidRoles = [
         'ROLE_PIMCORE_ADMIN',
     ];

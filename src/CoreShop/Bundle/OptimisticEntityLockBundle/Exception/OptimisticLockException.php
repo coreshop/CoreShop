@@ -22,24 +22,27 @@ class OptimisticLockException extends \Exception
     {
         parent::__construct($msg);
     }
+
     public function getEntity(): ?Concrete
     {
         return $this->entity;
     }
 
-    public static function lockFailed(Concrete $entity): OptimisticLockException
+    public static function lockFailed(Concrete $entity): self
     {
-        return new self("The optimistic lock on an entity failed.", $entity);
+        return new self('The optimistic lock on an entity failed.', $entity);
     }
 
-    public static function lockFailedVersionMismatch(Concrete $entity, int $expectedLockVersion, int $actualLockVersion): OptimisticLockException
+    public static function lockFailedVersionMismatch(Concrete $entity, int $expectedLockVersion, int $actualLockVersion): self
     {
-        return new self("The optimistic lock failed, version ".$expectedLockVersion." was expected, but is actually ".$actualLockVersion,
-            $entity);
+        return new self(
+            'The optimistic lock failed, version ' . $expectedLockVersion . ' was expected, but is actually ' . $actualLockVersion,
+            $entity
+        );
     }
 
-    public static function notVersioned(string $entityName): OptimisticLockException
+    public static function notVersioned(string $entityName): self
     {
-        return new self("Cannot obtain optimistic lock on unversioned entity ".$entityName, null);
+        return new self('Cannot obtain optimistic lock on unversioned entity ' . $entityName, null);
     }
 }

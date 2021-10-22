@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Core\Rule\Condition\CategoriesConditionCheckerTrait;
-use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;

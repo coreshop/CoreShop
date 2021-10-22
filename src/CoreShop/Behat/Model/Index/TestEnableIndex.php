@@ -1,4 +1,6 @@
-<?php /** @noinspection ALL */
+<?php
+
+/** @noinspection ALL */
 /** @noinspection ALL */
 /**
  * CoreShop.
@@ -38,7 +40,6 @@ class TestEnableIndex extends AbstractPimcoreModel implements IndexableInterface
         return false;
     }
 
-
     public function getIndexableName(IndexInterface $index, string $language): string
     {
         $name = $this->getName($language);
@@ -58,6 +59,7 @@ class TestEnableIndex extends AbstractPimcoreModel implements IndexableInterface
     {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
+
     public function getName($language)
     {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);

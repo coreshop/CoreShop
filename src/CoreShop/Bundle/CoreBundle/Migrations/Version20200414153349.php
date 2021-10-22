@@ -35,26 +35,26 @@ class Version20200414153349 extends AbstractMigration implements ContainerAwareI
                 'parentCategory' => ['fieldtype' => 'coreShopRelation', 'stack' => 'coreshop.category'],
             ],
             $this->container->getParameter('coreshop.model.company.pimcore_class_name') => [
-                'addresses' => ['fieldtype' => 'coreShopRelations', 'stack' => 'coreshop.address']
+                'addresses' => ['fieldtype' => 'coreShopRelations', 'stack' => 'coreshop.address'],
             ],
             $this->container->getParameter('coreshop.model.customer.pimcore_class_name') => [
                 'company' => ['fieldtype' => 'coreShopRelation', 'stack' => 'coreshop.company'],
                 'defaultAddress' => ['fieldtype' => 'coreShopRelation', 'stack' => 'coreshop.address'],
                 'addresses' => ['fieldtype' => 'coreShopRelations', 'stack' => 'coreshop.address'],
-                'customerGroups' => ['fieldtype' => 'coreShopRelations', 'stack' => 'coreshop.customer_group']
+                'customerGroups' => ['fieldtype' => 'coreShopRelations', 'stack' => 'coreshop.customer_group'],
             ],
             $this->container->getParameter('coreshop.model.customer_group.pimcore_class_name') => [],
             $this->container->getParameter('coreshop.model.manufacturer.pimcore_class_name') => [],
             $this->container->getParameter('coreshop.model.order_invoice.pimcore_class_name') => [
                 'order' => ['fieldtype' => 'coreShopRelation', 'stack' => 'coreshop.order'],
-                'items' => ['fieldtype' => 'coreShopRelations', 'stack' => 'coreshop.order_invoice_item']
+                'items' => ['fieldtype' => 'coreShopRelations', 'stack' => 'coreshop.order_invoice_item'],
             ],
             $this->container->getParameter('coreshop.model.order_invoice_item.pimcore_class_name') => [
                 'orderItem' => ['fieldtype' => 'coreShopRelation', 'stack' => 'coreshop.order_item'],
             ],
             $this->container->getParameter('coreshop.model.order_shipment.pimcore_class_name') => [
                 'order' => ['fieldtype' => 'coreShopRelation', 'stack' => 'coreshop.order'],
-                'items' => ['fieldtype' => 'coreShopRelations', 'stack' => 'coreshop.order_shipment_item']
+                'items' => ['fieldtype' => 'coreShopRelations', 'stack' => 'coreshop.order_shipment_item'],
             ],
             $this->container->getParameter('coreshop.model.order_shipment_item.pimcore_class_name') => [
                 'orderItem' => ['fieldtype' => 'coreShopRelation', 'stack' => 'coreshop.order_item'],
@@ -67,7 +67,7 @@ class Version20200414153349 extends AbstractMigration implements ContainerAwareI
                 'customer' => ['fieldtype' => 'coreShopRelation', 'stack' => 'coreshop.customer'],
                 'shippingAddress' => ['fieldtype' => 'coreShopRelation', 'stack' => 'coreshop.address'],
                 'invoiceAddress' => ['fieldtype' => 'coreShopRelation', 'stack' => 'coreshop.address'],
-                'items' => ['fieldtype' => 'coreShopRelations', 'stack' => 'coreshop.order_item']
+                'items' => ['fieldtype' => 'coreShopRelations', 'stack' => 'coreshop.order_item'],
             ],
             $this->container->getParameter('coreshop.model.order_item.pimcore_class_name') => [
                 'product' => ['fieldtype' => 'coreShopRelation', 'stack' => 'coreshop.purchasable'],
@@ -111,6 +111,5 @@ class Version20200414153349 extends AbstractMigration implements ContainerAwareI
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

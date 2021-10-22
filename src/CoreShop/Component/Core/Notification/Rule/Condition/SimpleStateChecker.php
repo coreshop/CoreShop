@@ -30,8 +30,7 @@ final class SimpleStateChecker extends AbstractConditionChecker
         private string $interface,
         private string $stateField,
         private string $configurationField
-    )
-    {
+    ) {
     }
 
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool

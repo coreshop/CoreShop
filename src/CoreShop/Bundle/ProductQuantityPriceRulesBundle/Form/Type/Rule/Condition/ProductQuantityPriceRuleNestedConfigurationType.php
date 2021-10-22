@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\Rule\Condition;
 
-use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\AbstractNestedConfigurationType;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleConditionCollectionType;
+use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\AbstractNestedConfigurationType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

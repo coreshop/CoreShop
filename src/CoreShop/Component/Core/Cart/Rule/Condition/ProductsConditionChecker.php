@@ -17,9 +17,9 @@ namespace CoreShop\Component\Core\Cart\Rule\Condition;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Core\Rule\Condition\ProductVariantsCheckerTrait;
 use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 
 final class ProductsConditionChecker extends AbstractConditionChecker

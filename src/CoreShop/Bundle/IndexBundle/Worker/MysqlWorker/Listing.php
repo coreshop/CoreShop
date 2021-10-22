@@ -37,11 +37,17 @@ use Pimcore\Model\DataObject\Concrete;
 class Listing extends AbstractListing implements OrderAwareListingInterface, ExtendedListingInterface
 {
     protected ?array $objects = null;
+
     protected ?int $totalCount = null;
+
     protected string $variantMode = ListingInterface::VARIANT_MODE_INCLUDE;
+
     protected ?int $limit = null;
+
     protected ?int $offset = null;
+
     protected ?PimcoreModelInterface $category = null;
+
     protected Dao $dao;
 
     /**
@@ -50,9 +56,10 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     protected $order;
 
     /**
-     * @var string | array
+     * @var string|array
      */
     protected $orderKey;
+
     protected bool $enabled = true;
 
     /**
@@ -403,7 +410,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
             }
         }
 
-
 //        $searchString = '';
 //        foreach ($this->queryConditions as $condition) {
 //            if ($condition instanceof ConditionInterface) {
@@ -452,7 +458,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
                 continue;
             }
             $joinName = $tableJoins['joinTableAlias'];
-            $objectKeyField = isset($tableJoins['objectKeyField']) ? $tableJoins['objectKeyField'] : 'o_id';
+            $objectKeyField = $tableJoins['objectKeyField'] ?? 'o_id';
 
             $function = 'join';
             switch (strtolower($joinType)) {

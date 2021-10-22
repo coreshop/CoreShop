@@ -38,9 +38,6 @@ interface QuantityRangeInterface extends BaseQuantityRangeInterface
      */
     public function getUnitDefinition();
 
-    /**
-     * @param ProductUnitDefinitionInterface|null $unitDefinition
-     */
     public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition = null);
 
     /**

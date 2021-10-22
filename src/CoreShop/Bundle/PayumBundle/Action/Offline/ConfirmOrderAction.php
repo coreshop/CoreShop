@@ -15,10 +15,10 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\PayumBundle\Action\Offline;
 
 use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
+use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderTransitions;
-use CoreShop\Component\Core\Model\PaymentInterface;
-use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use Payum\Core\Action\ActionInterface;
 
 final class ConfirmOrderAction implements ActionInterface

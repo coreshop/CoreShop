@@ -18,8 +18,8 @@ use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Tool\Email\Log;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class NoteService implements NoteServiceInterface
 {

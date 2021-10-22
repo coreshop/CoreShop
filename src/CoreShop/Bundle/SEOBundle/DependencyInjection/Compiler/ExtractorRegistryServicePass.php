@@ -28,5 +28,4 @@ final class ExtractorRegistryServicePass extends RegisterSimpleRegistryTypePass
             self::EXTRACTOR_TAG
         );
     }
-
 }

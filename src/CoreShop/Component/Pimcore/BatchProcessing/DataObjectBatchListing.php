@@ -21,10 +21,15 @@ use Pimcore\Model\DataObject;
 final class DataObjectBatchListing implements Iterator, Countable
 {
     private int $index = 0;
+
     private int $loop = 0;
+
     private int $currentLoopLoaded = -1;
+
     private int $total = 0;
+
     private array $items = [];
+
     private ?array $ids = null;
 
     public function __construct(private DataObject\Listing $list, private int $batchSize)
@@ -38,11 +43,11 @@ final class DataObjectBatchListing implements Iterator, Countable
 
     public function next(): void
     {
-        $this->index++;
+        ++$this->index;
 
         if ($this->index >= $this->batchSize) {
             $this->index = 0;
-            $this->loop++;
+            ++$this->loop;
 
             $this->load();
         }
@@ -73,8 +78,10 @@ final class DataObjectBatchListing implements Iterator, Countable
             $dao = $this->list->getDao();
 
             if (!method_exists($dao, 'getTotalCount')) {
-                throw new \InvalidArgumentException(sprintf('%s listing class does not support count.',
-                    $this->list::class));
+                throw new \InvalidArgumentException(sprintf(
+                    '%s listing class does not support count.',
+                    $this->list::class
+                ));
             }
 
             /** @psalm-suppress InternalMethod */
@@ -108,7 +115,7 @@ final class DataObjectBatchListing implements Iterator, Countable
         if ($this->currentLoopLoaded !== $this->loop) {
             $items = [];
 
-            for ($i = 0; $i < $this->batchSize; $i++) {
+            for ($i = 0; $i < $this->batchSize; ++$i) {
                 $idOffset = ($this->loop * $this->batchSize) + $i;
 
                 if (!array_key_exists($idOffset, $this->ids)) {

@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Doctrine;
 
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
-use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 
 final class ResourceMappingDriverChain extends MappingDriverChain

@@ -20,7 +20,7 @@ use Behat\Mink\Session;
 
 class CookieSetter implements CookieSetterInterface
 {
-    public function __construct(protected Session $minkSession, protected array|\ArrayAccess $minkParameters)
+    public function __construct(protected Session $minkSession, protected array | \ArrayAccess $minkParameters)
     {
     }
 
@@ -46,8 +46,7 @@ class CookieSetter implements CookieSetterInterface
             if ($driver instanceof PantherDriver && $driver->getClient() === null) {
                 return true;
             }
-        }
-        catch (DriverException) {
+        } catch (DriverException) {
             return true;
         }
 

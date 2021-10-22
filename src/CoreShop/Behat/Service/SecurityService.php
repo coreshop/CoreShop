@@ -28,8 +28,7 @@ final class SecurityService implements SecurityServiceInterface
         private SessionInterface $session,
         private CookieSetterInterface $cookieSetter,
         private string $firewallContextName
-    )
-    {
+    ) {
         $this->sessionTokenVariable = sprintf('_security_%s', $firewallContextName);
     }
 

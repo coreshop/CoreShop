@@ -36,8 +36,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
         foreach ($this->shippingCalculatorRegistry->all() as $calculator) {
             try {
                 $price = $calculator->getPrice($carrier, $shippable, $address, $context);
-            }
-            catch (NoShippingPriceFoundException) {
+            } catch (NoShippingPriceFoundException) {
                 continue;
             }
         }

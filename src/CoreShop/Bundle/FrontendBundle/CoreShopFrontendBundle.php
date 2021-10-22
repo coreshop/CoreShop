@@ -19,7 +19,6 @@ use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
 use CoreShop\Bundle\FrontendBundle\DependencyInjection\CompilerPass\RegisterFrontendControllerPass;
 use EmailizrBundle\EmailizrBundle;
-use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;

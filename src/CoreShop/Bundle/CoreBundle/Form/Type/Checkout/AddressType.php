@@ -132,8 +132,8 @@ final class AddressType extends AbstractResourceType
 
                         if (is_array($choiceList) && count($choiceList) > 0) {
                             $valid = count(array_filter($choiceList, static function (AddressInterface $address) use ($invoiceAddressId) {
-                                    return $address->getId() === (int) $invoiceAddressId;
-                                })) > 0;
+                                return $address->getId() === (int)$invoiceAddressId;
+                            })) > 0;
                         }
                     }
 
@@ -144,7 +144,6 @@ final class AddressType extends AbstractResourceType
                         $message = $this->translator->trans('coreshop.checkout.address.invoice_as_shipping_invalid');
                         $event->getForm()->addError(new FormError($message));
                     }
-
                 }
             });
     }

@@ -274,7 +274,7 @@ final class CartContext implements Context
      */
     public function iShouldSeeWithQuantityInMyCart($productName, $quantity): void
     {
-        Assert::same($this->cartPage->getQuantity($productName), (int) $quantity);
+        Assert::same($this->cartPage->getQuantity($productName), (int)$quantity);
     }
 
     /**
@@ -296,7 +296,7 @@ final class CartContext implements Context
         Assert::same($this->cartPage->getTotal(), $total);
     }
 
-    protected function findUnitDefinition(ProductInterface $product, ProductUnitInterface $unit)
+    private function findUnitDefinition(ProductInterface $product, ProductUnitInterface $unit)
     {
         $unitDefinition = null;
 
@@ -305,6 +305,7 @@ final class CartContext implements Context
         foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $definition) {
             if ($definition->getUnit()->getId() === $unit->getId()) {
                 $unitDefinition = $definition;
+
                 break;
             }
         }

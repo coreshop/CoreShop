@@ -16,11 +16,9 @@ namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Frontend\ProductPageInterface;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use Pimcore\Model\DataObject\Concrete;
-use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
@@ -137,10 +135,10 @@ final class ProductContext implements Context
      */
     public function iShouldSeeTheQuantityPriceRuleWithPrice(int $number, $price): void
     {
-        $number--;
+        --$number;
         $priceRules = $this->productPage->getQuantityPriceRules();
 
-        Assert::greaterThan($priceRules, $number+1);
+        Assert::greaterThan($priceRules, $number + 1);
         Assert::contains($priceRules[$number]['price'], $price);
     }
 
@@ -149,10 +147,10 @@ final class ProductContext implements Context
      */
     public function iShouldSeeTheQuantityPriceRuleWithInclPrice(int $number, $price): void
     {
-        $number--;
+        --$number;
         $priceRules = $this->productPage->getQuantityPriceRules();
 
-        Assert::greaterThan($priceRules, $number+1);
+        Assert::greaterThan($priceRules, $number + 1);
         Assert::contains($priceRules[$number]['priceExcl'], $price);
     }
 
@@ -161,13 +159,12 @@ final class ProductContext implements Context
      */
     public function iShouldSeeTheQuantityPriceRuleStartingFrom(int $number, $startingFrom): void
     {
-        $number--;
+        --$number;
         $priceRules = $this->productPage->getQuantityPriceRules();
 
-        Assert::greaterThan($priceRules, $number+1);
+        Assert::greaterThan($priceRules, $number + 1);
         Assert::contains($priceRules[$number]['startingFrom'], $startingFrom);
     }
-
 
     /**
      * @Then /^I should see one quantity price rule with price "([^"]+)" for (unit "[^"]+")$/
@@ -185,10 +182,10 @@ final class ProductContext implements Context
      */
     public function iShouldSeeTheQuantityPriceRuleForUnitWithPrice(int $number, $price, ProductUnitInterface $unit): void
     {
-        $number--;
+        --$number;
         $priceRules = $this->productPage->getQuantityPriceRulesForUnit($unit);
 
-        Assert::greaterThan($priceRules, $number+1);
+        Assert::greaterThan($priceRules, $number + 1);
         Assert::contains($priceRules[$number]['price'], $price);
     }
 
@@ -197,10 +194,10 @@ final class ProductContext implements Context
      */
     public function iShouldSeeTheQuantityPriceRuleForUnitWithInclPrice(int $number, $price, ProductUnitInterface $unit): void
     {
-        $number--;
+        --$number;
         $priceRules = $this->productPage->getQuantityPriceRulesForUnit($unit);
 
-        Assert::greaterThan($priceRules, $number+1);
+        Assert::greaterThan($priceRules, $number + 1);
         Assert::contains($priceRules[$number]['priceExcl'], $price);
     }
 
@@ -209,12 +206,13 @@ final class ProductContext implements Context
      */
     public function iShouldSeeTheQuantityPriceRuleForUnitStartingFrom(int $number, $startingFrom, ProductUnitInterface $unit): void
     {
-        $number--;
+        --$number;
         $priceRules = $this->productPage->getQuantityPriceRulesForUnit($unit);
 
-        Assert::greaterThan($priceRules, $number+1);
+        Assert::greaterThan($priceRules, $number + 1);
         Assert::contains($priceRules[$number]['startingFrom'], $startingFrom);
     }
+
     /**
      * @Then /^I should see that this (product) is out of stock$/
      */

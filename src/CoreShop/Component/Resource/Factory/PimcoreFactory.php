@@ -24,8 +24,7 @@ final class PimcoreFactory implements FactoryInterface, PimcoreFactoryInterface
          * @psalm-var class-string
          */
         private string $className
-    )
-    {
+    ) {
     }
 
     public function createNew()

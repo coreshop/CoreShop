@@ -118,7 +118,7 @@ class ProductUnitDefinitions extends Data implements
      */
     public function setDefaultValue($defaultValue)
     {
-        if (strlen(strval($defaultValue)) > 0) {
+        if (strlen((string)$defaultValue) > 0) {
             $this->defaultValue = $defaultValue;
         }
 
@@ -245,7 +245,7 @@ class ProductUnitDefinitions extends Data implements
         if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
-            $setter = 'set'.ucfirst($this->getName());
+            $setter = 'set' . ucfirst($this->getName());
             if (method_exists($object, $setter)) {
                 $object->$setter($data);
             }
@@ -369,7 +369,7 @@ class ProductUnitDefinitions extends Data implements
                 $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
             }
 
-            throw new \Exception(implode(PHP_EOL, $errors));
+            throw new \Exception(implode(\PHP_EOL, $errors));
         }
 
         return $productUnitDefinitionsValues;
@@ -383,8 +383,11 @@ class ProductUnitDefinitions extends Data implements
 
         $defaultUnit = $data->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface && $data->getDefaultUnitDefinition()->getUnit() instanceof ProductUnitInterface ? $data->getDefaultUnitDefinition()->getUnit()->getName() : '--';
 
-        return sprintf('Default Unit: %s, additional units: %d', $defaultUnit,
-            $data->getAdditionalUnitDefinitions()->count());
+        return sprintf(
+            'Default Unit: %s, additional units: %d',
+            $defaultUnit,
+            $data->getAdditionalUnitDefinitions()->count()
+        );
     }
 
     public function getForCsvExport($object, $params = [])
@@ -406,9 +409,12 @@ class ProductUnitDefinitions extends Data implements
 
         $data = $importValue == '' ? [] : json_decode($importValue, true);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \InvalidArgumentException(sprintf('Error decoding Product Unit Definitions JSON `%s`: %s',
-                $importValue, json_last_error_msg()));
+        if (json_last_error() !== \JSON_ERROR_NONE) {
+            throw new \InvalidArgumentException(sprintf(
+                'Error decoding Product Unit Definitions JSON `%s`: %s',
+                $importValue,
+                json_last_error_msg()
+            ));
         }
 
         return $data;
@@ -449,7 +455,7 @@ class ProductUnitDefinitions extends Data implements
             unset($array[$key]);
 
             if (str_contains($key, '.')) {
-                list($base, $ext) = explode('.', $key, 2);
+                [$base, $ext] = explode('.', $key, 2);
                 if (!array_key_exists($base, $array)) {
                     $array[$base] = [];
                 }

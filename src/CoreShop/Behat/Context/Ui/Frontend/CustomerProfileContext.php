@@ -87,7 +87,6 @@ class CustomerProfileContext implements Context
         $this->changePasswordPage->save();
     }
 
-
     /**
      * @Then I should be notified that the entered passwords do not match
      */
@@ -197,6 +196,7 @@ class CustomerProfileContext implements Context
             'This value should not be blank.'
         ));
     }
+
     /**
      * @Then /^I should be notified that the ([^"]+) is invalid$/
      */

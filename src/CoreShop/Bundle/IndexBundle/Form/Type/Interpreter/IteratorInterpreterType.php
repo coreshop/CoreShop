@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class IteratorInterpreterType extends AbstractType
 {
-     /**
+    /**
      * @param string[] $validationGroups
      */
     public function __construct(protected array $validationGroups)
@@ -32,8 +32,8 @@ final class IteratorInterpreterType extends AbstractType
         $builder
             ->add('interpreter', InterpreterType::class, [
                 'constraints' => [
-                    new Valid(['groups' => $this->validationGroups])
-                ]
+                    new Valid(['groups' => $this->validationGroups]),
+                ],
             ]);
     }
 }

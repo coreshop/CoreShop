@@ -56,10 +56,10 @@ class JsonType extends ScalarType
                 if ($childNode->value->kind === 'ObjectValue') {
                     $this->parseNodeAsList($result, $subPath, $childNode->value);
                 } else {
-                    $result[$subPath] = array(
+                    $result[$subPath] = [
                         'value' => $this->mapValue($childNode->value->kind, $childNode->value->value),
                         'type' => $this->mapType($childNode->value->kind),
-                    );
+                    ];
                 }
             }
         }

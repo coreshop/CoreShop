@@ -25,6 +25,7 @@ class Country extends BaseCountry implements CountryInterface
     use StoresAwareTrait {
         __construct as storesAwareConstructor;
     }
+
     /**
      * @var CurrencyInterface
      */

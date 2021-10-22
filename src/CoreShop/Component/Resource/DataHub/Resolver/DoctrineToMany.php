@@ -27,12 +27,12 @@ class DoctrineToMany
 
     public function getDefinition(): array
     {
-        $args = array();
+        $args = [];
 
         $outputType = $this->getOutputType();
 
         // Create and return the definition array
-        return array(
+        return [
             'name' => $this->name,
             'type' => $outputType,
             'args' => $args,
@@ -52,7 +52,7 @@ class DoctrineToMany
 
                 return ['items' => $result, 'total' => count($result)];
             },
-        );
+        ];
     }
 
     public function getOutputType()
@@ -73,18 +73,18 @@ class DoctrineToMany
 
     protected function getListType($name, $listType)
     {
-        $resultFields = array();
+        $resultFields = [];
 
-        $resultFields[] = array(
+        $resultFields[] = [
             'name' => 'total',
             'type' => Type::int(),
-        );
+        ];
 
-        $resultFields[] = array(
+        $resultFields[] = [
             'name' => 'items',
             'type' => Type::listOf($listType),
-        );
+        ];
 
-        return new ObjectType(array('name' => $name, 'fields' => $resultFields));
+        return new ObjectType(['name' => $name, 'fields' => $resultFields]);
     }
 }

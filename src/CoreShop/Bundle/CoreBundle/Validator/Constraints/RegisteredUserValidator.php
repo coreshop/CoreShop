@@ -26,7 +26,6 @@ final class RegisteredUserValidator extends ConstraintValidator
     {
     }
 
-
     public function validate($value, Constraint $constraint): void
     {
         /**

@@ -27,8 +27,10 @@ class CartPriceRule implements CartPriceRuleInterface
     use RuleTrait {
         initializeRuleCollections as private initializeRules;
     }
+
     use TranslatableTrait {
         initializeTranslationCollection as private initializeTranslationsCollection;
+
         getTranslation as private doGetTranslation;
     }
 

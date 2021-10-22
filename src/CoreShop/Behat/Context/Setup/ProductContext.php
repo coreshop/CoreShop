@@ -407,7 +407,7 @@ final class ProductContext implements Context
          */
         $defaultUnitDefinition = $this->productUnitDefinition->createNew();
         $defaultUnitDefinition->setUnit($unit);
-        $defaultUnitDefinition->setConversionRate((float) $conversionRate);
+        $defaultUnitDefinition->setConversionRate((float)$conversionRate);
         $defaultUnitDefinition->setPrecision($precison);
 
         $definitions->addAdditionalUnitDefinition($defaultUnitDefinition);
@@ -446,6 +446,7 @@ final class ProductContext implements Context
 
         $this->sharedStorage->set('copied-object', $newObject);
     }
+
     /**
      * @Given /^I copy the (products) unit-definitions and quantity-price-rules to all variants$/
      */
@@ -457,7 +458,6 @@ final class ProductContext implements Context
         Assert::isInstanceOf($product, Concrete::class);
 
         foreach ($product->getChildren([AbstractObject::OBJECT_TYPE_VARIANT], true) as $variant) {
-
             if (!$variant instanceof ProductInterface) {
                 continue;
             }

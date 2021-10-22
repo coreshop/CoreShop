@@ -92,7 +92,6 @@ final class InterpreterType extends AbstractType
 
     /**
      * @param mixed         $data
-     *
      */
     protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {

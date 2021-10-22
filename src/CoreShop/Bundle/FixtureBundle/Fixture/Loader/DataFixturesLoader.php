@@ -27,6 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DataFixturesLoader extends ContainerAwareLoader
 {
     protected array $loadedFixtures = [];
+
     protected ?\ReflectionProperty $ref = null;
 
     public function __construct(

@@ -28,8 +28,11 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
     public function generate(Concrete $object, array $params = []): string
     {
         if (!$object instanceof SluggableInterface) {
-            throw new \InvalidArgumentException(sprintf('Object with Path "%s" must implement %s',
-                $object->getFullPath(), SluggableInterface::class));
+            throw new \InvalidArgumentException(sprintf(
+                'Object with Path "%s" must implement %s',
+                $object->getFullPath(),
+                SluggableInterface::class
+            ));
         }
 
         $slugs = $object->getSlug($params['_locale'] ?? null);
@@ -38,11 +41,12 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
             $this->requestStack->getMainRequest() ?
                 $this->siteResolver->getSite($this->requestStack->getMainRequest()) :
                 null
-            );
+        );
 
         foreach ($slugs as $possibleSlug) {
             if ($possibleSlug->getSiteId() === ($site ? $site->getId() : 0)) {
                 $slug = $possibleSlug;
+
                 break;
             }
         }

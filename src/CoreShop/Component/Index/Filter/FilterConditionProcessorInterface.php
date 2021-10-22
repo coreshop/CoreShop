@@ -24,7 +24,7 @@ interface FilterConditionProcessorInterface
     /**
      * Const for Empty Value.
      */
-    const EMPTY_STRING = '##EMPTY##';
+    public const EMPTY_STRING = '##EMPTY##';
 
     public function addCondition(
         FilterConditionInterface $condition,

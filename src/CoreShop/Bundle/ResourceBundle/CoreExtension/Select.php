@@ -116,7 +116,7 @@ abstract class Select extends Data implements
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
-            if ((int) $data) {
+            if ((int)$data) {
                 return $this->getDataFromResource($data, $object, $params);
             }
         }
@@ -153,6 +153,7 @@ abstract class Select extends Data implements
      * @param string $data
      * @param null   $object
      * @param array  $params
+     *
      * @return int|string|null
      */
     public function getDataForResource($data, $object = null, $params = [])
@@ -168,11 +169,12 @@ abstract class Select extends Data implements
      * @param string $data
      * @param null   $object
      * @param array  $params
+     *
      * @return ResourceInterface|object|null
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        if ((int) $data > 0) {
+        if ((int)$data > 0) {
             return $this->getRepository()->find($data);
         }
 
@@ -183,6 +185,7 @@ abstract class Select extends Data implements
      * @param string $data
      * @param null   $object
      * @param array  $params
+     *
      * @return int|null
      */
     public function getDataForQueryResource($data, $object = null, $params = [])

@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
-use CoreShop\Component\Address\Model\ZoneInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 use Rinvex\Country\Country;

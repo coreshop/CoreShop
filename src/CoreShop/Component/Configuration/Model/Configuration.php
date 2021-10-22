@@ -23,6 +23,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 class Configuration implements ConfigurationInterface
 {
     use TimestampableTrait;
+
     use SetValuesTrait;
 
     /**

@@ -28,7 +28,6 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
 
     /**
      * @param string            $name
-     *
      */
     public function findNamedForCustomer(CustomerInterface $customer, $name): ?OrderInterface;
 

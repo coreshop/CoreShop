@@ -24,8 +24,7 @@ class LocaleMappingInterpreter implements LocalizedInterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed
-    {
+    ): mixed {
         throw new \Exception('method "interpret" in Localized Interpreter not allowed. Please use "interpretForLanguage" instead.');
     }
 
@@ -35,8 +34,7 @@ class LocaleMappingInterpreter implements LocalizedInterpreterInterface
         IndexableInterface $indexable,
         IndexColumnInterface $config,
         array $interpreterConfig = []
-    ): mixed
-    {
+    ): mixed {
         if (!is_array($value)) {
             return $value;
         }

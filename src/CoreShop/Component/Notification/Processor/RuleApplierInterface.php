@@ -22,7 +22,6 @@ interface RuleApplierInterface
      * Apply all actions from a rule.
      *
      * @param mixed                     $subject
-     *
      */
     public function applyRule(NotificationRuleInterface $rule, $subject, array $params): void;
 }

@@ -30,7 +30,7 @@ class OrderState extends AbstractOperator
     /**
      * @param \Pimcore\Model\Element\ElementInterface $element
      *
-     * @return null|\stdClass|string
+     * @return \stdClass|string|null
      */
     public function getLabeledValue($element)
     {
@@ -52,22 +52,18 @@ class OrderState extends AbstractOperator
                 $workflow = 'coreshop_order';
 
                 break;
-
             case 'paymentState':
                 $workflow = 'coreshop_order_payment';
 
                 break;
-
             case 'shippingState':
                 $workflow = 'coreshop_order_shipment';
 
                 break;
-
             case 'invoiceState':
                 $workflow = 'coreshop_order_invoice';
 
                 break;
-
             default:
                 $result->value = '--';
 
@@ -81,7 +77,7 @@ class OrderState extends AbstractOperator
 
         if ($this->highlightLabel === true) {
             $textColor = $workflow === 'coreshop_order' ? $this->getContrastColor($rgb[0], $rgb[1], $rgb[2]) : 'black';
-            $backgroundColor = join(',', $rgb);
+            $backgroundColor = implode(',', $rgb);
             $result->value = '<span class="rounded-color" style="background-color: rgba(' . $backgroundColor . ', ' . $opacity . '); color: ' . $textColor . ';">' . $state['label'] . '</span>';
         } else {
             $result->value = $state['label'];
@@ -118,9 +114,9 @@ class OrderState extends AbstractOperator
             0.0722 * ((0 / 255) ** 2.2);
 
         if ($l1 > $l2) {
-            $contrastRatio = (int) (($l1 + 0.05) / ($l2 + 0.05));
+            $contrastRatio = (int)(($l1 + 0.05) / ($l2 + 0.05));
         } else {
-            $contrastRatio = (int) (($l2 + 0.05) / ($l1 + 0.05));
+            $contrastRatio = (int)(($l2 + 0.05) / ($l1 + 0.05));
         }
 
         if ($contrastRatio > 7) {

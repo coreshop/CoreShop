@@ -26,6 +26,7 @@ use Doctrine\Common\Collections\Collection;
 class Zone extends AbstractResource implements ZoneInterface, \Stringable
 {
     use ToggleableTrait;
+
     use TimestampableTrait;
 
     /**

@@ -33,7 +33,7 @@ final class StackClassesPass implements CompilerPassInterface
         $classStackPimcoreClassId = [];
 
         foreach ($stack as $alias => $interface) {
-            list($applicationName, $name) = explode('.', $alias);
+            [$applicationName, $name] = explode('.', $alias);
 
             $classStack[$alias] = [];
             $classStackPimcoreClassName[$alias] = [];

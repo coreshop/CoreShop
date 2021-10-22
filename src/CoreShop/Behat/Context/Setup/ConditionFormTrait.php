@@ -51,7 +51,6 @@ trait ConditionFormTrait
         return $condition;
     }
 
-
     protected function getConditionForm(string $type): FormInterface
     {
         if (!$this->getConditionFormRegistry()->has($type, 'default')) {

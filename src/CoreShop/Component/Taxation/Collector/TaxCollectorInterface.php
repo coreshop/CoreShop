@@ -16,7 +16,6 @@ namespace CoreShop\Component\Taxation\Collector;
 
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
-use Pimcore\Model\DataObject\Objectbrick\Data\AbstractData;
 
 interface TaxCollectorInterface
 {

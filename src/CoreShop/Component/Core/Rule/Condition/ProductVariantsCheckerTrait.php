@@ -33,7 +33,7 @@ trait ProductVariantsCheckerTrait
 
         if ($includeVariants) {
             foreach ($products as $productId) {
-                $product = $this->productRepository->find( $productId);
+                $product = $this->productRepository->find($productId);
 
                 if (!$product instanceof ProductInterface) {
                     continue;

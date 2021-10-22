@@ -19,7 +19,6 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\DataObject\Folder;
 
 final class AddressContext implements Context

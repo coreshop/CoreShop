@@ -24,6 +24,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
 {
     use TimestampableTrait;
+
     use SetValuesTrait;
 
     /**

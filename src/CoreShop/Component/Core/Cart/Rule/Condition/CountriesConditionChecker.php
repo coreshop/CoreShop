@@ -18,9 +18,9 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 final class CountriesConditionChecker extends AbstractConditionChecker
 {
