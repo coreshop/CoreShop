@@ -123,7 +123,7 @@
     "symplify/easy-coding-standard": "^9.4"
   },
   "conflict": {
-
+    "pimcore/pimcore": "10.2.0 || 10.2.1"
   },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."
