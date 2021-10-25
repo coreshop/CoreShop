@@ -17,7 +17,7 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-class Version20210614115749 extends AbstractMigration
+class Version20200415153636 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {

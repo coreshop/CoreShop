@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\UserInterface;
-use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
+use CoreShop\Component\Pimcore\BatchProcessing\DataObjectBatchListing;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -94,7 +94,7 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
         $customerRepository = $this->container->get('coreshop.repository.customer');
 
         $customerList = $customerRepository->getList();
-        $batchList = new BatchListing($customerList, 100);
+        $batchList = new DataObjectBatchListing($customerList, 100);
 
         /**
          * @var CustomerInterface $customer

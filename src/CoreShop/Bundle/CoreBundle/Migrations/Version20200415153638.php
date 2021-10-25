@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\OrderSaleStates;
-use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
+use CoreShop\Component\Pimcore\BatchProcessing\DataObjectBatchListing;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -29,7 +29,7 @@ class Version20200415153638 extends AbstractMigration implements ContainerAwareI
     public function up(Schema $schema): void
     {
         $orderList = $this->container->get('coreshop.repository.order')->getList();
-        $batchList = new BatchListing($orderList, 50);
+        $batchList = new DataObjectBatchListing($orderList, 50);
 
         $fieldMap = [
             'paymentTotal' => 'convertedPaymentTotal',
