@@ -18,7 +18,7 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\OrderSaleStates;
-use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
+use CoreShop\Component\Pimcore\BatchProcessing\DataObjectBatchListing;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Pimcore\Model\DataObject\Service;
@@ -38,7 +38,7 @@ class Version20200415161210 extends AbstractMigration implements ContainerAwareI
         }
 
         $cartList = new $cartClass();
-        $batchList = new BatchListing($cartList, 50);
+        $batchList = new DataObjectBatchListing($cartList, 50);
 
         $withTaxFields = [
             'total',

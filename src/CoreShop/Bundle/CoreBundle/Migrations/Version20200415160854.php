@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Core\Model\OrderShipmentItemInterface;
-use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
+use CoreShop\Component\Pimcore\BatchProcessing\DataObjectBatchListing;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -28,7 +28,7 @@ class Version20200415160854 extends AbstractMigration implements ContainerAwareI
     public function up(Schema $schema): void
     {
         $orderShipmentItemList = $this->container->get('coreshop.repository.order_shipment_item')->getList();
-        $batchList = new BatchListing($orderShipmentItemList, 50);
+        $batchList = new DataObjectBatchListing($orderShipmentItemList, 50);
 
         $fieldMap = [
             'totalNet' => 'convertedTotalNet',
