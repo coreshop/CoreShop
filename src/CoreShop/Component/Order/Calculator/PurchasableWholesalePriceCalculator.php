@@ -42,10 +42,6 @@ class PurchasableWholesalePriceCalculator implements PurchasableWholesalePriceCa
             throw new NoPurchasableWholesalePriceFoundException(__CLASS__);
         }
 
-        if (!$wholesalePrice->getCurrency()) {
-            throw new NoPurchasableWholesalePriceFoundException(__CLASS__);
-        }
-
         return $this->currencyConverter->convert($wholesalePrice->getValue(), $wholesalePrice->getCurrency()->getIsoCode(), $contextCurrency->getIsoCode());
     }
 }

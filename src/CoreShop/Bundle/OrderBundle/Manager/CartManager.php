@@ -42,6 +42,9 @@ final class CartManager implements CartManagerInterface
                 if (!$cart->getId()) {
                     $cart->setItems([]);
 
+                    /**
+                     * @psalm-suppress DocblockTypeContradiction
+                     */
                     if (!$cart->getParent()) {
                         $cart->setParent($cartsFolder);
                     }

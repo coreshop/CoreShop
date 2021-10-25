@@ -33,6 +33,9 @@ class FieldCollectionGetter implements GetterInterface
 
         if ($collectionContainer instanceof Fieldcollection) {
             foreach ($collectionContainer->getItems() as $item) {
+                /**
+                 * @psalm-var class-string $className
+                 */
                 $className = 'Pimcore\Model\DataObject\Fieldcollection\Data\\' . $columnConfig['className'];
                 if (is_a($item, $className)) {
                     $validItems[] = $item;

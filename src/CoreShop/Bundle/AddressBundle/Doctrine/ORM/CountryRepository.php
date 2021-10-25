@@ -38,7 +38,7 @@ class CountryRepository extends EntityRepository implements CountryRepositoryInt
             ->getResult();
     }
 
-    public function findByCode($code): ?CountryInterface
+    public function findByCode(string $code): ?CountryInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.isoCode= :isoCode')
