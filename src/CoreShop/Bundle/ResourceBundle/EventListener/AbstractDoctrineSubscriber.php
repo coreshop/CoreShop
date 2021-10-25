@@ -23,24 +23,24 @@ use Doctrine\Persistence\Mapping\RuntimeReflectionService;
 
 abstract class AbstractDoctrineSubscriber implements EventSubscriber
 {
-    protected ReflectionService $reflectionService;
+    protected ?ReflectionService $reflectionService = null;
 
     public function __construct(protected RegistryInterface $resourceRegistry)
     {
-        $this->reflectionService = new RuntimeReflectionService();
+
     }
 
     protected function isResource(ClassMetadata $metadata): bool
     {
-        if (!$reflClass = $metadata->getReflectionClass()) {
-            return false;
-        }
-
-        return $reflClass->implementsInterface(ResourceInterface::class);
+        return $metadata->getReflectionClass()->implementsInterface(ResourceInterface::class);
     }
 
     protected function getReflectionService(): ReflectionService
     {
+        if ($this->reflectionService === null) {
+            $this->reflectionService = new RuntimeReflectionService();
+        }
+
         return $this->reflectionService;
     }
 }

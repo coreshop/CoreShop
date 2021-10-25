@@ -32,5 +32,5 @@ interface CountryRepositoryInterface extends RepositoryInterface
      *
      * @return CountryInterface
      */
-    public function findByCode($code): ?CountryInterface;
+    public function findByCode(string $code): ?CountryInterface;
 }
