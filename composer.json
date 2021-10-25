@@ -95,7 +95,7 @@
     "laminas/laminas-stdlib": "^3.6",
     "sylius/theme-bundle": "^2.2",
     "php-http/guzzle7-adapter": "^0.1",
-    "pimcore/pimcore": "^10.1",
+    "pimcore/pimcore": "^10.2.2",
     "rinvex/countries": "^7.3",
     "stof/doctrine-extensions-bundle": "^1.6",
     "webmozart/assert": "^1.10",
