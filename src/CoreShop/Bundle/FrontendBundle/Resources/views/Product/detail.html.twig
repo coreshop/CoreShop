@@ -83,7 +83,7 @@
                 </div>
                 <div class="tax">
                     <span {{ coreshop_test_html_attribute('product-tax-rate', product|coreshop_product_tax_rate(coreshop.context)) }}>
-                        {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate(coreshop.context)) }}
+                        {{ 'coreshop.ui.product.tax.inc'|trans|format(product|coreshop_product_tax_rate(coreshop.context)) }}
                     </span>
 
                     <span {{ coreshop_test_html_attribute('product-tax', currency.convertAndFormat(product|coreshop_product_tax_amount(coreshop.context))) }}>

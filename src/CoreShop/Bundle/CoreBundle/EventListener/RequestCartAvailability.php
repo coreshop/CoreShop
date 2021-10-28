@@ -60,7 +60,7 @@ final class RequestCartAvailability
             return;
         }
 
-        $this->session->getFlashBag()->add('coreshop_global_error', 'coreshop.global_error.cart_has_changed');
+        $this->session->getFlashBag()->add('coreshop_global_error', 'coreshop.ui.global_error.cart_has_changed');
         $cart->setNeedsRecalculation(false);
         $this->cartManager->persistCart($cart);
 

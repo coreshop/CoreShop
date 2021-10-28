@@ -72,28 +72,6 @@ services:
         tags:
            - { name: coreshop.resource.installer, type: sql, priority: 400}
 
-    coreshop.resource.installer.shared_translations:
-        alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcoreSharedTranslationsInstaller'
-        public: true
-
-    CoreShop\Bundle\ResourceBundle\Installer\PimcoreSharedTranslationsInstaller:
-        arguments:
-            - '@kernel'
-            - 'messages'
-        tags:
-           - { name: coreshop.resource.installer, type: translations, priority: 450}
-
-    coreshop.resource.installer.admin_translations:
-        alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcoreAdminTranslationsInstaller'
-        public: true
-
-    CoreShop\Bundle\ResourceBundle\Installer\PimcoreAdminTranslationsInstaller:
-        arguments:
-            - '@kernel'
-            - 'admin'
-        tags:
-           - { name: coreshop.resource.installer, type: admin_translations, priority: 500}
-
     coreshop.resource.installer.grid_config:
         alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller'
         public: true
