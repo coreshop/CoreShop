@@ -66,6 +66,7 @@ final class SluggableListener implements EventSubscriberInterface
             $i = 1;
 
             while (true) {
+                /** @psalm-suppress InternalMethod */
                 $existingSlug = UrlSlug::resolveSlug($slug);
 
                 if (null === $existingSlug || $existingSlug->getObjectId() === $object->getId()) {
