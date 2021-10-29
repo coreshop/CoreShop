@@ -161,7 +161,12 @@ final class PimcoreDaoContext implements Context
      */
     public function clearSlugs(): void
     {
-        $this->connection->executeQuery('TRUNCATE TABLE `object_url_slugs`');
+        $this->connection->executeQuery('DELETE FROM `object_url_slugs`');
+
+        $reflection = new \ReflectionClass(DataObject\Data\UrlSlug::class);
+        $cacheProperty = $reflection->getProperty('cache');
+        $cacheProperty->setAccessible(true);
+        $reflection->setStaticPropertyValue('cache', []);
     }
 
     /**
