@@ -63,12 +63,12 @@ final class SluggableListener implements EventSubscriberInterface
             );
 
 
-            $i = 0;
+            $i = 1;
 
             while (true) {
                 $existingSlug = UrlSlug::resolveSlug($slug);
 
-                if (null === $existingSlug) {
+                if (null === $existingSlug || $existingSlug->getObjectId() === $object->getId()) {
                     break;
                 }
 
