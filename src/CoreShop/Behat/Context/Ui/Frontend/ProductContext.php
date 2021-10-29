@@ -37,6 +37,7 @@ final class ProductContext implements Context
 
     /**
      * @Then /^I should be on the (product's) detail page$/
+     * @Then /^I should be on the detail page for (product with key "([^"]+)")$/
      */
     public function iShouldBeOnProductDetailedPage(ProductInterface $product): void
     {
