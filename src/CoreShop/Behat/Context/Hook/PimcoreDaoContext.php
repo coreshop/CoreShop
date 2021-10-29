@@ -17,6 +17,7 @@ namespace CoreShop\Behat\Context\Hook;
 use Behat\Behat\Context\Context;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
+use Doctrine\DBAL\Connection;
 use Pimcore\Cache;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
@@ -28,7 +29,11 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDaoContext implements Context
 {
-    public function __construct(private KernelInterface $kernel, private OrderRepositoryInterface $orderRepository)
+    public function __construct(
+        private KernelInterface $kernel,
+        private OrderRepositoryInterface $orderRepository,
+        private Connection $connection
+    )
     {
     }
 
@@ -149,6 +154,14 @@ final class PimcoreDaoContext implements Context
         if ($user) {
             $user->delete();
         }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearSlugs(): void
+    {
+        $this->connection->executeQuery('TRUNCATE TABLE `object_url_slugs`');
     }
 
     /**
