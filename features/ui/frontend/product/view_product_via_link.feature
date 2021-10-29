@@ -17,10 +17,10 @@ Feature: Viewing a product details using it's link
         And the product is active and published and available for store "Austria"
         And the site has another product "T-Shirt" with key "tshirt-2"
         And the product is active and published and available for store "Austria"
-        When I open the page "en/t-shirt-1" for this product
+        When I open the page "en/t-shirt" for this product
         Then I should be on the detail page for product with key "tshirt-1"
         Then I should see the product name "T-Shirt"
-        When I open the page "en/t-shirt-2" for this product
+        When I open the page "en/t-shirt-1" for this product
         Then I should be on the detail page for product with key "tshirt-2"
         Then I should see the product name "T-Shirt"
 
