@@ -62,6 +62,26 @@ final class SluggableListener implements EventSubscriberInterface
                 strtolower($this->slugger->slug($name, '-', $language)->toString())
             );
 
+
+            $i = 1;
+
+            while (true) {
+                /** @psalm-suppress InternalMethod */
+                $existingSlug = UrlSlug::resolveSlug($slug);
+
+                if (null === $existingSlug || $existingSlug->getObjectId() === $object->getId()) {
+                    break;
+                }
+
+                $slug = sprintf(
+                    '/%s/%s-%s',
+                    $language,
+                    strtolower($this->slugger->slug($name, '-', $language)->toString()),
+                    (string)$i
+                );
+                $i++;
+            }
+
             $newSlugs[] = new UrlSlug($slug, 0);
 
             foreach ($sites->getSites() as $site) {

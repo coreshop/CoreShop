@@ -45,10 +45,24 @@ final class ProductContext implements Context
 
     /**
      * @Given /^the site has a product "([^"]+)"$/
+     * @Given /^the site has another product "([^"]+)"$/
      */
     public function theSiteHasAProduct(string $productName): void
     {
         $product = $this->createSimpleProduct($productName);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the site has a product "([^"]+)" with key "([^"]+)"$/
+     * @Given /^the site has another product "([^"]+)" with key "([^"]+)"$/
+     */
+    public function theSiteHasAProductWithKey(string $productName, string $key): void
+    {
+        $product = $this->createSimpleProduct($productName);
+
+        $product->setKey($key);
 
         $this->saveProduct($product);
     }

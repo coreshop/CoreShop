@@ -56,6 +56,33 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Transform /^product with key "([^"]+)"$/
+     */
+    public function getProductByKey($productName)
+    {
+        /**
+         * @var \Pimcore\Model\DataObject\Listing\Concrete $list
+         */
+        $list = $this->productRepository->getList();
+        $list->setLocale('en');
+        $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
+        $list->setCondition('o_key = ?', [$productName]);
+        $list->load();
+
+        Assert::eq(
+            count($list->getObjects()),
+            1,
+            sprintf('%d products has been found with key "%s".', count($list->getObjects()), $productName)
+        );
+
+        $objects = $list->getObjects();
+        $product = \reset($objects);
+
+        //This is to not run into cache issues
+        return $this->productRepository->forceFind($product->getId());
+    }
+
+    /**
      * @Transform /^product(?:|s) "([^"]+)" with unit "([^"]+)"$/
      */
     public function getProductWithUnitName($productName, $productUnit): array
