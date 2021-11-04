@@ -72,9 +72,4 @@ class ProductSpecificPriceRule extends AbstractPriceRule implements ProductSpeci
     {
         return new ProductSpecificPriceRuleTranslation();
     }
-
-    public function __clone()
-    {
-        $this->id = null;
-    }
 }
