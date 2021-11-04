@@ -50,7 +50,7 @@
     "coreshop/menu-bundle": "^3.0",
     "coreshop/user-bundle": "^3.0",
     "coreshop/core": "^3.0",
-    "fzaninotto/faker": "^1.6",
+    "fakerphp/faker": "^1.16",
     "rinvex/countries": "^7.3",
     "pimcore/pimcore": "^10.2.2"
   },
