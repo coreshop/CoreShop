@@ -17,9 +17,7 @@ namespace CoreShop\Component\Index\Listing;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Order\OrderInterface;
-use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\Concrete;
 
 interface ListingInterface extends \Countable, \IteratorAggregate
@@ -41,8 +39,6 @@ interface ListingInterface extends \Countable, \IteratorAggregate
      * - considers variants in search results but only returns corresponding objects in search results.
      */
     public const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
-
-    public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection);
 
     /**
      * Returns all products valid for this search.
