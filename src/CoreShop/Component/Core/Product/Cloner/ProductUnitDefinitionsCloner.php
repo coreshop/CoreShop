@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Product\Cloner;
 
 use CoreShop\Component\Core\Model\ProductInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ProductUnitDefinitionsCloner implements ProductClonerInterface
 {
@@ -33,11 +34,36 @@ class ProductUnitDefinitionsCloner implements ProductClonerInterface
         $property->setAccessible(true);
         $property->setValue($unitDefinitions, null);
 
-        foreach ($unitDefinitions->getUnitDefinitions() as $unitDefinition) {
-            $reflectionClass = new \ReflectionClass($unitDefinition);
+        $property = $reflectionClass->getProperty('unitDefinitions');
+        $property->setAccessible(true);
+        $property->setValue($unitDefinitions, new ArrayCollection());
+
+        $property = $reflectionClass->getProperty('product');
+        $property->setAccessible(true);
+        $property->setValue($unitDefinitions, null);
+
+        $property = $reflectionClass->getProperty('defaultUnitDefinition');
+        $property->setAccessible(true);
+        $property->setValue($unitDefinitions, null);
+
+        $newDefaultDefinition = clone $referenceProduct->getUnitDefinitions()->getDefaultUnitDefinition();
+        $reflectionClass = new \ReflectionClass($newDefaultDefinition);
+        $property = $reflectionClass->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($newDefaultDefinition, null);
+
+        $unitDefinitions->setDefaultUnitDefinition($newDefaultDefinition);
+
+        foreach ($referenceProduct->getUnitDefinitions()->getAdditionalUnitDefinitions() as $unitDefinition) {
+            $newUnitDefinition = clone $unitDefinition;
+
+            $reflectionClass = new \ReflectionClass($newUnitDefinition);
             $property = $reflectionClass->getProperty('id');
             $property->setAccessible(true);
-            $property->setValue($unitDefinition, null);
+            $property->setValue($newUnitDefinition, null);
+
+            $newUnitDefinition->setProductUnitDefinitions($unitDefinitions);
+            $unitDefinitions->addAdditionalUnitDefinition($newUnitDefinition);
         }
 
         $product->setUnitDefinitions($unitDefinitions);

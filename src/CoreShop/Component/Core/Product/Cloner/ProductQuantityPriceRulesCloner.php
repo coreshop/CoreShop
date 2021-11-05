@@ -16,6 +16,7 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class ProductQuantityPriceRulesCloner implements ProductClonerInterface
@@ -70,13 +71,44 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
         $property->setAccessible(true);
         $property->setValue($newQuantityPriceRule, null);
 
-        foreach ([$newQuantityPriceRule->getConditions(), $newQuantityPriceRule->getActive()] as $batch) {
-            foreach ($batch as $entry) {
-                $reflectionClass = new \ReflectionClass($entry);
-                $property = $reflectionClass->getProperty('id');
+        $property = $reflectionClass->getProperty('product');
+        $property->setAccessible(true);
+        $property->setValue($newQuantityPriceRule, null);
+
+        $property = $reflectionClass->getProperty('conditions');
+        $property->setAccessible(true);
+        $property->setValue($newQuantityPriceRule, new ArrayCollection());
+
+        $property = $reflectionClass->getProperty('ranges');
+        $property->setAccessible(true);
+        $property->setValue($newQuantityPriceRule, new ArrayCollection());
+
+        foreach ($quantityPriceRule->getConditions() as $condition) {
+            $newCondition = clone $condition;
+
+            $reflectionClass = new \ReflectionClass($newCondition);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($newCondition, null);
+
+            $newQuantityPriceRule->addCondition($newCondition);
+        }
+
+        foreach ($quantityPriceRule->getRanges() as $range) {
+            $newRange = clone $range;
+
+            $reflectionClass = new \ReflectionClass($newRange);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($newRange, null);
+
+            if ($reflectionClass->hasProperty('unitDefinition')) {
+                $property = $reflectionClass->getProperty('unitDefinition');
                 $property->setAccessible(true);
-                $property->setValue($entry, null);
+                $property->setValue($newRange, null);
             }
+
+            $newQuantityPriceRule->addRange($newRange);
         }
 
         $newQuantityPriceRule->setProduct($product->getId());

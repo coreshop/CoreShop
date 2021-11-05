@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Pimcore\BCLayer;
 
-if (interface_exists(\Pimcore\Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface::class)) {
+if (interface_exists(\Pimcore\Model\DataObject\ClassDefinition\Data\CustomDataCopyInterface::class)) {
     interface CustomDataCopyInterface extends \Pimcore\Model\DataObject\ClassDefinition\Data\CustomDataCopyInterface
     {
     }
