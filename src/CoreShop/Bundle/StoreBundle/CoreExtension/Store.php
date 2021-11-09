@@ -48,4 +48,9 @@ class Store extends Select
     {
         return true;
     }
+
+    public function getOptionsProviderClass()
+    {
+        return '@'.StoreOptionProvider::class;
+    }
 }

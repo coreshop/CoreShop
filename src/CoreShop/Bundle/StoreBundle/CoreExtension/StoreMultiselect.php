@@ -27,4 +27,9 @@ class StoreMultiselect extends Multiselect
      * @var string
      */
     public $fieldtype = 'coreShopStoreMultiselect';
+
+    public function getOptionsProviderClass()
+    {
+        return '@'.StoreOptionProvider::class;
+    }
 }

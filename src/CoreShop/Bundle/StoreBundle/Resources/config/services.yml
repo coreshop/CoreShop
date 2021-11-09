@@ -49,3 +49,7 @@ services:
             - '@coreshop.repository.store'
         tags:
             - { name: coreshop.context.store.request_based.resolver, priority: 100 }
+
+    CoreShop\Bundle\StoreBundle\CoreExtension\StoreOptionProvider:
+        arguments:
+            - '@coreshop.repository.store'
