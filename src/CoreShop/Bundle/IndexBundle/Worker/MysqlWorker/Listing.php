@@ -91,7 +91,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection)
     {
-        parent::__construct($index, $worker, $connection);
+        parent::__construct($index, $worker);
 
         if (!$this->worker instanceof MysqlWorker) {
             throw new \InvalidArgumentException('Worker needs to be a MysqlWorker');

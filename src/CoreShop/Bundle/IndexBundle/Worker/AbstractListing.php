@@ -19,14 +19,13 @@ use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Doctrine\DBAL\Connection;
 use Pimcore\Tool;
 
 abstract class AbstractListing implements ListingInterface
 {
     protected ?string $locale = null;
 
-    public function __construct(protected IndexInterface $index, protected WorkerInterface $worker, protected Connection $connection)
+    public function __construct(protected IndexInterface $index, protected WorkerInterface $worker)
     {
     }
 
