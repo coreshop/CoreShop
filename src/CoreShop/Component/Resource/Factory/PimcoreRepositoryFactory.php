@@ -25,9 +25,6 @@ class PimcoreRepositoryFactory implements RepositoryFactoryInterface
      * @psalm-param class-string $repositoryClassName
      */
     public function __construct(
-        /**
-         * @psalm-var class-string
-         */
         private string $repositoryClassName,
         private MetadataInterface $metadata,
         private Connection $connection

@@ -24,9 +24,6 @@ class AddToCartFactory implements AddToCartFactoryInterface
      * @psalm-param class-string $addToCartClass
      */
     public function __construct(
-        /**
-         * @psalm-var class-string
-         */
         protected string $addToCartClass
     ) {
     }
