@@ -16,7 +16,9 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Factory\Factory;
+use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -72,6 +74,33 @@ final class Configuration implements ConfigurationInterface
                                             ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                             ->scalarNode('repository')->cannotBeEmpty()->end()
                                             ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('pimcore')
+                    ->useAttributeAsKey('name')
+                        ->arrayPrototype()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('path')
+                                    ->useAttributeAsKey('name')
+                                    ->prototype('scalar')->end()
+                                ->end()
+                                ->arrayNode('classes')
+                                    ->children()
+                                        ->scalarNode('model')->isRequired()->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->defaultValue(PimcoreRepository::class)->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->end()
+                                        ->scalarNode('install_file')->end()
+                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->end()
+                                        ->arrayNode('pimcore_controller')
+                                            ->useAttributeAsKey('name')
+                                            ->prototype('scalar')->end()
                                         ->end()
                                     ->end()
                                 ->end()
