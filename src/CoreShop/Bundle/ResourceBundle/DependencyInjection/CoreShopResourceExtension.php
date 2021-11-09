@@ -14,10 +14,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\DriverProvider;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
+use CoreShop\Component\Resource\Metadata\Metadata;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,7 +29,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopResourceExtension extends AbstractModelExtension
+final class CoreShopResourceExtension extends AbstractPimcoreExtension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -59,6 +63,9 @@ final class CoreShopResourceExtension extends AbstractModelExtension
         }
 
         $this->loadPersistence($configs['drivers'], $configs['resources'], $loader);
+        $this->loadResources($configs['resources'], $container);
+        $this->loadPimcoreModels($configs['pimcore'], $container);
+
 
         $bodyListener = new Definition(BodyListener::class);
         $bodyListener->addTag('kernel.event_listener', [
@@ -88,6 +95,67 @@ final class CoreShopResourceExtension extends AbstractModelExtension
 
         foreach ($drivers as $driver) {
             $loader->load(sprintf('services/integrations/%s.yml', $driver));
+        }
+    }
+
+    private function loadResources(array $loadedResources, ContainerBuilder $container): void
+    {
+        $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];
+
+        foreach ($loadedResources as $alias => $resourceConfig) {
+            $metadata = Metadata::fromAliasAndConfiguration($alias, $resourceConfig);
+
+            $resources[$alias] = $resourceConfig;
+            $container->setParameter('coreshop.resources', $resources);
+
+            DriverProvider::get($metadata)->load($container, $metadata);
+
+            if ($metadata->hasParameter('translation')) {
+                $alias .= '_translation';
+                $resourceConfig = array_merge(['driver' => $resourceConfig['driver']], $resourceConfig['translation']);
+
+                $resources[$alias] = $resourceConfig;
+                $container->setParameter('coreshop.resources', $resources);
+
+                $metadata = Metadata::fromAliasAndConfiguration($alias, $resourceConfig);
+
+                DriverProvider::get($metadata)->load($container, $metadata);
+            }
+        }
+    }
+
+    protected function loadPimcoreModels(array $models, ContainerBuilder $container): void
+    {
+        foreach ($models as $alias => $resourceConfig) {
+            $resourceConfig['driver'] = CoreShopResourceBundle::DRIVER_PIMCORE;
+            $resourceConfig['pimcore_class'] = match ($resourceConfig['classes']['type']) {
+                CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION => str_replace(
+                    'Pimcore\Model\DataObject\Fieldcollection\Data\\',
+                    '',
+                    $resourceConfig['classes']['model']
+                ),
+                CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK => str_replace(
+                    'Pimcore\Model\DataObject\Objectbrick\Data\\',
+                    '',
+                    $resourceConfig['classes']['model']
+                ),
+                default => str_replace(
+                    'Pimcore\Model\DataObject\\',
+                    '',
+                    $resourceConfig['classes']['model']
+                ),
+            };
+
+            $metadata = Metadata::fromAliasAndConfiguration($alias, $resourceConfig);
+
+            foreach (['coreshop.all.pimcore_classes', sprintf('%s.pimcore_classes', $metadata->getApplicationName())] as $parameter) {
+                $resources = $container->hasParameter($parameter) ? $container->getParameter($parameter) : [];
+                $resources[$alias] = $resourceConfig;
+
+                $container->setParameter($parameter, $resources);
+            }
+
+            DriverProvider::get($metadata)->load($container, $metadata);
         }
     }
 }
