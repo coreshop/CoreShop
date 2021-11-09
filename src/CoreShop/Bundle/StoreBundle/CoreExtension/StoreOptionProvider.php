@@ -18,15 +18,8 @@ use Pimcore\Model\DataObject\ClassDefinition\DynamicOptionsProvider\SelectOption
 
 class StoreOptionProvider implements SelectOptionsProviderInterface
 {
-    /** @var StoreRepository */
-    private $repository;
-
-    /**
-     * @param StoreRepository $repository
-     */
-    public function __construct(StoreRepository $repository)
+    public function __construct(private StoreRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     /**

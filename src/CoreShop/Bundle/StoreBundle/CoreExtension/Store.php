@@ -51,6 +51,6 @@ class Store extends Select
 
     public function getOptionsProviderClass()
     {
-        return StoreOptionProvider::class;
+        return '@'.StoreOptionProvider::class;
     }
 }
