@@ -20,9 +20,6 @@ final class PimcoreFactory implements FactoryInterface, PimcoreFactoryInterface
      * @psalm-param class-string $className
      */
     public function __construct(
-        /**
-         * @psalm-var class-string
-         */
         private string $className
     ) {
     }
