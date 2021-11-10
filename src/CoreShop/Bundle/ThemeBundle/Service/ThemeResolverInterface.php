@@ -21,5 +21,5 @@ interface ThemeResolverInterface
     /**
      * Resolve Current Theme
      */
-    public function resolveTheme(array $params): string;
+    public function resolveTheme(): string;
 }

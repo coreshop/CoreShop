@@ -16,14 +16,36 @@ namespace CoreShop\Bundle\ThemeBundle\Service;
 
 use Pimcore\Http\Request\Resolver\DocumentResolver;
 use Pimcore\Model\Document;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface
 {
-    public function resolveTheme(array $params): string
+    public function __construct(
+        private RequestStack $requestStack,
+        private DocumentResolver $documentResolver
+    ) {
+    }
+
+    public function resolveTheme(): string
     {
         try {
-            if (isset($params['document']) && $params['document'] instanceof Document && $params['document']->getProperty('theme')) {
-                return $params['document']->getProperty('theme');
+            $request = $this->requestStack->getMainRequest();
+
+            if (!$request) {
+                throw new ThemeNotResolvedException();
+            }
+
+            $isAjaxBrickRendering = $request->attributes->get('_route') === 'pimcore_admin_document_page_areabrick-render-index-editmode';
+
+            if ($isAjaxBrickRendering) {
+                $document = Document::getById($request->request->get('documentId'));
+            }
+            else {
+                $document = $this->documentResolver->getDocument($request);
+            }
+
+            if ($document instanceof Document && $document->getProperty('theme')) {
+                return $document->getProperty('theme');
             }
         } catch (\Exception $ex) {
             throw new ThemeNotResolvedException($ex);

@@ -30,8 +30,7 @@ final class ThemeContext implements ThemeContextInterface
         private ThemeResolverInterface $resolver,
         private ThemeRepositoryInterface $themeRepository,
         private PimcoreContextResolver $pimcoreContext,
-        private RequestStack $requestStack,
-        private DocumentResolver $documentResolver
+        private RequestStack $requestStack
     )
     {
     }
@@ -51,16 +50,7 @@ final class ThemeContext implements ThemeContextInterface
         }
 
         try {
-            if ($isAjaxBrickRendering) {
-                $document = Document::getById($request->request->get('documentId'));
-            }
-            else {
-                $document = $this->documentResolver->getDocument($request);
-            }
-
-            return $this->themeRepository->findOneByName(
-                $this->resolver->resolveTheme(['document' => $document])
-            );
+            return $this->themeRepository->findOneByName($this->resolver->resolveTheme());
         } catch (ThemeNotResolvedException) {
             return null;
         }

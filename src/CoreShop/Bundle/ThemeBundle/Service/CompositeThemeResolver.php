@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
 use Laminas\Stdlib\PriorityQueue;
-use Pimcore\Model\Document;
 
 final class CompositeThemeResolver implements ThemeResolverInterface
 {
@@ -31,11 +30,11 @@ final class CompositeThemeResolver implements ThemeResolverInterface
         $this->themeResolvers->insert($themeResolver, $priority);
     }
 
-    public function resolveTheme(array $params): string
+    public function resolveTheme(): string
     {
         foreach ($this->themeResolvers as $themeResolver) {
             try {
-                return $themeResolver->resolveTheme($params);
+                return $themeResolver->resolveTheme();
             } catch (ThemeNotResolvedException) {
                 continue;
             }

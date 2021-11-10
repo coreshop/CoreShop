@@ -29,7 +29,7 @@ final class ThemeContext implements Context
      */
     public function currentThemeNameIs(string $currentThemeName): void
     {
-        $theme = $this->themeResolver->resolveTheme();
+        $theme = $this->themeResolver->resolveTheme([]);
 
         Assert::same($theme, $currentThemeName);
     }
