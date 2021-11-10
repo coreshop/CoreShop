@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\ThemeBundle;
 use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\CompositeThemeResolverPass;
+use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\RemoveThemeAwareTranslatorPass;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
@@ -35,6 +36,7 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
         parent::build($container);
 
         $container->addCompilerPass(new CompositeThemeResolverPass());
+        $container->addCompilerPass(new RemoveThemeAwareTranslatorPass());
     }
 
     public function getNiceName(): string
