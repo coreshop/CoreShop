@@ -14,23 +14,19 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
-use Pimcore\Model\Site;
+use Pimcore\Model\Document;
+use Pimcore\Tool\Frontend;
 
 final class PimcoreSiteThemeResolver implements ThemeResolverInterface
 {
-    public function resolveTheme(): string
+    public function resolveTheme(array $params): string
     {
-        $list = new Site\Listing();
-        $list->load();
+        if (isset($params['document']) && $params['document'] instanceof Document) {
+            $site = Frontend::getSiteForDocument($params['document']);
 
-        try {
-            $currentSite = Site::getCurrentSite();
-
-            if ($theme = $currentSite->getRootDocument()->getKey()) {
+            if ($site && $theme = $site->getRootDocument()->getKey()) {
                 return $theme;
             }
-        } catch (\Exception $exception) {
-            throw new ThemeNotResolvedException($exception);
         }
 
         throw new ThemeNotResolvedException();

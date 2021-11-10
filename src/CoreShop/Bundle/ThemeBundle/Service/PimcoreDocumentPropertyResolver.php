@@ -15,20 +15,15 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
 use Pimcore\Http\Request\Resolver\DocumentResolver;
+use Pimcore\Model\Document;
 
 final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface
 {
-    public function __construct(private DocumentResolver $documentResolver)
-    {
-    }
-
-    public function resolveTheme(): string
+    public function resolveTheme(array $params): string
     {
         try {
-            $document = $this->documentResolver->getDocument();
-
-            if ($document && $document->getProperty('theme')) {
-                return $document->getProperty('theme');
+            if (isset($params['document']) && $params['document'] instanceof Document && $params['document']->getProperty('theme')) {
+                return $params['document']->getProperty('theme');
             }
         } catch (\Exception $ex) {
             throw new ThemeNotResolvedException($ex);
