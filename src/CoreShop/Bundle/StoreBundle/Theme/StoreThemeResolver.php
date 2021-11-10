@@ -25,7 +25,7 @@ final class StoreThemeResolver implements ThemeResolverInterface
     {
     }
 
-    public function resolveTheme(): string
+    public function resolveTheme(array $params): string
     {
         try {
             $store = $this->storeContext->getStore();

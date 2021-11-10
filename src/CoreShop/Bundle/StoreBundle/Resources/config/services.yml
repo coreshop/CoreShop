@@ -43,6 +43,13 @@ services:
         tags:
             - { name: coreshop.context.store.request_based.resolver, priority: 200 }
 
+    CoreShop\Component\Store\Context\RequestBased\PimcoreAreaBrickRenderResolver:
+        public: false
+        arguments:
+            - '@coreshop.repository.store'
+        tags:
+            - { name: coreshop.context.store.request_based.resolver, priority: 220 }
+
     CoreShop\Component\Store\Context\RequestBased\SiteBasedRequestResolver:
         public: false
         arguments:
