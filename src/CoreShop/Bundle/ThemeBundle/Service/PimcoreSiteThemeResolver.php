@@ -14,23 +14,48 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
-use Pimcore\Model\Site;
+use Pimcore\Http\Request\Resolver\DocumentResolver;
+use Pimcore\Model\Document;
+use Pimcore\Tool\Frontend;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class PimcoreSiteThemeResolver implements ThemeResolverInterface
 {
+    public function __construct(
+        private RequestStack $requestStack,
+        private DocumentResolver $documentResolver
+    ) {
+    }
+
+
     public function resolveTheme(): string
     {
-        $list = new Site\Listing();
-        $list->load();
+        $request = $this->requestStack->getMainRequest();
 
-        try {
-            $currentSite = Site::getCurrentSite();
+        if (!$request) {
+            throw new ThemeNotResolvedException();
+        }
 
-            if ($theme = $currentSite->getRootDocument()->getKey()) {
+        $isAjaxBrickRendering = $request->attributes->get('_route') === 'pimcore_admin_document_page_areabrick-render-index-editmode';
+        $document = null;
+
+        if ($isAjaxBrickRendering) {
+            $documentId = $request->request->get('documentId');
+
+            if ($documentId) {
+                $document = Document::getById((int)$documentId);
+            }
+        }
+        else {
+            $document = $this->documentResolver->getDocument($request);
+        }
+
+        if ($document instanceof Document) {
+            $site = Frontend::getSiteForDocument($document);
+
+            if ($site && $theme = $site->getRootDocument()->getKey()) {
                 return $theme;
             }
-        } catch (\Exception $exception) {
-            throw new ThemeNotResolvedException($exception);
         }
 
         throw new ThemeNotResolvedException();

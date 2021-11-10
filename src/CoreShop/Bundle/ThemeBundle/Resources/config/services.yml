@@ -19,11 +19,15 @@ services:
             - '@coreshop.theme.resolver.registry'
 
     CoreShop\Bundle\ThemeBundle\Service\PimcoreSiteThemeResolver:
+        arguments:
+            - '@Symfony\Component\HttpFoundation\RequestStack'
+            - '@Pimcore\Http\Request\Resolver\DocumentResolver'
         tags:
             - { name: coreshop.theme.resolver, type: pimcore_site, priority: 10 }
 
     CoreShop\Bundle\ThemeBundle\Service\PimcoreDocumentPropertyResolver:
         arguments:
+            - '@Symfony\Component\HttpFoundation\RequestStack'
             - '@Pimcore\Http\Request\Resolver\DocumentResolver'
         tags:
             - { name: coreshop.theme.resolver, type: pimcore_document_property, priority: 15 }

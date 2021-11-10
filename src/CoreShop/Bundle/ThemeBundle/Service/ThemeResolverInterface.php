@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
+use Pimcore\Model\Document;
+
 interface ThemeResolverInterface
 {
     /**

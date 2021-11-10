@@ -16,7 +16,9 @@ namespace CoreShop\Bundle\ThemeBundle\Context;
 
 use CoreShop\Bundle\ThemeBundle\Service\ThemeNotResolvedException;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
+use Pimcore\Http\Request\Resolver\DocumentResolver;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
+use Pimcore\Model\Document;
 use Sylius\Bundle\ThemeBundle\Context\ThemeContextInterface;
 use Sylius\Bundle\ThemeBundle\Model\ThemeInterface;
 use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
@@ -24,7 +26,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class ThemeContext implements ThemeContextInterface
 {
-    public function __construct(private ThemeResolverInterface $resolver, private ThemeRepositoryInterface $themeRepository, private PimcoreContextResolver $pimcoreContext, private RequestStack $requestStack)
+    public function __construct(
+        private ThemeResolverInterface $resolver,
+        private ThemeRepositoryInterface $themeRepository,
+        private PimcoreContextResolver $pimcoreContext,
+        private RequestStack $requestStack
+    )
     {
     }
 
@@ -36,7 +43,9 @@ final class ThemeContext implements ThemeContextInterface
             return null;
         }
 
-        if ($this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
+        $isAjaxBrickRendering = $request->attributes->get('_route') === 'pimcore_admin_document_page_areabrick-render-index-editmode';
+
+        if (!$isAjaxBrickRendering && $this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
             return null;
         }
 
