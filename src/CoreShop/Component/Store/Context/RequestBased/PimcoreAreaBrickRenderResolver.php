@@ -31,14 +31,17 @@ final class PimcoreAreaBrickRenderResolver implements RequestResolverInterface
     public function findStore(Request $request): ?StoreInterface
     {
         if ($request->attributes->get('_route') === 'pimcore_admin_document_page_areabrick-render-index-editmode') {
-            /** @psalm-suppress InternalMethod */
-            $document = Document::getById($request->request->get('documentId'));
+            $documentId = $request->request->get('documentId');
 
-            if ($document) {
-                $site = Frontend::getSiteForDocument($document);
+            if ($documentId) {
+                $document = Document::getById((int)$documentId);
 
-                if ($site instanceof Site) {
-                    return $this->storeRepository->findOneBySite($site->getId());
+                if ($document) {
+                    $site = Frontend::getSiteForDocument($document);
+
+                    if ($site instanceof Site) {
+                        return $this->storeRepository->findOneBySite($site->getId());
+                    }
                 }
             }
         }

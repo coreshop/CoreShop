@@ -36,9 +36,14 @@ final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface
             }
 
             $isAjaxBrickRendering = $request->attributes->get('_route') === 'pimcore_admin_document_page_areabrick-render-index-editmode';
+            $document = null;
 
             if ($isAjaxBrickRendering) {
-                $document = Document::getById($request->request->get('documentId'));
+                $documentId = $request->request->get('documentId');
+
+                if ($documentId) {
+                    $document = Document::getById((int)$documentId);
+                }
             }
             else {
                 $document = $this->documentResolver->getDocument($request);
