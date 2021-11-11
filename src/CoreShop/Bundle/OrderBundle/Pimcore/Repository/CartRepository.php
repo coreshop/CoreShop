@@ -41,6 +41,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND name = ? AND order__id is null', [$customer->getId(), $name]);
+        $list->setLimit(1);
         $list->load();
 
         $objects = $list->getObjects();
@@ -58,6 +59,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         $list->setCondition('customer__id = ? AND store = ? AND order__id is null ', [$customer->getId(), $store->getId()]);
         $list->setOrderKey('o_creationDate');
         $list->setOrder('DESC');
+        $list->setLimit(1);
         $list->load();
 
         $objects = $list->getObjects();
@@ -73,6 +75,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     {
         $list = $this->getList();
         $list->setCondition('o_id = ? AND order__id is null ', [$id]);
+        $list->setLimit(1);
         $list->load();
 
         $objects = $list->getObjects();
