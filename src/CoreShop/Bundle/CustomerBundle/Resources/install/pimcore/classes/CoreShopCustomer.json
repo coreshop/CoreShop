@@ -155,7 +155,7 @@
                             {
                                 "fieldtype": "password",
                                 "width": "",
-                                "algorithm": "md5",
+                                "algorithm": "password_hash",
                                 "salt": "",
                                 "saltlocation": "back",
                                 "name": "password",

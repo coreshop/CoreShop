@@ -85,7 +85,7 @@
                                 "queryColumnType": "varchar(190)",
                                 "columnType": "varchar(190)",
                                 "phpdocType": "string",
-                                "algorithm": "md5",
+                                "algorithm": "password_hash",
                                 "salt": "",
                                 "saltlocation": "back",
                                 "name": "password",
