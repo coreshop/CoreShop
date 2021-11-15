@@ -26,11 +26,6 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
      */
     public function findForCustomer(CustomerInterface $customer): array;
 
-    /**
-     * @param string            $name
-     */
-    public function findNamedForCustomer(CustomerInterface $customer, $name): ?OrderInterface;
-
     public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface;
 
     /**

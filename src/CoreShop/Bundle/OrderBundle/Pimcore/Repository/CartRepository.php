@@ -37,22 +37,6 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         return $carts;
     }
 
-    public function findNamedForCustomer(CustomerInterface $customer, $name): ?OrderInterface
-    {
-        $list = $this->getList();
-        $list->setCondition('customer__id = ? AND name = ? AND order__id is null', [$customer->getId(), $name]);
-        $list->setLimit(1);
-        $list->load();
-
-        $objects = $list->getObjects();
-
-        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
-            return $objects[0];
-        }
-
-        return null;
-    }
-
     public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface
     {
         $list = $this->getList();
@@ -75,7 +59,6 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     {
         $list = $this->getList();
         $list->setCondition('o_id = ? AND order__id is null ', [$id]);
-        $list->setLimit(1);
         $list->load();
 
         $objects = $list->getObjects();
