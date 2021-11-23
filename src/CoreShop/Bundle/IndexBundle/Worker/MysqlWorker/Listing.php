@@ -514,7 +514,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     /**
      * @inheritdoc
      */
-    public function getItems(int $offset, int $itemCountPerPage)
+    public function getItems($offset, $itemCountPerPage)
     {
         $this->setOffset($offset);
         $this->setLimit($itemCountPerPage);
