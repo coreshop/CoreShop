@@ -46,8 +46,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     protected ?int $offset = null;
 
-    protected ?PimcoreModelInterface $category = null;
-
     protected Dao $dao;
 
     /**
@@ -237,17 +235,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->offset;
     }
 
-    public function setCategory(PimcoreModelInterface $category)
-    {
-        $this->objects = null;
-        $this->category = $category;
-    }
-
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
     public function getEnabled()
     {
         return $this->enabled;
@@ -381,10 +368,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
         $queryBuilder->where($this->getWorker()->renderCondition(new MatchCondition('active', '1'), 'q'));
 
-        if ($this->getCategory()) {
-            $categoryCondition = ',' . $this->getCategory()->getId() . ',';
-            $queryBuilder->andWhere($this->getWorker()->renderCondition(new LikeCondition('parentCategoryIds', 'both', $categoryCondition), 'q'));
-        }
         $extensions = $this->getWorker()->getExtensions($this->getIndex());
 
         foreach ($extensions as $extension) {
