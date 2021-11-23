@@ -126,8 +126,8 @@ $(document).ready(function () {
         $useIasS.on('change', function () {
             if ($(this).is(':checked')) {
                 $shippingField.slideUp();
-                var address = $('select[name=invoiceAddress] option:selected').data('address');
-                var value = $('select[name=invoiceAddress] :selected').val();
+                var address = $('select[name=coreshop[invoiceAddress]] option:selected').data('address');
+                var value = $('select[name=coreshop[invoiceAddress]] :selected').val();
 
                 if (address) {
                     $shippingAddress.val(value).trigger('change');
@@ -171,3 +171,4 @@ $(document).ready(function () {
     };
 
 }(window.shop = window.shop || {}, jQuery));
+
