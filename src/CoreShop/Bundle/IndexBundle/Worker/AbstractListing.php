@@ -29,11 +29,6 @@ abstract class AbstractListing implements ListingInterface
     {
     }
 
-    public function getIterator()
-    {
-        return $this;
-    }
-
     abstract public function getObjects();
 
     abstract public function addCondition(ConditionInterface $condition, $fieldName);

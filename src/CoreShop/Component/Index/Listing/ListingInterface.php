@@ -21,7 +21,7 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Paginator\PaginateListingInterface;
 
-interface ListingInterface extends \Countable, \IteratorAggregate, PaginateListingInterface
+interface ListingInterface extends \Countable, PaginateListingInterface
 {
     /**
      * Variant mode defines how to consider variants in product list results
