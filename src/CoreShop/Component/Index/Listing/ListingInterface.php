@@ -19,8 +19,9 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Order\OrderInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\Paginator\PaginateListingInterface;
 
-interface ListingInterface extends \Countable, \IteratorAggregate
+interface ListingInterface extends \Countable, \IteratorAggregate, PaginateListingInterface
 {
     /**
      * Variant mode defines how to consider variants in product list results
