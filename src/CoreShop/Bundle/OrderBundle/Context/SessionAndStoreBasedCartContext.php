@@ -46,7 +46,13 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
             throw new CartNotFoundException('CoreShop was not able to find the cart in session');
         }
 
-        $cart = $this->cartRepository->findByCartId($this->session->get(sprintf('%s.%s', $this->sessionKeyName, $store->getId())));
+        $cartId = $this->session->get(sprintf('%s.%s', $this->sessionKeyName, $store->getId()));
+
+        if (!is_int($cartId)) {
+            throw new CartNotFoundException('CoreShop was not able to find the cart in session');
+        }
+
+        $cart = $this->cartRepository->findByCartId($cartId);
 
         if (null === $cart || null === $cart->getStore() || $cart->getStore()->getId() !== $store->getId()) {
             $cart = null;
