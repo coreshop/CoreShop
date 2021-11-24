@@ -45,8 +45,8 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
         $quantityPriceRules = $referenceProduct->getQuantityPriceRules();
 
         /**
-         * @var Concrete $referenceProduct
-         * @psalm-var Concrete $referenceProduct
+         * @var Concrete&ProductInterface $referenceProduct
+         * @psalm-var Concrete&ProductInterface $referenceProduct
          */
         $qprFieldDefinition = $referenceProduct->getClass()->getFieldDefinition('quantityPriceRules');
 

@@ -36,8 +36,8 @@ class ProductUnitDefinitionsCloner implements ProductClonerInterface
         }
 
         /**
-         * @var Concrete $referenceProduct
-         * @psalm-var Concrete $referenceProduct
+         * @var Concrete&ProductInterface $referenceProduct
+         * @psalm-var Concrete&ProductInterface $referenceProduct
          */
         $unitDefinitionsFieldDefinition = $referenceProduct->getClass()->getFieldDefinition('unitDefinitions');
 
