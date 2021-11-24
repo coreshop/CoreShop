@@ -31,7 +31,7 @@ class CompositeTracker implements TrackerInterface
             return $this->enabled;
         }
 
-        foreach ($this->trackerRegistry as $tracker) {
+        foreach ($this->trackerRegistry->all() as $tracker) {
             if ($tracker->isEnabled()) {
                 return $this->enabled = true;
             }
@@ -106,7 +106,7 @@ class CompositeTracker implements TrackerInterface
         if (!$this->isEnabled()) {
             return;
         }
-        
+
         $order = $this->extractTrackingData($order);
 
         $this->compositeTrackerCall('trackCheckoutComplete', [$order]);
