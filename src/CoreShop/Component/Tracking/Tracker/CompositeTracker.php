@@ -19,13 +19,25 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class CompositeTracker implements TrackerInterface
 {
+    private ?bool $enabled = null;
+
     public function __construct(private TrackingExtractorInterface $extractor, private ServiceRegistryInterface $trackerRegistry)
     {
     }
 
     public function isEnabled(): bool
     {
-        return true;
+        if ($this->enabled !== null) {
+            return $this->enabled;
+        }
+
+        foreach ($this->trackerRegistry->all() as $tracker) {
+            if ($tracker->isEnabled()) {
+                return $this->enabled = true;
+            }
+        }
+
+        return $this->enabled = false;
     }
 
     public function setEnabled(bool $enabled): void
@@ -34,6 +46,10 @@ class CompositeTracker implements TrackerInterface
 
     public function trackProduct($product): void
     {
+        if (!$this->isEnabled()) {
+            return;
+        }
+
         $data = $this->extractTrackingData($product);
 
         $this->compositeTrackerCall('trackProduct', [$data]);
@@ -41,6 +57,10 @@ class CompositeTracker implements TrackerInterface
 
     public function trackProductImpression($product): void
     {
+        if (!$this->isEnabled()) {
+            return;
+        }
+
         $data = $this->extractTrackingData($product);
 
         $this->compositeTrackerCall('trackProductImpression', [$data]);
@@ -48,6 +68,10 @@ class CompositeTracker implements TrackerInterface
 
     public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
+        if (!$this->isEnabled()) {
+            return;
+        }
+
         $cart = $this->extractTrackingData($cart);
         $product = $this->extractTrackingData($product);
 
@@ -56,6 +80,10 @@ class CompositeTracker implements TrackerInterface
 
     public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
+        if (!$this->isEnabled()) {
+            return;
+        }
+
         $cart = $this->extractTrackingData($cart);
         $product = $this->extractTrackingData($product);
 
@@ -64,6 +92,10 @@ class CompositeTracker implements TrackerInterface
 
     public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
+        if (!$this->isEnabled()) {
+            return;
+        }
+
         $cart = $this->extractTrackingData($cart);
 
         $this->compositeTrackerCall('trackCheckoutStep', [$cart, $stepIdentifier, $isFirstStep, $checkoutOption]);
@@ -71,6 +103,10 @@ class CompositeTracker implements TrackerInterface
 
     public function trackCheckoutComplete($order): void
     {
+        if (!$this->isEnabled()) {
+            return;
+        }
+
         $order = $this->extractTrackingData($order);
 
         $this->compositeTrackerCall('trackCheckoutComplete', [$order]);
