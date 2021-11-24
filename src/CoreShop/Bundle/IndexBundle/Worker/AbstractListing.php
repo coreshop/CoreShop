@@ -18,7 +18,6 @@ use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Tool;
 
 abstract class AbstractListing implements ListingInterface
@@ -58,10 +57,6 @@ abstract class AbstractListing implements ListingInterface
     abstract public function setOffset($offset);
 
     abstract public function getOffset();
-
-    abstract public function setCategory(PimcoreModelInterface $category);
-
-    abstract public function getCategory();
 
     abstract public function setVariantMode($variantMode);
 

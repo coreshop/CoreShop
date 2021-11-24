@@ -143,13 +143,6 @@ interface ListingInterface extends \Countable, PaginateListingInterface
      */
     public function getOffset();
 
-    public function setCategory(PimcoreModelInterface $category);
-
-    /**
-     * @return PimcoreModelInterface
-     */
-    public function getCategory();
-
     /**
      * @param bool $enabled
      */
