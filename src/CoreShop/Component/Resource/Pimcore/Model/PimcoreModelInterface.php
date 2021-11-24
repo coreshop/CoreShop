@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Resource\Pimcore\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\Element\ElementInterface;
 
 interface PimcoreModelInterface extends ResourceInterface, ElementInterface
@@ -61,4 +62,9 @@ interface PimcoreModelInterface extends ResourceInterface, ElementInterface
      * @return mixed
      */
     public function delete();
+
+    /**
+     * @return ClassDefinition
+     */
+    public function getClass();
 }

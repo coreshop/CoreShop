@@ -20,7 +20,6 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
-use CoreShop\Component\Store\Model\StoresAwareInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 interface ProductInterface extends

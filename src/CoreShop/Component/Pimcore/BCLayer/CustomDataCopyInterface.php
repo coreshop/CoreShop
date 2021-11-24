@@ -12,12 +12,18 @@
 
 namespace CoreShop\Component\Pimcore\BCLayer;
 
+use Pimcore\Model\DataObject\Concrete;
+
 if (interface_exists(\Pimcore\Model\DataObject\ClassDefinition\Data\CustomDataCopyInterface::class)) {
     interface CustomDataCopyInterface extends \Pimcore\Model\DataObject\ClassDefinition\Data\CustomDataCopyInterface
     {
     }
 } else {
+    /**
+     * @method mixed createDataCopy(Concrete $object, $data)
+     */
     interface CustomDataCopyInterface
     {
+
     }
 }

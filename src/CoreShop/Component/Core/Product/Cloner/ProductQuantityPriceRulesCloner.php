@@ -36,7 +36,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
         if ($product->getId() === null) {
             throw new \Exception(
                 sprintf(
-                    'cannot clone quantity price rules on a un-stored product (reference product id: %d.',
+                    'cannot clone quantity price rules on a unsaved product (reference product id: %d.)',
                     $referenceProduct->getId()
                 )
             );
