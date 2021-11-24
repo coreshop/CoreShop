@@ -16,7 +16,7 @@ namespace CoreShop\Component\Index\Condition;
 
 class RangeCondition implements ConditionInterface
 {
-    public function __construct(private string $fieldName, private string $from, private string $to)
+    public function __construct(private string $fieldName, private ?float $from, private ?float $to)
     {
     }
 
@@ -30,22 +30,22 @@ class RangeCondition implements ConditionInterface
         $this->fieldName = $fieldName;
     }
 
-    public function getFrom(): string
+    public function getFrom(): ?float
     {
         return $this->from;
     }
 
-    public function setFrom(string $from): void
+    public function setFrom(?float $from): void
     {
         $this->from = $from;
     }
 
-    public function getTo(): string
+    public function getTo(): ?float
     {
         return $this->to;
     }
 
-    public function setTo(string $to): void
+    public function setTo(?float $to): void
     {
         $this->to = $to;
     }

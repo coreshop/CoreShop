@@ -95,7 +95,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
                 $fieldName = 'PRECONDITION_' . $fieldName;
             }
 
-            $list->addCondition(new RangeCondition($field, $valueMin, $valueMax), $fieldName);
+            $list->addCondition(new RangeCondition($field, (float)$valueMin, (float)$valueMax), $fieldName);
         }
 
         return $currentFilter;
