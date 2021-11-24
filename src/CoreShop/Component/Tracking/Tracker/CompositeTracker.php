@@ -33,9 +33,7 @@ class CompositeTracker implements TrackerInterface
 
         foreach ($this->trackerRegistry as $tracker) {
             if ($tracker->isEnabled()) {
-                $this->enabled = true;
-
-                return true;
+                return $this->enabled = true;
             }
         }
 
