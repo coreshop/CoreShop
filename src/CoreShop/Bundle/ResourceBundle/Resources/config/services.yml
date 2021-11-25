@@ -84,7 +84,6 @@ services:
         arguments:
             - '@CoreShop\Bundle\ResourceBundle\Serialization\VersionObjectConstructor.inner'
             - '@jms_serializer.unserialize_object_constructor'
-            - 'null'
 
     CoreShop\Component\Resource\Service\FolderCreationServiceInterface: '@CoreShop\Component\Resource\Service\FolderCreationService'
     CoreShop\Component\Resource\Service\FolderCreationService:

@@ -25,7 +25,12 @@ use JMS\Serializer\Visitor\DeserializationVisitorInterface;
 
 class VersionObjectConstructor implements ObjectConstructorInterface
 {
-    public function __construct(private ObjectConstructorInterface $fallbackConstructor, private ObjectConstructorInterface $fallbacksFallbackConstructor, private string $fallbackStrategy = DoctrineObjectConstructor::ON_MISSING_NULL, private ?\JMS\Serializer\Exclusion\ExpressionLanguageExclusionStrategy $expressionLanguageExclusionStrategy = null)
+    public function __construct(
+        private ObjectConstructorInterface $fallbackConstructor,
+        private ObjectConstructorInterface $fallbacksFallbackConstructor,
+        private string $fallbackStrategy = DoctrineObjectConstructor::ON_MISSING_FALLBACK,
+        private ?\JMS\Serializer\Exclusion\ExpressionLanguageExclusionStrategy $expressionLanguageExclusionStrategy = null
+    )
     {
     }
 
@@ -103,7 +108,7 @@ class VersionObjectConstructor implements ObjectConstructorInterface
                 case DoctrineObjectConstructor::ON_MISSING_EXCEPTION:
                     throw new ObjectConstructionException(sprintf('Entity %s can not be found', $metadata->name));
                 case DoctrineObjectConstructor::ON_MISSING_FALLBACK:
-                    return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+                    return $this->fallbacksFallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
                 default:
                     throw new InvalidArgumentException('The provided fallback strategy for the object constructor is not valid');
             }
