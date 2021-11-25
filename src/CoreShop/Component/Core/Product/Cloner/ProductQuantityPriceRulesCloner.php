@@ -10,105 +10,94 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Component\Core\Product\Cloner;
 
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
-use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use Doctrine\Common\Collections\Collection;
+use Pimcore\Model\DataObject\ClassDefinition\Data\CustomDataCopyInterface;
+use Pimcore\Model\DataObject\Concrete;
 
 class ProductQuantityPriceRulesCloner implements ProductClonerInterface
 {
-    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void
+    public function __construct(protected UnitMatcherInterface $unitMatcher)
     {
+    }
+
+    public function clone(
+        ProductInterface $product,
+        ProductInterface $referenceProduct,
+        bool $resetExistingData = false
+    ): void {
         if ($product->getId() === null) {
-            throw new \Exception(sprintf('cannot clone quantity price rules on a un-stored product (reference product id: %d.', $referenceProduct->getId()));
+            throw new \Exception(
+                sprintf(
+                    'cannot clone quantity price rules on a unsaved product (reference product id: %d.)',
+                    $referenceProduct->getId()
+                )
+            );
         }
 
         $quantityPriceRules = $referenceProduct->getQuantityPriceRules();
-        $hasQuantityPriceRules = count($quantityPriceRules) > 0;
 
-        if ($hasQuantityPriceRules === true && $resetExistingData === false) {
-            return;
+        /**
+         * @var Concrete&ProductInterface $referenceProduct
+         * @psalm-var Concrete&ProductInterface $referenceProduct
+         */
+        $qprFieldDefinition = $referenceProduct->getClass()->getFieldDefinition('quantityPriceRules');
+
+        if (!$qprFieldDefinition instanceof CustomDataCopyInterface) {
+            throw new \Exception('Field Definition must implement CustomDataCopyInterface');
         }
 
-        $newQuantityPriceRules = [];
+        $newQuantityPriceRules = $qprFieldDefinition->createDataCopy($referenceProduct, $quantityPriceRules);
+        $this->reallocateRanges($product, $newQuantityPriceRules, $quantityPriceRules);
 
-        foreach ($quantityPriceRules as $quantityPriceRule) {
-            $newQuantityPriceRules[] = $this->cloneAndReallocateRangeQuantityUnit($product, $quantityPriceRule);
-        }
-
-        if (count($newQuantityPriceRules) > 0) {
-            $product->setQuantityPriceRules($newQuantityPriceRules);
-        }
+        $product->setQuantityPriceRules($newQuantityPriceRules);
     }
 
-    protected function cloneAndReallocateRangeQuantityUnit(ProductInterface $product, ProductQuantityPriceRuleInterface $quantityPriceRule): ProductQuantityPriceRuleInterface
-    {
-        $newQuantityPriceRule = clone $quantityPriceRule;
-
-        //Hack to get rid of the ID
-        $reflectionClass = new \ReflectionClass($newQuantityPriceRule);
-        $property = $reflectionClass->getProperty('id');
-        $property->setAccessible(true);
-        $property->setValue($newQuantityPriceRule, null);
-
-        foreach ([$newQuantityPriceRule->getConditions(), $newQuantityPriceRule->getActive()] as $batch) {
-            foreach ($batch as $entry) {
-                $reflectionClass = new \ReflectionClass($entry);
-                $property = $reflectionClass->getProperty('id');
-                $property->setAccessible(true);
-                $property->setValue($entry, null);
-            }
+    protected function reallocateRanges(
+        ProductInterface $product,
+        array $newQuantityPriceRules,
+        array $oldQuantityPriceRules
+    ) {
+        if (count($oldQuantityPriceRules) !== count($newQuantityPriceRules)) {
+            throw new \Exception('Count of old an new rules does not match');
         }
 
-        $newQuantityPriceRule->setProduct((int)$product->getId());
+        foreach ($newQuantityPriceRules as $j => $newQuantityPriceRule) {
+            $quantityPriceRule = $oldQuantityPriceRules[$j];
 
-        $ranges = $newQuantityPriceRule->getRanges();
-        $referenceRanges = $quantityPriceRule->getRanges();
+            $ranges = $newQuantityPriceRule->getRanges();
+            $referenceRanges = $quantityPriceRule->getRanges();
 
-        foreach ($ranges as $index => $range) {
-            if (!$range instanceof QuantityRangeInterface) {
+            if (!$ranges instanceof Collection) {
                 continue;
             }
 
-            $referenceRange = null;
-            $allocatedUnitDefinition = null;
+            foreach ($ranges as $index => $range) {
+                if (!$range instanceof QuantityRangeInterface) {
+                    continue;
+                }
 
-            if ($ranges instanceof Collection) {
                 $referenceRange = $referenceRanges->get($index);
-            }
 
-            if ($referenceRange instanceof QuantityRangeInterface && $referenceRange->getUnitDefinition() instanceof ProductUnitDefinitionInterface) {
-                $allocatedUnitDefinition = $this->findMatchingUnitDefinitionByUnitName($product, $referenceRange->getUnitDefinition()->getUnitName());
-            }
+                if ($referenceRange instanceof QuantityRangeInterface &&
+                    $referenceRange->getUnitDefinition() instanceof ProductUnitDefinitionInterface
+                ) {
+                    $allocatedUnitDefinition = $this->unitMatcher->findMatchingUnitDefinitionByUnitName(
+                        $product,
+                        $referenceRange->getUnitDefinition()->getUnitName()
+                    );
 
-            if (!$allocatedUnitDefinition instanceof ProductUnitDefinitionInterface) {
-                continue;
-            }
+                    if (!$allocatedUnitDefinition instanceof ProductUnitDefinitionInterface) {
+                        continue;
+                    }
 
-            $range->setUnitDefinition($allocatedUnitDefinition);
-        }
-
-        return $newQuantityPriceRule;
-    }
-
-    protected function findMatchingUnitDefinitionByUnitName(ProductInterface $product, string $unitName): ?ProductUnitDefinitionInterface
-    {
-        if ($product->hasUnitDefinitions() === false) {
-            return null;
-        }
-
-        /** @var ProductUnitDefinitionInterface $unitDefinition */
-        foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $unitDefinition) {
-            if ($unitDefinition->getUnitName() === $unitName) {
-                return $unitDefinition;
+                    $range->setUnitDefinition($allocatedUnitDefinition);
+                }
             }
         }
-
-        return null;
     }
 }

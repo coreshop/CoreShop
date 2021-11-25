@@ -1,4 +1,4 @@
-@product
+@domain @product
 Feature: Adding a new product with a simple quantity price rule
 
   Background:
@@ -10,8 +10,8 @@ Feature: Adding a new product with a simple quantity price rule
     And the site has a product-unit "Carton"
     And the site has a product-unit "Palette"
     And the product has the default unit "Pieces"
-    And the product has and additional unit "Carton" with conversion rate "24"
-    And the product has and additional unit "Palette" with conversion rate "200"
+    And the product has an additional unit "Carton" with conversion rate "24"
+    And the product has an additional unit "Palette" with conversion rate "200"
 
   Scenario: Add a quantity price rule with no conditions
     Given adding a quantity price rule to product "Shoe" named "default-product-quantity-price-rule" and with calculation-behaviour "volume"

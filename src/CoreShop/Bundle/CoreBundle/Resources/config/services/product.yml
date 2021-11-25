@@ -2,9 +2,16 @@ services:
     _defaults:
         public: true
 
-    CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner: ~
+    CoreShop\Component\Core\Product\Cloner\UnitMatcherInterface: '@CoreShop\Component\Core\Product\Cloner\UnitMatcher'
+    CoreShop\Component\Core\Product\Cloner\UnitMatcher: ~
 
-    CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner: ~
+    CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner:
+        arguments:
+            - '@CoreShop\Component\Core\Product\Cloner\UnitMatcherInterface'
+
+    CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner:
+        arguments:
+            - '@CoreShop\Component\Core\Product\Cloner\UnitMatcherInterface'
 
     CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface: '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactory'
     CoreShop\Component\Core\Product\ProductTaxCalculatorFactory:

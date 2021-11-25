@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
+use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
@@ -147,6 +149,33 @@ class ProductUnitDefinition extends Data implements
         }
 
         return null;
+    }
+
+    public function createDataCopy(Concrete $object, $data)
+    {
+        if (!$data instanceof ProductUnitDefinitionsInterface) {
+            return null;
+        }
+
+        if (!$object instanceof ProductInterface) {
+            return null;
+        }
+
+        $data->setProduct($object);
+
+        $reflectionClass = new \ReflectionClass($data);
+        $property = $reflectionClass->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($data, null);
+
+        foreach ($data->getUnitDefinitions() as $unitDefinition) {
+            $reflectionClass = new \ReflectionClass($unitDefinition);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($unitDefinition, null);
+        }
+
+        return $data;
     }
 
     public function marshalVersion($object, $data)

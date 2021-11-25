@@ -21,6 +21,7 @@ use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
@@ -33,7 +34,9 @@ use Webmozart\Assert\Assert;
  */
 class ProductSpecificPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
-    Data\CustomVersionMarshalInterface
+    Data\CustomVersionMarshalInterface,
+    Data\CustomRecyclingMarshalInterface,
+    Data\CustomDataCopyInterface
 {
     use TempEntityManagerTrait;
 
@@ -94,6 +97,70 @@ class ProductSpecificPriceRules extends Data implements
         }
 
         return $data;
+    }
+
+    public function createDataCopy(Concrete $object, $data)
+    {
+        if (!is_array($data)) {
+            return [];
+        }
+
+        if (!$object instanceof ProductInterface) {
+            return [];
+        }
+
+        $newPriceRules = [];
+
+        foreach ($data as $priceRule) {
+            if (!$priceRule instanceof ProductSpecificPriceRuleInterface) {
+                continue;
+            }
+
+            $newPriceRule = clone $priceRule;
+
+            $reflectionClass = new \ReflectionClass($newPriceRule);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, null);
+
+            $property = $reflectionClass->getProperty('product');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, null);
+
+            $property = $reflectionClass->getProperty('conditions');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, new ArrayCollection());
+
+            $property = $reflectionClass->getProperty('actions');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, new ArrayCollection());
+
+            foreach ($priceRule->getConditions() as $condition) {
+                $newCondition = clone $condition;
+
+                $reflectionClass = new \ReflectionClass($newCondition);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($newCondition, null);
+
+                $newPriceRule->addCondition($newCondition);
+            }
+
+            foreach ($priceRule->getActions() as $action) {
+                $newAction = clone $action;
+
+                $reflectionClass = new \ReflectionClass($newAction);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($newAction, null);
+
+                $newPriceRule->addAction($newAction);
+            }
+
+            $newPriceRules[] = $newPriceRule;
+        }
+
+        return $newPriceRules;
     }
 
     /**

@@ -10,41 +10,86 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Component\Core\Product\Cloner;
 
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
+use Pimcore\Model\DataObject\ClassDefinition\Data\CustomDataCopyInterface;
+use Pimcore\Model\DataObject\Concrete;
 
 class ProductUnitDefinitionsCloner implements ProductClonerInterface
 {
-    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void
+    public function __construct(protected UnitMatcherInterface $unitMatcher)
     {
-        if ($resetExistingData === false && $product->hasUnitDefinitions() === true) {
+    }
+
+    public function clone(
+        ProductInterface $product,
+        ProductInterface $referenceProduct,
+        bool $resetExistingData = false
+    ): void {
+        if ($product->hasUnitDefinitions() === true && $resetExistingData === false) {
             return;
         }
 
-        $unitDefinitions = $referenceProduct->getUnitDefinitions();
+        /**
+         * @var Concrete&ProductInterface $referenceProduct
+         * @psalm-var Concrete&ProductInterface $referenceProduct
+         */
+        $unitDefinitionsFieldDefinition = $referenceProduct->getClass()->getFieldDefinition('unitDefinitions');
 
-        if (null === $unitDefinitions) {
-            return;
+        if (!$unitDefinitionsFieldDefinition instanceof CustomDataCopyInterface) {
+            throw new \Exception('Field Definition must implement CustomDataCopyInterface');
         }
 
-        $newUnitDefinitions = clone $unitDefinitions;
+        $storeValuesFieldDefinition = $referenceProduct->getClass()->getFieldDefinition('storeValues');
 
-        //Hack to get rid of the ID
-        $reflectionClass = new \ReflectionClass($newUnitDefinitions);
-        $property = $reflectionClass->getProperty('id');
-        $property->setAccessible(true);
-        $property->setValue($unitDefinitions, null);
-
-        foreach ($newUnitDefinitions->getUnitDefinitions() as $unitDefinition) {
-            $reflectionClass = new \ReflectionClass($unitDefinition);
-            $property = $reflectionClass->getProperty('id');
-            $property->setAccessible(true);
-            $property->setValue($unitDefinition, null);
+        if (!$storeValuesFieldDefinition instanceof CustomDataCopyInterface) {
+            throw new \Exception('Field Definition must implement CustomDataCopyInterface');
         }
 
-        $product->setUnitDefinitions($newUnitDefinitions);
+        $unitDefinitions = $unitDefinitionsFieldDefinition->createDataCopy(
+            $referenceProduct,
+            $referenceProduct->getUnitDefinitions()
+        );
+
+        $storeValues = $storeValuesFieldDefinition->createDataCopy(
+            $referenceProduct,
+            $referenceProduct->getStoreValues()
+        );
+
+        $product->setUnitDefinitions($unitDefinitions);
+        $product->setStoreValues($storeValues);
+
+        /**
+         * @var ProductStoreValuesInterface $storeValue
+         */
+        foreach ($referenceProduct->getStoreValues() as $storeValue) {
+            $newStoreValue = $product->getStoreValuesForStore($storeValue->getStore());
+
+            if (!$newStoreValue) {
+                continue;
+            }
+
+            foreach ($storeValue->getProductUnitDefinitionPrices() as $definitionPrice) {
+                $newUnitDefinition = $this->unitMatcher->findMatchingUnitDefinitionByUnitName($product, $definitionPrice->getUnitDefinition()->getUnitName());
+
+                if (!$newUnitDefinition) {
+                    continue;
+                }
+
+                $newDefinitionPrice = clone $definitionPrice;
+
+                $reflectionClass = new \ReflectionClass($newDefinitionPrice);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($newDefinitionPrice, null);
+
+                $newDefinitionPrice->setProductStoreValues($newStoreValue);
+                $newDefinitionPrice->setUnitDefinition($newUnitDefinition);
+
+                $newStoreValue->addProductUnitDefinitionPrice($newDefinitionPrice);
+            }
+        }
     }
 }

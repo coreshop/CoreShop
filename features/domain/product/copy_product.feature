@@ -1,4 +1,4 @@
-@product
+@domain @product
 Feature: Adding a new Product and copy it
 
   Background:

@@ -24,6 +24,7 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Repository\ProductQuantityPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
@@ -37,7 +38,9 @@ use Webmozart\Assert\Assert;
  */
 class ProductQuantityPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
-    Data\CustomVersionMarshalInterface
+    Data\CustomVersionMarshalInterface,
+    Data\CustomRecyclingMarshalInterface,
+    Data\CustomDataCopyInterface
 {
     use TempEntityManagerTrait;
 
@@ -120,6 +123,76 @@ class ProductQuantityPriceRules extends Data implements
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];
+    }
+
+    public function createDataCopy(Concrete $object, $data)
+    {
+        if (!is_array($data)) {
+            return [];
+        }
+
+        if (!$object instanceof QuantityRangePriceAwareInterface) {
+            return [];
+        }
+
+        $newPriceRules = [];
+
+        foreach ($data as $priceRule) {
+            if (!$priceRule instanceof ProductQuantityPriceRuleInterface) {
+                continue;
+            }
+
+            $newPriceRule = clone $priceRule;
+
+            $reflectionClass = new \ReflectionClass($newPriceRule);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, null);
+
+            $property = $reflectionClass->getProperty('product');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, null);
+
+            $property = $reflectionClass->getProperty('conditions');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, new ArrayCollection());
+
+            $property = $reflectionClass->getProperty('ranges');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, new ArrayCollection());
+
+            foreach ($priceRule->getConditions() as $condition) {
+                $newCondition = clone $condition;
+
+                $reflectionClass = new \ReflectionClass($newCondition);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($newCondition, null);
+
+                $newPriceRule->addCondition($newCondition);
+            }
+
+            foreach ($priceRule->getRanges() as $range) {
+                $newRange = clone $range;
+
+                $reflectionClass = new \ReflectionClass($newRange);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($newRange, null);
+
+                if ($reflectionClass->hasProperty('unitDefinition')) {
+                    $property = $reflectionClass->getProperty('unitDefinition');
+                    $property->setAccessible(true);
+                    $property->setValue($newRange, null);
+                }
+
+                $newPriceRule->addRange($newRange);
+            }
+
+            $newPriceRules[] = $newPriceRule;
+        }
+
+        return $newPriceRules;
     }
 
     public function marshalVersion($object, $data)

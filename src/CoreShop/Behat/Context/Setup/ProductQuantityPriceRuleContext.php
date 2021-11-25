@@ -213,13 +213,13 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour percentage-decrease of ([^"]+)% for (unit "[^"]+")$/
-     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour percentage-decrease of ([^"]+)% for (unit "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour percentage-decrease of (\d+)% for (unit "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour percentage-decrease of (\d+)% for (unit "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasRangePercentageDecreaseForUnit(
         ProductQuantityPriceRuleInterface $rule,
         int $from,
-        $percentage,
+        float $percentage,
         ProductUnitInterface $unit
     ): void {
         $unitDefinition = $this->getUnitDefinitionFromProduct($rule->getProduct(), $unit);

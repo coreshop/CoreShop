@@ -23,10 +23,12 @@ use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
 use Webmozart\Assert\Assert;
 
@@ -35,7 +37,9 @@ use Webmozart\Assert\Assert;
  */
 class ProductUnitDefinitions extends Data implements
     Data\CustomResourcePersistingInterface,
-    Data\CustomVersionMarshalInterface
+    Data\CustomVersionMarshalInterface,
+    Data\CustomRecyclingMarshalInterface,
+    Data\CustomDataCopyInterface
 {
     use TempEntityManagerTrait;
 
@@ -183,6 +187,55 @@ class ProductUnitDefinitions extends Data implements
 //        return $code;
 //    }
 
+    public function createDataCopy(Concrete $object, $data)
+    {
+        if (!$data instanceof ProductUnitDefinitionsInterface) {
+            return null;
+        }
+
+        $newData = clone $data;
+
+        $reflectionClass = new \ReflectionClass($newData);
+
+        $property = $reflectionClass->getProperty('unitDefinitions');
+        $property->setAccessible(true);
+        $property->setValue($newData, new ArrayCollection());
+
+        $property = $reflectionClass->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($newData, null);
+
+        $property = $reflectionClass->getProperty('product');
+        $property->setAccessible(true);
+        $property->setValue($newData, null);
+
+        $property = $reflectionClass->getProperty('defaultUnitDefinition');
+        $property->setAccessible(true);
+        $property->setValue($newData, null);
+
+        $newDefaultDefinition = clone $data->getDefaultUnitDefinition();
+        $reflectionClass = new \ReflectionClass($newDefaultDefinition);
+        $property = $reflectionClass->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($newDefaultDefinition, null);
+
+        $newData->setDefaultUnitDefinition($newDefaultDefinition);
+
+        foreach ($data->getAdditionalUnitDefinitions() as $unitDefinition) {
+            $newUnitDefinition = clone $unitDefinition;
+
+            $reflectionClass = new \ReflectionClass($newUnitDefinition);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($newUnitDefinition, null);
+
+            $newUnitDefinition->setProductUnitDefinitions($newData);
+            $newData->addAdditionalUnitDefinition($newUnitDefinition);
+        }
+
+        return $newData;
+    }
+
     public function marshalVersion($object, $data)
     {
         if (!$data instanceof ProductUnitDefinitionsInterface) {
@@ -291,6 +344,8 @@ class ProductUnitDefinitions extends Data implements
         if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
             $entityMerger = new EntityMerger($this->getEntityManager());
             $entityMerger->merge($productUnitDefinitions);
+
+            $productUnitDefinitions->setProduct($object);
 
             $this->getEntityManager()->persist($productUnitDefinitions);
             $this->getEntityManager()->flush($productUnitDefinitions);

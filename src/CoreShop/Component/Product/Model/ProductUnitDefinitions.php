@@ -179,34 +179,4 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
 
         return new ArrayCollection(array_values($additionalDefinitions->toArray()));
     }
-
-    public function __clone()
-    {
-        if ($this->id === null) {
-            return;
-        }
-
-        $defaultUnitDefinition = $this->getDefaultUnitDefinition();
-
-        if (null === $defaultUnitDefinition) {
-            return;
-        }
-
-        $newDefaultUnitDefinition = clone $defaultUnitDefinition;
-        $newDefaultUnitDefinition->setProductUnitDefinitions($this);
-
-        $additionalUnits = $this->getAdditionalUnitDefinitions();
-
-        $this->id = null;
-        $this->unitDefinitions = new ArrayCollection();
-        $this->defaultUnitDefinition = null;
-
-        $this->setDefaultUnitDefinition($newDefaultUnitDefinition);
-
-        foreach ($additionalUnits as $additionalUnit) {
-            $newAdditionalDefinition = clone $additionalUnit;
-            $newAdditionalDefinition->setProductUnitDefinitions($this);
-            $this->addUnitDefinition($newAdditionalDefinition);
-        }
-    }
 }
