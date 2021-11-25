@@ -149,14 +149,4 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
     {
         $this->rule = $rule;
     }
-
-    public function __clone()
-    {
-        if ($this->id === null) {
-            return;
-        }
-
-        $this->rule = null;
-        $this->id = null;
-    }
 }

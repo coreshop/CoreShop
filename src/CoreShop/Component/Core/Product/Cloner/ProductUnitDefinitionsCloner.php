@@ -13,33 +13,86 @@
 namespace CoreShop\Component\Core\Product\Cloner;
 
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
+use CoreShop\Component\Pimcore\BCLayer\CustomDataCopyInterface;
+use Pimcore\Model\DataObject\Concrete;
 
 class ProductUnitDefinitionsCloner implements ProductClonerInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false)
+    protected $unitMatcher;
+
+    public function __construct(UnitMatcherInterface $unitMatcher)
     {
+        $this->unitMatcher = $unitMatcher;
+    }
+
+    public function clone(
+        ProductInterface $product,
+        ProductInterface $referenceProduct,
+        bool $resetExistingData = false
+    ) {
         if ($product->hasUnitDefinitions() === true && $resetExistingData === false) {
             return;
         }
 
-        $unitDefinitions = clone $referenceProduct->getUnitDefinitions();
+        /**
+         * @var Concrete&ProductInterface $referenceProduct
+         * @psalm-var Concrete&ProductInterface $referenceProduct
+         */
+        $unitDefinitionsFieldDefinition = $referenceProduct->getClass()->getFieldDefinition('unitDefinitions');
 
-        //Hack to get rid of the ID
-        $reflectionClass = new \ReflectionClass($unitDefinitions);
-        $property = $reflectionClass->getProperty('id');
-        $property->setAccessible(true);
-        $property->setValue($unitDefinitions, null);
-
-        foreach ($unitDefinitions->getUnitDefinitions() as $unitDefinition) {
-            $reflectionClass = new \ReflectionClass($unitDefinition);
-            $property = $reflectionClass->getProperty('id');
-            $property->setAccessible(true);
-            $property->setValue($unitDefinition, null);
+        if (!$unitDefinitionsFieldDefinition instanceof CustomDataCopyInterface) {
+            throw new \Exception('Field Definition must implement CustomDataCopyInterface');
         }
 
+        $storeValuesFieldDefinition = $referenceProduct->getClass()->getFieldDefinition('storeValues');
+
+        if (!$storeValuesFieldDefinition instanceof CustomDataCopyInterface) {
+            throw new \Exception('Field Definition must implement CustomDataCopyInterface');
+        }
+
+        $unitDefinitions = $unitDefinitionsFieldDefinition->createDataCopy(
+            $referenceProduct,
+            $referenceProduct->getUnitDefinitions()
+        );
+
+        $storeValues = $storeValuesFieldDefinition->createDataCopy(
+            $referenceProduct,
+            $referenceProduct->getStoreValues()
+        );
+
         $product->setUnitDefinitions($unitDefinitions);
+        $product->setStoreValues($storeValues);
+
+        /**
+         * @var ProductStoreValuesInterface $storeValue
+         */
+        foreach ($referenceProduct->getStoreValues() as $storeValue) {
+            $newStoreValue = $product->getStoreValues($storeValue->getStore());
+
+            if (!$newStoreValue) {
+                continue;
+            }
+
+            foreach ($storeValue->getProductUnitDefinitionPrices() as $definitionPrice) {
+                $newUnitDefinition = $this->unitMatcher->findMatchingUnitDefinitionByUnitName($product, $definitionPrice->getUnitDefinition()->getUnitName());
+
+                if (!$newUnitDefinition) {
+                    continue;
+                }
+
+                $newDefinitionPrice = clone $definitionPrice;
+
+                $reflectionClass = new \ReflectionClass($newDefinitionPrice);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($newDefinitionPrice, null);
+
+                $newDefinitionPrice->setProductStoreValues($newStoreValue);
+                $newDefinitionPrice->setUnitDefinition($newUnitDefinition);
+
+                $newStoreValue->addProductUnitDefinitionPrice($newDefinitionPrice);
+            }
+        }
     }
 }

@@ -19,20 +19,24 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
+use CoreShop\Component\Pimcore\BCLayer\CustomDataCopyInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
+use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
 class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface,
     Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    CustomRecyclingMarshalInterface,
+    CustomDataCopyInterface
 {
     use TempEntityManagerTrait;
 
@@ -304,6 +308,44 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         }
 
         return $data;
+    }
+
+    public function createDataCopy(Concrete $object, $data)
+    {
+        if (!is_array($data)) {
+            return [];
+        }
+
+        if (!$object instanceof ProductInterface) {
+            return [];
+        }
+
+        $newStoreValues = [];
+
+        foreach ($data as $storeValue) {
+            if (!$storeValue instanceof ProductStoreValuesInterface) {
+                continue;
+            }
+
+            $newStoreValue = clone $storeValue;
+
+            $reflectionClass = new \ReflectionClass($newStoreValue);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($newStoreValue, null);
+
+            $property = $reflectionClass->getProperty('product');
+            $property->setAccessible(true);
+            $property->setValue($newStoreValue, null);
+
+            $property = $reflectionClass->getProperty('productUnitDefinitionPrices');
+            $property->setAccessible(true);
+            $property->setValue($newStoreValue, new ArrayCollection());
+
+            $newStoreValues[] = $newStoreValue;
+        }
+
+        return $newStoreValues;
     }
 
     /**
