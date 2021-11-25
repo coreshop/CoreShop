@@ -13,13 +13,7 @@
 namespace CoreShop\Component\Core\Product\Cloner;
 
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\QuantityRangeInterface;
-use CoreShop\Component\Pimcore\BCLayer\CustomDataCopyInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
-use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Pimcore\Model\DataObject\Concrete;
 
 class UnitMatcher implements UnitMatcherInterface
 {
@@ -29,7 +23,6 @@ class UnitMatcher implements UnitMatcherInterface
             return null;
         }
 
-        /** @var ProductUnitDefinitionInterface $unitDefinition */
         foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $unitDefinition) {
 
             if (!$unitDefinition instanceof ProductUnitDefinitionInterface) {

@@ -336,6 +336,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 //        unset($storeEntry);
 
         foreach ($data as $storeValue) {
+            if (!$storeValue) {
+                continue;
+            }
+
             $returnData[$storeValue->getStore()->getId()] = $storeValue;
         }
 
