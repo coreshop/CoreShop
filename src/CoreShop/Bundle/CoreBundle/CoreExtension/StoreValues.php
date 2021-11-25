@@ -522,13 +522,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $context->setGroups(['Version']);
             $context->setAttribute('em', $tempEntityManager);
 
-            /**
-             * @var ProductStoreValuesInterface $data
-             */
             $data = $this->getSerializer()->fromArray($storeData, $this->getProductStoreValuesRepository()->getClassName(), $context);
 
-            foreach ($data->getProductUnitDefinitionPrices() as $price) {
-                $price->setProductStoreValues($data);
+            if ($data instanceof ProductStoreValuesInterface) {
+                foreach ($data->getProductUnitDefinitionPrices() as $price) {
+                    $price->setProductStoreValues($data);
+                }
             }
 
             $entities[] = $data;
