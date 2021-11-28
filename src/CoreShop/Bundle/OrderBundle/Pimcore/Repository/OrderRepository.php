@@ -65,7 +65,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
 
         $objects = $list->getObjects();
 
-        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
+        if (count($objects) > 0 && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
