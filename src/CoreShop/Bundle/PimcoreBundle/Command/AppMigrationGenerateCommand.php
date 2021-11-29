@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\Command;
 
-use CoreShop\Bundle\CoreBundle\Installer\Executor\CommandExecutor;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -26,8 +26,7 @@ final class AppMigrationGenerateCommand extends Command
         $this
             ->setName('coreshop:app:migration:generate')
             ->setHidden(true)
-            ->setDescription('Create a new App migration.')
-        ;
+            ->setDescription('Create a new App migration.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -35,10 +34,22 @@ final class AppMigrationGenerateCommand extends Command
         $application = $this->getApplication();
         $application->setCatchExceptions(false);
 
-        $commandExecutor = new CommandExecutor($input, $output, $application);
-        $commandExecutor->runCommand('doctrine:migrations:generate', ['--namespace' => 'App\\Migrations'], $output);
+        $parameters = array_merge(
+            ['command' => 'doctrine:migrations:generate'],
+            ['--namespace' => 'App\\Migrations'],
+        );
 
-        $output->writeln('');
+        $this->getApplication()->setAutoExit(false);
+        $exitCode = $this->getApplication()->run(new ArrayInput($parameters), $output);
+
+        if (0 !== $exitCode) {
+            $this->getApplication()->setAutoExit(true);
+
+            $errorMessage = sprintf('The command terminated with an error code: %u.', $exitCode);
+            $output->writeln("<error>$errorMessage</error>");
+
+            throw new \Exception($errorMessage, $exitCode);
+        }
 
         return 0;
     }

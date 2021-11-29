@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\Command;
 
-use CoreShop\Bundle\CoreBundle\Installer\Executor\CommandExecutor;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -38,10 +38,22 @@ EOT
         $application = $this->getApplication();
         $application->setCatchExceptions(false);
 
-        $commandExecutor = new CommandExecutor($input, $output, $application);
-        $commandExecutor->runCommand('doctrine:migrations:migrate', ['--prefix' => 'App\\Migrations'], $output);
+        $parameters = array_merge(
+            ['command' => 'doctrine:migrations:migrate'],
+            ['--prefix' => 'App\\Migrations'],
+        );
 
-        $output->writeln('');
+        $this->getApplication()->setAutoExit(false);
+        $exitCode = $this->getApplication()->run(new ArrayInput($parameters), $output);
+
+        if (0 !== $exitCode) {
+            $this->getApplication()->setAutoExit(true);
+
+            $errorMessage = sprintf('The command terminated with an error code: %u.', $exitCode);
+            $output->writeln("<error>$errorMessage</error>");
+
+            throw new \Exception($errorMessage, $exitCode);
+        }
 
         return 0;
     }
