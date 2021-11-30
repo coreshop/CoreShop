@@ -75,3 +75,11 @@ services:
     CoreShop\Component\Pimcore\Twig\Extension\DataObjectRoutingExtension:
         tags:
             - { name: twig.extension }
+
+    CoreShop\Bundle\PimcoreBundle\Command\AppMigrateCommand:
+        tags:
+            - { name: console.command, command: coreshop:app:migrate }
+
+    CoreShop\Bundle\PimcoreBundle\Command\AppMigrationGenerateCommand:
+        tags:
+            - { name: console.command, command: coreshop:app:migration:generate }
