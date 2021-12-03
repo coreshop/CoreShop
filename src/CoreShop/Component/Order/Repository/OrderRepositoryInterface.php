@@ -23,7 +23,7 @@ interface OrderRepositoryInterface extends PimcoreRepositoryInterface
 {
     public function findCartByCustomer(CustomerInterface $customer): array;
 
-    public function findByCartId(int $id): ?OrderInterface;
+    public function findByCartId(?int $id): ?OrderInterface;
 
     public function findLatestCartByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface;
 

@@ -113,7 +113,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         return $this->unitDefinitions;
     }
 
-    public function getUnitDefinition(string $identifier)
+    public function getUnitDefinition(?string $identifier)
     {
         $result = null;
 

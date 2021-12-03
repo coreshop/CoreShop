@@ -40,7 +40,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         return $carts;
     }
 
-    public function findByCartId(int $id): ?OrderInterface
+    public function findByCartId(?int $id): ?OrderInterface
     {
         $list = $this->getList();
         $list->setCondition('o_id = ? AND saleState = ? ', [$id, OrderSaleStates::STATE_CART]);

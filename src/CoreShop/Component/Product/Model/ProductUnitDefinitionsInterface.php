@@ -50,7 +50,7 @@ interface ProductUnitDefinitionsInterface extends ResourceInterface
     /**
      * @return ProductUnitDefinitionInterface|null
      */
-    public function getUnitDefinition(string $identifier);
+    public function getUnitDefinition(?string $identifier);
 
     public function addAdditionalUnitDefinition(ProductUnitDefinitionInterface $unitDefinition);
 
