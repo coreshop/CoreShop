@@ -1,4 +1,4 @@
-@ui @cart
+@ui @cart @wip
 Feature: Maintaining cart after login
 
     Background:
