@@ -1,0 +1,76 @@
+version: '3.4'
+
+networks:
+  cors_dev:
+    external: true
+
+services:
+  db:
+    image: mariadb:10.5
+    container_name: coreshop-3-mariadb
+    networks:
+      - cors_dev
+    working_dir: /application
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci]
+    volumes:
+      - coreshop-3-database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=ROOT
+      - MYSQL_DATABASE=pimcore
+      - MYSQL_USER=pimcore
+      - MYSQL_PASSWORD=pimcore
+    ports:
+      - "3306:3306"
+
+  php:
+    build: .
+    container_name: coreshop-3-php
+    volumes:
+      - .:/var/www/html:cached
+      - ./.docker/php.ini:/usr/local/etc/php/conf.d/01-custom.ini
+    networks:
+      - cors_dev
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.coreshop_3.rule=Host(`coreshop-3.localhost`)
+      - traefik.http.routers.coreshop_3.entrypoints=cors_dev
+      - traefik.http.routers.coreshop_3.tls=true
+      - traefik.http.services.coreshop_3.loadbalancer.server.port=80
+      - traefik.docker.network=cors_dev
+    depends_on:
+     - db
+    environment:
+      BLACKFIRE_CLIENT_ID: 505c139b-73d1-40bd-9427-ee0d1fa07a66
+      BLACKFIRE_CLIENT_TOKEN: 17c138a6e7e73e07f4af62d34e9ffe7fe4a0ee995c5b5961ea7cc7a33e47af7b
+
+  blackfire:
+    image: blackfire/blackfire:2
+    networks:
+      - cors_dev
+    environment:
+      # Exposes BLACKFIRE_SERVER_* environment variables from the host
+      BLACKFIRE_SERVER_ID: 9c6f597f-e135-4204-8b2c-cbbb664ff328
+      BLACKFIRE_SERVER_TOKEN: 7eb6a49f059d0abc68ee1745e784f4327be23af4cd05ec5f8788f185b20a52bc
+
+  php-debug:
+    image: pimcore/pimcore:PHP8.0-apache-debug
+    container_name: coreshop-3-debug-php
+    volumes:
+      - .:/var/www/html:cached
+    networks:
+      - cors_dev
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.coreshop_3_debug.rule=Host(`coreshop-3.localhost`)
+      - traefik.http.routers.coreshop_3_debug.tls=true
+      - traefik.http.routers.coreshop_3_debug.entrypoints=cors_dev_debug
+      - traefik.http.services.coreshop_3_debug.loadbalancer.server.port=80
+      - traefik.docker.network=cors_dev
+    depends_on:
+      - db
+    environment:
+      - PHP_DEBUG=1
+      - PHP_IDE_CONFIG="serverName=localhost"
+
+volumes:
+  coreshop-3-database:
