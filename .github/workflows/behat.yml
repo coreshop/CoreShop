@@ -56,7 +56,7 @@ jobs:
     - name: Verify MySQL connection
       run: |
         mysql --version
-        sudo apt-get install -y mysql-client
+        sudo apt-get install -y mysql-client-8.0
         mysql --host 127.0.0.1 --port ${{ job.services.database.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
 
     - name: Setup DB
