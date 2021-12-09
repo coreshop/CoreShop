@@ -41,13 +41,6 @@ jobs:
         ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
         extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
 
-    - name: Verify MySQL connection
-      run: |
-        mysql --version
-        while ! mysqladmin ping --silent; do
-          sleep 1
-        done
-
     - name: Validate composer.json and composer.lock
       run: composer validate
 

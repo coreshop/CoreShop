@@ -53,13 +53,6 @@ jobs:
     - name: Check PHP Version
       run: php -v
 
-    - name: Verify MySQL connection
-      run: |
-        mysql --version
-        while ! mysqladmin ping --silent; do
-          sleep 1
-        done
-
     - name: Setup DB
       run: |
         mysql --host 127.0.0.1 --port ${{ job.services.database.ports['3306'] }} -uroot -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
