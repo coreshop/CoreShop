@@ -26,11 +26,11 @@ class ProductPreviewController extends AdminController
 {
     public function previewAction(Request $request): Response
     {
-        if (!$request->get('store')) {
+        if (!$this->getParameterFromRequest($request, 'store')) {
             return new Response('No Store selected');
         }
 
-        $store = $this->get('coreshop.repository.store')->find($request->get('store'));
+        $store = $this->get('coreshop.repository.store')->find($this->getParameterFromRequest($request, 'store'));
 
         if (!$store instanceof StoreInterface) {
             return new Response('Invalid Store selected');
@@ -46,7 +46,7 @@ class ProductPreviewController extends AdminController
             }
         }
 
-        $id = $request->get('id');
+        $id = $this->getParameterFromRequest($request, 'id');
 
         /**
          * @var DataObject\Concrete|null $object

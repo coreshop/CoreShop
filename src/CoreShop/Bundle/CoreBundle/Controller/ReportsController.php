@@ -25,15 +25,15 @@ class ReportsController extends AdminController
 {
     public function getReportDataAction(Request $request): Response
     {
-        $report = $request->get('report');
+        $reportId = $this->getParameterFromRequest($request, 'report');
         $reportRegistry = $this->get('coreshop.registry.reports');
 
-        if (!$reportRegistry->has($report)) {
-            throw new \InvalidArgumentException(sprintf('Report %s not found', $report));
+        if (!$reportRegistry->has($reportId)) {
+            throw new \InvalidArgumentException(sprintf('Report %s not found', $reportId));
         }
 
         /** @var ReportInterface $report */
-        $report = $reportRegistry->get($report);
+        $report = $reportRegistry->get($reportId);
 
         return $this->viewHandler->handle([
             'success' => true,
@@ -44,7 +44,7 @@ class ReportsController extends AdminController
 
     public function exportReportCsvAction(Request $request): Response
     {
-        $reportType = $request->get('report');
+        $reportType = $this->getParameterFromRequest($request, 'report');
         $reportRegistry = $this->get('coreshop.registry.reports');
 
         if (!$reportRegistry->has($reportType)) {

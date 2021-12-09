@@ -38,7 +38,7 @@ class RegisterController extends FrontendController
 
         $form = $this->get('form.factory')->createNamed('customer', CustomerRegistrationType::class, $this->get('coreshop.factory.customer')->createNew());
 
-        $redirect = $request->get('_redirect', $this->generateUrl('coreshop_customer_profile'));
+        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_customer_profile'));
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $form = $form->handleRequest($request);
@@ -96,7 +96,7 @@ class RegisterController extends FrontendController
 
     public function passwordResetAction(Request $request): Response
     {
-        $resetToken = $request->get('token');
+        $resetToken = $this->getParameterFromRequest($request, 'token');
 
         if ($resetToken) {
             /**

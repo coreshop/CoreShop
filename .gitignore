@@ -48,12 +48,10 @@ parameters.yml
 var
 .env.local
 composer.lock
-docker-compose.yaml
 config/local/
 config/pimcore/
 .php-version
 etc/build
 public/bundles
 public/var
-web
 drivers

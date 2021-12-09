@@ -38,7 +38,7 @@ class SecurityController extends FrontendController
 
         $form = $this->formFactory->createNamed('', CustomerLoginType::class);
 
-        $renderLayout = $request->get('renderLayout', true);
+        $renderLayout = $this->getParameterFromRequest($request, 'renderLayout', true);
 
         $viewWithLayout = $this->templateConfigurator->findTemplate('Security/login.html');
         $viewWithoutLayout = $this->templateConfigurator->findTemplate('Security/_login-form.html');
@@ -47,8 +47,8 @@ class SecurityController extends FrontendController
             'form' => $form->createView(),
             'last_username' => $lastUsername,
             'last_error' => $lastError,
-            'target' => $request->get('target', null),
-            'failure' => $request->get('failure', null),
+            'target' => $this->getParameterFromRequest($request, 'target', null),
+            'failure' => $this->getParameterFromRequest($request, 'failure', null),
         ]);
     }
 

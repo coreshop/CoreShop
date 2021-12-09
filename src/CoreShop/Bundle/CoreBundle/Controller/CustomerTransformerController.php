@@ -159,8 +159,8 @@ class CustomerTransformerController extends AdminController
         $formError = false;
         $message = null;
 
-        $addressAssignmentType = $request->get('addressAssignmentType');
-        $addressAccessType = $request->get('addressAccessType');
+        $addressAssignmentType = $this->getParameterFromRequest($request, 'addressAssignmentType');
+        $addressAccessType = $this->getParameterFromRequest($request, 'addressAccessType');
 
         /** @var CustomerInterface $customer */
         $customer = $this->getCustomerRepository()->find($customerId);
@@ -201,9 +201,9 @@ class CustomerTransformerController extends AdminController
 
         $companyId = null;
 
-        $addressAssignmentType = $request->get('addressAssignmentType');
-        $addressAccessType = $request->get('addressAccessType');
-        $newCompanyName = $request->get('newCompanyName');
+        $addressAssignmentType = $this->getParameterFromRequest($request, 'addressAssignmentType');
+        $addressAccessType = $this->getParameterFromRequest($request, 'addressAccessType');
+        $newCompanyName = $this->getParameterFromRequest($request, 'newCompanyName');
 
         /** @var CustomerInterface $customer */
         $customer = $this->getCustomerRepository()->find($customerId);

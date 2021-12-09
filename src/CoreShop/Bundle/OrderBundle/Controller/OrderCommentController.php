@@ -28,7 +28,7 @@ class OrderCommentController extends PimcoreController
 {
     public function listAction(Request $request): JsonResponse
     {
-        $orderId = $request->get('id');
+        $orderId = $this->getParameterFromRequest($request, 'id');
         $order = $this->getOrderRepository()->find($orderId);
 
         $objectNoteService = $this->get(NoteServiceInterface::class);
@@ -53,9 +53,9 @@ class OrderCommentController extends PimcoreController
 
     public function addAction(Request $request): JsonResponse
     {
-        $comment = $request->get('comment');
-        $submitAsEmail = $request->get('submitAsEmail') === 'true';
-        $orderId = $request->get('id');
+        $comment = $this->getParameterFromRequest($request, 'comment');
+        $submitAsEmail = $this->getParameterFromRequest($request, 'submitAsEmail') === 'true';
+        $orderId = $this->getParameterFromRequest($request, 'id');
 
         $order = $this->getOrderRepository()->find($orderId);
 
@@ -79,7 +79,7 @@ class OrderCommentController extends PimcoreController
 
     public function deleteAction(Request $request): JsonResponse
     {
-        $commentId = $request->get('id');
+        $commentId = $this->getParameterFromRequest($request,'id');
         $objectNoteService = $this->get(NoteServiceInterface::class);
         $commentEntity = $objectNoteService->getNoteById($commentId);
 

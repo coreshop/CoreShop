@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use Pimcore\Model\User;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class PimcoreController extends AdminController
@@ -36,6 +37,10 @@ class PimcoreController extends AdminController
     protected function isGrantedOr403(): void
     {
         if ($this->getPermission()) {
+            /**
+             * @var User $user
+             * @psalm-var User $user
+             */
             $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
 
             if ($user->isAllowed($this->getPermission())) {

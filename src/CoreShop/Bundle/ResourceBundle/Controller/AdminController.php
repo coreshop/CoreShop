@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @property ContainerInterface $container
@@ -23,5 +24,27 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminContro
 {
     public function __construct(protected ViewHandlerInterface $viewHandler)
     {
+    }
+
+    /**
+     * @return mixed
+     *
+     * based on Symfony\Component\HttpFoundation\Request::get
+     */
+    protected function getParameterFromRequest(Request $request, string $key, $default = null)
+    {
+        if ($request !== $result = $request->attributes->get($key, $request)) {
+            return $result;
+        }
+
+        if ($request->query->has($key)) {
+            return $request->query->all()[$key];
+        }
+
+        if ($request->request->has($key)) {
+            return $request->request->all()[$key];
+        }
+
+        return $default;
     }
 }

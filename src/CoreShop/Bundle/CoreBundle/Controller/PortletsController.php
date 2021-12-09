@@ -25,7 +25,7 @@ class PortletsController extends AdminController
 {
     public function getPortletDataAction(Request $request): Response
     {
-        $portletName = $request->get('portlet');
+        $portletName = $this->getParameterFromRequest($request, 'portlet');
         $portletRegistry = $this->get('coreshop.registry.portlets');
 
         if (!$portletRegistry->has($portletName)) {
@@ -43,7 +43,7 @@ class PortletsController extends AdminController
 
     public function exportPortletCsvAction(Request $request): Response
     {
-        $portletName = $request->get('portlet');
+        $portletName = $this->getParameterFromRequest($request, 'portlet');
         $portletRegistry = $this->get('coreshop.registry.portlets');
 
         if (!$portletRegistry->has($portletName)) {

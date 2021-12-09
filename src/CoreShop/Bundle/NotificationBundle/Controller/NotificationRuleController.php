@@ -79,9 +79,9 @@ class NotificationRuleController extends ResourceController
          * @var EntityRepository $repository
          */
         $repository = $this->repository;
-        $rule = $request->get('rule');
-        $toRule = $request->get('toRule');
-        $position = $request->get('position');
+        $rule = $this->getParameterFromRequest($request, 'rule');
+        $toRule = $this->getParameterFromRequest($request, 'toRule');
+        $position = $this->getParameterFromRequest($request, 'position');
 
         /**
          * @var NotificationRuleInterface $rule

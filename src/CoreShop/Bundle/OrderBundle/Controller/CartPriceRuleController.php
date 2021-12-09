@@ -42,7 +42,7 @@ class CartPriceRuleController extends ResourceController
 
     public function getVoucherCodesAction(Request $request): JsonResponse
     {
-        $id = $request->get('cartPriceRule');
+        $id = $this->getParameterFromRequest($request, 'cartPriceRule');
         $cartPriceRule = $this->repository->find($id);
 
         if (!$cartPriceRule instanceof CartPriceRuleInterface) {
@@ -51,8 +51,8 @@ class CartPriceRuleController extends ResourceController
 
         $data = $this->getVoucherCodeRepository()->findAllPaginator(
             $cartPriceRule,
-            (int)$request->get('start', 0),
-            (int)$request->get('limit', 50)
+            (int)$this->getParameterFromRequest($request, 'start', 0),
+            (int)$this->getParameterFromRequest($request, 'limit', 50)
         );
 
         return $this->viewHandler->handle(
@@ -126,7 +126,7 @@ class CartPriceRuleController extends ResourceController
 
     public function exportVoucherCodesAction(Request $request): void
     {
-        $id = $request->get('cartPriceRule');
+        $id = $this->getParameterFromRequest($request, 'cartPriceRule');
         $priceRule = $this->repository->find($id);
 
         if ($priceRule instanceof CartPriceRuleInterface) {
@@ -140,7 +140,11 @@ class CartPriceRuleController extends ResourceController
                 'uses',
             ]);
 
-            $codes = $this->getVoucherCodeRepository()->findAllPaginator($priceRule, (int)$request->get('start', 0), (int)$request->get('limit', 50));
+            $codes = $this->getVoucherCodeRepository()->findAllPaginator(
+                $priceRule,
+                (int)$this->getParameterFromRequest($request, 'start', 0),
+                (int)$this->getParameterFromRequest($request, 'limit', 50)
+            );
 
             foreach ($codes as $code) {
                 $data = [
@@ -169,8 +173,8 @@ class CartPriceRuleController extends ResourceController
 
     public function deleteVoucherCodeAction(Request $request): JsonResponse
     {
-        $cartPriceRuleId = $request->get('cartPriceRule');
-        $id = $request->get('id');
+        $cartPriceRuleId = $this->getParameterFromRequest($request, 'cartPriceRule');
+        $id = $this->getParameterFromRequest($request, 'id');
         $cartPriceRule = $this->repository->find($cartPriceRuleId);
 
         if (!$cartPriceRule instanceof CartPriceRuleInterface) {

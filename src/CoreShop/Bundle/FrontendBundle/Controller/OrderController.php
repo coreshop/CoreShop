@@ -28,7 +28,7 @@ class OrderController extends FrontendController
 {
     public function reviseAction(Request $request): Response
     {
-        $token = $request->get('token');
+        $token = $this->getParameterFromRequest($request,'token');
         $payment = null;
 
         /** @var OrderInterface $order */

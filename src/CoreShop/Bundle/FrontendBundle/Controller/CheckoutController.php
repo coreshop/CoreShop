@@ -47,7 +47,7 @@ class CheckoutController extends FrontendController
 
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
 
-        $stepIdentifier = $request->get('stepIdentifier');
+        $stepIdentifier = $this->getParameterFromRequest($request, 'stepIdentifier');
         $step = $checkoutManager->getStep($stepIdentifier);
         $dataForStep = [];
         $cart = $this->getCart();

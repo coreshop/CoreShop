@@ -26,15 +26,15 @@ class WishlistController extends FrontendController
 {
     public function addItemAction(Request $request): Response
     {
-        $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
+        $product = $this->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
 
         if (!$product instanceof PurchasableInterface) {
-            $redirect = $request->get('_redirect', $this->generateUrl('coreshop_index'));
+            $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_index'));
 
             return $this->redirect($redirect);
         }
 
-        $quantity = (int)$request->get('quantity', 1);
+        $quantity = (int)$this->getParameterFromRequest($request, 'quantity', 1);
 
         /**
          * @var StorageListItem $wishlistItem
@@ -47,14 +47,14 @@ class WishlistController extends FrontendController
 
         $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
 
-        $redirect = $request->get('_redirect', $this->generateUrl('coreshop_wishlist_summary'));
+        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_wishlist_summary'));
 
         return $this->redirect($redirect);
     }
 
     public function removeItemAction(Request $request): Response
     {
-        $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
+        $product = $this->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
 
         if (!$product instanceof PurchasableInterface) {
             return $this->redirectToRoute('coreshop_index');

@@ -32,8 +32,8 @@ class ProductValidationController extends AdminController
         $message = null;
         $success = true;
         $status = 'unlocked';
-        $objectId = $request->get('id', null);
-        $unitDefinitionId = $request->get('unitDefinitionId', null);
+        $objectId = $this->getParameterFromRequest($request, 'id', null);
+        $unitDefinitionId = $this->getParameterFromRequest($request, 'unitDefinitionId', null);
 
         if (null === $unitDefinitionId) {
             return new JsonResponse([

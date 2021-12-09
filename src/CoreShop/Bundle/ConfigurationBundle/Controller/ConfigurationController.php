@@ -23,7 +23,7 @@ class ConfigurationController extends ResourceController
 {
     public function saveAllAction(Request $request): Response
     {
-        $values = $request->get('values');
+        $values = $this->getParameterFromRequest($request, 'values');
         $values = array_htmlspecialchars($values);
 
         foreach ($values as $key => $value) {

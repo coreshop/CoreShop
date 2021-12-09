@@ -39,7 +39,7 @@ class OrderInvoiceController extends PimcoreController
 {
     public function getInvoiceAbleItemsAction(Request $request): JsonResponse
     {
-        $orderId = $request->get('id');
+        $orderId = $this->getParameterFromRequest($request, 'id');
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
@@ -86,7 +86,7 @@ class OrderInvoiceController extends PimcoreController
 
     public function createInvoiceAction(Request $request): JsonResponse
     {
-        $orderId = $request->get('id');
+        $orderId = $this->getParameterFromRequest($request,'id');
 
         $form = $this->get('form.factory')->createNamed('', OrderInvoiceCreationType::class);
 
@@ -145,9 +145,9 @@ class OrderInvoiceController extends PimcoreController
 
     public function updateStateAction(Request $request): JsonResponse
     {
-        $invoiceId = $request->get('id');
+        $invoiceId = $this->getParameterFromRequest($request, 'id');
         $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
-        $transition = $request->get('transition');
+        $transition = $this->getParameterFromRequest($request, 'transition');
 
         if (!$invoice instanceof OrderInvoiceInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'invalid shipment']);
@@ -166,7 +166,7 @@ class OrderInvoiceController extends PimcoreController
 
     public function renderAction(Request $request): Response
     {
-        $invoiceId = $request->get('id');
+        $invoiceId = $this->getParameterFromRequest($request, 'id');
         $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
 
         if ($invoice instanceof OrderInvoiceInterface) {
