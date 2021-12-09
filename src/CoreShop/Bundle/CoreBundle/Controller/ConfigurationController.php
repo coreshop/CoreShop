@@ -24,7 +24,7 @@ class ConfigurationController extends ResourceController
 {
     public function saveAllAction(Request $request): Response
     {
-        $values = $this->decodeJson($request->get('values'));
+        $values = $this->decodeJson($this->getParameterFromRequest($request, 'values'));
         $values = array_htmlspecialchars($values);
 
         foreach ($values as $store => $storeValues) {

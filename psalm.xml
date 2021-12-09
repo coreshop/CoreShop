@@ -66,6 +66,7 @@
                 <referencedMethod name="Symfony\Component\Intl\Intl::getLocaleBundle" />
                 <referencedMethod name="Symfony\Component\Intl\Intl::getRegionBundle" />
                 <referencedMethod name="Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent::getException" />
+                <referencedMethod name="Symfony\Bundle\FrameworkBundle\Controller\AbstractController::get" />
             </errorLevel>
         </DeprecatedMethod>
 
@@ -130,6 +131,7 @@
                 <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
                 <referencedFunction name="Symfony\Component\HttpKernel\Config\FileLocator::__construct" />
                 <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
+                <referencedFunction name="Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken::__construct" /> <!-- removed parameter in Symfony 5.4 -->
             </errorLevel>
             <errorLevel type="suppress">
                 <referencedFunction name="Doctrine\ORM\Query\Expr::andX" />
@@ -153,6 +155,7 @@
             <errorLevel type="info">
                 <referencedFunction name="Symfony\Component\EventDispatcher\EventDispatcherInterface::dispatch" />
                 <referencedFunction name="SyliusLabs\AssociationHydrator\AssociationHydrator::__construct" />
+                <referencedFunction name="Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken::__construct" />
             </errorLevel>
         </InvalidArgument>
 

@@ -35,8 +35,8 @@ class OrderPaymentController extends PimcoreController
 {
     public function updateStateAction(Request $request): JsonResponse
     {
-        $payment = $this->getPaymentRepository()->find($request->get('id'));
-        $transition = $request->get('transition');
+        $payment = $this->getPaymentRepository()->find($this->getParameterFromRequest($request, 'id'));
+        $transition = $this->getParameterFromRequest($request, 'transition');
 
         if (!$payment instanceof PaymentInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'invalid payment']);
@@ -57,11 +57,11 @@ class OrderPaymentController extends PimcoreController
     {
         //TODO: Use Form here
 
-        $orderId = $request->get('o_id');
+        $orderId = $this->getParameterFromRequest($request, 'o_id');
         $order = $this->getSaleRepository()->find($orderId);
-        $amount = (int)round($request->get('amount', 0) * $this->container->getParameter('coreshop.currency.decimal_factor'));
+        $amount = (int)round($this->getParameterFromRequest($request, 'amount', 0) * $this->container->getParameter('coreshop.currency.decimal_factor'));
 
-        $paymentProviderId = $request->get('paymentProvider');
+        $paymentProviderId = $this->getParameterFromRequest($request, 'paymentProvider');
 
         if (!$order instanceof OrderInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
@@ -128,7 +128,7 @@ class OrderPaymentController extends PimcoreController
         return $this->viewHandler->handle(
             [
                 'success' => false,
-                'message' => sprintf('Payment Provider %s not found', $request->get('paymentProvider')),
+                'message' => sprintf('Payment Provider %s not found', $this->getParameterFromRequest($request, 'paymentProvider')),
             ]
         );
     }

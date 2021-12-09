@@ -131,9 +131,9 @@ class OrderController extends PimcoreController
         OrderRepositoryInterface $orderRepository,
         StateMachineManagerInterface $stateMachineManager
     ): Response {
-        $orderId = $request->get('o_id');
+        $orderId = $this->getParameterFromRequest($request, 'o_id');
+        $transition = $this->getParameterFromRequest($request,'transition');
         $order = $orderRepository->find($orderId);
-        $transition = $request->get('transition');
 
         if (!$order instanceof OrderInterface) {
             throw new \Exception('invalid order');
@@ -164,7 +164,7 @@ class OrderController extends PimcoreController
         $name = null;
         $folderId = null;
 
-        $type = $request->get('saleType', 'order');
+        $type = $this->getParameterFromRequest($request,'saleType', 'order');
 
         $orderClassId = (string)$this->container->getParameter('coreshop.model.order.pimcore_class_name');
         $folderPath = (string)$this->container->getParameter('coreshop.folder.' . $type);
@@ -188,17 +188,17 @@ class OrderController extends PimcoreController
         $this->isGrantedOr403();
 
         $list = $orderRepository->getList();
-        $list->setLimit($request->get('limit', 30));
-        $list->setOffset($request->get('page', 1) - 1);
+        $list->setLimit($this->getParameterFromRequest($request, 'limit', 30));
+        $list->setOffset($this->getParameterFromRequest($request, 'page', 1) - 1);
 
-        if ($request->get('filter', null)) {
+        if ($this->getParameterFromRequest($request, 'filter')) {
             /** @psalm-suppress InternalClass */
             $gridHelper = new GridHelperService();
 
             $conditionFilters = [];
             /** @psalm-suppress InternalMethod */
             $conditionFilters[] = $gridHelper->getFilterCondition(
-                $request->get('filter'),
+                $this->getParameterFromRequest($request,'filter'),
                 DataObject\ClassDefinition::getByName((string)$this->container->getParameter('coreshop.model.order.pimcore_class_name'))
             );
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
@@ -244,7 +244,7 @@ class OrderController extends PimcoreController
     {
         $this->isGrantedOr403();
 
-        $orderId = $request->get('id');
+        $orderId = $this->getParameterFromRequest($request,'id');
         $order = $orderRepository->find($orderId);
 
         if (!$order instanceof OrderInterface) {
@@ -260,7 +260,7 @@ class OrderController extends PimcoreController
     {
         $this->isGrantedOr403();
 
-        $number = $request->get('number');
+        $number = $this->getParameterFromRequest($request,'number');
 
         if ($number) {
             $list = $orderRepository->getList();
@@ -597,7 +597,7 @@ class OrderController extends PimcoreController
             $statesHistory[] = [
                 'icon' => 'coreshop_icon_orderstates',
                 'type' => $note->getType(),
-                'date' => $date->formatLocalized('%A %d %B %Y %H:%M:%S'),
+                'date' => $date->isoFormat('DD.MM.YYYY h:mm'),
                 'avatar' => $avatar,
                 'user' => $user ? $user->getName() : null,
                 'description' => $note->getDescription(),

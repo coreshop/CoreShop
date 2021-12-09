@@ -145,9 +145,9 @@ class CartController extends FrontendController
 
     public function addItemAction(Request $request): Response
     {
-        $redirect = $request->get('_redirect', $this->generateUrl('coreshop_index'));
+        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_index'));
 
-        $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
+        $product = $this->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
 
         if (!$product instanceof PurchasableInterface) {
             if ($request->isXmlHttpRequest()) {
@@ -168,7 +168,7 @@ class CartController extends FrontendController
         $form = $this->get('form.factory')->createNamed('coreshop-' . $product->getId(), AddToCartType::class, $addToCart);
 
         if ($request->isMethod('POST')) {
-            $redirect = $request->get('_redirect', $this->generateUrl('coreshop_cart_summary'));
+            $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_cart_summary'));
 
             $form->handleRequest($request);
 
@@ -221,7 +221,7 @@ class CartController extends FrontendController
         }
 
         return $this->render(
-            $request->get('template', $this->templateConfigurator->findTemplate('Product/_addToCart.html')),
+            $this->getParameterFromRequest($request, 'template', $this->templateConfigurator->findTemplate('Product/_addToCart.html')),
             [
                 'form' => $form->createView(),
                 'product' => $product,
@@ -231,7 +231,7 @@ class CartController extends FrontendController
 
     public function removeItemAction(Request $request): Response
     {
-        $cartItem = $this->get('coreshop.repository.order_item')->find($request->get('cartItem'));
+        $cartItem = $this->get('coreshop.repository.order_item')->find($this->getParameterFromRequest($request, 'cartItem'));
 
         if (!$cartItem instanceof OrderItemInterface) {
             return $this->redirectToRoute('coreshop_index');
@@ -253,7 +253,7 @@ class CartController extends FrontendController
 
     public function removePriceRuleAction(Request $request): Response
     {
-        $code = $request->get('code');
+        $code = $this->getParameterFromRequest($request, 'code');
         $cart = $this->getCart();
 
         $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);

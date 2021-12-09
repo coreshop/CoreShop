@@ -27,7 +27,7 @@ class TaxRuleGroupController extends ResourceController
         /**
          * @var TaxRuleGroupInterface $ruleGroup
          */
-        $ruleGroup = $this->findOr404($request->get('id'));
+        $ruleGroup = $this->findOr404($this->getParameterFromRequest($request, 'id'));
         $data = $this->getTaxRulesRepository()->findByGroup($ruleGroup);
 
         return $this->viewHandler->handle($data);

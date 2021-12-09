@@ -37,7 +37,7 @@ class CurrencyController extends FrontendController
 
     public function switchAction(Request $request): Response
     {
-        $currencyCode = $request->get('currencyCode');
+        $currencyCode = $this->getParameterFromRequest($request, 'currencyCode');
         $currency = $this->getCurrencyRepository()->getByCode($currencyCode);
         $cartManager = $this->get(CartManagerInterface::class);
         $cartContext = $this->get(CartContextInterface::class);

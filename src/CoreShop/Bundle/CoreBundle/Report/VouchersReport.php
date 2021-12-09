@@ -87,7 +87,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
             ];
         }
 
-        return array_values($data);
+        return $data;
     }
 
     public function getExportReportData(ParameterBag $parameterBag): array

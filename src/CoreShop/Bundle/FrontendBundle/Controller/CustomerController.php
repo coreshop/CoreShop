@@ -76,7 +76,7 @@ class CustomerController extends FrontendController
 
     public function orderDetailAction(Request $request): Response
     {
-        $orderId = $request->get('order');
+        $orderId = $this->getParameterFromRequest($request, 'order');
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
@@ -120,7 +120,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $addressId = $request->get('address');
+        $addressId = $this->getParameterFromRequest($request, 'address');
         $address = $this->get('coreshop.repository.address')->find($addressId);
         $addressAssignmentManager = $this->get(AddressAssignmentManagerInterface::class);
 
@@ -163,7 +163,9 @@ class CustomerController extends FrontendController
                 $this->fireEvent($request, $address, sprintf('%s.%s.%s_post', 'coreshop', 'address', $eventType));
                 $this->addFlash('success', $this->get('translator')->trans(sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated')));
 
-                return $this->redirect($request->get('_redirect', $this->generateUrl('coreshop_customer_addresses')));
+                return $this->redirect(
+                    $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_customer_addresses'))
+                );
             }
         }
 
@@ -183,7 +185,9 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $address = $this->get('coreshop.repository.address')->find($request->get('address'));
+        $address = $this->get('coreshop.repository.address')->find(
+            $this->getParameterFromRequest($request, 'address')
+        );
 
         if (!$address instanceof AddressInterface) {
             return $this->redirectToRoute('coreshop_customer_addresses');
@@ -273,7 +277,7 @@ class CustomerController extends FrontendController
     public function confirmNewsletterAction(Request $request): Response
     {
         $success = false;
-        $token = $request->get('token');
+        $token = $this->getParameterFromRequest($request, 'token');
         $newsletterUser = null;
 
         if (!$token) {

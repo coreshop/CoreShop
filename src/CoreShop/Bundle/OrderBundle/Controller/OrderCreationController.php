@@ -49,7 +49,7 @@ class OrderCreationController extends PimcoreController
     ): Response {
         $this->isGrantedOr403();
 
-        $customerId = $request->get('customerId');
+        $customerId = $this->getParameterFromRequest($request, 'customerId');
         $customer = $customerRepository->find($customerId);
 
         if (!$customer instanceof CustomerInterface) {
@@ -70,7 +70,7 @@ class OrderCreationController extends PimcoreController
     ): Response {
         $cart = $orderFactory->createNew();
         $form = $formFactory->createNamed('', CartCreationType::class, $cart, [
-            'customer' => $request->get('customer'),
+            'customer' => $this->getParameterFromRequest($request, 'customer'),
         ]);
 
         if ($request->getMethod() === 'POST') {
@@ -100,11 +100,11 @@ class OrderCreationController extends PimcoreController
     ): Response {
         $this->isGrantedOr403();
 
-        $type = $request->get('saleType', OrderSaleTransitions::TRANSITION_CART);
+        $type = $this->getParameterFromRequest($request,'saleType', OrderSaleTransitions::TRANSITION_CART);
 
         $cart = $orderFactory->createNew();
         $form = $formFactory->createNamed('', CartCreationType::class, $cart, [
-            'customer' => $request->get('customer'),
+            'customer' => $this->getParameterFromRequest($request, 'customer'),
         ]);
 
         if ($request->getMethod() === 'POST') {

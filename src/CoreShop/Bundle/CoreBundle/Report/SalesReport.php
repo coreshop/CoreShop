@@ -110,7 +110,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
             ];
         }
 
-        return array_values($data);
+        return $data;
     }
 
     public function getExportReportData(ParameterBag $parameterBag): array

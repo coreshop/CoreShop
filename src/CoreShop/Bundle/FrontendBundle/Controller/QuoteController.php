@@ -25,7 +25,7 @@ class QuoteController extends FrontendController
 {
     public function showAction(Request $request)
     {
-        $quote = $this->get('coreshop.repository.order')->find($request->get('quote'));
+        $quote = $this->get('coreshop.repository.order')->find($this->getParameterFromRequest($request, 'quote'));
 
         try {
             $currentCustomer = $this->get(CustomerContextInterface::class)->getCustomer();

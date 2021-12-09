@@ -57,7 +57,7 @@ class CategoryController extends FrontendController
 
     public function menuLeftAction(Request $request): Response
     {
-        $activeCategory = $request->get('activeCategory');
+        $activeCategory = $this->getParameterFromRequest($request, 'activeCategory');
         $activeSubCategories = [];
 
         $firstLevelCategories = $this->getRepository()->findFirstLevelForStore($this->getContext()->getStore());
@@ -80,10 +80,21 @@ class CategoryController extends FrontendController
 
     public function indexAction(Request $request): Response
     {
-        $category = $this->getRepository()->findOneBy([$this->repositoryIdentifier => $request->get($this->requestIdentifier), 'pimcore_unpublished' => true]);
+        $id = $this->getParameterFromRequest($request, $this->requestIdentifier);
+
+        $category = $this->getRepository()->findOneBy([
+            $this->repositoryIdentifier => $id,
+            'pimcore_unpublished' => true
+        ]);
 
         if (!$category instanceof CategoryInterface) {
-            throw new NotFoundHttpException(sprintf(sprintf('category with identifier "%s" (%s) not found', $this->repositoryIdentifier, $request->get($this->requestIdentifier))));
+            throw new NotFoundHttpException(
+                sprintf(
+                    'category with identifier "%s" (%s) not found',
+                    $this->repositoryIdentifier,
+                    $this->getParameterFromRequest($request, $this->requestIdentifier)
+                )
+            );
         }
 
         return $this->detail($request, $category);
@@ -99,13 +110,13 @@ class CategoryController extends FrontendController
         $displaySubCategories = $this->getConfigurationService()->getForStore('system.category.list.include_subcategories');
         $variantMode = $this->getConfigurationService()->getForStore('system.category.variant_mode');
 
-        $page = (int)$request->get('page', 1) ?: 1;
-        $type = $request->get('type', $listModeDefault);
+        $page = (int)$this->getParameterFromRequest($request, 'page', 1) ?: 1;
+        $type = $this->getParameterFromRequest($request, 'type', $listModeDefault);
 
         $defaultPerPage = $type === 'list' ? $listPerPageDefault : $gridPerPageDefault;
         $allowedPerPage = $type === 'list' ? $listPerPageAllowed : $gridPerPageAllowed;
 
-        $perPage = (int)$request->get('perPage', $defaultPerPage) ?: 10;
+        $perPage = (int)$this->getParameterFromRequest($request, 'perPage', $defaultPerPage) ?: 10;
 
         $this->validateCategory($request, $category);
 
@@ -122,7 +133,7 @@ class CategoryController extends FrontendController
             $orderKey = $category->getFilter()->getOrderKey();
 
             $sortKey = (empty($orderKey) ? $this->defaultSortName : strtoupper($orderKey)) . '_' . (empty($orderDirection) ? $this->defaultSortDirection : strtoupper($orderDirection));
-            $sort = $request->get('sort', $sortKey);
+            $sort = $this->getParameterFromRequest($request, 'sort', $sortKey);
             $sortParsed = $this->parseSorting($sort);
 
             $filteredList->setOrderKey($sortParsed['name']);
@@ -144,7 +155,7 @@ class CategoryController extends FrontendController
             $viewParameters['conditions'] = $preparedConditions;
         } else {
             //Classic Listing Mode
-            $sort = $request->get('sort', $this->defaultSortName . '_' . $this->defaultSortDirection);
+            $sort = $this->getParameterFromRequest($request, 'sort', $this->defaultSortName . '_' . $this->defaultSortDirection);
             $sortParsed = $this->parseSorting($sort);
 
             $categories = [$category];

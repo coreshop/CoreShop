@@ -28,7 +28,7 @@ class MailController extends FrontendController
 
     public function orderConfirmationAction(Request $request): Response
     {
-        $order = $request->get('object');
+        $order = $request->attributes->get('object');
         $viewParameters = [];
 
         if (!$this->get(EditmodeResolver::class)->isEditmode($request) && $order instanceof OrderInterface) {

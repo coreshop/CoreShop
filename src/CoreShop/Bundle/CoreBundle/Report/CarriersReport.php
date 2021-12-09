@@ -85,7 +85,7 @@ class CarriersReport implements ReportInterface
             ];
         }
 
-        return array_values($data);
+        return $data;
     }
 
     public function getTotal(): int

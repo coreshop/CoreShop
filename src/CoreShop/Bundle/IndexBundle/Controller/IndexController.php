@@ -106,7 +106,7 @@ class IndexController extends ResourceController
 
     public function getClassDefinitionForFieldSelectionAction(Request $request): Response
     {
-        $class = DataObject\ClassDefinition::getByName($request->get('class'));
+        $class = DataObject\ClassDefinition::getByName($this->getParameterFromRequest($request, 'class'));
 
         if (!$class instanceof DataObject\ClassDefinition) {
             return $this->viewHandler->handle([]);

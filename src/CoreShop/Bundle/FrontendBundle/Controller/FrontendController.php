@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @property ContainerInterface $container
@@ -28,5 +29,27 @@ class FrontendController extends AbstractController
     public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator): void
     {
         $this->templateConfigurator = $templateConfigurator;
+    }
+
+    /**
+     * @return mixed
+     *
+     * based on Symfony\Component\HttpFoundation\Request::get
+     */
+    protected function getParameterFromRequest(Request $request, string $key, $default = null)
+    {
+        if ($request !== $result = $request->attributes->get($key, $request)) {
+            return $result;
+        }
+
+        if ($request->query->has($key)) {
+            return $request->query->all()[$key];
+        }
+
+        if ($request->request->has($key)) {
+            return $request->request->all()[$key];
+        }
+
+        return $default;
     }
 }

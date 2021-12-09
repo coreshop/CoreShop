@@ -40,7 +40,7 @@ class OrderShipmentController extends PimcoreController
 {
     public function getShipAbleItemsAction(Request $request): JsonResponse
     {
-        $orderId = $request->get('id');
+        $orderId = $this->getParameterFromRequest($request, 'id');
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
@@ -87,7 +87,7 @@ class OrderShipmentController extends PimcoreController
 
     public function createShipmentAction(Request $request): JsonResponse
     {
-        $orderId = $request->get('id');
+        $orderId = $this->getParameterFromRequest($request, 'id');
 
         $form = $this->get('form.factory')->createNamed('', OrderShipmentCreationType::class);
 
@@ -143,8 +143,8 @@ class OrderShipmentController extends PimcoreController
 
     public function updateStateAction(Request $request): JsonResponse
     {
-        $shipment = $this->getOrderShipmentRepository()->find($request->get('id'));
-        $transition = $request->get('transition');
+        $shipment = $this->getOrderShipmentRepository()->find($this->getParameterFromRequest($request, 'id'));
+        $transition = $this->getParameterFromRequest($request, 'transition');
 
         if (!$shipment instanceof OrderShipmentInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'invalid shipment']);
@@ -163,7 +163,7 @@ class OrderShipmentController extends PimcoreController
 
     public function renderAction(Request $request): Response
     {
-        $shipmentId = $request->get('id');
+        $shipmentId = (int)$this->getParameterFromRequest($request, 'id');
         $shipment = $this->getOrderShipmentRepository()->find($shipmentId);
 
         if ($shipment instanceof OrderShipmentInterface) {

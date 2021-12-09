@@ -27,12 +27,12 @@ final class DynamicDropdownController extends AdminController
 
     public function optionsAction(Request $request): JsonResponse
     {
-        $folderName = $request->get('folderName');
+        $folderName = (string)$request->query->get('folderName');
         $parts = array_map(static function (string $part) {
             return Service::getValidKey($part, 'object');
         }, preg_split('/\//', $folderName, 0, \PREG_SPLIT_NO_EMPTY));
         $parentFolderPath = sprintf('/%s', implode('/', $parts));
-        $sort = $request->get('sortBy');
+        $sort = (string)$request->query->get('sortBy', '');
         $options = [];
 
         if ($parentFolderPath) {
@@ -87,7 +87,7 @@ final class DynamicDropdownController extends AdminController
     {
         $availableMethods = [];
 
-        $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', $request->get('className'));
+        $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', (string)$request->query->get('className'));
 
         if (!empty($className)) {
             /**
@@ -118,9 +118,9 @@ final class DynamicDropdownController extends AdminController
 
     private function walkPath(Request $request, DataObject\AbstractObject $folder, array $options = [], string $path = ''): array
     {
-        $currentLang = $request->get('current_language');
-        $source = $request->get('methodName');
-        $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', $request->get('className'));
+        $currentLang = $request->query->get('current_language');
+        $source = (string)$request->query->get('methodName');
+        $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', (string)$request->query->get('className'));
 
         if (empty($className)) {
             throw new \InvalidArgumentException();
@@ -141,7 +141,7 @@ final class DynamicDropdownController extends AdminController
                  * @var DataObject\Folder $child
                  */
                 $key = $child->getProperty('Taglabel') !== '' ? $child->getProperty('Taglabel') : $child->getKey();
-                if ($request->get('recursive') === 'true') {
+                if ($request->query->get('recursive') === 'true') {
                     $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                 }
             } elseif ($child instanceof $fqcn) {
@@ -152,7 +152,7 @@ final class DynamicDropdownController extends AdminController
                     'published' => $child instanceof DataObject\Concrete && $child->getPublished(),
                 ];
 
-                if ($request->get('recursive') === 'true') {
+                if ($request->query->get('recursive') === 'true') {
                     $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                 }
             }

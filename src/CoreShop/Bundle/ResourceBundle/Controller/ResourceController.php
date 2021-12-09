@@ -22,6 +22,7 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject;
+use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -49,6 +50,11 @@ class ResourceController extends AdminController
     {
         if ($this->metadata->hasParameter('permission')) {
             $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
+
+            /**
+             * @var User $user
+             * @psalm-var User $user
+             */
             $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
 
             if ($user->isAllowed($permission)) {
@@ -70,7 +76,7 @@ class ResourceController extends AdminController
     {
         $this->isGrantedOr403();
 
-        $resources = $this->findOr404((int)$request->get('id'));
+        $resources = $this->findOr404((int)$this->getParameterFromRequest($request, 'id'));
 
         return $this->viewHandler->handle(['data' => $resources, 'success' => true], ['group' => 'Detailed']);
     }
@@ -79,7 +85,7 @@ class ResourceController extends AdminController
     {
         $this->isGrantedOr403();
 
-        $resource = $this->findOr404($request->get('id'));
+        $resource = $this->findOr404($this->getParameterFromRequest($request, 'id'));
 
         $form = $this->resourceFormFactory->create($this->metadata, $resource);
         $handledForm = $form->handleRequest($request);
@@ -111,7 +117,7 @@ class ResourceController extends AdminController
     {
         $this->isGrantedOr403();
 
-        $name = $request->get('name');
+        $name = $this->getParameterFromRequest($request, 'name');
 
         if (strlen($name) <= 0) {
             return $this->viewHandler->handle(['success' => false]);
@@ -141,7 +147,7 @@ class ResourceController extends AdminController
     {
         $this->isGrantedOr403();
 
-        $id = $request->get('id');
+        $id = $this->getParameterFromRequest($request, 'id');
 
         $resource = $this->repository->find($id);
 
