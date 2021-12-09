@@ -98,7 +98,7 @@ class ManufacturerReport implements ReportInterface
             ];
         }
 
-        return array_values($data);
+        return $data;
     }
 
     /**

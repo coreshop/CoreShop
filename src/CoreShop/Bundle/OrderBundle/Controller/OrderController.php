@@ -597,7 +597,7 @@ class OrderController extends PimcoreController
             $statesHistory[] = [
                 'icon' => 'coreshop_icon_orderstates',
                 'type' => $note->getType(),
-                'date' => $date->formatLocalized('%A %d %B %Y %H:%M:%S'),
+                'date' => $date->isoFormat('DD.MM.YYYY h:mm'),
                 'avatar' => $avatar,
                 'user' => $user ? $user->getName() : null,
                 'description' => $note->getDescription(),
