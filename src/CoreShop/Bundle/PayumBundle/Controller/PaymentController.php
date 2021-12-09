@@ -44,7 +44,7 @@ class PaymentController extends AbstractController
             $identifier = $request->attributes->get('token');
         } else {
             $property = 'o_id';
-            $identifier = $request->query->get('order');
+            $identifier = $request->attributes->get('order');
         }
 
         /**

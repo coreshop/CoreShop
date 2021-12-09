@@ -51,7 +51,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
          * @var string|null $stepIdentifier
          * @psalm-var string|null $stepIdentifier
          */
-        $stepIdentifier = $request->query->get('stepIdentifier');
+        $stepIdentifier = $request->attributes->get('stepIdentifier');
         $requestAttributes = $request->attributes;
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
         $currentStep = 0;
@@ -118,7 +118,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
          * @var string|null $stepIdentifier
          * @psalm-var string|null $stepIdentifier
          */
-        $stepIdentifier = $request->query->get('stepIdentifier');
+        $stepIdentifier = $request->attributes->get('stepIdentifier');
 
         return $this->$getter($cart, $stepIdentifier, $checkoutManager);
     }
@@ -133,7 +133,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
          * @var string|null $previousIdentifier
          * @psalm-var string|null $previousIdentifier
          */
-        $previousIdentifier = $request->query->get('stepIdentifier');
+        $previousIdentifier = $request->attributes->get('stepIdentifier');
 
         if (null !== $previousIdentifier && $checkoutManager->hasPreviousStep($previousIdentifier)) {
             $step = $checkoutManager->getPreviousStep($previousIdentifier);
