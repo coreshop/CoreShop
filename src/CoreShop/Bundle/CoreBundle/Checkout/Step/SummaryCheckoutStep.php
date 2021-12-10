@@ -42,7 +42,13 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
 
     public function getResponse(OrderInterface $cart, Request $request): RedirectResponse
     {
-        $checkoutFinisherUrl = (string)$request->get('coreshop')['checkout_finisher'] ?? null;
+        $coreShop = (array)$request->request->get('coreshop');
+
+        $checkoutFinisherUrl = $coreShop['checkout_finisher'] ?? null;
+
+        if (null === $checkoutFinisherUrl) {
+            throw new \InvalidArgumentException('Checkout Finisher was not defined in request');
+        }
 
         return new RedirectResponse($checkoutFinisherUrl);
     }
