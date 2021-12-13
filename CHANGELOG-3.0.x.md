@@ -1,4 +1,25 @@
-# 3.0
+# 3.0.0-beta.2
+
+ - [Order] remove unused CartRepository (https://github.com/coreshop/CoreShop/pull/1801)
+ - [PimcoreBundle] add coreshop:migration:migrate and coreshop:migration:generate (https://github.com/coreshop/CoreShop/pull/1802)
+ - [FrontendBundle] fix new form namespace (https://github.com/coreshop/CoreShop/pull/1807)
+ - [Index] make ListingInterface a Pimcore PaginateListingInterface (https://github.com/coreshop/CoreShop/pull/1790)
+ - [Cart] fix existing cart initialization on customer login (https://github.com/coreshop/CoreShop/pull/1779)
+ - [CoreBundle] fix saving stores in PaymentProvider (https://github.com/coreshop/CoreShop/pull/1783)
+ - [Index] make IndexProcess compatible with the interface (https://github.com/coreshop/CoreShop/pull/1782)
+ - [User] remove md5 password and use password_hash (https://github.com/coreshop/CoreShop/pull/1780)
+ - [ThemeBundle] refactor theme-context to work with area-bricks (https://github.com/coreshop/CoreShop/pull/1778)
+ - [ThemeBundle] remove sylius theme-aware-translator, that doesn't work well with Pimcore (https://github.com/coreshop/CoreShop/pull/1777)
+ - [ResourceBundle] allow easier custom resources (https://github.com/coreshop/CoreShop/pull/1776)
+ - [Index] remove dbal connection in AbstractListing (https://github.com/coreshop/CoreShop/pull/1769)
+ - [Store select / multiselect] Support getOptions() via option provider (https://github.com/coreshop/CoreShop/pull/1773)
+ - [CoreExtensions] refactor how Doctrine Entities are cloned (https://github.com/coreshop/CoreShop/pull/1770)
+ - [Faker] use fakerphp/faker (https://github.com/coreshop/CoreShop/pull/1768)
+ - [CoreBundle] remove duplicate paymentTotal and convertedPaymentTotal from class definition (https://github.com/coreshop/CoreShop/pull/1766)
+ - [OrderBundle] fix admin en translations (https://github.com/coreshop/CoreShop/pull/1764)
+ - [All] remove installed translations and use symfony translations instead (https://github.com/coreshop/CoreShop/pull/1762)
+
+# 3.0.0-beta.1
 
  - PHP8.0 Return Types (https://github.com/coreshop/CoreShop/pull/1288, https://github.com/coreshop/CoreShop/pull/1666)
  - Cart eq Order eq Quote - one Object to rule them all (https://github.com/coreshop/CoreShop/pull/1289)
