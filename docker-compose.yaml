@@ -39,18 +39,6 @@ services:
       - traefik.docker.network=cors_dev
     depends_on:
      - db
-    environment:
-      BLACKFIRE_CLIENT_ID: 505c139b-73d1-40bd-9427-ee0d1fa07a66
-      BLACKFIRE_CLIENT_TOKEN: 17c138a6e7e73e07f4af62d34e9ffe7fe4a0ee995c5b5961ea7cc7a33e47af7b
-
-  blackfire:
-    image: blackfire/blackfire:2
-    networks:
-      - cors_dev
-    environment:
-      # Exposes BLACKFIRE_SERVER_* environment variables from the host
-      BLACKFIRE_SERVER_ID: 9c6f597f-e135-4204-8b2c-cbbb664ff328
-      BLACKFIRE_SERVER_TOKEN: 7eb6a49f059d0abc68ee1745e784f4327be23af4cd05ec5f8788f185b20a52bc
 
   php-debug:
     image: pimcore/pimcore:PHP8.0-apache-debug
