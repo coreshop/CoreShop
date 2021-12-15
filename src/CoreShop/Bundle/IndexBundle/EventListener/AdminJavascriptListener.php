@@ -35,7 +35,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
     public function getAdminJavascript(PathsEvent $event): void
     {
         $event->setPaths(array_merge($event->getPaths(), [
-            $this->router->generate('coreshop_menu', ['type' => 'coreshop.main']),
+            $this->router->generate('coreshop_menu', ['type' => 'coreshop.index']),
         ]));
     }
 }
