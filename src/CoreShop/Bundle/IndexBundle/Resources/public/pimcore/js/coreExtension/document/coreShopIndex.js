@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('pimcore.document.tags.coreshop_index');
-pimcore.document.tags.coreshop_index = Class.create(coreshop.document.tag.select, {
+pimcore.registerNS('pimcore.document.editables.coreshop_index');
+pimcore.document.editables.coreshop_index = Class.create(coreshop.document.editable.select, {
 
     getType: function() {
         return 'coreshop_index';

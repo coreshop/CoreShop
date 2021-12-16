@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('pimcore.document.tags.coreshop_payment_provider');
-pimcore.document.tags.coreshop_payment_provider = Class.create(coreshop.document.tag.select, {
+pimcore.registerNS('pimcore.document.editables.coreshop_payment_provider');
+pimcore.document.editables.coreshop_payment_provider = Class.create(coreshop.document.editable.select, {
 
     getType: function() {
         return 'coreshop_payment_provider';

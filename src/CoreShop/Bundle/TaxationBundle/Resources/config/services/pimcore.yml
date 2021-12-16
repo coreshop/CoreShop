@@ -2,20 +2,20 @@ services:
     _defaults:
         public: true
 
-    coreshop.pimcore.document.tag.tax_rate:
+    coreshop.pimcore.document.editable.tax_rate:
         class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
         arguments:
             - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
             - 'coreshop.repository.tax_rate'
             - 'name'
         tags:
-            - { name: coreshop.pimcore.document.tag, type: coreshop_tax_rate }
+            - { name: coreshop.pimcore.document.editable, type: coreshop_tax_rate }
 
-    coreshop.pimcore.document.tag.tax_rule_group:
+    coreshop.pimcore.document.editable.tax_rule_group:
         class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
         arguments:
             - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
             - 'coreshop.repository.tax_rule_group'
             - 'name'
         tags:
-            - { name: coreshop.pimcore.document.tag, type: coreshop_tax_rule_group }
+            - { name: coreshop.pimcore.document.editable, type: coreshop_tax_rule_group }

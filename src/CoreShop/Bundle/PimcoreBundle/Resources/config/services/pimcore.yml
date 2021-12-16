@@ -2,7 +2,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.registry.pimcore.document.tag:
+    coreshop.registry.pimcore.document.editable:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - CoreShop\Component\Pimcore\Document\DocumentTagFactoryInterface
@@ -12,6 +12,6 @@ services:
 
     CoreShop\Bundle\PimcoreBundle\Loader\DependencyInjectionImplementationLoader:
         arguments:
-            - '@coreshop.registry.pimcore.document.tag'
+            - '@coreshop.registry.pimcore.document.editable'
         tags:
-            - { name: coreshop.pimcore.implementation_loader.document.tag }
+            - { name: coreshop.pimcore.implementation_loader.document.editable }
