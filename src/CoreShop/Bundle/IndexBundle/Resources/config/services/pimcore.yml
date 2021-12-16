@@ -2,20 +2,20 @@ services:
     _defaults:
         public: true
 
-    coreshop.pimcore.document.tag.filter:
+    coreshop.pimcore.document.editable.filter:
         class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
         arguments:
             - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
             - 'coreshop.repository.filter'
             - 'name'
         tags:
-            - { name: coreshop.pimcore.document.tag, type: coreshop_filter }
+            - { name: coreshop.pimcore.document.editable, type: coreshop_filter }
 
-    coreshop.pimcore.document.tag.index:
+    coreshop.pimcore.document.editable.index:
         class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
         arguments:
             - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
             - 'coreshop.repository.index'
             - 'name'
         tags:
-            - { name: coreshop.pimcore.document.tag, type: coreshop_index }
+            - { name: coreshop.pimcore.document.editable, type: coreshop_index }

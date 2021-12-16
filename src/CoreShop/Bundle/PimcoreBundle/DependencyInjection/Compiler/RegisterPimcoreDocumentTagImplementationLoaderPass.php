@@ -14,13 +14,16 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
+use Pimcore\Model\Document\Editable\Loader\EditableLoader;
+
 final class RegisterPimcoreDocumentTagImplementationLoaderPass extends RegisterImplementationLoaderPass
 {
     public function __construct()
     {
         parent::__construct(
-            'pimcore.implementation_loader.document.tag',
-            'coreshop.pimcore.implementation_loader.document.tag'
+            /** @psalm-suppress InternalClass */
+            EditableLoader::class,
+            'coreshop.pimcore.implementation_loader.document.editable'
         );
     }
 }

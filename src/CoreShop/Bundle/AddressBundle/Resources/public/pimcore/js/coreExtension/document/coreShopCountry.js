@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('pimcore.document.tags.coreshop_country');
-pimcore.document.tags.coreshop_country = Class.create(coreshop.document.tag.select, {
+pimcore.registerNS('pimcore.document.editables.coreshop_country');
+pimcore.document.editables.coreshop_country = Class.create(coreshop.document.editable.select, {
 
     getType: function() {
         return 'coreshop_country';

@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('pimcore.document.tags.coreshop_filter');
-pimcore.document.tags.coreshop_filter = Class.create(coreshop.document.tag.select, {
+pimcore.registerNS('pimcore.document.editables.coreshop_filter');
+pimcore.document.editables.coreshop_filter = Class.create(coreshop.document.editable.select, {
 
     getType: function() {
         return 'coreshop_filter';

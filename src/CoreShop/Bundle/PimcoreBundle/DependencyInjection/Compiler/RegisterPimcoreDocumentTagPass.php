@@ -21,9 +21,9 @@ final class RegisterPimcoreDocumentTagPass extends RegisterSimpleRegistryTypePas
     public function __construct()
     {
         parent::__construct(
-            'coreshop.registry.pimcore.document.tag',
-            'coreshop.registry.pimcore.document.tags',
-            'coreshop.pimcore.document.tag'
+            'coreshop.registry.pimcore.document.editable',
+            'coreshop.registry.pimcore.document.editables',
+            'coreshop.pimcore.document.editable'
         );
     }
 }

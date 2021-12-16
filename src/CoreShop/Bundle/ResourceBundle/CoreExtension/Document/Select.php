@@ -68,7 +68,7 @@ class Select extends Editable
         return !$this->getResourceObject() instanceof ResourceInterface;
     }
 
-    public function getOptions()
+    public function getConfig()
     {
         $data = $this->getRepository()->findAll();
         $result = [];
@@ -84,7 +84,7 @@ class Select extends Editable
             ];
         }
 
-        $options = [];
+        $options = parent::getConfig();
         $options['store'] = $result;
 
         return $options;

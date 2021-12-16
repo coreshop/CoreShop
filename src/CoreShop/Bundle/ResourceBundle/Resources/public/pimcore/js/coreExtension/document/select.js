@@ -10,43 +10,7 @@
  *
  */
 
-pimcore.registerNS("coreshop.document.tag.select");
-coreshop.document.tag.select = Class.create(pimcore.document.tag, {
+pimcore.registerNS("coreshop.document.editable.select");
+coreshop.document.editable.select = Class.create(pimcore.document.editables.select, {
 
-    initialize: function(id, name, options, data, inherited) {
-        this.id = id;
-        this.name = name;
-
-        this.setupWrapper();
-        options = this.parseOptions(options);
-
-        options.listeners = {};
-
-        // onchange event
-        if (options.onchange) {
-            options.listeners.select = eval(options.onchange);
-        }
-
-        if (options["reload"]) {
-            options.listeners.select = this.reloadDocument;
-        }
-
-        options.name = id + "_editable";
-        options.triggerAction = 'all';
-        options.editable = false;
-        options.value = data;
-        options.valueField = 'id';
-        options.displayField = 'name';
-
-        this.element = new Ext.form.ComboBox(options);
-        this.element.render(id);
-    },
-
-    getValue: function () {
-        return this.element.getValue();
-    },
-
-    getType: function () {
-        return "select";
-    }
 });

@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('pimcore.document.tags.coreshop_currency');
-pimcore.document.tags.coreshop_currency = Class.create(coreshop.document.tag.select, {
+pimcore.registerNS('pimcore.document.editables.coreshop_currency');
+pimcore.document.editables.coreshop_currency = Class.create(coreshop.document.editable.select, {
 
     getType: function() {
         return 'coreshop_currency';
