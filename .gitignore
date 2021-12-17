@@ -55,3 +55,4 @@ etc/build
 public/bundles
 public/var
 drivers
+vendor/
