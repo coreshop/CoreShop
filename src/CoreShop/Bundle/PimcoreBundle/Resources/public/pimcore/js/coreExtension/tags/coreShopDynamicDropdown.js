@@ -60,7 +60,7 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
             displayField: 'key',
             autoComplete: false,
             forceSelection: true,
-            selectOnFocus: true,
+            selectOnFocus: false,
         };
 
         return new Ext.form.ComboBox(options);
