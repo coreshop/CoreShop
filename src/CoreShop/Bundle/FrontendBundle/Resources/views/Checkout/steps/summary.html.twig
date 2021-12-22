@@ -20,25 +20,10 @@
 
         <div class="row">
             <div class="col-12 col-sm-1 offset-sm-10">
-                <button
-                        type="submit"
-                        name="coreshop[checkout_finisher]"
-                        value="{{ path('coreshop_cart_create_qoute') }}"
-                        class="btn btn-success w-100"
-                        {{  coreshop_test_html_attribute('submit-quote') }}
-                >
-                    {{ 'coreshop.ui.quote'|trans }}
-                </button>
+                {{ form_widget(form.submitQuote, coreshop_test_form_attribute('submit-quote')|coreshop_merge_recursive({attr: {class: 'btn btn-success w-100'}})) }}
             </div>
             <div class="col-12 col-sm-1">
-                <button
-                        type="submit"
-                        name="coreshop[checkout_finisher]"
-                        value="{{ path('coreshop_checkout_do') }}"
-                        class="btn btn-success w-100"
-                        {{ coreshop_test_html_attribute('submit-order') }}>
-                    {{ 'coreshop.ui.buy'|trans }}
-                </button>
+                {{ form_widget(form.submitOrder, coreshop_test_form_attribute('submit-order')|coreshop_merge_recursive({attr: {class: 'btn btn-success w-100'}})) }}
             </div>
         </div>
 

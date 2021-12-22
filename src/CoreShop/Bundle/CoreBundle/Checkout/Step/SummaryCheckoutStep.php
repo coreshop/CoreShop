@@ -19,14 +19,16 @@ use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStepInterface
 {
-    public function __construct(private FormFactoryInterface $formFactory)
+    public function __construct(private FormFactoryInterface $formFactory, private RouterInterface $router)
     {
     }
 
@@ -42,15 +44,15 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
 
     public function getResponse(OrderInterface $cart, Request $request): RedirectResponse
     {
-        $coreShop = (array)$request->request->get('coreshop');
+        $form = $this->createForm($request, $cart);
 
-        $checkoutFinisherUrl = $coreShop['checkout_finisher'] ?? null;
+        $submitOrder = $form->get('submitOrder');
 
-        if (null === $checkoutFinisherUrl) {
-            throw new \InvalidArgumentException('Checkout Finisher was not defined in request');
-        }
+        $nextAction = $submitOrder instanceof ClickableInterface && $submitOrder->isClicked()
+            ? 'coreshop_checkout_do'
+            : 'coreshop_cart_create_qoute';
 
-        return new RedirectResponse($checkoutFinisherUrl);
+        return new RedirectResponse($this->router->generate($nextAction));
     }
 
     public function validate(OrderInterface $cart): bool

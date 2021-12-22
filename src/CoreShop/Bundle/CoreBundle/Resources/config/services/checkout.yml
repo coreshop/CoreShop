@@ -43,6 +43,7 @@ services:
     CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep:
         arguments:
             - '@form.factory'
+            - '@router'
 
     # Forms
     CoreShop\Bundle\CoreBundle\Form\Type\Checkout\AddressType:
