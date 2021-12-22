@@ -76,7 +76,7 @@ $(document).ready(function () {
             $shippingPanel = $addressStep.find('.panel-shipping-address'),
             $shippingField = $addressStep.find('.shipping-address-selector'),
             $shippingAddAddressButton = $shippingPanel.parent().find('.card-footer'),
-            $useIasS = $addressStep.find('[name="useInvoiceAsShipping"]');
+            $useIasS = $addressStep.find('[name="coreshop[useInvoiceAsShipping]"]');
 
         $invoiceAddress.on('change', function () {
             var selected = $(this).find('option:selected');
@@ -126,8 +126,8 @@ $(document).ready(function () {
         $useIasS.on('change', function () {
             if ($(this).is(':checked')) {
                 $shippingField.slideUp();
-                var address = $('select[name=coreshop[invoiceAddress]] option:selected').data('address');
-                var value = $('select[name=coreshop[invoiceAddress]] :selected').val();
+                var address = $('option:selected', $invoiceAddress).data('address');
+                var value = $(':selected', $invoiceAddress).val();
 
                 if (address) {
                     $shippingAddress.val(value).trigger('change');
