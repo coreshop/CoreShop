@@ -126,7 +126,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }
 
         // set new or changed parent
-        if ($this->isNewEntity($address) === true || ($address->getParent() && $address->getParent()->getId() !== $newParent->getId())) {
+        if ($this->isNewEntity($address) === true || $address->getParent()?->getId() !== $newParent->getId()) {
             $address->setParent($newParent);
             $address->setKey($this->getSaveKeyForMoving($address, $newParent));
 
