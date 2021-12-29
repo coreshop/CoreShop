@@ -45,6 +45,10 @@ final class UpdateOrderStateExtension implements ExtensionInterface
         }
 
         $previousStack = $context->getPrevious();
+        /**
+         * @var int
+         * @psalm-type int
+         */
         $previousStackSize = count($previousStack);
 
         if ($previousStackSize > 1) {
