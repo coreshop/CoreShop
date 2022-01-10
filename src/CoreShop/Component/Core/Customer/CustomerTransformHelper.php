@@ -245,6 +245,6 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
 
     private function isNewEntity(ElementInterface $element): bool
     {
-        return $element->getId() === 0;
+        return is_null($element->getId()) || $element->getId() === 0;
     }
 }
