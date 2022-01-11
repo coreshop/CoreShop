@@ -31,7 +31,8 @@ coreshop.filter.conditions.relational_select = Class.create(coreshop.filter.cond
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.configuration.preSelects
+                value: this.data.configuration.preSelects,
+                plugins: ['clearbutton'],
             }
         ];
     }

@@ -32,7 +32,8 @@ coreshop.filter.conditions.select = Class.create(coreshop.filter.conditions.abst
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.configuration.preSelect
+                value: this.data.configuration.preSelect,
+                plugins: ['clearbutton'],
             }
         ];
     }

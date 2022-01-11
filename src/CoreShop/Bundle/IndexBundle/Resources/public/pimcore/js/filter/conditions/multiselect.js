@@ -33,7 +33,8 @@ coreshop.filter.conditions.multiselect = Class.create(coreshop.filter.conditions
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.configuration.preSelects
+                value: this.data.configuration.preSelects,
+                plugins: ['clearbutton'],
             }
         ];
     }
