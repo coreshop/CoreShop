@@ -40,7 +40,8 @@ coreshop.filter.conditions.range = Class.create(coreshop.filter.conditions.abstr
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.configuration.preSelectMin
+                value: this.data.configuration.preSelectMin,
+                plugins: ['clearbutton'],
             },
             {
                 xtype: 'combo',
@@ -55,7 +56,8 @@ coreshop.filter.conditions.range = Class.create(coreshop.filter.conditions.abstr
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.configuration.preSelectMax
+                value: this.data.configuration.preSelectMax,
+                plugins: ['clearbutton'],
             }
         ];
     }
