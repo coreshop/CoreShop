@@ -27,6 +27,7 @@ core_shop_index:
             filter_condition: '/bundles/coreshopindex/pimcore/js/filter/condition.js'
             filter_similarity: '/bundles/coreshopindex/pimcore/js/filter/similarity.js'
             filter_condition_abstract: '/bundles/coreshopindex/pimcore/js/filter/conditions/abstract.js'
+            filter_condition_boolean: '/bundles/coreshopindex/pimcore/js/filter/conditions/boolean.js'
             filter_condition_nested: '/bundles/coreshopindex/pimcore/js/filter/conditions/nested.js'
             filter_condition_multiselect: '/bundles/coreshopindex/pimcore/js/filter/conditions/multiselect.js'
             filter_condition_multiselect_from_mulitselect: '/bundles/coreshopindex/pimcore/js/filter/conditions/multiselect_from_mulitselect.js'

@@ -239,6 +239,10 @@ services:
             - { name: coreshop.index.column_type, type: system, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeSystemType }
 
     # Filter Condition Types
+    CoreShop\Component\Index\Filter\BooleanFilterConditionProcessor:
+        tags:
+            - { name: coreshop.filter.condition_type, type: boolean, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionBooleanType }
+
     CoreShop\Component\Index\Filter\SelectFilterConditionProcessor:
         tags:
             - { name: coreshop.filter.condition_type, type: select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType }
@@ -272,12 +276,6 @@ services:
             - '@coreshop.registry.filter.user_condition_types'
         tags:
             - { name: coreshop.filter.user_condition_type, type: nested, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterUserConditionNestedType }
-
-    # Will be deactivated for now, this is not functional as it is right now
-    #coreshop.filter.condition_type.boolean:
-    #  class: CoreShop\Component\Index\Filter\BooleanFilterConditionProcessor
-    #  tags:
-    #    - { name: coreshop.filter.condition_type, type: boolean, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionBooleanType}
 
     CoreShop\Component\Index\Filter\RelationalMultiselectConditionProcessor:
         tags:
