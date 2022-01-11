@@ -59,12 +59,20 @@ final class SessionCartSubscriber implements EventSubscriberInterface
         }
 
         if (0 !== $cart->getId() && null !== $cart->getStore()) {
-            $session = $request->getSession();
+            $session = null;
 
-            $session->set(
-                sprintf('%s.%s', $this->sessionKeyName, $cart->getStore()->getId()),
-                $cart->getId()
-            );
+            try {
+                $session = $request->getSession();
+            } catch (\Throwable $e) {
+                // fail silently
+            }
+
+            if ($session) {
+                $session->set(
+                    sprintf('%s.%s', $this->sessionKeyName, $cart->getStore()->getId()),
+                    $cart->getId()
+                );
+            }
         }
     }
 }
