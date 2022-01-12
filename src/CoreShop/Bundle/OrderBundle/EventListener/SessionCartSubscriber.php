@@ -52,6 +52,10 @@ final class SessionCartSubscriber implements EventSubscriberInterface
         /** @var Request $request */
         $request = $event->getRequest();
 
+        if (!$request->hasSession()) {
+            return;
+        }
+
         try {
             $cart = $this->cartContext->getCart();
         } catch (CartNotFoundException) {
