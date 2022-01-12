@@ -56,8 +56,6 @@ final class SessionCartSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $session = $request->getSession();
-
         try {
             $cart = $this->cartContext->getCart();
         } catch (CartNotFoundException) {
@@ -65,6 +63,8 @@ final class SessionCartSubscriber implements EventSubscriberInterface
         }
 
         if (0 !== $cart->getId() && null !== $cart->getStore()) {
+            $session = $request->getSession();
+
             $session->set(
                 sprintf('%s.%s', $this->sessionKeyName, $cart->getStore()->getId()),
                 $cart->getId()
