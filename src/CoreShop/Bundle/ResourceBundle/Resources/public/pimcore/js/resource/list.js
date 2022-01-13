@@ -274,6 +274,7 @@ coreshop.resource.list = Class.create({
         var searchLayout = this.search.getLayout();
 
         if (searchLayout) {
+            searchLayout.clearListeners();
             searchLayout.on('afterrender', function (layout) {
 
                 layout.setTitle(t('coreshop_' + this.type + '_manage'));
