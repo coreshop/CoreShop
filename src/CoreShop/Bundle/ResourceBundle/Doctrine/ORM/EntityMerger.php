@@ -30,6 +30,9 @@ class EntityMerger
 
     public function __construct(private EntityManagerInterface $em)
     {
+        /**
+         * @psalm-suppress InvalidArgument
+         */
         $this->identifierFlattener = new IdentifierFlattener($em->getUnitOfWork(), $em->getMetadataFactory());
     }
 
