@@ -70,7 +70,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         $objects = $list->getObjects();
 
-        if (count($objects) === 1 && $objects[0] instanceof CartInterface) {
+        if (count($objects) > 0 && $objects[0] instanceof CartInterface) {
             return $objects[0];
         }
 
