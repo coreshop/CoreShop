@@ -121,4 +121,13 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
     {
         return $this->taxRules->contains($taxRule);
     }
+
+    public function __sleep()
+    {
+        $blockedVars = ['taxRules'];
+
+        $vars = get_object_vars($this);
+
+        return array_diff(array_keys($vars), $blockedVars);
+    }
 }
