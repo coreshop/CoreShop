@@ -12,6 +12,7 @@
         <field name="state" column="state"/>
         <field name="orderId" column="orderId" type="integer"/>
         <field name="datePayment" column="datePayment" type="datetime"/>
+        <field name="details" column="details" type="json" />
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>

@@ -59,6 +59,14 @@ services:
         tags:
             - { name: payum.action, factory: offline, alias: coreshop.offline.status }
 
+    # PayPal Payment
+    CoreShop\Bundle\PayumBundle\Action\Paypal\ExpressCheckout\ConvertPaymentAction:
+        arguments:
+            - '%coreshop.currency.decimal_factor%'
+            - '%coreshop.currency.decimal_precision%'
+        tags:
+            - { name: payum.action, factory: paypal_express_checkout, alias: coreshop.paypal_express_checkout.convert_payment }
+
     CoreShop\Bundle\PayumBundle\EventListener\TransactionListener:
         arguments:
             - '@doctrine.dbal.default_connection'
