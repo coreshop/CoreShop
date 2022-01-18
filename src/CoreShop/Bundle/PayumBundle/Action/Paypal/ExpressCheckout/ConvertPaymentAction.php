@@ -96,16 +96,23 @@ final class ConvertPaymentAction implements ActionInterface
 
     private function prepareAddressData(OrderInterface $order, array $details): array
     {
-        $details['EMAIL'] = $order->getCustomer()->getEmail();
+        if ($customer = $order->getCustomer()) {
+            $details['EMAIL'] = $customer->getEmail();
+        }
+        
         $invoiceAddress = $order->getInvoiceAddress();
 
-        if (!$invoiceAddress) {
-            $details['LOCALECODE'] = $invoiceAddress->getCountry()->getIsoCode();
+        if ($invoiceAddress) {
+            if ($country = $invoiceAddress->getCountry()) {
+                $details['LOCALECODE'] = $country->getIsoCode();
+                $details['PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE'] = $country->getIsoCode();
+            }
+
             $details['PAYMENTREQUEST_0_SHIPTONAME'] = $invoiceAddress->getFirstname() . ' ' . $invoiceAddress->getLastname();
             $details['PAYMENTREQUEST_0_SHIPTOSTREET'] = $invoiceAddress->getStreet();
             $details['PAYMENTREQUEST_0_SHIPTOCITY'] = $invoiceAddress->getCity();
             $details['PAYMENTREQUEST_0_SHIPTOZIP'] = $invoiceAddress->getPostcode();
-            $details['PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE'] = $invoiceAddress->getCountry()->getIsoCode();
+
 
             if ($invoiceAddress->getPhoneNumber() !== null) {
                 $details['PAYMENTREQUEST_0_SHIPTOPHONENUM'] = $invoiceAddress->getPhoneNumber();
