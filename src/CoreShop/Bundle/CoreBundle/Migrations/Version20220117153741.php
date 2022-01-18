@@ -17,7 +17,7 @@ final class Version20220117153741 extends AbstractMigration
     public function up(Schema $schema): void
     {
         if (!$schema->getTable('coreshop_payment')->hasColumn('details')) {
-            $this->addSql("ALTER TABLE coreshop_payment ADD details LONGTEXT NOT NULL COMMENT '(DC2Type:json_array)';");
+            $this->addSql("ALTER TABLE coreshop_payment ADD details LONGTEXT NOT NULL COMMENT '(DC2Type:json)';");
         }
     }
 
