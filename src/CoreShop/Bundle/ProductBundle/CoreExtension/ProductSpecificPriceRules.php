@@ -263,12 +263,6 @@ class ProductSpecificPriceRules extends Data implements
             return 'empty';
         }
 
-        $output = '';
-        /** @var ProductSpecificPriceRuleInterface $priceRule */
-        foreach($data as $priceRule) {
-            $output .= ;
-        }
-
         return sprintf('Rules: %s', count($data));
     }
 
