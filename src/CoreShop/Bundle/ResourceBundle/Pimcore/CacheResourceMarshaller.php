@@ -29,11 +29,7 @@ class CacheResourceMarshaller implements MarshallerInterface
 
     public function __construct(EntityManagerInterface $entityManager, MarshallerInterface $defaultMarshaller = null)
     {
-        if (null === $defaultMarshaller) {
-            $defaultMarshaller = new DefaultMarshaller();
-        }
-
-        $this->defaultMarshaller = $defaultMarshaller;
+        $this->defaultMarshaller = $defaultMarshaller ?? new DefaultMarshaller();
         $this->entityManager = $entityManager;
     }
 
