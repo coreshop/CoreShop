@@ -27,15 +27,18 @@ use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
+use Pimcore\Model\DataObject\Traits\SimpleComparisonTrait;
 use Webmozart\Assert\Assert;
 
 class ProductSpecificPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
     Data\CustomVersionMarshalInterface,
     CustomRecyclingMarshalInterface,
-    CustomDataCopyInterface
+    CustomDataCopyInterface,
+    Data\EqualComparisonInterface
 {
     use TempEntityManagerTrait;
+    use SimpleComparisonTrait;
 
     /**
      * Static type of this element.
@@ -258,6 +261,12 @@ class ProductSpecificPriceRules extends Data implements
     {
         if (!is_array($data)) {
             return 'empty';
+        }
+
+        $output = '';
+        /** @var ProductSpecificPriceRuleInterface $priceRule */
+        foreach($data as $priceRule) {
+            $output .= ;
         }
 
         return sprintf('Rules: %s', count($data));
