@@ -84,10 +84,10 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
         $taxAmount = 0;
         foreach ($this->getTaxRates() as $tax) {
             if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
-                $taxesAmounts[$tax->getId()] = (int) round($price - ($price / (1 + ($tax->getRate() / 100))));
+                $taxesAmounts[$tax->getId()] = (int) round($price - ($price / (1 + ($tax->getRate() / 100))), 2);
                 $price = $price - $taxesAmounts[$tax->getId()];
             } else {
-                $taxesAmounts[$tax->getId()] = (int) round($price - ($price / (1 + ($tax->getRate() / 100))));
+                $taxesAmounts[$tax->getId()] = (int) round($price - ($price / (1 + ($tax->getRate() / 100))), 2);
             }
         }
 
@@ -112,10 +112,10 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
 
         foreach ($this->getTaxRates() as $tax) {
             if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
-                $taxesAmounts[$tax->getId()] = (int) round($price * (abs($tax->getRate()) / 100));
+                $taxesAmounts[$tax->getId()] = (int) round($price * (abs($tax->getRate()) / 100), 2);
                 $price = $price + $taxesAmounts[$tax->getId()];
             } else {
-                $taxesAmounts[$tax->getId()] = (int) round(($price * (abs($tax->getRate()) / 100)));
+                $taxesAmounts[$tax->getId()] = (int) round(($price * (abs($tax->getRate()) / 100)), 2);
             }
         }
 
