@@ -44,8 +44,8 @@ class CacheResourceMarshaller implements MarshallerInterface
                 }
 
                 /**
-                 * @var Data&CacheMarshallerInterface $fd
-                 * @psalm-var Data&CacheMarshallerInterface $fd
+                 * @var Data&CacheMarshallerInterface|null $fd
+                 * @psalm-var Data&CacheMarshallerInterface|null $fd
                  */
                 foreach ($class->getFieldDefinitions() as $fd) {
                     if (!$fd instanceof CacheMarshallerInterface) {
