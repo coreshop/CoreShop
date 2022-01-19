@@ -274,7 +274,6 @@ coreshop.resource.list = Class.create({
         var searchLayout = this.search.getLayout();
 
         if (searchLayout) {
-            searchLayout.clearListeners();
             searchLayout.on('afterrender', function (layout) {
 
                 layout.setTitle(t('coreshop_' + this.type + '_manage'));
@@ -308,7 +307,10 @@ coreshop.resource.list = Class.create({
             }
         });
 
+        grid.removeListener('celldblclick', grid.events.celldblclick.listeners[0].fn);
         grid.on('celldblclick', function (view, td, cellIndex, record, tr, rowIndex) {
+            grid.suspendEvents(false);
+            grid.resumeEvents();
 
             if (!view.panel) {
                 return;
@@ -323,7 +325,7 @@ coreshop.resource.list = Class.create({
                 });
                 return false;
             }
-        }.bind(this));
+        }, this, {order: -100});
 
         coreshop.broker.fireEvent('sales.list.enhancing.grid', grid);
 
