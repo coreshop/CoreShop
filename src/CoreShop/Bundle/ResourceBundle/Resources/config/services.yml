@@ -91,7 +91,5 @@ services:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
 
-    CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller:
-        arguments:
-            - '@doctrine.orm.entity_manager'
+    CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller: ~
 

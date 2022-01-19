@@ -25,12 +25,10 @@ use Symfony\Component\Cache\Marshaller\MarshallerInterface;
 class CacheResourceMarshaller implements MarshallerInterface
 {
     protected MarshallerInterface $defaultMarshaller;
-    protected EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, MarshallerInterface $defaultMarshaller = null)
+    public function __construct(MarshallerInterface $defaultMarshaller = null)
     {
         $this->defaultMarshaller = $defaultMarshaller ?? new DefaultMarshaller();
-        $this->entityManager = $entityManager;
     }
 
     public function marshall(array $values, ?array &$failed): array
@@ -43,16 +41,8 @@ class CacheResourceMarshaller implements MarshallerInterface
                     continue;
                 }
 
-                /**
-                 * @var Data&CacheMarshallerInterface|null $fd
-                 * @psalm-var Data&CacheMarshallerInterface|null $fd
-                 */
                 foreach ($class->getFieldDefinitions() as $fd) {
                     if (!$fd instanceof CacheMarshallerInterface) {
-                        continue;
-                    }
-
-                    if (!$fd instanceof Data) {
                         continue;
                     }
 
@@ -78,16 +68,8 @@ class CacheResourceMarshaller implements MarshallerInterface
                 return $data;
             }
 
-            /**
-             * @var Data&CacheMarshallerInterface       $fd
-             * @psalm-var Data&CacheMarshallerInterface $fd
-             */
             foreach ($class->getFieldDefinitions() as $fd) {
                 if (!$fd instanceof CacheMarshallerInterface) {
-                    continue;
-                }
-
-                if (!$fd instanceof Data) {
                     continue;
                 }
 
