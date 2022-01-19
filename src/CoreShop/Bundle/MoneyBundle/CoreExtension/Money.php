@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
+use CoreShop\Bundle\ResourceBundle\Pimcore\CacheMarshallerInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
@@ -26,7 +27,8 @@ class Money extends DataObject\ClassDefinition\Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
     Data\CustomVersionMarshalInterface,
-    Data\CustomRecyclingMarshalInterface
+    Data\CustomRecyclingMarshalInterface,
+    CacheMarshallerInterface
 {
     /**
      * Static type of this element.
@@ -188,6 +190,16 @@ class Money extends DataObject\ClassDefinition\Data implements
     public function unmarshalRecycleData($object, $data)
     {
         return $this->unmarshalVersion($object, $data);
+    }
+
+    public function marshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->marshalVersion($concrete, $data);
+    }
+
+    public function unmarshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->unmarshalVersion($concrete, $data);
     }
 
     public function getDataForResource($data, $object = null, $params = [])
