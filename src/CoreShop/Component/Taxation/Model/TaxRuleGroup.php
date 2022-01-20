@@ -124,7 +124,7 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
 
     public function __sleep()
     {
-        $blockedVars = ['taxRules'];
+        $blockedVars = ['__initializer__', '__cloner__', 'taxRules'];
 
         $vars = get_object_vars($this);
 
