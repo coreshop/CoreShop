@@ -15,16 +15,17 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\IndexBundle;
 
 use Pimcore\Console\Application;
-use Pimcore\Extension\Bundle\Installer\InstallerInterface;
+use Pimcore\Extension\Bundle\Installer\SettingsStoreAwareInstaller;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class Installer implements InstallerInterface
+class Installer extends SettingsStoreAwareInstaller
 {
     public function __construct(protected KernelInterface $kernel)
     {
+        parent::__construct($this->kernel->getBundle('CoreShopIndexBundle'));
     }
 
     public function install(): void
@@ -46,33 +47,21 @@ class Installer implements InstallerInterface
             ['application-name' => 'coreshop', '--no-interaction' => true, '--force' => true]
         );
         $application->run(new ArrayInput($options));
+
+        parent::install();
     }
 
-    public function uninstall(): bool
-    {
-        return false;
-    }
-
-    public function isInstalled(): bool
-    {
-        return false;
-    }
-
-    public function canBeInstalled(): bool
-    {
-        return true;
-    }
-
-    public function canBeUninstalled(): bool
-    {
-        return false;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function needsReloadAfterInstall(): bool
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getOutput(): OutputInterface
     {
         return new NullOutput();
