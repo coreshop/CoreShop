@@ -51,17 +51,11 @@ class Installer extends SettingsStoreAwareInstaller
         parent::install();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function needsReloadAfterInstall(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOutput(): OutputInterface
     {
         return new NullOutput();
