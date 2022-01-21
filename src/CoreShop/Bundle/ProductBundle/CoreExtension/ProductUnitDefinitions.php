@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
+use CoreShop\Bundle\ResourceBundle\Pimcore\CacheMarshallerInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
@@ -39,7 +40,8 @@ class ProductUnitDefinitions extends Data implements
     Data\CustomResourcePersistingInterface,
     Data\CustomVersionMarshalInterface,
     Data\CustomRecyclingMarshalInterface,
-    Data\CustomDataCopyInterface
+    Data\CustomDataCopyInterface,
+    CacheMarshallerInterface
 {
     use TempEntityManagerTrait;
 
@@ -281,6 +283,16 @@ class ProductUnitDefinitions extends Data implements
     public function unmarshalRecycleData($object, $data)
     {
         return $this->unmarshalVersion($object, $data);
+    }
+
+    public function marshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->marshalVersion($concrete, $data);
+    }
+
+    public function unmarshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->unmarshalVersion($concrete, $data);
     }
 
     public function getDataFromResource($data, $object = null, $params = [])

@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 use CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
+use CoreShop\Bundle\ResourceBundle\Pimcore\CacheMarshallerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
@@ -39,7 +40,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface,
     Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface,
     Model\DataObject\ClassDefinition\Data\CustomRecyclingMarshalInterface,
-    Model\DataObject\ClassDefinition\Data\CustomDataCopyInterface
+    Model\DataObject\ClassDefinition\Data\CustomDataCopyInterface,
+    CacheMarshallerInterface
 {
     use TempEntityManagerTrait;
 
@@ -548,6 +550,16 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     public function unmarshalRecycleData($object, $data)
     {
         return $this->unmarshalVersion($object, $data);
+    }
+
+    public function marshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->marshalVersion($concrete, $data);
+    }
+
+    public function unmarshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->unmarshalVersion($concrete, $data);
     }
 
     public function delete($object, $params = [])

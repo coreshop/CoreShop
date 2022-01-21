@@ -90,3 +90,6 @@ services:
         arguments:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+
+    CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller: ~
+

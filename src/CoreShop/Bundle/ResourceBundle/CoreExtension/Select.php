@@ -14,10 +14,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
+use CoreShop\Bundle\ResourceBundle\Pimcore\CacheMarshallerInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
+use Pimcore\Model\DataObject\Concrete;
 
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
@@ -25,7 +27,9 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 abstract class Select extends Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
-    Data\CustomRecyclingMarshalInterface
+    Data\CustomRecyclingMarshalInterface,
+    Data\CustomVersionMarshalInterface,
+    CacheMarshallerInterface
 {
     use Model\DataObject\Traits\SimpleComparisonTrait;
 
@@ -229,5 +233,15 @@ abstract class Select extends Data implements
     public function setAllowEmpty($allowEmpty)
     {
         $this->allowEmpty = $allowEmpty;
+    }
+
+    public function marshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->marshalVersion($concrete, $data);
+    }
+
+    public function unmarshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->unmarshalVersion($concrete, $data);
     }
 }
