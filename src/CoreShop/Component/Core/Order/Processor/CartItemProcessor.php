@@ -62,8 +62,8 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             if ($store->getUseGrossPrice()) {
-                $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross((int) round($itemPrice * $cartItem->getQuantity()));
                 $itemPriceTax = $taxCalculator->getTaxesAmountFromGross($itemPrice);
+                $totalTaxAmount = $itemPriceTax * $cartItem->getQuantity();
                 $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemRetailPrice);
                 $itemDiscountTax = $taxCalculator->getTaxesAmountFromGross($itemDiscount);
                 $itemDiscountPriceTax = $taxCalculator->getTaxesAmountFromGross($itemDiscountPrice);
@@ -83,7 +83,7 @@ final class CartItemProcessor implements CartItemProcessorInterface
                 $cartItem->setItemDiscount($itemDiscount, true);
                 $cartItem->setItemDiscount($itemDiscount - $itemDiscountTax, false);
             } else {
-                $totalTaxAmount = $taxCalculator->getTaxesAmount((int) round($itemPrice * $cartItem->getQuantity()));
+                $totalTaxAmount = $taxCalculator->getTaxesAmount((int)round($itemPrice * $cartItem->getQuantity()));
                 $itemPriceTax = $taxCalculator->getTaxesAmount($itemPrice);
                 $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmount($itemRetailPrice);
                 $itemDiscountTax = $taxCalculator->getTaxesAmount($itemDiscount);
