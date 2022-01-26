@@ -83,8 +83,8 @@ final class CartItemProcessor implements CartItemProcessorInterface
                 $cartItem->setItemDiscount($itemDiscount, true);
                 $cartItem->setItemDiscount($itemDiscount - $itemDiscountTax, false);
             } else {
-                $totalTaxAmount = $taxCalculator->getTaxesAmount((int)round($itemPrice * $cartItem->getQuantity()));
                 $itemPriceTax = $taxCalculator->getTaxesAmount($itemPrice);
+                $totalTaxAmount = $itemPriceTax * $cartItem->getQuantity();
                 $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmount($itemRetailPrice);
                 $itemDiscountTax = $taxCalculator->getTaxesAmount($itemDiscount);
                 $itemDiscountPriceTax = $taxCalculator->getTaxesAmount($itemDiscountPrice);
