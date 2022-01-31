@@ -2,6 +2,11 @@ imports:
     - { resource: services/wishlist.yml }
     - { resource: services_alias.yml }
 
+parameters:
+    coreshop.frontend.category.valid_sort_options: ['name']
+    coreshop.frontend.category.default_sort_name: name
+    coreshop.frontend.category.default_sort_direction: asc
+
 services:
     coreshop.frontend.controller.abstract:
         class: CoreShop\Bundle\FrontendBundle\Controller\FrontendController
@@ -39,3 +44,9 @@ services:
     CoreShop\Bundle\FrontendBundle\Twig\MergeRecursiveExtension:
         tags:
             - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Controller\CategoryController:
+        arguments:
+            - '%coreshop.frontend.category.valid_sort_options%'
+            - '%coreshop.frontend.category.default_sort_name%'
+            - '%coreshop.frontend.category.default_sort_direction%'

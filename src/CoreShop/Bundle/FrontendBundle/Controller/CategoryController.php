@@ -36,15 +36,25 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryController extends FrontendController
 {
-    protected array $validSortProperties = ['name'];
+    protected array $validSortProperties;
 
     protected string $repositoryIdentifier = 'oo_id';
 
     protected string $requestIdentifier = 'category';
 
-    protected string $defaultSortName = 'name';
+    protected string $defaultSortName;
 
-    protected string $defaultSortDirection = 'asc';
+    protected string $defaultSortDirection;
+
+    public function __construct(
+        array $validSortProperties,
+        string $defaultSortName,
+        string $defaultSortDirection
+    ) {
+        $this->validSortProperties = $validSortProperties;
+        $this->defaultSortName = $defaultSortName;
+        $this->defaultSortDirection = $defaultSortDirection;
+    }
 
     public function menuAction(): Response
     {
@@ -132,7 +142,7 @@ class CategoryController extends FrontendController
             $orderDirection = $category->getFilter()->getOrderDirection();
             $orderKey = $category->getFilter()->getOrderKey();
 
-            $sortKey = (empty($orderKey) ? $this->defaultSortName : strtoupper($orderKey)) . '_' . (empty($orderDirection) ? $this->defaultSortDirection : strtoupper($orderDirection));
+            $sortKey = (empty($orderKey) ? $this->defaultSortName : $orderKey) . '_' . (empty($orderDirection) ? $this->defaultSortDirection : $orderDirection);
             $sort = $this->getParameterFromRequest($request, 'sort', $sortKey);
             $sortParsed = $this->parseSorting($sort);
 
