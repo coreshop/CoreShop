@@ -2,11 +2,6 @@ imports:
     - { resource: services/wishlist.yml }
     - { resource: services_alias.yml }
 
-parameters:
-    coreshop.frontend.category.valid_sort_options: ['name']
-    coreshop.frontend.category.default_sort_name: name
-    coreshop.frontend.category.default_sort_direction: asc
-
 services:
     coreshop.frontend.controller.abstract:
         class: CoreShop\Bundle\FrontendBundle\Controller\FrontendController

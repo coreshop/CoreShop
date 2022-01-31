@@ -47,10 +47,33 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('view_bundle')->defaultValue('CoreShopFrontend')->end()
             ->end();
 
+        $this->addCategorySection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
         $this->addControllerSection($rootNode);
 
         return $treeBuilder;
+    }
+
+    private function addCategorySection(ArrayNodeDefinition $node): void
+    {
+        $node->children()
+            ->arrayNode('category')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('valid_sort_options')
+                        ->defaultValue(['name'])
+                        ->scalarPrototype()->end()
+                    ->end()
+                    ->scalarNode('default_sort_name')->defaultValue('name')->end()
+                    ->scalarNode('default_sort_direction')
+                        ->defaultValue('asc')
+                        ->validate()
+                            ->ifNotInArray(['asc', 'desc'])
+                            ->thenInvalid('Supported values are asc, desc.')
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
     private function addControllerSection(ArrayNodeDefinition $node): void
