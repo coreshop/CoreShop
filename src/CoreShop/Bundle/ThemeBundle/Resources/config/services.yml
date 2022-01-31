@@ -44,4 +44,5 @@ services:
             - '@Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface'
             - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
             - '@Symfony\Component\HttpFoundation\RequestStack'
+            - '@Sylius\Bundle\ThemeBundle\Context\SettableThemeContext'
 
