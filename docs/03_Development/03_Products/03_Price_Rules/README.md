@@ -5,22 +5,31 @@ Price Rules always consist of Conditions and Actions.
 
 ## Price Rule Types
 
-### Catalog Price Rules
+### Product Price Rules
 
-> Checkout all available catalog price rules [here](../../../02_User_Documentation/03_Price_Rules/02_Product_Price_Rules.md)
+> Checkout all available product price rules [here](../../../02_User_Documentation/03_Price_Rules/02_Product_Price_Rules.md)
 
-Catalog Price Rules are applied to multiple Products based on Conditions like Category or Manufacturer.
+Product price rules are applied to multiple products based on conditions like category or manufacturer.
 
 ### Specific Price Rules
 
-> Checkout all available specific price rules [here](../../../02_User_Documentation/03_Price_Rules/03_Specific_Product_Prices.md)
+> Checkout all available specific price rules [here](../../../02_User_Documentation/03_Price_Rules/03_Specific_Price_Rules.md)
 
-Specific Price Rules are applied to a single Product based on Conditions like Customer or Customer Group.
+Specific price rules are applied to a single product based on conditions like customer or customer group.
+
+### Quantity Price Rules
+
+> Checkout all available quantity price rules [here](../../../02_User_Documentation/03_Price_Rules/04_Quantity_Price_Rules.md)
+
+Quantity price rules are applied to a single product based on conditions like the quantity of a cart item.
+
+These rules apply only in the calculation of cart item prices. If you have only quantity rules configured,
+the default price calculation of CoreShop will return zero outside of cart context.
 
 ## Extending Conditions and Actions
 
- - [Click here to see how you can add custom Actions](../../01_Extending_Guide/04_Extending_Rule_Actions.md)
- - [Click here to see how you can add custom Conditions](../../01_Extending_Guide/05_Extending_Rule_Conditions.md)
+- [Click here to see how you can add custom Actions](../../01_Extending_Guide/04_Extending_Rule_Actions.md)
+- [Click here to see how you can add custom Conditions](../../01_Extending_Guide/05_Extending_Rule_Conditions.md)
 
 ## Template Helper
 

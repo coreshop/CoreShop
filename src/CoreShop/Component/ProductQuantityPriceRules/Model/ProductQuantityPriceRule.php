@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,7 +27,7 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
     use ToggleableTrait;
 
     /**
-     * @var int|null
+     * @var int
      */
     protected $id;
 
@@ -280,37 +280,5 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
     public function __toString()
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
-    }
-
-    public function __clone()
-    {
-        if ($this->id === null) {
-            return;
-        }
-
-        $conditions = $this->getConditions();
-        $ranges = $this->getRanges();
-
-        $this->id = null;
-        $this->product = null;
-        $this->conditions = new ArrayCollection();
-        $this->ranges = new ArrayCollection();
-
-        if ($conditions instanceof Collection) {
-            /** @var ConditionInterface $condition */
-            foreach ($conditions as $condition) {
-                $newCondition = clone $condition;
-                $this->addCondition($newCondition);
-            }
-        }
-
-        if ($ranges instanceof Collection) {
-            /** @var QuantityRangeInterface $range */
-            foreach ($ranges as $range) {
-                $newRange = clone $range;
-                $newRange->setRule($this);
-                $this->addRange($newRange);
-            }
-        }
     }
 }

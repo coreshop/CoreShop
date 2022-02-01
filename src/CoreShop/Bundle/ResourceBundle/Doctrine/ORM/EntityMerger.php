@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -144,8 +144,19 @@ class EntityMerger
                 }, $visited);
 
                 $this->mergeCollection($newData, $origData, $assoc, static function ($foundEntry) use ($newCollection) {
-                    $newCollection->add($foundEntry);
-                }, $visited);
+                    $found = false;
+
+                    foreach ($newCollection as $entry) {
+                        if (spl_object_hash($entry) === spl_object_hash($foundEntry)) {
+                            $found = true;
+                            break;
+                        }
+                    }
+
+                    if (!$found) {
+                        $newCollection->add($foundEntry);
+                    }
+                }, $visited, true);
 
                 // @todo: check if we really need to build this reference!
                 $newData = &$newCollection;
@@ -188,7 +199,14 @@ class EntityMerger
      * @param \Closure   $notFound
      * @param array      $visited
      */
-    private function mergeCollection(Collection $from, Collection $to, array $assoc, \Closure $notFound, array &$visited)
+    private function mergeCollection(
+        Collection $from,
+        Collection $to,
+        array $assoc,
+        \Closure $notFound,
+        array &$visited,
+        bool $mergeFoundEntity = false
+    )
     {
         $assocClass = $this->em->getClassMetadata($assoc['targetEntity']);
 
@@ -196,11 +214,20 @@ class EntityMerger
             $found = false;
             $origId = $assocClass->getIdentifierValues($fromEntry);
 
-            foreach ($to as $toEntry) {
+            foreach ($to as $offset => $toEntry) {
                 $newId = $assocClass->getIdentifierValues($toEntry);
+
+                if (!$newId) {
+                    continue;
+                }
 
                 if ($newId === $origId) {
                     $found = true;
+
+                    if ($mergeFoundEntity) {
+                        $to->set($offset, $fromEntry);
+                    }
+
                     break;
                 }
             }

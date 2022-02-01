@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -454,7 +454,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     public function getTableName()
     {
-        return $this->worker->getTablename($this->index);
+        return $this->worker->getTablename($this->index->getName());
     }
 
     /**
@@ -462,7 +462,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     public function getQueryTableName()
     {
-        return $this->worker->getLocalizedViewName($this->index, $this->getLocale());
+        return $this->worker->getLocalizedViewName($this->index->getName(), $this->getLocale());
     }
 
     /**
@@ -470,7 +470,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     public function getRelationTablename()
     {
-        return $this->worker->getRelationTablename($this->index);
+        return $this->worker->getRelationTablename($this->index->getName());
     }
 
     /**
@@ -537,7 +537,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     protected function addUserSpecificConditions(QueryBuilder $queryBuilder, $excludedFieldName = null)
     {
-        $relationalTableName = $this->worker->getRelationTablename($this->index);
+        $relationalTableName = $this->worker->getRelationTablename($this->index->getName());
         foreach ($this->relationConditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {

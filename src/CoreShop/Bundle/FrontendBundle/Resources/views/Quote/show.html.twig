@@ -67,7 +67,7 @@
                 {% for priceRule in quote.getPriceRuleItems %}
                     <tr>
                         <td colspan="2" class="text-center">
-                            {{ priceRule.cartPriceRule.getName }}
+                            {{ priceRule.cartPriceRule.label ?: priceRule.cartPriceRule.name }}
                         </td>
                         <td class="text-center">
 

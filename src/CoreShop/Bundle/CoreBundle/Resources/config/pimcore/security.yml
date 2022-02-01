@@ -1,5 +1,5 @@
 parameters:
-    coreshop.security.frontend_regex: "^/(?!admin)[^/]++"
+    coreshop.security.frontend_regex: "^/(?!admin)[^/]*"
 
 pimcore:
     security:

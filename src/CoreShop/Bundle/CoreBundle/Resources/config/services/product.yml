@@ -3,10 +3,18 @@ services:
         public: true
 
     coreshop.product.cloner.quantity_price_rules: '@CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner'
-    CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner: ~
+    CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner:
+        arguments:
+            - '@CoreShop\Component\Core\Product\Cloner\UnitMatcherInterface'
 
     coreshop.product.cloner.unit_definitions: '@CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner'
-    CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner: ~
+    CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner:
+        arguments:
+            - '@CoreShop\Component\Core\Product\Cloner\UnitMatcherInterface'
+
+    coreshop.product.cloner.unit_matcher: '@CoreShop\Component\Core\Product\Cloner\UnitMatcher'
+    CoreShop\Component\Core\Product\Cloner\UnitMatcherInterface: '@CoreShop\Component\Core\Product\Cloner\UnitMatcher'
+    CoreShop\Component\Core\Product\Cloner\UnitMatcher: ~
 
     coreshop.product.tax_factory: '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactory'
     CoreShop\Component\Core\Product\ProductTaxCalculatorFactory:

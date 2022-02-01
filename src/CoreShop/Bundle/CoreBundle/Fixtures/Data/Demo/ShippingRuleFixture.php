@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -62,13 +62,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                                 'minAmount' => 0,
                                 'maxAmount' => 15000,
                             ],
-                        ],
-                        [
-                            'type' => 'zones',
-                            'config' => [
-                                'zones' => [4],
-                            ],
-                        ],
+                        ]
                     ],
                     'actions' => [
                         [
@@ -89,13 +83,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                                 'minAmount' => 15000,
                                 'maxAmount' => 200000,
                             ],
-                        ],
-                        [
-                            'type' => 'zones',
-                            'config' => [
-                                'zones' => [4],
-                            ],
-                        ],
+                        ]
                     ],
                     'actions' => [
                         [
@@ -116,13 +104,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                                 'minAmount' => 200000,
                                 'maxAmount' => 300000,
                             ],
-                        ],
-                        [
-                            'type' => 'zones',
-                            'config' => [
-                                'zones' => [4],
-                            ],
-                        ],
+                        ]
                     ],
                     'actions' => [
                         [
