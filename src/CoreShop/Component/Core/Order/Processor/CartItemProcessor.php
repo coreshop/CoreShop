@@ -63,9 +63,7 @@ final class CartItemProcessor implements CartItemProcessorInterface
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             if ($store->getUseGrossPrice()) {
                 $itemPriceTax = $taxCalculator->getTaxesAmountFromGross($itemPrice);
-                var_dump($itemPriceTax);
                 $totalTaxAmount = (int) round($itemPriceTax * $cartItem->getQuantity());
-                var_dump($totalTaxAmount);
                 $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemRetailPrice);
                 $itemDiscountTax = $taxCalculator->getTaxesAmountFromGross($itemDiscount);
                 $itemDiscountPriceTax = $taxCalculator->getTaxesAmountFromGross($itemDiscountPrice);
