@@ -20,6 +20,18 @@
             <gedmo:timestampable on="update"/>
         </field>
 
+        <field name="number" column="number" type="string" nullable="true" />
+
+        <field name="description" column="description" type="string" nullable="true" />
+
+        <field name="clientEmail" column="client_email" type="string" nullable="true" />
+
+        <field name="clientId" column="client_id" type="string" nullable="true" />
+
+        <field name="totalAmount" column="total_amount" type="integer" nullable="true" />
+
+        <field name="currencyCode" column="currency_code" type="string" nullable="true" />
+
         <many-to-one field="paymentProvider" target-entity="CoreShop\Component\Payment\Model\PaymentProviderInterface">
             <join-column name="payment_provider_id" referenced-column-name="id" nullable="true"/>
         </many-to-one>
