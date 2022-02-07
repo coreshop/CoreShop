@@ -1294,20 +1294,6 @@ translations:
           de: 'Passwort wiederholen'
           it: 'Ripeti la password'
 
-  coreshop.form.customer.password_new:
-      languages:
-          de_CH: 'Neues Passwort'
-          en: 'New Password'
-          de: 'Neues Passwort'
-          it: 'Nuovu Password'
-
-  coreshop.form.customer.password_new_repeat:
-      languages:
-          de_CH: 'Neues Passwort wiederholen'
-          en: 'Repeat new Password'
-          de: 'Neues Passwort wiederholen'
-          it: 'Ripeti la nuovu password'
-
   coreshop.form.customer.new_password:
       languages:
           de_CH: 'Neues Passwort'
