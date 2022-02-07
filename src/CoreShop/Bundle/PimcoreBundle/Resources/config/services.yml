@@ -60,9 +60,14 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    CoreShop\Bundle\PimcoreBundle\EventListener\SluggableListener:
+    CoreShop\Component\Pimcore\Slug\SluggableSluggerInterface: '@CoreShop\Component\Pimcore\Slug\SluggableSlugger'
+    CoreShop\Component\Pimcore\Slug\SluggableSlugger:
         arguments:
             - '@Symfony\Component\String\Slugger\SluggerInterface'
+
+    CoreShop\Bundle\PimcoreBundle\EventListener\SluggableListener:
+        arguments:
+            - '@CoreShop\Component\Pimcore\Slug\SluggableSluggerInterface'
         tags:
             - { name: kernel.event_subscriber }
 

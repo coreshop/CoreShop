@@ -14,18 +14,19 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\EventListener;
 
+use CoreShop\Component\Pimcore\Exception\SlugNotPossibleException;
 use CoreShop\Component\Pimcore\Slug\SluggableInterface;
+use CoreShop\Component\Pimcore\Slug\SluggableSluggerInterface;
 use Pimcore\Event\DataObjectEvents;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Model\DataObject\Data\UrlSlug;
 use Pimcore\Model\Site;
 use Pimcore\Tool;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class SluggableListener implements EventSubscriberInterface
 {
-    public function __construct(protected SluggerInterface $slugger)
+    public function __construct(protected SluggableSluggerInterface $slugger)
     {
     }
 
@@ -50,18 +51,12 @@ final class SluggableListener implements EventSubscriberInterface
         foreach (Tool::getValidLanguages() as $language) {
             $newSlugs = [];
             $actualSlugs = [];
-            $name = $object->getNameForSlug($language);
 
-            if (!$name) {
+            try {
+                $slug = $this->slugger->slug($object, $language);
+            } catch (SlugNotPossibleException $exception) {
                 continue;
             }
-
-            $slug = sprintf(
-                '/%s/%s',
-                $language,
-                strtolower($this->slugger->slug($name, '-', $language)->toString())
-            );
-
 
             $i = 1;
 
@@ -73,12 +68,7 @@ final class SluggableListener implements EventSubscriberInterface
                     break;
                 }
 
-                $slug = sprintf(
-                    '/%s/%s-%s',
-                    $language,
-                    strtolower($this->slugger->slug($name, '-', $language)->toString()),
-                    (string)$i
-                );
+                $slug = $this->slugger->slug($object, $language, (string)$i);
                 $i++;
             }
 
