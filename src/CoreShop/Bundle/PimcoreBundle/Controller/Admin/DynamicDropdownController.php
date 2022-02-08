@@ -179,7 +179,6 @@ final class DynamicDropdownController extends AdminController
                 /**
                  * @psalm-suppress InternalProperty, UndefinedPropertyFetch
                  */
-                $definition['get' . ucfirst($child->name)] = $tree->getFieldtype() === 'localizedfields';
                 $definition = $this->parseTree($child, $definition);
             }
         }
