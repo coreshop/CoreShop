@@ -18,8 +18,6 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 interface ClassUpdateInterface
 {
-    public function __construct(string $className);
-
     public function save(): bool;
 
     public function getProperty(string $property): array;
