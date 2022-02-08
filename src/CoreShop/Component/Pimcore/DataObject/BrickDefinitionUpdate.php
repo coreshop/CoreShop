@@ -23,6 +23,8 @@ class BrickDefinitionUpdate extends AbstractDefinitionUpdate
 
     public function __construct(string $brickKey)
     {
+        parent::__construct();
+
         $this->brickDefinition = DataObject\Objectbrick\Definition::getByKey($brickKey);
 
         if (null === $this->brickDefinition) {

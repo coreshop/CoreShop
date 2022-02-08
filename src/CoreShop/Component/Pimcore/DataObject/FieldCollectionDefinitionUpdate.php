@@ -23,6 +23,8 @@ class FieldCollectionDefinitionUpdate extends AbstractDefinitionUpdate
 
     public function __construct(string $fieldCollectionKey)
     {
+        parent::__construct();
+
         $this->fieldCollectionDefinition = DataObject\Fieldcollection\Definition::getByKey($fieldCollectionKey);
 
         if (null === $this->fieldCollectionDefinition) {
