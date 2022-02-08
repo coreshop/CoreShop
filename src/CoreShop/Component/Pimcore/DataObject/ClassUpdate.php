@@ -25,7 +25,7 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
 
     public function __construct(string $className)
     {
-        parent::__construct($className);
+        parent::__construct();
 
         $this->classDefinition = DataObject\ClassDefinition::getByName($className);
 
