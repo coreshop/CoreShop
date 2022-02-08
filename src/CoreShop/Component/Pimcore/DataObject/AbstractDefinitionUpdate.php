@@ -15,13 +15,21 @@ declare(strict_types=1);
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException;
+use Pimcore\Bundle\CoreBundle\Migrations\Version20211117173000;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 {
     protected array $jsonDefinition;
-
     protected array $fieldDefinitions;
+    protected string $childrenPath = 'childs';
+
+    public function __construct(string $className)
+    {
+        if (class_exists(Version20211117173000::class)) {
+            $this->childrenPath = 'children';
+        }
+    }
 
     abstract public function save(): bool;
 
@@ -55,14 +63,14 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
             $fieldName,
             false,
             function (array &$foundField, int $index, array &$parent) {
-                unset($parent['childs'][$index]);
+                unset($parent[$this->childrenPath][$index]);
             }
         );
     }
 
     public function insertField(array $jsonFieldDefinition): void
     {
-        $this->jsonDefinition['layoutDefinitions']['childs'][0]['childs'][] = $jsonFieldDefinition;
+        $this->jsonDefinition['layoutDefinitions'][$this->childrenPath][0][$this->childrenPath][] = $jsonFieldDefinition;
     }
 
     public function insertFieldBefore(string $fieldName, array $jsonFieldDefinition): void
@@ -75,11 +83,11 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                     $index = 1;
                 }
 
-                $childs = $parent['childs'];
+                $childs = $parent[$this->childrenPath];
 
                 array_splice($childs, $index, 0, [$jsonFieldDefinition]);
 
-                $parent['childs'] = $childs;
+                $parent[$this->childrenPath] = $childs;
             }
         );
     }
@@ -90,11 +98,11 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
             $fieldName,
             false,
             function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
-                $childs = $parent['childs'];
+                $childs = $parent[$this->childrenPath];
 
                 array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
 
-                $parent['childs'] = $childs;
+                $parent[$this->childrenPath] = $childs;
             }
         );
     }
@@ -133,11 +141,11 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                     $index = 1;
                 }
 
-                $childs = $parent['childs'];
+                $childs = $parent[$this->childrenPath];
 
                 array_splice($childs, $index, 0, [$jsonFieldDefinition]);
 
-                $parent['childs'] = $childs;
+                $parent[$this->childrenPath] = $childs;
             }
         );
     }
@@ -148,11 +156,11 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
             $fieldName,
             true,
             function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
-                $childs = $parent['childs'];
+                $childs = $parent[$this->childrenPath];
 
                 array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
 
-                $parent['childs'] = $childs;
+                $parent[$this->childrenPath] = $childs;
             }
         );
     }
@@ -187,7 +195,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
             $fieldName,
             true,
             function (array &$foundField, int $index, array &$parent) {
-                unset($parent['childs'][$index]);
+                unset($parent[$this->childrenPath][$index]);
             }
         );
     }
@@ -196,15 +204,15 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     {
         $found = false;
 
-        $traverseFunction = static function (array $children) use (&$traverseFunction, $layoutElement, $fieldName, $callback, &$found): array {
-            foreach ($children['childs'] as $index => &$child) {
+        $traverseFunction = function (array $children) use (&$traverseFunction, $layoutElement, $fieldName, $callback, &$found): array {
+            foreach ($children[$this->childrenPath] as $index => &$child) {
                 $eligible = true;
 
-                if ($layoutElement && !array_key_exists('childs', $child)) {
+                if ($layoutElement && !array_key_exists($this->childrenPath, $child)) {
                     $eligible = false;
                 }
 
-                if (!$layoutElement && array_key_exists('childs', $child)) {
+                if (!$layoutElement && array_key_exists($this->childrenPath, $child)) {
                     $eligible = false;
                 }
 
@@ -215,7 +223,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                     break;
                 }
 
-                if (array_key_exists('childs', $child)) {
+                if (array_key_exists($this->childrenPath, $child)) {
                     $child = $traverseFunction($child);
                 }
             }
