@@ -43,7 +43,7 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
 
     public function detectAddressAffiliationForCustomer(CustomerInterface $customer, AddressInterface $address): ?string
     {
-        if ($address->getId() === 0) {
+        if (null === $address->getId() || 0 === $address->getId()) {
             return null;
         }
 
