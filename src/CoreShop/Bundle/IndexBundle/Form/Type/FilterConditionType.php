@@ -41,7 +41,7 @@ class FilterConditionType extends AbstractResourceType
             ->add('type', FilterConditionChoiceType::class)
             ->add('label', TextType::class)
             ->add('sort', IntegerType::class)
-            ->add('quantityUnit', NumberType::class);
+            ->add('quantityUnit', TextType::class);
 
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
