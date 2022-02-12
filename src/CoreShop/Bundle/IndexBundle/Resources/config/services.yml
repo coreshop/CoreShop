@@ -295,3 +295,7 @@ services:
         arguments:
             - '@coreshop.repository.index'
             - '@coreshop.registry.index.worker'
+
+    CoreShop\Component\Index\Extension\DecimalIndexColumnTypeConfigExtension:
+        tags:
+            - { name: coreshop.index.extension }
