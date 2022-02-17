@@ -66,6 +66,16 @@ services:
         tags:
             - { name: coreshop.notification_rule.condition, type: orderState, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderStateConfigurationType }
 
+    coreshop.notification_rule.condition.order.order_sale_state:
+        class: CoreShop\Component\Core\Notification\Rule\Condition\SimpleStateChecker
+        arguments:
+            - 'CoreShop\Component\Order\Model\OrderInterface'
+            - 'saleState'
+            - 'saleState'
+        tags:
+            - { name: coreshop.notification_rule.condition, type: saleState, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderSaleStateConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: saleState, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderSaleStateConfigurationType }
+
     coreshop.notification_rule.condition.order.order_transition:
         class: CoreShop\Component\Core\Notification\Rule\Condition\StateTransitionChecker
         arguments:
@@ -206,11 +216,6 @@ services:
             - '@CoreShop\Component\Notification\Processor\RulesProcessorInterface'
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'
 
-    CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\QuoteListener:
-        parent: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\AbstractNotificationRuleListener
-        tags:
-            - { name: kernel.event_listener, event: coreshop.quote.post_transform, method: applyRule }
-
     CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\OrderWorkflowListener:
         parent: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\AbstractNotificationRuleListener
         tags:
@@ -218,6 +223,8 @@ services:
             - { name: kernel.event_listener, event: workflow.coreshop_order_invoice.completed, method: applyOrderWorkflowRule }
             - { name: kernel.event_listener, event: workflow.coreshop_order_shipment.completed, method: applyOrderWorkflowRule }
             - { name: kernel.event_listener, event: workflow.coreshop_order_payment.completed, method: applyOrderWorkflowRule }
+            - { name: kernel.event_listener, event: workflow.coreshop_quote.completed, method: applyOrderWorkflowRule }
+            - { name: kernel.event_listener, event: workflow.coreshop_order_sales_type.completed, method: applyOrderWorkflowRule }
 
     CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\OrderCommentsListener:
         parent: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\AbstractNotificationRuleListener

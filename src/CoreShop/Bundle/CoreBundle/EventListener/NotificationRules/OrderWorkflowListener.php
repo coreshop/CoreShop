@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use Symfony\Component\Workflow\Event\Event;
 
 final class OrderWorkflowListener extends AbstractNotificationRuleListener
@@ -28,13 +29,17 @@ final class OrderWorkflowListener extends AbstractNotificationRuleListener
             return;
         }
 
+        if (!in_array($order->getSaleState(), [OrderSaleStates::STATE_QUOTE, OrderSaleStates::STATE_ORDER], true)) {
+            return;
+        }
+
         $customer = $order->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
             return;
         }
 
-        $this->rulesProcessor->applyRules('order', $order, [
+        $this->rulesProcessor->applyRules($order->getSaleState(), $order, [
             'workflow' => $event->getWorkflowName(),
             'fromState' => $event->getMarking()->getPlaces(),
             'toState' => $event->getTransition()->getTos(),
