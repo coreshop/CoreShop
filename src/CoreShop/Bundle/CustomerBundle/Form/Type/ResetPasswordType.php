@@ -27,8 +27,8 @@ class ResetPasswordType extends AbstractType
         $builder
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'coreshop.form.customer.password'],
-                'second_options' => ['label' => 'coreshop.form.customer.password_repeat'],
+                'first_options' => ['label' => 'coreshop.form.customer.new_password'],
+                'second_options' => ['label' => 'coreshop.form.customer.new_password_repeat'],
             ]);
     }
 
