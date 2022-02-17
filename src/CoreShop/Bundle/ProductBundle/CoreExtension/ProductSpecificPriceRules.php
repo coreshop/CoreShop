@@ -17,6 +17,7 @@ use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
 use CoreShop\Component\Pimcore\BCLayer\CustomDataCopyInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
+use CoreShop\Component\Pimcore\BCLayer\EqualComparisonInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
@@ -35,7 +36,7 @@ class ProductSpecificPriceRules extends Data implements
     Data\CustomVersionMarshalInterface,
     CustomRecyclingMarshalInterface,
     CustomDataCopyInterface,
-    Data\EqualComparisonInterface
+    EqualComparisonInterface
 {
     use TempEntityManagerTrait;
     use SimpleComparisonTrait;
