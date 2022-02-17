@@ -18,6 +18,7 @@ services:
         arguments:
             - '@CoreShop\Component\Index\Service\IndexUpdaterService'
         tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.postAdd, method: onPostUpdate }
             - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: onPostUpdate }
             - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: onPostDelete }
 
