@@ -7,6 +7,7 @@ pimcore:
             data:
                 map:
                     coreShopTaxRuleGroup: CoreShop\Bundle\TaxationBundle\CoreExtension\TaxRuleGroup
+                    coreShopTaxRate: CoreShop\Bundle\TaxationBundle\CoreExtension\TaxRate
 
 jms_serializer:
     metadata:

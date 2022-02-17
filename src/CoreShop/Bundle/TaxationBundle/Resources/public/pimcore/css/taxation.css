@@ -1,4 +1,4 @@
-.coreshop_icon_taxes {
+.coreshop_icon_taxes, .coreshop_icon_tax_rate, .pimcore_icon_coreShopTaxRate {
     background: url(../img/taxes.svg) center center no-repeat !important;
 }
 

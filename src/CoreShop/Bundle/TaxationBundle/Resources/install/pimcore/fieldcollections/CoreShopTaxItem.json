@@ -98,6 +98,24 @@
                         "invisible": false,
                         "visibleGridView": false,
                         "visibleSearch": false
+                    },
+                    {
+                        "fieldtype": "coreShopTaxRate",
+                        "allowEmpty": false,
+                        "name": "taxRate",
+                        "title": "Tax Rate",
+                        "tooltip": "",
+                        "mandatory": false,
+                        "noteditable": false,
+                        "index": false,
+                        "locked": false,
+                        "style": "",
+                        "permissions": null,
+                        "datatype": "data",
+                        "relationType": false,
+                        "invisible": false,
+                        "visibleGridView": false,
+                        "visibleSearch": false
                     }
                 ],
                 "locked": false

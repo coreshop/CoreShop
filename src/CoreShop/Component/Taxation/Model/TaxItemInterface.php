@@ -29,4 +29,8 @@ interface TaxItemInterface extends ResourceInterface
     public function getAmount(): int;
 
     public function setAmount(int $amount);
+
+    public function getTaxRate(): ?TaxRateInterface;
+
+    public function setTaxRate(TaxRateInterface $taxRate);
 }

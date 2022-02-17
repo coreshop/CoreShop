@@ -79,6 +79,7 @@ class TaxCollector implements TaxCollectorInterface
             $item = $this->taxItemFactory->createNew();
             $item->setName($tax->getName());
             $item->setRate($tax->getRate());
+            $item->setTaxRate($tax);
             $item->setAmount($amount);
 
             $usedTaxes[$tax->getId()] = $item;
