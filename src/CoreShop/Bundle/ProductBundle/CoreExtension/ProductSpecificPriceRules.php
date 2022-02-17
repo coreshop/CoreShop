@@ -517,4 +517,24 @@ class ProductSpecificPriceRules extends Data implements
     {
         return $this->getContainer()->getParameter('coreshop.product_specific_price_rule.conditions');
     }
+
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return '?array';
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return '?array';
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return ProductSpecificPriceRuleInterface::class.'[]';
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return ProductSpecificPriceRuleInterface::class.'[]';
+    }
 }
