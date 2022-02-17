@@ -16,7 +16,6 @@ namespace CoreShop\Component\Core\Order\Committer;
 
 use Carbon\Carbon;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\Committer\QuoteCommitterInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -28,7 +27,7 @@ use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
-class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
+class QuoteCommitter implements QuoteCommitterInterface
 {
     protected string $orderFolderPath;
 

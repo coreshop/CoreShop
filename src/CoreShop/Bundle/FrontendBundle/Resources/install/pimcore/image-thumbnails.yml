@@ -94,3 +94,8 @@ thumbnails:
       - method: scaleByWidth
         arguments:
           width: 1200
+  coreshop_productQuote:
+    items:
+      - method: scaleByWidth
+        arguments:
+          width: 400
