@@ -12,18 +12,19 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
+namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 
-use CoreShop\Component\Core\Model\OrderInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Webmozart\Assert\Assert;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 
-final class QuoteListener extends AbstractNotificationRuleListener
+final class OrderSaleStateConfigurationType extends AbstractType
 {
-    public function applyRule(GenericEvent $event): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        Assert::isInstanceOf($event->getSubject(), OrderInterface::class);
-
-        $this->rulesProcessor->applyRules('quote', $event->getSubject());
+        $builder
+            ->add('saleState', TextType::class, [
+            ]);
     }
+
 }
