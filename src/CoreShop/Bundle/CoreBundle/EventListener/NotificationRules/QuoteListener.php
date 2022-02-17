@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\QuoteInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
@@ -22,6 +23,24 @@ final class QuoteListener extends AbstractNotificationRuleListener
     {
         Assert::isInstanceOf($event->getSubject(), QuoteInterface::class);
 
-        $this->rulesProcessor->applyRules('quote', $event->getSubject());
+        $quote = $event->getSubject();
+
+        if (!$quote instanceof QuoteInterface) {
+            return;
+        }
+
+        $customer = $quote->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            return;
+        }
+
+        $this->rulesProcessor->applyRules('quote', $quote, [
+            '_locale' => $quote->getLocaleCode(),
+            'recipient' => $customer->getEmail(),
+            'firstname' => $customer->getFirstname(),
+            'lastname' => $customer->getLastname(),
+            'quoteNumber' => $quote->getQuoteNumber(),
+        ]);
     }
 }
