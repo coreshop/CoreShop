@@ -18,7 +18,6 @@ use Carbon\Carbon;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Committer\OrderCommitterInterface;
-use CoreShop\Component\Order\Committer\QuoteCommitterInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
@@ -35,7 +34,7 @@ use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
-class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
+class OrderCommitter implements OrderCommitterInterface
 {
     public function __construct(protected CartManagerInterface $cartManager, protected FolderCreationServiceInterface $folderCreationService, protected NumberGeneratorInterface $numberGenerator, protected ObjectClonerInterface $objectCloner, protected StateMachineApplierInterface $stateMachineApplier)
     {

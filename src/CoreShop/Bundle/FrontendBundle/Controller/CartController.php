@@ -19,6 +19,7 @@ use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\ShippingCalculatorType;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier;
 use CoreShop\Component\Order\Cart\CartModifierInterface;
@@ -30,6 +31,7 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
@@ -48,6 +50,15 @@ class CartController extends FrontendController
         return $this->render($this->templateConfigurator->findTemplate('Cart/_widget.html'), [
             'cart' => $this->getCart(),
         ]);
+    }
+
+    public function createQuoteAction(Request $request, StateMachineManagerInterface $machineManager)
+    {
+        $order = $this->getCart();
+        $workflow = $machineManager->get($order, OrderSaleTransitions::IDENTIFIER);
+        $workflow->apply($order, OrderSaleTransitions::TRANSITION_QUOTE);
+
+        return $this->redirectToRoute('coreshop_quote_detail', ['quote' => $order->getId()]);
     }
 
     public function summaryAction(Request $request): Response
