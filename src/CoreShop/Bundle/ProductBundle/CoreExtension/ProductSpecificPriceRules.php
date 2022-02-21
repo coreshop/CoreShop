@@ -17,6 +17,7 @@ use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
 use CoreShop\Component\Pimcore\BCLayer\CustomDataCopyInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
+use CoreShop\Component\Pimcore\BCLayer\EqualComparisonInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
@@ -27,15 +28,18 @@ use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
+use Pimcore\Model\DataObject\Traits\SimpleComparisonTrait;
 use Webmozart\Assert\Assert;
 
 class ProductSpecificPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
     Data\CustomVersionMarshalInterface,
     CustomRecyclingMarshalInterface,
-    CustomDataCopyInterface
+    CustomDataCopyInterface,
+    EqualComparisonInterface
 {
     use TempEntityManagerTrait;
+    use SimpleComparisonTrait;
 
     /**
      * Static type of this element.
