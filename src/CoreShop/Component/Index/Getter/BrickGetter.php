@@ -16,9 +16,16 @@ namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
+use Pimcore\Model\DataObject\Localizedfield;
+use Pimcore\Tool;
 
 class BrickGetter implements GetterInterface
 {
+    public function __construct(protected TranslationLocaleProviderInterface $localeProvider)
+    {
+    }
+
     public function get(IndexableInterface $object, IndexColumnInterface $config): mixed
     {
         $columnConfig = $config->getConfiguration();
@@ -37,6 +44,7 @@ class BrickGetter implements GetterInterface
         }
 
         $brickContainer = $object->$brickContainerGetter();
+
         $brickGetter = 'get' . ucfirst($columnConfig['className']);
 
         if (!$brickContainer) {
@@ -44,12 +52,30 @@ class BrickGetter implements GetterInterface
         }
         $brick = $brickContainer->$brickGetter();
 
-        if ($brick) {
-            $fieldGetter = 'get' . ucfirst($columnConfig['key']);
-
-            return $brick->$fieldGetter();
+        if (!$brick) {
+            return null;
         }
 
-        return null;
+        $fieldGetter = 'get' . ucfirst($columnConfig['key']);
+
+        $field = $brick->$fieldGetter();
+
+        if (!$field instanceof Localizedfield) {
+            return $field;
+        }
+
+        $getter = 'get' . ucfirst($config->getObjectKey());
+
+        $fallbackMemory = Localizedfield::getGetFallbackValues();
+        Localizedfield::setGetFallbackValues(true);
+
+        $values = [];
+        foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
+            $values[$locale] = $brick->$getter($locale);
+        }
+
+        Localizedfield::setGetFallbackValues($fallbackMemory);
+
+        return $values;
     }
 }

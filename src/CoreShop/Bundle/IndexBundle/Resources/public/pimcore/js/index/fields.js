@@ -317,7 +317,29 @@ coreshop.index.fields = Class.create({
 
                     baseNode = tree.getRootNode().appendChild(baseNode);
                     for (var j = 0; j < data[keys[i]].childs.length; j++) {
-                        var node = this.addDataChild.call(baseNode, data[keys[i]].childs[j].fieldtype, data[keys[i]].childs[j], data[keys[i]].nodeType, data[keys[i]].className);
+                        if (
+                            (data[keys[i]].nodeType == 'objectbricks' ||
+                                data[keys[i]].nodeType == 'fieldcollections') &&
+                            data[keys[i]].childs[j].nodeLabel == 'localizedfields') {
+
+                            var text = t(data[keys[i]].childs[j].nodeLabel);
+
+                            var node = {
+                                type: 'layout',
+                                allowDrag: false,
+                                iconCls: 'pimcore_icon_' + data[keys[i]].childs[j].nodeType,
+                                text: text
+                            };
+
+                            node = tree.getRootNode().appendChild(node);
+
+                            for (var k = 0; k < data[keys[i]].childs[j].childs.length; k++) {
+                                var innerNode = this.addDataChild.call(node, data[keys[i]].childs[j].childs[k].fieldtype, data[keys[i]].childs[j].childs[k], data[keys[i]].nodeType, data[keys[i]].className);
+                                node.appendChild(innerNode);
+                            }
+                        } else {
+                            var node = this.addDataChild.call(baseNode, data[keys[i]].childs[j].fieldtype, data[keys[i]].childs[j], data[keys[i]].nodeType, data[keys[i]].className);
+                        }
 
                         baseNode.appendChild(node);
                     }

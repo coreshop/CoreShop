@@ -231,13 +231,28 @@ class IndexController extends ResourceController
                 $result[$key]['childs'] = [];
 
                 foreach ($fields as $field) {
-                    $fieldConfig = $this->getFieldConfiguration($field);
-                    $fieldConfig['getter'] = 'brick';
-                    $fieldConfig['configuration'] = [
-                        'className' => $key,
-                        'key' => $field->getName(),
-                    ];
-                    $result[$key]['childs'][] = $fieldConfig;
+                    if ($field instanceof DataObject\ClassDefinition\Data\Localizedfields) {
+                        $localizedfields = $this->getLocalizedFields($field)['localizedfields'];
+
+                        foreach ($localizedfields['childs'] as &$child) {
+                            $child['getter'] = 'brick';
+                            $child['configuration'] = [
+                                'className' => $key,
+                                'key' => $field->getName(),
+                            ];
+                        }
+
+                        $result[$key]['childs'][] = $localizedfields;
+                    } else {
+                        $fieldConfig = $this->getFieldConfiguration($field);
+
+                        $fieldConfig['getter'] = 'brick';
+                        $fieldConfig['configuration'] = [
+                            'className' => $key,
+                            'key' => $field->getName(),
+                        ];
+                        $result[$key]['childs'][] = $fieldConfig;
+                    }
                 }
             }
         }
@@ -260,13 +275,26 @@ class IndexController extends ResourceController
             $result[$key]['childs'] = [];
 
             foreach ($fieldDefinition as $fieldcollectionField) {
-                $fieldConfig = $this->getFieldConfiguration($fieldcollectionField);
-                $fieldConfig['getter'] = 'fieldcollection';
-                $fieldConfig['configuration'] = [
-                    'className' => $key,
-                ];
+                if ($fieldcollectionField instanceof DataObject\ClassDefinition\Data\Localizedfields) {
+                    $localizedfields = $this->getLocalizedFields($fieldcollectionField)['localizedfields'];
 
-                $result[$key]['childs'][] = $fieldConfig;
+                    foreach ($localizedfields['childs'] as &$child) {
+                        $child['getter'] = 'fieldcollection';
+                        $child['configuration'] = [
+                            'className' => $key,
+                        ];
+                    }
+
+                    $result[$key]['childs'][] = $localizedfields;
+                } else {
+                    $fieldConfig = $this->getFieldConfiguration($fieldcollectionField);
+
+                    $fieldConfig['getter'] = 'fieldcollection';
+                    $fieldConfig['configuration'] = [
+                        'className' => $key,
+                    ];
+                    $result[$key]['childs'][] = $fieldConfig;
+                }
             }
         }
 
