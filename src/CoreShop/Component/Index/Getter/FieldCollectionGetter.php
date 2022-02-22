@@ -16,10 +16,16 @@ namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
+use Pimcore\Model\DataObject\Localizedfield;
 
 class FieldCollectionGetter implements GetterInterface
 {
+    public function __construct(protected TranslationLocaleProviderInterface $localeProvider)
+    {
+    }
+
     public function get(IndexableInterface $object, IndexColumnInterface $config): mixed
     {
         $columnConfig = $config->getConfiguration();
@@ -38,15 +44,22 @@ class FieldCollectionGetter implements GetterInterface
                  */
                 $className = 'Pimcore\Model\DataObject\Fieldcollection\Data\\' . $columnConfig['className'];
                 if (is_a($item, $className)) {
+
                     $validItems[] = $item;
                 }
             }
         }
 
         foreach ($validItems as $item) {
+            $fallbackMemory = Localizedfield::getGetFallbackValues();
+            Localizedfield::setGetFallbackValues(true);
             if (method_exists($item, $fieldGetter)) {
-                $fieldValues[] = $item->$fieldGetter();
+                foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
+                    $fieldValues[$locale] =  $item->$fieldGetter($locale);
+                }
             }
+
+            Localizedfield::setGetFallbackValues($fallbackMemory);
         }
 
         return count($fieldValues) > 0 ? $fieldValues : null;
