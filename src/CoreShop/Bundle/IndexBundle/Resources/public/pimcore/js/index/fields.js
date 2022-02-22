@@ -270,7 +270,17 @@ coreshop.index.fields = Class.create({
         });
 
         tree.addListener('itemdblclick', function (tree, record, item, index, e, eOpts) {
-            if (!record.data.root && record.datatype !== 'layout' && record.data.dataType !== 'localizedfields') {
+            if (
+                !record.data.root &&
+                (
+                    record.datatype &&
+                    record.datatype !== 'layout'
+                ) ||
+                (
+                    record.data.dataType &&
+                    record.data.dataType !== 'localizedfields'
+                )
+            ) {
                 var copy = Ext.apply({}, record.data);
 
                 copy.id = Ext.id();
