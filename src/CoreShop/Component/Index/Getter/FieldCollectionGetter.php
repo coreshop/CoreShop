@@ -18,7 +18,7 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
-use Pimcore\Model\DataObject\Localizedfield;
+use Pimcore\Model\DataObject;
 
 class FieldCollectionGetter implements GetterInterface
 {
@@ -51,15 +51,19 @@ class FieldCollectionGetter implements GetterInterface
         }
 
         foreach ($validItems as $item) {
-            $fallbackMemory = Localizedfield::getGetFallbackValues();
-            Localizedfield::setGetFallbackValues(true);
-            if (method_exists($item, $fieldGetter)) {
-                foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
-                    $fieldValues[$locale] =  $item->$fieldGetter($locale);
+            if ($item instanceof DataObject\Localizedfield) {
+                $fallbackMemory = DataObject\Localizedfield::getGetFallbackValues();
+                DataObject\Localizedfield::setGetFallbackValues(true);
+                if (method_exists($item, $fieldGetter)) {
+                    foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
+                        $fieldValues[$locale] = $item->$fieldGetter($locale);
+                    }
                 }
-            }
 
-            Localizedfield::setGetFallbackValues($fallbackMemory);
+                DataObject\Localizedfield::setGetFallbackValues($fallbackMemory);
+            } else {
+                $fieldValues[] = $item->$fieldGetter();
+            }
         }
 
         return count($fieldValues) > 0 ? $fieldValues : null;
