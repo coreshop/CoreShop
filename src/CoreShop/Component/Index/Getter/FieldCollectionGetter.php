@@ -44,25 +44,26 @@ class FieldCollectionGetter implements GetterInterface
                  */
                 $className = 'Pimcore\Model\DataObject\Fieldcollection\Data\\' . $columnConfig['className'];
                 if (is_a($item, $className)) {
-
                     $validItems[] = $item;
                 }
             }
         }
 
         foreach ($validItems as $item) {
-            if ($item instanceof DataObject\Localizedfield) {
-                $fallbackMemory = DataObject\Localizedfield::getGetFallbackValues();
-                DataObject\Localizedfield::setGetFallbackValues(true);
-                if (method_exists($item, $fieldGetter)) {
+            if (method_exists($item, $fieldGetter)) {
+                if (!empty((new \ReflectionMethod($item, $fieldGetter))->getParameters())) {
+
+                    $fallbackMemory = DataObject\Localizedfield::getGetFallbackValues();
+                    DataObject\Localizedfield::setGetFallbackValues(true);
+
                     foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
                         $fieldValues[$locale] = $item->$fieldGetter($locale);
                     }
-                }
 
-                DataObject\Localizedfield::setGetFallbackValues($fallbackMemory);
-            } else {
-                $fieldValues[] = $item->$fieldGetter();
+                    DataObject\Localizedfield::setGetFallbackValues($fallbackMemory);
+                } else {
+                    $fieldValues[] = $item->$fieldGetter();
+                }
             }
         }
 
