@@ -16,9 +16,10 @@ namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
+use CoreShop\Component\Pimcore\DataObject\LocaleFallbackHelper;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
+use Pimcore\Model\DataObject\Localizedfield;
 
 class FieldCollectionGetter implements GetterInterface
 {
@@ -50,17 +51,30 @@ class FieldCollectionGetter implements GetterInterface
         }
 
         foreach ($validItems as $item) {
-            if (method_exists($item, $fieldGetter)) {
-                if ($item->getDefinition()->getFieldDefinition('localizedfields')) {
-                    InheritanceHelper::useInheritedValues(function() use (&$fieldValues, $item, $fieldGetter) {
-                        foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
-                            $fieldValues[$locale] = $item->$fieldGetter($locale);
-                        }
-                    });
-                } else {
-                    $fieldValues[] = $item->$fieldGetter();
-                }
+            $fd = $item->getDefinition()->getFieldDefinition($config->getObjectKey());
+
+            if (!$fd) {
+                continue;
             }
+
+            if (!method_exists($item, $fieldGetter)) {
+                continue;
+            }
+
+            if ($fd instanceof Localizedfield) {
+                $fieldValues[] = LocaleFallbackHelper::useFallbackValues(function() use ($item, $fieldGetter) {
+                    $values = [];
+
+                    foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
+                        $values[$locale] = $item->$fieldGetter($locale);
+                    }
+
+                    return $values;
+                });
+                continue;
+            }
+
+            $fieldValues[] = $item->$fieldGetter();
         }
 
         return count($fieldValues) > 0 ? $fieldValues : null;

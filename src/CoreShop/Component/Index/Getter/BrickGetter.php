@@ -16,8 +16,12 @@ namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Pimcore\DataObject\LocaleFallbackHelper;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Localizedfields;
 use Pimcore\Model\DataObject\Localizedfield;
+use Pimcore\Model\DataObject\Objectbrick;
+use Pimcore\Model\DataObject\Objectbrick\Data\AbstractData;
 use Pimcore\Tool;
 
 class BrickGetter implements GetterInterface
@@ -31,7 +35,7 @@ class BrickGetter implements GetterInterface
         $columnConfig = $config->getConfiguration();
         $getterConfig = $config->getGetterConfig();
 
-        if (!isset($getterConfig['brickField']) || !isset($columnConfig['className']) || !isset($columnConfig['key'])) {
+        if (!isset($getterConfig['brickField'], $columnConfig['className'], $columnConfig['key'])) {
             return null;
         }
 
@@ -47,35 +51,33 @@ class BrickGetter implements GetterInterface
 
         $brickGetter = 'get' . ucfirst($columnConfig['className']);
 
-        if (!$brickContainer) {
+        if (!$brickContainer instanceof Objectbrick) {
             return null;
         }
+
         $brick = $brickContainer->$brickGetter();
 
-        if (!$brick) {
+        if (!$brick instanceof AbstractData) {
             return null;
         }
 
         $fieldGetter = 'get' . ucfirst($columnConfig['key']);
 
-        $field = $brick->$fieldGetter();
+        $fd = $brick->getDefinition()->getFieldDefinition($columnConfig['key']);
 
-        if (!$field instanceof Localizedfield) {
-            return $field;
+        if (!$fd instanceof Localizedfields) {
+            return $brick->$fieldGetter();
         }
 
         $getter = 'get' . ucfirst($config->getObjectKey());
 
-        $fallbackMemory = Localizedfield::getGetFallbackValues();
-        Localizedfield::setGetFallbackValues(true);
+        return LocaleFallbackHelper::useFallbackValues(function() use ($brick, $getter) {
+            $values = [];
+            foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
+                $values[$locale] = $brick->$getter($locale);
+            }
 
-        $values = [];
-        foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
-            $values[$locale] = $brick->$getter($locale);
-        }
-
-        Localizedfield::setGetFallbackValues($fallbackMemory);
-
-        return $values;
+            return $values;
+        }, true);
     }
 }

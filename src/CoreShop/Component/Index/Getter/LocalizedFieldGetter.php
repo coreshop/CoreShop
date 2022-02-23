@@ -17,6 +17,7 @@ namespace CoreShop\Component\Index\Getter;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
+use CoreShop\Component\Pimcore\DataObject\LocaleFallbackHelper;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 
 class LocalizedFieldGetter implements GetterInterface
@@ -29,14 +30,14 @@ class LocalizedFieldGetter implements GetterInterface
     {
         $getter = 'get' . ucfirst($config->getObjectKey());
 
-        $values = [];
+        return LocaleFallbackHelper::useFallbackValues(function() use($object, $getter) {
+            $values = [];
 
-        InheritanceHelper::useInheritedValues(function() use($object, $getter, &$values) {
             foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
                 $values[$locale] = $object->$getter($locale);
             }
-        });
 
-        return $values;
+            return $values;
+        });
     }
 }
