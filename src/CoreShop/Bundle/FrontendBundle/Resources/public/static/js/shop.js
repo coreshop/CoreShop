@@ -126,8 +126,8 @@ $(document).ready(function () {
         $useIasS.on('change', function () {
             if ($(this).is(':checked')) {
                 $shippingField.slideUp();
-                var address = $('select[name=coreshop[invoiceAddress]] option:selected').data('address');
-                var value = $('select[name=coreshop[invoiceAddress]] :selected').val();
+                var address = $('option:selected', $invoiceAddress).data('address');
+                var value = $(':selected', $invoiceAddress).val();
 
                 if (address) {
                     $shippingAddress.val(value).trigger('change');

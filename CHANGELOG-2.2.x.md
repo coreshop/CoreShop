@@ -1,5 +1,11 @@
 # Within 2.2
 
+## 2.2.11
+ - Bugs:
+   - [CoreExtensions] refactor how Doctrine Entities are cloned (https://github.com/coreshop/CoreShop/pull/1770)
+   - [Frontend] After renaming formtypes with coreshop[], form elements where not found (https://github.com/coreshop/CoreShop/pull/1791)
+   - [Checkout] fix new form namespace (https://github.com/coreshop/CoreShop/pull/1807)
+
 ## 2.2.10
  - Bugs:
      - [Shipping] make shipping calculation more independent from cart (https://github.com/coreshop/CoreShop/pull/1562)
