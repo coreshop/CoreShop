@@ -18,7 +18,6 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
-use Pimcore\Model\DataObject;
 
 class LocalizedFieldGetter implements GetterInterface
 {

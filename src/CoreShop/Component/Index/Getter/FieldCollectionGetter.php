@@ -19,9 +19,6 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
-use Pimcore\Model\DataObject;
-
-use function Clue\StreamFilter\fun;
 
 class FieldCollectionGetter implements GetterInterface
 {
