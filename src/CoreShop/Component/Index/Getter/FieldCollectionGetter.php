@@ -16,9 +16,12 @@ namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject;
+
+use function Clue\StreamFilter\fun;
 
 class FieldCollectionGetter implements GetterInterface
 {
@@ -51,16 +54,12 @@ class FieldCollectionGetter implements GetterInterface
 
         foreach ($validItems as $item) {
             if (method_exists($item, $fieldGetter)) {
-                if (!empty((new \ReflectionMethod($item, $fieldGetter))->getParameters())) {
-
-                    $fallbackMemory = DataObject\Localizedfield::getGetFallbackValues();
-                    DataObject\Localizedfield::setGetFallbackValues(true);
-
-                    foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
-                        $fieldValues[$locale] = $item->$fieldGetter($locale);
-                    }
-
-                    DataObject\Localizedfield::setGetFallbackValues($fallbackMemory);
+                if ($item->getDefinition()->getFieldDefinition('localizedfields')) {
+                    InheritanceHelper::useInheritedValues(function() use (&$fieldValues, $item, $fieldGetter) {
+                        foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
+                            $fieldValues[$locale] = $item->$fieldGetter($locale);
+                        }
+                    });
                 } else {
                     $fieldValues[] = $item->$fieldGetter();
                 }
