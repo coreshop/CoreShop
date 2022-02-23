@@ -44,7 +44,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
             ]
         );
 
-        $this->rulesProcessor->applyRules('user', $user, $params);
+        $this->rulesProcessor->applyRules('user', $user->getCustomer(), $params);
     }
 
     public function applyRegisterCustomerRule(GenericEvent $event): void
