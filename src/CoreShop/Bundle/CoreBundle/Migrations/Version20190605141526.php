@@ -21,7 +21,9 @@ class Version20190605141526 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql(' ALTER TABLE coreshop_payment DROP client_email, DROP client_id;');
+        if ($schema->getTable('coreshop_payment')->hasColumn('client_email')) {
+            $this->addSql(' ALTER TABLE coreshop_payment DROP client_email, DROP client_id;');
+        }
     }
 
     public function down(Schema $schema): void
