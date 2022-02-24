@@ -50,7 +50,7 @@ class LocalizedNestedInterpreter implements LocalizedInterpreterInterface
                 return $interpreter->interpretForLanguage($language, $value, $indexable, $config, $interpreterConfig);
             }
 
-            return $value;
+            return $interpreter->interpret($value, $indexable, $config, $interpreterConfig);
         });
     }
 }

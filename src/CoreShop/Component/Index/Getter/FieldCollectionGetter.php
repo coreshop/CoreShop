@@ -18,6 +18,7 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Pimcore\DataObject\LocaleFallbackHelper;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Localizedfields;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Localizedfield;
 
@@ -51,7 +52,12 @@ class FieldCollectionGetter implements GetterInterface
         }
 
         foreach ($validItems as $item) {
+            /**
+             * @var Localizedfields $localizedFieldsFd
+             */
+            $localizedFieldsFd = $item->getDefinition()->getFieldDefinition('localizedfields');
             $fd = $item->getDefinition()->getFieldDefinition($config->getObjectKey());
+            $localizedFd = $localizedFieldsFd?->getFieldDefinition($config->getObjectKey());
 
             if (!$fd) {
                 continue;
@@ -61,15 +67,11 @@ class FieldCollectionGetter implements GetterInterface
                 continue;
             }
 
-            if ($fd instanceof Localizedfield) {
-                $fieldValues[] = LocaleFallbackHelper::useFallbackValues(function() use ($item, $fieldGetter) {
-                    $values = [];
-
+            if ($localizedFd) {
+                LocaleFallbackHelper::useFallbackValues(function() use ($item, $fieldGetter, &$fieldValues) {
                     foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
-                        $values[$locale] = $item->$fieldGetter($locale);
+                        $fieldValues[$locale][] = $item->$fieldGetter($locale);
                     }
-
-                    return $values;
                 });
                 continue;
             }
