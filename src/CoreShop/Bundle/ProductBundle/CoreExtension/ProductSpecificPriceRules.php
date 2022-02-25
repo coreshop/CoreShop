@@ -28,6 +28,7 @@ use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
+use Pimcore\Model\DataObject\Traits\SimpleComparisonTrait;
 use Webmozart\Assert\Assert;
 
 /**
@@ -38,9 +39,11 @@ class ProductSpecificPriceRules extends Data implements
     Data\CustomVersionMarshalInterface,
     Data\CustomRecyclingMarshalInterface,
     Data\CustomDataCopyInterface,
-    CacheMarshallerInterface
+    CacheMarshallerInterface,
+    Data\EqualComparisonInterface
 {
     use TempEntityManagerTrait;
+    use SimpleComparisonTrait;
 
     /**
      * Static type of this element.
