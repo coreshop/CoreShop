@@ -53,7 +53,7 @@ class FieldCollectionGetter implements GetterInterface
 
         foreach ($validItems as $item) {
             /**
-             * @var Localizedfields $localizedFieldsFd
+             * @var Localizedfields|null $localizedFieldsFd
              */
             $localizedFieldsFd = $item->getDefinition()->getFieldDefinition('localizedfields');
             $fd = $item->getDefinition()->getFieldDefinition($config->getObjectKey());
