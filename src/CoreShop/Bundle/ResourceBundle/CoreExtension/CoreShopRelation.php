@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
-use League\Csv\Exception;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\ClassDefinition\Data\Relations\AbstractRelations;
 use Pimcore\Model\Element;
@@ -70,7 +69,6 @@ class CoreShopRelation extends Data\ManyToOneRelation
     {
         return $this->getParameterTypeDeclaration();
     }
-
 
     /**
      * @param array $classes
