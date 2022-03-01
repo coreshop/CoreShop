@@ -44,7 +44,7 @@ final class StackClassesPass implements CompilerPassInterface
                     continue;
                 }
 
-                if (in_array($interface, class_implements($definition['classes']['interface']))) {
+                if (in_array($interface, class_implements($definition['classes']['interface'])) || $interface === $definition['classes']['interface']) {
                     $classStack[$alias][] = $definition['classes']['model'];
 
                     $fullClassName = $definition['classes']['model'];
