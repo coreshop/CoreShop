@@ -21,7 +21,7 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_exchange_rate',
     type: 'coreshop_exchange_rate',
 
-    url: {
+    routing: {
         add: 'coreshop_exchange_rate_add',
         save: 'coreshop_exchange_rate_save',
         delete: 'coreshop_currency_delete',
