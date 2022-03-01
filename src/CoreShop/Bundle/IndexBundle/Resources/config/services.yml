@@ -132,6 +132,8 @@ services:
 
     # Index Getter
     CoreShop\Component\Index\Getter\BrickGetter:
+        arguments:
+            - '@coreshop.translation_locale_provider'
         tags:
           - { name: coreshop.index.getter, type: brick, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\BrickGetterFormType}
 
@@ -140,6 +142,8 @@ services:
           - { name: coreshop.index.getter, type: classificationstore, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\ClassificationStoreGetterFormType}
 
     CoreShop\Component\Index\Getter\FieldCollectionGetter:
+        arguments:
+            - '@coreshop.translation_locale_provider'
         tags:
           - { name: coreshop.index.getter, type: fieldcollection, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\FieldCollectionGetterFormType}
 

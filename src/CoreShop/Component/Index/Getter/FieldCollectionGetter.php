@@ -16,10 +16,18 @@ namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Pimcore\DataObject\LocaleFallbackHelper;
+use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Localizedfields;
 use Pimcore\Model\DataObject\Fieldcollection;
+use Pimcore\Model\DataObject\Localizedfield;
 
 class FieldCollectionGetter implements GetterInterface
 {
+    public function __construct(protected TranslationLocaleProviderInterface $localeProvider)
+    {
+    }
+
     public function get(IndexableInterface $object, IndexColumnInterface $config): mixed
     {
         $columnConfig = $config->getConfiguration();
@@ -44,9 +52,31 @@ class FieldCollectionGetter implements GetterInterface
         }
 
         foreach ($validItems as $item) {
-            if (method_exists($item, $fieldGetter)) {
-                $fieldValues[] = $item->$fieldGetter();
+            /**
+             * @var Localizedfields|null $localizedFieldsFd
+             */
+            $localizedFieldsFd = $item->getDefinition()->getFieldDefinition('localizedfields');
+            $fd = $item->getDefinition()->getFieldDefinition($config->getObjectKey());
+            $localizedFd = $localizedFieldsFd?->getFieldDefinition($config->getObjectKey());
+
+            if (!$fd) {
+                continue;
             }
+
+            if (!method_exists($item, $fieldGetter)) {
+                continue;
+            }
+
+            if ($localizedFd) {
+                LocaleFallbackHelper::useFallbackValues(function() use ($item, $fieldGetter, &$fieldValues) {
+                    foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
+                        $fieldValues[$locale][] = $item->$fieldGetter($locale);
+                    }
+                });
+                continue;
+            }
+
+            $fieldValues[] = $item->$fieldGetter();
         }
 
         return count($fieldValues) > 0 ? $fieldValues : null;
