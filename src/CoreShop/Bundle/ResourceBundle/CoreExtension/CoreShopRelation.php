@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
+use League\Csv\Exception;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Relations\AbstractRelations;
+use Pimcore\Model\Element;
 
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
@@ -68,18 +71,17 @@ class CoreShopRelation extends Data\ManyToOneRelation
         return $this->getParameterTypeDeclaration();
     }
 
-    public function getClasses()
+
+    /**
+     * @param array $classes
+     *
+     * @return $this
+     */
+    public function setClasses($classes)
     {
-        $classes = $this->getCoreShopPimcoreClasses()[$this->stack];
-        $return = [];
+        $this->classes = Element\Service::fixAllowedTypes($this->getCoreShopPimcoreClasses()[$this->stack], 'classes');
 
-        foreach ($classes as $cl) {
-            $return[] = [
-                'classes' => $cl,
-            ];
-        }
-
-        return $return;
+        return $this;
     }
 
     /**
