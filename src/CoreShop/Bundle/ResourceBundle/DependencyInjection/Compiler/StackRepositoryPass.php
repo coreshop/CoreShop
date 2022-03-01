@@ -31,6 +31,9 @@ final class StackRepositoryPass implements CompilerPassInterface
             return;
         }
 
+        /**
+         * @var array $stackConfig
+         */
         $stackConfig = $container->getParameter('coreshop.all.stack');
 
         foreach ($container->getParameter('coreshop.all.stack.fqcns') as $alias => $classes) {

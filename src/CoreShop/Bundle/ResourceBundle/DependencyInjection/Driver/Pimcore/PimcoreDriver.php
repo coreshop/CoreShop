@@ -125,6 +125,9 @@ final class PimcoreDriver extends AbstractDriver
                 $allPaths = [];
 
                 if ($container->hasParameter($parameterName)) {
+                    /**
+                     * @var array $allPaths
+                     */
                     $allPaths = $container->getParameter($parameterName);
                 }
 
