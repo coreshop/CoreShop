@@ -25,7 +25,14 @@ final class StackClassesPass implements CompilerPassInterface
             return;
         }
 
+        /**
+         * @var array $classes
+         */
         $classes = $container->getParameter('coreshop.all.pimcore_classes');
+
+        /**
+         * @var array $stack
+         */
         $stack = $container->getParameter('coreshop.all.stack');
 
         $classStack = [];

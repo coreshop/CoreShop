@@ -79,6 +79,9 @@ class OrderController extends PimcoreController
 
     public function getStatesAction(Request $request): Response
     {
+        /**
+         * @var array $identifiers
+         */
         $identifiers = $this->container->getParameter('coreshop.state_machines');
         $states = [];
         $transitions = [];

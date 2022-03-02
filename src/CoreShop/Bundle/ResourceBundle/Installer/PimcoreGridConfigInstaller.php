@@ -36,6 +36,9 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.grid_config', $applicationName) : 'coreshop.all.pimcore.admin.install.grid_config';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            /**
+             * @var array $routeFilesToInstall
+             */
             $routeFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);
             $gridConfigsToInstall = [];
 

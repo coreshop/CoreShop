@@ -65,12 +65,22 @@ class CoreShopRelations extends Data\ManyToManyRelation
 
     public function getPhpdocInputType(): ?string
     {
-        return '?\\' . \Pimcore::getContainer()->getParameter('coreshop.all.stack')[$this->stack] . '[]';
+        /**
+         * @var array $stack
+         */
+        $stack = \Pimcore::getContainer()->getParameter('coreshop.all.stack');
+
+        return '?\\' . $stack[$this->stack] . '[]';
     }
 
     public function getPhpdocReturnType(): ?string
     {
-        return '?\\' . \Pimcore::getContainer()->getParameter('coreshop.all.stack')[$this->stack] . '[]';
+        /**
+         * @var array $stack
+         */
+        $stack = \Pimcore::getContainer()->getParameter('coreshop.all.stack');
+
+        return '?\\' . $stack[$this->stack] . '[]';
     }
 
     public function getClasses()

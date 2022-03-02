@@ -33,6 +33,9 @@ class RegisterIndexProductExtensionPass implements CompilerPassInterface
         if ($container->hasParameter($stackId)) {
             $registry = $container->getDefinition('coreshop.registry.index.extensions');
 
+            /**
+             * @var array $stack
+             */
             $stack = $container->getParameter($stackId);
 
             foreach ($stack as $class) {
