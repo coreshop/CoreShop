@@ -34,6 +34,9 @@ final class PimcoreDependantBundleInstaller implements ResourceInstallerInterfac
         ;
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            /**
+             * @var array $bundlesToInstall
+             */
             $bundlesToInstall = $this->kernel->getContainer()->getParameter($parameter);
 
             $progress = new ProgressBar($output);

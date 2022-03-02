@@ -100,6 +100,9 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
 
     private function loadResources(array $loadedResources, ContainerBuilder $container): void
     {
+        /**
+         * @var array $resources
+         */
         $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];
 
         foreach ($loadedResources as $alias => $resourceConfig) {
@@ -149,6 +152,9 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
             $metadata = Metadata::fromAliasAndConfiguration($alias, $resourceConfig);
 
             foreach (['coreshop.all.pimcore_classes', sprintf('%s.pimcore_classes', $metadata->getApplicationName())] as $parameter) {
+                /**
+                 * @var array $resources
+                 */
                 $resources = $container->hasParameter($parameter) ? $container->getParameter($parameter) : [];
                 $resources[$alias] = $resourceConfig;
 

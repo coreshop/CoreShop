@@ -52,7 +52,12 @@ class CoreShopRelation extends Data\ManyToOneRelation
 
     public function getParameterTypeDeclaration(): ?string
     {
-        return '?\\' . \Pimcore::getContainer()->getParameter('coreshop.all.stack')[$this->stack];
+        /**
+         * @var array $stack
+         */
+        $stack = \Pimcore::getContainer()->getParameter('coreshop.all.stack');
+
+        return '?\\' . $stack[$this->stack];
     }
 
     public function getReturnTypeDeclaration(): ?string

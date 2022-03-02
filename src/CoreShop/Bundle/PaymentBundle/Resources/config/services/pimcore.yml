@@ -4,6 +4,6 @@ services:
         arguments:
             - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
             - 'coreshop.repository.payment_provider'
-            - 'name'
+            - 'title'
         tags:
             - { name: coreshop.pimcore.document.editable, type: coreshop_payment_provider }
