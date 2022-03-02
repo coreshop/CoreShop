@@ -51,7 +51,7 @@ class SelectFilterConditionFromMultiselectProcessor implements FilterConditionPr
         return [
             'type' => 'select',
             'label' => $condition->getLabel(),
-            'currentValue' => trim($currentFilter[$field], ','),
+            'currentValue' => isset($currentFilter[$field]) ? trim($currentFilter[$field], ',') : null,
             'values' => array_values($values),
             'fieldName' => $field,
             'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById((string)$condition->getQuantityUnit()) : null,
@@ -67,7 +67,9 @@ class SelectFilterConditionFromMultiselectProcessor implements FilterConditionPr
             $value = $condition->getConfiguration()['preSelect'];
         }
 
-        $value = trim($value);
+        if (is_string($value)) {
+            $value = trim($value);
+        }
 
         if (!empty($value)) {
             $value = ',' . $value . ',';
