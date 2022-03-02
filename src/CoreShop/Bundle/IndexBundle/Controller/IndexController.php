@@ -67,6 +67,9 @@ class IndexController extends ResourceController
             ];
         }
 
+        /**
+         * @var array $fieldTypes
+         */
         $fieldTypes = $this->container->getParameter('coreshop.index.mapping_types');
         $fieldTypesResult = [];
 

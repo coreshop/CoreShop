@@ -37,6 +37,9 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
         $parameter = $applicationName ? sprintf('%s.pimcore_classes', $applicationName) : 'coreshop.all.pimcore_classes';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            /**
+             * @var array $pimcoreClasses
+             */
             $pimcoreClasses = $this->kernel->getContainer()->getParameter($parameter);
             $fieldCollections = [];
             $bricks = [];

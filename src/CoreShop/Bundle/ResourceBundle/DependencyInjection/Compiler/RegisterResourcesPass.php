@@ -25,6 +25,9 @@ final class RegisterResourcesPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         try {
+            /**
+             * @var array $resources
+             */
             $resources = $container->getParameter('coreshop.resources');
             $registry = $container->findDefinition(RegistryInterface::class);
         } catch (InvalidArgumentException) {
