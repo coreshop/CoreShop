@@ -29,6 +29,8 @@ services:
         arguments:
             - '@Symfony\Component\HttpFoundation\RequestStack'
             - '@Pimcore\Http\Request\Resolver\DocumentResolver'
+            - '@Pimcore\Model\Document\Service'
+            - '@Pimcore\Http\Request\Resolver\SiteResolver'
         tags:
             - { name: coreshop.theme.resolver, type: pimcore_document_property, priority: 15 }
 
