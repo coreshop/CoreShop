@@ -62,6 +62,9 @@ final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface
                     $basePath = $site->getRootPath();
                 }
 
+                /**
+                 * @psalm-suppress InternalMethod
+                 */
                 $document = $this->documentService->getNearestDocumentByPath($basePath . $request->getPathInfo());
             }
 
