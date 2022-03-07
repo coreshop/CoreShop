@@ -38,7 +38,7 @@ Define a time span in which range the price rule is valid
 ## Voucher
 > **Available for**: Cart Price Rules
 
-Define some Voucher Conditions. Check out the [Voucher Section](./04_Vouchers.md) to learn more about Voucher Configuration.
+Define some Voucher Conditions. Check out the [Voucher Section](./05_Vouchers.md) to learn more about Voucher Configuration.
 
 #### Options
 

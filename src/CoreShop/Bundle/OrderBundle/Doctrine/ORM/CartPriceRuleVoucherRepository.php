@@ -6,20 +6,29 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\OrderBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class CartPriceRuleVoucherRepository extends EntityRepository implements CartPriceRuleVoucherRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    public function findAllPaginator(CartPriceRuleInterface $cartPriceRule, int $offset, int $limit)
+    {
+        return new Paginator($this->createQueryBuilder('o')
+            ->where('o.cartPriceRule = :cartPriceRule')
+            ->setParameter('cartPriceRule', $cartPriceRule)
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+        );
+    }
+
     public function findByCode($code)
     {
         return $this->createQueryBuilder('o')

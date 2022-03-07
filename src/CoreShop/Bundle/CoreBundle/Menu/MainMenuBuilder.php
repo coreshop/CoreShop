@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -137,7 +137,7 @@ class MainMenuBuilder implements MenuBuilderInterface
         $localization
             ->addChild('coreshop_taxes')
             ->setLabel('coreshop_taxes')
-            ->setAttribute('permission', 'coreshop_permission_tax_item')
+            ->setAttribute('permission', 'coreshop_permission_tax_rate')
             ->setAttribute('iconCls', 'coreshop_nav_icon_taxes')
             ->setAttribute('resource', 'coreshop.taxation')
             ->setAttribute('function', 'tax_item')

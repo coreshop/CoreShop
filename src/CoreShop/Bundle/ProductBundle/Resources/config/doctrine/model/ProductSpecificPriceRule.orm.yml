@@ -41,6 +41,8 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
     manyToMany:
         conditions:
             targetEntity: CoreShop\Component\Rule\Model\ConditionInterface
+            orphanRemoval: true
+            orderBy: { 'sort': 'ASC' }
             cascade:
                 - all
             joinTable:
@@ -58,6 +60,8 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
 
         actions:
             targetEntity: CoreShop\Component\Rule\Model\ActionInterface
+            orphanRemoval: true
+            orderBy: { 'sort': 'ASC' }
             cascade:
                 - all
             joinTable:

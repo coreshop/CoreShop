@@ -11,6 +11,10 @@ CoreShop\Component\Rule\Model\Action:
         type:
             column: type
             type: string
+        sort:
+            column: sort
+            type: integer
+            nullable: true
         configuration:
             column: configuration
             type: array

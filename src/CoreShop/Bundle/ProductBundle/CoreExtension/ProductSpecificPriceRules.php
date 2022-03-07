@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,24 +15,31 @@ namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
+use CoreShop\Component\Pimcore\BCLayer\CustomDataCopyInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
+use CoreShop\Component\Pimcore\BCLayer\EqualComparisonInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
+use Pimcore\Model\DataObject\Traits\SimpleComparisonTrait;
 use Webmozart\Assert\Assert;
 
 class ProductSpecificPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
     Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    CustomRecyclingMarshalInterface,
+    CustomDataCopyInterface,
+    EqualComparisonInterface
 {
     use TempEntityManagerTrait;
+    use SimpleComparisonTrait;
 
     /**
      * Static type of this element.
@@ -71,6 +78,70 @@ class ProductSpecificPriceRules extends Data implements
         }
 
         return $data;
+    }
+
+    public function createDataCopy(Concrete $object, $data)
+    {
+        if (!is_array($data)) {
+            return [];
+        }
+
+        if (!$object instanceof ProductInterface) {
+            return [];
+        }
+
+        $newPriceRules = [];
+
+        foreach ($data as $priceRule) {
+            if (!$priceRule instanceof ProductSpecificPriceRuleInterface) {
+                continue;
+            }
+
+            $newPriceRule = clone $priceRule;
+
+            $reflectionClass = new \ReflectionClass($newPriceRule);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, null);
+
+            $property = $reflectionClass->getProperty('product');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, null);
+
+            $property = $reflectionClass->getProperty('conditions');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, new ArrayCollection());
+
+            $property = $reflectionClass->getProperty('actions');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, new ArrayCollection());
+
+            foreach ($priceRule->getConditions() as $condition) {
+                $newCondition = clone $condition;
+
+                $reflectionClass = new \ReflectionClass($newCondition);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($newCondition, null);
+
+                $newPriceRule->addCondition($newCondition);
+            }
+
+            foreach ($priceRule->getActions() as $action) {
+                $newAction = clone $action;
+
+                $reflectionClass = new \ReflectionClass($newAction);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($newAction, null);
+
+                $newPriceRule->addAction($newAction);
+            }
+
+            $newPriceRules[] = $newPriceRule;
+        }
+
+        return $newPriceRules;
     }
 
     /**
