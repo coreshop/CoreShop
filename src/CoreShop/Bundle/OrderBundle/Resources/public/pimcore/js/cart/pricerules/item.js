@@ -208,7 +208,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                                 return record.data.used === true;
                             },
                             tooltip: t('remove'),
-                            iconCls: 'pimcore_icon_deletes',
+                            iconCls: 'pimcore_icon_delete',
                             handler: function (grid, rowIndex) {
                                 var record = grid.getStore().getAt(rowIndex);
                                 grid.getStore().removeAt(rowIndex);
