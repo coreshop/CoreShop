@@ -86,7 +86,7 @@ coreshop.object.objectMultihref = Class.create(pimcore.object.tags.objects, {
                 items: [
                     {
                         tooltip: t('remove'),
-                        icon: 'pimcore_icon_delete',
+                        iconCls: 'pimcore_icon_delete',
                         handler: function (grid, rowIndex) {
                             grid.getStore().removeAt(rowIndex);
                         }.bind(this)
