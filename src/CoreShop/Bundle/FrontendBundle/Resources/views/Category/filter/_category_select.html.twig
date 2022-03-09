@@ -10,8 +10,8 @@
         <div class="filter-group filter-group-checkbox">
             {% for value in objects %}
                 {% if value %}
-                    <label class="checkbox">
-                        <input name="{{ fieldName }}[]" type="checkbox" value="{{ value.id }}" {% if currentValues is iterable and value.id in currentValues %} checked="checked" {% endif %}>
+                    <label class="radio">
+                        <input name="{{ fieldName }}" type="radio" value="{{ value.id }}" {% if value.id == currentValues %} checked="checked" {% endif %}>
                         {{ value.name }}
                     </label>
                 {% endif %}
