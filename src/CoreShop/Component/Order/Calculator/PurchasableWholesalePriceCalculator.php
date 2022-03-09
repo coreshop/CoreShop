@@ -28,13 +28,13 @@ class PurchasableWholesalePriceCalculator implements PurchasableWholesalePriceCa
 
     public function getPurchasableWholesalePrice(PurchasableInterface $purchasable, array $context): int
     {
-        Assert::keyExists($context, 'currency');
-        Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
+        Assert::keyExists($context, 'base_currency');
+        Assert::isInstanceOf($context['base_currency'], CurrencyInterface::class);
 
         /**
          * @var CurrencyInterface $contextCurrency
          */
-        $contextCurrency = $context['currency'];
+        $contextCurrency = $context['base_currency'];
 
         $wholesalePrice = $purchasable->getWholesaleBuyingPrice();
 

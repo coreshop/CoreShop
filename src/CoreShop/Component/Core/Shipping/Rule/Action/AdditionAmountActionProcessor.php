@@ -31,13 +31,13 @@ class AdditionAmountActionProcessor implements CarrierPriceModificationActionPro
 
     public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration, array $context): int
     {
-        Assert::keyExists($context, 'currency');
-        Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
+        Assert::keyExists($context, 'base_currency');
+        Assert::isInstanceOf($context['base_currency'], CurrencyInterface::class);
 
         /**
          * @var CurrencyInterface $contextCurrency
          */
-        $contextCurrency = $context['currency'];
+        $contextCurrency = $context['base_currency'];
         $amount = $configuration['amount'];
 
         $currency = $this->currencyRepository->find($configuration['currency']);
