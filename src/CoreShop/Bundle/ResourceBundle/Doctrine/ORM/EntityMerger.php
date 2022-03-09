@@ -98,14 +98,17 @@ class EntityMerger
     }
 
     /**
-     * @param mixed $entity
-     * @param mixed $managedCopy
+     * @param object $entity
+     * @param object $managedCopy
      */
     private function checkAssociations($entity, $managedCopy, array &$visited): void
     {
         $class = $this->em->getClassMetadata($entity::class);
 
         foreach ($class->associationMappings as $assoc) {
+            /**
+             * @psalm-suppress PossiblyFalseArgument
+             */
             $origData = $class->reflFields[$assoc['fieldName']]->getValue($managedCopy);
             $newData = $class->reflFields[$assoc['fieldName']]->getValue($entity);
 
@@ -117,26 +120,47 @@ class EntityMerger
                 $origData->initialize();
             }
 
-            if ($assoc['type'] === ClassMetadata::MANY_TO_MANY) {
-                $newCollection = $origData;
+            $reflectionClass = new \ReflectionClass($origData);
+            $property = $reflectionClass->getProperty('collection');
+            $property->setAccessible(true);
+            $origDataCollection = $property->getValue($origData);
 
-                //Reset new Data, for some reason the line above resets newData
-                $newData = $class->reflFields[$assoc['fieldName']]->getValue($entity);
+            if (!$origDataCollection instanceof Collection) {
+                continue;
+            }
 
-                /** @psalm-suppress TypeDoesNotContainType */
-                if (!$newCollection instanceof PersistentCollection) {
-                    $newCollection = new PersistentCollection(
-                        $this->em,
-                        $class,
-                        $newCollection
-                    );
+            if ($newData instanceof PersistentCollection) {
+                if (!$newData->isInitialized()) {
+                    $newData->initialize();
                 }
 
-                $this->mergeCollection($origData, $newData, $assoc, static function (mixed $foundEntry) use ($newCollection): void {
+                $reflectionClass = new \ReflectionClass($newData);
+                $property = $reflectionClass->getProperty('collection');
+                $property->setAccessible(true);
+                $newDataCollection = $property->getValue($newData);
+
+                if (!$newDataCollection instanceof Collection) {
+                    continue;
+                }
+            }
+            else {
+                $newDataCollection = $newData;
+            }
+
+            if ($assoc['type'] === ClassMetadata::MANY_TO_MANY) {
+                $newCollection = new PersistentCollection(
+                    $this->em,
+                    $class,
+                    $origDataCollection
+                );
+                $newCollection->setOwner($entity, $assoc);
+                $newCollection->takeSnapshot();
+
+                $this->mergeCollection($origDataCollection, $newDataCollection, $assoc, static function (mixed $foundEntry) use ($newCollection): void {
                     $newCollection->removeElement($foundEntry);
                 }, $visited);
 
-                $this->mergeCollection($newData, $origData, $assoc, static function (mixed $foundEntry) use ($newCollection): void {
+                $this->mergeCollection($newDataCollection, $origDataCollection, $assoc, static function (mixed $foundEntry) use ($newCollection): void {
                     $found = false;
 
                     foreach ($newCollection as $entry) {
@@ -155,7 +179,32 @@ class EntityMerger
                 // @todo: check if we really need to build this reference!
                 $newData = &$newCollection;
 
-                $newCollection->setOwner($entity, $assoc);
+                if ($newData->isDirty() && count($newData->getSnapshot()) > 0) {
+                    $snapshotEntries = [];
+                    $assocClass = $this->em->getClassMetadata($assoc['targetEntity']);
+
+                    foreach ($newData->getSnapshot() as $snapshotEntry) {
+                        $origId = $assocClass->getIdentifierValues($snapshotEntry);
+                        $flatId = ($assocClass->containsForeignIdentifier)
+                            ? $this->identifierFlattener->flattenIdentifier($class, $origId)
+                            : $origId;
+
+                        $managedCopy = $this->em->getUnitOfWork()->tryGetById($flatId, $assocClass->rootEntityName);
+
+                        if ($managedCopy) {
+                            $snapshotEntries[] = $managedCopy;
+                        }
+                        else {
+                            $snapshotEntries[] = $snapshotEntry;
+                        }
+                    }
+
+                    $reflectionClass = new \ReflectionClass($newData);
+                    $property = $reflectionClass->getProperty('snapshot');
+                    $property->setAccessible(true);
+                    $property->setValue($newData, $snapshotEntries);
+                }
+
                 $class->reflFields[$assoc['fieldName']]->setValue($entity, $newCollection);
 
                 continue;
@@ -180,7 +229,7 @@ class EntityMerger
                 continue;
             }
 
-            $this->mergeCollection($origData, $newData, $assoc, function (mixed $foundEntry): void {
+            $this->mergeCollection($origDataCollection, $newDataCollection, $assoc, function (mixed $foundEntry): void {
                 $this->em->getUnitOfWork()->scheduleOrphanRemoval($foundEntry);
             }, $visited);
         }
