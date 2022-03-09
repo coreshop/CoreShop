@@ -117,26 +117,38 @@ class EntityMerger
                 $origData->initialize();
             }
 
+            $reflectionClass = new \ReflectionClass($origData);
+            $property = $reflectionClass->getProperty('collection');
+            $property->setAccessible(true);
+            $origDataCollection = $property->getValue($origData);
+
+            if (!$origDataCollection instanceof Collection) {
+                continue;
+            }
+
+            $reflectionClass = new \ReflectionClass($newData);
+            $property = $reflectionClass->getProperty('collection');
+            $property->setAccessible(true);
+            $newDataCollection = $property->getValue($newData);
+
+            if (!$newDataCollection instanceof Collection) {
+                continue;
+            }
+
             if ($assoc['type'] === ClassMetadata::MANY_TO_MANY) {
-                $newCollection = $origData;
+                $newCollection = new PersistentCollection(
+                    $this->em,
+                    $class,
+                    $origDataCollection
+                );
+                $newCollection->setOwner($entity, $assoc);
+                $newCollection->takeSnapshot();
 
-                //Reset new Data, for some reason the line above resets newData
-                $newData = $class->reflFields[$assoc['fieldName']]->getValue($entity);
-
-                /** @psalm-suppress TypeDoesNotContainType */
-                if (!$newCollection instanceof PersistentCollection) {
-                    $newCollection = new PersistentCollection(
-                        $this->em,
-                        $class,
-                        $newCollection
-                    );
-                }
-
-                $this->mergeCollection($origData, $newData, $assoc, static function (mixed $foundEntry) use ($newCollection): void {
+                $this->mergeCollection($origDataCollection, $newDataCollection, $assoc, static function (mixed $foundEntry) use ($newCollection): void {
                     $newCollection->removeElement($foundEntry);
                 }, $visited);
 
-                $this->mergeCollection($newData, $origData, $assoc, static function (mixed $foundEntry) use ($newCollection): void {
+                $this->mergeCollection($newDataCollection, $origDataCollection, $assoc, static function (mixed $foundEntry) use ($newCollection): void {
                     $found = false;
 
                     foreach ($newCollection as $entry) {
@@ -155,7 +167,32 @@ class EntityMerger
                 // @todo: check if we really need to build this reference!
                 $newData = &$newCollection;
 
-                $newCollection->setOwner($entity, $assoc);
+                if ($newData->isDirty() && count($newData->getSnapshot()) > 0) {
+                    $snapshotEntries = [];
+                    $assocClass = $this->em->getClassMetadata($assoc['targetEntity']);
+
+                    foreach ($newData->getSnapshot() as $snapshotEntry) {
+                        $origId = $assocClass->getIdentifierValues($snapshotEntry);
+                        $flatId = ($assocClass->containsForeignIdentifier)
+                            ? $this->identifierFlattener->flattenIdentifier($class, $origId)
+                            : $origId;
+
+                        $managedCopy = $this->em->getUnitOfWork()->tryGetById($flatId, $assocClass->rootEntityName);
+
+                        if ($managedCopy) {
+                            $snapshotEntries[] = $managedCopy;
+                        }
+                        else {
+                            $snapshotEntries[] = $snapshotEntry;
+                        }
+                    }
+
+                    $reflectionClass = new \ReflectionClass($newData);
+                    $property = $reflectionClass->getProperty('snapshot');
+                    $property->setAccessible(true);
+                    $property->setValue($newData, $snapshotEntries);
+                }
+
                 $class->reflFields[$assoc['fieldName']]->setValue($entity, $newCollection);
 
                 continue;
@@ -180,7 +217,7 @@ class EntityMerger
                 continue;
             }
 
-            $this->mergeCollection($origData, $newData, $assoc, function (mixed $foundEntry): void {
+            $this->mergeCollection($origDataCollection, $newDataCollection, $assoc, function (mixed $foundEntry): void {
                 $this->em->getUnitOfWork()->scheduleOrphanRemoval($foundEntry);
             }, $visited);
         }
