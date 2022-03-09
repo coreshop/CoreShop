@@ -106,6 +106,9 @@ class EntityMerger
         $class = $this->em->getClassMetadata($entity::class);
 
         foreach ($class->associationMappings as $assoc) {
+            /**
+             * @psalm-suppress PossiblyFalseArgument
+             */
             $origData = $class->reflFields[$assoc['fieldName']]->getValue($managedCopy);
             $newData = $class->reflFields[$assoc['fieldName']]->getValue($entity);
 
@@ -127,6 +130,10 @@ class EntityMerger
             }
 
             if ($newData instanceof PersistentCollection) {
+                if (!$newData->isInitialized()) {
+                    $newData->initialize();
+                }
+
                 $reflectionClass = new \ReflectionClass($newData);
                 $property = $reflectionClass->getProperty('collection');
                 $property->setAccessible(true);
