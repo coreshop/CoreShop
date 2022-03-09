@@ -98,8 +98,8 @@ class EntityMerger
     }
 
     /**
-     * @param mixed $entity
-     * @param mixed $managedCopy
+     * @param object $entity
+     * @param object $managedCopy
      */
     private function checkAssociations($entity, $managedCopy, array &$visited): void
     {
@@ -126,13 +126,18 @@ class EntityMerger
                 continue;
             }
 
-            $reflectionClass = new \ReflectionClass($newData);
-            $property = $reflectionClass->getProperty('collection');
-            $property->setAccessible(true);
-            $newDataCollection = $property->getValue($newData);
+            if ($newData instanceof PersistentCollection) {
+                $reflectionClass = new \ReflectionClass($newData);
+                $property = $reflectionClass->getProperty('collection');
+                $property->setAccessible(true);
+                $newDataCollection = $property->getValue($newData);
 
-            if (!$newDataCollection instanceof Collection) {
-                continue;
+                if (!$newDataCollection instanceof Collection) {
+                    continue;
+                }
+            }
+            else {
+                $newDataCollection = $newData;
             }
 
             if ($assoc['type'] === ClassMetadata::MANY_TO_MANY) {
