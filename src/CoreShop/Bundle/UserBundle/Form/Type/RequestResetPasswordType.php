@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RequestResetPasswordType extends AbstractType
 {
@@ -29,6 +30,9 @@ class RequestResetPasswordType extends AbstractType
 
         $builder->add($identifier, $typeClass, [
             'label' => sprintf('coreshop.form.customer.%s', $identifier),
+            'constraints' => [
+                new NotBlank()
+            ],
         ]);
     }
 
