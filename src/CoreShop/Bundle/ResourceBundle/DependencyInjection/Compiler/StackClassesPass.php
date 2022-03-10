@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
 use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -49,9 +50,12 @@ final class StackClassesPass implements CompilerPassInterface
                 if (in_array($interface, class_implements($definition['classes']['interface']))) {
                     $classStack[$alias][] = $definition['classes']['model'];
 
-                    $fullClassName = $definition['classes']['model'];
-                    $reflectionClass = new ReflectionClass($fullClassName);
-                    $classStackPimcoreClassName[$alias][] = $reflectionClass->getDefaultProperties()['o_className'];
+                    try {
+                        $reflectionClass = new ReflectionClass($definition['classes']['model']);
+                        $classStackPimcoreClassName[$alias][] = $reflectionClass->getDefaultProperties()['o_className'] ?? $definition['classes']['model'];
+                    } catch (ReflectionException $e) {
+                        $classStackPimcoreClassName[$alias][] = $definition['classes']['model'];
+                    }
                 }
             }
 

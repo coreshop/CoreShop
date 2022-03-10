@@ -14,6 +14,8 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 use Pimcore\Model\Element\AbstractElement;
 use Pimcore\Model\Element\Service;
+use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\HttpFoundation\Request;
 
 class ResourceSettingsController extends AdminController
@@ -62,6 +64,13 @@ class ResourceSettingsController extends AdminController
                     $class = substr($definition['classes']['model'], $lastBackslash + 1);
                 } else {
                     $class = $definition['classes']['model'];
+                }
+
+                try {
+                    $reflectionClass = new ReflectionClass($definition['classes']['model']);
+                    $classStackPimcoreClassName[$alias][] = $reflectionClass->getDefaultProperties()['o_className'] ?? $definition['classes']['model'];
+                } catch(ReflectionException $e) {
+                    $classStackPimcoreClassName[$alias][] = $definition['classes']['model'];
                 }
 
                 $config['classMap'][$application][$alias] = $class;
