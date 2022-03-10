@@ -57,8 +57,12 @@ class ResourceSettingsController extends AdminController
                 $application = $alias[0];
                 $alias = $alias[1];
 
-                $class = str_replace('Pimcore\\Model\\DataObject\\', '', $definition['classes']['model']);
-                $class = str_replace('\\', '', $class);
+                $lastBackslash = strrpos($definition['classes']['model'], '\\');
+                if($lastBackslash !== false) {
+                    $class = substr($definition['classes']['model'], $lastBackslash + 1);
+                } else {
+                    $class = $definition['classes']['model'];
+                }
 
                 $config['classMap'][$application][$alias] = $class;
             }

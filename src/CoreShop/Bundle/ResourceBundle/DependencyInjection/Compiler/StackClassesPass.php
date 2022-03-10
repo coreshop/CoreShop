@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -49,10 +50,8 @@ final class StackClassesPass implements CompilerPassInterface
                     $classStack[$alias][] = $definition['classes']['model'];
 
                     $fullClassName = $definition['classes']['model'];
-                    $class = str_replace('Pimcore\\Model\\DataObject\\', '', $fullClassName);
-                    $class = str_replace('\\', '', $class);
-
-                    $classStackPimcoreClassName[$alias][] = $class;
+                    $reflectionClass = new ReflectionClass($fullClassName);
+                    $classStackPimcoreClassName[$alias][] = $reflectionClass->getDefaultProperties()['o_className'];
                 }
             }
 
