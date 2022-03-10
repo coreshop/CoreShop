@@ -265,7 +265,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         $queryBuilder->setMaxResults($this->getLimit());
         $queryBuilder->setFirstResult($this->getOffset());
         $objectRaws = $this->dao->load($queryBuilder);
-        $this->totalCount = $this->dao->getLastRecordCount();
+        $this->totalCount = $this->count();
         $className = $this->index->getClass();
         $this->objects = [];
         foreach ($objectRaws as $raw) {
