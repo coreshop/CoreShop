@@ -40,6 +40,9 @@ final class SqlInstaller implements ResourceInstallerInterface
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.sql', $applicationName) : 'coreshop.all.pimcore.admin.install.sql';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            /**
+             * @var array $sqlFilesToExecute
+             */
             $sqlFilesToExecute = $this->kernel->getContainer()->getParameter($parameter);
 
             $progress = new ProgressBar($output);

@@ -55,6 +55,9 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
         $parameter = $this->getIdentifier($applicationName);
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            /**
+             * @var array $translationFilesToInstall
+             */
             $translationFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);
             $translationsToInstall = [];
 

@@ -264,10 +264,20 @@ class ProductQuantityPriceRules extends Data implements
         $calculationBehaviourTypes = [];
         $pricingBehaviourTypes = [];
 
-        foreach ($this->getContainer()->getParameter('coreshop.product_quantity_price_rules.calculators') as $type) {
+        /**
+         * @var array $priceCalculators
+         */
+        $priceCalculators = $this->getContainer()->getParameter('coreshop.product_quantity_price_rules.calculators');
+
+        /**
+         * @var array $actions
+         */
+        $actions = $this->getContainer()->getParameter('coreshop.product_quantity_price_rules.actions');
+
+        foreach ($priceCalculators as $type) {
             $calculationBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_calculator_' . strtolower($type)];
         }
-        foreach ($this->getContainer()->getParameter('coreshop.product_quantity_price_rules.actions') as $type) {
+        foreach ($$actions as $type) {
             $pricingBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_behaviour_' . strtolower($type)];
         }
 

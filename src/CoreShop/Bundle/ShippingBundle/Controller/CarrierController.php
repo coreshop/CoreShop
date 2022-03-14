@@ -18,6 +18,9 @@ class CarrierController extends ResourceController
 {
     public function getConfigAction()
     {
+        /**
+         * @var array $strategies
+         */
         $strategies = $this->getParameter('coreshop.shipping.tax_calculation_strategies');
 
         $convertedStrategies = [];
