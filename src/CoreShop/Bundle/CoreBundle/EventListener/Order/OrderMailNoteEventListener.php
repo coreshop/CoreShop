@@ -49,20 +49,28 @@ final class OrderMailNoteEventListener
         $noteInstance->addData('subject', 'text', $mail->getSubjectRendered());
 
         $mailTos = [];
-        $recipients = isset($params['recipient']) && !empty($params['recipient']) ? $params['recipient'] : $mail->getTo();
+        if (isset($params['recipient']) && !empty($params['recipient'])) {
+            $recipients = $params['recipient'];
 
-        if (is_array($recipients)) {
-            foreach ($recipients as $mail => $name) {
-                if ($name) {
-                    $mailTos[] = sprintf('%s <%s>', $name, $mail);
-                } else {
-                    $mailTos[] = $mail;
+            if (is_array($recipients)) {
+                foreach ($recipients as $mail => $name) {
+                    if ($name) {
+                        $mailTos[] = sprintf('%s <%s>', $name, $mail);
+                    } else {
+                        $mailTos[] = $mail;
+                    }
                 }
+            } elseif (is_string($recipients)) {
+                $mailTos[] = $recipients;
             }
-        } elseif (is_string($recipients)) {
-            $mailTos[] = $recipients;
-        }
+        } else {
+            $recipients = $mail->getTo();
 
+            foreach ($recipients as $recipient) {
+                $mailTos[] = sprintf('%s <%s>', $recipient->getName(), $recipient->getAddress());
+            }
+        }
+        
         $noteInstance->addData('recipient', 'text', (empty($mailTos) ? '--' : implode(', ', $mailTos)));
 
         unset($params['recipient']);
