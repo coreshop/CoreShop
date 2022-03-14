@@ -24,9 +24,7 @@ coreshop.notification.rule.conditions.shipmentState = Class.create(coreshop.rule
                     name: 'shipmentState',
                     value: this.data ? this.data.shipmentState : [],
                     width: 250,
-                    store: {
-                        type: 'coreshop_states_shipment'
-                    },
+                    store: pimcore.globalmanager.get('coreshop_states_shipment'),
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,

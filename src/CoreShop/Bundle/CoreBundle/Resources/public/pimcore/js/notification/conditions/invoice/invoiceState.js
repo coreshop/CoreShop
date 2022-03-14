@@ -24,9 +24,7 @@ coreshop.notification.rule.conditions.invoiceState = Class.create(coreshop.rules
                     name: 'invoiceState',
                     value: this.data ? this.data.invoiceState : [],
                     width: 250,
-                    store: {
-                        type: 'coreshop_states_invoice'
-                    },
+                    store: pimcore.globalmanager.get('coreshop_states_invoice'),
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,
