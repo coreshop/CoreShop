@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Renderer;
 
+use CoreShop\Bundle\OrderBundle\Controller\OrderDocumentPrintController;
 use CoreShop\Bundle\OrderBundle\Event\WkhtmlOptionsEvent;
 use CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
@@ -45,16 +46,15 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
             $request = new Request($params);
             $request->setLocale($orderDocument->getOrder()->getLocaleCode());
 
-            $printBundle = 'CoreShopOrderBundle';
-            $printController = 'OrderDocumentPrint';
+            $printController = OrderDocumentPrintController::class;
 
-            $printContentAction = $orderDocument::getDocumentType();
-            $printFooterAction = 'footer';
-            $printHeaderAction = 'header';
+            $printContentAction = $orderDocument::getDocumentType() . 'Action';
+            $printFooterAction = 'footerAction';
+            $printHeaderAction = 'headerAction';
 
-            $referenceFooter = new ControllerReference(sprintf('%s:%s:%s', $printBundle, $printController, $printFooterAction), $params);
-            $referenceHeader = new ControllerReference(sprintf('%s:%s:%s', $printBundle, $printController, $printHeaderAction), $params);
-            $referenceContent = new ControllerReference(sprintf('%s:%s:%s', $printBundle, $printController, $printContentAction), $params);
+            $referenceFooter = new ControllerReference(sprintf('%s::%s', $printController, $printFooterAction), $params);
+            $referenceHeader = new ControllerReference(sprintf('%s::%s', $printController, $printHeaderAction), $params);
+            $referenceContent = new ControllerReference(sprintf('%s::%s', $printController, $printContentAction), $params);
 
             $contentHeader = $this->fragmentRenderer->render($referenceHeader, $request)->getContent();
             $contentFooter = $this->fragmentRenderer->render($referenceFooter, $request)->getContent();
