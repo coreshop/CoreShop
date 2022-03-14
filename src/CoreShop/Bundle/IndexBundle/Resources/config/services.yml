@@ -292,6 +292,10 @@ services:
     CoreShop\Component\Index\Filter\CategorySelectConditionProcessor:
         tags:
             - { name: coreshop.filter.condition_type, type: category_select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionCategorySelectType}
+              
+    CoreShop\Component\Index\Filter\CategoryMultiSelectConditionProcessor:
+        tags:
+            - { name: coreshop.filter.condition_type, type: category_multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionCategoryMultiSelectType }
 
     # Index Updater Service
     CoreShop\Component\Index\Service\IndexUpdaterServiceInterface: '@CoreShop\Component\Index\Service\IndexUpdaterService'
