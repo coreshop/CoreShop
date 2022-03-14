@@ -27,6 +27,10 @@ class RegisterFilterConditionTypesPass implements CompilerPassInterface
             $definition = $container->findDefinition($id);
 
             foreach ($attributes as $tag) {
+                if (empty($tag)) {
+                    continue;
+                }
+                
                 $definition->addTag('coreshop.filter.user_condition_type', $tag);
                 $definition->addTag('coreshop.filter.pre_condition_type', $tag);
             }
