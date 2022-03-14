@@ -18,3 +18,9 @@ services:
         calls:
             - ['setAddressFormatter', ['@CoreShop\Component\Address\Formatter\AddressFormatterInterface']]
 
+    CoreShop\Bundle\OrderBundle\Controller\OrderDocumentPrintController:
+        autowire: true
+        autoconfigure: true
+        public: true
+        tags: [ 'controller.service_arguments' ]
+
