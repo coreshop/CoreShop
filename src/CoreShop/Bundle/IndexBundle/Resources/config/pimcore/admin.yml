@@ -37,6 +37,7 @@ core_shop_index:
             filter_condition_relational_multiselect: '/bundles/coreshopindex/pimcore/js/filter/conditions/relational_multiselect.js'
             filter_condition_relational_select: '/bundles/coreshopindex/pimcore/js/filter/conditions/relational_select.js'
             filter_condition_category_select: '/bundles/coreshopindex/pimcore/js/filter/conditions/category_select.js'
+            filter_condition_category_multiselect: '/bundles/coreshopindex/pimcore/js/filter/conditions/category_multiselect.js'
             filter_similarity_abstract: '/bundles/coreshopindex/pimcore/js/filter/similarities/abstract.js'
             filter_similarity_field: '/bundles/coreshopindex/pimcore/js/filter/similarities/field.js'
             core_extension_data_filter: '/bundles/coreshopindex/pimcore/js/coreExtension/data/coreShopFilter.js'

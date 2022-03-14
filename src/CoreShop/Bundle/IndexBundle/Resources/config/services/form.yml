@@ -15,6 +15,7 @@ parameters:
     coreshop.form.type.index.interpreter.object_property.validation_groups: [coreshop]
     coreshop.form.type.index.interpreter.iterator.validation_groups: [coreshop]
     coreshop.form.type.filter.condition.category.validation_groups: [coreshop]
+    coreshop.form.type.filter.condition.category_multiselect.validation_groups: [coreshop]
     coreshop.form.type.filter.condition.multiselect.validation_groups: [coreshop]
     coreshop.form.type.filter.condition.range.validation_groups: [coreshop]
     coreshop.form.type.filter.condition.select.validation_groups: [coreshop]
@@ -192,6 +193,12 @@ services:
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionCategorySelectType:
         arguments:
             - '%coreshop.form.type.filter.condition.category.validation_groups%'
+        tags:
+            - { name: form.type }
+              
+    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionCategoryMultiSelectType:
+        arguments:
+            - '%coreshop.form.type.filter.condition.category_multiselect.validation_groups%'
         tags:
             - { name: form.type }
 
