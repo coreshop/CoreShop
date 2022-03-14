@@ -64,6 +64,12 @@ jobs:
         composer config minimum-stability dev
         composer config prefer-stable true
         composer req pimcore/pimcore:${{ matrix.pimcore }} symfony/symfony:${{ matrix.symfony }} --no-interaction --no-scripts --no-update
+        
+        if ["${{ matrix.symfony }}" = "~3.4"]
+        then
+          composer req laminas/laminas-code:^3.5.1 --no-interaction --no-scripts --no-update
+        fi
+        
         composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
     - name: Cache clear
