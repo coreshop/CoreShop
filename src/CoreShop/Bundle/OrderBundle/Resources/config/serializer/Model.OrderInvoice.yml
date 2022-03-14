@@ -39,6 +39,6 @@ CoreShop\Component\Order\Model\OrderInvoice:
             groups: [Detailed]
         items:
             serialized_name: items
-            exp: object.getItems
+            exp: object.getItems()
             type: array
             groups: [Detailed]
