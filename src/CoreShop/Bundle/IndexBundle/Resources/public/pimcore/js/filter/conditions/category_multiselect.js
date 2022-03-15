@@ -29,28 +29,48 @@ coreshop.filter.conditions.category_multiselect = Class.create(coreshop.filter.c
 
     getItems: function () {
 
-        var catValue = this.data.configuration.preSelect;
-        var categorySelect = new coreshop.object.elementHref({
-            id: catValue,
-            type: 'object',
-            subtype: coreshop.class_map.coreshop.category
-        }, {
-            objectsAllowed: true,
-            classes: [{
-                classes: coreshop.class_map.coreshop.category
-            }],
+        this.preSelects = this.data.configuration.preSelects;
+        var resultLayout = [];
+
+        this.categoryMultiSelect = new coreshop.object.objectMultihref(this.preSelects ? this.preSelects : [], {
+            classes: this.getFormattedStackClasses(coreshop.stack.coreshop.category),
             name: 'preSelects',
-            title: t('coreshop_filters_category_names')
+            title: 'preSelects',
+            height: 200,
+            width: 500,
+            columns: [],
+            columnType: null,
+            datatype: 'data',
+            fieldtype: 'objects',
         });
 
-        return [
-            categorySelect.getLayoutEdit(),
-            {
-                xtype: 'checkbox',
-                fieldLabel: t('coreshop_filters_include_subcategories'),
-                name: 'includeSubCategories',
-                checked: this.data.configuration.includeSubCategories
-            }
-        ];
+        this.includeSubCategories = Ext.create({
+            xtype: 'checkbox',
+            fieldLabel: t('coreshop_filters_include_subcategories'),
+            name: 'includeSubCategories',
+            checked: this.data.configuration.includeSubCategories
+        });
+
+        resultLayout.push(this.categoryMultiSelect.getLayoutEdit());
+        resultLayout.push(this.includeSubCategories)
+
+        return resultLayout;
+    },
+
+    getFormattedStackClasses: function (stackClasses) {
+        var classes = [];
+        if (Ext.isArray(stackClasses)) {
+            Ext.Array.each(stackClasses, function (cClass) {
+                classes.push({classes: cClass});
+            });
+        }
+        return classes;
+    },
+
+    getFormValues: function () {
+        return {
+            includeSubCategories: this.includeSubCategories.getValue(),
+            preSelects: this.categoryMultiSelect.getValue()
+        }
     }
 });

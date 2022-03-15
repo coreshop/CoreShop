@@ -64,7 +64,7 @@ coreshop.filter.abstract = Class.create({
     getData: function () {
         var data = this.form.getForm().getFieldValues();
 
-        data['configuration'] = this.configurationForm.getForm().getFieldValues();
+        data['configuration'] = this.getFormValues() ? this.getFormValues() : this.configurationForm.getForm().getFieldValues();
 
         return data;
     },
