@@ -55,11 +55,6 @@ class Carrier extends AbstractResource implements CarrierInterface
     private $hideFromCheckout = false;
 
     /**
-     * @var bool
-     */
-    private $isFree = false;
-
-    /**
      * @var Asset|null
      */
     private $logo;
@@ -135,17 +130,7 @@ class Carrier extends AbstractResource implements CarrierInterface
     {
         $this->hideFromCheckout = $hideFromCheckout;
     }
-
-    public function getIsFree()
-    {
-        return $this->isFree;
-    }
-
-    public function setIsFree($isFree)
-    {
-        $this->isFree = $isFree;
-    }
-
+    
     public function getLogo()
     {
         return $this->logo;
