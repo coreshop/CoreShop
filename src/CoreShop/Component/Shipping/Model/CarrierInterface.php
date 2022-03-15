@@ -66,16 +66,6 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
     /**
      * @return bool
      */
-    public function getIsFree();
-
-    /**
-     * @param bool $isFree
-     */
-    public function setIsFree($isFree);
-
-    /**
-     * @return bool
-     */
     public function getHideFromCheckout();
 
     /**

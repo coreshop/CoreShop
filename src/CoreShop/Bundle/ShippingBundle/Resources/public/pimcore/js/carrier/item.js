@@ -274,13 +274,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
             bodyStyle: 'padding:10px;',
             autoScroll: true,
             border: false,
-            items: [{
-                xtype: 'checkbox',
-                name: 'isFree',
-                fieldLabel: t('coreshop_carrier_isFree'),
-                width: 250,
-                value: this.data.isFree
-            }, this.getShippingRulesGrid()]
+            items: [this.getShippingRulesGrid()]
         });
 
         return this.shippingLocationAndCosts;
