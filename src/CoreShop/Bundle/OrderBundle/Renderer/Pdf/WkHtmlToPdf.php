@@ -171,13 +171,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
             $command = $wkHtmlTopPfBinary . $options;
         }
 
-        $process = new Process(
-            [
-                $command,
-                $httpSource,
-                $tmpPdfFile,
-            ]
-        );
+        $process = Process::fromShellCommandline($command . ' ' . $httpSource . ' ' . $tmpPdfFile);
         $process->run();
 
         if (!file_exists($tmpPdfFile)) {
@@ -204,6 +198,6 @@ final class WkHtmlToPdf implements PdfRendererInterface
 
     private function getXvfbBinary(): string
     {
-        return (string)Console::getExecutable('xvfb-run', true);
+        return (string)Console::getExecutable('xvfb-run', false);
     }
 }
