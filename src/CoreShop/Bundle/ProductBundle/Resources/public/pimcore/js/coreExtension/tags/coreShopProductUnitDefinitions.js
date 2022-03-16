@@ -44,8 +44,11 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
             border: true,
             layout: 'fit',
             style: 'margin: 10px 0;',
-            collapsible: true,
-            collapsed: true
+            collapsible: {
+                direction: 'left',
+                collapsed: true,
+                dynamic: true
+            }
         };
 
         this.fieldConfig.datatype = 'layout';
