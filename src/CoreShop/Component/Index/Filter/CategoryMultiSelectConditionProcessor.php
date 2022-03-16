@@ -105,8 +105,10 @@ class CategoryMultiSelectConditionProcessor implements FilterConditionProcessorI
             }
 
             unset($v);
+            
+            $concatenator = $condition->getConfiguration()['concatenator'] ? $condition->getConfiguration()['concatenator'] : 'OR';
 
-            $list->addCondition(new ConcatCondition($field, 'OR', $likeConditions), $fieldName);
+            $list->addCondition(new ConcatCondition($field, $concatenator, $likeConditions), $fieldName);
         }
 
         return $currentFilter;

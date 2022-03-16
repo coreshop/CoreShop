@@ -38,7 +38,8 @@ final class FilterConditionCategoryMultiSelectType extends AbstractType
                 'allow_delete' => true,
                 'entry_type' => TextType::class,
             ])
-            ->add('includeSubCategories', CheckboxType::class);
+            ->add('includeSubCategories', CheckboxType::class)
+            ->add('concatenator', TextType::class);
     }
 
     public function getBlockPrefix(): string

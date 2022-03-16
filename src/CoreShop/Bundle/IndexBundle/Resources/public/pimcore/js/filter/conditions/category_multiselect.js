@@ -30,7 +30,6 @@ coreshop.filter.conditions.category_multiselect = Class.create(coreshop.filter.c
     getItems: function () {
 
         this.preSelects = this.data.configuration.preSelects;
-        var resultLayout = [];
 
         this.categoryMultiSelect = new coreshop.object.objectMultihref(this.preSelects ? this.preSelects : [], {
             classes: this.getFormattedStackClasses(coreshop.stack.coreshop.category),
@@ -51,10 +50,29 @@ coreshop.filter.conditions.category_multiselect = Class.create(coreshop.filter.c
             checked: this.data.configuration.includeSubCategories
         });
 
-        resultLayout.push(this.categoryMultiSelect.getLayoutEdit());
-        resultLayout.push(this.includeSubCategories)
+        var concatenators = Ext.create('Ext.data.Store', {
+            fields: ['value', 'name'],
+            data : [
+                {"value":"OR", "name":"OR"},
+                {"value":"AND", "name":"AND"}
+            ]
+        });
 
-        return resultLayout;
+        this.concatenator = Ext.create('Ext.form.ComboBox', {
+            fieldLabel: 'Choose concatenator',
+            store: concatenators,
+            queryMode: 'local',
+            displayField: 'name',
+            valueField: 'value',
+            value: this.data.configuration.concatenator ? this.data.configuration.concatenator : concatenators.first(),
+            renderTo: Ext.getBody()
+        });
+
+        return [
+            this.categoryMultiSelect.getLayoutEdit(),
+            this.includeSubCategories,
+            this.concatenator
+        ];
     },
 
     getFormattedStackClasses: function (stackClasses) {
@@ -70,7 +88,8 @@ coreshop.filter.conditions.category_multiselect = Class.create(coreshop.filter.c
     getFormValues: function () {
         return {
             includeSubCategories: this.includeSubCategories.getValue(),
-            preSelects: this.categoryMultiSelect.getValue()
+            preSelects: this.categoryMultiSelect.getValue(),
+            concatenator: this.concatenator.getValue(),
         }
     }
 });
