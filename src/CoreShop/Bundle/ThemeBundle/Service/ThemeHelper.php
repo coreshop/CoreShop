@@ -26,9 +26,13 @@ final class ThemeHelper implements ThemeHelperInterface
     public function useTheme(string $themeName, \Closure $function)
     {
         $backupTheme = $this->themeContext->getTheme();
-        $this->themeContext->setTheme(
-            $this->themeRepository->findOneByName($themeName)
-        );
+        $theme = $this->themeRepository->findOneByName($themeName);
+
+        if ($theme) {
+            $this->themeContext->setTheme(
+                $this->themeRepository->findOneByName($themeName)
+            );
+        }
 
         $result = $function();
 
