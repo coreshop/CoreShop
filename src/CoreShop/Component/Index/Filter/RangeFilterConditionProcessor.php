@@ -88,14 +88,20 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
         $currentFilter[$field . '-min'] = $valueMin;
         $currentFilter[$field . '-max'] = $valueMax;
 
-        if (null !== $valueMin && null !== $valueMax) {
+        if (null !== $valueMin || null !== $valueMax) {
             $fieldName = $field;
 
             if ($isPrecondition) {
                 $fieldName = 'PRECONDITION_' . $fieldName;
             }
 
-            $list->addCondition(new RangeCondition($field, (float)$valueMin, (float)$valueMax), $fieldName);
+            $condition = new RangeCondition(
+                $field,
+                is_null($valueMin) ? null : (float)$valueMin,
+                is_null($valueMax) ? null : (float)$valueMax
+            );
+
+            $list->addCondition($condition, $fieldName);
         }
 
         return $currentFilter;
