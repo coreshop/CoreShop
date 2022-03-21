@@ -29,9 +29,7 @@ final class ThemeHelper implements ThemeHelperInterface
         $theme = $this->themeRepository->findOneByName($themeName);
 
         if ($theme) {
-            $this->themeContext->setTheme(
-                $this->themeRepository->findOneByName($themeName)
-            );
+            $this->themeContext->setTheme($theme);
         }
 
         $result = $function();
