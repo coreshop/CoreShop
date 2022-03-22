@@ -37,7 +37,6 @@ class SearchConditionProcessor implements FilterConditionProcessorInterface
             'objects' => $objects,
             'fieldName' => 'searchTerm',
         ];
-        return [];
     }
 
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
@@ -69,7 +68,7 @@ class SearchConditionProcessor implements FilterConditionProcessorInterface
                 unset($field);
             }
 
-            $concatenator = $condition->getConfiguration()['concatenator'] ? $condition->getConfiguration()['concatenator'] : 'OR';
+            $concatenator = $condition->getConfiguration()['concatenator'] ?: 'OR';
 
             $list->addCondition(new ConcatCondition('search', $concatenator, $likeConditions), 'search');
         }
