@@ -26,7 +26,8 @@ class FilterConditionSearchType extends AbstractType
                 'entry_type' => TextType::class,
             ])
             ->add('searchTerm', TextType::class)
-            ->add('concatenator', TextType::class);
+            ->add('concatenator', TextType::class)
+            ->add('pattern', TextType::class);
     }
 
     public function getBlockPrefix(): string

@@ -45,7 +45,7 @@ class SearchConditionProcessor implements FilterConditionProcessorInterface
         $fields = $condition->getConfiguration()['fields'];
 
         $value = $parameterBag->get('searchTerm');
-        
+
         if (empty($value)) {
             $value = $condition->getConfiguration()['searchTerm'];
         }
@@ -59,18 +59,19 @@ class SearchConditionProcessor implements FilterConditionProcessorInterface
         if (!empty($value) && !empty($fields)) {
 
             $likeConditions = [];
+            $pattern = $condition->getConfiguration()['pattern'];
 
             foreach ($fields as $field) {
                 $fieldName = $isPrecondition ? 'PRECONDITION_' . $field : $field;
 
-                $likeConditions[] = new LikeCondition($field, 'both', $value);
+                $likeConditions[] = new LikeCondition($field, $pattern, $value);
 
                 unset($field);
             }
 
             $concatenator = $condition->getConfiguration()['concatenator'] ? $condition->getConfiguration()['concatenator'] : 'OR';
 
-            $list->addCondition(new ConcatCondition($fieldName, $concatenator, $likeConditions), $fieldName);
+            $list->addCondition(new ConcatCondition('search', $concatenator, $likeConditions), 'search');
         }
 
         return $currentFilter;
