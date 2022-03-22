@@ -192,6 +192,7 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
             indexesForServer = {};
 
         indexes.forEach(function (index) {
+            console.log(index.columns)
             index.columns = index.columns.filter(function (col) {
                 return availableFields.indexOf(col) >= 0;
             });

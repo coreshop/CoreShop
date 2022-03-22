@@ -19,6 +19,7 @@ parameters:
     coreshop.form.type.filter.condition.multiselect.validation_groups: [coreshop]
     coreshop.form.type.filter.condition.range.validation_groups: [coreshop]
     coreshop.form.type.filter.condition.select.validation_groups: [coreshop]
+    coreshop.form.type.filter.condition.search.validation_groups: [ coreshop ]
     coreshop.form.type.filter.condition.boolean.validation_groups: [coreshop]
     coreshop.form.type.filter.condition.pre_nested.validation_groups: [coreshop]
     coreshop.form.type.filter.condition.user_nested.validation_groups: [coreshop]
@@ -205,6 +206,12 @@ services:
     CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType:
         arguments:
             - '%coreshop.form.type.filter.condition.multiselect.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSearchType:
+        arguments:
+            - '%coreshop.form.type.filter.condition.search.validation_groups%'
         tags:
             - { name: form.type }
 

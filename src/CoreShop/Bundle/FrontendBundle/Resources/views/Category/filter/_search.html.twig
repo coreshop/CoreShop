@@ -1,0 +1,15 @@
+<div class="list-group">
+    {% if label %}
+        <div class="list-group-item">
+            {{ label|trans }}
+        </div>
+    {% endif %}
+
+    <div class="list-group-item">
+        <div class="filter-group filter-group-input">
+            <label class="input">
+                <input name="{{ fieldName }}" type="input" value="{{ currentValue }}" >
+            </label>
+        </div>
+    </div>
+</div>

@@ -66,7 +66,7 @@ class FilterGroupHelper implements FilterGroupHelperInterface
             default:
                 $rawValues = $list->getGroupByValues($field, true);
                 $values = [];
-
+//dd($rawValues, $field);
                 foreach ($rawValues as $v) {
                     $explode = explode(',', $v['value']);
 
