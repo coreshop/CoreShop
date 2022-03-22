@@ -22,7 +22,8 @@ final class CartContextResolver implements CartContextResolverInterface
     {
         return [
             'customer' => $cart->getCustomer() ?: null,
-            'currency' => $cart->getStore()->getCurrency(),
+            'currency' => $cart->getCurrency(),
+            'base_currency' => $cart->getStore()->getCurrency(),
             'cart' => $cart,
         ];
     }

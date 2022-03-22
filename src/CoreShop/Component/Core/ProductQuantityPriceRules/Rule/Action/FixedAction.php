@@ -34,7 +34,7 @@ class FixedAction implements ProductQuantityPriceRuleActionInterface
          */
         Assert::isInstanceOf($range, \CoreShop\Component\Core\Model\QuantityRangeInterface::class);
         Assert::isInstanceOf($range->getCurrency(), CurrencyInterface::class);
-        $currentContextCurrency = $context['currency'];
+        $currentContextCurrency = $context['base_currency'];
 
         return $this->currencyConverter->convert($range->getAmount(), $range->getCurrency()->getIsoCode(), $currentContextCurrency->getIsoCode());
     }

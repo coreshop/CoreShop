@@ -17,6 +17,7 @@ namespace CoreShop\Component\Core\Context;
 use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\CountryInterface;
+use CoreShop\Component\Core\Model\Store;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
@@ -128,6 +129,7 @@ class ShopperContext implements ShopperContextInterface
             'store' => $this->getStore(),
             'customer' => $this->hasCustomer() ? $this->getCustomer() : null,
             'currency' => $this->getCurrency(),
+            'base_currency' => $this->getStore()->getCurrency(),
             'country' => $this->getCountry(),
             'cart' => $this->getCart(),
         ];
