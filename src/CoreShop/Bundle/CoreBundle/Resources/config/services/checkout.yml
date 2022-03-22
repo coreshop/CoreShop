@@ -23,8 +23,6 @@ services:
             - '@form.factory'
             - '@coreshop.customer.manager'
             - '@coreshop.context.locale'
-            - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
-
 
     CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep:
         arguments:

@@ -15,7 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
@@ -35,7 +37,7 @@ use Webmozart\Assert\Assert;
 
 class CheckoutController extends FrontendController
 {
-    public function __construct(protected CheckoutManagerFactoryInterface $checkoutManagerFactory)
+    public function __construct(protected CheckoutManagerFactoryInterface $checkoutManagerFactory, private AvailabilityCheckerInterface $availabilityChecker)
     {
     }
 
@@ -43,6 +45,12 @@ class CheckoutController extends FrontendController
     {
         if (!$this->getCart()->hasItems()) {
             return $this->redirectToRoute('coreshop_cart_summary');
+        }
+
+        foreach ($this->getCart()->getItems() as $item) {
+            if (!$this->availabilityChecker->isStockSufficient($item->getProduct(), 0)) {
+                return $this->redirectToRoute('coreshop_cart_summary');
+            }
         }
 
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
@@ -69,8 +77,6 @@ class CheckoutController extends FrontendController
             if ($nextStep) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
             }
-        } elseif (!$isValid && !$checkoutManager->hasPreviousStep($stepIdentifier)) {
-            return $this->redirectToRoute('coreshop_cart_summary', ['cartFail' => true]);
         }
 
         $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier]);

@@ -29,11 +29,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    public function __construct(
-        private FormFactoryInterface $formFactory,
-        private CustomerManagerInterface $customerManager,
-        private LocaleContextInterface $localeContext,
-        private AvailabilityCheckerInterface $availabilityChecker)
+    public function __construct(private FormFactoryInterface $formFactory, private CustomerManagerInterface $customerManager, private LocaleContextInterface $localeContext)
     {
     }
 
@@ -51,12 +47,6 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     {
         if (!$cart->hasItems()) {
             return false;
-        }
-
-        foreach ($cart->getItems() as $item) {
-            if (!$this->availabilityChecker->isStockSufficient($item->getProduct(), 0)) {
-                return false;
-            }
         }
 
         return $cart->getCustomer() instanceof CustomerInterface;

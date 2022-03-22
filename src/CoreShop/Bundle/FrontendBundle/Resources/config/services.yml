@@ -45,3 +45,8 @@ services:
             - '%coreshop.frontend.category.valid_sort_options%'
             - '%coreshop.frontend.category.default_sort_name%'
             - '%coreshop.frontend.category.default_sort_direction%'
+
+    CoreShop\Bundle\FrontendBundle\Controller\CheckoutController:
+        arguments:
+            - '@CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface'
+            - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
