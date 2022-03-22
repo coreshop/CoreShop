@@ -58,7 +58,7 @@ class CategoryController extends FrontendController
 
     public function menuAction(): Response
     {
-        $categories = $this->getRepository()->findForStore($this->getContext()->getStore());
+        $categories = $this->getRepository()->findFirstLevelForStore($this->getContext()->getStore());
 
         return $this->render($this->templateConfigurator->findTemplate('Category/_menu.html'), [
             'categories' => $categories,
