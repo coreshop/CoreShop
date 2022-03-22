@@ -37,6 +37,7 @@ use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,7 +65,11 @@ class CartController extends FrontendController
     public function summaryAction(Request $request): Response
     {
         $cart = $this->getCart();
+        $cloneCart = clone($cart);
+
         $form = $this->get('form.factory')->createNamed('coreshop', CartType::class, $cart);
+        $cloneForm = clone($form);
+
         $form->handleRequest($request);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isSubmitted() && $form->isValid()) {
@@ -97,10 +102,16 @@ class CartController extends FrontendController
 
             $this->get('event_dispatcher')->dispatch(new GenericEvent($cart), 'coreshop.cart.update');
             $this->getCartManager()->persistCart($cart);
+        } else if ($request->get('cartFail')) {
+            $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.cart.invalid'));
         } else {
-            if ($cart->getId()) {
-                $cart = $this->get('coreshop.repository.order')->forceFind($cart->getId());
+            $cart = $cloneCart;
+
+            foreach ($form->getErrors(true) as $error) {
+                $cloneForm->addError($error);
             }
+
+            $form = $cloneForm;
         }
 
         return $this->render($this->templateConfigurator->findTemplate('Cart/summary.html'), [

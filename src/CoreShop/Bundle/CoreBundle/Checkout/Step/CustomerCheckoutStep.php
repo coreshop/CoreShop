@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 use CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
@@ -28,7 +29,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    public function __construct(private FormFactoryInterface $formFactory, private CustomerManagerInterface $customerManager, private LocaleContextInterface $localeContext)
+    public function __construct(
+        private FormFactoryInterface $formFactory,
+        private CustomerManagerInterface $customerManager,
+        private LocaleContextInterface $localeContext,
+        private AvailabilityCheckerInterface $availabilityChecker)
     {
     }
 
@@ -46,6 +51,12 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     {
         if (!$cart->hasItems()) {
             return false;
+        }
+
+        foreach ($cart->getItems() as $item) {
+            if (!$this->availabilityChecker->isStockSufficient($item->getProduct(), 0)) {
+                return false;
+            }
         }
 
         return $cart->getCustomer() instanceof CustomerInterface;

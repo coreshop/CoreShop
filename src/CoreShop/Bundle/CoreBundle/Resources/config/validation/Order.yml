@@ -1,0 +1,5 @@
+CoreShop\Component\Core\Model\Order:
+  constraints:
+    - \CoreShop\Bundle\CoreBundle\Validator\Constraints\CartStockAvailability: { groups: ['coreshop'] }
+    - \CoreShop\Bundle\CoreBundle\Validator\Constraints\CartMinimumQuantity: { messageBelowMinimum: 'coreshop.cart_item.quantity_below_min_limit', groups: ['coreshop'] }
+    - \CoreShop\Bundle\CoreBundle\Validator\Constraints\CartMaximumQuantity: { messageAboveMaximum: 'coreshop.cart_item.quantity_above_max_limit', groups: ['coreshop'] }

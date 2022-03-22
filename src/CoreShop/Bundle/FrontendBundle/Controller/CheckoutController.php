@@ -69,6 +69,8 @@ class CheckoutController extends FrontendController
             if ($nextStep) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
             }
+        } elseif (!$isValid && !$checkoutManager->hasPreviousStep($stepIdentifier)) {
+            return $this->redirectToRoute('coreshop_cart_summary', ['cartFail' => true]);
         }
 
         $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier]);
