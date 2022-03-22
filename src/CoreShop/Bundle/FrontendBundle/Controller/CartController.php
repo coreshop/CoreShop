@@ -102,8 +102,6 @@ class CartController extends FrontendController
 
             $this->get('event_dispatcher')->dispatch(new GenericEvent($cart), 'coreshop.cart.update');
             $this->getCartManager()->persistCart($cart);
-        } else if ($request->get('cartFail')) {
-            $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.cart.invalid'));
         } else {
             $cart = $cloneCart;
 
