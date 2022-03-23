@@ -25,7 +25,6 @@ final class AppMigrationGenerateCommand extends Command
     {
         $this
             ->setName('coreshop:app:migration:generate')
-            ->setHidden(true)
             ->setDescription('Create a new App migration.');
     }
 
