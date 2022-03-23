@@ -63,7 +63,7 @@ jobs:
       run: |
         composer config minimum-stability dev
         composer config prefer-stable true
-        composer req pimcore/pimcore:${{ matrix.pimcore }} symfony/symfony:${{ matrix.symfony }} --no-interaction --no-scripts --no-update
+        composer req pimcore/pimcore:${{ matrix.pimcore }} symfony/symfony:${{ matrix.symfony }} ocramius/proxy-manager:~2.2.0 --no-interaction --no-scripts --no-update
         composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
     - name: Cache clear
