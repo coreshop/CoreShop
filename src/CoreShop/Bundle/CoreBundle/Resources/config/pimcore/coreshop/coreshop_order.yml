@@ -1,17 +1,5 @@
 core_shop_order:
     pimcore:
-#        cart:
-#            path: coreshop/carts
-#            classes:
-#                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCart.json'
-#                interface: CoreShop\Component\Core\Model\CartInterface
-#                pimcore_controller:
-#                    default: CoreShop\Bundle\CoreBundle\Controller\CartController
-#                    creation: CoreShop\Bundle\CoreBundle\Controller\CartCreationController
-#        cart_item:
-#            classes:
-#                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCartItem.json'
-#                interface: CoreShop\Component\Core\Model\CartItemInterface
         order:
             path:
                 order: coreshop/orders
@@ -35,14 +23,3 @@ core_shop_order:
             classes:
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrderShipmentItem.json'
                 interface: CoreShop\Component\Core\Model\OrderShipmentItemInterface
-#        quote:
-#            path: coreshop/quotes
-#            classes:
-#                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopQuote.json'
-#                interface: CoreShop\Component\Core\Model\QuoteInterface
-#                pimcore_controller:
-#                    creation: CoreShop\Bundle\CoreBundle\Controller\QuoteCreationController
-#        quote_item:
-#            classes:
-#                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopQuoteItem.json'
-#                interface: CoreShop\Component\Core\Model\QuoteItemInterface

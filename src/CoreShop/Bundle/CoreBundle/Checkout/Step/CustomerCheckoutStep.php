@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 use CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType;
 use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;

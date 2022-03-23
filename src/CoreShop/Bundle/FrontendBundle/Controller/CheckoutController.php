@@ -37,7 +37,7 @@ use Webmozart\Assert\Assert;
 
 class CheckoutController extends FrontendController
 {
-    public function __construct(protected CheckoutManagerFactoryInterface $checkoutManagerFactory, private AvailabilityCheckerInterface $availabilityChecker)
+    public function __construct(protected CheckoutManagerFactoryInterface $checkoutManagerFactory)
     {
     }
 
@@ -45,12 +45,6 @@ class CheckoutController extends FrontendController
     {
         if (!$this->getCart()->hasItems()) {
             return $this->redirectToRoute('coreshop_cart_summary');
-        }
-
-        foreach ($this->getCart()->getItems() as $item) {
-            if (!$this->availabilityChecker->isStockSufficient($item->getProduct(), 0)) {
-                return $this->redirectToRoute('coreshop_cart_summary');
-            }
         }
 
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
