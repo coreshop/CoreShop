@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -32,8 +33,13 @@ final class FilterConditionCategoryMultiSelectType extends AbstractType
     {
         $builder
             ->add('field', TextType::class)
-            ->add('preSelects', TextType::class)
-            ->add('includeSubCategories', CheckboxType::class);
+            ->add('preSelects', CollectionType::class, [
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_type' => TextType::class,
+            ])
+            ->add('includeSubCategories', CheckboxType::class)
+            ->add('concatenator', TextType::class);
     }
 
     public function getBlockPrefix(): string
