@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.index.interpreters.nestedrelational');
+pimcore.registerNS('coreshop.index.interpreters.nestedRelational');
 
-coreshop.index.interpreters.nestedrelational = Class.create(coreshop.index.interpreters.nested, {
+coreshop.index.interpreters.nestedRelational = Class.create(coreshop.index.interpreters.nested, {
 
 });

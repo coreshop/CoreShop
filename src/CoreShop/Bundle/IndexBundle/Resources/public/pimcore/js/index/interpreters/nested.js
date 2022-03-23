@@ -70,8 +70,6 @@ coreshop.index.interpreters.nested = Class.create(coreshop.index.interpreters.ab
 
     addInterpreter: function (type, record, config) {
         // create condition
-        //type = type.toLowerCase();
-
         var interpreterClass = this.getInterpreterClassItem(type);
         var item = new interpreterClass();
         var container = new coreshop.index.interpreters.nestedcontainer(this, type, item);

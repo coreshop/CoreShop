@@ -11,8 +11,8 @@
  */
 
 
-pimcore.registerNS('coreshop.index.interpreters.nestedlocalized');
+pimcore.registerNS('coreshop.index.interpreters.nestedLocalized');
 
-coreshop.index.interpreters.nestedlocalized = Class.create(coreshop.index.interpreters.nested, {
+coreshop.index.interpreters.nestedLocalized = Class.create(coreshop.index.interpreters.nested, {
 
 });
