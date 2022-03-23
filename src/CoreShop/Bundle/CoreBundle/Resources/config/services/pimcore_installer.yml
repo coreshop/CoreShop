@@ -1,5 +1,7 @@
 services:
     CoreShop\Bundle\CoreBundle\Installer:
         public: true
+        autoconfigure: true
+        autowire: true
         arguments:
             $kernel: "@kernel"
