@@ -29,7 +29,14 @@ class Installer extends SettingsStoreAwareInstaller
 
     public function getLastMigrationVersionClassName(): ?string
     {
+        /**
+         * @psalm-suppress InternalMethod
+         */
         $this->migrationRepository->setPrefix($this->bundle->getNamespace());
+
+        /**
+         * @psalm-suppress InternalMethod
+         */
         $this->tableMetadataStorage->setPrefix($this->bundle->getNamespace());
 
         $migrations = $this->dependencyFactory->getMigrationRepository()->getMigrations();
