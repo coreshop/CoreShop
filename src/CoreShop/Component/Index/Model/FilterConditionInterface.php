@@ -50,12 +50,12 @@ interface FilterConditionInterface extends ResourceInterface, TimestampableInter
     public function setLabel($label);
 
     /**
-     * @return int
+     * @return string
      */
     public function getQuantityUnit();
 
     /**
-     * @param int $quantityUnit
+     * @param string $quantityUnit
      */
     public function setQuantityUnit($quantityUnit);
 

@@ -39,7 +39,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
             'currentValue' => $currentFilter[$field] ?? null,
             'values' => array_values($rawValues),
             'fieldName' => $field,
-            'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById((string)$condition->getQuantityUnit()) : null,
+            'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById($condition->getQuantityUnit()) : null,
         ];
     }
 

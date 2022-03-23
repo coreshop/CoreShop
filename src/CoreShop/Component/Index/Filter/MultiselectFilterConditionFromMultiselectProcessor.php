@@ -56,7 +56,7 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
             }, $currentFilter[$field] ?: []),
             'values' => array_values($values),
             'fieldName' => $field,
-            'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById((string)$condition->getQuantityUnit()) : null,
+            'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById($condition->getQuantityUnit()) : null,
         ];
     }
 
