@@ -10,9 +10,9 @@
  *
  */
 
-pimcore.registerNS('coreshop.index.interpreters.objectproperty');
+pimcore.registerNS('coreshop.index.interpreters.objectProperty');
 
-coreshop.index.interpreters.objectproperty = Class.create(coreshop.index.interpreters.abstract, {
+coreshop.index.interpreters.objectProperty = Class.create(coreshop.index.interpreters.abstract, {
 
     getLayout: function (record, interpreterConfig) {
         return [

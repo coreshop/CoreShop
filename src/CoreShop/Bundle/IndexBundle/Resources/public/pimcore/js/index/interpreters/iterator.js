@@ -71,8 +71,6 @@ coreshop.index.interpreters.iterator = Class.create(coreshop.index.interpreters.
 
     getInterpreterPanelLayout : function (type, record, parentConfig, config) {
         if (type) {
-            type = type.toLowerCase();
-
             if (coreshop.index.interpreters[type]) {
                 this.interpreterPanelClass = new coreshop.index.interpreters[type];
 

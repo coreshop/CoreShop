@@ -230,8 +230,6 @@ coreshop.index.objecttype.abstract = Class.create({
 
     getInterpreterPanelLayout: function (type) {
         if (type) {
-            type = type.toLowerCase();
-
             //Check if some class for getterPanel is available
             if (coreshop.index.interpreters[type]) {
                 var interpreter = new coreshop.index.interpreters[type];
