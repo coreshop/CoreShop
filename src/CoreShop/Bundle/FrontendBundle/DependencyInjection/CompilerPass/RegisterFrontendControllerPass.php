@@ -23,6 +23,7 @@ use CoreShop\Component\Order\Payment\OrderPaymentProviderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterFrontendControllerPass implements CompilerPassInterface
@@ -36,6 +37,7 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
 
         foreach ($controllers as $key => $value) {
             $controllerKey = sprintf('coreshop.frontend.controller.%s', $key);
+            $serviceName = sprintf('CoreShop\\Bundle\\FrontendBundle\\Controller\\.%sController', $key);
             $controllerClass = (string)$container->getParameter($controllerKey);
 
             if ($container->hasDefinition($controllerClass)) {
@@ -44,7 +46,8 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
                 $customController->addMethodCall('setContainer', [new Reference('service_container')]);
                 $customController->addMethodCall('setTemplateConfigurator', [new Reference(TemplateConfiguratorInterface::class)]);
 
-                $container->setDefinition($controllerKey, $customController)->setPublic(true);
+                $container->setDefinition($serviceName, $customController)->setPublic(true);
+                $container->setAlias($controllerKey, $serviceName)->setPublic(true);
 
                 continue;
             }
@@ -69,6 +72,14 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
                     ]);
 
                     break;
+                case 'category':
+                    $controllerDefinition->setArguments([
+                        new Parameter('coreshop.frontend.category.valid_sort_options'),
+                        new Parameter('coreshop.frontend.category.default_sort_name'),
+                        new Parameter('coreshop.frontend.category.default_sort_direction'),
+                    ]);
+
+                    break;
                 case 'payment':
                     $controllerDefinition->setMethodCalls([
                         ['setContainer', [new Reference('service_container')]],
@@ -88,6 +99,7 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
 
             $container->setDefinition($controllerClass, $controllerDefinition);
             $container->setAlias($controllerKey, $controllerClass)->setPublic(true);
+            $container->setAlias($serviceName, $controllerClass)->setPublic(true);
         }
     }
 }
