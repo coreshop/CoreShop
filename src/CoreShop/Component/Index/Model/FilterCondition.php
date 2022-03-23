@@ -50,7 +50,7 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
     public $label;
 
     /**
-     * @var int
+     * @var string
      */
     public $quantityUnit;
 
