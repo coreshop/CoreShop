@@ -63,7 +63,7 @@ body.pimcore_version_10 .coreshop_nav_icon_filters {
 }
 
 .coreshop_filters_icon_conditions_search {
-    background: url(../img/filter-category-select.svg) center center no-repeat !important;
+    background: url(../img/filter-search.svg) center center no-repeat !important;
 }
 
 .coreshop_filters_preConditions {
