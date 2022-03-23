@@ -37,6 +37,8 @@ services:
 
     CoreShop\Bundle\CoreBundle\Command\InstallCommand:
         parent: CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Installer'
         tags:
           - { name: console.command, command: coreshop:install }
 
