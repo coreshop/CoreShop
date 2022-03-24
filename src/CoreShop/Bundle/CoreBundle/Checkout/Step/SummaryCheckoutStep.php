@@ -50,7 +50,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
 
         $nextAction = $submitOrder instanceof ClickableInterface && $submitOrder->isClicked()
             ? 'coreshop_checkout_do'
-            : 'coreshop_cart_create_qoute';
+            : 'coreshop_cart_create_quote';
 
         return new RedirectResponse($this->router->generate($nextAction));
     }
