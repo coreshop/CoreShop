@@ -22,6 +22,18 @@ coreshop.notification.rule.action = Class.create(coreshop.rules.action, {
         return coreshop.notification.rule.actions;
     },
 
+    reload: function (actions) {
+        this.actionsContainer.removeAll();
+
+        Ext.each(actions, function (action) {
+            var actionType = action.type.replace(this.type + '.', '');
+
+            if (this.actions.indexOf(actionType) >= 0) {
+                this.addAction(actionType, action, false);
+            }
+        }.bind(this));
+    },
+
     prepareAction: function (action) {
         action['type'] = this.type + '.' + action['type'];
 

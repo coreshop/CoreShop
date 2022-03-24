@@ -26,6 +26,18 @@ coreshop.notification.rule.condition = Class.create(coreshop.rules.condition, {
         return coreshop.notification.rule.conditions;
     },
 
+    reload: function (conditions) {
+        this.conditionsContainer.removeAll();
+
+        Ext.each(conditions, function (condition) {
+            var conditionType = condition.type.replace(this.type + '.', '');
+
+            if (this.conditions.indexOf(conditionType) >= 0) {
+                this.addCondition(conditionType, condition, false);
+            }
+        }.bind(this));
+    },
+
     prepareCondition: function (condition) {
         condition['type'] = this.type + '.' + condition['type'];
 
