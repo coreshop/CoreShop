@@ -71,7 +71,7 @@ routes:
     variables: _locale
     priority: 2
 
-  coreshop_cart_create_qoute:
+  coreshop_cart_create_quote:
     pattern: '/(\w+)\/shop\/cart\/quote$/'
     reverse: '/%_locale/shop/cart/quote'
     controller: 'CoreShop\Bundle\FrontendBundle\Controller\CartController:createQuoteAction'
