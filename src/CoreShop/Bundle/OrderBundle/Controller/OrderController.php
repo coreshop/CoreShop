@@ -70,6 +70,9 @@ class OrderController extends AbstractSaleDetailController
      */
     public function getStatesAction(Request $request)
     {
+        /**
+         * @var array $identifiers
+         */
         $identifiers = $this->getParameter('coreshop.state_machines');
         $states = [];
         $transitions = [];

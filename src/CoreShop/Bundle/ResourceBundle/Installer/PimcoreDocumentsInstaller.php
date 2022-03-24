@@ -49,6 +49,9 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
         ) : 'coreshop.all.pimcore.admin.install.documents';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            /**
+             * @var array $documentFilesToInstall
+             */
             $documentFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);
             $docsToInstall = [];
 

@@ -21,6 +21,9 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+        /**
+         * @var array $controllers
+         */
         $controllers = $container->getParameter('coreshop.frontend.controllers');
 
         foreach ($controllers as $key => $value) {

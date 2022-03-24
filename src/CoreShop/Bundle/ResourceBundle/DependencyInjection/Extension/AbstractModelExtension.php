@@ -95,6 +95,9 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
         $globalParameterName = 'coreshop.all.stack';
 
         foreach ([$appParameterName, $globalParameterName] as $parameterName) {
+            /**
+             * @var array $stackConfig
+             */
             $stackConfig = $container->hasParameter($parameterName) ? $container->getParameter($parameterName) : [];
 
             foreach ($stack as $key => $interface) {
@@ -144,10 +147,16 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
             $globalPermissions = [];
 
             if ($container->hasParameter($applicationParameter)) {
+                /**
+                 * @var array $applicationPermissions
+                 */
                 $applicationPermissions = $container->getParameter($applicationParameter);
             }
 
             if ($container->hasParameter($globalParameter)) {
+                /**
+                 * @var array $globalPermissions
+                 */
                 $globalPermissions = $container->getParameter($globalParameter);
             }
 
