@@ -52,7 +52,7 @@
     "coreshop/core": "^3.0",
     "fakerphp/faker": "^1.16",
     "rinvex/countries": "^7.3",
-    "pimcore/pimcore": "^10.2.2"
+    "pimcore/pimcore": "^10.3"
   },
   "require-dev": {
     "phpstan/phpstan": "^0.12",
