@@ -31,16 +31,14 @@ coreshop.core.resource = Class.create(coreshop.resource, {
     },
 
     pimcoreReady: function (params, broker) {
-        if (pimcore.globalmanager.get('user').isAllowed('coreshop_permission_settings')) {
-            Ext.Ajax.request({
-                url: Routing.generate('coreshop_admin_settings_get_settings'),
-                success: function (response) {
-                    this.settings = Ext.decode(response.responseText);
-                    coreshop.settings = this.settings;
-                    this.initializeCoreShop();
-                }.bind(this)
-            });
-        }
+        Ext.Ajax.request({
+            url: Routing.generate('coreshop_admin_settings_get_settings'),
+            success: function (response) {
+                this.settings = Ext.decode(response.responseText);
+                coreshop.settings = this.settings;
+                this.initializeCoreShop();
+            }.bind(this)
+        });
     },
 
     initializeCoreShop: function () {

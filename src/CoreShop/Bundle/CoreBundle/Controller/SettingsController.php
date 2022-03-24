@@ -23,8 +23,6 @@ class SettingsController extends AdminController
 {
     public function getSettingsAction(Request $request): Response
     {
-        $this->checkPermission('coreshop_permission_settings');
-
         $settings = [
             'bundle' => [
                 'version' => Version::getVersion(),
