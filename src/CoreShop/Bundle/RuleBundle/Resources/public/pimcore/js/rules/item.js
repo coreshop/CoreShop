@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -61,8 +61,13 @@ coreshop.rules.item = Class.create(coreshop.resource.item, {
         }
     },
 
+    postSave: function(result) {
+        this.conditions.reload(result.data.conditions);
+        this.actions.reload(result.data.actions);
+    },
+
     getSaveData: function () {
-        saveData = this.settingsForm.getForm().getFieldValues();
+        var saveData = this.settingsForm.getForm().getFieldValues();
         saveData['conditions'] = this.conditions.getConditionsData();
         saveData['actions'] = this.actions.getActionsData();
 

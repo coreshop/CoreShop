@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -217,31 +217,5 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         $additionalDefinitionsSorted = new ArrayCollection(array_values($additionalDefinitions->toArray()));
 
         return $additionalDefinitionsSorted;
-    }
-
-    public function __clone()
-    {
-        if ($this->id === null) {
-            return;
-        }
-
-        $newDefaultUnitDefinition = clone $this->getDefaultUnitDefinition();
-        $newDefaultUnitDefinition->setProductUnitDefinitions($this);
-
-        $additionalUnits = $this->getAdditionalUnitDefinitions();
-
-        $this->id = null;
-        $this->unitDefinitions =  new ArrayCollection();
-        $this->defaultUnitDefinition = null;
-
-        $this->setDefaultUnitDefinition($newDefaultUnitDefinition);
-
-        if ($additionalUnits instanceof Collection) {
-            foreach ($additionalUnits as $additionalUnit) {
-                $newAdditionalDefinition = clone $additionalUnit;
-                $newAdditionalDefinition->setProductUnitDefinitions($this);
-                $this->addUnitDefinition($newAdditionalDefinition);
-            }
-        }
     }
 }

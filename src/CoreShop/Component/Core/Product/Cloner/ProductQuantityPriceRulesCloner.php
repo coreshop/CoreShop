@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,117 +14,93 @@ namespace CoreShop\Component\Core\Product\Cloner;
 
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
+use CoreShop\Component\Pimcore\BCLayer\CustomDataCopyInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
-use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use Doctrine\Common\Collections\Collection;
+use Pimcore\Model\DataObject\Concrete;
 
 class ProductQuantityPriceRulesCloner implements ProductClonerInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false)
+    protected $unitMatcher;
+
+    public function __construct(UnitMatcherInterface $unitMatcher)
     {
+        $this->unitMatcher = $unitMatcher;
+    }
+
+    public function clone(
+        ProductInterface $product,
+        ProductInterface $referenceProduct,
+        bool $resetExistingData = false
+    ) {
         if ($product->getId() === null) {
-            throw new \Exception(sprintf('cannot clone quantity price rules on a un-stored product (reference product id: %d.', $referenceProduct->getId()));
+            throw new \Exception(
+                sprintf(
+                    'cannot clone quantity price rules on a unsaved product (reference product id: %d.)',
+                    $referenceProduct->getId()
+                )
+            );
         }
 
         $quantityPriceRules = $referenceProduct->getQuantityPriceRules();
 
-        if (!is_array($quantityPriceRules)) {
-            return;
+        /**
+         * @var Concrete&ProductInterface $referenceProduct
+         * @psalm-var Concrete&ProductInterface $referenceProduct
+         */
+        $qprFieldDefinition = $referenceProduct->getClass()->getFieldDefinition('quantityPriceRules');
+
+        if (!$qprFieldDefinition instanceof CustomDataCopyInterface) {
+            throw new \Exception('Field Definition must implement CustomDataCopyInterface');
         }
 
-        $hasQuantityPriceRules = is_array($product->getQuantityPriceRules()) && count($product->getQuantityPriceRules()) > 0;
+        $newQuantityPriceRules = $qprFieldDefinition->createDataCopy($referenceProduct, $quantityPriceRules);
+        $this->reallocateRanges($product, $newQuantityPriceRules, $quantityPriceRules);
 
-        if ($hasQuantityPriceRules === true && $resetExistingData === false) {
-            return;
-        }
-
-        $newQuantityPriceRules = [];
-
-        /** @var ProductQuantityPriceRuleInterface $quantityPriceRule */
-        foreach ($quantityPriceRules as $quantityPriceRule) {
-            $newQuantityPriceRules[] = $this->cloneAndReallocateRangeQuantityUnit($product, $quantityPriceRule);
-        }
-
-        if (count($newQuantityPriceRules) > 0) {
-            $product->setQuantityPriceRules($newQuantityPriceRules);
-        }
+        $product->setQuantityPriceRules($newQuantityPriceRules);
     }
 
-    /**
-     * @param ProductInterface                  $product
-     * @param ProductQuantityPriceRuleInterface $quantityPriceRule
-     *
-     * @return ProductQuantityPriceRuleInterface
-     * @throws \Exception
-     */
-    protected function cloneAndReallocateRangeQuantityUnit(ProductInterface $product, ProductQuantityPriceRuleInterface $quantityPriceRule)
-    {
-        $newQuantityPriceRule = clone $quantityPriceRule;
-
-        $newQuantityPriceRule->setProduct($product->getId());
-
-        $ranges = $newQuantityPriceRule->getRanges();
-        $referenceRanges = $quantityPriceRule->getRanges();
-
-        if (!$ranges instanceof Collection) {
-            return $newQuantityPriceRule;
+    protected function reallocateRanges(
+        ProductInterface $product,
+        array $newQuantityPriceRules,
+        array $oldQuantityPriceRules
+    ) {
+        if (count($oldQuantityPriceRules) !== count($newQuantityPriceRules)) {
+            throw new \Exception('Count of old an new rules does not match');
         }
 
-        foreach ($ranges as $index => $range) {
+        foreach ($newQuantityPriceRules as $j => $newQuantityPriceRule) {
+            $quantityPriceRule = $oldQuantityPriceRules[$j];
 
-            if (!$range instanceof QuantityRangeInterface) {
+            $ranges = $newQuantityPriceRule->getRanges();
+            $referenceRanges = $quantityPriceRule->getRanges();
+
+            if (!$ranges instanceof Collection) {
                 continue;
             }
 
-            $referenceRange = null;
-            $allocatedUnitDefinition = null;
+            foreach ($ranges as $index => $range) {
+                if (!$range instanceof QuantityRangeInterface) {
+                    continue;
+                }
 
-            if ($ranges instanceof Collection) {
                 $referenceRange = $referenceRanges->get($index);
-            }
 
-            if ($referenceRange instanceof QuantityRangeInterface && $referenceRange->getUnitDefinition() instanceof ProductUnitDefinitionInterface) {
-                $allocatedUnitDefinition = $this->findMatchingUnitDefinitionByUnitName($product, $referenceRange->getUnitDefinition()->getUnitName());
-            }
+                if ($referenceRange instanceof QuantityRangeInterface &&
+                    $referenceRange->getUnitDefinition() instanceof ProductUnitDefinitionInterface
+                ) {
+                    $allocatedUnitDefinition = $this->unitMatcher->findMatchingUnitDefinitionByUnitName(
+                        $product,
+                        $referenceRange->getUnitDefinition()->getUnitName()
+                    );
 
-            if (!$allocatedUnitDefinition instanceof ProductUnitDefinitionInterface) {
-                continue;
-            }
+                    if (!$allocatedUnitDefinition instanceof ProductUnitDefinitionInterface) {
+                        continue;
+                    }
 
-            $range->setUnitDefinition($allocatedUnitDefinition);
-
-        }
-
-        return $newQuantityPriceRule;
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param string           $unitName
-     *
-     * @return ProductUnitDefinitionInterface|null
-     */
-    protected function findMatchingUnitDefinitionByUnitName(ProductInterface $product, string $unitName)
-    {
-        if ($product->hasUnitDefinitions() === false) {
-            return null;
-        }
-
-        /** @var ProductUnitDefinitionInterface $unitDefinition */
-        foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $unitDefinition) {
-
-            if (!$unitDefinition instanceof ProductUnitDefinitionInterface) {
-                continue;
-            }
-
-            if ($unitDefinition->getUnitName() === $unitName) {
-                return $unitDefinition;
+                    $range->setUnitDefinition($allocatedUnitDefinition);
+                }
             }
         }
-
-        return null;
     }
 }

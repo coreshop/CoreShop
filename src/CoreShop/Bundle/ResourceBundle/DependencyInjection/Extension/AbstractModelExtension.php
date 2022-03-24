@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -95,6 +95,9 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
         $globalParameterName = 'coreshop.all.stack';
 
         foreach ([$appParameterName, $globalParameterName] as $parameterName) {
+            /**
+             * @var array $stackConfig
+             */
             $stackConfig = $container->hasParameter($parameterName) ? $container->getParameter($parameterName) : [];
 
             foreach ($stack as $key => $interface) {
@@ -144,10 +147,16 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
             $globalPermissions = [];
 
             if ($container->hasParameter($applicationParameter)) {
+                /**
+                 * @var array $applicationPermissions
+                 */
                 $applicationPermissions = $container->getParameter($applicationParameter);
             }
 
             if ($container->hasParameter($globalParameter)) {
+                /**
+                 * @var array $globalPermissions
+                 */
                 $globalPermissions = $container->getParameter($globalParameter);
             }
 

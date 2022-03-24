@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -32,9 +32,17 @@ final class StackRepositoryPass implements CompilerPassInterface
             return;
         }
 
+        /**
+         * @var array $stackConfig
+         */
         $stackConfig = $container->getParameter('coreshop.all.stack');
 
-        foreach ($container->getParameter('coreshop.all.stack.fqcns') as $alias => $classes) {
+        /**
+         * @var array $fqcns
+         */
+        $fqcns = $container->getParameter('coreshop.all.stack.fqcns');
+
+        foreach ($fqcns as $alias => $classes) {
             list($applicationName, $name) = explode('.', $alias);
 
             $definition = new Definition(Metadata::class);

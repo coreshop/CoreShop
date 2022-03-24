@@ -13,6 +13,12 @@
   "homepage": "https://www.coreshop.org",
   "authors": [
     {
+      "name": "CoreShop Team",
+      "email": "info@coreshop.org",
+      "homepage": "https://www.coreshop.org/",
+      "role": "Developer"
+    },
+    {
       "name": "Dominik Pfaffenbauer",
       "email": "dominik@pfaffenbauer.at",
       "homepage": "https://www.pfaffenbauer.at/",
@@ -110,7 +116,8 @@
     "dpfaffenbauer/process-manager": "<2.4",
     "pimcore/pimcore": "6.1.0 || 6.1.1 || 6.5.2",
     "monolog/monolog": ">=2",
-    "symfony/monolog-bundle": "3.6.0"
+    "symfony/monolog-bundle": "3.6.0",
+    "symfony/symfony": "3.4.49"
   },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."

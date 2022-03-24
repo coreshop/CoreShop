@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -51,9 +51,12 @@ class ResourceSettingsController extends AdminController
             'stack' => [],
         ];
 
-        if ($this->container->hasParameter('coreshop.all.pimcore_classes')) {
-            $classes = $this->getParameter('coreshop.all.pimcore_classes');
+        /**
+         * @var array $classes
+         */
+        $classes =  $this->container->hasParameter('coreshop.all.pimcore_classes');
 
+        if ($classes) {
             foreach ($classes as $key => $definition) {
                 $alias = explode('.', $key);
                 $application = $alias[0];
@@ -76,6 +79,9 @@ class ResourceSettingsController extends AdminController
                 $config['classMap'][$application][$alias] = $class;
             }
 
+            /**
+             * @var array $stack
+             */
             $stack = $this->container->getParameter('coreshop.all.stack.pimcore_class_names');
 
             foreach ($stack as $key => $impl) {
