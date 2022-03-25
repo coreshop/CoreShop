@@ -39,13 +39,20 @@ coreshop.filter.conditions.search = Class.create(coreshop.filter.conditions.abst
         var patterns = Ext.create('Ext.data.Store', {
             fields: ['value', 'name'],
             data : [
-                {"value":"left", "name":"Ends with"},
-                {"value":"right", "name":"Begins with"},
-                {"value":"both", "name":"Contains"}
+                {"value":"left", "name":t('coreshop_filters_search_patterns_left')},
+                {"value":"right", "name":t('coreshop_filters_search_patterns_right')},
+                {"value":"both", "name":t('coreshop_filters_search_patterns_both')}
             ]
         });
 
         return [
+            {
+                xtype: 'textfield',
+                name: 'name',
+                width: 400,
+                fieldLabel: t('coreshop_filters_search_condition_name'),
+                value: this.data.configuration.name
+            },
             this.getFieldsComboBox(),
             {
                 xtype: 'textfield',
@@ -56,7 +63,7 @@ coreshop.filter.conditions.search = Class.create(coreshop.filter.conditions.abst
             },
             Ext.create('Ext.form.ComboBox', {
                 name: 'pattern',
-                fieldLabel: 'Choose pattern',
+                fieldLabel: t('coreshop_filters_search_patterns_label'),
                 store: patterns,
                 queryMode: 'local',
                 displayField: 'name',
@@ -66,7 +73,7 @@ coreshop.filter.conditions.search = Class.create(coreshop.filter.conditions.abst
             }),
             Ext.create('Ext.form.ComboBox', {
                 name: 'concatenator',
-                fieldLabel: 'Choose concatenator',
+                fieldLabel: t('coreshop_filters_search_patterns_concatenator'),
                 store: concatenators,
                 queryMode: 'local',
                 displayField: 'name',
