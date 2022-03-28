@@ -41,19 +41,19 @@ jobs:
 #        pimcore: [ ^10.3, 10.x-dev ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
         include:
-          - { php-version: "8.0", dependencies: "lowest", pimcore: ^10.3 }
-          - { php-version: "8.0", dependencies: "highest", pimcore: ^10.3 }
-          - { php-version: "8.0", dependencies: "lowest", pimcore: 10.x-dev }
-          - { php-version: "8.0", dependencies: "highest", pimcore: 10.x-dev }
-          - { php-version: "8.0", dependencies: "lowest", pimcore: ^10.3 }
-          - { php-version: "8.0", dependencies: "highest", pimcore: ^10.3 }
-          - { php-version: "8.0", dependencies: "lowest", pimcore: 10.x-dev }
-          - { php-version: "8.0", dependencies: "highest", pimcore: 10.x-dev }
+          - { php: "8.0", dependencies: "lowest",  pimcore: "^10.3" }
+          - { php: "8.0", dependencies: "highest", pimcore: "^10.3" }
+          - { php: "8.0", dependencies: "lowest",  pimcore: "10.x-dev" }
+          - { php: "8.0", dependencies: "highest", pimcore: "10.x-dev" }
+          - { php: "8.0", dependencies: "lowest",  pimcore: "^10.3" }
+          - { php: "8.0", dependencies: "highest", pimcore: "^10.3" }
+          - { php: "8.0", dependencies: "lowest",  pimcore: "10.x-dev" }
+          - { php: "8.0", dependencies: "highest", pimcore: "10.x-dev" }
 
-          - { php-version: "8.1", dependencies: "highest", pimcore: ^10.3}
-          - { php-version: "8.1", dependencies: "highest", pimcore: 10.x-dev }
-          - { php-version: "8.1", dependencies: "highest", pimcore: ^10.3 }
-          - { php-version: "8.1", dependencies: "highest", pimcore: 10.x-dev }
+          - { php: "8.1", dependencies: "highest", pimcore: "^10.3" }
+          - { php: "8.1", dependencies: "highest", pimcore: "10.x-dev" }
+          - { php: "8.1", dependencies: "highest", pimcore: "^10.3" }
+          - { php: "8.1", dependencies: "highest", pimcore: "10.x-dev" }
     steps:
     - uses: actions/checkout@v2
 
