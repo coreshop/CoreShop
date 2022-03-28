@@ -114,10 +114,8 @@ class PriorityMap implements \Iterator, \Countable
 
     /**
      * Get count or map.
-     *
-     * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->list);
     }
@@ -183,7 +181,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Reset iterator.
      */
-    public function rewind()
+    public function rewind(): void
     {
         uasort($this->list, [$this, $this->order . 'SortStrategy']);
         reset($this->list);
@@ -191,10 +189,8 @@ class PriorityMap implements \Iterator, \Countable
 
     /**
      * Get current item.
-     *
-     * @return mixed
      */
-    public function current()
+    public function current(): mixed
     {
         $item = current($this->list);
 
@@ -203,10 +199,8 @@ class PriorityMap implements \Iterator, \Countable
 
     /**
      * Get current key.
-     *
-     * @return mixed
      */
-    public function key()
+    public function key(): mixed
     {
         return key($this->list);
     }
@@ -214,17 +208,15 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Mve iterator next.
      */
-    public function next()
+    public function next(): void
     {
         next($this->list);
     }
 
     /**
      * Check if current key is valid.
-     *
-     * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         return null !== $this->key();
     }
