@@ -45,7 +45,7 @@ final class CurrencyCollector extends DataCollector
 
     public function getCurrency(): ?CurrencyInterface
     {
-        return $this->data['currency'];
+        return $this->data['currency'] ?? null;
     }
 
     public function getCurrencies(): array
