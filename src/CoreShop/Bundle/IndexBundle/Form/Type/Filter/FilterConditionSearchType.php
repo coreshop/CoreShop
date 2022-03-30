@@ -20,6 +20,7 @@ class FilterConditionSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('name', TextType::class)
             ->add('fields', CollectionType::class, [
                 'allow_add' => true,
                 'allow_delete' => true,

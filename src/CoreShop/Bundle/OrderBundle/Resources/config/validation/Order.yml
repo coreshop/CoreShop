@@ -1,4 +1,4 @@
-CoreShop\Component\Order\Model\Cart:
+CoreShop\Component\Order\Model\Order:
     constraints:
         - \CoreShop\Bundle\OrderBundle\Validator\Constraints\CartPriceRule: { groups: ['coreshop'] }
 

@@ -84,21 +84,13 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
 
     private function installRoute(string $name, array $properties): Staticroute
     {
-        $route = new Staticroute();
+        $route = Staticroute::getByName($name);
 
-        try {
-            /**
-             * @psalm-suppress InternalMethod
-             */
-            $route->getDao()->getByName($name, null);
-        } catch (\Exception) {
-            //Route does not exist, so we install it
-            $route = Staticroute::create();
+        if (!$route) {
+            $route = new Staticroute();
             $route->setId($name);
             $route->setName($name);
-            if (method_exists($route, 'setMethods')) {
-                $route->setMethods($properties['methods']);
-            }
+            $route->setMethods($properties['methods']);
             $route->setPattern($properties['pattern']);
             $route->setReverse($properties['reverse']);
             $route->setController($properties['controller']);

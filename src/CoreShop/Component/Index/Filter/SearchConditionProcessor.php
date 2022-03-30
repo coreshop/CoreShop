@@ -26,8 +26,6 @@ class SearchConditionProcessor implements FilterConditionProcessorInterface
 {
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
-        $fields = $condition->getConfiguration()['fields'];
-
         $objects = $list->load();
 
         return [
@@ -35,15 +33,16 @@ class SearchConditionProcessor implements FilterConditionProcessorInterface
             'label' => $condition->getLabel(),
             'currentValue' => $currentFilter['searchTerm'],
             'objects' => $objects,
-            'fieldName' => 'searchTerm',
+            'fieldName' => $condition->getConfiguration()['name'],
         ];
     }
 
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $fields = $condition->getConfiguration()['fields'];
+        $name = $condition->getConfiguration()['name'];
 
-        $value = $parameterBag->get('searchTerm');
+        $value = $parameterBag->get($name);
 
         if (empty($value)) {
             $value = $condition->getConfiguration()['searchTerm'];
@@ -63,14 +62,14 @@ class SearchConditionProcessor implements FilterConditionProcessorInterface
             foreach ($fields as $field) {
                 $fieldName = $isPrecondition ? 'PRECONDITION_' . $field : $field;
 
-                $likeConditions[] = new LikeCondition($field, $pattern, $value);
+                $likeConditions[] = new LikeCondition($fieldName, $pattern, $value);
 
                 unset($field);
             }
 
             $concatenator = $condition->getConfiguration()['concatenator'] ?: 'OR';
 
-            $list->addCondition(new ConcatCondition('search', $concatenator, $likeConditions), 'search');
+            $list->addCondition(new ConcatCondition($name, $concatenator, $likeConditions), $name);
         }
 
         return $currentFilter;

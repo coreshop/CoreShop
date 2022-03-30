@@ -187,7 +187,11 @@ class ProductUnitDefinition extends Data implements
 
     public function unmarshalVersion($object, $data)
     {
-        return $this->getDataFromEditmode($data, $object);
+        if (is_array($data) && isset($data['id'])) {
+            return $this->getRepository()->find($data['id']);
+        }
+
+        return null;
     }
 
     public function marshalRecycleData($object, $data)

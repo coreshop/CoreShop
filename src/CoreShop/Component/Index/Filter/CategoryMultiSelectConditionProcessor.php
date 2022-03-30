@@ -32,8 +32,9 @@ class CategoryMultiSelectConditionProcessor implements FilterConditionProcessorI
             $field = 'parentCategoryIds';
         }
 
+        $concatenator = $condition->getConfiguration()['concatenator'] ?: 'OR';
         $parsedValues = [];
-        $rawValues = $list->getGroupByValues($field, true);
+        $rawValues = $list->getGroupByValues($field, true, $concatenator == 'AND' ? false : true);
 
         foreach ($rawValues as $v) {
             $explode = explode(',', $v['value']);
