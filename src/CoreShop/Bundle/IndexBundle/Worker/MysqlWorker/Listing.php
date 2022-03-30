@@ -475,7 +475,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     /**
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         if ($this->totalCount === null) {
             $queryBuilder = $this->dao->createQueryBuilder();
@@ -508,21 +508,21 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     /**
      * @return mixed
      */
-    public function key()
+    public function key(): mixed
     {
         $this->getObjects();
 
         return key($this->objects);
     }
 
-    public function next(): \CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface|bool
+    public function next(): void
     {
         $this->getObjects();
 
-        return next($this->objects);
+        next($this->objects);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->getObjects();
         reset($this->objects);
@@ -531,7 +531,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     /**
      * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->current() !== false;
     }

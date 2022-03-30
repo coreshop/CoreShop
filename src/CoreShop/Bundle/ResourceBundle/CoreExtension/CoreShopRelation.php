@@ -82,7 +82,12 @@ class CoreShopRelation extends Data\ManyToOneRelation
      */
     public function setClasses($classes)
     {
-        $this->classes = Element\Service::fixAllowedTypes($this->getCoreShopPimcoreClasses()[$this->stack], 'classes');
+        if (!empty($this->stack)) {
+            $this->classes = Element\Service::fixAllowedTypes(
+                $this->getCoreShopPimcoreClasses()[$this->stack],
+                'classes'
+            );
+        }
 
         return $this;
     }

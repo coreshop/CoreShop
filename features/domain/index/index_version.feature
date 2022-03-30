@@ -19,21 +19,21 @@ Feature: Adding a object index
       | key         | value | type     |
       | enabled     | true  | checkbox |
       | booleanTest | false | checkbox |
-    Then the index column "booleanTest" for object-instance "test1" should have value "0"
+    Then the index column "booleanTest" for object-instance "test1" should have integer value "0"
 
   Scenario: Save object normally
     Given the object-instance has following values:
       | key         | value | type     |
       | enabled     | true  | checkbox |
       | booleanTest | true  | checkbox |
-    Then the index column "booleanTest" for object-instance "test1" should have value "1"
+    Then the index column "booleanTest" for object-instance "test1" should have integer value "1"
 
   Scenario: Save object as version, index should not update
     Given the object-instance has following values as version:
       | key         | value | type     |
       | enabled     | true  | checkbox |
       | booleanTest | true  | checkbox |
-    Then the index column "booleanTest" for object-instance "test1" should have value "0"
+    Then the index column "booleanTest" for object-instance "test1" should have integer value "0"
 
   Scenario: Save object normally when index allows version changes
     Given the index allows version changes
@@ -41,7 +41,7 @@ Feature: Adding a object index
       | key         | value | type     |
       | enabled     | true  | checkbox |
       | booleanTest | true  | checkbox |
-    Then the index column "booleanTest" for object-instance "test1" should have value "1"
+    Then the index column "booleanTest" for object-instance "test1" should have integer value "1"
 
   Scenario: Save object as version when index allows version changes
     Given the index allows version changes
@@ -49,7 +49,7 @@ Feature: Adding a object index
       | key         | value | type     |
       | enabled     | true  | checkbox |
       | booleanTest | true  | checkbox |
-    Then the index column "booleanTest" for object-instance "test1" should have value "1"
+    Then the index column "booleanTest" for object-instance "test1" should have integer value "1"
 
 
 

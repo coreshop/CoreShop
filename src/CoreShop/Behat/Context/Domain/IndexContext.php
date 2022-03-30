@@ -128,6 +128,16 @@ final class IndexContext implements Context
     }
 
     /**
+     * @Then /^the (index) column "([^"]+)" for (product "[^"]+") should have integer value "(\d+)"$/
+     * @Then /^the (index) column "([^"]+)" for (object-instance) should have integer value "(\d+)"$/
+     * @Then /^the (index) column "([^"]+)" for (object-instance "[^"]+") should have integer value "(\d+)"$/
+     */
+    public function theIndexColumnForProductShouldHaveIntegerValue(IndexInterface $index, $column, IndexableInterface $object, int $value): void
+    {
+        $this->indexEntryShouldHaveValue($index, $object, $column, $value);
+    }
+
+    /**
      * @Then /^the (index) localized column "([^"]+)" for (product "[^"]+") should have value "([^"]+)"$/
      * @Then /^the (index) localized column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
      * @Then /^the (index) localized column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/
@@ -179,10 +189,13 @@ final class IndexContext implements Context
             $productEntry[$column],
             $value,
             sprintf(
-                'Expected column value %s for column %s to be %s',
+                'Expected column value %s (type: %s) for column %s to be %s (type: %s)',
                 $productEntry[$column],
+                get_debug_type($productEntry[$column]),
                 $column,
-                $value
+                $value,
+                get_debug_type($value),
+
             )
         );
     }
