@@ -89,7 +89,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['ctc_assign_to_new', 'ctc_assign_to_existing'])
+                        ->defaultValue(['settings', 'ctc_assign_to_new', 'ctc_assign_to_existing'])
                     ->end()
                     ->arrayNode('editmode_js')
                         ->useAttributeAsKey('name')

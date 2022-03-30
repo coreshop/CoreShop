@@ -19,6 +19,11 @@ use Pimcore\Model\DataObject\Data\UrlSlug;
 interface SluggableInterface
 {
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
      * @return UrlSlug[]
      */
     public function getSlug($language = null): ?array;
