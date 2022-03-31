@@ -64,22 +64,22 @@ class Money extends DataObject\ClassDefinition\Data implements
 
     public function getParameterTypeDeclaration(): ?string
     {
-        return 'int';
+        return '?int';
     }
 
     public function getReturnTypeDeclaration(): ?string
     {
-        return 'int';
+        return '?int';
     }
 
     public function getPhpdocInputType(): ?string
     {
-        return 'int';
+        return '?int';
     }
 
     public function getPhpdocReturnType(): ?string
     {
-        return 'int';
+        return '?int';
     }
 
     /**
@@ -211,11 +211,11 @@ class Money extends DataObject\ClassDefinition\Data implements
         $data = $object->getObjectVar($this->getName());
 
         if (null === $data) {
-            return 0;
+            return null;
         }
 
         if (!is_int($data)) {
-            return 0;
+            return null;
         }
 
         return $data;
@@ -230,7 +230,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
         $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function get' . ucfirst($key) . " (): int {\n";
+        $code .= 'public function get' . ucfirst($key) . " (): ?int {\n";
 
         $code .= $this->getPreGetValueHookCode($key);
 
@@ -288,7 +288,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
         $code .= '* @return ' . $returnType . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' (int ' . '$' . $key . ") {\n";
+        $code .= 'public function set' . ucfirst($key) . ' (?int ' . '$' . $key . ") {\n";
         $code .= "\t" . '$fd = $this->getClass()->getFieldDefinition("' . $key . '");' . "\n";
 
         if ($this instanceof DataObject\ClassDefinition\Data\EncryptedField) {
@@ -329,7 +329,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
         $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function get' . ucfirst($key) . " (): int {\n";
+        $code .= 'public function get' . ucfirst($key) . " (): ?int {\n";
 
         if (method_exists($this, 'preGetData')) {
             $code .= "\t" . '$data = $this->getDefinition()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n";
@@ -367,7 +367,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
         $code .= '* @return \\Pimcore\\Model\\DataObject\\Objectbrick\\Data\\' . ucfirst($brickClass->getKey()) . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' (int ' . '$' . $key . ") {\n";
+        $code .= 'public function set' . ucfirst($key) . ' (?int ' . '$' . $key . ") {\n";
         $code .= "\t" . '$fd = $this->getDefinition()->getFieldDefinition("' . $key . '");' . "\n";
 
         if ($this instanceof DataObject\ClassDefinition\Data\EncryptedField) {
@@ -409,7 +409,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
         $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function get' . ucfirst($key) . " (): int {\n";
+        $code .= 'public function get' . ucfirst($key) . " (): ?int {\n";
 
         if (method_exists($this, 'preGetData')) {
             $code .= "\t" . '$container = $this;' . "\n";
@@ -439,7 +439,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
         $code .= '* @return \\Pimcore\\Model\\DataObject\\Fieldcollection\\Data\\' . ucfirst($fieldcollectionDefinition->getKey()) . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' (int ' . '$' . $key . ") {\n";
+        $code .= 'public function set' . ucfirst($key) . ' (?int ' . '$' . $key . ") {\n";
         $code .= "\t" . '$fd = $this->getDefinition()->getFieldDefinition("' . $key . '");' . "\n";
 
         if ($this instanceof DataObject\ClassDefinition\Data\EncryptedField) {
@@ -479,7 +479,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
         $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function get' . ucfirst($key) . ' ($language = null): int {' . "\n";
+        $code .= 'public function get' . ucfirst($key) . ' ($language = null): ?int {' . "\n";
 
         $code .= "\t" . '$data = $this->getLocalizedfields()->getLocalizedValue("' . $key . '", $language);' . "\n";
 
@@ -519,7 +519,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
         $code .= '* @return \\Pimcore\\Model\\DataObject\\' . ucfirst($classname) . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' (int ' . '$' . $key . ', $language = null) {' . "\n";
+        $code .= 'public function set' . ucfirst($key) . ' (?int ' . '$' . $key . ', $language = null) {' . "\n";
         if ($this->supportsDirtyDetection()) {
             $code .= "\t" . '$fd = $this->' . $containerGetter . '()->getFieldDefinition("localizedfields")->getFieldDefinition("' . $key . '");' . "\n";
         }
@@ -556,7 +556,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         }
 
         if (null === $data) {
-            return 0;
+            return null;
         }
 
         return $data;
@@ -569,6 +569,10 @@ class Money extends DataObject\ClassDefinition\Data implements
 
     public function getDataForEditmode($data, $object = null, $params = [])
     {
+        if (null === $data) {
+            return $data;
+        }
+
         return round($data / $this->getDecimalFactor(), $this->getDecimalPrecision());
     }
 
