@@ -10,17 +10,12 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.quote.detail.panel');
-coreshop.order.quote.detail.panel = Class.create(coreshop.order.order.detail.panel, {
-    type: 'quote',
+pimcore.registerNS('coreshop.notification.rule.conditions.quoteTransition');
 
-    getBlockIdentifier: function () {
-        return coreshop.order.quote.detail.blocks;
-    },
+coreshop.notification.rule.conditions.quoteTransition = Class.create(coreshop.notification.rule.conditions.abstractTransition, {
+    type: 'quoteTransition',
 
-    getLayout: function($super) {
-        var layout = $super();
-
-        layout.setTitle(t('coreshop_' + this.type) + ': ' + this.sale.quoteNumber);
-    },
+    getRepoName: function() {
+        return 'coreshop_transitions_quote';
+    }
 });

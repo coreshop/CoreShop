@@ -19,8 +19,6 @@ services:
       - MYSQL_DATABASE=pimcore
       - MYSQL_USER=pimcore
       - MYSQL_PASSWORD=pimcore
-    ports:
-      - "3306:3306"
 
   php:
     build: .

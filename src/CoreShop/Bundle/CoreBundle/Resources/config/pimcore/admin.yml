@@ -89,6 +89,8 @@ core_shop_core:
             notification_rule_condition_order_backend_created: '/bundles/coreshopcore/pimcore/js/notification/conditions/order/backendCreated.js'
             notification_rule_condition_order_order_state: '/bundles/coreshopcore/pimcore/js/notification/conditions/order/orderState.js'
             notification_rule_condition_order_order_state_transition: '/bundles/coreshopcore/pimcore/js/notification/conditions/order/orderTransition.js'
+            notification_rule_condition_order_quote_state: '/bundles/coreshopcore/pimcore/js/notification/conditions/quote/orderState.js'
+            notification_rule_condition_order_quote_state_transition: '/bundles/coreshopcore/pimcore/js/notification/conditions/quote/orderTransition.js'
             notification_rule_condition_order_payment: '/bundles/coreshopcore/pimcore/js/notification/conditions/order/payment.js'
             notification_rule_condition_order_payment_state: '/bundles/coreshopcore/pimcore/js/notification/conditions/order/orderPaymentState.js'
             notification_rule_condition_order_payment_transition: '/bundles/coreshopcore/pimcore/js/notification/conditions/order/orderPaymentTransition.js'
