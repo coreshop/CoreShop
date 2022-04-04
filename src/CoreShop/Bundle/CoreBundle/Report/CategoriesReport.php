@@ -127,7 +127,7 @@ class CategoriesReport implements ReportInterface
             SELECT SQL_CALC_FOUND_ROWS
               `categories`.oo_id as categoryId,
               `categories`.o_key as categoryKey,
-              `localizedCategories`.name as categoryName,
+              `localizedCategories`.publicationsCategory as categoryName,
               `orders`.store,
               SUM(orderItems.totalGross) AS sales,
               SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
