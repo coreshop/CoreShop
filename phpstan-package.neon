@@ -1,7 +1,7 @@
 parameters:
     reportUnmatchedIgnoredErrors: false
 
-    excludes_analyse:
+    excludePaths:
         # Makes PHPStan crash
         - '**/DependencyInjection/Configuration.php'
         - '**/Migrations/Version*.php'
