@@ -96,6 +96,7 @@ jobs:
     - name: Install CoreShop
       run: |
         bin/console coreshop:install
+        composer dump-autoload
 
     - name: Install Browser Drivers
       run: vendor/bin/bdi detect drivers
