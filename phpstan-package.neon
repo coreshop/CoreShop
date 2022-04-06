@@ -34,6 +34,7 @@ parameters:
         - '/Method Pimcore\\Model\\DataObject\\Concrete::getLatestVersion\(\)\(.*\)/'
         - '/Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\)/'
         - '/Method CoreShop\\Bundle\\ResourceBundle\\Routing\\ResourceLoader::getResolver\(\) should return Symfony\\Component\\Config\\Loader\\LoaderResolverInterface but return statement is missing./'
+        - '/PHPDoc type string of property CoreShop\\Bundle\\PayumBundle\\Request\\GetStatus::\$status is not covariant with PHPDoc type int of overridden property Payum\\Core\\Request\\BaseGetStatus::\$status./'
 
         # Pimcore BC Breaks
         - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Href not found/'
