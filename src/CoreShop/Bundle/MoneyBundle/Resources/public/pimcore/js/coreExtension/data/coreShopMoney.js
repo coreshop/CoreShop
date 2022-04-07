@@ -61,7 +61,8 @@ pimcore.object.classes.data.coreShopMoney = Class.create(pimcore.object.classes.
                 fieldLabel: t("default_value"),
                 name: "defaultValue",
                 value: this.datax.defaultValue
-            }, {
+            },
+            {
                 xtype: "panel",
                 bodyStyle: "padding-top: 3px",
                 style: "margin-bottom: 10px",
@@ -71,6 +72,12 @@ pimcore.object.classes.data.coreShopMoney = Class.create(pimcore.object.classes.
 
         if (!this.isInCustomLayoutEditor()) {
             this.specificPanel.add([
+                {
+                    xtype: "checkbox",
+                    fieldLabel: t("nullable"),
+                    name: "nullable",
+                    value: this.datax.nullable
+                },
                 {
                     xtype: "numberfield",
                     fieldLabel: t("min_value"),
@@ -99,6 +106,7 @@ pimcore.object.classes.data.coreShopMoney = Class.create(pimcore.object.classes.
                 defaultValue: source.datax.defaultValue,
                 minValue: source.datax.minValue,
                 maxValue: source.datax.maxValue,
+                nullable: source.datax.nullable,
             });
         }
     }
