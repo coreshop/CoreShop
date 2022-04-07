@@ -185,6 +185,11 @@ CoreShop\Component\Order\Model\Order:
             exp: object.getOrderNumber()
             type: string
             groups: [Detailed]
+        quoteNumber:
+            serialized_name: quoteNumber
+            exp: object.getQuoteNumber()
+            type: string
+            groups: [Detailed]
         orderDate:
             serialized_name: orderDate
             exp: object.getOrderDate()

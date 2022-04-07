@@ -53,7 +53,7 @@ coreshop.order.quote.detail.blocks.info = Class.create(coreshop.order.order.deta
     updateSale: function () {
         var me = this;
 
-        me.saleInfo.setTitle(t('coreshop_' + me.panel.type) + ': ' + this.sale.saleNumber + ' (' + this.sale.o_id + ')');
+        me.saleInfo.setTitle(t('coreshop_' + me.panel.type) + ': ' + this.sale.quoteNumber + ' (' + this.sale.o_id + ')');
 
         me.saleInfo.removeAll();
         me.saleStatesStore.loadRawData(me.sale.statesHistory);

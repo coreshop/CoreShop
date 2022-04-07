@@ -1,4 +1,5 @@
-/*
+<?php
+/**
  * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
@@ -7,20 +8,19 @@
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
  */
 
-pimcore.registerNS('coreshop.order.quote.detail.panel');
-coreshop.order.quote.detail.panel = Class.create(coreshop.order.order.detail.panel, {
-    type: 'quote',
+declare(strict_types=1);
 
-    getBlockIdentifier: function () {
-        return coreshop.order.quote.detail.blocks;
-    },
+namespace CoreShop\Component\Order;
 
-    getLayout: function($super) {
-        var layout = $super();
+final class QuoteTransitions
+{
+    public const IDENTIFIER = 'coreshop_quote';
 
-        layout.setTitle(t('coreshop_' + this.type) + ': ' + this.sale.quoteNumber);
-    },
-});
+    public const TRANSITION_CREATE = 'create';
+
+    public const TRANSITION_CANCEL = 'cancel';
+
+    public const TRANSITION_COMPLETE = 'complete';
+}
