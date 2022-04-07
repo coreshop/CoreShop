@@ -73,8 +73,15 @@ class CartController extends FrontendController
                 $cart = $form->getData();
                 $code = $form->get('cartRuleCoupon')->getData();
 
-                if ($code) {
-                    $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
+                if(method_exists($form, 'getClickedButton')) {
+                    $submit = $form->getClickedButton();
+                    $validateVoucherCode = $submit && 'submit_voucher' === $submit->getName();
+                } else {
+                    $validateVoucherCode = (bool)$code;
+                }
+
+                if ($validateVoucherCode) {
+                    $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code ?? '');
 
                     if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                         $this->addFlash(

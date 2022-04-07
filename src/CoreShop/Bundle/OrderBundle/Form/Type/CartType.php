@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,7 +31,8 @@ final class CartType extends AbstractResourceType
                 'allow_delete' => false,
                 'by_reference' => false,
                 'label' => 'coreshop.form.cart.items',
-            ]);
+            ])
+            ->add('submit', SubmitType::class);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
