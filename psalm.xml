@@ -25,6 +25,11 @@
 
     <issueHandlers>
         <!-- level 3 issues - slightly lazy code writing, but probably low false-negatives -->
+        <UndefinedDocblockClass>
+            <errorLevel type="suppress">
+                <referencedClass name="UnitEnum" />
+            </errorLevel>
+        </UndefinedDocblockClass>
 
         <DeprecatedClass>
             <errorLevel type="info">

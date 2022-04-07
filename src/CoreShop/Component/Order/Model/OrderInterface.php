@@ -55,6 +55,10 @@ interface OrderInterface extends
 
     public function setOrderState(?string $orderState);
 
+    public function getQuoteState(): ?string;
+
+    public function setQuoteState(?string $quoteState);
+
     public function getShippingState(): ?string;
 
     public function setShippingState(?string $shippingState);
@@ -74,6 +78,10 @@ interface OrderInterface extends
     public function getOrderNumber(): ?string;
 
     public function setOrderNumber(?string $orderNumber);
+
+    public function getQuoteNumber(): ?string;
+
+    public function setQuoteNumber(?string $quoteNumber);
 
     public function getBaseCurrency(): ?CurrencyInterface;
 

@@ -1,0 +1,37 @@
+framework:
+    workflows:
+        coreshop_quote:
+            type: 'state_machine'
+            marking_store:
+                service: coreshop.state_machine.marking_store.quote_pimcore_marking_store
+            supports: CoreShop\Component\Order\Model\Order
+
+core_shop_workflow:
+    state_machine:
+        coreshop_quote:
+            places:
+                - initialized
+                - new
+                - cancelled
+                - complete
+            transitions:
+                create:
+                    from: [initialized]
+                    to: new
+                cancel:
+                    from: [new]
+                    to:   cancelled
+                complete:
+                    from: new
+                    to:   complete
+            place_colors:
+                initialized: '#d6e1dd'
+                new: '#61c2cb'
+                cancelled: '#f2583e'
+                complete: '#5b981a'
+            callbacks:
+                after:
+                    add_to_history:
+                          on: ['create', 'confirm', 'cancel', 'complete']
+                          do: ['@CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface', 'log']
+                          args: ['object', 'event']
