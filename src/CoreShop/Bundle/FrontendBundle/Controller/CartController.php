@@ -89,7 +89,7 @@ class CartController extends FrontendController
                             $this->get('translator')->trans('coreshop.ui.error.voucher.not_found')
                         );
 
-                        return $this->redirect($request->getPathInfo());
+                        return $this->redirectToRoute('coreshop_cart_summary');
                     }
 
                     $priceRule = $voucherCode->getCartPriceRule();
@@ -110,9 +110,9 @@ class CartController extends FrontendController
                 $this->get('event_dispatcher')->dispatch(new GenericEvent($cart), 'coreshop.cart.update');
                 $this->getCartManager()->persistCart($cart);
 
-                return $this->redirect($request->getPathInfo());
+                return $this->redirectToRoute('coreshop_cart_summary');
             }
-            
+
             $session = $request->getSession();
 
             if ($session instanceof Session) {
@@ -120,7 +120,7 @@ class CartController extends FrontendController
                     $session->getFlashBag()->add('error', $error->getMessage());
                 }
 
-                return $this->redirect($request->getPathInfo());
+                return $this->redirectToRoute('coreshop_cart_summary');
             }
         }
 
