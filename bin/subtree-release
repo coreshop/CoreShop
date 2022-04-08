@@ -8,7 +8,7 @@ LAST_TAG=`git tag -l  --sort=committerdate | tail -n1`
 
 function split()
 {
-    SHA1_TAG=`./bin/splitsh-lite --prefix=$1 --target=tags/$LAST_TAG`
+    SHA1_TAG=`./bin/splitsh-lite-arm --prefix=$1 --target=tags/$LAST_TAG`
     git push $2 "$SHA1_TAG:$CURRENT_BRANCH" $LAST_TAG
 }
 
