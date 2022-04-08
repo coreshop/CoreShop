@@ -25,7 +25,6 @@
   ],
   "require": {
     "php": "^7.2",
-    "pimcore/pimcore": "^6.6.0",
     "pimcore/pimcore": "^6.6.0"
   },
   "require-dev": {
