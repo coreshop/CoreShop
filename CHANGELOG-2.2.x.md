@@ -1,5 +1,15 @@
 # Within 2.2
 
+## 2.2.12
+ - Bugs:
+   - [FrontendBundle] Fix "Invoice Address is Shipping Address" in checkout address step (https://github.com/coreshop/CoreShop/pull/1823)
+   - [OrderBundle] cart context returns latest cart even if multiple found (https://github.com/coreshop/CoreShop/pull/1837)
+   - [FrontendBundle] Password reset: Clearer form labels (https://github.com/coreshop/CoreShop/pull/1855)
+   - [ResourceBundle] Fatal error when saving object with product-specific prices -> EntityMerger got object of wrong class (https://github.com/coreshop/CoreShop/pull/1864)
+   - [ProductBundle] Add isEqual() for product-specific price (https://github.com/coreshop/CoreShop/pull/1844)
+   - [Pimcore] Fix delete icons in Pimcore backend (https://github.com/coreshop/CoreShop/pull/1885)
+   - 
+
 ## 2.2.11
  - Bugs:
    - [CoreExtensions] refactor how Doctrine Entities are cloned (https://github.com/coreshop/CoreShop/pull/1770)
