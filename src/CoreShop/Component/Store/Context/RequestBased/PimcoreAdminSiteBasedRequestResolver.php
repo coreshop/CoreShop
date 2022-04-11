@@ -31,25 +31,31 @@ final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInter
 
     public function findStore(Request $request): ?StoreInterface
     {
+        $document = null;
+
+        if ($request->get('_route') === 'pimcore_admin_document_page_save') {
+            $document = Document::getById($request->get('id'));
+        }
+
         if ($this->requestHelper->isFrontendRequestByAdmin($request)) {
             /** @psalm-suppress InternalMethod */
             $document = $this->documentService->getNearestDocumentByPath($request->getPathInfo());
+        }
 
-            if ($document instanceof Document) {
-                do {
-                    try {
-                        $site = Site::getByRootId($document->getId());
+        if ($document instanceof Document) {
+            do {
+                try {
+                    $site = Site::getByRootId($document->getId());
 
-                        if ($site instanceof Site) {
-                            return $this->storeRepository->findOneBySite($site->getId());
-                        }
-                    } catch (\Exception) {
-                        //Ignore Exception and continue
+                    if ($site instanceof Site) {
+                        return $this->storeRepository->findOneBySite($site->getId());
                     }
+                } catch (\Exception) {
+                    //Ignore Exception and continue
+                }
 
-                    $document = $document->getParent();
-                } while ($document instanceof Document);
-            }
+                $document = $document->getParent();
+            } while ($document instanceof Document);
         }
 
         throw new StoreNotFoundException();
