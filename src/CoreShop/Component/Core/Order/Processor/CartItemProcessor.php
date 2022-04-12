@@ -23,6 +23,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
@@ -138,7 +139,14 @@ final class CartItemProcessor implements CartItemProcessorInterface
         $usedTaxes = [];
 
         foreach ($taxes as $taxId => $splitted) {
+            /**
+             * @var TaxRateInterface|null $tax
+             */
             $tax = $this->taxRateRepository->find($taxId);
+
+            if (!$tax) {
+                continue;
+            }
 
             if ($splitted[$i] <= 0) {
                 continue;
@@ -168,7 +176,14 @@ final class CartItemProcessor implements CartItemProcessorInterface
         $usedTaxes = [];
 
         foreach ($taxes as $taxId => $amount) {
+            /**
+             * @var TaxRateInterface|null $tax
+             */
             $tax = $this->taxRateRepository->find($taxId);
+
+            if (!$tax) {
+                continue;
+            }
 
             if ($amount <= 0) {
                 continue;

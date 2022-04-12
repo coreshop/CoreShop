@@ -33,8 +33,14 @@ final class ZoneChoiceType extends AbstractType
             ->setDefaults([
                 'choices' => function (Options $options) {
                     if (null === $options['active']) {
+                        /**
+                         * @var ZoneInterface[] $zones
+                         */
                         $zones = $this->zoneRepository->findAll();
                     } else {
+                        /**
+                         * @var ZoneInterface[] $zones
+                         */
                         $zones = $this->zoneRepository->findBy(['active' => $options['active']]);
                     }
 

@@ -34,7 +34,11 @@ final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInter
         $document = null;
 
         if ($request->attributes->get('_route') === 'pimcore_admin_document_page_save') {
-            $document = Document::getById($request->request->get('id'));
+            $id = $request->request->get('id');
+
+            if ($id) {
+                $document = Document::getById((int)$id);
+            }
         }
 
         if ($this->requestHelper->isFrontendRequestByAdmin($request)) {

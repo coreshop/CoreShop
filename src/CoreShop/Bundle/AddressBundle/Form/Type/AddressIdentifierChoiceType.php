@@ -33,8 +33,14 @@ final class AddressIdentifierChoiceType extends AbstractType
             ->setDefaults([
                 'choices' => function (Options $options) {
                     if (null === $options['active']) {
+                        /**
+                         * @var AddressIdentifierInterface[] $addressIdentifier
+                         */
                         $addressIdentifier = $this->addressIdentifierRepository->findAll();
                     } else {
+                        /**
+                         * @var AddressIdentifierInterface[] $addressIdentifier
+                         */
                         $addressIdentifier = $this->addressIdentifierRepository->findBy(['active' => $options['active']]);
                     }
 
