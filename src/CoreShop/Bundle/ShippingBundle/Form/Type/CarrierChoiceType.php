@@ -34,6 +34,9 @@ final class CarrierChoiceType extends AbstractType
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
+                    /**
+                     * @var CarrierInterface[] $carriers
+                     */
                     $carriers = $this->carrierRepository->findAll();
 
                     usort($carriers, function (CarrierInterface $a, CarrierInterface $b): int {

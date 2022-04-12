@@ -91,6 +91,9 @@ class ResourceController extends AdminController
         $handledForm = $form->handleRequest($request);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
+            /**
+             * @var ResourceInterface $resource
+             */
             $resource = $form->getData();
 
             $this->eventDispatcher->dispatchPreEvent('save', $this->metadata, $resource, $request);
@@ -100,7 +103,9 @@ class ResourceController extends AdminController
 
             $this->manager->clear();
 
-            //Reload resource
+            /**
+             * @var ResourceInterface $resource
+             */
             $resource = $this->repository->find($resource->getId());
 
             $this->eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);

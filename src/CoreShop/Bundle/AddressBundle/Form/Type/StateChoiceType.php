@@ -33,8 +33,14 @@ final class StateChoiceType extends AbstractType
             ->setDefaults([
                 'choices' => function (Options $options) {
                     if (null === $options['active']) {
+                        /**
+                         * @var StateInterface[] $states
+                         */
                         $states = $this->countryRepository->findAll();
                     } else {
+                        /**
+                         * @var StateInterface[] $states
+                         */
                         $states = $this->countryRepository->findBy(['active' => $options['active']]);
                     }
 

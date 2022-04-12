@@ -33,8 +33,14 @@ final class TaxRateChoiceType extends AbstractType
             ->setDefaults([
                 'choices' => function (Options $options) {
                     if (null === $options['active']) {
+                        /**
+                         * @var TaxRateInterface[] $taxRates
+                         */
                         $taxRates = $this->countryRepository->findAll();
                     } else {
+                        /**
+                         * @var TaxRateInterface[] $taxRates
+                         */
                         $taxRates = $this->countryRepository->findBy(['active' => $options['active']]);
                     }
 

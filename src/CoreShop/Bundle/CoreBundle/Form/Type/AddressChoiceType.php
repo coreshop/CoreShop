@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -35,6 +36,9 @@ final class AddressChoiceType extends AbstractType
             ->setDefaults(
                 [
                     'choices' => function (Options $options) {
+                        /**
+                         * @var CustomerInterface $customer
+                         */
                         $customer = $this->customerRepository->find($options['customer']);
                         $allowedAddressIdentifier = $options['allowed_address_identifier'];
 
