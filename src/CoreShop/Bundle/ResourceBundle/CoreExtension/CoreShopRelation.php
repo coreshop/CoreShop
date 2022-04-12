@@ -43,6 +43,8 @@ class CoreShopRelation extends Data\ManyToOneRelation
     public function setStack($stack): void
     {
         $this->stack = $stack;
+
+        $this->setClasses([]);
     }
 
     protected function getCoreShopPimcoreClasses()
@@ -82,9 +84,11 @@ class CoreShopRelation extends Data\ManyToOneRelation
      */
     public function setClasses($classes)
     {
-        $this->classes = Element\Service::fixAllowedTypes($this->getCoreShopPimcoreClasses()[$this->stack], 'classes');
+        if (null === $this->stack) {
+            return $this;
+        }
 
-        return $this;
+        return parent::setClasses(Element\Service::fixAllowedTypes($this->getCoreShopPimcoreClasses()[$this->stack], 'classes'));
     }
 
     /**

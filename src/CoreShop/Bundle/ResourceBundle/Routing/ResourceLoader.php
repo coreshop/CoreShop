@@ -45,6 +45,10 @@ final class ResourceLoader implements LoaderInterface
         ];
         $routesToGenerate = [];
 
+        if (isset($configuration['clone']) && $configuration['clone']) {
+            $defaultRoutes['clone'] = ['POST'];
+        }
+
         if (!empty($configuration['no_default_routes'])) {
             $defaultRoutes = [];
         }

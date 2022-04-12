@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class FilterType extends AbstractResourceType
 {
@@ -32,6 +33,10 @@ class FilterType extends AbstractResourceType
                     'ASC' => 'asc',
                     'DESC' => 'desc',
                 ],
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(['groups' => $this->validationGroups])
+                ]
             ])
             ->add('preConditions', FilterPreConditionCollectionType::class)
             ->add('conditions', FilterUserConditionCollectionType::class)

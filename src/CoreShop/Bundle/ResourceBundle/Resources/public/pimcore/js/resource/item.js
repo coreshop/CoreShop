@@ -20,10 +20,9 @@ coreshop.resource.item = Class.create({
     },
 
     routing: {
-        save: null
+        save: null,
+        clone: null,
     },
-
-    multiShopSettings: false,
 
     initialize: function (parentPanel, data, panelKey, type) {
         this.parentPanel = parentPanel;
@@ -54,7 +53,7 @@ coreshop.resource.item = Class.create({
     getPanel: function () {
         var items = this.getItems();
 
-        panel = new Ext.panel.Panel({
+        return new Ext.panel.Panel({
             title: this.getTitleText(),
             itemId: this.panelKey,
             closable: true,
@@ -62,8 +61,6 @@ coreshop.resource.item = Class.create({
             layout: 'border',
             items: items
         });
-
-        return panel;
     },
 
     getTitleText: function () {
@@ -138,6 +135,48 @@ coreshop.resource.item = Class.create({
                 }.bind(this)
             });
         }
+    },
+
+    clone: function () {
+
+        var saveData = this.getSaveData();
+        saveData = coreshop.helpers.convertDotNotationToObject(saveData);
+        coreshop.helpers.removeKey(saveData);
+
+        if (saveData.hasOwnProperty('stores')) {
+            var stores = [];
+
+            saveData.stores.forEach(function (store) {
+                stores.push(store + "");
+            });
+
+            saveData.stores = stores;
+        }
+
+        Ext.Ajax.request({
+            url: Routing.generate(this.routing.clone),
+            method: 'post',
+            jsonData: saveData,
+            success: function (response) {
+                try {
+                    if (this.parentPanel.store) {
+                        this.parentPanel.store.load();
+                    }
+
+                    this.parentPanel.refresh();
+
+                    var res = Ext.decode(response.responseText);
+
+                    if (res.success) {
+                        pimcore.helpers.showNotification(t('success'), t('coreshop_clone_success'), 'success');
+                    } else {
+                        pimcore.helpers.showNotification(t('error'), t('coreshop_clone_error'), 'error', res.message);
+                    }
+                } catch (e) {
+                    pimcore.helpers.showNotification(t('error'), t('coreshop_clone_error'), 'error');
+                }
+            }.bind(this)
+        });
     },
 
     postSave: function (result) {

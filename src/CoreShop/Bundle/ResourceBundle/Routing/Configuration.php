@@ -29,6 +29,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('alias')->cannotBeEmpty()->end()
+                ->booleanNode('clone')->defaultFalse()->end()
                 ->booleanNode('expose')->defaultTrue()->end()
                 ->scalarNode('path')->cannotBeEmpty()->end()
                 ->scalarNode('identifier')->defaultValue('id')->end()
