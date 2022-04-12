@@ -103,7 +103,9 @@ class ResourceController extends AdminController
 
             $this->manager->clear();
 
-            //Reload resource
+            /**
+             * @var ResourceInterface $resource
+             */
             $resource = $this->repository->find($resource->getId());
 
             $this->eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);
