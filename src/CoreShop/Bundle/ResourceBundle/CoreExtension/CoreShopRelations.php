@@ -88,7 +88,7 @@ class CoreShopRelations extends Data\ManyToManyRelation
     public function getClasses()
     {
         if (null === $this->stack) {
-            return $this;
+            return [];
         }
 
         $classes = $this->getCoreShopPimcoreClasses()[$this->stack];
