@@ -54,3 +54,15 @@ coreshop.helpers.convertDotNotationToObject = function (data) {
 
     return obj;
 };
+
+
+coreshop.helpers.removeKey = function (obj) {
+    for(prop in obj) {
+        if (prop === 'id') {
+            delete obj[prop];
+        }
+        else if (typeof obj[prop] === 'object') {
+            coreshop.helpers.removeKey(obj[prop]);
+        }
+    }
+};
