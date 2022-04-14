@@ -44,9 +44,17 @@ class CartRuleApplier implements CartRuleApplierInterface
     protected function apply(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
     {
         $totalAmount = [];
+        $totalDiscountPossible = 0;
 
         foreach ($cart->getItems() as $item) {
             $totalAmount[] = $item->getTotal(false);
+            $totalDiscountPossible += $item->getTotal($withTax);
+        }
+        
+        $discount = min($discount, $totalDiscountPossible);
+        
+        if (0 === $discount) {
+            return;
         }
 
         $distributedAmount = $this->distributor->distribute($totalAmount, $discount);
@@ -165,8 +173,7 @@ class CartRuleApplier implements CartRuleApplierInterface
                 AdjustmentInterface::CART_PRICE_RULE,
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
                 $positive ? $amountGross : (-1 * $amountGross),
-                $positive ? $amountNet : (-1 * $amountNet),
-                true
+                $positive ? $amountNet : (-1 * $amountNet)
             ));
         }
 

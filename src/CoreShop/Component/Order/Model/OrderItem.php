@@ -47,6 +47,16 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
     }
 
+    public function getSubtotal(bool $withTax = true): int
+    {
+        return $withTax ? $this->getSubtotalGross() : $this->getSubtotalNet();
+    }
+
+    public function setSubtotal(int $subtotal, bool $withTax = true)
+    {
+        $withTax ? $this->setSubtotalGross($subtotal) : $this->setSubtotalNet($subtotal);
+    }
+
     public function getItemPrice(bool $withTax = true): int
     {
         return $withTax ? $this->getItemPriceGross() : $this->getItemPriceNet();
@@ -107,6 +117,16 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         $withTax ? $this->setConvertedItemRetailPriceGross($itemRetailPrice) : $this->setConvertedItemRetailPriceNet(
             $itemRetailPrice
         );
+    }
+
+    public function getConvertedSubtotal(bool $withTax = true): int
+    {
+        return $withTax ? $this->getConvertedSubtotalGross() : $this->getConvertedSubtotalNet();
+    }
+
+    public function setConvertedSubtotal(int $subtotal, bool $withTax = true)
+    {
+        $withTax ? $this->setConvertedSubtotalGross($subtotal) : $this->setConvertedSubtotalNet($subtotal);
     }
 
     public function getConvertedTotal(bool $withTax = true): int
@@ -190,6 +210,26 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         } while ($parent !== null);
 
         throw new \Exception('Order Item does not have a valid Order');
+    }
+
+    public function getSubtotalNet(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setSubtotalNet(int $totalNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function getSubtotalGross(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setSubtotalGross(int $totalGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     public function getTotalNet(): int
@@ -452,6 +492,26 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    public function getConvertedSubtotalNet(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setConvertedSubtotalNet(int $subtotal)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function getConvertedSubtotalGross(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setConvertedSubtotalGross(int $subtotal)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
     public function getConvertedTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -514,13 +574,13 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
 
     protected function recalculateAfterAdjustmentChange(): void
     {
-        $this->setTotal($this->getTotal(true) + $this->getAdjustmentsTotal(null, true), true);
-        $this->setTotal($this->getTotal(false) + $this->getAdjustmentsTotal(null, false), false);
+        $this->setTotal($this->getSubtotal(true) + $this->getAdjustmentsTotal(null, true), true);
+        $this->setTotal($this->getSubtotal(false) + $this->getAdjustmentsTotal(null, false), false);
     }
 
     protected function recalculateConvertedAfterAdjustmentChange(): void
     {
-        $this->setConvertedTotal($this->getConvertedTotal(true) + $this->getConvertedAdjustmentsTotal(null, true), true);
-        $this->setConvertedTotal($this->getConvertedTotal(false) + $this->getConvertedAdjustmentsTotal(null, false), false);
+        $this->setConvertedTotal($this->getConvertedSubtotal(true) + $this->getConvertedAdjustmentsTotal(null, true), true);
+        $this->setConvertedTotal($this->getConvertedSubtotal(false) + $this->getConvertedAdjustmentsTotal(null, false), false);
     }
 }
