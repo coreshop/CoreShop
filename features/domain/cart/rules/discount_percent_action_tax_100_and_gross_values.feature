@@ -1,4 +1,4 @@
-@cart @cart_rules @cart_rule_discount_percent_action_tax
+@domain @cart
 Feature: Adding a new cart rule
   In order to give the customer discounts
   based on the cart, we add a new rule with a 100% discount

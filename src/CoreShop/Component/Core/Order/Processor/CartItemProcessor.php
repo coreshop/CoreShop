@@ -69,8 +69,11 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
                 $cartItem->setTaxes(new Fieldcollection($taxes));
 
-                $cartItem->setTotal((int)round($itemPrice * $quantity), true);
-                $cartItem->setTotal($cartItem->getTotal(true) - $totalTaxAmount, false);
+                $cartItem->setSubtotal((int)round($itemPrice * $quantity), true);
+                $cartItem->setSubtotal($cartItem->getSubtotal(true) - $totalTaxAmount, false);
+
+                $cartItem->setTotal($cartItem->getSubtotal(true), true);
+                $cartItem->setTotal($cartItem->getSubtotal(false), false);
 
                 $cartItem->setItemPrice($itemPrice, true);
                 $cartItem->setItemPrice($itemPrice - $itemPriceTax, false);
@@ -94,8 +97,11 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
                 $cartItem->setTaxes(new Fieldcollection($taxes));
 
-                $cartItem->setTotal((int)round($itemPrice * $quantity), false);
-                $cartItem->setTotal((int)round($itemPrice * $quantity) + $totalTaxAmount, true);
+                $cartItem->setSubtotal((int)round($itemPrice * $quantity), false);
+                $cartItem->setSubtotal((int)round($itemPrice * $quantity) + $totalTaxAmount, true);
+
+                $cartItem->setTotal($cartItem->getSubtotal(true), true);
+                $cartItem->setTotal($cartItem->getSubtotal(false), false);
 
                 $cartItem->setItemPrice($itemPrice, false);
                 $cartItem->setItemPrice($itemPrice + $itemPriceTax, true);
@@ -110,8 +116,11 @@ final class CartItemProcessor implements CartItemProcessorInterface
                 $cartItem->setItemDiscount($itemDiscount + $itemDiscountTax, true);
             }
         } else {
-            $cartItem->setTotal((int)round($itemPrice * $quantity), false);
-            $cartItem->setTotal((int)round($itemPrice * $quantity), true);
+            $cartItem->setSubtotal((int)round($itemPrice * $quantity), false);
+            $cartItem->setSubtotal((int)round($itemPrice * $quantity), true);
+
+            $cartItem->setTotal($cartItem->getSubtotal(true), true);
+            $cartItem->setTotal($cartItem->getSubtotal(false), false);
 
             $cartItem->setItemPrice($itemPrice, true);
             $cartItem->setItemPrice($itemPrice, false);

@@ -111,6 +111,9 @@ trait AdjustableTrait
             }
 
             if ($adjustment instanceof Fieldcollection\Data\AbstractData) {
+                /**
+                 * @psalm-suppress InvalidArgument
+                 */
                 $items->add($adjustment);
             }
 

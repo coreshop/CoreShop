@@ -34,6 +34,10 @@ interface OrderItemInterface extends
 
     public function setName(?string $name, $language = null);
 
+    public function getSubtotal(bool $withTax = true): int;
+
+    public function setSubtotal(int $subtotal, bool $withTax = true);
+
     public function getTotal(bool $withTax = true): int;
 
     public function setTotal(int $total, bool $withTax = true);
@@ -119,6 +123,8 @@ interface OrderItemInterface extends
     public function setConvertedTaxes(?Fieldcollection $taxes);
 
     public function getConvertedTotal(bool $withTax = true): int;
+
+    public function getConvertedSubtotal(bool $withTax = true): int;
 
     public function getConvertedTotalTax(): int;
 
