@@ -1,4 +1,4 @@
-@ui @cart @wip
+@ui @cart
 Feature: Adding a product to cart with a unit
 
     Background:

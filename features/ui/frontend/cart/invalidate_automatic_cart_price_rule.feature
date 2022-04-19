@@ -1,4 +1,4 @@
-@ui @cart @wip
+@ui @car
 Feature: Applying a valid cart-price-rule that gets invalidated after the cart changes
 
     Background:

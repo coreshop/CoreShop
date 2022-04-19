@@ -1,4 +1,4 @@
-@ui @cart @wip
+@ui @cart
 Feature: Adding a product to the cart with minimum Quantity to Order
 
     Background:
