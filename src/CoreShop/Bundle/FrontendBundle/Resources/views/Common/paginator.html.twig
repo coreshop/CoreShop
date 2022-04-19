@@ -2,16 +2,15 @@
 {% set pages = paginator.getPaginationData %}
 
 {% macro generate_seo_pagination_url(page) %}
-    {% apply spaceless %}
-        {% if page == 1 %}
-            {% set pageUrl = pimcore_url({ page: null }) %}
-        {% else %}
-            {% set pageUrl = pimcore_url({ page: page }) %}
-        {% endif %}
+{% apply spaceless %}
+    {% if page == 1 %}
+        {% set pageUrl = pimcore_url({ page: null }) %}
+    {% else %}
+        {% set pageUrl = pimcore_url({ page: page }) %}
+    {% endif %}
 
-        {{ pageUrl }}
-        {#{{ optimizedUrl }}#}
-    {% endapply %}
+    {{ pageUrl }}
+{% endapply %}
 {% endmacro %}
 
 {% if pages.pageCount > 1 %}
