@@ -26,10 +26,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     {
         $list = $this->getList();
         $list->setCondition('stores LIKE ?', ['%,' . $store->getId() . ',%']);
-        $list->setOrderKey(
-            'o_index ASC, o_key ASC',
-            false
-        );
+        $this->setSortingForListingWithoutCategory($list);
 
         return $list->getObjects();
     }
@@ -38,10 +35,8 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     {
         $list = $this->getList();
         $list->setCondition('parentCategory__id is null AND stores LIKE "%,' . $store->getId() . ',%"');
-        $list->setOrderKey(
-            'o_index ASC, o_key ASC',
-            false
-        );
+
+        $this->setSortingForListingWithoutCategory($list);
 
         return $list->getObjects();
     }
@@ -116,7 +111,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     private function setSortingForListingWithoutCategory(Listing $list): void
     {
         $list->setOrderKey(
-            'o_key ASC',
+            'o_index ASC, o_key ASC',
             false
         );
     }
