@@ -1,4 +1,4 @@
-@ui @cart @wip
+@ui @cart
 Feature: Loosing cart after log out
 
     Background:

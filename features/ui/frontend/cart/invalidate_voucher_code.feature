@@ -1,4 +1,4 @@
-@ui @cart @wip
+@ui @cart
 Feature: Applying a valid voucher that gets invalidated after the cart changes
 
     Background:
