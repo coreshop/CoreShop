@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Notification\Rule\Action\Order;
 
+use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Notification\Rule\Action\MailActionProcessor;
@@ -22,8 +23,10 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class StoreMailActionProcessor implements NotificationRuleProcessorInterface
 {
-    public function __construct(protected MailActionProcessor $mailActionProcessor)
-    {
+    public function __construct(
+        protected MailActionProcessor $mailActionProcessor,
+        protected ThemeHelperInterface $themeHelper
+    ) {
     }
 
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, array $params = []): void
@@ -47,7 +50,11 @@ class StoreMailActionProcessor implements NotificationRuleProcessorInterface
             $subConfiguration = $configuration;
             $subConfiguration['mails'] = $mails[$store->getId()];
 
-            $this->mailActionProcessor->apply($subject, $rule, $subConfiguration, $params);
+            $this->themeHelper->useTheme($store->getTemplate(),
+                function () use ($subject, $rule, $subConfiguration, $params) {
+                    $this->mailActionProcessor->apply($subject, $rule, $subConfiguration, $params);
+                }
+            );
         }
     }
 }
