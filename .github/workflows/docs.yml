@@ -2,8 +2,8 @@ name: Generate and Upload Docs
 on:
   push:
     branches: [ master ]
-    paths:
-      - 'docs/**'
+#    paths:
+#      - 'docs/**'
 
 jobs:
   docs:
