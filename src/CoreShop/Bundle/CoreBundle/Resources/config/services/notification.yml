@@ -210,6 +210,7 @@ services:
     CoreShop\Component\Core\Notification\Rule\Action\Order\StoreMailActionProcessor:
         arguments:
             - '@CoreShop\Component\Notification\Rule\Action\MailActionProcessor'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface'
         tags:
             - { name: coreshop.notification_rule.action, type: storeMail, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreMailConfigurationType }
             - { name: coreshop.notification_rule.action, type: storeMail, notification-type: user, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreMailConfigurationType }
