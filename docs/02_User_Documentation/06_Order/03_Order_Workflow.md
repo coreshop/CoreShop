@@ -1,6 +1,6 @@
 # Order Workflow
 
-> [Technical Overview](../../03_Development/17_State_Machine/README.md) of CoreShop Workflows.
+> [Technical Overview](../../03_Development/17_State_Machine) of CoreShop Workflows.
 
 ## Change States
 States can be changed for: Order, Payment, Shipment and Invoice.

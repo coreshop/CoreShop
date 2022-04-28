@@ -36,7 +36,7 @@ priority via the priority number field.
 
 ## Automatic Rule Availability Checker
 Rules with time-span elements included on root level will be disabled automatically if they're outdated.
-Read more about automation [here](../10_Automation/README.md#expired-rules).
+Read more about automation [here](../10_Automation#expired-rules).
 
 ## More Information
 
