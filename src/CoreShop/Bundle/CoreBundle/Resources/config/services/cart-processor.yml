@@ -69,6 +69,7 @@ services:
             - '@CoreShop\Component\Taxation\Collector\TaxCollectorInterface'
             - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
             - '@coreshop.registry.shipping.tax_calculation_strategies'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
         tags:
             - { name: coreshop.cart_processor, priority: 350 }
 

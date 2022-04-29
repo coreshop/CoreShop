@@ -172,6 +172,7 @@ services:
             - '@CoreShop\Component\Taxation\Collector\TaxCollectorInterface'
             - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
             - '@coreshop.factory.adjustment'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
 
     # Rules Availability Check
     coreshop.maintenance.rule_availability_task:

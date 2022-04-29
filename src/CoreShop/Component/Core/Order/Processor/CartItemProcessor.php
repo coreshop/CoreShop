@@ -52,7 +52,8 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
         $taxCalculator = $this->taxCalculator->getTaxCalculator(
             $product,
-            $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
+            $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart),
+            $context
         );
 
         $quantity = $cartItem->getQuantity();

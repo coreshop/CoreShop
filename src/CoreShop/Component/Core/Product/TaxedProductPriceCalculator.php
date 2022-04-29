@@ -80,7 +80,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
 
     protected function getTaxCalculator(PurchasableInterface $product, array $context): ?TaxCalculatorInterface
     {
-        return $this->taxCalculatorFactory->getTaxCalculator($product, $this->getDefaultAddress($context));
+        return $this->taxCalculatorFactory->getTaxCalculator($product, $this->getDefaultAddress($context), $context);
     }
 
     protected function getDefaultAddress($context): ?AddressInterface

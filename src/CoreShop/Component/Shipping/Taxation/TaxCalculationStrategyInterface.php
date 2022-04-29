@@ -28,6 +28,7 @@ interface TaxCalculationStrategyInterface
         ShippableInterface $shippable,
         CarrierInterface $carrier,
         AddressInterface $address,
-        int $shippingAmount
+        int $shippingAmount,
+        array $context = [],
     ): array;
 }
