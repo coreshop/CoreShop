@@ -32,12 +32,12 @@ class RuleConditionsValidationProcessor implements RuleConditionsValidationProce
 
     public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, array $params = []): bool
     {
-        if (!count($conditions)) {
-            return true;
-        }
-
         if (!$rule->getActive()) {
             return false;
+        }
+
+        if (!count($conditions)) {
+            return true;
         }
 
         foreach ($conditions as $condition) {
