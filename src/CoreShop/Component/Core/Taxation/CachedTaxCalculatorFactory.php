@@ -17,6 +17,7 @@ namespace CoreShop\Component\Core\Taxation;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\StateInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
@@ -30,7 +31,8 @@ class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
 
     public function getTaxCalculatorForAddress(
         TaxRuleGroupInterface $taxRuleGroup,
-        AddressInterface $address
+        AddressInterface $address,
+        array $context = [],
     ): TaxCalculatorInterface {
         $cacheIdentifier = sprintf(
             '%s.%s.%s',
@@ -39,10 +41,17 @@ class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
             ($address->getState() instanceof StateInterface ? $address->getState()->getId() : 0)
         );
 
+        foreach ($context as $key => $value) {
+            if ($value instanceof ResourceInterface) {
+                $cacheIdentifier .= '-'.$key.'-'.$value->getId();
+            }
+        }
+
         if (!array_key_exists($cacheIdentifier, $this->cache)) {
             $this->cache[$cacheIdentifier] = $this->taxCalculatorFactory->getTaxCalculatorForAddress(
                 $taxRuleGroup,
-                $address
+                $address,
+                $context
             );
         }
 
