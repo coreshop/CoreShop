@@ -41,7 +41,7 @@ class CustomerManager implements CustomerManagerInterface
         /**
          * @var AddressInterface[] $addressBackup
          */
-        $addressBackup = $customer->getObjectVar('addresses');
+        $addressBackup = $customer->getObjectVar('addresses') ?? [];
 
         /**
          * @var UserInterface|null $userBackup
