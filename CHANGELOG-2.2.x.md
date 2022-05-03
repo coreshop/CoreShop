@@ -1,5 +1,9 @@
 # Within 2.2
 
+## 2.2.13
+ - Bugs:
+   - [ResourceBundle] fix ResourceSettingsController getConfigAction (https://github.com/coreshop/CoreShop/pull/1981)
+   
 ## 2.2.12
  - Bugs:
    - [FrontendBundle] Fix "Invoice Address is Shipping Address" in checkout address step (https://github.com/coreshop/CoreShop/pull/1823)
@@ -8,7 +12,6 @@
    - [ResourceBundle] Fatal error when saving object with product-specific prices -> EntityMerger got object of wrong class (https://github.com/coreshop/CoreShop/pull/1864)
    - [ProductBundle] Add isEqual() for product-specific price (https://github.com/coreshop/CoreShop/pull/1844)
    - [Pimcore] Fix delete icons in Pimcore backend (https://github.com/coreshop/CoreShop/pull/1885)
-   - 
 
 ## 2.2.11
  - Bugs:
