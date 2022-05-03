@@ -34,15 +34,15 @@ final class RegisteredUserValidator extends ConstraintValidator
         Assert::isInstanceOf($value, CustomerInterface::class);
 
         /**
-         * @var UniqueCustomer $constraint
+         * @var RegisteredUser $constraint
          */
-        Assert::isInstanceOf($constraint, UniqueCustomer::class);
+        Assert::isInstanceOf($constraint, RegisteredUser::class);
 
         /** @var CustomerInterface|null $existingCustomer */
         $existingCustomer = $this->customerRepository->findCustomerByEmail($value->getEmail());
 
         if (null !== $existingCustomer && null !== $existingCustomer->getUser()) {
-            $this->context->buildViolation($constraint->messageEmail)->atPath('email')->addViolation();
+            $this->context->buildViolation($constraint->message)->atPath('email')->addViolation();
         }
     }
 }
