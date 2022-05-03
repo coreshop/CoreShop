@@ -49,12 +49,12 @@ class ResourceSettingsController extends AdminController
             'stack' => [],
         ];
 
-        /**
-         * @var array $classes
-         */
-        $classes =  $this->container->hasParameter('coreshop.all.pimcore_classes');
+        if ($this->container->hasParameter('coreshop.all.pimcore_classes')) {
+            /**
+             * @var array $classes
+             */
+            $classes = $this->container->getParameter('coreshop.all.pimcore_classes');
 
-        if ($classes) {
             foreach ($classes as $key => $definition) {
                 $alias = explode('.', $key);
                 $application = $alias[0];
