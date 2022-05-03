@@ -92,7 +92,7 @@ services:
             - 'quoteState'
             - 'quoteState'
         tags:
-            - { name: coreshop.notification_rule.condition, type: quoteState, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\QuotetateConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: quoteState, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\QuoteStateConfigurationType }
 
     coreshop.notification_rule.condition.quote.quote_transition:
         class: CoreShop\Component\Core\Notification\Rule\Condition\StateTransitionChecker
