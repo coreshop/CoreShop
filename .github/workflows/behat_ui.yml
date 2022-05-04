@@ -120,5 +120,5 @@ jobs:
       if: failure()
       with:
         name: "Pimcore logs (non-JS, PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
-        path: var/logs/
+        path: var/log/
         if-no-files-found: ignore
