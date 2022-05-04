@@ -1,0 +1,6 @@
+CoreShop\Bundle\VariantBundle\Model\AttributeColorInterface:
+    attributes:
+        valueColor:
+            groups: ['coreshop']
+        valueText:
+            groups: ['coreshop']

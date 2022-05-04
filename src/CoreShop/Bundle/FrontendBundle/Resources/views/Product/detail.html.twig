@@ -72,6 +72,8 @@
             </ul>
             <hr/>
 
+            {% include '@CoreShopFrontend/Product/_variants.html.twig' %}
+
             {% if product.hasUnitDefinitions == true %}
                 <div class="unit-prices">
                     {{ product_price.display_product_unit_prices(product) }}

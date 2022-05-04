@@ -1,0 +1,7 @@
+CoreShop\Bundle\VariantBundle\Model\AttributeInterface:
+    constraints:
+        -   \CoreShop\Bundle\VariantBundle\Validator\Constraints\ValidAttributesType: { message: 'coreshop.variant.attribute.attribute_type.wrong', groups: [ 'coreshop' ] }
+
+    getters:
+        attributeGroup:
+            -   NotBlank: { groups: [ 'coreshop' ], message: 'coreshop.variant.attribute.attribute_group.wrong' }

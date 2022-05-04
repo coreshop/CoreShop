@@ -1,0 +1,8 @@
+CoreShop\Bundle\VariantBundle\Model\AttributeGroupInterface:
+    attributes:
+        id:
+            groups: ['coreshop']
+        name:
+            groups: ['coreshop']
+        sorting:
+            groups: ['coreshop']

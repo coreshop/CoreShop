@@ -72,6 +72,7 @@ remote tracking git@github.com:CoreShop/Tracking.git
 remote product-quantity-price-rules git@github.com:CoreShop/ProductQuantityPriceRules.git
 remote user git@github.com:CoreShop/User.git
 remote payum-payment git@github.com:CoreShop/PayumPayment.git
+remote variant git@github.com:CoreShop/Variant.git
 
 remote address-bundle git@github.com:CoreShop/AddressBundle.git
 remote configuration-bundle git@github.com:CoreShop/ConfigurationBundle.git
@@ -105,6 +106,7 @@ remote menu-bundle git@github.com:CoreShop/MenuBundle.git
 remote payum-payment-bundle git@github.com:CoreShop/PayumPaymentBundle.git
 remote user-bundle git@github.com:CoreShop/UserBundle.git
 remote optimistic-entity-lock-bundle git@github.com:CoreShop/OptimisticEntityLockBundle.git
+remote variant-bundle git@github.com:CoreShop/VariantBundle.git
 
 split 'src/CoreShop/Component/Resource' resource
 split 'src/CoreShop/Component/Registry' registry
@@ -132,6 +134,7 @@ split 'src/CoreShop/Component/Tracking' tracking
 split 'src/CoreShop/Component/ProductQuantityPriceRules' product-quantity-price-rules
 split 'src/CoreShop/Component/User' user
 split 'src/CoreShop/Component/PayumPayment' payum-payment
+split 'src/CoreShop/Component/Variant' variant
 
 split 'src/CoreShop/Bundle/AddressBundle' address-bundle
 split 'src/CoreShop/Bundle/ConfigurationBundle' configuration-bundle
@@ -165,3 +168,4 @@ split 'src/CoreShop/Bundle/MenuBundle' menu-bundle
 split 'src/CoreShop/Bundle/UserBundle' user-bundle
 split 'src/CoreShop/Bundle/PayumPaymentBundle' payum-payment-bundle
 split 'src/CoreShop/Bundle/OptimisticEntityLockBundle' optimistic-entity-lock-bundle
+split 'src/CoreShop/Bundle/VariantBundle' variant-bundle

@@ -295,6 +295,8 @@ final class ProductContext implements Context
     /**
      * @Given /^the (product "[^"]+") is published$/
      * @Given /^the (product) is published$/
+     * @Given /^the (variant "[^"]+") is published$/
+     * @Given /^the (variant) is published$/
      */
     public function theProductIsPublished(ProductInterface $product): void
     {
@@ -306,6 +308,8 @@ final class ProductContext implements Context
     /**
      * @Given /^the (product "[^"]+") is not published$/
      * @Given /^the (product) is not published$/
+     * @Given /^the (variant "[^"]+") is not published$/
+     * @Given /^the (variant) is not published$/
      */
     public function theProductIsNotPublished(ProductInterface $product): void
     {

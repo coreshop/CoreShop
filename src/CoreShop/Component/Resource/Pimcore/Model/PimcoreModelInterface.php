@@ -71,6 +71,11 @@ interface PimcoreModelInterface extends ResourceInterface, ElementInterface
     public function delete();
 
     /**
+     * @return array
+     */
+    public function getChildren(array $type = [], $includingUnpublished = false);
+
+    /**
      * @return ClassDefinition
      */
     public function getClass();

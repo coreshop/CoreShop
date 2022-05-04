@@ -1,0 +1,10 @@
+CoreShop\Bundle\VariantBundle\Model\Resolved\ResolvedAttributeGroup:
+    attributes:
+        type:
+            groups: ['coreshop']
+        group:
+            groups: ['coreshop']
+        selected:
+            groups: [ 'coreshop' ]
+        attributes:
+            groups: ['coreshop']

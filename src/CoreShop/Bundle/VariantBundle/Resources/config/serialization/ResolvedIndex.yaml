@@ -1,0 +1,6 @@
+CoreShop\Bundle\VariantBundle\Model\Resolved\ResolvedIndex:
+    attributes:
+        url:
+            groups: ['coreshop']
+        attributes:
+            groups: ['coreshop']

@@ -23,6 +23,7 @@ use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
 
 interface ProductInterface extends
     BaseProductInterface,
@@ -33,7 +34,8 @@ interface ProductInterface extends
     SEOImageAwareInterface,
     SEOOpenGraphAwareInterface,
     QuantityRangePriceAwareInterface,
-    PimcoreStoresAwareInterface
+    PimcoreStoresAwareInterface,
+    ProductVariantAwareInterface
 {
     /**
      * @return \CoreShop\Component\Core\Model\ProductStoreValuesInterface[]

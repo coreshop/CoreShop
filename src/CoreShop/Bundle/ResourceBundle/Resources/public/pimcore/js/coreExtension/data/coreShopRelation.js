@@ -118,7 +118,8 @@ pimcore.object.classes.data.coreShopRelation = Class.create(coreshop.object.clas
                     relationType: source.datax.relationType,
                     remoteOwner: source.datax.remoteOwner,
                     stack: source.datax.stack,
-                    pathFormatterClass: source.datax.pathFormatterClass
+                    pathFormatterClass: source.datax.pathFormatterClass,
+                    returnConcrete: source.datax.returnConcrete,
                 }
             );
         }

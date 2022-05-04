@@ -1,0 +1,6 @@
+CoreShop\Bundle\VariantBundle\Model\Resolved\ResolvedAttribute:
+    attributes:
+        attribute:
+            groups: ['coreshop']
+        products:
+            groups: ['coreshop']
