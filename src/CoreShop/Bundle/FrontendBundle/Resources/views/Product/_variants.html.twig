@@ -2,7 +2,7 @@
 {% set index = coreshop_variant_index(product) %}
 
 {% set config = { attributes: attributeGroups|coreshop_variant_serialize_groups, index: index|coreshop_variant_serialize_index } %}
-<div class="attributes" data-config="{{ config|serialize|json_encode() }}">
+<div class="attributes" data-config="{{ config|json_encode() }}">
     {% for key, attributeGroup in attributeGroups %}
         <fieldset class="mt-1 mt-lg-3" id="attribute-group-{{ attributeGroup.group.id }}">
             <label class="h2 fs-3">{{ 'coreshop.ui.attribute_group.label'|trans({ '%name%': attributeGroup.group.name }) }}</label>
