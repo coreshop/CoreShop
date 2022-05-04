@@ -35,6 +35,7 @@ Feature: Viewing a product variant details
         And attribute value "Winter" is not selected
         When I click on attribute value "Winter"
         Then I should be on the detail page for variant with key "t-shirt-green-s-winter"
+        Then screenshot
         When I click on attribute color "blue"
         When I click on attribute value "XL"
         When I click on attribute value "Summer"
