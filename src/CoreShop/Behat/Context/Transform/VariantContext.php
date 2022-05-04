@@ -61,7 +61,7 @@ final class VariantContext implements Context
     public function getAttributeColor($name): AttributeColorInterface
     {
         /**
-         * @var AttributeColorInterface[] $attributeColor
+         * @var AttributeColorInterface[] $attributes
          */
         $attributes = $this->attributeColorRepository->findBy(['name' => $name]);
 
@@ -80,7 +80,7 @@ final class VariantContext implements Context
     public function getAttributeValue($name): AttributeValueInterface
     {
         /**
-         * @var AttributeColorInterface[] $attributeColor
+         * @var AttributeColorInterface[] $attributes
          */
         $attributes = $this->attributeValueRepository->findBy(['name' => $name]);
 
