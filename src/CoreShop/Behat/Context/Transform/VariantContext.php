@@ -80,7 +80,7 @@ final class VariantContext implements Context
     public function getAttributeValue($name): AttributeValueInterface
     {
         /**
-         * @var AttributeColorInterface[] $attributes
+         * @var AttributeValueInterface[] $attributes
          */
         $attributes = $this->attributeValueRepository->findBy(['name' => $name]);
 
