@@ -461,7 +461,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "children": [
+                        "childs": [
                             {
                                 "fieldtype": "coreShopRelation",
                                 "stack": "coreshop.purchasable",
