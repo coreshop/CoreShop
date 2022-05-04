@@ -1,4 +1,4 @@
-CoreShop\Bundle\VariantBundle\Model\AttributeInterface:
+CoreShop\Component\Variant\Model\AttributeInterface:
     constraints:
         -   \CoreShop\Bundle\VariantBundle\Validator\Constraints\ValidAttributesType: { message: 'coreshop.variant.attribute.attribute_type.wrong', groups: [ 'coreshop' ] }
 

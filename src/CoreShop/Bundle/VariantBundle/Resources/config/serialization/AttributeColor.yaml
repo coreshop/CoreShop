@@ -1,4 +1,4 @@
-CoreShop\Bundle\VariantBundle\Model\AttributeColorInterface:
+CoreShop\Component\Variant\Model\AttributeColorInterface:
     attributes:
         valueColor:
             groups: ['coreshop']

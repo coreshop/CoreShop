@@ -34,6 +34,7 @@ final class AttributeListener implements EventSubscriberInterface
     {
         return [
             DataObjectEvents::PRE_UPDATE => 'preUpdate',
+            DataObjectEvents::PRE_ADD => 'preUpdate',
         ];
     }
 

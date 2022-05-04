@@ -1,4 +1,4 @@
-CoreShop\Bundle\VariantBundle\Model\Resolved\ResolvedAttribute:
+CoreShop\Component\Variant\Model\Resolved\ResolvedAttribute:
     attributes:
         attribute:
             groups: ['coreshop']

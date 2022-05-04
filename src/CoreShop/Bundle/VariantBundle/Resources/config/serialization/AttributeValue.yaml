@@ -1,4 +1,4 @@
-CoreShop\Bundle\VariantBundle\Model\AttributeValueInterface:
+CoreShop\Component\Variant\Model\AttributeValueInterface:
     attributes:
         valueText:
             groups: ['coreshop']

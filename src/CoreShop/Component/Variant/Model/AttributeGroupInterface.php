@@ -22,5 +22,7 @@ interface AttributeGroupInterface extends PimcoreModelInterface
 
     public function getSorting(): ?float;
 
+    public function setSorting(?float $sorting);
+
     public function getShowInList(): ?bool;
 }

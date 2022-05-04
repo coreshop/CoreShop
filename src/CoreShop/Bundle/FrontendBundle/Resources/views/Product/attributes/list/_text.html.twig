@@ -1,9 +1,9 @@
-<div class="product-texts my-_5">
+<div class="attribute-text">
     {% for attribute in group.attributes|sort((a, b) => a.attribute.sorting <=> b.attribute.sorting) %}
         {% if loop.index0 < 3 %}
-            <a class="btn btn-sm btn-white product-texts__item">
+            <span class="btn btn-sm btn-outline-secondary attribute-text__item">
                 {{ attribute.attribute.name }}
-            </a>
+            </span>
         {% endif %}
     {% endfor %}
     {% if group.attributes|length > 3 %}
