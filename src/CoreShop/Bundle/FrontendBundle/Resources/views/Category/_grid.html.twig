@@ -23,7 +23,7 @@
                 {% if attributeGroup.type == "Pimcore\\Model\\DataObject\\CoreShopAttributeColor" %}
                     {% include '@CoreShopFrontend/Product/attributes/detail/_color.html.twig' with { group: attributeGroup } %}
                 {% else %}
-                    {% include '@CoreShopFrontend/Product/attributes/detail/text.html.twig' with { group: attributeGroup } %}
+                    {% include '@CoreShopFrontend/Product/attributes/detail/_text.html.twig' with { group: attributeGroup } %}
                 {% endif %}
             {% endfor %}
 

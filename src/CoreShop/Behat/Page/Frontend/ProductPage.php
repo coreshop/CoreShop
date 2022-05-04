@@ -14,9 +14,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
+use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Element\NodeElement;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
+use CoreShop\Component\Variant\Model\AttributeInterface;
+use Pimcore\Analytics\AbstractTracker;
 
 class ProductPage extends AbstractFrontendPage implements ProductPageInterface
 {
@@ -106,6 +109,16 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
         $this->getElement('add_to_cart')->click();
     }
 
+    public function clickAttribute(AttributeInterface $attribute): void
+    {
+        $this->getElement('attribute-label', ['%id%' => $attribute->getId()])->click();
+    }
+
+    public function isAttributeSelected(AttributeInterface $attribute): bool
+    {
+        return $this->getElement('attribute', ['%id%' => $attribute->getId()])->isSelected();
+    }
+
     protected function processQuantityPriceRuleElement(string $selector): array
     {
         $element = $this->getElement('product_quantity_price_rules');
@@ -143,6 +156,8 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
             'product_unit_price_palette' => '[data-test-product-unit-price-palette]',
             'product_quantity_price_rules' => '[data-test-product-quantity-price-rules]',
             'product_ouf_of_stock' => '[data-test-product-out-of-stock]',
+            'attribute' => '[data-test-attribute="%id%"]',
+            'attribute-label' => '[data-test-attribute-label="%id%"]',
         ]);
     }
 }

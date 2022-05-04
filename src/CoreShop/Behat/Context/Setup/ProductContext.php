@@ -30,6 +30,8 @@ use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Variant\Model\AttributeGroupInterface;
+use CoreShop\Component\Variant\Model\AttributeInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Folder;
@@ -139,6 +141,92 @@ final class ProductContext implements Context
         $variant = $this->createSimpleVariant($product, $productName);
 
         $this->saveProduct($variant);
+    }
+
+    /**
+     * @Given /^the (product) has variants for all values of (attribute group "[^"]+") and (attribute group "[^"]+")$/
+     */
+    public function theProductHasVaraintsForAllValuesOfAttributeGroup(
+        ProductInterface $product,
+        AttributeGroupInterface $group1,
+        AttributeGroupInterface $group2,
+    ): void
+    {
+        $product->setAllowedAttributeGroups([$group1, $group2]);
+        $product->save();
+
+        /**
+         * @var AttributeInterface $attribute1
+         */
+        foreach ($group1->getChildren([AbstractObject::OBJECT_TYPE_OBJECT]) as $attribute1) {
+            /**
+             * @var AttributeInterface $attribute2
+             */
+            foreach ($group2->getChildren([AbstractObject::OBJECT_TYPE_OBJECT]) as $attribute2) {
+                $variant = $this->createSimpleVariant(
+                    $product,
+                    sprintf(
+                        '%s %s %s',
+                        $product->getName(),
+                        $attribute1->getName(),
+                        $attribute2->getName()
+                    )
+                );
+                $variant->setAttributes([
+                    $attribute1,
+                    $attribute2
+                ]);
+                $variant->setPublished(true);
+                $this->saveProduct($variant);
+            }
+        }
+    }
+
+    /**
+     * @Given /^the (product) has variants for all values of (attribute group "[^"]+") and (attribute group "[^"]+") and (attribute group "[^"]+")$/
+     */
+    public function theProductHasVaraintsForAllValuesOf3AttributeGroups(
+        ProductInterface $product,
+        AttributeGroupInterface $group1,
+        AttributeGroupInterface $group2,
+        AttributeGroupInterface $group3,
+    ): void
+    {
+        $product->setAllowedAttributeGroups([$group1, $group2, $group3]);
+        $product->save();
+
+        /**
+         * @var AttributeInterface $attribute1
+         */
+        foreach ($group1->getChildren([AbstractObject::OBJECT_TYPE_OBJECT]) as $attribute1) {
+            /**
+             * @var AttributeInterface $attribute2
+             */
+            foreach ($group2->getChildren([AbstractObject::OBJECT_TYPE_OBJECT]) as $attribute2) {
+                /**
+                 * @var AttributeInterface $attribute3
+                 */
+                foreach ($group3->getChildren([AbstractObject::OBJECT_TYPE_OBJECT]) as $attribute3) {
+                    $variant = $this->createSimpleVariant(
+                        $product,
+                        sprintf(
+                            '%s %s %s %s',
+                            $product->getName(),
+                            $attribute1->getName(),
+                            $attribute2->getName(),
+                            $attribute3->getName(),
+                        )
+                    );
+                    $variant->setAttributes([
+                        $attribute1,
+                        $attribute2,
+                        $attribute3,
+                    ]);
+                    $variant->setPublished(true);
+                    $this->saveProduct($variant);
+                }
+            }
+        }
     }
 
     /**
