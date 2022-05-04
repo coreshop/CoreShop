@@ -152,6 +152,25 @@ final class VariantContext implements Context
         $product->save();
     }
 
+
+    /**
+     * @Given /^the (variant "[^"]+") uses (attribute color "[^"]+") and (attribute value "[^"]+")$/
+     * @Given /^the (variant) uses (attribute color "[^"]+") and (attribute value "[^"]+")$/
+     */
+    public function theVariantUsesAttributeColorAndAttributeValue(
+        ProductVariantAwareInterface $product,
+        AttributeColorInterface $attributeColor,
+        AttributeValueInterface $attributeValue,
+    ): void {
+        $attributes = $product->getAttributes() ?? [];
+
+        $attributes[] = $attributeColor;
+        $attributes[] = $attributeValue;
+
+        $product->setAttributes($attributes);
+        $product->save();
+    }
+
     private function hex2rgba(string $color): RgbaColor
     {
         // Sanitize $color if "#" is provided

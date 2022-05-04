@@ -14,12 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
-use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Element\NodeElement;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
-use Pimcore\Analytics\AbstractTracker;
 
 class ProductPage extends AbstractFrontendPage implements ProductPageInterface
 {
@@ -117,6 +115,18 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
     public function isAttributeSelected(AttributeInterface $attribute): bool
     {
         return $this->getElement('attribute', ['%id%' => $attribute->getId()])->isSelected();
+    }
+
+    public function isAttributeDisabled(AttributeInterface $attribute): bool
+    {
+        return $this->getElement('attribute', ['%id%' => $attribute->getId()])->getAttribute('disabled') === "true";
+    }
+
+    public function isAttributeEnabled(AttributeInterface $attribute): bool
+    {
+        $attr = $this->getElement('attribute', ['%id%' => $attribute->getId()])->getAttribute('disabled');
+
+        return "false" === $attr || null === $attr;
     }
 
     protected function processQuantityPriceRuleElement(string $selector): array
