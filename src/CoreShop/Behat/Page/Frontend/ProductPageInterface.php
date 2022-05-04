@@ -67,4 +67,8 @@ interface ProductPageInterface extends FrontendPageInterface
 
     public function isAttributeSelected(AttributeInterface $attribute): bool;
 
+    public function isAttributeDisabled(AttributeInterface $attribute): bool;
+
+    public function isAttributeEnabled(AttributeInterface $attribute): bool;
+
 }

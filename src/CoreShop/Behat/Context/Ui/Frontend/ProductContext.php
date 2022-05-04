@@ -260,4 +260,22 @@ final class ProductContext implements Context
     {
         Assert::false($this->productPage->isAttributeSelected($attribute));
     }
+
+    /**
+     * @Then /^(attribute value "[^"]+") is disabled/
+     * @Then /^(attribute color "[^"]+") is disabled$/
+     */
+    public function attributeIsDisabled(AttributeInterface $attribute): void
+    {
+        Assert::true($this->productPage->isAttributeDisabled($attribute));
+    }
+
+    /**
+     * @Then /^(attribute value "[^"]+") is enabled$/
+     * @Then /^(attribute color "[^"]+") is enabled$/
+     */
+    public function attributeIsEnabled(AttributeInterface $attribute): void
+    {
+        Assert::true($this->productPage->isAttributeEnabled($attribute));
+    }
 }
