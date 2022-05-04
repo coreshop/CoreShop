@@ -22,7 +22,7 @@ class ResolvedAttributeGroup
     private AttributeGroupInterface $group;
     private ArrayCollection $attributes;
     private string $type;
-    private int $selected;
+    private int $selected = 0;
 
     public function __construct()
     {

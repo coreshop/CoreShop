@@ -28,7 +28,7 @@ class AttributeCollector implements AttributeCollectorInterface
     /**
      * @return ResolvedAttributeGroup[]
      */
-    public function getAttributesFromVariants(ProductVariantAwareInterface $product, bool $showInList = true): array
+    public function getAttributesFromVariants(ProductVariantAwareInterface $product, bool $showInList = false): array
     {
         if (AbstractObject::OBJECT_TYPE_VARIANT === $product->getType()) {
             $variants = [$product];
@@ -42,7 +42,7 @@ class AttributeCollector implements AttributeCollectorInterface
     /**
      * @return ResolvedAttributeGroup[]
      */
-    public function getAttributes(array $products, bool $showInList = true): array
+    public function getAttributes(array $products, bool $showInList = false): array
     {
         $resolvedGroups = [];
         foreach ($products as $product) {
@@ -94,7 +94,7 @@ class AttributeCollector implements AttributeCollectorInterface
     /**
      * @return ResolvedAttributeGroup[]
      */
-    public function getAttributesFromObject(ProductVariantAwareInterface $product, bool $showInList = true): array
+    public function getAttributesFromObject(ProductVariantAwareInterface $product, bool $showInList = false): array
     {
         if (AbstractObject::OBJECT_TYPE_VARIANT === $product->getType()) {
             $product = $product->getVariantParent();

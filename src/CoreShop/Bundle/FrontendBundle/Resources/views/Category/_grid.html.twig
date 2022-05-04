@@ -18,17 +18,28 @@
             </div>
         </div>
         <div>
+            {% set attributeGroups = coreshop_variant_attribute_list_variants(product, true)|sort((a, b) => a.group.sorting <=> b.group.sorting) %}
+            {% for attributeGroup in attributeGroups %}
+                {% if attributeGroup.type == "Pimcore\\Model\\DataObject\\CoreShopAttributeColor" %}
+                    {% include '@CoreShopFrontend/Product/attributes/detail/_color.html.twig' with { group: attributeGroup } %}
+                {% else %}
+                    {% include '@CoreShopFrontend/Product/attributes/detail/text.html.twig' with { group: attributeGroup } %}
+                {% endif %}
+            {% endfor %}
+
             <div class="price">
                 {{ product_price.display_product_price(product) }}
             </div>
-            <div class="cart-button btn-group">
-                <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" class="btn btn-wishlist">
-                    <i class="fa fa-heart"></i>
-                </a>
-                {% if coreshop_inventory_is_available(product) %}
-                    {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
-                {% endif %}
-            </div>
+            {% if coreshop_add_to_cart_available(product) %}
+                <div class="cart-button btn-group">
+                    <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" class="btn btn-wishlist">
+                        <i class="fa fa-heart"></i>
+                    </a>
+                    {% if coreshop_inventory_is_available(product) %}
+                        {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

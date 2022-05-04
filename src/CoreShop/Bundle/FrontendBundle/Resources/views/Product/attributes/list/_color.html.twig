@@ -1,7 +1,7 @@
-<div class="product-colors my-_5">
+<div class="attribute-color">
     {% for attribute in group.attributes|sort((a, b) => a.attribute.sorting <=> b.attribute.sorting) %}
         {% if loop.index0 < 3 %}
-            <div data-bs-toggle="tooltip" title="{{ attribute.attribute.name }}" class="product-colors__item" style="--bs-product-color: {{ attribute.attribute.valueColor }}"></div>
+            <div data-bs-toggle="tooltip" title="{{ attribute.attribute.name }}" class="attribute-color__item" style="--bs-product-color: {{ attribute.attribute.valueColor }}"></div>
         {% endif %}
     {% endfor %}
     {% if group.attributes|length > 3 %}

@@ -1,7 +1,7 @@
-<div class="product-colors my-_5">
+<div class="attribute-color">
     {% for attribute in group.attributes|sort((a, b) => a.attribute.sorting <=> b.attribute.sorting) %}
-        <div data-bs-toggle="tooltip" title="{{ attribute.attribute.name }}" class="product-colors__item">
-            <input disabled data-group="{{ group.group.id }}" type="radio" class="btn-check" name="attributes[{{ group.group.id }}]" id="attribute-{{ attribute.attribute.id }}" value="{{ attribute.attribute.id }}" autocomplete="off">
+        <div data-bs-toggle="tooltip" title="{{ attribute.attribute.name }}" class="attribute-color__item">
+            <input disabled data-group="{{ group.group.id }}" type="radio" class="btn-check" name="attributes[{{ group.group.id }}]" id="attribute-{{ attribute.attribute.id }}" value="{{ attribute.attribute.id }}" autocomplete="off" {{ coreshop_test_html_attribute('attribute', attribute.attribute.id) }}>
             <label for="attribute-{{ attribute.attribute.id }}" style="--bs-product-color: {{ attribute.attribute.valueColor }}"></label>
         </div>
     {% endfor %}

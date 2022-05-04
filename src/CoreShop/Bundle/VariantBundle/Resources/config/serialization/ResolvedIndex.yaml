@@ -1,4 +1,4 @@
-CoreShop\Bundle\VariantBundle\Model\Resolved\ResolvedIndex:
+CoreShop\Component\Variant\Model\Resolved\ResolvedIndex:
     attributes:
         url:
             groups: ['coreshop']

@@ -37,7 +37,7 @@ final class VariantExtension extends AbstractExtension
             new TwigFunction('coreshop_variant_attribute_list_object', [$this->attributeCollector, 'getAttributesFromObject']),
             new TwigFunction('coreshop_variant_attribute_list_variants', [$this->attributeCollector, 'getAttributesFromVariants']),
             new TwigFunction('coreshop_variant_index', [$this->attributeCollector, 'getIndex']),
-            new TwigFunction('coreshop_variant_selected', [$this, 'getSelected']),
+            new TwigFunction('coreshop_variant_selected', [$this, 'setSelected']),
             new TwigFunction('coreshop_variant_serialize_groups', [$this, 'serializeGroups']),
             new TwigFunction('coreshop_variant_serialize_index', [$this, 'serializeIndex']),
         ];
@@ -50,13 +50,13 @@ final class VariantExtension extends AbstractExtension
             new TwigFilter('coreshop_variant_attribute_list_object', [$this->attributeCollector, 'getAttributesFromObject']),
             new TwigFilter('coreshop_variant_attribute_list_variants', [$this->attributeCollector, 'getAttributesFromVariants']),
             new TwigFilter('coreshop_variant_index', [$this->attributeCollector, 'getIndex']),
-            new TwigFilter('coreshop_variant_selected', [$this, 'getSelected']),
+            new TwigFilter('coreshop_variant_selected', [$this, 'setSelected']),
             new TwigFilter('coreshop_variant_serialize_groups', [$this, 'serializeGroups']),
             new TwigFilter('coreshop_variant_serialize_index', [$this, 'serializeIndex']),
         ];
     }
 
-    public function getSelected(array $attributeGroups, ProductVariantAwareInterface $product)
+    public function setSelected(array $attributeGroups, ProductVariantAwareInterface $product)
     {
         foreach ($attributeGroups as $attributeGroup) {
             foreach ($product->getAttributes() as $attribute) {
@@ -67,6 +67,8 @@ final class VariantExtension extends AbstractExtension
                 $attributeGroup->setSelected($attribute->getId());
             }
         }
+
+        return $attributeGroups;
     }
 
     public function serializeGroups(array $attributeGroups, array $groups = ['coreshop'])
