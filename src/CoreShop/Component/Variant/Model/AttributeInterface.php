@@ -20,6 +20,8 @@ interface AttributeInterface extends PimcoreModelInterface
 {
     public function getName(string $language = null): ?string;
 
+    public function setName(string $name, $language = null): ?string;
+
     public function getAttributeGroup(): ?AttributeGroupInterface;
 
     public function setAttributeGroup(?AttributeGroupInterface $attributeGroup);

@@ -18,7 +18,9 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface AttributeGroupInterface extends PimcoreModelInterface
 {
-    public function getName(string $language): ?string;
+    public function getName(string $language = null): ?string;
+
+    public function setName(string $name, $language = null): ?string;
 
     public function getSorting(): ?float;
 
