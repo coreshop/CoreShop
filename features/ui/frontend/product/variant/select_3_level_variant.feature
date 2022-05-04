@@ -36,6 +36,7 @@ Feature: Viewing a product variant details
         When I click on attribute value "Winter"
         Then I should be on the detail page for variant with key "t-shirt-green-s-winter"
         Then screenshot
+        Then html log
         When I click on attribute color "blue"
         When I click on attribute value "XL"
         When I click on attribute value "Summer"

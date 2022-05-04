@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Mink\Exception\Exception as MinkException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
@@ -39,6 +40,19 @@ final class LogContext implements Context
             //Ignore
         }
     }
+    /**
+     * @Given /^html log/
+     */
+    public function htmlLog(): void
+    {
+        $session = $this->getSession();
+
+        $log = sprintf('Current page: %d %s', $this->getStatusCode($session), $this->getCurrentUrl($session)) . "\n";
+        $log .= $this->getResponseHeadersLogMessage($session);
+        $log .= $this->getResponseContentLogMessage($session);
+
+        $this->saveLog($log, 'html');
+    }
 
     private function getSession(): Session
     {
@@ -51,6 +65,41 @@ final class LogContext implements Context
 
         if (file_put_contents($path, $content) === false) {
             throw new \RuntimeException(sprintf('Failed while trying to write log in "%s".', $path));
+        }
+    }
+    private function getStatusCode(Session $session): ?int
+    {
+        try {
+            return $session->getStatusCode();
+        } catch (MinkException | WebDriverException $exception) {
+            return null;
+        }
+    }
+
+    private function getCurrentUrl(Session $session): ?string
+    {
+        try {
+            return $session->getCurrentUrl();
+        } catch (MinkException | WebDriverException $exception) {
+            return null;
+        }
+    }
+
+    private function getResponseHeadersLogMessage(Session $session): ?string
+    {
+        try {
+            return 'Response headers:' . "\n" . print_r($session->getResponseHeaders(), true) . "\n";
+        } catch (MinkException | WebDriverException $exception) {
+            return null;
+        }
+    }
+
+    private function getResponseContentLogMessage(Session $session): ?string
+    {
+        try {
+            return 'Response content:' . "\n" . $session->getPage()->getContent() . "\n";
+        } catch (MinkException | WebDriverException $exception) {
+            return null;
         }
     }
 }
