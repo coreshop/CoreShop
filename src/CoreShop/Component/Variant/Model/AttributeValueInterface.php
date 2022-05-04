@@ -16,7 +16,5 @@ namespace CoreShop\Component\Variant\Model;
 
 interface AttributeValueInterface extends AttributeInterface
 {
-    public function getValueText(): ?string;
 
-    public function setValueText(?string $valueText);
 }

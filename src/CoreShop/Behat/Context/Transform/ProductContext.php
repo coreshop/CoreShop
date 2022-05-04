@@ -57,6 +57,7 @@ final class ProductContext implements Context
 
     /**
      * @Transform /^product with key "([^"]+)"$/
+     * @Transform /^variant with key "([^"]+)"$/
      */
     public function getProductByKey($productName)
     {

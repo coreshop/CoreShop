@@ -130,7 +130,23 @@ final class VariantContext implements Context
         $product->save();
     }
 
-    private function hex2rgba(string $color, float $opacity = 1): RgbaColor
+    /**
+     * @Given /^the (variant "[^"]+") uses (attribute value "[^"]+")$/
+     * @Given /^the (variant) uses (attribute value "[^"]+")$/
+     */
+    public function theVariantUsesAttributeValue(
+        ProductVariantAwareInterface $product,
+        AttributeValueInterface $attributeValue
+    ): void {
+        $attributes = $product->getAttributes() ?? [];
+
+        $attributes[] = $attributeValue;
+
+        $product->setAttributes($attributes);
+        $product->save();
+    }
+
+    private function hex2rgba(string $color): RgbaColor
     {
         // Sanitize $color if "#" is provided
         if ($color[0] === '#') {
@@ -149,16 +165,6 @@ final class VariantContext implements Context
         // Convert hexadec to rgb
         $rgb = array_map('hexdec', $hex);
 
-        // Check if opacity is set(rgba or rgb)
-        if ($opacity) {
-            if (abs($opacity) > 1) {
-                $opacity = 1.0;
-            }
-
-            return new RgbaColor($rgb[0], $rgb[1], $rgb[2], $opacity);
-        }
-
         return new RgbaColor($rgb[0], $rgb[1], $rgb[2]);
-
     }
 }

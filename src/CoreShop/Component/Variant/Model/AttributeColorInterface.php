@@ -21,8 +21,4 @@ interface AttributeColorInterface extends AttributeInterface
     public function getValueColor(): ?RgbaColor;
 
     public function setValueColor(?RgbaColor $color);
-
-    public function getValueText(): ?string;
-
-    public function setValueText(?string $valueText);
 }

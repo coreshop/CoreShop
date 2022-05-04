@@ -17,6 +17,7 @@ namespace CoreShop\Behat\Page\Frontend;
 use Behat\Mink\Exception\ElementNotFoundException;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
+use CoreShop\Component\Variant\Model\AttributeInterface;
 
 interface ProductPageInterface extends FrontendPageInterface
 {
@@ -61,4 +62,9 @@ interface ProductPageInterface extends FrontendPageInterface
      * @throws ElementNotFoundException
      */
     public function addToCartInUnitWithQuantity(ProductUnitDefinitionInterface $unit, string $quantity): void;
+
+    public function clickAttribute(AttributeInterface $attribute): void;
+
+    public function isAttributeSelected(AttributeInterface $attribute): bool;
+
 }

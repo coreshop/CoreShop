@@ -18,6 +18,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Frontend\ProductPageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
+use CoreShop\Component\Variant\Model\AttributeInterface;
 use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
@@ -37,7 +38,9 @@ final class ProductContext implements Context
 
     /**
      * @Then /^I should be on the (product's) detail page$/
+     * @Then /^I should be on the (variant's) detail page$/
      * @Then /^I should be on the detail page for (product with key "([^"]+)")$/
+     * @Then /^I should be on the detail page for (variant with key "([^"]+)")$/
      */
     public function iShouldBeOnProductDetailedPage(ProductInterface $product): void
     {
@@ -52,6 +55,7 @@ final class ProductContext implements Context
 
     /**
      * @When /^I open the (product's) detail page$/
+     * @When /^I open the (variant's) detail page$/
      */
     public function iCheckLatestProducts(ProductInterface $product): void
     {
@@ -228,5 +232,32 @@ final class ProductContext implements Context
         $this->productPage->tryToOpenWithUri($path);
 
         Assert::true($this->productPage->getIsOutOfStock());
+    }
+
+    /**
+     * @Then /^I click on (attribute value "[^"]+")$/
+     * @Then /^I click on (attribute color "[^"]+")$/
+     */
+    public function iClickOnAttribute(AttributeInterface $attribute): void
+    {
+        $this->productPage->clickAttribute($attribute);
+    }
+
+    /**
+     * @Then /^(attribute value "[^"]+") is selected$/
+     * @Then /^(attribute color "[^"]+") is selected$/
+     */
+    public function attributeIsSelected(AttributeInterface $attribute): void
+    {
+        Assert::true($this->productPage->isAttributeSelected($attribute));
+    }
+
+    /**
+     * @Then /^(attribute value "[^"]+") is not selected$/
+     * @Then /^(attribute color "[^"]+") is not selected$/
+     */
+    public function attributeIsNotSelected(AttributeInterface $attribute): void
+    {
+        Assert::false($this->productPage->isAttributeSelected($attribute));
     }
 }
