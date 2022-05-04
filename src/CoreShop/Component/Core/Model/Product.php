@@ -16,9 +16,12 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Product\Model\Product as BaseProduct;
+use CoreShop\Component\Variant\Model\ProductVariantTrait;
 
 abstract class Product extends BaseProduct implements ProductInterface
 {
+    use ProductVariantTrait;
+
     public function getInventoryName(): ?string
     {
         return $this->getName();

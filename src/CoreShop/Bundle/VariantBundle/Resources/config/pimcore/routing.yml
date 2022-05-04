@@ -1,0 +1,5 @@
+coreshop_variant_attribute:
+    path: /product/attribute/{product}
+    defaults: { _controller: CoreShop\Bundle\VariantBundle\Controller\ProductController::attributeAction }
+    options:
+        expose: true

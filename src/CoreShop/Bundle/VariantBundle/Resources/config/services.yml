@@ -1,0 +1,50 @@
+parameters:
+    coreshop.variant.attribute.validation_groups: [coreshop]
+    coreshop.variant.product.validation_groups: [coreshop]
+
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Component\Variant\AttributeCollectorInterface: '@CoreShop\Component\Variant\AttributeCollector'
+    CoreShop\Component\Variant\AttributeCollector:
+
+    CoreShop\Bundle\VariantBundle\Twig\Extension\VariantExtension:
+        public: false
+        arguments:
+            - '@CoreShop\Component\Variant\AttributeCollectorInterface'
+            - '@serializer'
+        tags:
+            - { name: twig.extension }
+
+    CoreShop\Bundle\VariantBundle\EventListener\AttributeListener:
+        arguments:
+            - '@Symfony\Component\Validator\Validator\ValidatorInterface'
+            - '%coreshop.variant.attribute.validation_groups%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\VariantBundle\EventListener\ProductListener:
+        arguments:
+            - '@Symfony\Component\Validator\Validator\ValidatorInterface'
+            - '%coreshop.variant.product.validation_groups%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\VariantBundle\EventListener\MainVariantListener:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\VariantBundle\Validator\Constraints\ValidAttributesTypeValidator:
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_variant_valid_attribute_type }
+
+    CoreShop\Bundle\VariantBundle\Validator\Constraints\ValidAttributesValidator:
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_variant_valid_attributes }
+
+    CoreShop\Bundle\VariantBundle\Pimcore\VariantLinkGenerator:
+        decorates: 'CoreShop\Component\Pimcore\Slug\SluggableLinkGenerator'
+        arguments:
+            - '@CoreShop\Bundle\VariantBundle\Pimcore\VariantLinkGenerator.inner'
+            - '%coreshop.variant.redirect_to_main_variant%'

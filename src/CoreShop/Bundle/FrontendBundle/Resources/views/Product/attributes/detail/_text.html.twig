@@ -1,0 +1,8 @@
+<div class="product-texts mt-_5 flex-wrap">
+    {% for attribute in group.attributes|sort((a, b) => a.attribute.sorting <=> b.attribute.sorting) %}
+        <div class="product-texts__item">
+            <input disabled  data-group="{{ group.group.id }}" type="radio" class="btn-check" name="attributes[{{ group.group.id }}]" id="attribute-{{ attribute.attribute.id }}" value="{{ attribute.attribute.id }}" autocomplete="off">
+            <label class="btn btn-sm btn-white" for="attribute-{{ attribute.attribute.id }}">{{ attribute.attribute.name }}</label>
+        </div>
+    {% endfor %}
+</div>
