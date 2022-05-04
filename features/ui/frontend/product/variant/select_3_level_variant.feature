@@ -5,17 +5,17 @@ Feature: Viewing a product variant details
         Given the site operates on a store in "Austria"
         And the store "Austria" is the default store
         And the site has a attribute group "Color"
-        And the site has a color attribute "red" with hex code "#FF0000" in attribute group
-        And the site has a color attribute "blue" with hex code "#0000FF" in attribute group
-        And the site has a color attribute "green" with hex code "#00FF00" in attribute group
+        And the site has a color attribute "red" with hex code "#FF0000" in attribute group with sorting 1
+        And the site has a color attribute "blue" with hex code "#0000FF" in attribute group with sorting 2
+        And the site has a color attribute "green" with hex code "#00FF00" in attribute group with sorting 3
         And the site has a attribute group "Size"
-        And the site has a value attribute "S" in attribute group
-        And the site has a value attribute "M" in attribute group
-        And the site has a value attribute "L" in attribute group
-        And the site has a value attribute "XL" in attribute group
+        And the site has a value attribute "S" in attribute group with sorting 1
+        And the site has a value attribute "M" in attribute group with sorting 2
+        And the site has a value attribute "L" in attribute group with sorting 3
+        And the site has a value attribute "XL" in attribute group with sorting 4
         And the site has a attribute group "Season"
-        And the site has a value attribute "Winter" in attribute group
-        And the site has a value attribute "Summer" in attribute group
+        And the site has a value attribute "Winter" in attribute group with sorting 1
+        And the site has a value attribute "Summer" in attribute group with sorting 2
         And the site has a product "T-Shirt"
         And the product is active and published and available for store "Austria"
         And the product has variants for all values of attribute group "Color" and attribute group "Size" and attribute group "Season"
