@@ -35,11 +35,11 @@ final class VariantContext implements Context
     public function theAttributeGroupShouldHaveXAttributes(AttributeGroupInterface $attributeGroup, int $count): void
     {
         Assert::eq(
-            count($attributeGroup->getChildren()),
+            count($attributeGroup->getChildren([AbstractObject::OBJECT_TYPE_OBJECT])),
             $count,
             sprintf(
                 '%d attributes have been found in group "%s".',
-                count($attributeGroup->getChildren()),
+                count($attributeGroup->getChildren([AbstractObject::OBJECT_TYPE_OBJECT])),
                 $attributeGroup->getRealFullPath()
             )
         );
