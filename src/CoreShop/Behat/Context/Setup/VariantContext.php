@@ -57,9 +57,11 @@ final class VariantContext implements Context
 
     /**
      * @Given /^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group "[^"]+")$/
+     * @Given /^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group "[^"]+") with sorting (\d+)$/
      * @Given /^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group)$/
+     * @Given /^the site has a color attribute "([^"]+)" with hex code "([^"]+)" in (attribute group) with sorting (\d+)$/
      */
-    public function thereIsAColorAttributeInGroup(string $name, string $hex, AttributeGroupInterface $group): void
+    public function thereIsAColorAttributeInGroup(string $name, string $hex, AttributeGroupInterface $group, float $sorting = 0): void
     {
         /**
          * @var AttributeColorInterface $attribute
@@ -69,6 +71,7 @@ final class VariantContext implements Context
         $attribute->setName($name);
         $attribute->setValueText($name);
         $attribute->setValueColor($this->hex2rgba($hex));
+        $attribute->setSorting($sorting);
         $attribute->setParent($group);
         $attribute->setKey(File::getValidFilename($name));
         $attribute->setPublished(true);
@@ -79,9 +82,11 @@ final class VariantContext implements Context
 
     /**
      * @Given /^the site has a value attribute "([^"]+)" in (attribute group "[^"]+")$/
+     * @Given /^the site has a value attribute "([^"]+)" in (attribute group "[^"]+") with sorting (\d+)$/
      * @Given /^the site has a value attribute "([^"]+)" in (attribute group)$/
+     * @Given /^the site has a value attribute "([^"]+)" in (attribute group) with sorting (\d+)$/
      */
-    public function thereIsAValueAttributeInGroup(string $name, AttributeGroupInterface $group): void
+    public function thereIsAValueAttributeInGroup(string $name, AttributeGroupInterface $group, float $sorting = 1): void
     {
         /**
          * @var AttributeValueInterface $attribute
@@ -90,6 +95,7 @@ final class VariantContext implements Context
 
         $attribute->setName($name);
         $attribute->setValueText($name);
+        $attribute->setSorting($sorting);
         $attribute->setParent($group);
         $attribute->setKey(File::getValidFilename($name));
         $attribute->setPublished(true);
