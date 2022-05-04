@@ -40,7 +40,7 @@ class ValidAttributesTypeValidator extends ConstraintValidator
         Assert::isInstanceOf($constraint, ValidAttributesType::class);
 
         /**
-         * @var null|Concrete&AttributeGroupInterface $parent
+         * @var null|AttributeGroupInterface $parent
          */
         $parent = $value->getAttributeGroup();
 
