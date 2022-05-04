@@ -42,7 +42,7 @@ class ResolvedAttributeGroup
     public function getAttributes(): array
     {
         $attributes = $this->attributes->toArray();
-        usort($attributes, fn($a, $b) => $a->getAttribute()->getSorting() <=> $b->getAttribute()->getSorting());
+        usort($attributes, static fn(ResolvedAttribute $a, ResolvedAttribute $b) => $a->getAttribute()->getSorting() <=> $b->getAttribute()->getSorting());
 
         return $attributes;
     }

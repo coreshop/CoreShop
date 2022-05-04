@@ -86,7 +86,7 @@ class AttributeCollector implements AttributeCollectorInterface
             }
         }
 
-        usort($resolvedGroups, fn($a, $b) => $a->getGroup()->getSorting() <=> $b->getGroup()->getSorting());
+        usort($resolvedGroups, static fn(ResolvedAttributeGroup $a, ResolvedAttributeGroup $b) => $a->getGroup()->getSorting() <=> $b->getGroup()->getSorting());
 
         return $resolvedGroups;
     }
