@@ -21,7 +21,7 @@ interface ProductVariantAwareInterface extends PimcoreModelInterface
 {
     public function getName(string $language = null): ?string;
 
-    public function setName(string $name, string $language = null);
+    public function setName(string $name, $language = null);
 
     /**
      * @return AttributeInterface[]|null
