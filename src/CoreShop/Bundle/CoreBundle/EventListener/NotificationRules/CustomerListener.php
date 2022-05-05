@@ -107,7 +107,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
             ]
         );
 
-        $this->rulesProcessor->applyRules('user', $customer->getUser(), $params);
+        $this->rulesProcessor->applyRules('user', $customer, $params);
     }
 
     public function applyNewsletterConfirmed(GenericEvent $event): void
