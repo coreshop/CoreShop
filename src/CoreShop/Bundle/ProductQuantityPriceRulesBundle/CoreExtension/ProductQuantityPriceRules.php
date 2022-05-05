@@ -277,7 +277,7 @@ class ProductQuantityPriceRules extends Data implements
         foreach ($priceCalculators as $type) {
             $calculationBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_calculator_' . strtolower($type)];
         }
-        foreach ($$actions as $type) {
+        foreach ($actions as $type) {
             $pricingBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_behaviour_' . strtolower($type)];
         }
 
