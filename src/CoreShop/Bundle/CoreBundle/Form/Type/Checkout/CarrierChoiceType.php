@@ -18,6 +18,7 @@ use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
+use CoreShop\Component\Core\Taxation\TaxationDisplayProviderInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
@@ -35,7 +36,8 @@ final class CarrierChoiceType extends AbstractResourceType
         private CarrierRepositoryInterface $repository,
         private CarriersResolverInterface $carriersResolver,
         private TaxedShippingCalculatorInterface $taxedShippingCalculator,
-        private CartContextResolverInterface $cartContextResolver
+        private CartContextResolverInterface $cartContextResolver,
+        private TaxationDisplayProviderInterface $taxationDisplayProvider
     ) {
         parent::__construct($dataClass, $validationGroups);
     }
@@ -60,7 +62,6 @@ final class CarrierChoiceType extends AbstractResourceType
                 'cart',
             ])
             ->setDefault('show_carrier_price', true)
-            ->setDefault('show_carrier_price_with_tax', true)
             ->setAllowedTypes('cart', OrderInterface::class);
     }
 
@@ -79,12 +80,14 @@ final class CarrierChoiceType extends AbstractResourceType
                 continue;
             }
 
+            $context = $this->cartContextResolver->resolveCartContext($cart);
+
             $price = $this->taxedShippingCalculator->getPrice(
                 $carrier,
                 $cart,
                 $cart->getShippingAddress(),
-                $options['show_carrier_price_with_tax'],
-                $this->cartContextResolver->resolveCartContext($cart)
+                $this->taxationDisplayProvider->displayWithTax($context),
+                $context
             );
 
             $prices[$choice->value] = $price;
