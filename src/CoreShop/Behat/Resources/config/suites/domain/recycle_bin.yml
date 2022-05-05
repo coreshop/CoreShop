@@ -42,4 +42,4 @@ default:
                 - coreshop.behat.context.domain.product
                 - coreshop.behat.context.domain.recycle_bin
             filters:
-                tags: "@domain && @recycle_bin"
+                tags: "@domain&&@recycle_bin"

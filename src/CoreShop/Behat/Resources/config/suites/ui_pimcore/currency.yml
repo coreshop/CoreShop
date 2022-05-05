@@ -17,4 +17,4 @@ default:
                 - coreshop.behat.context.ui_pimcore.pwa
                 - coreshop.behat.context.ui_pimcore.coreshop.currency
             filters:
-                tags: "@ui_pimcore && @currency"
+                tags: "@ui_pimcore&&@currency"

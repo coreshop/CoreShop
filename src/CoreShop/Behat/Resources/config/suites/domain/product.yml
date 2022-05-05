@@ -56,4 +56,4 @@ default:
                 - coreshop.behat.context.domain.product_quantity_price_rule
                 - coreshop.behat.context.domain.variant
             filters:
-                tags: "@domain && @product"
+                tags: "@domain&&@product"

@@ -29,5 +29,7 @@ framework:
 
 monolog:
     handlers:
+        main:
+            level: error
         console:
             channels: ['!event', '!doctrine', '!console', '!cache']

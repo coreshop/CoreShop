@@ -17,4 +17,4 @@ default:
                 - coreshop.behat.context.ui_pimcore.pwa
                 - coreshop.behat.context.ui_pimcore.coreshop.exchange_rate
             filters:
-                tags: "@ui_pimcore && @exchange_rate"
+                tags: "@ui_pimcore&&@exchange_rate"

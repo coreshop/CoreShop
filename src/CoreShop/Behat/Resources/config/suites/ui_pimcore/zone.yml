@@ -17,4 +17,4 @@ default:
                 - coreshop.behat.context.ui_pimcore.pwa
                 - coreshop.behat.context.ui_pimcore.coreshop.zone
             filters:
-                tags: "@ui_pimcore && @zone"
+                tags: "@ui_pimcore&&@zone"

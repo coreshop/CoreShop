@@ -35,4 +35,4 @@ default:
 
                 - coreshop.behat.context.ui.domain.payment
             filters:
-                tags: "@ui && @ui_domain"
+                tags: "@ui&&@ui_domain"
