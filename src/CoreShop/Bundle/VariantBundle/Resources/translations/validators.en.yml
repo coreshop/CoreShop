@@ -1,0 +1,10 @@
+coreshop:
+    variant:
+        product:
+            attributes:
+                wrong: "Wrong attributes assigned. There is only one attribute per group allowed. Please check also allowed attribute groups."
+        attribute:
+            attribute_type:
+                wrong: "Wrong Attribute Type"
+            attribute_group:
+                wrong: "No attribute group available. Please create attributes below attribute groups."

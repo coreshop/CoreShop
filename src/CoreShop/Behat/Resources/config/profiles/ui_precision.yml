@@ -31,4 +31,4 @@ ui_precision:
 
     gherkin:
         filters:
-            tags: '@ui_precision && ~@wip'
+            tags: '@ui_precision&&~@wip'

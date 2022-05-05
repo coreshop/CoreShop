@@ -24,4 +24,4 @@ default:
 
                 - coreshop.behat.context.ui_pimcore.login
             filters:
-                tags: "@ui_pimcore && @login"
+                tags: "@ui_pimcore&&@login"

@@ -21,4 +21,4 @@ default:
 
                 - coreshop.behat.context.domain.index
             filters:
-                tags: "@domain && @index"
+                tags: "@domain&&@index"

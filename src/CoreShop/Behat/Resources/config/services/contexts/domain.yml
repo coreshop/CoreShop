@@ -233,3 +233,10 @@ services:
             - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.variant:
+        class: CoreShop\Behat\Context\Domain\VariantContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
