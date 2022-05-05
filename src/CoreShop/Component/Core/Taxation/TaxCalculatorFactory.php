@@ -28,7 +28,8 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
 
     public function getTaxCalculatorForAddress(
         TaxRuleGroupInterface $taxRuleGroup,
-        AddressInterface $address
+        AddressInterface $address,
+        array $context = [],
     ): TaxCalculatorInterface {
         $taxRules = $this->taxRuleRepository->findForCountryAndState(
             $taxRuleGroup,

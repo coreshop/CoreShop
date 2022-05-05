@@ -26,12 +26,15 @@ class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterfac
     {
     }
 
-    public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address): ?TaxCalculatorInterface
-    {
+    public function getTaxCalculator(
+        PurchasableInterface $product,
+        AddressInterface $address,
+        array $context = []
+    ): ?TaxCalculatorInterface {
         $taxRuleGroup = $product->getTaxRule();
 
         if ($taxRuleGroup instanceof TaxRuleGroupInterface) {
-            return $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address);
+            return $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address, $context);
         }
 
         return null;
