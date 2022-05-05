@@ -87,5 +87,6 @@ services:
             - '@CoreShop\Component\Shipping\Resolver\CarriersResolverInterface'
             - '@CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface'
             - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
+            - '@CoreShop\Component\Core\Taxation\TaxationDisplayProviderInterface'
         tags:
             - { name: form.type }
