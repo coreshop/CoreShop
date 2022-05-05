@@ -66,9 +66,9 @@ grid_config:
                                 -
                                     label: 'Customer (customer)'
                                     type: value
-                                    class: Href
+                                    class: DefaultValue
                                     attribute: customer
-                                    dataType: manyToOneRelation
+                                    dataType: coreShopRelation
                                     childs: {  }
                         key: '#5a65a6bced85d'
                     isOperator: true
@@ -99,9 +99,9 @@ grid_config:
                                         -
                                             label: 'Invoice Address (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: manyToOneRelation
+                                            dataType: coreShopRelation
                                             childs: {  }
                                 -
                                     label: 'Last Name'
@@ -117,9 +117,9 @@ grid_config:
                                         -
                                             label: 'Invoice Address (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: manyToOneRelation
+                                            dataType: coreShopRelation
                                             childs: {  }
                         key: '#5a65a6bced8d0'
                     isOperator: true
@@ -312,9 +312,9 @@ grid_config:
                                 -
                                     label: 'Kunde (customer)'
                                     type: value
-                                    class: Href
+                                    class: DefaultValue
                                     attribute: customer
-                                    dataType: manyToOneRelation
+                                    dataType: coreShopRelation
                                     childs: {  }
                         key: '#5a65a6bced85d'
                     isOperator: true
@@ -345,9 +345,9 @@ grid_config:
                                         -
                                             label: 'Rechnungsadresse (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: manyToOneRelation
+                                            dataType: coreShopRelation
                                             childs: {  }
                                 -
                                     label: 'Last Name'
@@ -363,9 +363,9 @@ grid_config:
                                         -
                                             label: 'Rechnungsadresse (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: manyToOneRelation
+                                            dataType: coreShopRelation
                                             childs: {  }
                         key: '#5a65a6bced8d0'
                     isOperator: true
@@ -558,9 +558,9 @@ grid_config:
                                 -
                                     label: 'Customer (customer)'
                                     type: value
-                                    class: Href
+                                    class: DefaultValue
                                     attribute: customer
-                                    dataType: manyToOneRelation
+                                    dataType: coreShopRelation
                                     childs: {  }
                         key: '#5a65a6bced85d'
                     isOperator: true
@@ -591,9 +591,9 @@ grid_config:
                                         -
                                             label: 'Invoice Address (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: manyToOneRelation
+                                            dataType: coreShopRelation
                                             childs: {  }
                                 -
                                     label: 'Last Name'
@@ -609,9 +609,9 @@ grid_config:
                                         -
                                             label: 'Invoice Address (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: manyToOneRelation
+                                            dataType: coreShopRelation
                                             childs: {  }
                         key: '#5a65a6bced8d0'
                     isOperator: true
@@ -735,9 +735,9 @@ grid_config:
                                 -
                                     label: 'Kunde (customer)'
                                     type: value
-                                    class: Href
+                                    class: DefaultValue
                                     attribute: customer
-                                    dataType: manyToOneRelation
+                                    dataType: coreShopRelation
                                     childs: {  }
                         key: '#5a65a6bced85d'
                     isOperator: true
@@ -768,9 +768,9 @@ grid_config:
                                         -
                                             label: 'Rechnungsadresse (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: manyToOneRelation
+                                            dataType: coreShopRelation
                                             childs: {  }
                                 -
                                     label: 'Last Name'
@@ -786,9 +786,9 @@ grid_config:
                                         -
                                             label: 'Rechnungsadresse (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: manyToOneRelation
+                                            dataType: coreShopRelation
                                             childs: {  }
                         key: '#5a65a6bced8d0'
                     isOperator: true
@@ -891,9 +891,9 @@ grid_config:
                             childs:
                                 -   label: 'Customer (customer)'
                                     type: value
-                                    class: Href
+                                    class: DefaultValue
                                     attribute: customer
-                                    dataType: href
+                                    dataType: coreShopRelation
                                     childs: {  }
                         key: '#5a65a6bced85d'
                     isOperator: true
@@ -922,9 +922,9 @@ grid_config:
                                     childs:
                                         -   label: 'Invoice Address (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: coreShopRelation
                                             childs: {  }
                                 -   label: 'Last Name'
                                     type: operator
@@ -938,9 +938,9 @@ grid_config:
                                     childs:
                                         -   label: 'Invoice Address (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: coreShopRelation
                                             childs: {  }
                         key: '#5a65a6bced8d0'
                     isOperator: true
@@ -991,9 +991,9 @@ grid_config:
                             childs:
                                 -   label: 'Kunde (customer)'
                                     type: value
-                                    class: Href
+                                    class: DefaultValue
                                     attribute: customer
-                                    dataType: href
+                                    dataType: coreShopRelation
                                     childs: {  }
                         key: '#5a65a6bced85d'
                     isOperator: true
@@ -1022,9 +1022,9 @@ grid_config:
                                     childs:
                                         -   label: 'Rechnungsadresse (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: coreShopRelation
                                             childs: {  }
                                 -   label: 'Last Name'
                                     type: operator
@@ -1038,9 +1038,9 @@ grid_config:
                                     childs:
                                         -   label: 'Rechnungsadresse (invoiceAddress)'
                                             type: value
-                                            class: Href
+                                            class: DefaultValue
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: coreShopRelation
                                             childs: {  }
                         key: '#5a65a6bced8d0'
                     isOperator: true
