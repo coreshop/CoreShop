@@ -74,6 +74,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
             'city' => '{{ city }}',
             'country' => [
                 '{{ country.name }}',
+                \PHP_EOL,
                 '{{ phoneNumber }}',
             ],
             'region' => '',
