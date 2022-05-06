@@ -27,36 +27,29 @@
             } while (group);
         }
 
-        let _filterAttributes = function(attributes, group, previousGroup) {
-            if (previousGroup === undefined) {
-                previousGroup = group;
-            }
-
-            if (previousGroup.prevGroup) {
-                attributes = _filterAttributes(attributes, group, previousGroup.prevGroup);
-            }
-
-            if (previousGroup === group) {
-                return attributes;
-            }
-
+        let _filterAttributes = function (attributes, group) {
             let filterAttributes = [];
-            if (previousGroup.selected) {
-                attributes.forEach((attribute) => {
-                    attribute.products.forEach((product) => {
-                        if (_config.index.hasOwnProperty(product.id) &&
-                            _config.index[product.id]['attributes'].hasOwnProperty(previousGroup.group.id) &&
-                            _config.index[product.id]['attributes'][previousGroup.group.id] === previousGroup.selected &&
-                            !filterAttributes.includes(attribute)
-                        ) {
-                            filterAttributes.push(attribute);
-                        }
-                    });
-                });
-                return filterAttributes;
+
+            group = group.prevGroup;
+            while (group) {
+                if (group.selected && group.nextGroup) {
+                    filterAttributes.push({ group: group.group.id, selected: group.selected });
+                }
+                group = group.prevGroup;
             }
 
-            return attributes;
+            let filtered = [];
+            attributes.forEach((attribute) => {
+                attribute.products.forEach((product) => {
+                    if (filterAttributes.every((x) => {
+                        return _config.index[product.id]['attributes'].hasOwnProperty(x.group) && _config.index[product.id]['attributes'][x.group] === x.selected;
+                    }) && !filtered.includes(attribute)) {
+                        filtered.push(attribute);
+                    }
+                });
+            });
+
+            return filtered.length ? filtered : attributes;
         }
 
         let _configureGroup = function(group) {
@@ -64,8 +57,8 @@
             attributes = _filterAttributes(attributes, group);
 
             if (attributes) {
-                attributes.forEach((attribute) => {
-                    group.elements.forEach((element) => {
+                group.elements.forEach((element) => {
+                    attributes.forEach((attribute) => {
                         // set options on select, otherwise only enable inputs
                         if (element.tagName.toLowerCase() === 'select') {
                             const option = new Option(attribute.attribute.name, attribute.attribute.id);
@@ -89,19 +82,20 @@
             }
         }
 
-        let _setupAttributeGroupSettings = function() {
+        let _setupAttributeGroupSettings = function () {
             let index = _attributeGroups.length;
-            let group;
 
             while (index--) {
-                group = _attributeGroups[index];
-                group.prevGroup = _attributeGroups[index - 1];
-                group.nextGroup = _attributeGroups[index + 1];
+                _attributeGroups[index].prevGroup = _attributeGroups[index - 1];
+                _attributeGroups[index].nextGroup = _attributeGroups[index + 1];
+            }
 
-                if (!index || group.selected) {
-                    _configureGroup(group);
+            index = _attributeGroups.length;
+            while (index--) {
+                if (!index || _attributeGroups[index].selected) {
+                    _configureGroup(_attributeGroups[index]);
                 } else {
-                    _clearGroup(group);
+                    _clearGroup(_attributeGroups[index]);
                 }
             }
         }
@@ -173,9 +167,10 @@
                     _clearGroups(group.nextGroup);
                     _configureGroup(group.nextGroup);
                 } else {
-                    _attributeContainer.dispatchEvent(_createEvent('redirect', { element: element }));
+                    _attributeContainer.dispatchEvent(
+                        _createEvent('redirect', { element: element })
+                    );
                     _redirectToVariant();
-                    return;
                 }
             } else {
                 delete group.selected;
