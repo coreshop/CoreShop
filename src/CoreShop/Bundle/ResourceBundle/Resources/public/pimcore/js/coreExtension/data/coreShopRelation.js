@@ -96,6 +96,12 @@ pimcore.object.classes.data.coreShopRelation = Class.create(coreshop.object.clas
                         value: this.datax.stack,
                         store: stacks,
                         width: 400
+                    },
+                    {
+                        xtype: "checkbox",
+                        checked: this.datax.returnConcrete,
+                        fieldLabel: t("coreshop_return_concrete"),
+                        name: "returnConcrete"
                     }
                 ]
             }
