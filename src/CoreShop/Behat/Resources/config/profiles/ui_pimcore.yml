@@ -31,4 +31,4 @@ ui_pimcore:
 
     gherkin:
         filters:
-            tags: '@ui_pimcore && ~@wip'
+            tags: '@ui_pimcore&&~@wip'

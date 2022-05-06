@@ -48,4 +48,4 @@ default:
                 - coreshop.behat.context.domain.cart_price_rule
                 - coreshop.behat.context.domain.cart_price_rule_voucher_code
             filters:
-                tags: "@domain && @cart"
+                tags: "@domain&&@cart"

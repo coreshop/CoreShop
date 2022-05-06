@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\ClassDefinition\Data\Relations\AbstractRelations;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Element;
 
 /**
@@ -35,6 +36,8 @@ class CoreShopRelation extends Data\ManyToOneRelation
 
     public $documentsAllowed = false;
 
+    public $returnConcrete = false;
+
     public function getStack()
     {
         return $this->stack;
@@ -47,6 +50,16 @@ class CoreShopRelation extends Data\ManyToOneRelation
         $this->setClasses([]);
     }
 
+    public function getReturnConcrete(): bool
+    {
+        return $this->returnConcrete;
+    }
+
+    public function setReturnConcrete(bool $returnConcrete): void
+    {
+        $this->returnConcrete = $returnConcrete;
+    }
+
     protected function getCoreShopPimcoreClasses()
     {
         return \Pimcore::getContainer()->getParameter('coreshop.all.stack.pimcore_class_names');
@@ -54,6 +67,10 @@ class CoreShopRelation extends Data\ManyToOneRelation
 
     public function getParameterTypeDeclaration(): ?string
     {
+        if ($this->getReturnConcrete()) {
+            return '?\\' . Concrete::class;
+        }
+
         /**
          * @var array $stack
          */

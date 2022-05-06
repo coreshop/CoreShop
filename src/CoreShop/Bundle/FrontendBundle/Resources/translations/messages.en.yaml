@@ -6,6 +6,7 @@ coreshop.ui.add_new_invoice_address: 'Add a new billing address'
 coreshop.ui.add_to_cart: 'Add to Cart'
 coreshop.ui.address: 'Address'
 coreshop.ui.addresses: 'Addresses'
+coreshop.ui.attribute_group.label: "Choose %name%"
 coreshop.ui.availability: 'Availability'
 coreshop.ui.buy: 'Buy'
 coreshop.ui.carrier: 'Carrier'

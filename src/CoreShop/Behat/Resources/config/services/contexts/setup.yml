@@ -359,3 +359,21 @@ services:
             - '@coreshop.configuration.service'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.variant:
+        class: CoreShop\Behat\Context\Setup\VariantContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop.factory.attribute_group'
+            - '@coreshop.factory.attribute_color'
+            - '@coreshop.factory.attribute_value'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.log:
+        class: CoreShop\Behat\Context\Setup\LogContext
+        arguments:
+            - '@behat.mink'
+            - '%kernel.project_dir%/etc/build'
+        tags:
+            - { name: fob.context_service }

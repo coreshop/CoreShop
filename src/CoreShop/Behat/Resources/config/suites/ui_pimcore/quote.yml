@@ -13,4 +13,4 @@ default:
                 - coreshop.behat.context.ui_pimcore.login
                 - coreshop.behat.context.ui_pimcore.menu
             filters:
-                tags: "@ui_pimcore && @quote"
+                tags: "@ui_pimcore&&@quote"

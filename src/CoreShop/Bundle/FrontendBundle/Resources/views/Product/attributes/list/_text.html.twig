@@ -1,0 +1,14 @@
+<div class="attribute-text">
+    {% for attribute in group.attributes|sort((a, b) => a.attribute.sorting <=> b.attribute.sorting) %}
+        {% if loop.index0 < 3 %}
+            <span class="btn btn-sm btn-outline-secondary attribute-text__item">
+                {{ attribute.attribute.name }}
+            </span>
+        {% endif %}
+    {% endfor %}
+    {% if group.attributes|length > 3 %}
+        <span class="ms-_5 fs-lead fs-lg-5 lh-1">
+            <strong>+ {{ group.attributes|length - 3 }}</strong>
+        </span>
+    {% endif %}
+</div>

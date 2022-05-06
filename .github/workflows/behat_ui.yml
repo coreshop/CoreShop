@@ -114,3 +114,11 @@ jobs:
         name: "Behat logs (non-JS, PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
         path: etc/build/
         if-no-files-found: ignore
+
+    - name: Upload Pimcore logs
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: "Pimcore logs (non-JS, PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
+        path: var/log/
+        if-no-files-found: ignore
