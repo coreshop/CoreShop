@@ -4,7 +4,7 @@
         let _config = {};
         let _attributeGroups = [];
 
-        let _clearGroup = function(group) {
+        let _clearGroup = function (group) {
             delete group.selected;
             group.elements.forEach((element) => {
                 element.disabled = true;
@@ -20,7 +20,7 @@
             });
         }
 
-        let _clearGroups = function(group) {
+        let _clearGroups = function (group) {
             do {
                 _clearGroup(group);
                 group = group.nextGroup;
@@ -33,7 +33,7 @@
             group = group.prevGroup;
             while (group) {
                 if (group.selected && group.nextGroup) {
-                    filterAttributes.push({ group: group.group.id, selected: group.selected });
+                    filterAttributes.push({group: group.group.id, selected: group.selected});
                 }
                 group = group.prevGroup;
             }
@@ -52,7 +52,7 @@
             return filtered.length ? filtered : attributes;
         }
 
-        let _configureGroup = function(group) {
+        let _configureGroup = function (group) {
             let attributes = group.attributes.slice();
             attributes = _filterAttributes(attributes, group);
 
@@ -100,7 +100,7 @@
             }
         }
 
-        let _setupChangeEvents = function() {
+        let _setupChangeEvents = function () {
             _attributeGroups.forEach((group) => {
                 group.elements.forEach((element) => {
                     element.onchange = (e) => {
@@ -110,8 +110,8 @@
             });
         }
 
-        let _init = function(attributeContainer) {
-            if(!attributeContainer) {
+        let _init = function (attributeContainer) {
+            if (!attributeContainer) {
                 return;
             }
 
@@ -126,7 +126,7 @@
             _setupChangeEvents();
         }
 
-        let _redirectToVariant = function() {
+        let _redirectToVariant = function () {
             const groups = _attributeGroups.filter((g) => g.selected);
 
             const selected = Object.fromEntries(
@@ -145,30 +145,30 @@
             }
         }
 
-        let _createEvent = function(name, data = {}) {
+        let _createEvent = function (name, data = {}) {
             return new CustomEvent('variant_selector.' + name, {
                 bubbles: true,
-                cancelable:false,
+                cancelable: false,
                 data: data
             })
         }
 
-        let _configureElement = function(group, element) {
+        let _configureElement = function (group, element) {
             _attributeContainer.dispatchEvent(
-                _createEvent('change', { element: element })
+                _createEvent('change', {element: element})
             );
 
             if (element.value) {
                 group.selected = parseInt(element.value);
                 if (group.nextGroup) {
                     _attributeContainer.dispatchEvent(
-                        _createEvent('select', { element: element })
+                        _createEvent('select', {element: element})
                     )
                     _clearGroups(group.nextGroup);
                     _configureGroup(group.nextGroup);
                 } else {
                     _attributeContainer.dispatchEvent(
-                        _createEvent('redirect', { element: element })
+                        _createEvent('redirect', {element: element})
                     );
                     _redirectToVariant();
                 }
