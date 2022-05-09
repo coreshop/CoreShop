@@ -113,11 +113,11 @@ routes:
     variables: _locale
     priority: 2
 
-  coreshop_checkout_confirmation:
-    pattern: '/(\w+)\/shop\/checkout-thank-you$/'
-    reverse: '/%_locale/shop/checkout-thank-you'
+  coreshop_checkout_thank_you:
+    pattern: '/(\w+)\/shop\/checkout-thank-you\/(.*)$/'
+    reverse: '/%_locale/shop/checkout-thank-you/%token'
     controller: 'CoreShop\Bundle\FrontendBundle\Controller\CheckoutController:thankYouAction'
-    variables: _locale
+    variables: _locale,token
     priority: 2
 
   coreshop_payment:
@@ -125,13 +125,6 @@ routes:
     reverse: '/%_locale/shop/pay/%order'
     controller: 'CoreShop\Bundle\PayumBundle\Controller\PaymentController::prepareCaptureAction'
     variables: _locale,order
-    priority: 2
-
-  coreshop_checkout_error:
-    pattern: '/(\w+)\/shop\/checkout-error$/'
-    reverse: '/%_locale/shop/checkout-error'
-    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CheckoutController:errorAction'
-    variables: _locale
     priority: 2
 
   coreshop_switch_currency:

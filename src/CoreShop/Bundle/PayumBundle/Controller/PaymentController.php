@@ -61,8 +61,6 @@ class PaymentController extends AbstractController
          */
         $payment = $this->orderPaymentProvider->provideOrderPayment($order);
 
-        $request->getSession()->set('coreshop_order_id', $order->getId());
-
         $storage = $this->getPayum()->getStorage($payment);
         $storage->update($payment);
 
