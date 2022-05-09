@@ -32,15 +32,12 @@ final class ResolveNextRouteAction implements ActionInterface
         $order = $payment->getOrder();
 
         if ($order instanceof OrderInterface) {
-            $request->setRouteName('coreshop_checkout_confirmation');
+            $request->setRouteName('coreshop_checkout_thank_you');
             $request->setRouteParameters([
                 '_locale' => $order->getLocaleCode(),
+                'token' => $order->getToken(),
             ]);
-
-            return;
         }
-
-        $request->setRouteName('coreshop_checkout_error');
     }
 
     public function supports($request): bool

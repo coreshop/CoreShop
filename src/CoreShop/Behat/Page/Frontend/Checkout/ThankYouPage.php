@@ -20,7 +20,7 @@ class ThankYouPage extends AbstractFrontendPage implements ThankYouPageInterface
 {
     public function getRouteName(): string
     {
-        return 'coreshop_checkout_confirmation';
+        return 'coreshop_checkout_thank_you';
     }
 
     protected function getDefinedElements(): array
