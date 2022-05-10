@@ -217,11 +217,9 @@ class CheckoutController extends FrontendController
                 $orderPaymentStateMachine->apply($order, OrderPaymentTransitions::TRANSITION_PAY);
             }
 
-            $request->getSession()->set('coreshop_order_id', $order->getId());
-
             $this->get('event_dispatcher')->dispatch(new CheckoutEvent($this->getCart(), ['order' => $order]), CheckoutEvents::CHECKOUT_DO_POST);
 
-            $response = $this->redirectToRoute('coreshop_checkout_confirmation');
+            $response = $this->redirectToRoute('coreshop_checkout_thank_you', ['token' => $order->getToken()]);
         }
 
         $event = new CheckoutEvent($this->getCart(), ['order' => $order]);
@@ -244,43 +242,19 @@ class CheckoutController extends FrontendController
         return $response;
     }
 
-    public function errorAction(Request $request): Response
-    {
-        $orderId = $request->getSession()->get('coreshop_order_id', null);
-
-        if (null === $orderId) {
-            return $this->redirectToRoute('coreshop_index');
-        }
-
-        $request->getSession()->remove('coreshop_order_id');
-
-        /**
-         * @var OrderInterface $order
-         */
-        $order = $this->get('coreshop.repository.order')->find($orderId);
-        Assert::notNull($order);
-
-        $payments = $this->get('coreshop.repository.payment')->findForPayable($order);
-        $lastPayment = is_array($payments) ? $payments[count($payments) - 1] : null;
-
-        return $this->render($this->templateConfigurator->findTemplate('Checkout/error.html'), [
-            'order' => $order,
-            'payments' => $payments,
-            'lastPayment' => $lastPayment,
-        ]);
-    }
-
     public function thankYouAction(Request $request): Response
     {
-        $orderId = $request->getSession()->get('coreshop_order_id', null);
+        $orderToken = $this->getParameterFromRequest($request, 'token');
 
-        if (null === $orderId) {
+        if (null === $orderToken) {
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $request->getSession()->remove('coreshop_order_id');
-        $order = $this->get('coreshop.repository.order')->find($orderId);
-        Assert::notNull($order);
+        $order = $this->get('coreshop.repository.order')->findByToken($orderToken);
+
+        if (null === $order) {
+            return $this->redirectToRoute('coreshop_index');
+        }
 
         $this->get(TrackerInterface::class)->trackCheckoutComplete($order);
 

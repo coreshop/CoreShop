@@ -55,6 +55,21 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         return null;
     }
 
+    public function findByToken(string $token): ?OrderInterface
+    {
+        $list = $this->getList();
+        $list->setCondition('token = ?', [$token]);
+        $list->load();
+
+        if ($list->getTotalCount() === 1) {
+            $objects = $list->getObjects();
+
+            return $objects[0];
+        }
+
+        return null;
+    }
+
     public function findLatestCartByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface
     {
         $list = $this->getList();
