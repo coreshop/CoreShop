@@ -27,6 +27,8 @@ final class MainVariantListener implements EventSubscriberInterface
     {
         return [
             DataObjectEvents::PRE_UPDATE => 'preUpdate',
+            DataObjectEvents::POST_UPDATE => 'postUpdate',
+            DataObjectEvents::POST_ADD => 'postUpdate',
         ];
     }
 
@@ -49,5 +51,25 @@ final class MainVariantListener implements EventSubscriberInterface
         }
 
         $object->setMainVariant($variant);
+    }
+
+    public function postUpdate(DataObjectEvent $dataObjectEvent): void
+    {
+        $object = $dataObjectEvent->getObject();
+
+        if (!$object instanceof ProductVariantAwareInterface) {
+            return;
+        }
+
+        if (!$object->getPublished()) {
+            return;
+        }
+
+        if ($object->getType() !== AbstractObject::OBJECT_TYPE_VARIANT) {
+            return;
+        }
+
+        $product = $object->getVariantParent();
+        $product->save();
     }
 }

@@ -14,13 +14,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\VariantBundle\EventListener;
 
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Resource\Exception\NiceValidationException;
 use CoreShop\Component\Variant\Model\AttributeInterface;
 use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
 use Pimcore\Event\DataObjectEvents;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Model\DataObject\AbstractObject;
-use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Element\ValidationException;
 use Pimcore\Tool;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -36,6 +36,7 @@ final class ProductListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            DataObjectEvents::PRE_ADD => ['preUpdate', 10],
             DataObjectEvents::PRE_UPDATE => ['preUpdate', 10],
         ];
     }
@@ -56,10 +57,18 @@ final class ProductListener implements EventSubscriberInterface
             return;
         }
 
+        if (!$object->getPublished()) {
+            return;
+        }
+
         $this->validate($object);
 
         foreach (Tool::getValidLanguages() as $language) {
-            if (!$object->getName($language)) {
+            $name = InheritanceHelper::useInheritedValues(static function () use ($object, $language) {
+                return $object->getName($language);
+            }, false);
+
+            if (!$name) {
                 $parent = $object->getVariantParent();
 
                 if ($parent instanceof ProductVariantAwareInterface && $object->getAttributes()) {
