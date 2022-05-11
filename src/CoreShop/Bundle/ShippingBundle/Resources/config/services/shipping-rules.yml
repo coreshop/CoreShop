@@ -31,6 +31,8 @@ services:
         arguments:
             - '@coreshop.registry.shipping_rule.conditions'
             - 'Shipping Rules'
+        tags:
+            - { name: coreshop.rule.conditions.validation_processor }
 
     coreshop.shipping_rule.processor:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor

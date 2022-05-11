@@ -24,6 +24,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class TraceableValidationProcessorPass implements CompilerPassInterface
 {
+    public const RULE_CONDITIONS_VALIDATIONS_PROCESSOR = 'coreshop.rule.conditions.validation_processor';
+
     public function process(ContainerBuilder $container): void
     {
         if (!$container->getParameter('kernel.debug')) {
@@ -32,39 +34,18 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
 
         $validationProcessors = [];
 
-        foreach ($container->getServiceIds() as $serviceId) {
-            if (!$container->hasDefinition($serviceId)) {
-                continue;
-            }
+        foreach ($container->findTaggedServiceIds(self::RULE_CONDITIONS_VALIDATIONS_PROCESSOR) as $serviceId => $tags) {
+            $newServiceId = sprintf('%s.decorated', $serviceId);
+            $serviceIdInner = sprintf('%s.inner', $newServiceId);
 
-            $definition = $container->getDefinition($serviceId);
+            $decorator = new Definition(TraceableRuleConditionsValidationProcessor::class);
+            $decorator->setDecoratedService($serviceId);
+            $decorator->setArguments([new Reference($serviceIdInner)]);
+            $decorator->setPublic(true);
 
-            if (null === $definition->getClass()) {
-                continue;
-            }
+            $container->setDefinition($newServiceId, $decorator);
 
-            if ($definition->isDeprecated() || $definition->isAbstract()) {
-                continue;
-            }
-
-            if (!@class_exists($definition->getClass())) {
-                continue;
-            }
-
-            if (in_array(RuleConditionsValidationProcessorInterface::class, class_implements($definition->getClass()))) {
-                //Add Decorator
-                $newServiceId = sprintf('%s.decorated', $serviceId);
-                $serviceIdInner = sprintf('%s.inner', $newServiceId);
-
-                $decorator = new Definition(TraceableRuleConditionsValidationProcessor::class);
-                $decorator->setDecoratedService($serviceId);
-                $decorator->setArguments([new Reference($serviceIdInner)]);
-                $decorator->setPublic(true);
-
-                $container->setDefinition($newServiceId, $decorator);
-
-                $validationProcessors[] = new Reference($newServiceId);
-            }
+            $validationProcessors[] = new Reference($newServiceId);
         }
 
         if (count($validationProcessors) > 0) {
