@@ -17,7 +17,9 @@ namespace CoreShop\Bundle\RuleBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\RuleAvailabilityAssessorPass;
+use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\TraceableValidationProcessorPass;
 use CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface;
+use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -40,5 +42,9 @@ final class CoreShopRuleExtension extends AbstractModelExtension
         $container
             ->registerForAutoconfiguration(RuleAvailabilityAssessorInterface::class)
             ->addTag(RuleAvailabilityAssessorPass::RULE_AVAILABILITY_ASSESSOR_TAG);
+
+        $container
+            ->registerForAutoconfiguration(RuleConditionsValidationProcessorInterface::class)
+            ->addTag(TraceableValidationProcessorPass::RULE_CONDITIONS_VALIDATIONS_PROCESSOR);
     }
 }

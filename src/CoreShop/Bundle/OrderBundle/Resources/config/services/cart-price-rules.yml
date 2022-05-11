@@ -116,6 +116,8 @@ services:
         arguments:
             - '@coreshop.registry.cart_price_rule.conditions'
             - 'Cart Price Rules'
+        tags:
+            - { name: coreshop.rule.conditions.validation_processor }
 
     CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface: '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessor'
     CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessor:
