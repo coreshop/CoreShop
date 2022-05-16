@@ -23,7 +23,6 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 final class ORMTranslatableListener implements EventSubscriber
@@ -72,7 +71,7 @@ final class ORMTranslatableListener implements EventSubscriber
         $this->translatableEntityLocaleAssigner->assignLocale($entity);
     }
 
-    private function mapTranslatable(ClassMetadata $metadata): void
+    private function mapTranslatable(ClassMetadataInfo $metadata): void
     {
         $className = $metadata->name;
 
@@ -102,7 +101,7 @@ final class ORMTranslatableListener implements EventSubscriber
         }
     }
 
-    private function mapTranslation(ClassMetadata $metadata): void
+    private function mapTranslation(ClassMetadataInfo $metadata): void
     {
         $className = $metadata->name;
 
@@ -157,7 +156,7 @@ final class ORMTranslatableListener implements EventSubscriber
         }
     }
 
-    private function hasUniqueConstraint(ClassMetadata $metadata, array $columns): bool
+    private function hasUniqueConstraint(ClassMetadataInfo $metadata, array $columns): bool
     {
         if (!isset($metadata->table['uniqueConstraints'])) {
             return false;
