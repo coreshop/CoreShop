@@ -1,0 +1,31 @@
+CoreShop\Component\Wishlist\Model\Wishlist:
+    exclusion_policy: ALL
+    xml_root_name: wishlist
+    virtual_properties:
+        token:
+            serialized_name: token
+            exp: object.getToken()
+            type: string
+            groups: [List, Detailed]
+        name:
+            serialized_name: name
+            exp: object.getName()
+            type: string
+            groups: [Detailed]
+        date:
+            serialized_name: date
+            exp: object.getCreationDate()
+            type: DateTime
+            groups: [Detailed]
+        store:
+            serialized_name: store
+            exp: object.getStore()
+            groups: [Detailed]
+        items:
+            serialized_name: items
+            exp: object.getItems()
+            groups: [Detailed]
+        customer:
+            serialized_name: customer
+            exp: object.getCustomer()
+            groups: [Detailed]

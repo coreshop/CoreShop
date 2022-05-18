@@ -1,0 +1,58 @@
+parameters:
+    coreshop.dto.add_to_wishlist.class: 'CoreShop\Bundle\WishlistBundle\DTO\AddToWishlist'
+
+imports:
+    - { resource: services_alias.yml }
+    - { resource: services/wishlist.yml }
+    - { resource: services/context.yml }
+    - { resource: services/forms.yml }
+    - { resource: services/controller.yml }
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: false
+
+    CoreShop\Component\Wishlist\Manager\WishlistManagerInterface: '@CoreShop\Bundle\WishlistBundle\Manager\WishlistManager'
+    CoreShop\Bundle\WishlistBundle\Manager\WishlistManager:
+        arguments:
+            - '@CoreShop\Component\Wishlist\Processor\WishlistProcessorInterface'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
+            - '@doctrine.dbal.default_connection'
+
+    CoreShop\Component\Wishlist\Wishlist\WishlistItemResolver: ~
+
+    CoreShop\Component\Wishlist\Wishlist\WishlistModifierInterface: '@CoreShop\Component\Wishlist\Wishlist\WishlistModifier'
+    CoreShop\Component\Wishlist\Wishlist\WishlistModifier:
+        arguments:
+            - '@coreshop.cart_item.quantity_modifier'
+            - '@event_dispatcher'
+            - '@CoreShop\Component\Wishlist\Wishlist\WishlistItemResolver'
+
+    CoreShop\Component\Wishlist\Processor\WishlistProcessorInterface: '@CoreShop\Component\Wishlist\Processor\CompositeWishlistProcessor'
+    CoreShop\Component\Wishlist\Processor\CompositeWishlistProcessor: ~
+
+    CoreShop\Component\Wishlist\Factory\WishlistItemFactory:
+        decorates: coreshop.factory.wishlist_item
+        decoration_priority: 256
+        public: false
+        arguments:
+            - '@CoreShop\Component\Wishlist\Factory\WishlistItemFactory.inner'
+
+    CoreShop\Component\Wishlist\Factory\WishlistFactory:
+        decorates: coreshop.factory.wishlist
+        decoration_priority: 256
+        public: false
+        arguments:
+            - '@CoreShop\Component\Wishlist\Factory\WishlistFactory.inner'
+
+    CoreShop\Bundle\WishlistBundle\Factory\AddToWishlistFactoryInterface: '@CoreShop\Bundle\WishlistBundle\Factory\AddToWishlistFactory'
+    CoreShop\Bundle\WishlistBundle\Factory\AddToWishlistFactory:
+        arguments:
+            - '%coreshop.dto.add_to_cart.class%'

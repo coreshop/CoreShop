@@ -1,0 +1,28 @@
+coreshop_wishlist:
+    resource: "@CoreShopWishlistBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+coreshop_admin_wishlist_get_folder_configuration:
+    path: /%coreshop.admin.route.base%/wishlist/get-folder-configuration
+    defaults: { _controller: 'coreshop.pimcore_controller.wishlist:getFolderConfigurationAction'}
+    options:
+        expose: true
+
+coreshop_admin_wishlist_get_wishlists:
+    path: /%coreshop.admin.route.base%/wishlist/list
+    defaults: { _controller: 'coreshop.pimcore_controller.wishlist:listAction'}
+    options:
+        expose: true
+
+coreshop_admin_wishlist_get_wishlist:
+    path: /%coreshop.admin.route.base%/wishlist/detail
+    defaults: { _controller: 'coreshop.pimcore_controller.wishlist:detailAction'}
+    options:
+        expose: true
+
+coreshop_admin_wishlist_find:
+    path: /%coreshop.admin.route.base%/wishlist/find
+    defaults: { _controller: 'coreshop.pimcore_controller.wishlist:findWishlistAction'}
+    options:
+        expose: true

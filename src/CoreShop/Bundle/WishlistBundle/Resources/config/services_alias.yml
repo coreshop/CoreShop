@@ -1,0 +1,44 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.wishlist.manager:
+        alias: CoreShop\Component\Wishlist\Manager\WishlistManagerInterface
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Wishlist\Manager\WishlistManagerInterface instead'
+
+    coreshop.wishlist.item_finder:
+        alias: CoreShop\Component\Wishlist\Wishlist\WishlistItemResolver
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Wishlist\Wishlist\WishlistItemResolver instead'
+
+    coreshop.wishlist.modifier:
+        alias: CoreShop\Component\Wishlist\Wishlist\WishlistModifier
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Wishlist\Wishlist\WishlistModifier instead'
+
+    coreshop.wishlist_processor.composite:
+        alias: CoreShop\Component\Wishlist\Processor\WishlistProcessorInterface
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Wishlist\Processor\WishlistProcessorInterface instead'
+
+    coreshop.factory.add_to_wishlist:
+        alias: CoreShop\Bundle\WishlistBundle\Factory\AddToWishlistFactoryInterface
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WishlistBundle\Factory\AddToWishlistFactoryInterface instead'
+
+    coreshop.context.wishlist.fixed:
+        alias: CoreShop\Component\Wishlist\Context\FixedWishlistContext
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Wishlist\Context\FixedWishlistContext instead'
+
+    coreshop.context.wishlist.new:
+        alias: CoreShop\Component\Wishlist\Context\WishlistContext
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Wishlist\Context\WishlistContext instead'
+
+    coreshop.context.wishlist:
+        alias: CoreShop\Component\Wishlist\Context\WishlistContextInterface
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Wishlist\Context\WishlistContextInterface instead'
+
+    coreshop.context.wishlist.composite:
+        alias: CoreShop\Component\Wishlist\Context\CompositeWishlistContext
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Wishlist\Context\CompositeWishlistContext instead'
+
+    coreshop.wishlist_processor:
+        alias: CoreShop\Component\Wishlist\Processor\WishlistProcessorInterface
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Wishlist\Processor\WishlistProcessorInterface instead'
+

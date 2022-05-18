@@ -43,6 +43,7 @@ use CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle;
 use CoreShop\Bundle\TrackingBundle\CoreShopTrackingBundle;
 use CoreShop\Bundle\UserBundle\CoreShopUserBundle;
 use CoreShop\Bundle\VariantBundle\CoreShopVariantBundle;
+use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
@@ -93,6 +94,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $collection->addBundle(new CoreShopFrontendBundle(), 1800);
         $collection->addBundle(new CoreShopPayumBundle(), 1700);
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
+        $collection->addBundle(new CoreShopWishlistBundle(), 1500);
     }
 
     protected function getModelNamespace(): string

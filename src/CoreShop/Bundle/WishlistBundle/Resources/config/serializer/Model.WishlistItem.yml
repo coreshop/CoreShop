@@ -1,0 +1,4 @@
+CoreShop\Component\Wishlist\Model\WishlistItem:
+    exclusion_policy: ALL
+    xml_root_name: wishlist_item
+

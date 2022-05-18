@@ -1,0 +1,30 @@
+parameters:
+    coreshop.session.wishlist: 'coreshop.wishlist'
+    coreshop.form.type.wishlist.validation_groups: [coreshop]
+    coreshop.form.type.wishlist_item.validation_groups: [coreshop]
+
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\WishlistBundle\Form\Type\WishlistCreationType:
+        arguments:
+            - '%coreshop.model.wishlist.class%'
+            - '%coreshop.form.type.wishlist.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\WishlistBundle\Form\Type\WishlistItemType:
+        arguments:
+            - '%coreshop.model.wishlist_item.class%'
+            - '%coreshop.form.type.wishlist_item.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\WishlistBundle\Form\Type\WishlistCreationWishlistItemType:
+        arguments:
+            - '%coreshop.model.wishlist_item.class%'
+            - '%coreshop.form.type.wishlist_item.validation_groups%'
+        tags:
+            - { name: form.type }
+

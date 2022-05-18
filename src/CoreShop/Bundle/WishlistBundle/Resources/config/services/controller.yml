@@ -1,0 +1,8 @@
+services:
+    CoreShop\Bundle\WishlistBundle\Controller\WishlistController:
+        abstract: true
+        calls:
+            - ['setEventDispatcher', ['@event_dispatcher']]
+            - ['setObjectNoteService', ['@CoreShop\Component\Pimcore\DataObject\NoteServiceInterface']]
+            - ['setSerializer', ['@jms_serializer.serializer']]
+
