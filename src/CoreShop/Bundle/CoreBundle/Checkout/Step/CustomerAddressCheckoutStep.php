@@ -14,26 +14,28 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
+use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\AddressType;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 
-class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
+class CustomerAddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    public function __construct(
-        protected CustomerAddressCheckoutStep $customerAddressCheckoutStep,
-        protected GuestAddressCheckoutStep $guestAddressCheckoutStep
-    ) {
+    public function __construct(private FormFactoryInterface $formFactory, private CartManagerInterface $cartManager)
+    {
     }
 
     public function getIdentifier(): string
     {
-        return 'address';
+        return 'customer_address';
     }
 
     public function doAutoForward(OrderInterface $cart): bool
@@ -58,12 +60,19 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
             throw new CheckoutException('Customer not set', 'coreshop.ui.error.coreshop_checkout_internal_error');
         }
 
-        $isGuest = null === $customer->getUser();
+        $form = $this->createForm($request, $cart, $customer);
 
-        return $isGuest ? $this->guestAddressCheckoutStep->commitStep(
-            $cart,
-            $request
-        ) : $this->customerAddressCheckoutStep->commitStep($cart, $request);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $cart = $form->getData();
+
+                $this->cartManager->persistCart($cart);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function prepareStep(OrderInterface $cart, Request $request): array
@@ -76,13 +85,31 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
             throw new CheckoutException('Customer not set', 'coreshop.ui.error.coreshop_checkout_internal_error');
         }
 
-        $isGuest = null === $customer->getUser();
+        return [
+            'form' => $this->createForm($request, $cart, $customer)->createView(),
+            'hasShippableItems' => $cart->hasShippableItems(),
+        ];
+    }
 
-        return array_merge(
-            $isGuest ?
-                $this->guestAddressCheckoutStep->prepareStep($cart, $request) :
-                $this->customerAddressCheckoutStep->prepareStep($cart, $request),
-            ['is_guest' => $isGuest]
-        );
+    private function createForm(Request $request, OrderInterface $cart, CustomerInterface $customer): FormInterface
+    {
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
+
+        $options = [
+            'customer' => $customer,
+        ];
+
+        $form = $this->formFactory->createNamed('coreshop', AddressType::class, $cart, $options);
+
+        if ($cart->hasShippableItems() === false) {
+            $form->remove('shippingAddress');
+            $form->remove('useInvoiceAsShipping');
+        }
+
+        if ($request->isMethod('post')) {
+            $form = $form->handleRequest($request);
+        }
+
+        return $form;
     }
 }

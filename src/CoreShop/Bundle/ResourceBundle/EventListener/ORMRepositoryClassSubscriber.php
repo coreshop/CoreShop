@@ -29,7 +29,12 @@ final class ORMRepositoryClassSubscriber extends AbstractDoctrineSubscriber
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
-        $this->setCustomRepositoryClass($eventArgs->getClassMetadata());
+        /**
+         * @var ClassMetadata $classMetaData
+         */
+        $classMetaData = $eventArgs->getClassMetadata();
+
+        $this->setCustomRepositoryClass($classMetaData);
     }
 
     private function setCustomRepositoryClass(ClassMetadata $metadata): void

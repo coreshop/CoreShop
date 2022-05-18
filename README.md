@@ -88,7 +88,7 @@ APP_ENV=test PIMCORE_CLASS_DIRECTORY=var/tmp/behat/var/classes PIMCORE_TEST_DB_D
 APP_ENV=test PIMCORE_TEST_DB_DSN=mysql://root:ROOT@127.0.0.1:3306/coreshop2___behat symfony server:start --port=9080 --dir=public --no-tls
 
 # Run Behat
-CORESHOP_SKIP_DB_SETUP=1 PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:9080/app_test.php PANTHER_NO_HEADLESS=0 PIMCORE_TEST_DB_DSN=mysql://root:ROOT@127.0.0.1:3306/coreshop2___behat php -d memory_limit=-1 vendor/bin/behat -c behat.yml.dist -p ui -vvv 
+CORESHOP_SKIP_DB_SETUP=1 PANTHER_EXTERNAL_BASE_URI=http://127.0.0.1:9080/index_test.php PANTHER_NO_HEADLESS=0 PIMCORE_TEST_DB_DSN=mysql://root:ROOT@127.0.0.1:3306/coreshop2___behat php -d memory_limit=-1 vendor/bin/behat -c behat.yml.dist -p ui -vvv 
 ```
 
 ## Copyright and license 
