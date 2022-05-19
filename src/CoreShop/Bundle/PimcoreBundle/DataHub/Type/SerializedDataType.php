@@ -15,9 +15,12 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\PimcoreBundle\DataHub\Type;
 
 use GraphQL\Type\Definition\ScalarType;
+use Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectType\GeopointType;
 
 class SerializedDataType extends ScalarType
 {
+    protected static $instance;
+
     public $name = 'coreShopSerializedData';
 
     public function serialize($value)
@@ -33,5 +36,13 @@ class SerializedDataType extends ScalarType
     public function parseLiteral($valueNode, ?array $variables = null)
     {
         return $valueNode->value;
+    }
+
+    public static function getInstance()
+    {
+        if (!self::$instance) {
+            self::$instance = new static();
+        }
+        return self::$instance;
     }
 }
