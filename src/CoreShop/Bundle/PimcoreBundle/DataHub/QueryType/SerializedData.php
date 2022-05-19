@@ -36,6 +36,6 @@ class SerializedData extends Input
 
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
-        return new SerializedDataType();
+        return SerializedDataType::getInstance();
     }
 }
