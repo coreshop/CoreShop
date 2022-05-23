@@ -26,7 +26,7 @@ use Webmozart\Assert\Assert;
 
 class WishlistModifier implements WishlistModifierInterface
 {
-    public function __construct(protected StorageListItemQuantityModifierInterface $cartItemQuantityModifier, protected EventDispatcherInterface $eventDispatcher, protected ?\CoreShop\Component\StorageList\StorageListItemResolverInterface $cartItemResolver = null)
+    public function __construct(protected StorageListItemQuantityModifierInterface $wishlistItemQuantityModifier, protected EventDispatcherInterface $eventDispatcher, protected ?\CoreShop\Component\StorageList\StorageListItemResolverInterface $wishlistItemResolver = null)
     {
     }
 
@@ -61,10 +61,10 @@ class WishlistModifier implements WishlistModifierInterface
     private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem): void
     {
         foreach ($storageList->getItems() as $item) {
-            if ($this->cartItemResolver->equals($item, $storageListItem)) {
-                $this->cartItemQuantityModifier->modify(
+            if ($this->wishlistItemResolver->equals($item, $storageListItem)) {
+                $this->wishlistItemQuantityModifier->modify(
                     $item,
-                    $item->getQuantity() + $storageListItem->getQuantity()
+                    1
                 );
 
                 return;
