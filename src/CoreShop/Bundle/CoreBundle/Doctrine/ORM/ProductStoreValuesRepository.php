@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
@@ -30,7 +31,7 @@ class ProductStoreValuesRepository extends EntityRepository implements ProductSt
             ->getResult();
     }
 
-    public function findForProductAndStore(ProductInterface $product, StoreInterface $store): array
+    public function findForProductAndStore(ProductInterface $product, StoreInterface $store): ?ProductStoreValuesInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :product')

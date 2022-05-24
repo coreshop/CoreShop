@@ -15,12 +15,15 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Order\Committer;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Committer\QuoteCommitterInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\OrderSaleStates;
+use CoreShop\Component\Order\OrderTransitions;
+use CoreShop\Component\Order\QuoteTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
@@ -31,7 +34,13 @@ class QuoteCommitter implements QuoteCommitterInterface
 {
     protected string $orderFolderPath;
 
-    public function __construct(protected CartManagerInterface $cartManager, protected FolderCreationServiceInterface $folderCreationService, protected NumberGeneratorInterface $numberGenerator, protected ObjectClonerInterface $objectCloner)
+    public function __construct(
+        protected CartManagerInterface $cartManager,
+        protected FolderCreationServiceInterface $folderCreationService,
+        protected NumberGeneratorInterface $numberGenerator,
+        protected ObjectClonerInterface $objectCloner,
+        protected StateMachineApplierInterface $stateMachineApplier
+    )
     {
     }
 
@@ -46,13 +55,13 @@ class QuoteCommitter implements QuoteCommitterInterface
             'suffix' => date('Y/m/d'),
             'path' => 'quote',
         ]);
-        $orderNumber = $this->numberGenerator->generate($order);
+        $quoteNumber = $this->numberGenerator->generate($order);
 
         $order->setParent($orderFolder);
         $order->setSaleState(OrderSaleStates::STATE_QUOTE);
         $order->setOrderDate(Carbon::now());
-        $order->setOrderNumber($orderNumber);
-        $order->setKey(Service::getValidKey($orderNumber, 'object'));
+        $order->setQuoteNumber($quoteNumber);
+        $order->setKey(Service::getValidKey($quoteNumber, 'object'));
 
         $this->cartManager->persistCart($order);
 
@@ -88,5 +97,7 @@ class QuoteCommitter implements QuoteCommitterInterface
         $order->setInvoiceAddress($invoiceAddress);
 
         $this->cartManager->persistCart($order);
+
+        $this->stateMachineApplier->apply($order, QuoteTransitions::IDENTIFIER, QuoteTransitions::TRANSITION_CREATE);
     }
 }

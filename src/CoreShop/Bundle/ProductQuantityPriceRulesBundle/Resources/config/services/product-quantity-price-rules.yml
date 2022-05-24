@@ -64,6 +64,8 @@ services:
         arguments:
             - '@coreshop.registry.product_quantity_price_rules.conditions'
             - 'Product Quantity Price Rules'
+        tags:
+            - { name: coreshop.rule.conditions.validation_processor }
 
     coreshop.product_quantity_price_rules.processor:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor

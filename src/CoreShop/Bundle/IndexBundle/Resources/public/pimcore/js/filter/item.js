@@ -17,7 +17,8 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
     iconCls: 'coreshop_icon_filters',
 
     routing: {
-        save: 'coreshop_filter_save'
+        save: 'coreshop_filter_save',
+        clone: 'coreshop_filter_clone',
     },
 
     indexFieldsStore: null,
@@ -31,6 +32,10 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
             forceLayout: true,
             iconCls: this.iconCls,
             buttons: [{
+                text: t('clone'),
+                iconCls: 'pimcore_icon_clone',
+                handler: this.clone.bind(this)
+            }, {
                 text: t('save'),
                 iconCls: 'pimcore_icon_apply',
                 handler: this.save.bind(this)

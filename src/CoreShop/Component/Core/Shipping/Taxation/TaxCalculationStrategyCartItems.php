@@ -29,15 +29,19 @@ use Webmozart\Assert\Assert;
 
 class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
 {
-    public function __construct(private TaxCollectorInterface $taxCollector, private TaxCalculatorFactoryInterface $taxCalculationFactory, private ProportionalIntegerDistributorInterface $distributor)
-    {
+    public function __construct(
+        private TaxCollectorInterface $taxCollector,
+        private TaxCalculatorFactoryInterface $taxCalculationFactory,
+        private ProportionalIntegerDistributorInterface $distributor
+    ) {
     }
 
     public function calculateShippingTax(
         ShippableInterface $shippable,
         CarrierInterface $carrier,
         AddressInterface $address,
-        int $shippingAmount
+        int $shippingAmount,
+        array $context = [],
     ): array {
         /**
          * @var StoreAwareInterface $shippable
@@ -60,7 +64,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
 
         $distributedAmount = $this->distributor->distribute(\array_values($totalAmount), $shippingAmount);
 
-        return $this->collectTaxes($address, $taxRules, $distributedAmount, $store->getUseGrossPrice());
+        return $this->collectTaxes($address, $taxRules, $distributedAmount, $store->getUseGrossPrice(), $context);
     }
 
     private function collectCartItemsTaxRules(ShippableInterface $cart): array
@@ -103,12 +107,17 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
         AddressInterface $address,
         array $taxRuleGroup,
         array $distributedAmount,
-        bool $useGrossValues
+        bool $useGrossValues,
+        array $context = [],
     ): array {
         $taxes = [];
 
         foreach ($distributedAmount as $i => $amount) {
-            $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($taxRuleGroup[$i], $address);
+            $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress(
+                $taxRuleGroup[$i],
+                $address,
+                $context
+            );
 
             if ($useGrossValues) {
                 $shippingTax = $this->taxCollector->collectTaxesFromGross($taxCalculator, $amount);

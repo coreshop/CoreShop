@@ -1,0 +1,88 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+<div class="row">
+    <div class="col-12 col-lg-6">
+        <div class="invoice-address-selector">
+            <h1 class="h4">{{ 'coreshop.ui.invoice_address'|trans  }}</h1>
+            <div class="card mb-2">
+                <div class="card-body">
+                    {% set class = '' %}
+
+                    {{ form_row(form.invoiceAddress.salutation, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.customer.salutation' } }) }}
+                    {{ form_row(form.invoiceAddress.firstname, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.customer.firstname' } }) }}
+                    {{ form_row(form.invoiceAddress.lastname, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.customer.lastname' } }) }}
+                    {{ form_row(form.invoiceAddress.company, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.company' } }) }}
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.invoiceAddress.street, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.street' } }) }}
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.invoiceAddress.number, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.number' } }) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-3">
+                            {{ form_row(form.invoiceAddress.postcode, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.postcode' } }) }}
+                        </div>
+                        <div class="col-12 col-lg-9">
+                            {{ form_row(form.invoiceAddress.city, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.city' } }) }}
+                        </div>
+                    </div>
+
+                    {{ form_row(form.invoiceAddress.country, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.country' } }) }}
+                    {{ form_row(form.invoiceAddress.phoneNumber, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.phone_number' } }) }}
+
+                    {{ form_row(form.useInvoiceAsShipping, {row_attr: {class: 'form-floating'}, attr: {class: ''}}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="shipping-address-selector" style="{% if form.useInvoiceAsShipping.vars.data %}display:none{% endif %}">
+            <h1 class="h4">{{ 'coreshop.ui.shipping_address'|trans  }}</h1>
+            <div class="card">
+                <div class="card-body">
+                    {% set class = '' %}
+
+                    {{ form_row(form.shippingAddress.salutation, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.customer.salutation' } }) }}
+                    {{ form_row(form.shippingAddress.firstname, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.customer.firstname' } }) }}
+                    {{ form_row(form.shippingAddress.lastname, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.customer.lastname' } }) }}
+                    {{ form_row(form.shippingAddress.company, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.company' } }) }}
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.shippingAddress.street, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.street' } }) }}
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.shippingAddress.number, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.number' } }) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-3">
+                            {{ form_row(form.shippingAddress.postcode, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.postcode' } }) }}
+                        </div>
+                        <div class="col-12 col-lg-9">
+                            {{ form_row(form.shippingAddress.city, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.city' } }) }}
+                        </div>
+                    </div>
+
+                    {{ form_row(form.shippingAddress.country, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.country' } }) }}
+                    {{ form_row(form.shippingAddress.phoneNumber, { row_attr: { class: 'form-floating mb-1' }, attr: { class: class, placeholder: 'coreshop.form.address.phone_number' } }) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if form._token is defined %}
+    {{ form_row(form._token) }}
+{% endif %}
+
+<div class="mt-2 text-start text-lg-end">
+    <button type="submit" class="btn btn-success pull-right" {{ coreshop_test_html_attribute('submit-address-step') }}>
+        {{ 'coreshop.ui.proceed'|trans }}
+    </button>
+</div>

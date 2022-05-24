@@ -108,6 +108,9 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
                     $convertedItem = clone $taxItem;
                     $convertedItem->setAmount($this->convert($taxItem->getAmount(), $cart));
 
+                    /**
+                     * @psalm-suppress InvalidArgument
+                     */
                     $convertedTaxesFieldCollection->add($convertedItem);
                 }
             }

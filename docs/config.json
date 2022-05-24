@@ -4,7 +4,7 @@
     "repo": "coreshop/core-shop",
     "html": {
         "theme": "coreshop-blue",
-        "edit_on_github" : "/coreshop/CoreShop/edit/master/docs"
+        "edit_on_github" : "coreshop/CoreShop/edit/master/docs"
     },
     "themes_directory" : "themes",
     "links": {
@@ -13,6 +13,7 @@
     "breadcrumbs": false,
     "google_analytics": "UA-75356862-4",
     "ignore": {
-        "files": ["generate-api.sh", "generate-docs.sh", "generate-docs-local.sh", "config.json", "sami.php"]
+        "files": ["generate-api.sh", "generate-docs.sh", "generate-docs-local.sh", "config.json", "composer.json", "composer.lock"],
+        "folders": ["vendor", "themes", "generated_docs", "img"]
     }
 }

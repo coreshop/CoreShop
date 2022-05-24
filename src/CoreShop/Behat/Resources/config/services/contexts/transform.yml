@@ -209,3 +209,13 @@ services:
             - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.variant:
+        class: CoreShop\Behat\Context\Transform\VariantContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop.repository.attribute_group'
+            - '@coreshop.repository.attribute_color'
+            - '@coreshop.repository.attribute_value'
+        tags:
+            - { name: fob.context_service }

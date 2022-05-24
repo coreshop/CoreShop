@@ -24,10 +24,20 @@ services:
             - '@coreshop.customer.manager'
             - '@coreshop.context.locale'
 
-    CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep:
+    CoreShop\Bundle\CoreBundle\Checkout\Step\GuestAddressCheckoutStep:
         arguments:
             - '@form.factory'
             - '@CoreShop\Component\Order\Manager\CartManagerInterface'
+
+    CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerAddressCheckoutStep:
+        arguments:
+            - '@form.factory'
+            - '@CoreShop\Component\Order\Manager\CartManagerInterface'
+
+    CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep:
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerAddressCheckoutStep'
+            - '@CoreShop\Bundle\CoreBundle\Checkout\Step\GuestAddressCheckoutStep'
 
     CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep:
         arguments:
@@ -52,6 +62,13 @@ services:
             - '%coreshop.form.type.checkout.address.validation_groups%'
             - '@CoreShop\Component\Address\Formatter\AddressFormatterInterface'
             - '@translator'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Checkout\GuestAddressType:
+        arguments:
+            - '%coreshop.model.order.class%'
+            - '%coreshop.form.type.checkout.address.validation_groups%'
         tags:
             - { name: form.type }
 
@@ -87,5 +104,6 @@ services:
             - '@CoreShop\Component\Shipping\Resolver\CarriersResolverInterface'
             - '@CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface'
             - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
+            - '@CoreShop\Component\Core\Taxation\TaxationDisplayProviderInterface'
         tags:
             - { name: form.type }

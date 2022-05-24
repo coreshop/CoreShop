@@ -91,6 +91,9 @@ class ResourceController extends AdminController
         $handledForm = $form->handleRequest($request);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
+            /**
+             * @var ResourceInterface $resource
+             */
             $resource = $form->getData();
 
             $this->eventDispatcher->dispatchPreEvent('save', $this->metadata, $resource, $request);
@@ -100,10 +103,52 @@ class ResourceController extends AdminController
 
             $this->manager->clear();
 
-            //Reload resource
+            /**
+             * @var ResourceInterface $resource
+             */
             $resource = $this->repository->find($resource->getId());
 
             $this->eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);
+
+            return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
+        }
+
+        $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
+
+        return $this->viewHandler->handle(['success' => false, 'message' => implode(\PHP_EOL, $errors)]);
+    }
+
+    public function cloneAction(Request $request): JsonResponse
+    {
+        $this->isGrantedOr403();
+
+        $resource = $this->factory->createNew();
+        $form = $this->resourceFormFactory->create($this->metadata, $resource);
+        $handledForm = $form->handleRequest($request);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
+            /**
+             * @var ResourceInterface $resource
+             */
+            $resource = $form->getData();
+
+            $this->eventDispatcher->dispatchPreEvent('clone', $this->metadata, $resource, $request);
+
+            if (method_exists($resource, 'getName')) {
+                $resource->setValue('name', sprintf('%s - %s', $resource->getName(), time()));
+            }
+
+            $this->manager->persist($resource);
+            $this->manager->flush();
+
+            $this->manager->clear();
+
+            /**
+             * @var ResourceInterface $resource
+             */
+            $resource = $this->repository->find($resource->getId());
+
+            $this->eventDispatcher->dispatchPostEvent('clone', $this->metadata, $resource, $request);
 
             return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
         }

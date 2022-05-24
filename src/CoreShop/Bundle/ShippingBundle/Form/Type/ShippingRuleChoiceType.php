@@ -32,6 +32,9 @@ final class ShippingRuleChoiceType extends AbstractType
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
+                    /**
+                     * @var ShippingRuleInterface[] $shippingRules
+                     */
                     $shippingRules = $this->shippingRuleRepository->findAll();
 
                     usort($shippingRules, function (ShippingRuleInterface $a, ShippingRuleInterface $b): int {

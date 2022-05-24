@@ -23,6 +23,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
@@ -51,7 +52,8 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
         $taxCalculator = $this->taxCalculator->getTaxCalculator(
             $product,
-            $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
+            $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart),
+            $context
         );
 
         $quantity = $cartItem->getQuantity();
@@ -68,8 +70,11 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
                 $cartItem->setTaxes(new Fieldcollection($taxes));
 
-                $cartItem->setTotal((int)round($itemPrice * $quantity), true);
-                $cartItem->setTotal($cartItem->getTotal(true) - $totalTaxAmount, false);
+                $cartItem->setSubtotal((int)round($itemPrice * $quantity), true);
+                $cartItem->setSubtotal($cartItem->getSubtotal(true) - $totalTaxAmount, false);
+
+                $cartItem->setTotal($cartItem->getSubtotal(true), true);
+                $cartItem->setTotal($cartItem->getSubtotal(false), false);
 
                 $cartItem->setItemPrice($itemPrice, true);
                 $cartItem->setItemPrice($itemPrice - $itemPriceTax, false);
@@ -93,8 +98,11 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
                 $cartItem->setTaxes(new Fieldcollection($taxes));
 
-                $cartItem->setTotal((int)round($itemPrice * $quantity), false);
-                $cartItem->setTotal((int)round($itemPrice * $quantity) + $totalTaxAmount, true);
+                $cartItem->setSubtotal((int)round($itemPrice * $quantity), false);
+                $cartItem->setSubtotal((int)round($itemPrice * $quantity) + $totalTaxAmount, true);
+
+                $cartItem->setTotal($cartItem->getSubtotal(true), true);
+                $cartItem->setTotal($cartItem->getSubtotal(false), false);
 
                 $cartItem->setItemPrice($itemPrice, false);
                 $cartItem->setItemPrice($itemPrice + $itemPriceTax, true);
@@ -109,8 +117,11 @@ final class CartItemProcessor implements CartItemProcessorInterface
                 $cartItem->setItemDiscount($itemDiscount + $itemDiscountTax, true);
             }
         } else {
-            $cartItem->setTotal((int)round($itemPrice * $quantity), false);
-            $cartItem->setTotal((int)round($itemPrice * $quantity), true);
+            $cartItem->setSubtotal((int)round($itemPrice * $quantity), false);
+            $cartItem->setSubtotal((int)round($itemPrice * $quantity), true);
+
+            $cartItem->setTotal($cartItem->getSubtotal(true), true);
+            $cartItem->setTotal($cartItem->getSubtotal(false), false);
 
             $cartItem->setItemPrice($itemPrice, true);
             $cartItem->setItemPrice($itemPrice, false);
@@ -138,7 +149,14 @@ final class CartItemProcessor implements CartItemProcessorInterface
         $usedTaxes = [];
 
         foreach ($taxes as $taxId => $splitted) {
+            /**
+             * @var TaxRateInterface|null $tax
+             */
             $tax = $this->taxRateRepository->find($taxId);
+
+            if (!$tax) {
+                continue;
+            }
 
             if ($splitted[$i] <= 0) {
                 continue;
@@ -168,7 +186,14 @@ final class CartItemProcessor implements CartItemProcessorInterface
         $usedTaxes = [];
 
         foreach ($taxes as $taxId => $amount) {
+            /**
+             * @var TaxRateInterface|null $tax
+             */
             $tax = $this->taxRateRepository->find($taxId);
+
+            if (!$tax) {
+                continue;
+            }
 
             if ($amount <= 0) {
                 continue;

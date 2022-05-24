@@ -73,8 +73,15 @@ class CartController extends FrontendController
                 $cart = $form->getData();
                 $code = $form->get('cartRuleCoupon')->getData();
 
-                if ($code) {
-                    $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
+                if(method_exists($form, 'getClickedButton')) {
+                    $submit = $form->getClickedButton();
+                    $validateVoucherCode = $submit && 'submit_voucher' === $submit->getName();
+                } else {
+                    $validateVoucherCode = (bool)$code;
+                }
+
+                if ($validateVoucherCode) {
+                    $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code ?? '');
 
                     if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                         $this->addFlash(
@@ -82,10 +89,7 @@ class CartController extends FrontendController
                             $this->get('translator')->trans('coreshop.ui.error.voucher.not_found')
                         );
 
-                        return $this->render($this->templateConfigurator->findTemplate('Cart/summary.html'), [
-                            'cart' => $this->getCart(),
-                            'form' => $form->createView(),
-                        ]);
+                        return $this->redirectToRoute('coreshop_cart_summary');
                     }
 
                     $priceRule = $voucherCode->getCartPriceRule();
@@ -105,16 +109,18 @@ class CartController extends FrontendController
 
                 $this->get('event_dispatcher')->dispatch(new GenericEvent($cart), 'coreshop.cart.update');
                 $this->getCartManager()->persistCart($cart);
-            } else {
-                $session = $request->getSession();
 
-                if ($session instanceof Session) {
-                    foreach ($form->getErrors() as $error) {
-                        $session->getFlashBag()->add('error', $error->getMessage());
-                    }
+                return $this->redirectToRoute('coreshop_cart_summary');
+            }
 
-                    return $this->redirect($request->getPathInfo());
+            $session = $request->getSession();
+
+            if ($session instanceof Session) {
+                foreach ($form->getErrors() as $error) {
+                    $session->getFlashBag()->add('error', $error->getMessage());
                 }
+
+                return $this->redirectToRoute('coreshop_cart_summary');
             }
         }
 

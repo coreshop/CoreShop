@@ -16,6 +16,7 @@ namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
@@ -27,7 +28,14 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 class CartRuleApplier implements CartRuleApplierInterface
 {
-    public function __construct(private ProportionalIntegerDistributor $distributor, private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory, private TaxCollectorInterface $taxCollector, private AddressProviderInterface $defaultAddressProvider, private AdjustmentFactoryInterface $adjustmentFactory)
+    public function __construct(
+        private ProportionalIntegerDistributor $distributor,
+        private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
+        private TaxCollectorInterface $taxCollector,
+        private AddressProviderInterface $defaultAddressProvider,
+        private AdjustmentFactoryInterface $adjustmentFactory,
+        private CartContextResolverInterface $cartContextResolver
+    )
     {
     }
 
@@ -43,10 +51,20 @@ class CartRuleApplier implements CartRuleApplierInterface
 
     protected function apply(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
     {
+        $context = $this->cartContextResolver->resolveCartContext($cart);
+
         $totalAmount = [];
+        $totalDiscountPossible = 0;
 
         foreach ($cart->getItems() as $item) {
             $totalAmount[] = $item->getTotal(false);
+            $totalDiscountPossible += $item->getTotal($withTax);
+        }
+        
+        $discount = min($discount, $totalDiscountPossible);
+        
+        if (0 === $discount) {
+            return;
         }
 
         $distributedAmount = $this->distributor->distribute($totalAmount, $discount);
@@ -74,7 +92,8 @@ class CartRuleApplier implements CartRuleApplierInterface
 
             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
                 $item->getProduct(),
-                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
+                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart),
+                $context
             );
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
@@ -134,7 +153,8 @@ class CartRuleApplier implements CartRuleApplierInterface
 
             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
                 $item->getProduct(),
-                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
+                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart),
+                $context
             );
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
@@ -165,8 +185,7 @@ class CartRuleApplier implements CartRuleApplierInterface
                 AdjustmentInterface::CART_PRICE_RULE,
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
                 $positive ? $amountGross : (-1 * $amountGross),
-                $positive ? $amountNet : (-1 * $amountNet),
-                true
+                $positive ? $amountNet : (-1 * $amountNet)
             ));
         }
 

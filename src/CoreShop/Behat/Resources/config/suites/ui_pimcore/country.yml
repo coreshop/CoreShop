@@ -17,4 +17,4 @@ default:
                 - coreshop.behat.context.ui_pimcore.pwa
                 - coreshop.behat.context.ui_pimcore.coreshop.country
             filters:
-                tags: "@ui_pimcore && @country"
+                tags: "@ui_pimcore&&@country"

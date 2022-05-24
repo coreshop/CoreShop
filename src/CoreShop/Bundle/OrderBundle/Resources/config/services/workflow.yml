@@ -53,6 +53,17 @@ services:
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.order_state'
 
+    coreshop.state_machine.marking_store.single_state.quote_state:
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
+        arguments:
+            - true
+            - quoteState
+
+    coreshop.state_machine.marking_store.quote_pimcore_marking_store:
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
+        arguments:
+            - '@coreshop.state_machine.marking_store.single_state.quote_state'
+
     coreshop.state_machine.marking_store.single_state.order_shipment_state:
         class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:

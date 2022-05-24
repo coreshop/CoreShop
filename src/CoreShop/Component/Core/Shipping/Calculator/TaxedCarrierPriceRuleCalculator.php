@@ -74,7 +74,7 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
          * @var TaxCalculationStrategyInterface $taxCalculationService
          */
         $taxCalculationService = $this->taxCalculatorStrategyRegistry->get($shippingTaxCalculationStrategy);
-        $cartTaxes = $taxCalculationService->calculateShippingTax($shippable, $carrier, $address, $price);
+        $cartTaxes = $taxCalculationService->calculateShippingTax($shippable, $carrier, $address, $price, $context);
 
         $cartTax = array_sum(array_map(static function (TaxItemInterface $taxItem) {
             return $taxItem->getAmount();

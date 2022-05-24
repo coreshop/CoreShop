@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -23,11 +24,13 @@ final class CartTypeExtension extends AbstractTypeExtension
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('cartRuleCoupon', TextType::class, [
-            'mapped' => false,
-            'required' => false,
-            'label' => 'coreshop.form.cart_rule.coupon',
-        ]);
+        $builder
+            ->add('cartRuleCoupon', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => 'coreshop.form.cart_rule.coupon',
+            ])
+            ->add('submit_voucher', SubmitType::class);
     }
 
     public static function getExtendedTypes(): iterable

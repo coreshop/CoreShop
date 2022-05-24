@@ -98,7 +98,6 @@ class GuestRegistrationType extends AbstractResourceType
                 $customer = $this->customerRepository->findGuestByEmail($data['email']['first']);
 
                 // assign existing customer or create a new one
-                $form = $event->getForm();
                 if (null !== $customer && null === $customer->getUser()) {
                     $form->setData($customer);
 

@@ -1,0 +1,8 @@
+<div class="attribute">
+    <div class="attribute__item">
+        <select name="attributes[{{ group.group.id }}]" data-group="{{ group.group.id }}" class="form-control bg-white border-1">
+            <option value=""></option>
+            {% for resolvedAttribute in group.attributes|sort((a, b) => a.attribute.sorting <=> b.attribute.sorting) %}{% endfor %}
+        </select>
+    </div>
+</div>

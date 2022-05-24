@@ -32,6 +32,9 @@ final class TaxRuleGroupChoiceType extends AbstractType
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
+                    /**
+                     * @var TaxRuleGroupInterface[] $taxRuleGroups
+                     */
                     $taxRuleGroups = $this->taxRuleGroupRepository->findAll();
 
                     usort($taxRuleGroups, function (TaxRuleGroupInterface $a, TaxRuleGroupInterface $b): int {

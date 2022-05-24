@@ -33,7 +33,7 @@ jobs:
   test-packages:
     needs: list
     runs-on: ubuntu-latest
-    name: "${{ matrix.package }}, PHP ${{ matrix.php }}"
+    name: "${{ matrix.package }}, PHP ${{ matrix.php }}, Pimcore ${{ matrix.pimcore }}"
     strategy:
       fail-fast: false
       matrix:

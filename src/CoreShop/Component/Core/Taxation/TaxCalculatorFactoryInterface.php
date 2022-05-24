@@ -22,6 +22,7 @@ interface TaxCalculatorFactoryInterface
 {
     public function getTaxCalculatorForAddress(
         TaxRuleGroupInterface $taxRuleGroup,
-        AddressInterface $address
+        AddressInterface $address,
+        array $context = [],
     ): TaxCalculatorInterface;
 }

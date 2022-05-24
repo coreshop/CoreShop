@@ -2,6 +2,10 @@ imports:
     - { resource: ../../config.yaml }
     - { resource: ../../../src/CoreShop/Behat/Resources/config/services.yml }
 
+pimcore:
+    targeting:
+        enabled: false
+
 doctrine:
     dbal:
         connections:
@@ -25,5 +29,7 @@ framework:
 
 monolog:
     handlers:
+        main:
+            level: error
         console:
             channels: ['!event', '!doctrine', '!console', '!cache']

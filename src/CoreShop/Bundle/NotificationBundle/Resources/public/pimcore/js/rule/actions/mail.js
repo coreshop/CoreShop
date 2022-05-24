@@ -13,19 +13,23 @@
 pimcore.registerNS('coreshop.notification.rule.actions.mail');
 
 coreshop.notification.rule.actions.mail = Class.create(coreshop.rules.actions.abstract, {
-
     type: 'mail',
-
     fields: {},
+
+    initialize: function ($super, parent, type, data) {
+        $super(parent, type, data);
+
+        this.fields = {};
+    },
 
     getForm: function () {
         var me = this,
             tabs = [];
 
         Ext.each(pimcore.settings.websiteLanguages, function (lang) {
-            var value = this.data && this.data.mails && this.data.mails.hasOwnProperty(lang) ? this.data.mails[lang] : '';
+            var value = me.data && me.data.mails && me.data.mails.hasOwnProperty(lang) ? me.data.mails[lang] : '';
 
-            this.fields[lang] = new coreshop.object.elementHref({
+            var elementHref = new coreshop.object.elementHref({
                 id: value,
                 type: 'document',
                 subtype: 'email'
@@ -44,11 +48,12 @@ coreshop.notification.rule.actions.mail = Class.create(coreshop.rules.actions.ab
                 iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
                 layout: 'form',
                 items: [
-                    this.fields[lang].getLayoutEdit()
+                    elementHref.getLayoutEdit()
                 ]
             });
 
-        }.bind(this));
+            me.fields[lang] = elementHref;
+        });
 
         this.doNotSendToDesignatedRecipient = Ext.create({
             fieldLabel: t('coreshop_mail_rule_do_not_send_to_designated_recipient'),
@@ -81,7 +86,7 @@ coreshop.notification.rule.actions.mail = Class.create(coreshop.rules.actions.ab
         var values = {};
 
         Ext.Object.each(this.fields, function (key, elementHref) {
-            values[key] = elementHref.getValue();
+            values[key] = elementHref.data.id;
         });
 
         return {

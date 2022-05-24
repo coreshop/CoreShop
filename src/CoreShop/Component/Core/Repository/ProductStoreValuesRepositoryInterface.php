@@ -27,7 +27,7 @@ interface ProductStoreValuesRepositoryInterface extends RepositoryInterface
     public function findForProduct(ProductInterface $product): array;
 
     /**
-     * @return ProductStoreValuesInterface[]
+     * @return ProductStoreValuesInterface|null
      */
-    public function findForProductAndStore(ProductInterface $product, StoreInterface $store): array;
+    public function findForProductAndStore(ProductInterface $product, StoreInterface $store): ?ProductStoreValuesInterface;
 }

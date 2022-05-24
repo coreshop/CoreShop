@@ -41,6 +41,9 @@ final class StoreChoiceType extends AbstractType
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
+                    /**
+                     * @var StoreInterface[] $stores
+                     */
                     $stores = $this->storeRepository->findAll();
 
                     usort($stores, function (StoreInterface $a, StoreInterface $b): int {

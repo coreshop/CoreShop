@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\ClassDefinition\Data\Relations\AbstractRelations;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Element;
 
 /**
@@ -35,6 +36,8 @@ class CoreShopRelation extends Data\ManyToOneRelation
 
     public $documentsAllowed = false;
 
+    public $returnConcrete = false;
+
     public function getStack()
     {
         return $this->stack;
@@ -43,6 +46,18 @@ class CoreShopRelation extends Data\ManyToOneRelation
     public function setStack($stack): void
     {
         $this->stack = $stack;
+
+        $this->setClasses([]);
+    }
+
+    public function getReturnConcrete(): bool
+    {
+        return $this->returnConcrete;
+    }
+
+    public function setReturnConcrete(bool $returnConcrete): void
+    {
+        $this->returnConcrete = $returnConcrete;
     }
 
     protected function getCoreShopPimcoreClasses()
@@ -52,6 +67,10 @@ class CoreShopRelation extends Data\ManyToOneRelation
 
     public function getParameterTypeDeclaration(): ?string
     {
+        if ($this->getReturnConcrete()) {
+            return '?\\' . Concrete::class;
+        }
+
         /**
          * @var array $stack
          */
@@ -82,14 +101,11 @@ class CoreShopRelation extends Data\ManyToOneRelation
      */
     public function setClasses($classes)
     {
-        if (!empty($this->stack)) {
-            $this->classes = Element\Service::fixAllowedTypes(
-                $this->getCoreShopPimcoreClasses()[$this->stack],
-                'classes'
-            );
+        if (null === $this->stack) {
+            return $this;
         }
 
-        return $this;
+        return parent::setClasses(Element\Service::fixAllowedTypes($this->getCoreShopPimcoreClasses()[$this->stack], 'classes'));
     }
 
     /**

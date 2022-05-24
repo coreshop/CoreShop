@@ -1,0 +1,6 @@
+CoreShop\Component\Variant\Model\AttributeColorInterface:
+    attributes:
+        valueColor:
+            groups: ['coreshop']
+        valueText:
+            groups: ['coreshop']

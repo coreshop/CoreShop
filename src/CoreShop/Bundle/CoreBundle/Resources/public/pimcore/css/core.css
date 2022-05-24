@@ -148,9 +148,18 @@ body.pimcore_version_10 .coreshop_nav_icon_customer_to_company_assign_to_existin
     background: url(../img/store-values.svg) center center no-repeat !important;
 }
 
+.coreshop_rule_icon_condition_saleState {
+    background: url(../img/sales.svg) center center no-repeat !important;
+}
+
 .coreshop_rule_icon_condition_orderState,
 .coreshop_rule_icon_condition_orderTransition {
     background: url(../img/orders.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_condition_quoteState,
+.coreshop_rule_icon_condition_quoteTransition {
+    background: url(../img/quotes.svg) center center no-repeat !important;
 }
 
 .coreshop_rule_icon_condition_comment {

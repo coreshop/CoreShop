@@ -75,6 +75,9 @@ trait ProposalPriceRuleTrait
             }
 
             if ($priceRule instanceof Fieldcollection\Data\AbstractData) {
+                /**
+                 * @psalm-suppress InvalidArgument
+                 */
                 $items->add($priceRule);
             }
 

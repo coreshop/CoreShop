@@ -17,4 +17,10 @@ coreshop.order.quote.detail.panel = Class.create(coreshop.order.order.detail.pan
     getBlockIdentifier: function () {
         return coreshop.order.quote.detail.blocks;
     },
+
+    getLayout: function($super) {
+        var layout = $super();
+
+        layout.setTitle(t('coreshop_' + this.type) + ': ' + this.sale.quoteNumber);
+    },
 });

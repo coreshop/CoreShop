@@ -41,6 +41,8 @@ class CoreShopRelations extends Data\ManyToManyRelation
     public function setStack($stack): void
     {
         $this->stack = $stack;
+
+        $this->setClasses([]);
     }
 
     public function enrichLayoutDefinition($object, $context)
@@ -85,6 +87,10 @@ class CoreShopRelations extends Data\ManyToManyRelation
 
     public function getClasses()
     {
+        if (null === $this->stack) {
+            return [];
+        }
+
         $classes = $this->getCoreShopPimcoreClasses()[$this->stack];
         $return = [];
 

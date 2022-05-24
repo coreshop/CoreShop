@@ -42,8 +42,14 @@ final class CountryChoiceType extends AbstractType
             ->setDefaults([
                 'choices' => function (Options $options) {
                     if (null === $options['active']) {
+                        /**
+                         * @var CountryInterface[] $countries
+                         */
                         $countries = $this->countryRepository->findAll();
                     } else {
+                        /**
+                         * @var CountryInterface[] $countries
+                         */
                         $countries = $this->countryRepository->findBy(['active' => $options['active']]);
                     }
 

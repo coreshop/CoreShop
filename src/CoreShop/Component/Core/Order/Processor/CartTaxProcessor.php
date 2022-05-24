@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Model\Carrier;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
@@ -27,12 +28,18 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartTaxProcessor implements CartProcessorInterface
 {
-    public function __construct(private TaxCollectorInterface $taxCollector, private AddressProviderInterface $defaultAddressProvider, private ServiceRegistry $registry)
+    public function __construct(
+        private TaxCollectorInterface $taxCollector,
+        private AddressProviderInterface $defaultAddressProvider,
+        private ServiceRegistry $registry,
+        private CartContextResolverInterface $cartContextResolver
+    )
     {
     }
 
     public function process(OrderInterface $cart): void
     {
+        $context = $this->cartContextResolver->resolveCartContext($cart);
         $cart->setTaxes(null);
 
         $usedTaxes = [];
@@ -48,14 +55,14 @@ final class CartTaxProcessor implements CartProcessorInterface
             );
         }
 
-        $usedTaxes = $this->collectShippingTaxes($cart, $usedTaxes);
+        $usedTaxes = $this->collectShippingTaxes($cart, $usedTaxes, $context);
 
         $fieldCollection = new Fieldcollection();
         $fieldCollection->setItems($usedTaxes);
         $cart->setTaxes($fieldCollection);
     }
 
-    private function collectShippingTaxes(OrderInterface $cart, array $usedTaxes = []): array
+    private function collectShippingTaxes(OrderInterface $cart, array $usedTaxes = [], array $context = []): array
     {
         if (!$cart instanceof \CoreShop\Component\Core\Model\OrderInterface) {
             return $usedTaxes;
@@ -93,7 +100,7 @@ final class CartTaxProcessor implements CartProcessorInterface
              * @var TaxCalculationStrategyInterface $taxCalculationService
              */
             $taxCalculationService = $this->registry->get($shippingTaxCalculationStrategy);
-            $cartTax = $taxCalculationService->calculateShippingTax($cart, $carrier, $address, $cart->getShipping($store->getUseGrossPrice()));
+            $cartTax = $taxCalculationService->calculateShippingTax($cart, $carrier, $address, $cart->getShipping($store->getUseGrossPrice()), $context);
 
             if (1 === count($cartTax)) {
                 $cart->setShippingTaxRate(reset($cartTax)->getRate());

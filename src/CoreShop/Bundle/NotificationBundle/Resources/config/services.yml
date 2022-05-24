@@ -17,6 +17,8 @@ services:
         arguments:
             - '@coreshop.registry.notification_rule.conditions'
             - 'Notification Rules'
+        tags:
+            - { name: coreshop.rule.conditions.validation_processor }
 
     coreshop.notification_rule.validation.processor:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor

@@ -38,7 +38,7 @@ final class ProductTaxExtension extends AbstractExtension
 
     public function getTaxAmount(PurchasableInterface $product, array $context = []): int
     {
-        $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product, $this->defaultAddressProvider->getAddress($context));
+        $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product, $this->defaultAddressProvider->getAddress($context), $context);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $taxCalculator->getTaxesAmount($this->productPriceCalculator->getPrice($product, $context, false));
@@ -49,7 +49,7 @@ final class ProductTaxExtension extends AbstractExtension
 
     public function getTaxRate(PurchasableInterface $product, array $context = []): float
     {
-        $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product, $this->defaultAddressProvider->getAddress($context));
+        $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product, $this->defaultAddressProvider->getAddress($context), $context);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $taxCalculator->getTotalRate();

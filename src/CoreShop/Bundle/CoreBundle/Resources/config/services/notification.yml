@@ -84,6 +84,24 @@ services:
         tags:
             - { name: coreshop.notification_rule.condition, type: orderTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
 
+    ##### Quote
+    coreshop.notification_rule.condition.quote.quote_state:
+        class: CoreShop\Component\Core\Notification\Rule\Condition\SimpleStateChecker
+        arguments:
+            - 'CoreShop\Component\Order\Model\OrderInterface'
+            - 'quoteState'
+            - 'quoteState'
+        tags:
+            - { name: coreshop.notification_rule.condition, type: quoteState, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\QuoteStateConfigurationType }
+
+    coreshop.notification_rule.condition.quote.quote_transition:
+        class: CoreShop\Component\Core\Notification\Rule\Condition\StateTransitionChecker
+        arguments:
+            - 'CoreShop\Component\Order\Model\OrderInterface'
+            - !php/const CoreShop\Component\Order\QuoteTransitions::IDENTIFIER
+        tags:
+            - { name: coreshop.notification_rule.condition, type: quoteTransition, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
+
     ##### MISC
     CoreShop\Component\Core\Notification\Rule\Condition\Order\CarriersChecker:
         tags:
@@ -192,6 +210,7 @@ services:
     CoreShop\Component\Core\Notification\Rule\Action\Order\StoreMailActionProcessor:
         arguments:
             - '@CoreShop\Component\Notification\Rule\Action\MailActionProcessor'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface'
         tags:
             - { name: coreshop.notification_rule.action, type: storeMail, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreMailConfigurationType }
             - { name: coreshop.notification_rule.action, type: storeMail, notification-type: user, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreMailConfigurationType }
@@ -223,8 +242,8 @@ services:
             - { name: kernel.event_listener, event: workflow.coreshop_order_invoice.completed, method: applyOrderWorkflowRule }
             - { name: kernel.event_listener, event: workflow.coreshop_order_shipment.completed, method: applyOrderWorkflowRule }
             - { name: kernel.event_listener, event: workflow.coreshop_order_payment.completed, method: applyOrderWorkflowRule }
-            - { name: kernel.event_listener, event: workflow.coreshop_quote.completed, method: applyOrderWorkflowRule }
             - { name: kernel.event_listener, event: workflow.coreshop_order_sales_type.completed, method: applyOrderWorkflowRule }
+            - { name: kernel.event_listener, event: workflow.coreshop_quote.completed, method: applyOrderWorkflowRule }
 
     CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\OrderCommentsListener:
         parent: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\AbstractNotificationRuleListener

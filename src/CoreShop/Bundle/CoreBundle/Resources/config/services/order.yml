@@ -118,3 +118,8 @@ services:
             - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
             - '@coreshop.quote.number_generator.default'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface'
+            - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
+
+    CoreShop\Bundle\CoreBundle\Twig\AddToCartExtension:
+        tags:
+            - { name: twig.extension }
