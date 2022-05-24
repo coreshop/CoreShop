@@ -472,9 +472,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         }
     }
 
-    /**
-     * @return int
-     */
     public function count(): int
     {
         if ($this->totalCount === null) {
@@ -505,9 +502,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->getObjects();
     }
 
-    /**
-     * @return mixed
-     */
     public function key(): mixed
     {
         $this->getObjects();
@@ -528,9 +522,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         reset($this->objects);
     }
 
-    /**
-     * @return bool
-     */
     public function valid(): bool
     {
         return $this->current() !== false;

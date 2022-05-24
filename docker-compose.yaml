@@ -3,7 +3,6 @@ version: '3.4'
 networks:
   cors_dev:
     external: true
-
   coreshop_3:
     external: false
 
@@ -47,6 +46,7 @@ services:
 
   php:
     image: pimcore/pimcore:PHP8.1-fpm
+    container_name: coreshop-php
     networks:
       - coreshop_3
     environment:
@@ -58,6 +58,7 @@ services:
 
   php-debug:
     image: pimcore/pimcore:PHP8.1-fpm-debug
+    container_name: coreshop-php-debug
     networks:
       - coreshop_3
     depends_on:
