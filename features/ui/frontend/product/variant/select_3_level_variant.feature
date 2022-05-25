@@ -1,4 +1,4 @@
-@ui @product @wip
+@ui @product
 Feature: Viewing a product variant details
 
     Background:

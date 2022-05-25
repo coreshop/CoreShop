@@ -15,7 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
+use Behat\Mink\Session;
 use CoreShop\Behat\Page\Frontend\ProductPageInterface;
+use CoreShop\Behat\Service\JavascriptHelper;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
@@ -24,7 +26,10 @@ use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    public function __construct(private ProductPageInterface $productPage)
+    public function __construct(
+        private Session $session,
+        private ProductPageInterface $productPage
+    )
     {
     }
 
@@ -66,6 +71,7 @@ final class ProductContext implements Context
         }
 
         $this->productPage->tryToOpenWithUri($path);
+        JavascriptHelper::waitForVariantsToBeReady($this->session);
     }
 
     /**
