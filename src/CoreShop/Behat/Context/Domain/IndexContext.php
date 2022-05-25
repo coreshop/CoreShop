@@ -185,8 +185,13 @@ final class IndexContext implements Context
 
         Assert::isArray($productEntry, sprintf('Could not find index entry for product %s', $object->getId()));
         Assert::keyExists($productEntry, $column, sprintf('Could not find column %s in index', $column));
+
+        $dbValue = $productEntry[$column];
+
+        \settype($dbValue, gettype($value));
+
         Assert::same(
-            $productEntry[$column],
+            $dbValue,
             $value,
             sprintf(
                 'Expected column value %s (type: %s) for column %s to be %s (type: %s)',
