@@ -25,7 +25,7 @@ jobs:
 
     - name: "List Packages"
       id: create-list
-      run: echo "::set-output name=packages::$(find src/CoreShop -mindepth 3 -maxdepth 3 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)"
+      run: echo "::set-output name=packages::$(find src/CoreShop/Component -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\/Component\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)"
 
     outputs:
        packages: "${{ steps.create-list.outputs.packages }}"
