@@ -247,6 +247,7 @@ final class ProductContext implements Context
     public function iClickOnAttribute(AttributeInterface $attribute): void
     {
         $this->productPage->clickAttribute($attribute);
+        JavascriptHelper::waitForVariantsToBeReady($this->session);
     }
 
     /**
