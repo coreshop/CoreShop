@@ -550,6 +550,11 @@ final class ProductContext implements Context
         $objectService = new Service();
         $newObject = $objectService->copyAsChild($product->getParent(), $product);
 
+        $product->save();
+
+        $newObject->setKey($product->getKey() . '-copy');
+        $newObject->save();
+
         $this->sharedStorage->set('copied-object', $newObject);
     }
 
