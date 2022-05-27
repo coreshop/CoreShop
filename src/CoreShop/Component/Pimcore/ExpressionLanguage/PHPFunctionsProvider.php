@@ -47,6 +47,8 @@ class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
             ExpressionFunction::fromPHP('implode'),
             ExpressionFunction::fromPHP('is_array'),
             ExpressionFunction::fromPHP('count'),
+            ExpressionFunction::fromPHP('dirname'),
+            ExpressionFunction::fromPHP('basename'),
         ];
     }
 }
