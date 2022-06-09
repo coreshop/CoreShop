@@ -7,7 +7,7 @@ of OROMigrationBundle. Purpose of this Bundle is to make fixtures easy for CoreS
 CoreShop
 ------
 
-![CoreShop](http://www.coreshop.org/assets/img/logo-full.svg)
+![CoreShop](https://www.coreshop.org/assets/img/logo-full.svg)
 
 CoreShop is an eCommerce Solution for Pimcore. It is build from decoupled components to get highest quality of code. [Read more on coreshop.org](http://www.coreshop.org)
 
