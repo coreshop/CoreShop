@@ -1,3 +1,41 @@
+# 3.0.0-beta.4
+## Feature
+ - [Variants] introduce Variant Bundle (https://github.com/coreshop/CoreShop/pull/1990) @breakone
+ - [Pimcore] require min 10.4 (https://github.com/coreshop/CoreShop/pull/2013)
+
+## Bugs
+ - [Store] add Store Resolver for document save from Pimcore Admin (https://github.com/coreshop/CoreShop/pull/1962)
+ - [ResourceBundle] add feature to clone resources (https://github.com/coreshop/CoreShop/pull/1965)
+ - [CartPriceRules] fix cart-price-rules with over 100% discount (https://github.com/coreshop/CoreShop/pull/1966)
+ - [Tests] re-enable cart tests (https://github.com/coreshop/CoreShop/pull/1970)
+ - [FrontendBundle] fix: paginator.html.twig prepends four spaces to URLs (https://github.com/coreshop/CoreShop/pull/1968)
+ - [IndexBundle] fix Argument #2 ($values) must be of type array, string given (https://github.com/coreshop/CoreShop/pull/1967)
+ - [CoreBundle] use themeHelper to resolve template in StoreMailActionProcessor (https://github.com/coreshop/CoreShop/pull/1973)
+ - [Condition] fix rules being active even if inactive when having no conditions (https://github.com/coreshop/CoreShop/pull/1977)
+ - [CoreBundle] Handle null addresses when persisting customers (https://github.com/coreshop/CoreShop/pull/1979)
+ - [ResourceBundle] fix ResourceSettingsController getConfigAction (https://github.com/coreshop/CoreShop/pull/1981)
+ - [CoreBundle] fix registered user validator (https://github.com/coreshop/CoreShop/pull/1980)
+ - [CustomerBundle] fix: wiring non-existing User classes which were migrated to CustomerBundle (https://github.com/coreshop/CoreShop/pull/1984)
+ - [CoreBundle] Remove duplicate assignment (https://github.com/coreshop/CoreShop/pull/1985)
+ - [CoreBundle] Fix Typo in notifcation.yml (https://github.com/coreshop/CoreShop/pull/1988)
+ - [ResourceBundle] Fix grid view for orders/quotes/carts in admin (https://github.com/coreshop/CoreShop/pull/1989)
+ - [OrderBundle] Fix for order grid configs (https://github.com/coreshop/CoreShop/pull/1992)
+ - [Taxation] pass context into TaxCalculatorFactory (https://github.com/coreshop/CoreShop/pull/1978)
+ - [CoreBundle] use TaxationDisplayProvider in CarrierChoiceType (https://github.com/coreshop/CoreShop/pull/1994)
+ - [CoreBundle] Fix newsletter double opt in mail not sending (https://github.com/coreshop/CoreShop/pull/1993)
+ - [CoreBundle] added newline before phoneNumber in CountryFixture (https://github.com/coreshop/CoreShop/pull/1995)
+ - [CoreBundle] fix variant js, added variant select template (https://github.com/coreshop/CoreShop/pull/1997)
+ - [Checkout] change thank-you to work with token and fix strict samesite cookies (https://github.com/coreshop/CoreShop/pull/1999)
+ - [Variant] add concrete return type to ui configuration (https://github.com/coreshop/CoreShop/pull/1996)
+ - [CoreBundle] fix event listeners for variants (https://github.com/coreshop/CoreShop/pull/2000)
+ - [Rule] use tags for TraceableRuleConditionsValidationProcessor (https://github.com/coreshop/CoreShop/pull/2002)
+ - [Guest] improve guest checkout to change address or use different one for shipping (https://github.com/coreshop/CoreShop/pull/2003)
+ - [CoreBundle] use the index for categories to allow fine tuning the menus (https://github.com/coreshop/CoreShop/pull/1915)
+ - [Pimcore] add dirname() and basename() to expression function provider (https://github.com/coreshop/CoreShop/pull/2007)
+ - [Product Model] Allow getIndexableName() to return null (https://github.com/coreshop/CoreShop/pull/2009)
+ - [Doctrine] Use doctrine-extension 3.6.0 (https://github.com/coreshop/CoreShop/pull/2012)
+ - 
+
 # 3.0.0-beta.3
  - [IndexBundle] fix: generate the correct menu route (https://github.com/coreshop/CoreShop/pull/1815)
  - [All] rename document coreshop editables (https://github.com/coreshop/CoreShop/pull/1822)
