@@ -44,6 +44,7 @@ services:
     coreshop.behat.context.ui.product:
         class: CoreShop\Behat\Context\Ui\Frontend\ProductContext
         arguments:
+            - '@behat.mink.default_session'
             - '@CoreShop\Behat\Page\Frontend\ProductPageInterface'
         tags:
             - { name: fob.context_service }

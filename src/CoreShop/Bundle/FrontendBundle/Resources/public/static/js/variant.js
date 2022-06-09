@@ -1,8 +1,12 @@
-$(document).ready(function () {
-    variant.init();
-});
-
 (function (variant, $) {
+    $(document).ready(function () {
+        $.variantReady = false;
+
+        variant.init();
+
+        $.variantReady = true;
+    });
+
     variant.init = function() {
         const variants = document.querySelector('.product-info__attributes');
         if(!variants) {

@@ -22,4 +22,4 @@ Feature: Adding a object index
       | enabled    | true   | checkbox  |
       | name       | test   | localized |
       | objectHref | 1      | relation  |
-    Then the index column "objectHref" for object-instance should have value "1"
+    Then the index column "objectHref" for object-instance should have integer value "1"

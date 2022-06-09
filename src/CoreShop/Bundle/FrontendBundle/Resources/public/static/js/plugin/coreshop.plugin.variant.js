@@ -154,6 +154,7 @@
         }
 
         let _configureElement = function (group, element) {
+            $.variantReady = false;
             _attributeContainer.dispatchEvent(
                 _createEvent('change', {element: element})
             );
@@ -178,6 +179,7 @@
                     _clearGroups(group.nextGroup);
                 }
             }
+            $.variantReady = true;
         }
 
         _init(attributeContainer);
