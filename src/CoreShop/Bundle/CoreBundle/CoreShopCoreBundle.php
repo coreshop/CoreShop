@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
 use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
 use CoreShop\Bundle\CoreBundle\Application\Version;
@@ -117,7 +118,21 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
 
     public function getComposerVersion(): string
     {
-        return Versions::getVersion('coreshop/core-shop');
+        if (class_exists(InstalledVersions::class)) {
+            return InstalledVersions::getVersion('coreshop/core-shop');
+        }
+
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
+        if (class_exists(Versions::class)) {
+            /**
+             * @psalm-suppress DeprecatedClass
+             */
+            return Versions::getVersion('coreshop/core-shop');
+        }
+
+        return '';
     }
 
     public function getInstaller(): Installer

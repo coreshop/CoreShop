@@ -17,13 +17,16 @@
 
         variants.addEventListener('variant_selector.select', (e) => {
             const options = document.querySelector('.product-info .product-details .options');
-            const submits = options.querySelectorAll('[type="submit"]');
 
-            options.classList.add('disabled');
+            if (options) {
+                const submits = options.querySelectorAll('[type="submit"]');
 
-            submits.forEach((submit) => {
-                submit.disabled = true;
-            });
+                options.classList.add('disabled');
+
+                submits.forEach((submit) => {
+                    submit.disabled = true;
+                });
+            }
         });
     };
 }(window.variant = window.variant || {}, jQuery));
