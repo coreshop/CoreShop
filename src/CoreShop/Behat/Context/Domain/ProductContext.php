@@ -188,9 +188,6 @@ final class ProductContext implements Context
      */
     public function bothProductsShouldHaveItsOwnPrice(ProductInterface $originalProduct, ProductInterface $copiedObject): void
     {
-        $originalProduct->save();
-        $copiedObject->save();
-
         $storeValues = $originalProduct->getStoreValues();
 
         foreach ($storeValues as $storeValue) {
