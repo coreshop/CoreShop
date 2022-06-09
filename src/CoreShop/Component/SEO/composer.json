@@ -25,7 +25,7 @@
   ],
   "require": {
     "coreshop/registry": "^3.0",
-    "pimcore/pimcore": "^10.3",
+    "pimcore/pimcore": "^10.4",
     "webmozart/assert": "^1.10"
   },
   "require-dev": {
