@@ -588,7 +588,7 @@ final class ProductContext implements Context
         /** @var ProductInterface $product */
         $product = $this->productFactory->createNew();
 
-        $product->setKey(File::getValidFilename($productName));
+        $product->setKey(File::getValidFilename(sprintf('%s - %s', $productName, uniqid('', true))));
         $product->setParent(Folder::getByPath('/'));
 
         foreach (Tool::getValidLanguages() as $lang) {
