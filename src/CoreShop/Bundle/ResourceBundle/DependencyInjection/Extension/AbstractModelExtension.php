@@ -155,6 +155,9 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
             $globalPermissions = [];
 
             if ($container->hasParameter($applicationParameter)) {
+                /**
+                 * @var array $applicationPermissions
+                 */
                 $applicationPermissions = $container->getParameter($applicationParameter);
             }
 
