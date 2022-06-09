@@ -50,5 +50,5 @@ interface IndexableInterface
 
     public function getIndexable(IndexInterface $index): bool;
 
-    public function getIndexableName(IndexInterface $index, string $language): string;
+    public function getIndexableName(IndexInterface $index, string $language): ?string;
 }
