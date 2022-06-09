@@ -21,6 +21,16 @@ jobs:
           - php: 8.1
             dependencies: lowest
 
+    services:
+      database:
+        image: "mariadb:10.5"
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: coreshop_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
