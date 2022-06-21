@@ -30,12 +30,24 @@ final class ImageExtractor implements ExtractorInterface
 
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
-        Assert::isInstanceOf($object, SEOImageAwareInterface::class);
-
         /**
          * @var SEOImageAwareInterface $object
          */
-        $ogImage = Tool::getHostUrl() . $object->getImage()->getThumbnail('coreshop_seo');
+        Assert::isInstanceOf($object, SEOImageAwareInterface::class);
+
+        /**
+         * @var Image\Thumbnail $thubmnail
+         */
+        $thumbnail = $object->getImage()->getThumbnail('coreshop_seo');
+        $path = $thumbnail->getPath();
+
+        if (str_starts_with($path, 'http')) {
+            $ogImage = $path;
+        }
+        else {
+            $ogImage = Tool::getHostUrl() . $path;
+        }
+
         $seoMetadata->addExtraProperty('og:image', $ogImage);
     }
 }
