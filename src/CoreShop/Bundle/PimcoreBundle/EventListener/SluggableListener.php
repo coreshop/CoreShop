@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\PimcoreBundle\EventListener;
 use CoreShop\Component\Pimcore\Exception\SlugNotPossibleException;
 use CoreShop\Component\Pimcore\Slug\SluggableInterface;
 use CoreShop\Component\Pimcore\Slug\SluggableSluggerInterface;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Event\DataObjectEvents;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Model\DataObject\Data\UrlSlug;
@@ -26,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class SluggableListener implements EventSubscriberInterface
 {
-    public function __construct(protected SluggableSluggerInterface $slugger)
+    public function __construct(protected SluggableSluggerInterface $slugger, protected StoreRepositoryInterface $storeRepository)
     {
     }
 
@@ -46,7 +47,13 @@ final class SluggableListener implements EventSubscriberInterface
             return;
         }
 
-        $sites = new Site\Listing();
+        $sites = [];
+        foreach($this->storeRepository->findAll() as $store) {
+            $site = Site::getById($store->getSiteId());
+            if($site instanceof Site) {
+                $sites[] = $site;
+            }
+        }
 
         foreach (Tool::getValidLanguages() as $language) {
             $newSlugs = [];
@@ -74,7 +81,7 @@ final class SluggableListener implements EventSubscriberInterface
 
             $newSlugs[] = new UrlSlug($slug, 0);
 
-            foreach ($sites->getSites() as $site) {
+            foreach ($sites as $site) {
                 $newSlugs[] = new UrlSlug($slug, $site->getId());
             }
 
