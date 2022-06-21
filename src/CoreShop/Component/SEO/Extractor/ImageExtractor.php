@@ -36,7 +36,7 @@ final class ImageExtractor implements ExtractorInterface
         Assert::isInstanceOf($object, SEOImageAwareInterface::class);
 
         /**
-         * @var Image\Thumbnail $thubmnail
+         * @var Image\Thumbnail $thumbnail
          */
         $thumbnail = $object->getImage()->getThumbnail('coreshop_seo');
         $path = $thumbnail->getPath();
