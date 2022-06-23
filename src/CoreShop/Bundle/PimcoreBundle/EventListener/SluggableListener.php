@@ -17,9 +17,9 @@ namespace CoreShop\Bundle\PimcoreBundle\EventListener;
 use CoreShop\Component\Pimcore\Exception\SlugNotPossibleException;
 use CoreShop\Component\Pimcore\Slug\SluggableInterface;
 use CoreShop\Component\Pimcore\Slug\SluggableSluggerInterface;
-use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Event\DataObjectEvents;
 use Pimcore\Event\Model\DataObjectEvent;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Data\UrlSlug;
 use Pimcore\Model\Site;
 use Pimcore\Tool;
@@ -27,15 +27,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class SluggableListener implements EventSubscriberInterface
 {
-    public function __construct(protected SluggableSluggerInterface $slugger, protected StoreRepositoryInterface $storeRepository)
+    public function __construct(protected SluggableSluggerInterface $slugger)
     {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            DataObjectEvents::PRE_UPDATE => 'preUpdate',
-            DataObjectEvents::PRE_ADD => 'preUpdate',
+            DataObjectEvents::PRE_UPDATE => 'preUpdate'
         ];
     }
 
@@ -47,72 +46,59 @@ final class SluggableListener implements EventSubscriberInterface
             return;
         }
 
-        $sites = [];
-        foreach($this->storeRepository->findAll() as $store) {
-            $site = Site::getById($store->getSiteId());
-            if($site instanceof Site) {
-                $sites[] = $site;
-            }
-        }
-
         foreach (Tool::getValidLanguages() as $language) {
-            $newSlugs = [];
-            $actualSlugs = [];
+
+            $urlSlugs = $object->getSlug($language);
+
+            if($urlSlugs === null) {
+                $urlSlugs = [];
+            }
+
+            $found = false;
+            foreach($urlSlugs as $key => $urlSlug) {
+                if($urlSlug->getSiteId() === 0) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if($found && !empty($urlSlugs[$key]->getSlug())) {
+                continue;
+            }
 
             try {
-                $slug = $this->slugger->slug($object, $language);
+                $slug = $this->generateUniqueSlug($object, $language);
             } catch (SlugNotPossibleException $exception) {
                 continue;
             }
 
-            $i = 1;
-
-            while (true) {
-                /** @psalm-suppress InternalMethod */
-                $existingSlug = UrlSlug::resolveSlug($slug);
-
-                if (null === $existingSlug || $existingSlug->getObjectId() === $object->getId()) {
-                    break;
-                }
-
-                $slug = $this->slugger->slug($object, $language, (string)$i);
-                $i++;
+            if(!$found) {
+                $urlSlugs[] = new UrlSlug($slug, 0);
+            } else {
+                $urlSlugs[$key]->setSlug($slug);
             }
 
-            $newSlugs[] = new UrlSlug($slug, 0);
-
-            foreach ($sites as $site) {
-                $newSlugs[] = new UrlSlug($slug, $site->getId());
-            }
-
-            $existingSlugs = $object->getSlug($language);
-
-            foreach ($newSlugs as $newSlug) {
-                $found = false;
-
-                foreach ($existingSlugs as $existingSlug) {
-                    if ($existingSlug->getSiteId() === $newSlug->getSiteId()) {
-                        if ($existingSlug->getSlug() === $newSlug->getSlug()) {
-                            $actualSlugs[] = $existingSlug;
-                        } else {
-                            /**
-                             * @psalm-suppress InternalMethod
-                             */
-                            $newSlug->setPreviousSlug($existingSlug->getSlug());
-                            $actualSlugs[] = $newSlug;
-                        }
-                        $found = true;
-
-                        break;
-                    }
-                }
-
-                if (!$found) {
-                    $actualSlugs[] = $newSlug;
-                }
-            }
-
-            $object->setSlug($actualSlugs, $language);
+            $object->setSlug($urlSlugs, $language);
         }
+    }
+
+    private function generateUniqueSlug(Concrete $object, string $language) : string
+    {
+        $slug = $this->slugger->slug($object, $language);
+
+        $i = 1;
+        while (true) {
+            /** @psalm-suppress InternalMethod */
+            $existingSlug = UrlSlug::resolveSlug($slug);
+
+            if (null === $existingSlug || $existingSlug->getObjectId() === $object->getId()) {
+                break;
+            }
+
+            $slug = $this->slugger->slug($object, $language, (string)$i);
+            $i++;
+        }
+
+        return $slug;
     }
 }

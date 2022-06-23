@@ -44,6 +44,9 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
         );
 
         foreach ($slugs as $possibleSlug) {
+            if ($possibleSlug->getSiteId() === 0) {
+                $fallbackSlug = $possibleSlug;
+            }
             if ($possibleSlug->getSiteId() === ($site ? $site->getId() : 0)) {
                 $slug = $possibleSlug;
 
@@ -51,10 +54,10 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
             }
         }
 
-        if (null === $slug) {
+        if (null === $slug && null === $fallbackSlug) {
             throw new \InvalidArgumentException(sprintf('No Valid Slug found for object "%s"', $object->getFullPath()));
         }
 
-        return $slug->getSlug();
+        return $slug ? $slug->getSlug() : $fallbackSlug->getSlug();
     }
 }

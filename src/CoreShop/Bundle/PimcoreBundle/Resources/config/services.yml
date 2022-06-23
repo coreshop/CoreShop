@@ -68,7 +68,6 @@ services:
     CoreShop\Bundle\PimcoreBundle\EventListener\SluggableListener:
         arguments:
             - '@CoreShop\Component\Pimcore\Slug\SluggableSluggerInterface'
-            - '@coreshop.repository.store'
         tags:
             - { name: kernel.event_subscriber }
 
