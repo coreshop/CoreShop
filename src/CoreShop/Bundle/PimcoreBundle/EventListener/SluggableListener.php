@@ -55,6 +55,7 @@ final class SluggableListener implements EventSubscriberInterface
             }
 
             $found = false;
+            $key = null;
             foreach($urlSlugs as $key => $urlSlug) {
                 if($urlSlug->getSiteId() === 0) {
                     $found = true;
@@ -82,7 +83,7 @@ final class SluggableListener implements EventSubscriberInterface
         }
     }
 
-    private function generateUniqueSlug(Concrete $object, string $language) : string
+    private function generateUniqueSlug(SluggableInterface $object, string $language) : string
     {
         $slug = $this->slugger->slug($object, $language);
 
