@@ -77,6 +77,9 @@ final class PimcoreDaoContext implements Context
         foreach ($list->getObjects() as $obj) {
             $obj->delete();
         }
+
+        //Force
+        $this->connection->executeQuery('DELETE FROM objects WHERE o_id <> 1');
     }
 
     /**

@@ -35,6 +35,7 @@ use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
+use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormError;
@@ -322,7 +323,7 @@ class CartController extends FrontendController
         return $this->get(CartModifierInterface::class);
     }
 
-    protected function getQuantityModifer(): CartItemQuantityModifier
+    protected function getQuantityModifer(): StorageListItemQuantityModifierInterface
     {
         return $this->get(CartItemQuantityModifier::class);
     }

@@ -28,7 +28,14 @@ use Webmozart\Assert\Assert;
 
 final class CheckoutContext implements Context
 {
-    public function __construct(private CustomerPageInterface $customerPage, private AddressPageInterface $addressPage, private ShippingPageInterface $shippingPage, private PaymentPageInterface $paymentPage, private SummaryPageInterface $summaryPage, private ThankYouPageInterface $thankYouPage)
+    public function __construct(
+        private CustomerPageInterface $customerPage,
+        private AddressPageInterface $addressPage,
+        private ShippingPageInterface $shippingPage,
+        private PaymentPageInterface $paymentPage,
+        private SummaryPageInterface $summaryPage,
+        private ThankYouPageInterface $thankYouPage
+    )
     {
     }
 
@@ -202,7 +209,7 @@ final class CheckoutContext implements Context
      */
     public function IShouldBeOnTheThankYouPage(): void
     {
-        $this->thankYouPage->verify();
+        $this->thankYouPage->verify(['token' => $this->thankYouPage->getToken()]);
     }
 
     /**

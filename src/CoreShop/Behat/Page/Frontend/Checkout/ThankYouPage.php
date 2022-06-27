@@ -23,9 +23,15 @@ class ThankYouPage extends AbstractFrontendPage implements ThankYouPageInterface
         return 'coreshop_checkout_thank_you';
     }
 
+    public function getToken(): string
+    {
+        return $this->getElement('order_token')->getAttribute('data-test-order-token');
+    }
+
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
+            'order_token' => '[data-test-order-token]',
         ]);
     }
 }

@@ -111,7 +111,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     private function setSortingForListingWithoutCategory(Listing $list): void
     {
         $list->setOrderKey(
-            'o_key ASC',
+            'o_index ASC, o_key ASC',
             false
         );
     }

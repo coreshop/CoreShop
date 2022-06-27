@@ -154,7 +154,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     {
         $this->ensureDataLayer();
 
-        $product['quantity'] = 1;
+        $product['quantity'] = $quantity;
 
         $actionData = [$action => []];
 
@@ -177,7 +177,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         return [
             'id' => $actionData['id'],
             'affiliation' => $actionData['affiliation'] ?: '',
-            'total' => $actionData['total'],
+            'revenue' => $actionData['total'],
             'tax' => $actionData['totalTax'],
             'shipping' => $actionData['shipping'],
             'currency' => $actionData['currency'],
@@ -190,11 +190,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
             'id' => $item['id'],
             'name' => $item['name'],
             'category' => $item['category'],
-            'brand' => $item['brand'],
-            'variant' => $item['variant'],
             'price' => round($item['price'], 2),
-            'quantity' => $item['quantity'] ?: 1,
-            'list_position' => $item['position'],
         ]);
     }
 

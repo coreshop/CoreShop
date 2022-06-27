@@ -33,6 +33,9 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
+        /**
+         * @var ClassMetadataInfo $metadata
+         */
         $metadata = $eventArgs->getClassMetadata();
 
         if (!$metadata->isMappedSuperclass) {

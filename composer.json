@@ -89,18 +89,19 @@
     "doctrine/data-fixtures": "^1.5",
     "doctrine/orm": "^2.9",
     "fakerphp/faker": "^1.16",
-    "gedmo/doctrine-extensions": "^3.1.0",
+    "gedmo/doctrine-extensions": "~3.6.0",
     "jms/serializer-bundle": "^4.0",
     "knplabs/knp-menu-bundle": "^3.1",
     "laminas/laminas-stdlib": "^3.6",
     "sylius/theme-bundle": "^2.2",
     "php-http/guzzle7-adapter": "^0.1",
-    "pimcore/pimcore": "^10.3",
+    "pimcore/pimcore": "^10.4",
     "rinvex/countries": "^7.3",
     "stof/doctrine-extensions-bundle": "^1.6",
     "webmozart/assert": "^1.10",
     "payum/payum": "dev-master",
-    "payum/payum-bundle": "dev-master"
+    "payum/payum-bundle": "dev-master",
+    "laminas/laminas-zendframework-bridge": "^1.5"
   },
   "require-dev": {
     "behat/behat": "^3.8",
@@ -122,8 +123,6 @@
     "symplify/easy-coding-standard": "^9.4"
   },
   "conflict": {
-    "pimcore/pimcore": "10.2.0 || 10.2.1",
-    "thecodingmachine/safe": "< 2.0.0"
   },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."

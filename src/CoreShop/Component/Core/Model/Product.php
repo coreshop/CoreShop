@@ -67,7 +67,7 @@ abstract class Product extends BaseProduct implements ProductInterface
         return $this->getIndexableEnabled($index);
     }
 
-    public function getIndexableName(IndexInterface $index, string $language): string
+    public function getIndexableName(IndexInterface $index, string $language): ?string
     {
         return $this->getName($language);
     }

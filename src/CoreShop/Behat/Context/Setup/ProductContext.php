@@ -140,6 +140,8 @@ final class ProductContext implements Context
     ): void {
         $variant = $this->createSimpleVariant($product, $productName);
 
+        $variant->setKey(File::getValidFilename($productName));
+
         $this->saveProduct($variant);
     }
 
@@ -172,6 +174,12 @@ final class ProductContext implements Context
                         $attribute2->getName()
                     )
                 );
+                $variant->setKey(File::getValidFilename(sprintf(
+                    '%s %s %s',
+                    $product->getName(),
+                    $attribute1->getName(),
+                    $attribute2->getName()
+                )));
                 $variant->setAttributes([
                     $attribute1,
                     $attribute2
@@ -549,6 +557,9 @@ final class ProductContext implements Context
     {
         $objectService = new Service();
         $newObject = $objectService->copyAsChild($product->getParent(), $product);
+        
+        $newObject->setKey($product->getKey() . '-copy');
+        $newObject->save();
 
         $this->sharedStorage->set('copied-object', $newObject);
     }
@@ -588,7 +599,7 @@ final class ProductContext implements Context
         /** @var ProductInterface $product */
         $product = $this->productFactory->createNew();
 
-        $product->setKey(File::getValidFilename($productName));
+        $product->setKey(File::getValidFilename(sprintf('%s - %s', $productName, uniqid('', true))));
         $product->setParent(Folder::getByPath('/'));
 
         foreach (Tool::getValidLanguages() as $lang) {
