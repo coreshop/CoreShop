@@ -1,6 +1,0 @@
-jms_serializer:
-    metadata:
-        directories:
-            coreshop-wishlist:
-                namespace_prefix: "CoreShop\\Component\\Wishlist"
-                path: "@CoreShopWishlistBundle/Resources/config/serializer"

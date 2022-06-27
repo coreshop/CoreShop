@@ -14,25 +14,25 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\WishlistBundle\Form\Type;
 
-use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerSelectionType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class WishlistCreationType extends AbstractResourceType
+final class WishlistType extends AbstractResourceType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('customer', CustomerSelectionType::class)
-            ->add('store', StoreChoiceType::class)
             ->add('items', CollectionType::class, [
-                'entry_type' => WishlistCreationWishlistItemType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-            ]);
+                'entry_type' => WishlistItemType::class,
+                'allow_add' => false,
+                'allow_delete' => false,
+                'by_reference' => false,
+                'label' => 'coreshop.form.cart.items',
+            ])
+            ->add('submit', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -40,8 +40,13 @@ final class WishlistCreationType extends AbstractResourceType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'csrf_protection' => false,
-            'customer' => null,
+            'csrf_protection' => true,
         ]);
     }
+
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_wishlist';
+    }
 }
+

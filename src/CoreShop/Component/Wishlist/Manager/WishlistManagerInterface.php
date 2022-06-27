@@ -18,5 +18,5 @@ use CoreShop\Component\Wishlist\Model\WishlistInterface;
 
 interface WishlistManagerInterface
 {
-    public function persistWishlist(WishlistInterface $wishlist): void;
+    public function persist(WishlistInterface $wishlist): void;
 }

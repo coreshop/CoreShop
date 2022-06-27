@@ -1,0 +1,28 @@
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\CoreBundle\Wishlist\Context\CustomerAndStoreBasedWishlistContext:
+        arguments:
+            - '@CoreShop\Component\Customer\Context\CustomerContextInterface'
+            - '@CoreShop\Component\Store\Context\StoreContextInterface'
+            - '@coreshop.repository.wishlist'
+        tags:
+            - { name: coreshop.context.wishlist, priority: -777 }
+
+    CoreShop\Bundle\CoreBundle\Wishlist\Context\SessionAndStoreBasedWishlistContext:
+        arguments:
+            - '@session'
+            - '%coreshop.session.wishlist%'
+            - '@coreshop.repository.wishlist'
+            - '@CoreShop\Component\Store\Context\StoreContextInterface'
+        tags:
+            - { name: coreshop.context.wishlist, priority: -555 }
+
+
+    CoreShop\Bundle\CoreBundle\EventListener\SessionWishlistSubscriber:
+        decorates: 'CoreShop\Bundle\WishlistBundle\EventListener\SessionWishlistSubscriber'
+        arguments:
+            - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
+            - '@CoreShop\Component\Wishlist\Context\WishlistContextInterface'
+            - '%coreshop.session.wishlist%'

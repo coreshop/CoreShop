@@ -14,8 +14,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Wishlist\Context;
 
-use CoreShop\Component\Wishlist\Model\WishlistInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\OrderInvoiceStates;
+use CoreShop\Component\Order\OrderPaymentStates;
+use CoreShop\Component\Order\OrderSaleStates;
+use CoreShop\Component\Order\OrderShipmentStates;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Wishlist\Model\WishlistInterface;
 
 final class WishlistContext implements WishlistContextInterface
 {
@@ -23,7 +29,7 @@ final class WishlistContext implements WishlistContextInterface
     {
     }
 
-    public function getCart(): WishlistInterface
+    public function getWishlist(): WishlistInterface
     {
         /**
          * @var WishlistInterface $wishlist

@@ -14,20 +14,22 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Wishlist\Wishlist;
 
-use CoreShop\Component\Wishlist\WishlistEvents;
-use CoreShop\Component\Wishlist\Model\WishlistInterface;
-use CoreShop\Component\Wishlist\Model\WishlistItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
-use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
+use CoreShop\Component\StorageList\StorageListItemResolverInterface;
+use CoreShop\Component\Wishlist\Model\WishlistInterface;
+use CoreShop\Component\Wishlist\Model\WishlistItemInterface;
+use CoreShop\Component\Wishlist\WishlistEvents;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 class WishlistModifier implements WishlistModifierInterface
 {
-    public function __construct(protected StorageListItemQuantityModifierInterface $wishlistItemQuantityModifier, protected EventDispatcherInterface $eventDispatcher, protected ?\CoreShop\Component\StorageList\StorageListItemResolverInterface $wishlistItemResolver = null)
-    {
+    public function __construct(
+        protected EventDispatcherInterface $eventDispatcher,
+        protected StorageListItemResolverInterface $wishlistItemResolver
+    ) {
     }
 
     public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void
@@ -62,11 +64,6 @@ class WishlistModifier implements WishlistModifierInterface
     {
         foreach ($storageList->getItems() as $item) {
             if ($this->wishlistItemResolver->equals($item, $storageListItem)) {
-                $this->wishlistItemQuantityModifier->modify(
-                    $item,
-                    1
-                );
-
                 return;
             }
         }

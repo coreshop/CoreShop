@@ -15,9 +15,11 @@ declare(strict_types=1);
 namespace CoreShop\Component\Wishlist\Factory;
 
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
+use CoreShop\Component\Wishlist\Model\WishlistItem;
 use CoreShop\Component\Wishlist\Model\WishlistItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Wishlist\Model\WishlistProductInterface;
 
 class WishlistItemFactory implements WishlistItemFactoryInterface
 {
@@ -30,24 +32,11 @@ class WishlistItemFactory implements WishlistItemFactoryInterface
         return $this->wishlistItemFactory->createNew();
     }
 
-    public function createWithWishlist(WishlistInterface $wishlist, PurchasableInterface $purchasable): WishlistItemInterface
+    public function createWithWishlist(WishlistProductInterface $wishlistProduct): WishlistItemInterface
     {
         $item = $this->wishlistItemFactory->createNew();
         $item->setKey(uniqid());
-        $item->setParent($wishlist);
-        $item->setProduct($purchasable);
-        $item->setPublished(true);
-
-        $wishlist->addItem($item);
-
-        return $item;
-    }
-
-    public function createWithPurchasable(PurchasableInterface $purchasable): WishlistItemInterface
-    {
-        $item = $this->wishlistItemFactory->createNew();
-        $item->setKey(uniqid());
-        $item->setProduct($purchasable);
+        $item->setProduct($wishlistProduct);
         $item->setPublished(true);
 
         return $item;

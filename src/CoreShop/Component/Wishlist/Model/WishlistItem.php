@@ -14,9 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Wishlist\Model;
 
-use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 abstract class WishlistItem extends AbstractPimcoreModel implements WishlistItemInterface
 {
@@ -35,13 +34,10 @@ abstract class WishlistItem extends AbstractPimcoreModel implements WishlistItem
         throw new \Exception('Wishlist Item does not have a valid Wishlist');
     }
 
-    public function getProduct(): ?PurchasableInterface
+    public function equals(StorageListItemInterface $storageListItem): bool
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    public function setProduct(?PurchasableInterface $product)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        return $storageListItem->getProduct() instanceof WishlistProductInterface &&
+            $this->getProduct() instanceof WishlistProductInterface &&
+            $storageListItem->getProduct()->getId() === $this->getProduct()->getId();
     }
 }

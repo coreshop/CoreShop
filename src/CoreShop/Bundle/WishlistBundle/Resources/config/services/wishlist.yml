@@ -1,5 +1,6 @@
 parameters:
     coreshop.session.wishlist: 'coreshop.wishlist'
+    coreshop.dto.add_to_wishlist.class: 'CoreShop\Bundle\WishlistBundle\DTO\AddToWishlist'
     coreshop.form.type.wishlist.validation_groups: [coreshop]
     coreshop.form.type.wishlist_item.validation_groups: [coreshop]
 
@@ -7,7 +8,7 @@ services:
     _defaults:
         public: true
 
-    CoreShop\Bundle\WishlistBundle\Form\Type\WishlistCreationType:
+    CoreShop\Bundle\WishlistBundle\Form\Type\WishlistType:
         arguments:
             - '%coreshop.model.wishlist.class%'
             - '%coreshop.form.type.wishlist.validation_groups%'
@@ -21,10 +22,7 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\WishlistBundle\Form\Type\WishlistCreationWishlistItemType:
+    CoreShop\Bundle\WishlistBundle\Factory\AddToWishlistFactoryInterface: '@CoreShop\Bundle\WishlistBundle\Factory\AddToWishlistFactory'
+    CoreShop\Bundle\WishlistBundle\Factory\AddToWishlistFactory:
         arguments:
-            - '%coreshop.model.wishlist_item.class%'
-            - '%coreshop.form.type.wishlist_item.validation_groups%'
-        tags:
-            - { name: form.type }
-
+            - '%coreshop.dto.add_to_wishlist.class%'

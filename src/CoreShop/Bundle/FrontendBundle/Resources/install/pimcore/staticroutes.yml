@@ -246,9 +246,17 @@ routes:
     variables: _locale,product
     priority: 3
 
+  coreshop_partial_wishlist_add:
+    pattern: '/(\w+)\/_partial\/wishlist\/add\/([0-9]+)$/'
+    reverse: '/%_locale/_partial/wishlist/add/%product'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\WishlistController:addItemAction'
+    variables: _locale,product
+    priority: 3
+
   coreshop_wishlist_remove:
     pattern: '/(\w+)\/shop\/wishlist\/remove\/([0-9]+)$/'
     reverse: '/%_locale/shop/wishlist/remove/%product'
     controller: 'CoreShop\Bundle\FrontendBundle\Controller\WishlistController:removeItemAction'
     variables: _locale,product
     priority: 3
+

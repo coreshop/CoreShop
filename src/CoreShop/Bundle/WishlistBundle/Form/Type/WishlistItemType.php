@@ -19,13 +19,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class WishlistItemType extends AbstractResourceType
 {
-    public function __construct(
-        string $dataClass,
-        array $validationGroups
-    ) {
-        parent::__construct($dataClass, $validationGroups);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 

@@ -12,11 +12,15 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\Wishlist\Wishlist;
+namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Wishlist\Model\WishlistInterface;
+use CoreShop\Component\Customer\Model\CustomerAwareInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 
-interface WishlistContextResolverInterface
+interface WishlistInterface extends
+    \CoreShop\Component\Wishlist\Model\WishlistInterface,
+    CustomerAwareInterface,
+    StoreAwareInterface
 {
-    public function resolveWishlistContext(WishlistInterface $wishlist): array;
+
 }

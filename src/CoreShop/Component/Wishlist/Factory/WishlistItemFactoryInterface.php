@@ -14,14 +14,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Wishlist\Factory;
 
-use CoreShop\Component\Wishlist\Model\WishlistInterface;
-use CoreShop\Component\Wishlist\Model\WishlistItemInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Wishlist\Model\WishlistItemInterface;
+use CoreShop\Component\Wishlist\Model\WishlistProductInterface;
 
 interface WishlistItemFactoryInterface extends FactoryInterface
 {
-    public function createWithWishlist(WishlistInterface $wishlist, PurchasableInterface $purchasable): WishlistItemInterface;
-
-    public function createWithPurchasable(PurchasableInterface $purchasable): WishlistItemInterface;
+    public function createWithWishlist(WishlistProductInterface $wishlistProduct): WishlistItemInterface;
 }

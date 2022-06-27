@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\WishlistBundle\DependencyInjection\Compiler;
 
-use CoreShop\Component\Wishlist\Context\WishlistContextInterface;
-use CoreShop\Component\Wishlist\Context\CompositeWishlistContext;
 use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
+use CoreShop\Component\Wishlist\Context\CompositeWishlistContext;
+use CoreShop\Component\Wishlist\Context\WishlistContextInterface;
 
 final class RegisterWishlistContextsPass extends PrioritizedCompositeServicePass
 {

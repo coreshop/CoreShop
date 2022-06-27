@@ -41,6 +41,12 @@ services:
             - '@CoreShop\Component\Core\Context\StoreBasedCartContext.inner'
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'
 
+    CoreShop\Component\Core\Context\StoreBasedWishlistContext:
+        decorates: CoreShop\Component\Wishlist\Context\WishlistContext
+        arguments:
+            - '@CoreShop\Component\Core\Context\StoreBasedWishlistContext.inner'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+
     CoreShop\Component\Core\Context\Country\StoreAwareCountryContext:
         decorates: CoreShop\Component\Address\Context\CountryContextInterface
         decoration_priority: 256

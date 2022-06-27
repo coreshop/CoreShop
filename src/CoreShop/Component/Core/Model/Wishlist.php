@@ -12,14 +12,11 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\Wishlist\Processor;
+namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Wishlist\Model\WishlistItemInterface;
+use CoreShop\Component\Wishlist\Model\Wishlist as BaseWishlist;
 
-interface WishlistItemProcessorInterface
+abstract class Wishlist extends BaseWishlist implements WishlistInterface
 {
-    public function processCartItem(
-        WishlistItemInterface $wishlistItem,
-        array $context
-    ): void;
+
 }

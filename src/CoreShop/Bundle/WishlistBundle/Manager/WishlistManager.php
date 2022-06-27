@@ -17,18 +17,20 @@ namespace CoreShop\Bundle\WishlistBundle\Manager;
 use CoreShop\Component\Wishlist\Manager\WishlistManagerInterface;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
 use CoreShop\Component\Wishlist\Model\WishlistItemInterface;
-use CoreShop\Component\Wishlist\Processor\WishlistProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Doctrine\DBAL\Connection;
 
 final class WishlistManager implements WishlistManagerInterface
 {
-    public function __construct(private WishlistProcessorInterface $wishlistProcessor, private FolderCreationServiceInterface $folderCreationService, private Connection $connection)
+    public function __construct(
+        private FolderCreationServiceInterface $folderCreationService,
+        private Connection $connection
+    )
     {
     }
 
-    public function persistWishlist(WishlistInterface $wishlist): void
+    public function persist(WishlistInterface $wishlist): void
     {
         $wishlistsFolder = $this->folderCreationService->createFolderForResource($wishlist, [
             'suffix' => date('Y/m/d'),
@@ -68,7 +70,6 @@ final class WishlistManager implements WishlistManagerInterface
                 }
 
                 $wishlist->setItems($tempItems);
-                $this->wishlistProcessor->process($wishlist);
 
                 /**
                  * @var WishlistItemInterface $wishlistItem

@@ -14,26 +14,16 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Wishlist\Model;
 
-use CoreShop\Component\Customer\Model\CustomerAwareInterface;
-use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
-use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 interface WishlistInterface extends
     PimcoreModelInterface,
-    StoreAwareInterface,
-    LocaleAwareInterface,
-    CustomerAwareInterface,
     StorageListInterface
 {
     public function getToken(): ?string;
 
     public function setToken(?string $token);
-
-    public function getName(): ?string;
-
-    public function setName(?string $token);
 
     /**
      * @return WishlistItemInterface[]|null

@@ -1,28 +1,20 @@
 services:
-    _defaults:
-        public: true
+  _defaults:
+    public: true
 
-    CoreShop\Component\Wishlist\Context\FixedWishlistContext:
-        tags:
-            - { name: coreshop.context.cart, priority: -100 }
+  CoreShop\Component\Wishlist\Context\WishlistContext:
+    arguments:
+      - '@coreshop.factory.wishlist'
+    tags:
+      - { name: coreshop.context.wishlist, priority: -999 }
 
-    CoreShop\Bundle\WishlistBundle\Context\CustomerAndStoreBasedWishlistContext:
-        arguments:
-            - '@CoreShop\Component\Customer\Context\CustomerContextInterface'
-            - '@CoreShop\Component\Store\Context\StoreContextInterface'
-            - '@coreshop.repository.wishlist'
-            - '@Pimcore\Http\RequestHelper'
-        tags:
-            - { name: coreshop.context.cart, priority: -777 }
+  CoreShop\Component\Wishlist\Context\WishlistContextInterface: '@CoreShop\Component\Wishlist\Context\CompositeWishlistContext'
+  CoreShop\Component\Wishlist\Context\CompositeWishlistContext: ~
 
-    CoreShop\Component\Wishlist\Context\WishlistContext:
-        arguments:
-            - '@coreshop.factory.wishlist'
-        tags:
-            - { name: coreshop.context.cart, priority: -999 }
-
-    CoreShop\Component\Wishlist\Context\WishlistContextInterface: '@CoreShop\Component\Wishlist\Context\CompositeWishlistContext'
-    CoreShop\Component\Wishlist\Context\CompositeWishlistContext: ~
-
-    CoreShop\Component\Wishlist\Wishlist\WishlistContextResolverInterface: '@CoreShop\Component\Wishlist\Wishlist\WishlistContextResolver'
-    CoreShop\Component\Wishlist\Wishlist\WishlistContextResolver: ~
+  CoreShop\Bundle\WishlistBundle\EventListener\SessionWishlistSubscriber:
+    arguments:
+      - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
+      - '@CoreShop\Component\Wishlist\Context\WishlistContextInterface'
+      - '%coreshop.session.wishlist%'
+    tags:
+      - { name: kernel.event_subscriber }

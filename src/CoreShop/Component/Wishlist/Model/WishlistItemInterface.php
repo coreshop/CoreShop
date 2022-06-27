@@ -24,7 +24,7 @@ interface WishlistItemInterface extends
 {
     public function getWishlist(): WishlistInterface;
 
-    public function getProduct(): ?PurchasableInterface;
+    public function getProduct(): ?WishlistProductInterface;
 
-    public function setProduct(?PurchasableInterface $product);
+    public function setProduct(?WishlistProductInterface $product);
 }

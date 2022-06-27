@@ -14,11 +14,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\StorageList\Model\StorageListInterface;
-use CoreShop\Component\StorageList\Model\StorageListItem;
+use CoreShop\Bundle\WishlistBundle\DTO\AddToWishlistInterface;
+use CoreShop\Bundle\WishlistBundle\Factory\AddToWishlistFactoryInterface;
+use CoreShop\Bundle\WishlistBundle\Form\Type\AddToWishlistType;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use CoreShop\Component\Wishlist\Context\WishlistContextInterface;
+use CoreShop\Component\Wishlist\Manager\WishlistManagerInterface;
+use CoreShop\Component\Wishlist\Model\WishlistInterface;
+use CoreShop\Component\Wishlist\Model\WishlistItemInterface;
+use CoreShop\Component\Wishlist\Model\WishlistProductInterface;
+use CoreShop\Component\Wishlist\Wishlist\WishlistModifierInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,72 +32,105 @@ class WishlistController extends FrontendController
 {
     public function addItemAction(Request $request): Response
     {
-        $product = $this->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
+        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_index'));
+        $product = $this->get('coreshop.repository.stack.wishlist_product')->find($this->getParameterFromRequest($request, 'product'));
+        $wishlist = $this->get(WishlistContextInterface::class)->getWishlist();
 
-        if (!$product instanceof PurchasableInterface) {
-            $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_index'));
+        if (!$wishlist) {
+            $wishlist = $this->get('coreshop.factory.wishlist')->createNew();
+        }
+
+        if (!$product instanceof WishlistProductInterface) {
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse([
+                    'success' => false,
+                ]);
+            }
 
             return $this->redirect($redirect);
         }
 
-        $quantity = (int)$this->getParameterFromRequest($request, 'quantity', 1);
+        $item = $this->get('coreshop.factory.wishlist_item')->createWithWishlist($product);
 
-        /**
-         * @var StorageListItem $wishlistItem
-         */
-        $wishlistItem = $this->get('coreshop.factory.wishlist_item')->createNew();
-        $wishlistItem->setProduct($product);
-        $wishlistItem->setQuantity($quantity);
+        $addToWishlist = $this->createAddToWishlist($wishlist, $item);
 
-        $this->getWishlistModifier()->addToList($this->getWishlist(), $wishlistItem);
+        $form = $this->get('form.factory')->createNamed('coreshop-' . $product->getId(), AddToWishlistType::class, $addToWishlist);
 
-        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
+        if ($request->isMethod('POST')) {
+            $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_wishlist_summary'));
 
-        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_wishlist_summary'));
+            $form->handleRequest($request);
 
-        return $this->redirect($redirect);
-    }
+            if ($form->isSubmitted() && $form->isValid()) {
+                /**
+                 * @var AddToWishlistInterface $addToWishlist
+                 */
+                $addToWishlist = $form->getData();
 
-    public function removeItemAction(Request $request): Response
-    {
-        $product = $this->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
+                $this->getWishlistModifier()->addToList($addToWishlist->getWishlist(), $addToWishlist->getWishlistItem());
+                $this->getWishlistManager()->persist($wishlist);
 
-        if (!$product instanceof PurchasableInterface) {
-            return $this->redirectToRoute('coreshop_index');
-        }
+                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
 
-        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse([
+                        'success' => true,
+                    ]);
+                }
 
-        foreach ($this->getWishlist()->getItems() as $item) {
-            if ($item->getProduct() instanceof $product && $item->getProduct()->getId() === $product->getId()) {
-                $this->getWishlistModifier()->removeFromList($this->getWishlist(), $item);
-
-                break;
+                return $this->redirect($redirect);
             }
+
+            foreach ($form->getErrors(true, true) as $error) {
+                $this->addFlash('error', $error->getMessage());
+            }
+
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse([
+                    'success' => false,
+                    'errors' => array_map(static function (FormError $error) {
+                        return $error->getMessage();
+                    }, iterator_to_array($form->getErrors(true))),
+                ]);
+            }
+
+            return $this->redirect($redirect);
         }
 
-        return $this->redirectToRoute('coreshop_wishlist_summary');
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'success' => false,
+            ]);
+        }
+
+        return $this->render(
+            $this->getParameterFromRequest($request, 'template', $this->templateConfigurator->findTemplate('Product/_addToWishlist.html')),
+            [
+                'form' => $form->createView(),
+                'product' => $product,
+            ]
+        );
     }
 
     public function summaryAction(Request $request): Response
     {
         return $this->render($this->templateConfigurator->findTemplate('Wishlist/summary.html'), [
-            'wishlist' => $this->getWishlist(),
+            'wishlist' => $this->get(WishlistContextInterface::class)->getWishlist()
         ]);
+    }
+
+    protected function createAddToWishlist(WishlistInterface $wishlist, WishlistItemInterface $wishlistItem): AddToWishlistInterface
+    {
+        return $this->get(AddToWishlistFactoryInterface::class)->createWithWishlistAndWishlistItem($wishlist, $wishlistItem);
     }
 
     protected function getWishlistModifier(): StorageListModifierInterface
     {
-        return $this->get('coreshop.wishlist.modifier');
+        return $this->get(WishlistModifierInterface::class);
     }
 
-    protected function getWishlist(): StorageListInterface
+    protected function getWishlistManager(): WishlistManagerInterface
     {
-        return $this->getWishlistManager()->getStorageList();
-    }
-
-    protected function getWishlistManager(): StorageListManagerInterface
-    {
-        return $this->get('coreshop.wishlist.manager');
+        return $this->get(WishlistManagerInterface::class);
     }
 }

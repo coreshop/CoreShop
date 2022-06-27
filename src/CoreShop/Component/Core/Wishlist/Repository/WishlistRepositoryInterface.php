@@ -12,17 +12,13 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\Wishlist\Wishlist;
+namespace CoreShop\Component\Core\Wishlist\Repository;
 
+use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
 
-final class WishlistContextResolver implements WishlistContextResolverInterface
+interface WishlistRepositoryInterface extends \CoreShop\Component\Wishlist\Repository\WishlistRepositoryInterface
 {
-    public function resolveWishlistContext(WishlistInterface $wishlist): array
-    {
-        return [
-            'customer' => $wishlist->getCustomer() ?: null,
-            'wishlist' => $wishlist,
-        ];
-    }
+    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?WishlistInterface;
 }

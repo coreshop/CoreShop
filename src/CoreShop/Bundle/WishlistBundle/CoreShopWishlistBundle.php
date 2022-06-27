@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\WishlistBundle;
 
 use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
 use CoreShop\Bundle\WishlistBundle\DependencyInjection\Compiler\RegisterWishlistContextsPass;
-use CoreShop\Bundle\WishlistBundle\DependencyInjection\Compiler\RegisterWishlistProcessorPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
@@ -36,7 +35,6 @@ final class CoreShopWishlistBundle extends AbstractResourceBundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RegisterWishlistProcessorPass());
         $container->addCompilerPass(new RegisterWishlistContextsPass());
     }
 
