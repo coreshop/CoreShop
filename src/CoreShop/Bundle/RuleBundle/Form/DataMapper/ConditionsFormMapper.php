@@ -35,7 +35,7 @@ class ConditionsFormMapper implements DataMapperInterface
 
     public function mapFormsToData($forms, &$viewData): void
     {
-        if (!$viewData instanceof Collection) {
+        if (!$viewData instanceof Collection && !is_array($viewData)) {
             return;
         }
 
