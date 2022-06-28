@@ -19,9 +19,14 @@ use Pimcore\Model\DataObject\Data\UrlSlug;
 interface SluggableInterface
 {
     /**
-     * @return int
+     * @return int|string|null
      */
     public function getId();
+
+    /**
+     * @return string
+     */
+    public function getKey();
 
     /**
      * @return UrlSlug[]

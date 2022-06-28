@@ -34,7 +34,8 @@ final class SluggableListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            DataObjectEvents::PRE_UPDATE => 'preUpdate'
+            DataObjectEvents::PRE_UPDATE => 'preUpdate',
+            DataObjectEvents::PRE_ADD => 'preUpdate'
         ];
     }
 

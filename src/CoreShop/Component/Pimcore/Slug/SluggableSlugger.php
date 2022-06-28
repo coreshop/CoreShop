@@ -25,7 +25,7 @@ class SluggableSlugger implements SluggableSluggerInterface
 
     public function slug(SluggableInterface $sluggable, string $locale, string $suffix = null): string
     {
-        $name = $sluggable->getNameForSlug($locale) ?: (string)$sluggable->getId();
+        $name = $sluggable->getNameForSlug($locale) ?: $sluggable->getKey();
 
         if (!$name) {
             throw new SlugNotPossibleException('name is empty');
