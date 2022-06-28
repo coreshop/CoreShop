@@ -255,8 +255,8 @@ routes:
 
   coreshop_wishlist_remove:
     pattern: '/(\w+)\/shop\/wishlist\/remove\/([0-9]+)$/'
-    reverse: '/%_locale/shop/wishlist/remove/%product'
+    reverse: '/%_locale/shop/wishlist/remove/%wishlistItem'
     controller: 'CoreShop\Bundle\FrontendBundle\Controller\WishlistController:removeItemAction'
-    variables: _locale,product
+    variables: _locale,wishlistItem
     priority: 3
 
