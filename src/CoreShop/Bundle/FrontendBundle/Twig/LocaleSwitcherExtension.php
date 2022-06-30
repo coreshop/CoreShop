@@ -15,17 +15,23 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Twig;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
+use CoreShop\Component\Pimcore\Slug\SluggableInterface;
+use Pimcore\Model\DataObject\Data\UrlSlug;
 use Pimcore\Model\Document;
 use Pimcore\Model\Site;
 use Pimcore\Tool;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class LocaleSwitcherExtension extends AbstractExtension
 {
-    public function __construct(private Document\Service $documentService, private ShopperContextInterface $shopperContext)
-    {
-    }
+    public function __construct(
+        private Document\Service $documentService,
+        private ShopperContextInterface $shopperContext,
+        private RequestStack $requestStack
+    ) {}
 
     public function getFunctions(): array
     {
@@ -54,8 +60,24 @@ final class LocaleSwitcherExtension extends AbstractExtension
             }
         }
 
+        $object = $this->getMainRequest()->attributes->get('object');
+
         foreach (Tool::getValidLanguages() as $language) {
             $target = $basePath . $language;
+
+            if ($object instanceof SluggableInterface) {
+                $urlSlug = $object->getSlug($language)[0] ?? null;
+
+                if ($urlSlug instanceof UrlSlug) {
+                    $links[] = [
+                        'language' => $language,
+                        'target' => $urlSlug->getSlug(),
+                        'displayLanguage' => \Locale::getDisplayLanguage($language, $language),
+                    ];
+                }
+
+                continue;
+            }
 
             if (isset($translations[$language])) {
                 $localizedDocument = Document::getById($translations[$language]);
@@ -73,5 +95,15 @@ final class LocaleSwitcherExtension extends AbstractExtension
         }
 
         return $links;
+    }
+
+    private function getMainRequest(): Request
+    {
+        $masterRequest = $this->requestStack->getMainRequest();
+        if (null === $masterRequest) {
+            throw new \UnexpectedValueException('There are not any requests on request stack');
+        }
+
+        return $masterRequest;
     }
 }
