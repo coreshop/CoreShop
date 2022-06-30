@@ -99,11 +99,12 @@ final class LocaleSwitcherExtension extends AbstractExtension
 
     private function getMainRequest(): Request
     {
-        $masterRequest = $this->requestStack->getMainRequest();
-        if (null === $masterRequest) {
+        $mainRequest = $this->requestStack->getMainRequest();
+
+        if (null === $mainRequest) {
             throw new \UnexpectedValueException('There are not any requests on request stack');
         }
 
-        return $masterRequest;
+        return $mainRequest;
     }
 }
