@@ -66,7 +66,7 @@ final class WishlistBlamerListener
         $wishlist->setCustomer($user);
 
         if ($wishlist->getId()) {
-            $this->wishlistManager->persistWishlist($wishlist);
+            $this->wishlistManager->persist($wishlist);
         }
     }
 
