@@ -20,6 +20,7 @@ services:
         arguments:
             - '@Pimcore\Model\Document\Service'
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+            - '@Symfony\Component\HttpFoundation\RequestStack'
         tags:
             - { name: twig.extension }
 

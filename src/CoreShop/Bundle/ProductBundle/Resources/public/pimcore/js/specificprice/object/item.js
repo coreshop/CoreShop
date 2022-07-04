@@ -15,6 +15,7 @@ pimcore.registerNS('coreshop.product.specificprice.object.item');
 coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_price_rule',
+    settingsForm: null,
 
     postSaveObject: function (object, refreshedRuleData, task, fieldName) {
         // remove dirty flag!
