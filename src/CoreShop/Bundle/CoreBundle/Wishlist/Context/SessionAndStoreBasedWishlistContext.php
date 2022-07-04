@@ -56,10 +56,12 @@ final class SessionAndStoreBasedWishlistContext implements WishlistContextInterf
             throw new WishlistNotFoundException('CoreShop was not able to find the wishlist in session');
         }
 
+        /**
+         * @var \CoreShop\Component\Core\Model\WishlistInterface|null $wishlist
+         */
         $wishlist = $this->wishlistRepository->find($wishlistId);
 
-        if (null === $wishlist || null === $wishlist->getStore() || $wishlist->getStore()->getId() !== $store->getId(
-            )) {
+        if (null === $wishlist || null === $wishlist->getStore() || $wishlist->getStore()->getId() !== $store->getId()) {
             $wishlist = null;
         }
 

@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('coreshop_wishlist');
 
+        /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addModelsSection($rootNode);

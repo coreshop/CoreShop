@@ -25,6 +25,8 @@ use CoreShop\Component\Wishlist\Model\WishlistInterface;
 use CoreShop\Component\Wishlist\Model\WishlistItemInterface;
 use CoreShop\Component\Wishlist\Model\WishlistProductInterface;
 use CoreShop\Component\Wishlist\Wishlist\WishlistModifierInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -40,6 +40,9 @@ final class StoreBasedWishlistContext implements WishlistContextInterface
             return $this->wishlist;
         }
 
+        /**
+         * @var \CoreShop\Component\Core\Model\WishlistInterface $wishlist
+         */
         $wishlist = $this->wishlistContext->getwishlist();
 
         try {

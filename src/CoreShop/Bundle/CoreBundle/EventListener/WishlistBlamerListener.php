@@ -26,8 +26,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 final class WishlistBlamerListener
 {
     public function __construct(
-        private WishlistContextInterface $wishlistContext,
-        private WishlistManagerInterface $wishlistManager
+        private WishlistContextInterface $wishlistContext
     )
     {
     }
@@ -64,10 +63,6 @@ final class WishlistBlamerListener
         }
 
         $wishlist->setCustomer($user);
-
-        if ($wishlist->getId()) {
-            $this->wishlistManager->persistWishlist($wishlist);
-        }
     }
 
     private function getWishlist(): ?WishlistInterface

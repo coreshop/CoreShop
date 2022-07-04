@@ -14,7 +14,6 @@ services:
     CoreShop\Bundle\CoreBundle\EventListener\WishlistBlamerListener:
         arguments:
             - '@CoreShop\Component\Wishlist\Context\WishlistContextInterface'
-            - '@CoreShop\Component\Wishlist\Manager\WishlistManagerInterface'
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
             - { name: kernel.event_listener, event: coreshop.customer.register, method: onRegisterEvent }
