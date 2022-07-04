@@ -27,35 +27,26 @@ final class SessionStorage implements StorageInterface
 
     public function has(string $name): bool
     {
-        return $this->getSession()->has($name);
+        return $this->requestStack->getSession()->has($name);
     }
 
     public function get(string $name, mixed $default = null): mixed
     {
-        return $this->getSession()->get($name, $default);
+        return $this->requestStack->getSession()->get($name, $default);
     }
 
     public function set(string $name, mixed $value): void
     {
-        $this->getSession()->set($name, $value);
+        $this->requestStack->getSession()->set($name, $value);
     }
 
     public function remove(string $name): void
     {
-        $this->getSession()->remove($name);
+        $this->requestStack->getSession()->remove($name);
     }
 
     public function all(): array
     {
-        return $this->getSession()->all();
-    }
-
-    private function getSession(): SessionInterface
-    {
-        if (null !== $this->requestStack->getSession()) {
-            return $this->requestStack->getSession();
-        }
-
-        throw new SessionNotFoundException();
+        return $this->requestStack->getSession()->all();
     }
 }

@@ -49,11 +49,11 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
             throw new CartNotFoundException($exception->getMessage(), $exception);
         }
 
-        if (!$this->getSession()->has(sprintf('%s.%s', $this->sessionKeyName, $store->getId()))) {
+        if (!$this->requestStack->getSession()->has(sprintf('%s.%s', $this->sessionKeyName, $store->getId()))) {
             throw new CartNotFoundException('CoreShop was not able to find the cart in session');
         }
 
-        $cartId = $this->getSession()->get(sprintf('%s.%s', $this->sessionKeyName, $store->getId()));
+        $cartId = $this->requestStack->getSession()->get(sprintf('%s.%s', $this->sessionKeyName, $store->getId()));
 
         if (!is_int($cartId)) {
             throw new CartNotFoundException('CoreShop was not able to find the cart in session');
@@ -66,7 +66,7 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
         }
 
         if (null === $cart) {
-            $this->getSession()->remove(sprintf('%s.%s', $this->sessionKeyName, $store->getId()));
+            $this->requestStack->getSession()->remove(sprintf('%s.%s', $this->sessionKeyName, $store->getId()));
 
             throw new CartNotFoundException('CoreShop was not able to find the cart in session');
         }
@@ -74,14 +74,5 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
         $this->cart = $cart;
 
         return $cart;
-    }
-
-    private function getSession(): SessionInterface
-    {
-        if (null !== $this->requestStack->getSession()) {
-            return $this->requestStack->getSession();
-        }
-
-        throw new SessionNotFoundException();
     }
 }

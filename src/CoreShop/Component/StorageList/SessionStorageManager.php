@@ -31,7 +31,7 @@ class SessionStorageManager implements StorageListManagerInterface
 
     public function getStorageList(): StorageListInterface
     {
-        $list = $this->getSession()->get($this->name);
+        $list = $this->requestStack->getSession()->get($this->name);
 
         if (!$list instanceof StorageListInterface) {
             $list = $this->sessionListFactory->createNew();
@@ -42,20 +42,11 @@ class SessionStorageManager implements StorageListManagerInterface
 
     public function hasStorageList(): bool
     {
-        return $this->getSession()->has($this->name);
+        return $this->$this->requestStack->getSession()->has($this->name);
     }
 
     public function persist(StorageListInterface $storageList): void
     {
-        $this->getSession()->set($this->name, $storageList);
-    }
-
-    private function getSession(): SessionInterface
-    {
-        if (null !== $this->requestStack->getSession()) {
-            return $this->requestStack->getSession();
-        }
-
-        throw new SessionNotFoundException();
+        $this->$this->requestStack->getSession()->set($this->name, $storageList);
     }
 }
