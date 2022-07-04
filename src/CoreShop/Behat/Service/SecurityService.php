@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Service;
 
 use CoreShop\Component\User\Model\UserInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -25,7 +26,7 @@ final class SecurityService implements SecurityServiceInterface
     private string $sessionTokenVariable;
 
     public function __construct(
-        private SessionInterface $session,
+        private RequestStack $requestStack,
         private CookieSetterInterface $cookieSetter,
         private string $firewallContextName
     ) {
@@ -40,15 +41,15 @@ final class SecurityService implements SecurityServiceInterface
 
     public function logOut(): void
     {
-        $this->session->set($this->sessionTokenVariable, null);
-        $this->session->save();
+        $this->requestStack->getSession()->set($this->sessionTokenVariable, null);
+        $this->requestStack->getSession()->save();
 
-        $this->cookieSetter->setCookie($this->session->getName(), $this->session->getId());
+        $this->cookieSetter->setCookie($this->requestStack->getSession()->getName(), $this->requestStack->getSession()->getId());
     }
 
     public function getCurrentToken(): TokenInterface
     {
-        $serializedToken = $this->session->get($this->sessionTokenVariable);
+        $serializedToken = $this->requestStack->getSession()->get($this->sessionTokenVariable);
 
         if (null === $serializedToken) {
             throw new TokenNotFoundException();
@@ -65,8 +66,8 @@ final class SecurityService implements SecurityServiceInterface
     private function setToken(TokenInterface $token): void
     {
         $serializedToken = serialize($token);
-        $this->session->set($this->sessionTokenVariable, $serializedToken);
-        $this->session->save();
-        $this->cookieSetter->setCookie($this->session->getName(), $this->session->getId());
+        $this->requestStack->getSession()->set($this->sessionTokenVariable, $serializedToken);
+        $this->requestStack->getSession()->save();
+        $this->cookieSetter->setCookie($this->requestStack->getSession()->getName(), $this->requestStack->getSession()->getId());
     }
 }

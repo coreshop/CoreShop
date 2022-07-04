@@ -17,7 +17,7 @@ services:
 
     CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext:
         arguments:
-            - '@session'
+            - '@request_stack'
             - '%coreshop.session.cart%'
             - '@coreshop.repository.order'
             - '@CoreShop\Component\Store\Context\StoreContextInterface'

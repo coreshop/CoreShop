@@ -52,7 +52,7 @@ services:
     coreshop.security_service.frontend:
         class: CoreShop\Behat\Service\SecurityService
         arguments:
-            - '@session'
+            - '@request_stack'
             - '@CoreShop\Behat\Service\CookieSetterInterface'
             - 'shop'
 

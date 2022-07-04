@@ -26,7 +26,7 @@ use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 /** @psalm-suppress DeprecatedInterface */
 final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
 {
-    public function __construct(private RouterInterface $router, private string $routeName, private SessionInterface $session, private StoreContextInterface $storeContext)
+    public function __construct(private RouterInterface $router, private string $routeName, private StoreContextInterface $storeContext)
     {
     }
 
@@ -35,7 +35,8 @@ final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
         $store = $this->storeContext->getStore();
 
         if ($store instanceof StoreInterface) {
-            $this->session->remove('coreshop.cart.' . $store->getId());
+
+            $request->getSession()->remove('coreshop.cart.' . $store->getId());
         }
 
         return new RedirectResponse($this->router->generate($this->routeName, ['_locale' => $request->getLocale()]));

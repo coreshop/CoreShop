@@ -15,7 +15,7 @@ services:
     coreshop.wishlist.manager:
         class: CoreShop\Component\StorageList\SessionStorageManager
         arguments:
-            - '@session'
+            - '@request_stack'
             - 'wishlist'
             - '@coreshop.factory.wishlist'
 

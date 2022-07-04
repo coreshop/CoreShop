@@ -15,36 +15,47 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Storage;
 
 use CoreShop\Component\Resource\Storage\StorageInterface;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class SessionStorage implements StorageInterface
 {
-    public function __construct(private SessionInterface $session)
+    public function __construct(private RequestStack $requestStack)
     {
     }
 
     public function has(string $name): bool
     {
-        return $this->session->has($name);
+        return $this->getSession()->has($name);
     }
 
     public function get(string $name, mixed $default = null): mixed
     {
-        return $this->session->get($name, $default);
+        return $this->getSession()->get($name, $default);
     }
 
     public function set(string $name, mixed $value): void
     {
-        $this->session->set($name, $value);
+        $this->getSession()->set($name, $value);
     }
 
     public function remove(string $name): void
     {
-        $this->session->remove($name);
+        $this->getSession()->remove($name);
     }
 
     public function all(): array
     {
-        return $this->session->all();
+        return $this->getSession()->all();
+    }
+
+    private function getSession(): SessionInterface
+    {
+        if (null !== $this->requestStack->getSession()) {
+            return $this->requestStack->getSession();
+        }
+
+        throw new SessionNotFoundException();
     }
 }
