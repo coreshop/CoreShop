@@ -28,7 +28,7 @@ class WishlistRepository extends \CoreShop\Bundle\WishlistBundle\Pimcore\Reposit
         CustomerInterface $customer
     ): ?WishlistInterface {
         $list = $this->getList();
-        $list->setCondition('customer__id = ? AND store = ? AND saleState = ? ', [$customer->getId(), $store->getId(), OrderSaleStates::STATE_CART]);
+        $list->setCondition('customer__id = ? AND store = ?', [$customer->getId(), $store->getId()]);
         $list->setOrderKey('o_creationDate');
         $list->setOrder('DESC');
         $list->load();

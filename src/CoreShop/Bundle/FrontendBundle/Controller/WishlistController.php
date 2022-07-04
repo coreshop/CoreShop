@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Bundle\WishlistBundle\DTO\AddToWishlistInterface;
 use CoreShop\Bundle\WishlistBundle\Factory\AddToWishlistFactoryInterface;
 use CoreShop\Bundle\WishlistBundle\Form\Type\AddToWishlistType;
-use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use CoreShop\Component\Wishlist\Context\WishlistContextInterface;
 use CoreShop\Component\Wishlist\Manager\WishlistManagerInterface;
@@ -114,6 +113,26 @@ class WishlistController extends FrontendController
         );
     }
 
+    public function removeItemAction(Request $request): Response
+    {
+        $wishlistItem = $this->get('coreshop.repository.wishlist_item')->find($this->getParameterFromRequest($request, 'wishlistItem'));
+
+        if (!$wishlistItem instanceof WishlistItemInterface) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        if ($wishlistItem->getWishlist()->getId() !== $this->getWishlist()->getId()) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
+
+        $this->getWishlistModifier()->removeFromList($this->getWishlist(), $wishlistItem);
+        $this->getWishlistManager()->persist($this->getWishlist());
+
+        return $this->redirectToRoute('coreshop_wishlist_summary');
+    }
+
     public function summaryAction(Request $request): Response
     {
         return $this->render($this->templateConfigurator->findTemplate('Wishlist/summary.html'), [
@@ -134,5 +153,15 @@ class WishlistController extends FrontendController
     protected function getWishlistManager(): WishlistManagerInterface
     {
         return $this->get(WishlistManagerInterface::class);
+    }
+
+    protected function getWishlist(): WishlistInterface
+    {
+        return $this->getCartContext()->getWishlist();
+    }
+
+    protected function getCartContext(): WishlistContextInterface
+    {
+        return $this->get(WishlistContextInterface::class);
     }
 }
