@@ -30,7 +30,7 @@ final class WishlistType extends AbstractResourceType
                 'allow_add' => false,
                 'allow_delete' => false,
                 'by_reference' => false,
-                'label' => 'coreshop.form.cart.items',
+                'label' => 'coreshop.form.wishlist.items',
             ])
             ->add('submit', SubmitType::class);
     }

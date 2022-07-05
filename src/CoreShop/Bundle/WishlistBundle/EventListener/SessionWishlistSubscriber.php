@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\WishlistBundle\EventListener;
 
-use CoreShop\Component\Order\Context\CartNotFoundException;
 use CoreShop\Component\Wishlist\Context\WishlistContextInterface;
+use CoreShop\Component\Wishlist\Context\WishlistNotFoundException;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,7 +61,7 @@ final class SessionWishlistSubscriber implements EventSubscriberInterface
 
         try {
             $wishlist = $this->wishlistContext->getWishlist();
-        } catch (CartNotFoundException) {
+        } catch (WishlistNotFoundException) {
             return;
         }
 

@@ -23,23 +23,23 @@ final class CompositeWishlistContext implements WishlistContextInterface
      * @var PriorityQueue|WishlistContextInterface[]
      * @psalm-var PriorityQueue<WishlistContextInterface>
      */
-    private PriorityQueue $cartContexts;
+    private PriorityQueue $contexts;
 
     public function __construct()
     {
-        $this->cartContexts = new PriorityQueue();
+        $this->contexts = new PriorityQueue();
     }
 
-    public function addContext(WishlistContextInterface $cartContext, int $priority = 0): void
+    public function addContext(WishlistContextInterface $context, int $priority = 0): void
     {
-        $this->cartContexts->insert($cartContext, $priority);
+        $this->contexts->insert($context, $priority);
     }
 
     public function getWishlist(): WishlistInterface
     {
-        foreach ($this->cartContexts as $cartContext) {
+        foreach ($this->contexts as $context) {
             try {
-                return $cartContext->getWishlist();
+                return $context->getWishlist();
             } catch (WishlistNotFoundException) {
                 continue;
             }
