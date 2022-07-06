@@ -1,0 +1,5 @@
+elasticsearch:
+    resource: "@ElasticsearchBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
