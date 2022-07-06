@@ -28,7 +28,7 @@ class ConfigResolver implements ConfigResolverInterface
 
     public function getGoogleConfig(): ?ConfigObject
     {
-        if (null !== $this->googleConfig) {
+        if (isset($this->googleConfig)) {
             return $this->googleConfig;
         }
 
