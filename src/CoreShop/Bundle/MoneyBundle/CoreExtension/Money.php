@@ -198,7 +198,11 @@ class Money extends DataObject\ClassDefinition\Data implements
 
     public function unmarshalVersion($object, $data)
     {
-        return $this->getDataFromEditmode($data, $object);
+        if (is_numeric($data)) {
+            return $data;
+        }
+
+        return $this->nullable ? null : 0;
     }
 
     public function marshalRecycleData($object, $data)
