@@ -28,10 +28,12 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Order\OrderRendererInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Pimcore\Db\Connection;
 use Pimcore\Tool;
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientBuilder;
 
 class ElasticsearchWorker extends AbstractWorker
 {
@@ -42,7 +44,8 @@ class ElasticsearchWorker extends AbstractWorker
         FilterGroupHelperInterface $filterGroupHelper,
         ConditionRendererInterface $conditionRenderer,
         OrderRendererInterface $orderRenderer,
-        protected Connection $database
+        protected Connection $database,
+        protected Client $client
     ) {
         parent::__construct(
             $extensionsRegistry,
@@ -52,6 +55,10 @@ class ElasticsearchWorker extends AbstractWorker
             $conditionRenderer,
             $orderRenderer
         );
+
+        $builder = ClientBuilder::create();
+        $builder->setHosts(['127.0.0.1:9200']);
+        $this->client = $builder->build();
     }
 
     public function createOrUpdateIndexStructures(IndexInterface $index): void
