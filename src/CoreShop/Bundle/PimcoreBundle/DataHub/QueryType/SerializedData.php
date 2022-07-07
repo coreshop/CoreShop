@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\PimcoreBundle\DataHub\QueryType;
 
 use CoreShop\Bundle\PimcoreBundle\DataHub\Type\SerializedDataType;
-use phpDocumentor\Reflection\Types\Self_;
 use Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Input;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
