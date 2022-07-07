@@ -56,16 +56,14 @@ final class ElasticsearchBundle extends AbstractResourceBundle implements Pimcor
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RegisterColumnTypePass());
+        /*$container->addCompilerPass(new RegisterColumnTypePass());
         $container->addCompilerPass(new RegisterIndexWorkerPass());
-        $container->addCompilerPass(new RegisterInterpreterPass());
-        $container->addCompilerPass(new RegisterGetterPass());
         $container->addCompilerPass(new RegisterFilterConditionTypesPass());
         $container->addCompilerPass(new RegisterExtensionsPass());
         $container->addCompilerPass(new RegisterConditionRendererTypesPass());
         $container->addCompilerPass(new RegisterOrderRendererTypesPass());
         $container->addCompilerPass(new RegisterFilterPreConditionTypesPass());
-        $container->addCompilerPass(new RegisterFilterUserConditionTypesPass());
+        $container->addCompilerPass(new RegisterFilterUserConditionTypesPass());*/
     }
 
     protected function getModelNamespace(): string
