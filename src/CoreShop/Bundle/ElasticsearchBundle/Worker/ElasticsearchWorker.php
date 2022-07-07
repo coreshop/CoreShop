@@ -37,6 +37,8 @@ use Elastic\Elasticsearch\ClientBuilder;
 
 class ElasticsearchWorker extends AbstractWorker
 {
+    protected Client $client;
+
     public function __construct(
         ServiceRegistryInterface $extensionsRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
@@ -44,8 +46,7 @@ class ElasticsearchWorker extends AbstractWorker
         FilterGroupHelperInterface $filterGroupHelper,
         ConditionRendererInterface $conditionRenderer,
         OrderRendererInterface $orderRenderer,
-        protected Connection $database,
-        protected Client $client
+        protected Connection $database
     ) {
         parent::__construct(
             $extensionsRegistry,
