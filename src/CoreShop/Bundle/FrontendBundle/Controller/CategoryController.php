@@ -149,14 +149,14 @@ class CategoryController extends FrontendController
             $filteredList->setOrderKey($sortParsed['name']);
             $filteredList->setOrder($sortParsed['direction']);
 
-            $currentFilter = $this->get(FilterProcessorInterface::class)->processConditions($category->getFilter(), $filteredList, $request->query);
-            $preparedConditions = $this->get(FilterProcessorInterface::class)->prepareConditionsForRendering($category->getFilter(), $filteredList, $currentFilter);
-
             $paginator = $this->getPaginator()->paginate(
                 $filteredList,
                 $page,
                 $perPage
             );
+
+            $currentFilter = $this->get(FilterProcessorInterface::class)->processConditions($category->getFilter(), $filteredList, $request->query);
+            $preparedConditions = $this->get(FilterProcessorInterface::class)->prepareConditionsForRendering($category->getFilter(), $filteredList, $currentFilter);
 
             $viewParameters['list'] = $filteredList;
             $viewParameters['filter'] = $category->getFilter();
