@@ -95,13 +95,14 @@
     "laminas/laminas-stdlib": "^3.6",
     "sylius/theme-bundle": "^2.2",
     "php-http/guzzle7-adapter": "^0.1",
-    "pimcore/pimcore": "^10.4",
+    "pimcore/pimcore": "10.x-dev",
     "rinvex/countries": "^7.3",
     "stof/doctrine-extensions-bundle": "^1.6",
     "webmozart/assert": "^1.10",
     "payum/payum": "dev-master",
     "payum/payum-bundle": "dev-master",
-    "laminas/laminas-zendframework-bridge": "^1.5"
+    "laminas/laminas-zendframework-bridge": "^1.5",
+    "symfony/notifier": "^5.4"
   },
   "require-dev": {
     "behat/behat": "^3.8",
