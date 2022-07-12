@@ -25,10 +25,6 @@ services:
     _defaults:
         public: true
 
-    CoreShop\Bundle\OrderBundle\Session\SessionCartConfigurator:
-        tags:
-            - { name: pimcore.session.configurator }
-
     CoreShop\Component\Order\Manager\CartManagerInterface: '@CoreShop\Bundle\OrderBundle\Manager\CartManager'
     CoreShop\Bundle\OrderBundle\Manager\CartManager:
         arguments:
