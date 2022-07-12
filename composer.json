@@ -101,8 +101,7 @@
     "webmozart/assert": "^1.10",
     "payum/payum": "dev-master",
     "payum/payum-bundle": "dev-master",
-    "laminas/laminas-zendframework-bridge": "^1.5",
-    "symfony/notifier": "^5.4"
+    "laminas/laminas-zendframework-bridge": "^1.5"
   },
   "require-dev": {
     "behat/behat": "^3.8",
