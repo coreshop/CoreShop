@@ -12,12 +12,11 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\Pimcore\DataObject;
+namespace CoreShop\Bundle\ThemeBundle\Service;
 
-/**
- * @experimental Use with caution only, this is a new experimental feature
- */
-interface ClassUpdateRenameInterface
+use Pimcore\Model\Document;
+
+interface DocumentThemeResolverInterface
 {
-    public function renameField(string $fieldName, string $newFieldName): void;
+    public function resolveThemeForDocument(Document $document): string;
 }

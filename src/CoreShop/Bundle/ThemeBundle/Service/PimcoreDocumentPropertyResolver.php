@@ -20,7 +20,7 @@ use Pimcore\Model\Document;
 use Pimcore\Model\Site;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface
+final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface, DocumentThemeResolverInterface
 {
     public function __construct(
         private RequestStack $requestStack,
@@ -73,6 +73,15 @@ final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface
             }
         } catch (\Exception $ex) {
             throw new ThemeNotResolvedException($ex);
+        }
+
+        throw new ThemeNotResolvedException();
+    }
+
+    public function resolveThemeForDocument(Document $document): string
+    {
+        if ($document->getProperty('theme')) {
+            return $document->getProperty('theme');
         }
 
         throw new ThemeNotResolvedException();

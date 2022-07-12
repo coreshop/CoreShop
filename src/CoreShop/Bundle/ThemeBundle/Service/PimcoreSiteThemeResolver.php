@@ -19,7 +19,7 @@ use Pimcore\Model\Document;
 use Pimcore\Tool\Frontend;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final class PimcoreSiteThemeResolver implements ThemeResolverInterface
+final class PimcoreSiteThemeResolver implements ThemeResolverInterface, DocumentThemeResolverInterface
 {
     public function __construct(
         private RequestStack $requestStack,
@@ -51,11 +51,18 @@ final class PimcoreSiteThemeResolver implements ThemeResolverInterface
         }
 
         if ($document instanceof Document) {
-            $site = Frontend::getSiteForDocument($document);
+            return $this->resolveThemeForDocument($document);
+        }
 
-            if ($site && $theme = $site->getRootDocument()->getKey()) {
-                return $theme;
-            }
+        throw new ThemeNotResolvedException();
+    }
+
+    public function resolveThemeForDocument(Document $document): string
+    {
+        $site = Frontend::getSiteForDocument($document);
+
+        if ($site && $theme = $site->getRootDocument()->getKey()) {
+            return $theme;
         }
 
         throw new ThemeNotResolvedException();

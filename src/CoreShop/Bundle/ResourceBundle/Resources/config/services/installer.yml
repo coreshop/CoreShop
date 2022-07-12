@@ -69,6 +69,7 @@ services:
     CoreShop\Bundle\ResourceBundle\Installer\SqlInstaller:
         arguments:
             - '@kernel'
+            - '@doctrine.dbal.default_connection'
         tags:
            - { name: coreshop.resource.installer, type: sql, priority: 400}
 
