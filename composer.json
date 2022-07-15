@@ -89,7 +89,7 @@
     "doctrine/data-fixtures": "^1.5",
     "doctrine/orm": "^2.9",
     "fakerphp/faker": "^1.16",
-    "gedmo/doctrine-extensions": "^3.7",
+    "gedmo/doctrine-extensions": "^3.6",
     "jms/serializer-bundle": "^4.0",
     "knplabs/knp-menu-bundle": "^3.1",
     "laminas/laminas-stdlib": "^3.6",
