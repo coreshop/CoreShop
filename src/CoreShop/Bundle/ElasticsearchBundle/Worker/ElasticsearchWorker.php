@@ -31,9 +31,10 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use Pimcore\Db\Connection;
+use Pimcore\Log\Simple;
 use Pimcore\Tool;
-use Elastic\Elasticsearch\Client;
-use Elastic\Elasticsearch\ClientBuilder;
+use Elasticsearch\Client;
+use Elasticsearch\ClientBuilder;
 
 class ElasticsearchWorker extends AbstractWorker
 {
@@ -58,47 +59,178 @@ class ElasticsearchWorker extends AbstractWorker
         );
 
         $builder = ClientBuilder::create();
-        $builder->setHosts(['127.0.0.1:9200']);
+        $builder->setHosts(['http://elasticsearch:9200']);
         $this->client = $builder->build();
     }
 
     public function createOrUpdateIndexStructures(IndexInterface $index): void
     {
-        $schemaManager = $this->database->getSchemaManager();
+        $tableName = $this->getTablename($index->getName());
 
+        try {
+            $params = ['index' => $tableName];
+
+            $this->client->indices()->delete($params);
+        } catch (\Exception $e) {
+            Simple::log('elastic-worker', (string)$e);
+        }
+
+        try {
+            $result = $this->client->indices()->exists(['index' => $tableName]);
+        } catch (\Exception $e) {
+            $result = null;
+            Simple::log('elastic-worker', (string)$e);
+        }
+
+        if (!$result) {
+            $result = $this->client->indices()->create(
+                [
+                    'index' => $tableName,
+                    'body' => [
+                        'settings' => [
+                            "number_of_shards" => 5,
+                            "number_of_replicas" => 0
+                        ]
+                    ]
+                ]
+            );
+
+            Simple::log('elastic-worker','Creating new Index. Name: ' . $tableName);
+
+            if (!$result['acknowledged']) {
+                throw new \Exception("Index creation failed. IndexName: " . $tableName);
+            }
+        } else {
+            try {
+                $this->client->indices()->delete(['index' => $tableName]);
+            } catch (\Exception $e) {
+                Simple::log('elastic-worker', (string)$e);
+            }
+        }
+
+        $properties = [];
+
+        $systemColumns = $this->getSystemAttributes();
+        $columnConfig = $index->getColumns();
+
+        foreach ($systemColumns as $column => $type) {
+            $properties[$column] = [
+                'type' => $this->renderFieldType($type)
+            ];
+        }
+
+        foreach ($columnConfig as $column) {
+            if ($column instanceof IndexColumnInterface) {
+                $properties[$column->getName()] = [
+                    'type' => $this->renderFieldType($column->getColumnType())
+                ];
+            }
+        }
+        Simple::log('elastic-worker', serialize($properties));
+        $params = [
+            'index' => $tableName,
+            'type' => "coreshop",
+            'include_type_name' => true,
+            'body'  => [
+                'coreshop' => [
+                    'properties' => $properties
+                ]
+            ]
+        ];
+
+        try {
+            $this->client->indices()->putMapping($params);
+        } catch (\Exception $e) {
+            Simple::log('elastic-worker', (string)$e);
+        }
+/*
         $tableName = $this->getTablename($index->getName());
         $localizedTableName = $this->getLocalizedTablename($index->getName());
         $relationalTableName = $this->getRelationTablename($index->getName());
 
-        $oldTables = [];
+        $this->createTableSchema($index, $tableName);*/
+    }
 
-        foreach ([$tableName, $localizedTableName, $relationalTableName] as $searchTableName) {
-            if ($schemaManager->tablesExist([$searchTableName])) {
-                $oldTables[] = $schemaManager->listTableDetails($searchTableName);
+    protected function createTableSchema(IndexInterface $index, string $tableName)
+    {
+        $params = ['index' => $tableName];
+
+        try {
+            $this->client->indices()->delete($params);
+        } catch (\Exception $e) {
+            Simple::log('elastic-worker', (string)$e);
+        }
+
+        try {
+            $result = $this->client->indices()->exists(['index' => $tableName]);
+        } catch (\Exception $e) {
+            $result = null;
+            Simple::log('elastic-worker', (string)$e);
+        }
+
+        if (!$result) {
+            $result = $this->client->indices()->create(
+                [
+                    'index' => $tableName,
+                    'body' => [
+                        'settings' => [
+                            "number_of_shards" => 5,
+                            "number_of_replicas" => 0
+                        ]
+                    ]
+                ]
+            );
+
+            Simple::log('elastic-worker','Creating new Index. Name: ' . $tableName);
+
+            if (!$result['acknowledged']) {
+                throw new \Exception("Index creation failed. IndexName: " . $tableName);
+            }
+        } else {
+            try {
+                $this->client->indices()->delete(['index' => $tableName]);
+            } catch (\Exception $e) {
+                Simple::log('elastic-worker', (string)$e);
             }
         }
 
-        $newSchema = new Schema([], [], $this->database->getSchemaManager()->createSchemaConfig());
-        $oldSchema = new Schema($oldTables, [], $this->database->getSchemaManager()->createSchemaConfig());
+        $properties = [];
 
-        $this->createTableSchema($index, $newSchema);
-        $this->createLocalizedTableSchema($index, $newSchema);
-        $this->createRelationalTableSchema($index, $newSchema);
+        $systemColumns = $this->getSystemAttributes();
+        $columnConfig = $index->getColumns();
 
-        $queries = $newSchema->getMigrateFromSql($oldSchema, $this->database->getDatabasePlatform());
-
-        //Show run in an Transaction, but doctrine transactional does not work with PDO for some odd reason....
-        foreach ($queries as $qry) {
-            $this->database->executeQuery($qry);
+        foreach ($systemColumns as $column => $type) {
+            $properties[$column] = [
+                'type' => $this->renderFieldType($type)
+            ];
         }
 
-        foreach ($this->createLocalizedViews($index) as $qry) {
-            $this->database->executeQuery($qry);
+        foreach ($columnConfig as $column) {
+            if ($column instanceof IndexColumnInterface) {
+                $properties[$column->getName()] = [
+                    'type' => $this->renderFieldType($column->getColumnType())
+                ];
+            }
         }
-    }
+        Simple::log('elastic-worker', serialize($properties));
+        $params = [
+            'index' => $tableName,
+            'type' => "coreshop",
+            'include_type_name' => true,
+            'body'  => [
+                'coreshop' => [
+                    'properties' => $properties
+                ]
+            ]
+        ];
 
-    protected function createTableSchema(IndexInterface $index, Schema $tableSchema)
-    {
+        try {
+            $this->client->indices()->putMapping($params);
+        } catch (\Exception $e) {
+            Simple::log('elastic-worker', (string)$e);
+        }
+
+
         $table = $tableSchema->createTable($this->getTablename($index->getName()));
         $table->addOption('row_format', 'DYNAMIC');
 
@@ -280,17 +412,11 @@ class ElasticsearchWorker extends AbstractWorker
     public function deleteIndexStructures(IndexInterface $index)
     {
         try {
-            $languages = Tool::getValidLanguages();
-
-            foreach ($languages as $language) {
-                $this->database->executeQuery('DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index->getName(), $language) . '`');
-            }
-
-            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getTablename($index->getName()) . '`');
-            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index->getName()) . '`');
-            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index->getName()) . '`');
+            $this->client->indices()->delete([
+                'index' => $this->getTablename($index->getName())
+            ]);
         } catch (\Exception $e) {
-            $this->logger->error((string)$e);
+            Simple::log('elastic-worker', (string)$e);
         }
     }
 
@@ -321,15 +447,19 @@ class ElasticsearchWorker extends AbstractWorker
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->error((string)$e);
+            Simple::log('elastic-worker', (string)$e);
         }
     }
 
     public function deleteFromIndex(IndexInterface $index, IndexableInterface $object): void
     {
-        $this->database->delete($this->getTablename($index->getName()), ['o_id' => $object->getId()]);
-        $this->database->delete($this->getLocalizedTablename($index->getName()), ['oo_id' => $object->getId()]);
-        $this->database->delete($this->getRelationTablename($index->getName()), ['src' => $object->getId()]);
+        $params = [
+            'index' => $this->getTablename($index->getName()),
+            'type' => 'coreshop',
+            'id' => $object->getId()
+        ];
+
+        $this->client->delete($params);
     }
 
     public function updateIndex(IndexInterface $index, IndexableInterface $object): void
@@ -340,24 +470,20 @@ class ElasticsearchWorker extends AbstractWorker
             $preparedData = $this->prepareData($index, $object);
 
             try {
-                $this->doInsertData($index, $preparedData['data']);
+                $params = [
+                    'index' => $this->getTablename($index->getName()),
+                    'type' => 'coreshop',
+                    'id' => $object->getId(),
+                    'body' => $preparedData['data']
+                ];
+
+                $this->client->index($params);
             } catch (\Exception $e) {
-                $this->logger->warning('Error during updating index table: ' . $e->getMessage(), [$e]);
+                $this->logger->warning('Error during updating index table: '.$e);
             }
 
-            try {
-                $this->doInsertLocalizedData($index, $preparedData['localizedData']);
-            } catch (\Exception $e) {
-                $this->logger->warning('Error during updating index table: ' . $e->getMessage(), [$e]);
-            }
+            //TODO add localized
 
-            try {
-                $this->database->delete($this->getRelationTablename($index->getName()), ['src' => $object->getId()]);
-
-                $this->doInsertRelationalData($index, $preparedData['relation']);
-            } catch (\Exception $e) {
-                $this->logger->warning('Error during updating index relation table: ' . $e->getMessage(), [$e]);
-            }
         } else {
             $this->logger->info('Don\'t adding object ' . $object->getId() . ' to index.');
 
@@ -470,25 +596,27 @@ class ElasticsearchWorker extends AbstractWorker
 
     public function renderFieldType(string $type)
     {
-        //Check if the Mapping type is available in doctrine
-        $doctrineType = strtolower($type);
-
         switch ($type) {
+            case IndexColumnInterface::FIELD_TYPE_INTEGER:
+                return "integer";
+
+            case IndexColumnInterface::FIELD_TYPE_BOOLEAN:
+                return "boolean";
+
             case IndexColumnInterface::FIELD_TYPE_DATE:
-                $doctrineType = 'date';
+                return "date";
 
-                break;
             case IndexColumnInterface::FIELD_TYPE_DOUBLE:
-                $doctrineType = 'decimal';
+                return "dizbke";
 
-                break;
+            case IndexColumnInterface::FIELD_TYPE_STRING:
+                return "text";
+
+            case IndexColumnInterface::FIELD_TYPE_TEXT:
+                return "text";
         }
 
-        if (Type::hasType($doctrineType)) {
-            return Type::getType($doctrineType)->getName();
-        }
-
-        throw new \Exception($type . ' is not supported by MySQL Index');
+        throw new \Exception($type . " is not supported by Elasticsearch Index");
     }
 
     public function getFieldTypeConfig(IndexColumnInterface $column)
@@ -524,12 +652,12 @@ class ElasticsearchWorker extends AbstractWorker
 
     public function getTablename(string $name): string
     {
-        return 'coreshop_index_mysql_' . $name;
+        return 'coreshop_index_elasticsearch_' . strtolower($name);
     }
 
     public function getLocalizedTablename(string $name): string
     {
-        return 'coreshop_index_mysql_localized_' . $name;
+        return 'coreshop_index_elasticsearch_localized_' . strtolower($name);
     }
 
     public function getLocalizedViewName(string $name, string $language): string
@@ -539,6 +667,6 @@ class ElasticsearchWorker extends AbstractWorker
 
     public function getRelationTablename(string $name): string
     {
-        return 'coreshop_index_mysql_relations_' . $name;
+        return 'coreshop_index_elasticsearch_relations_' . strtolower($name);
     }
 }

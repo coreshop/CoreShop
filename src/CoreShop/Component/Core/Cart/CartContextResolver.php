@@ -21,7 +21,9 @@ use Webmozart\Assert\Assert;
 
 final class CartContextResolver implements CartContextResolverInterface
 {
-    public function __construct(private CartContextResolverInterface $inner)
+    public function __construct(
+        private CartContextResolverInterface $inner
+    )
     {
     }
 
