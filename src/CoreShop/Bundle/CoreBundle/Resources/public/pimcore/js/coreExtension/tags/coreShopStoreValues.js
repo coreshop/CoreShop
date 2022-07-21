@@ -27,7 +27,12 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
 
         this.data = data;
         this.fieldConfig = fieldConfig;
-        this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        if (pimcore.eventDispatcher !== undefined) {
+            this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        }
+        else {
+            document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+        }
 
     },
 
@@ -69,6 +74,11 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
 
     getGridColumnFilter: function (field) {
         return false;
+    },
+
+    postSaveObjectNew: function (e)
+    {
+        this.postSaveObject(e.detail.object, e.detail.task);
     },
 
     postSaveObject: function (object, task) {
@@ -257,7 +267,13 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
         this.component = new Ext.Panel(wrapperConfig);
         this.component.add([this.tabPanel]);
         this.component.on('destroy', function () {
-            pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+            if (pimcore.eventDispatcher !== undefined) {
+                pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+            }
+            else {
+                document.removeEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+            }
+
             coreshop.broker.removeListener('pimcore.object.tags.coreShopProductUnitDefinitions.change', this.onUnitDefinitionsChange);
         }.bind(this));
 

@@ -22,7 +22,12 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
         this.unitBuilder = {};
         this.unitStore = pimcore.globalmanager.get('coreshop_product_units');
         this.fieldConfig = fieldConfig;
-        this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        if (pimcore.eventDispatcher !== undefined) {
+            this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        }
+        else {
+            document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+        }
     },
 
     getGridColumnEditor: function (field) {
@@ -74,7 +79,12 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
 
         this.component = new Ext.Panel(wrapperConfig);
         this.component.on('destroy', function () {
-            pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+            if (pimcore.eventDispatcher !== undefined) {
+                pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+            }
+            else {
+                document.removeEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+            }
         }.bind(this));
 
         this.initiateUnitStoreField();
@@ -125,6 +135,11 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
 
     getName: function () {
         return this.fieldConfig.name;
+    },
+
+    postSaveObjectNew: function (e)
+    {
+        this.postSaveObject(e.detail.object, e.detail.task);
     },
 
     postSaveObject: function (object, task) {
