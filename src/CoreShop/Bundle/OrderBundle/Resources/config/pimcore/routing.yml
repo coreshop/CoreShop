@@ -68,7 +68,7 @@ coreshop_admin_order_get_order:
 
 coreshop_admin_order_find:
     path: /%coreshop.admin.route.base%/order/find
-    defaults: { _controller: 'coreshop.pimcore_controller.order:findSaleAction'}
+    defaults: { _controller: 'coreshop.pimcore_controller.order:findOrderAction'}
     options:
         expose: true
 
