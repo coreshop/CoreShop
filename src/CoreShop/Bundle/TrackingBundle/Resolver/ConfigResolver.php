@@ -20,12 +20,18 @@ use Pimcore\Config\Config as ConfigObject;
 
 class ConfigResolver implements ConfigResolverInterface
 {
+    /**
+     * @psalm-suppress DeprecatedClass
+     */
     private ?ConfigObject $googleConfig;
 
     public function __construct(private SiteIdProvider $siteIdProvider, private GoogleConfigProvider $goggleConfigProvider)
     {
     }
 
+    /**
+     * @psalm-suppress DeprecatedClass
+     */
     public function getGoogleConfig(): ?ConfigObject
     {
         if (isset($this->googleConfig)) {
