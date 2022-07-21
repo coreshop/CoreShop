@@ -21,6 +21,9 @@ class ConfigResolver implements ConfigResolverInterface
 {
     public function getGoogleConfig(): ConfigObject
     {
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
         return new ConfigObject([]);
     }
 }
