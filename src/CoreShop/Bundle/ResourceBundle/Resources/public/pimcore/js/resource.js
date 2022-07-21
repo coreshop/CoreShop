@@ -28,13 +28,14 @@ coreshop.resources = Class.create({
             }.bind(this)
         });
 
-        pimcore.eventDispatcher.registerTarget('coreshopMenuOpen', new (Class.create({
-            coreshopMenuOpen: function(type, item) {
-                if (item.attributes.resource) {
-                    coreshop.global.resource.open(item.attributes.resource, item.attributes.function);
-                }
+        document.addEventListener(coreshop.events.menu.open, (e) => {
+            var item = e.detail.item;
+            var type = e.detail.type;
+
+            if (item.attributes.resource) {
+                coreshop.global.resource.open(item.attributes.resource, item.attributes.function);
             }
-        })));
+        });
 
         coreshop.broker.addListener('resource.register', this.resourceRegistered, this);
     },

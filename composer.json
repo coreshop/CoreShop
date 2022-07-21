@@ -85,25 +85,25 @@
   "require": {
     "ext-json": "*",
     "dachcom-digital/emailizr": "^2.0.0",
-    "doctrine/doctrine-bundle": "^2.4",
     "doctrine/data-fixtures": "^1.5",
+    "doctrine/doctrine-bundle": "^2.4",
     "doctrine/orm": "^2.9",
     "fakerphp/faker": "^1.16",
     "gedmo/doctrine-extensions": "^3.6",
     "jms/serializer-bundle": "^4.0",
     "knplabs/knp-menu-bundle": "^3.1",
     "laminas/laminas-stdlib": "^3.6",
-    "sylius/theme-bundle": "^2.2",
-    "php-http/guzzle7-adapter": "^0.1",
-    "pimcore/pimcore": "10.x-dev",
-    "rinvex/countries": "^7.3",
-    "stof/doctrine-extensions-bundle": "^1.6",
-    "webmozart/assert": "^1.10",
+    "laminas/laminas-zendframework-bridge": "^1.5",
     "payum/payum": "dev-master",
     "payum/payum-bundle": "dev-master",
-    "laminas/laminas-zendframework-bridge": "^1.5",
+    "php-http/guzzle7-adapter": "^0.1",
+    "pimcore/pimcore": "^10.4",
+    "rinvex/countries": "^7.3",
+    "stof/doctrine-extensions-bundle": "^1.6",
+    "sylius/theme-bundle": "^2.2",
     "symfony/notifier": "^5.4.0",
-    "symfony/serializer": "^5.4.0"
+    "symfony/serializer": "^5.4.0",
+    "webmozart/assert": "^1.10"
   },
   "require-dev": {
     "behat/behat": "^3.8",
@@ -156,5 +156,8 @@
     "branch-alias": {
       "dev-master": "3.0-dev"
     }
+  },
+  "config": {
+    "sort-packages": true
   }
 }

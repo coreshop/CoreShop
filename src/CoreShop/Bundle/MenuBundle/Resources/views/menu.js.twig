@@ -25,7 +25,14 @@ coreshop.menu.{{ type }} = Class.create({
                     text: t(item.name),
                     iconCls: item.attributes.iconCls,
                     handler: function() {
-                        pimcore.eventDispatcher.fireEvent('coreshopMenuOpen', type, item);
+                        const openMenuEvent = new CustomEvent(coreshop.events.menu.open, {
+                            detail: {
+                                type: type,
+                                item: item
+                            }
+                        });
+
+                        document.dispatchEvent(openMenuEvent);
                     }
                 };
 
