@@ -19,7 +19,8 @@ use CoreShop\Bundle\ElasticsearchBundle\Worker\AbstractListing;
 use CoreShop\Bundle\ElasticsearchBundle\Worker\ElasticsearchWorker;
 use CoreShop\Bundle\ElasticsearchBundle\Worker\ElasticsearchWorker\Listing\Dao;
 use CoreShop\Component\Index\Condition\ConditionInterface;
-use CoreShop\Component\Elasticsearch\Condition\MatchCondition;
+use CoreShop\Component\Index\Condition\MatchCondition;
+use CoreShop\Component\Index\Condition\NotMatchCondition;
 use CoreShop\Component\Index\Listing\ExtendedListingInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Listing\OrderAwareListingInterface;
@@ -84,6 +85,17 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     protected array $queryJoins = [];
 
     protected WorkerInterface $worker;
+
+    /**
+     * @var array
+     */
+    protected $preparedGroupByValues = [];
+
+    /**
+     * @var array
+     */
+    protected $preparedGroupByValuesResults = [];
+
 
     public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection)
     {
@@ -256,18 +268,24 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     public function load(array $options = [])
     {
-        $queryBuilder = $this->dao->createQueryBuilder();
-        $this->addQueryFromConditions($queryBuilder);
-        $this->addOrderBy($queryBuilder);
-        $this->addJoins($queryBuilder);
-        $queryBuilder->setMaxResults($this->getLimit());
-        $queryBuilder->setFirstResult($this->getOffset());
-        $objectRaws = $this->dao->load($queryBuilder);
-        $this->totalCount = $this->count();
+        $result = $this->sendRequest($this->getQuery());
+
+        $objectRaws = [];
+
+        if ($result['hits']) {
+            $this->totalCount = $result['hits']['total']['value'];
+
+            foreach ($result['hits']['hits'] as $hit) {
+                $objectRaws[] = $hit['_id'];
+            }
+        }
+
+        // load elements
         $className = $this->index->getClass();
+
         $this->objects = [];
         foreach ($objectRaws as $raw) {
-            $object = $this->loadElementById($raw['o_id']);
+            $object = $this->loadElementById($raw);
 
             if ($object instanceof Concrete) {
                 if ($object->getClassName() === $className) {
@@ -291,23 +309,12 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
             $excludedFieldName = null;
         }
 
-        $queryBuilder = $this->dao->createQueryBuilder();
-        $this->addQueryFromConditions($queryBuilder, false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
-
-        return $this->dao->loadGroupByValues($queryBuilder, $fieldName, $countValues);
+        return $this->doGetGroupByValues($fieldName, $countValues, $fieldNameShouldBeExcluded);
     }
 
     public function getGroupByRelationValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
     {
-        $excludedFieldName = $fieldName;
-        if (!$fieldNameShouldBeExcluded) {
-            $excludedFieldName = null;
-        }
-
-        $queryBuilder = $this->dao->createQueryBuilder();
-        $this->addQueryFromConditions($queryBuilder, false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
-
-        return $this->dao->loadGroupByRelationValues($queryBuilder, $fieldName, $countValues);
+        return $this->doGetGroupByValues($fieldName, $countValues, $fieldNameShouldBeExcluded);
     }
 
     public function getGroupByRelationValuesAndType(
@@ -358,13 +365,13 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->dao->quote($value);
     }
 
-    protected function addQueryFromConditions(QueryBuilder $queryBuilder, $excludeConditions = false, $excludedFieldName = null, $variantMode = null)
+    protected function addQueryFromConditions($excludeConditions = false, $excludedFieldName = null, $variantMode = null): array
     {
         if ($variantMode == null) {
             $variantMode = $this->getVariantMode();
         }
 
-        $queryBuilder->where($this->getWorker()->renderCondition(new MatchCondition('active', '1'), 'q'));
+        $filters[] = $this->getWorker()->renderCondition(new MatchCondition('active', 'true'));
 
         $extensions = $this->getWorker()->getExtensions($this->getIndex());
 
@@ -372,7 +379,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
             if ($extension instanceof ElasticsearchIndexQueryExtensionInterface) {
                 $conditions = $extension->preConditionQuery($this->getIndex());
                 foreach ($conditions as $cond) {
-                    $queryBuilder->andWhere($this->getWorker()->renderCondition($cond, 'q'));
+                    $filters[] = $this->getWorker()->renderCondition($cond);
                 }
             }
         }
@@ -380,44 +387,41 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         //variant handling and userspecific conditions
         if ($variantMode == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             if (!$excludeConditions) {
-                $this->addUserSpecificConditions($queryBuilder, $excludedFieldName);
+                $filters = array_merge($filters, $this->addUserSpecificConditions($excludedFieldName));
             }
         } else {
             if ($variantMode == AbstractListing::VARIANT_MODE_HIDE) {
-                $queryBuilder->andWhere('q.o_type != \'variant\'');
+                $filters[] = $this->getWorker()->renderCondition(new NotMatchCondition('o_type', 'variant'));
             }
             if (!$excludeConditions) {
-                $this->addUserSpecificConditions($queryBuilder, $excludedFieldName);
+                $filters = array_merge($filters, $this->addUserSpecificConditions($excludedFieldName));
             }
         }
 
-//        $searchString = '';
-//        foreach ($this->queryConditions as $condition) {
-//            if ($condition instanceof ConditionInterface) {
-//                $searchString .= '+' . $condition->getValues() . '+ ';
-//            }
-//        }
-        //$condition .= ' AND '.$this->dao->buildFulltextSearchWhere(["name"], $searchString); //TODO: Load array("name") from any configuration (cause its also used by indexservice)
+        return $filters;
     }
 
-    protected function addUserSpecificConditions(QueryBuilder $queryBuilder, $excludedFieldName = null)
+    protected function addUserSpecificConditions($excludedFieldName = null):array
     {
-        $relationalTableName = $this->getWorker()->getRelationTablename($this->index->getName());
+        $renderedConditions = [];
+
         foreach ($this->relationConditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {
-                    $cond = $this->getWorker()->renderCondition($cond, 'q');
-                    $queryBuilder->andWhere('q.o_id IN (SELECT DISTINCT src FROM ' . $relationalTableName . ' q WHERE ' . $cond . ')');
+                    $renderedConditions[] = $this->getWorker()->renderCondition($cond);
                 }
             }
         }
+
         foreach ($this->conditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {
-                    $queryBuilder->andWhere($this->getWorker()->renderCondition($cond, 'q'));
+                    $renderedConditions[] = $this->getWorker()->renderCondition($cond);
                 }
             }
         }
+
+        return $renderedConditions;
     }
 
     protected function addOrderBy(QueryBuilder $queryBuilder)
@@ -473,10 +477,11 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     public function count(): int
     {
         if ($this->totalCount === null) {
-            $queryBuilder = $this->dao->createQueryBuilder();
+            /*$queryBuilder = $this->dao->createQueryBuilder();
             $this->addQueryFromConditions($queryBuilder);
             $this->addJoins($queryBuilder);
-            $this->totalCount = $this->dao->getCount($queryBuilder);
+            $this->totalCount = $this->dao->getCount($queryBuilder);*/
+            $this->totalCount = 0;
         }
 
         return $this->totalCount;
@@ -523,5 +528,191 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     public function valid(): bool
     {
         return $this->current() !== false;
+    }
+
+    /**
+     * @param array $params
+     * @return array
+     */
+    protected function sendRequest($params)
+    {
+        $esClient = $this->worker->getElasticsearchClient();
+
+        $result = $esClient->search($params);
+
+        return $result;
+    }
+
+    /**
+     * @return array|string
+     */
+    protected function getQuery()
+    {
+        //user specific filters
+        $filters = $this->addQueryFromConditions();
+
+        //relation conditions
+        $queryFilters = $this->buildQueryConditions([]);
+
+        $params = [];
+        $params['index'] = $this->getTableName();
+        $params['type'] = "coreshop";
+        $params['body']['_source'] = false;
+        $params['body']['size'] = $this->getLimit() ?? 40;
+        $params['body']['from'] = $this->getOffset() ?? 1;
+        $params['body']['query']['bool']['filter'] = $filters;
+
+        if (!empty($queryFilters)) {
+            $params['body']['query']['bool']['must'] = $queryFilters;
+        }
+
+        if ($this->orderKey) {
+            if (is_array($this->orderKey)) {
+                foreach ($this->orderKey as $orderKey) {
+                    $params['body']['sort'][] = [$orderKey[0] => ($orderKey[1] ?: "asc")];
+                }
+            } else {
+                $params['body']['sort'][] = [$this->orderKey => ($this->order ?: "asc")];
+            }
+        }
+
+        return $params;
+    }
+
+    /**
+     * @param $excludedFieldName
+     * @return array
+     */
+    protected function buildFilterConditions($excludedFieldName)
+    {
+        $filters = [];
+
+        foreach ($this->conditions as $fieldName => $condArray) {
+            if ($fieldName !== $excludedFieldName && is_array($condArray)) {
+                foreach ($condArray as $cond) {
+                    $filters[] = $this->worker->renderCondition($cond);
+                }
+            }
+        }
+
+        return $filters;
+    }
+
+    /**
+     * @param $excludedFieldName
+     * @return array
+     */
+    protected function buildQueryConditions($excludedFieldName)
+    {
+        $filters = [];
+
+        if (is_array($this->queryConditions)) {
+            foreach ($this->queryConditions as $queryCondition) {
+                if ($queryCondition instanceof ConditionInterface) {
+                    $filters[] = ['match' => [$queryCondition->getFieldName() => $queryCondition->getValues()]];
+                }
+            }
+        }
+
+        return $filters;
+    }
+
+    /**
+     * checks if group by values are loaded and returns them
+     *
+     * @param $fieldName
+     * @param bool $countValues
+     * @param bool $fieldNameShouldBeExcluded
+     * @return array
+     */
+    protected function doGetGroupByValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
+    {
+        $this->doLoadGroupByValues();
+
+        $results = !empty($this->preparedGroupByValuesResults[$fieldName]) ? $this->preparedGroupByValuesResults[$fieldName] : [];
+
+        if ($results) {
+            if ($countValues) {
+                return $results;
+            } else {
+                $resultsWithoutCounts = [];
+                foreach ($results as $result) {
+                    $resultsWithoutCounts[] = $result['value'];
+                }
+                return $resultsWithoutCounts;
+            }
+        } else {
+            return [];
+        }
+    }
+
+    /**
+     * loads all prepared group by values
+     *   1 - get general filter (= filter of fields don't need to be considered in group by values or where fieldnameShouldBeExcluded set to false)
+     *   2 - for each group by value create a own aggregation section with all other group by filters added
+     *
+     * @throws \Exception
+     */
+    protected function doLoadGroupByValues()
+    {
+        // create general filters and queries
+        $filters = $this->addQueryFromConditions();
+
+        //relation conditions
+        $queryFilters = $this->buildQueryConditions([]);
+
+        $columns = $this->getIndex()->getColumns();
+
+        $aggregations = [];
+
+        foreach ($columns as $column) {
+            $aggregations[$column->getName()] = [
+                "terms" => [
+                    "field" => $column->getName(),
+                    "order" => ["_term" => "asc"]
+                ]
+            ];
+        }
+
+        if (count($aggregations) > 0) {
+
+            $params = [];
+            $params['index'] = $this->getTableName();
+            $params['type'] = "coreshop";
+            $params['size'] = 0;
+            $params['body']['_source'] = false;
+            $params['body']['size'] = $this->getLimit() ?? 40;
+            $params['body']['from'] = $this->getOffset() ?? 1;
+            $params['body']['aggs'] = $aggregations;
+            $params['body']['query']['bool']['filter'] = $filters;
+
+            if (!empty($queryFilters)) {
+                $params['body']['query']['bool']['must'] = $queryFilters;
+            }
+
+            // send request
+            $result = $this->sendRequest($params);
+
+
+            if ($result['aggregations']) {
+                foreach ($result['aggregations'] as $fieldName => $aggregation) {
+                    $buckets = $aggregation['buckets'];
+
+                    $groupByValueResult = [];
+                    if ($buckets) {
+                        foreach ($buckets as $bucket) {
+                            $groupByValueResult[] = ['value' => $bucket['key'], 'count' => $bucket['doc_count']];
+                        }
+                    }
+
+                    $this->preparedGroupByValuesResults[$fieldName] = $groupByValueResult;
+                }
+            }
+        } else {
+            $this->preparedGroupByValuesResults = [];
+        }
+
+
+        $this->preparedGroupByValuesLoaded = true;
     }
 }

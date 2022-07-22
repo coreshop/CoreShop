@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 
 class InRenderer extends AbstractElasticsearchDynamicRenderer
 {
-    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): array
     {
         /**
          * @var InCondition $condition
@@ -36,6 +36,8 @@ class InRenderer extends AbstractElasticsearchDynamicRenderer
             $inValues[] = $this->quote((string)$value);
         }
 
+        $rendered = [];
+
         if (count($inValues) > 0) {
             $operator = 'must';
 
@@ -43,7 +45,7 @@ class InRenderer extends AbstractElasticsearchDynamicRenderer
                 $operator = 'must_not';
             }
 
-            return [
+            $rendered = [
                 'bool' => [
                     $operator => [
                         'terms' => [
@@ -54,7 +56,7 @@ class InRenderer extends AbstractElasticsearchDynamicRenderer
             ];
         }
 
-        return '';
+        return $rendered;
     }
 
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool

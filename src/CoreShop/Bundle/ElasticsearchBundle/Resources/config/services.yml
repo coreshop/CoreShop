@@ -1,6 +1,6 @@
 imports:
+    - { resource: services/form.yml }
     - { resource: services_alias.yml }
-    - { resource: services/commands.yml }
     - { resource: services/condition_renderer.yml }
     - { resource: services/order_renderer.yml }
 services:
@@ -27,67 +27,67 @@ services:
         calls:
             - { method: setLogger, arguments: ['@logger'] }
         tags:
-            - { name: coreshop.index.worker, type: elasticsearch, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Worker\MysqlWorkerType}
-
-    # Filter Condition Types
-    CoreShop\Component\Elasticsearch\Filter\BooleanFilterConditionProcessor:
-        tags:
-            - { name: coreshop.filter.condition_type, type: boolean, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionBooleanType }
-
-    CoreShop\Component\Elasticsearch\Filter\SelectFilterConditionProcessor:
-        tags:
-            - { name: coreshop.filter.condition_type, type: select, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionSelectType }
-
-    CoreShop\Component\Elasticsearch\Filter\SelectFilterConditionFromMultiselectProcessor:
-        tags:
-            - { name: coreshop.filter.condition_type, type: select_from_multiselect, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionSelectType }
-
-    CoreShop\Component\Elasticsearch\Filter\RangeFilterConditionProcessor:
-        tags:
-            - { name: coreshop.filter.condition_type, type: range, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionRangeType }
-
-    CoreShop\Component\Elasticsearch\Filter\MultiselectFilterConditionProcessor:
-        tags:
-            - { name: coreshop.filter.condition_type, type: multiselect, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionMultiselectType }
-
-    CoreShop\Component\Elasticsearch\Filter\MultiselectFilterConditionFromMultiselectProcessor:
-        tags:
-            - { name: coreshop.filter.condition_type, type: multiselect_from_multiselect, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionMultiselectType }
-
-    coreshop.filter.condition_type.pre_nested:
-        class: CoreShop\Component\Elasticsearch\Filter\NestedFilterConditionProcessor
-        arguments:
-            - '@coreshop.registry.filter.pre_condition_types'
-        tags:
-            - { name: coreshop.filter.pre_condition_type, type: nested, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterPreConditionNestedType }
-
-    coreshop.filter.condition_type.user_nested:
-        class: CoreShop\Component\Elasticsearch\Filter\NestedFilterConditionProcessor
-        arguments:
-            - '@coreshop.registry.filter.user_condition_types'
-        tags:
-            - { name: coreshop.filter.user_condition_type, type: nested, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterUserConditionNestedType }
-
-    CoreShop\Component\Elasticsearch\Filter\RelationalMultiselectConditionProcessor:
-        tags:
-            - { name: coreshop.filter.condition_type, type: relational_multiselect, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionMultiselectType}
-
-    CoreShop\Component\Elasticsearch\Filter\RelationalSelectConditionProcessor:
-        tags:
-            - { name: coreshop.filter.condition_type, type: relational_select, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionSelectType}
-
-    CoreShop\Component\Elasticsearch\Filter\CategorySelectConditionProcessor:
-        tags:
-            - { name: coreshop.filter.condition_type, type: category_select, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionCategorySelectType}
-
-    CoreShop\Component\Elasticsearch\Filter\CategoryMultiSelectConditionProcessor:
-        tags:
-            - { name: coreshop.filter.condition_type, type: category_multiselect, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionCategoryMultiSelectType }
-
-    CoreShop\Component\Elasticsearch\Filter\SearchConditionProcessor:
-        tags:
-            - { name: coreshop.filter.condition_type, type: search, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionSearchType }
-
-    CoreShop\Component\Elasticsearch\Extension\DecimalElasticsearchColumnTypeConfigExtension:
-        tags:
-            - { name: coreshop.index.extension }
+            - { name: coreshop.index.worker, type: elasticsearch, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Worker\ElasticsearchWorkerType}
+#
+#    # Filter Condition Types
+#    CoreShop\Component\Elasticsearch\Filter\BooleanFilterConditionProcessor:
+#        tags:
+#            - { name: coreshop.filter.condition_type, type: boolean, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionBooleanType }
+#
+#    CoreShop\Component\Elasticsearch\Filter\SelectFilterConditionProcessor:
+#        tags:
+#            - { name: coreshop.filter.condition_type, type: select, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionSelectType }
+#
+#    CoreShop\Component\Elasticsearch\Filter\SelectFilterConditionFromMultiselectProcessor:
+#        tags:
+#            - { name: coreshop.filter.condition_type, type: select_from_multiselect, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionSelectType }
+#
+#    CoreShop\Component\Elasticsearch\Filter\RangeFilterConditionProcessor:
+#        tags:
+#            - { name: coreshop.filter.condition_type, type: range, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionRangeType }
+#
+#    CoreShop\Component\Elasticsearch\Filter\MultiselectFilterConditionProcessor:
+#        tags:
+#            - { name: coreshop.filter.condition_type, type: multiselect, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionMultiselectType }
+#
+#    CoreShop\Component\Elasticsearch\Filter\MultiselectFilterConditionFromMultiselectProcessor:
+#        tags:
+#            - { name: coreshop.filter.condition_type, type: multiselect_from_multiselect, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionMultiselectType }
+#
+#    coreshop.filter.condition_type.pre_nested:
+#        class: CoreShop\Component\Elasticsearch\Filter\NestedFilterConditionProcessor
+#        arguments:
+#            - '@coreshop.registry.filter.pre_condition_types'
+#        tags:
+#            - { name: coreshop.filter.pre_condition_type, type: nested, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterPreConditionNestedType }
+#
+#    coreshop.filter.condition_type.user_nested:
+#        class: CoreShop\Component\Elasticsearch\Filter\NestedFilterConditionProcessor
+#        arguments:
+#            - '@coreshop.registry.filter.user_condition_types'
+#        tags:
+#            - { name: coreshop.filter.user_condition_type, type: nested, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterUserConditionNestedType }
+#
+#    CoreShop\Component\Elasticsearch\Filter\RelationalMultiselectConditionProcessor:
+#        tags:
+#            - { name: coreshop.filter.condition_type, type: relational_multiselect, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionMultiselectType}
+#
+#    CoreShop\Component\Elasticsearch\Filter\RelationalSelectConditionProcessor:
+#        tags:
+#            - { name: coreshop.filter.condition_type, type: relational_select, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionSelectType}
+#
+#    CoreShop\Component\Elasticsearch\Filter\CategorySelectConditionProcessor:
+#        tags:
+#            - { name: coreshop.filter.condition_type, type: category_select, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionCategorySelectType}
+#
+#    CoreShop\Component\Elasticsearch\Filter\CategoryMultiSelectConditionProcessor:
+#        tags:
+#            - { name: coreshop.filter.condition_type, type: category_multiselect, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionCategoryMultiSelectType }
+#
+#    CoreShop\Component\Elasticsearch\Filter\SearchConditionProcessor:
+#        tags:
+#            - { name: coreshop.filter.condition_type, type: search, form-type: CoreShop\Bundle\ElasticsearchBundle\Form\Type\Filter\FilterConditionSearchType }
+#
+#    CoreShop\Component\Elasticsearch\Extension\DecimalElasticsearchColumnTypeConfigExtension:
+#        tags:
+#            - { name: coreshop.index.extension }

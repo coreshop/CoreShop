@@ -1,0 +1,4 @@
+core_shop_index:
+    pimcore_admin:
+        js:
+            index_worker_elasticsearch: '/bundles/elasticsearch/pimcore/js/index/worker/elasticsearch.js'

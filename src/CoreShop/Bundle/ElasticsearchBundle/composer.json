@@ -25,7 +25,8 @@
   ],
   "require": {
     "coreshop/resource-bundle": "^3.0",
-    "coreshop/elasticsearch": "^3.0"
+    "coreshop/elasticsearch": "^3.0",
+    "elasticsearch/elasticsearch": "^7.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.5.4",
