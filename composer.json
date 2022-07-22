@@ -97,7 +97,7 @@
     "payum/payum": "dev-master",
     "payum/payum-bundle": "dev-master",
     "php-http/guzzle7-adapter": "^0.1",
-    "pimcore/pimcore": "^10.4",
+    "pimcore/pimcore": "^10.4 || ^11.0",
     "rinvex/countries": "^7.3",
     "stof/doctrine-extensions-bundle": "^1.6",
     "sylius/theme-bundle": "^2.2",

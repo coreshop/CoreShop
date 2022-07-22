@@ -53,7 +53,7 @@
     "coreshop/core": "^3.0",
     "fakerphp/faker": "^1.16",
     "rinvex/countries": "^7.3",
-    "pimcore/pimcore": "^10.4"
+    "pimcore/pimcore": "^10.4 || ^11.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.5.4",
@@ -77,5 +77,8 @@
     "branch-alias": {
       "dev-master": "3.0-dev"
     }
+  },
+  "config": {
+    "sort-packages": true
   }
 }
