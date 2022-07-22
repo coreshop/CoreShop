@@ -297,7 +297,7 @@ abstract class AbstractWorker implements WorkerInterface
             'o_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
             'oo_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
             'o_key' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'o_classId' => IndexColumnInterface::FIELD_TYPE_INTEGER,
+            'o_classId' => IndexColumnInterface::FIELD_TYPE_STRING,
             'o_className' => IndexColumnInterface::FIELD_TYPE_STRING,
             'o_virtualObjectId' => IndexColumnInterface::FIELD_TYPE_INTEGER,
             'o_virtualObjectActive' => IndexColumnInterface::FIELD_TYPE_BOOLEAN,
@@ -312,6 +312,17 @@ abstract class AbstractWorker implements WorkerInterface
             'o_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
             'language' => IndexColumnInterface::FIELD_TYPE_STRING,
             'name' => IndexColumnInterface::FIELD_TYPE_STRING,
+        ];
+    }
+
+    protected function getRelationalSystemAttributes(): array
+    {
+        return [
+            'src' => IndexColumnInterface::FIELD_TYPE_INTEGER,
+            'src_virtualObjectId' => IndexColumnInterface::FIELD_TYPE_INTEGER,
+            'dest' => IndexColumnInterface::FIELD_TYPE_INTEGER,
+            'fieldname' => IndexColumnInterface::FIELD_TYPE_STRING,
+            'type' => IndexColumnInterface::FIELD_TYPE_STRING,
         ];
     }
 }
