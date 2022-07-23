@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ElasticsearchBundle\Worker\ElasticsearchWorker\Listing;
 
 use CoreShop\Bundle\ElasticsearchBundle\Worker\ElasticsearchWorker;
+use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -22,6 +23,16 @@ use Doctrine\DBAL\Query\QueryBuilder;
 class Dao
 {
     private int $lastRecordCount = 0;
+
+    /**
+     * @var array
+     */
+    protected $preparedGroupByValues = [];
+
+    /**
+     * @var array
+     */
+    protected $preparedGroupByValuesResults = [];
 
     public function __construct(private ElasticsearchWorker\Listing $model, private Connection $database)
     {
@@ -70,34 +81,90 @@ class Dao
      *
      * @return array
      */
-    public function loadGroupByValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
+    public function loadGroupByValues(array $filters, $fieldName, $countValues = false)
     {
-        $queryBuilder->from($this->model->getQueryTableName(), 'q');
-        $queryBuilder->groupBy('q.' . $this->quoteIdentifier($fieldName));
-        $queryBuilder->orderBy('q.' . $this->quoteIdentifier($fieldName));
+        $this->doLoadGroupByValues($filters);
 
-        if ($countValues) {
-            if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(DISTINCT o_virtualObjectId) AS count');
+        $results = !empty($this->preparedGroupByValuesResults[$fieldName]) ? $this->preparedGroupByValuesResults[$fieldName] : [];
+
+        if ($results) {
+            if ($countValues) {
+                return $results;
             } else {
-                $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(*) AS count');
+                $resultsWithoutCounts = [];
+                foreach ($results as $result) {
+                    $resultsWithoutCounts[] = $result['value'];
+                }
+                return $resultsWithoutCounts;
             }
+        } else {
+            return [];
+        }
+    }
 
-            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
+    protected function doLoadGroupByValues(array $filters)
+    {
+        $columns = $this->model->getIndex()->getColumns();
+        //TODO aggregation for system columns
+        $aggregations = [];
+
+        foreach ($columns as $column) {
+            $aggregations[$column->getName()] = [
+                "terms" => [
+                    "field" => $column->getName(),
+                    "order" => ["_term" => "asc"]
+                ]
+            ];
         }
 
-        $queryBuilder->select($this->quoteIdentifier($fieldName));
-        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+        $extensions = $this->model->getWorker()->getExtensions($this->model->getIndex());
 
-        $result = [];
-
-        foreach ($queryResult as $row) {
-            if ($row[$fieldName]) {
-                $result[] = $row[$fieldName];
+        foreach ($extensions as $extension) {
+            if ($extension instanceof IndexColumnsExtensionInterface) {
+                foreach ($extension->getSystemColumns() as $systemColumnName => $systemColumnType) {
+                    $aggregations[$systemColumnName] = [
+                        "terms" => [
+                            "field" => $systemColumnName,
+                            "order" => ["_term" => "asc"]
+                        ]
+                    ];
+                }
             }
         }
 
-        return $result;
+        if (count($aggregations) > 0) {
+            $params = [];
+            $params['index'] = $this->model->getTableName();
+            $params['type'] = "coreshop";
+            $params['body']['_source'] = false;
+            $params['body']['aggs'] = $aggregations;
+            $params['body']['query']['bool']['filter'] = $filters;
+
+            try {
+                $queryResult = $this->model->getWorker()->getElasticsearchClient()->search($params);
+            } catch (\Exception $exception) {
+                dd($params, $exception);
+            }
+
+            if ($queryResult['aggregations']) {
+                foreach ($queryResult['aggregations'] as $fieldName => $aggregation) {
+                    $buckets = $aggregation['buckets'];
+
+                    $groupByValueResult = [];
+                    if ($buckets) {
+                        foreach ($buckets as $bucket) {
+                            $groupByValueResult[] = ['value' => $bucket['key'], 'count' => $bucket['doc_count']];
+                        }
+                    }
+
+                    $this->preparedGroupByValuesResults[$fieldName] = $groupByValueResult;
+                }
+            }
+        } else {
+            $this->preparedGroupByValuesResults = [];
+        }
+
+        $this->preparedGroupByValuesLoaded = true;
     }
 
     /**
@@ -108,22 +175,23 @@ class Dao
      *
      * @return array
      */
-    public function loadGroupByRelationValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
+    public function loadGroupByRelationValues(array $filters, $fieldName, $countValues = false)
     {
-        return $this->loadGroupByRelationValuesAndType($queryBuilder, $fieldName, null, $countValues);
+        return $this->loadGroupByRelationValuesAndType($filters, $fieldName, null, $countValues);
     }
 
     /**
      * Load Grouo by Relation values and type.
      */
-    public function loadGroupByRelationValuesAndType(QueryBuilder $queryBuilder, string $fieldName, ?string $type = null, bool $countValues = false): array
+    public function loadGroupByRelationValuesAndType(array $filters, string $fieldName, ?string $type = null, bool $countValues = false): array
     {
-        $queryBuilder->from($this->model->getRelationTablename(), 'q');
+        return [];
+        $esClient = $this->model->getWorker()->getElasticsearchClient();
 
         if ($countValues) {
             $subQueryBuilder = new QueryBuilder($this->database);
             $subQueryBuilder->select($this->quoteIdentifier('o_id'));
-            $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
+            //$subQueryBuilder->from($this->model->getQueryTableName(), 'q');
             $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
 
             if ($this->model->getVariantMode() === ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
@@ -147,7 +215,7 @@ class Dao
 
             return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
-
+        dd('here2');
         $queryBuilder->select($this->quoteIdentifier('dest'));
         $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
 

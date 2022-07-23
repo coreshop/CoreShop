@@ -86,17 +86,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     protected WorkerInterface $worker;
 
-    /**
-     * @var array
-     */
-    protected $preparedGroupByValues = [];
-
-    /**
-     * @var array
-     */
-    protected $preparedGroupByValuesResults = [];
-
-
     public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection)
     {
         parent::__construct($index, $worker);
@@ -305,16 +294,26 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     public function getGroupByValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
     {
         $excludedFieldName = $fieldName;
+
         if (!$fieldNameShouldBeExcluded) {
             $excludedFieldName = null;
         }
 
-        return $this->doGetGroupByValues($fieldName, $countValues, $fieldNameShouldBeExcluded);
+        $filters = $this->addQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
+
+        return $this->dao->loadGroupByValues($filters, $fieldName, $countValues);
     }
 
     public function getGroupByRelationValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
     {
-        return $this->doGetGroupByValues($fieldName, $countValues, $fieldNameShouldBeExcluded);
+        $excludedFieldName = $fieldName;
+        if (!$fieldNameShouldBeExcluded) {
+            $excludedFieldName = null;
+        }
+
+        $filters = $this->addQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
+
+        return $this->dao->loadGroupByRelationValues($filters, $fieldName, $countValues);
     }
 
     public function getGroupByRelationValuesAndType(
@@ -328,10 +327,9 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
             $excludedFieldName = null;
         }
 
-        $queryBuilder = $this->dao->createQueryBuilder();
-        $this->addQueryFromConditions($queryBuilder, false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
+        $filters = $this->addQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
 
-        return $this->dao->loadGroupByRelationValuesAndType($queryBuilder, $fieldName, $type, $countValues);
+        return $this->dao->loadGroupByValues($filters, $fieldName, $countValues);
     }
 
     public function getGroupBySystemValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
@@ -536,7 +534,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     protected function sendRequest($params)
     {
-        $esClient = $this->worker->getElasticsearchClient();
+        $esClient = $this->getWorker()->getElasticsearchClient();
 
         $result = $esClient->search($params);
 
@@ -551,20 +549,11 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         //user specific filters
         $filters = $this->addQueryFromConditions();
 
-        //relation conditions
-        $queryFilters = $this->buildQueryConditions([]);
-
         $params = [];
         $params['index'] = $this->getTableName();
         $params['type'] = "coreshop";
         $params['body']['_source'] = false;
-        $params['body']['size'] = $this->getLimit() ?? 40;
-        $params['body']['from'] = $this->getOffset() ?? 1;
         $params['body']['query']['bool']['filter'] = $filters;
-
-        if (!empty($queryFilters)) {
-            $params['body']['query']['bool']['must'] = $queryFilters;
-        }
 
         if ($this->orderKey) {
             if (is_array($this->orderKey)) {
@@ -577,142 +566,5 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         }
 
         return $params;
-    }
-
-    /**
-     * @param $excludedFieldName
-     * @return array
-     */
-    protected function buildFilterConditions($excludedFieldName)
-    {
-        $filters = [];
-
-        foreach ($this->conditions as $fieldName => $condArray) {
-            if ($fieldName !== $excludedFieldName && is_array($condArray)) {
-                foreach ($condArray as $cond) {
-                    $filters[] = $this->worker->renderCondition($cond);
-                }
-            }
-        }
-
-        return $filters;
-    }
-
-    /**
-     * @param $excludedFieldName
-     * @return array
-     */
-    protected function buildQueryConditions($excludedFieldName)
-    {
-        $filters = [];
-
-        if (is_array($this->queryConditions)) {
-            foreach ($this->queryConditions as $queryCondition) {
-                if ($queryCondition instanceof ConditionInterface) {
-                    $filters[] = ['match' => [$queryCondition->getFieldName() => $queryCondition->getValues()]];
-                }
-            }
-        }
-
-        return $filters;
-    }
-
-    /**
-     * checks if group by values are loaded and returns them
-     *
-     * @param $fieldName
-     * @param bool $countValues
-     * @param bool $fieldNameShouldBeExcluded
-     * @return array
-     */
-    protected function doGetGroupByValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
-    {
-        $this->doLoadGroupByValues();
-
-        $results = !empty($this->preparedGroupByValuesResults[$fieldName]) ? $this->preparedGroupByValuesResults[$fieldName] : [];
-
-        if ($results) {
-            if ($countValues) {
-                return $results;
-            } else {
-                $resultsWithoutCounts = [];
-                foreach ($results as $result) {
-                    $resultsWithoutCounts[] = $result['value'];
-                }
-                return $resultsWithoutCounts;
-            }
-        } else {
-            return [];
-        }
-    }
-
-    /**
-     * loads all prepared group by values
-     *   1 - get general filter (= filter of fields don't need to be considered in group by values or where fieldnameShouldBeExcluded set to false)
-     *   2 - for each group by value create a own aggregation section with all other group by filters added
-     *
-     * @throws \Exception
-     */
-    protected function doLoadGroupByValues()
-    {
-        // create general filters and queries
-        $filters = $this->addQueryFromConditions();
-
-        //relation conditions
-        $queryFilters = $this->buildQueryConditions([]);
-
-        $columns = $this->getIndex()->getColumns();
-
-        $aggregations = [];
-
-        foreach ($columns as $column) {
-            $aggregations[$column->getName()] = [
-                "terms" => [
-                    "field" => $column->getName(),
-                    "order" => ["_term" => "asc"]
-                ]
-            ];
-        }
-
-        if (count($aggregations) > 0) {
-
-            $params = [];
-            $params['index'] = $this->getTableName();
-            $params['type'] = "coreshop";
-            $params['size'] = 0;
-            $params['body']['_source'] = false;
-            $params['body']['size'] = $this->getLimit() ?? 40;
-            $params['body']['from'] = $this->getOffset() ?? 1;
-            $params['body']['aggs'] = $aggregations;
-            $params['body']['query']['bool']['filter'] = $filters;
-
-            if (!empty($queryFilters)) {
-                $params['body']['query']['bool']['must'] = $queryFilters;
-            }
-
-            // send request
-            $result = $this->sendRequest($params);
-
-
-            if ($result['aggregations']) {
-                foreach ($result['aggregations'] as $fieldName => $aggregation) {
-                    $buckets = $aggregation['buckets'];
-
-                    $groupByValueResult = [];
-                    if ($buckets) {
-                        foreach ($buckets as $bucket) {
-                            $groupByValueResult[] = ['value' => $bucket['key'], 'count' => $bucket['doc_count']];
-                        }
-                    }
-
-                    $this->preparedGroupByValuesResults[$fieldName] = $groupByValueResult;
-                }
-            }
-        } else {
-            $this->preparedGroupByValuesResults = [];
-        }
-
-
-        $this->preparedGroupByValuesLoaded = true;
     }
 }

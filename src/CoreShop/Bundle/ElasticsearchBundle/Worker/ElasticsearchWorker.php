@@ -30,8 +30,8 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Db\Connection;
 use Pimcore\Log\Simple;
 use Pimcore\Tool;
-use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientBuilder;
 
 class ElasticsearchWorker extends AbstractWorker
 {
@@ -54,9 +54,10 @@ class ElasticsearchWorker extends AbstractWorker
             $conditionRenderer,
             $orderRenderer
         );
-
+        //TODO make this changeable
         $builder = ClientBuilder::create();
         $builder->setHosts(['http://elasticsearch:9200']);
+        $builder->setBasicAuthentication('elastic', 'elastic');
         $this->client = $builder->build();
     }
 
@@ -87,11 +88,7 @@ class ElasticsearchWorker extends AbstractWorker
 
     protected function createTableSchema(IndexInterface $index, string $tableName)
     {
-        try {
-            $this->truncateOrCreateTable($tableName);
-        } catch (\Exception $e) {
-            Simple::log('elastic-worker', (string)$e);
-        }
+        $this->truncateOrCreateTable($tableName);
 
         $properties = [];
 
@@ -147,11 +144,7 @@ class ElasticsearchWorker extends AbstractWorker
 
     protected function createLocalizedTableSchema(IndexInterface $index, string $tableName)
     {
-        try {
-            $this->truncateOrCreateTable($tableName);
-        } catch (\Exception $e) {
-            Simple::log('elastic-worker', (string)$e);
-        }
+        $this->truncateOrCreateTable($tableName);
 
         $properties = [];
 
@@ -195,11 +188,7 @@ class ElasticsearchWorker extends AbstractWorker
 
     protected function createRelationalTableSchema(IndexInterface $index, string $tableName)
     {
-        try {
-            $this->truncateOrCreateTable($tableName);
-        } catch (\Exception $e) {
-            Simple::log('elastic-worker', (string)$e);
-        }
+        $this->truncateOrCreateTable($tableName);
 
         $properties = [];
 
@@ -271,9 +260,9 @@ class ElasticsearchWorker extends AbstractWorker
         }
 
         try {
-            $result = $this->client->indices()->exists($params);
+            $result = $this->client->indices()->exists($params)->asBool();
         } catch (\Exception $e) {
-            $result = null;
+            $result = false;
             Simple::log('elastic-worker', (string)$e);
         }
 
@@ -360,7 +349,13 @@ class ElasticsearchWorker extends AbstractWorker
             }
 
             foreach ($potentialTables as $oldTable => $newTable) {
-                $result = $this->client->indices()->exists(['index' => $oldTable]);
+                try {
+                    $result = $this->client->indices()->exists(['index' => $oldTable])->asBool();
+                } catch (\Exception $e) {
+                    $result = false;
+                    Simple::log('elastic-worker', (string)$e);
+                }
+
                 if ($result) {
                     $params['body'] = [
                         'source' => [
