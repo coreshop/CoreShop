@@ -47,14 +47,11 @@ class ConcatRenderer extends AbstractElasticsearchDynamicRenderer
             $conditions[] = $this->renderer->render($worker, $subCondition, $prefix);
         }
 
-        $rendered = [
-            "filter" => [
-            ]
-        ];
+        $rendered['bool']['must'] = [];
 
         if (count($conditions) > 0) {
-            foreach ($conditions as $condition) {
-                $rendered["filter"][$condition->getOperator()][] = $condition;
+            foreach ($conditions as $operator => $condition) {
+                $rendered['bool']['must'][$operator] = $condition;
             }
         }
 

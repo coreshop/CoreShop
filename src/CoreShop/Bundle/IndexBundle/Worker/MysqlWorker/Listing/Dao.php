@@ -144,7 +144,7 @@ class Dao
 
             $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
             $queryBuilder->groupBy('dest');
-
+            dd($queryBuilder->getSQL());
             return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
 

@@ -31,6 +31,8 @@ class IsRenderer extends AbstractElasticsearchDynamicRenderer
 
         $value = $condition->getValue();
 
+        //TODO see this
+
         return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' IS ' . ($value ? '' : ' NOT ') . 'NULL';
     }
 

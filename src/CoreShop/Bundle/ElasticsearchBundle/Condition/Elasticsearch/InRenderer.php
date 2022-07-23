@@ -33,7 +33,7 @@ class InRenderer extends AbstractElasticsearchDynamicRenderer
         $inValues = [];
 
         foreach ($condition->getValues() as $value) {
-            $inValues[] = $this->quote((string)$value);
+            $inValues[] = $value;
         }
 
         $rendered = [];
