@@ -254,14 +254,14 @@ class ElasticsearchWorker extends AbstractWorker
         try {
             $this->client->indices()->delete($params);
         } catch (\Exception $e) {
-            Simple::log('elastic-worker', (string)$e);
+            $this->logger->info((string)$e);
         }
 
         try {
             $result = $this->client->indices()->exists($params)->asBool();
         } catch (\Exception $e) {
             $result = false;
-            Simple::log('elastic-worker', (string)$e);
+            $this->logger->info((string)$e);
         }
 
         if (!$result) {
@@ -277,7 +277,7 @@ class ElasticsearchWorker extends AbstractWorker
                 ]
             );
 
-            Simple::log('elastic-worker','Creating new Index. Name: ' . $tableName);
+            $this->logger->info('Creating new Index. Name: ' . $tableName);
 
             if (!$result['acknowledged']) {
                 throw new \Exception("Index creation failed. IndexName: " . $tableName);
@@ -286,7 +286,7 @@ class ElasticsearchWorker extends AbstractWorker
             try {
                 $this->client->indices()->delete($params);
             } catch (\Exception $e) {
-                Simple::log('elastic-worker', (string)$e);
+                $this->logger->info((string)$e);
             }
         }
     }
@@ -305,7 +305,7 @@ class ElasticsearchWorker extends AbstractWorker
         try {
             $this->client->indices()->putMapping($params);
         } catch (\Exception $e) {
-            Simple::log('elastic-worker', (string)$e);
+            $this->logger->info((string)$e);
         }
     }
 
@@ -340,7 +340,7 @@ class ElasticsearchWorker extends AbstractWorker
                 'index' => $this->getLocalizedTablename($index->getName())
             ]);
         } catch (\Exception $e) {
-            Simple::log('elastic-worker', (string)$e);
+            $this->logger->info((string)$e);
         }
     }
 
@@ -363,7 +363,7 @@ class ElasticsearchWorker extends AbstractWorker
                     $result = $this->client->indices()->exists(['index' => $oldTable])->asBool();
                 } catch (\Exception $e) {
                     $result = false;
-                    Simple::log('elastic-worker', (string)$e);
+                    $this->logger->info((string)$e);
                 }
 
                 if ($result) {
@@ -383,7 +383,7 @@ class ElasticsearchWorker extends AbstractWorker
                 }
             }
         } catch (\Exception $e) {
-            Simple::log('elastic-worker', (string)$e);
+            $this->logger->info((string)$e);
         }
     }
 
@@ -398,7 +398,7 @@ class ElasticsearchWorker extends AbstractWorker
         try {
             $this->client->delete($params);
         } catch (\Exception $e) {
-            Simple::log('elastic-worker', (string)$e);
+            $this->logger->info((string)$e);
         }
     }
 
@@ -413,7 +413,7 @@ class ElasticsearchWorker extends AbstractWorker
         try {
             $this->client->delete($params);
         } catch (\Exception $e) {
-            Simple::log('elastic-worker', (string)$e);
+            $this->logger->info((string)$e);
         }
     }
 
@@ -459,7 +459,7 @@ class ElasticsearchWorker extends AbstractWorker
         try {
             $this->client->index($params);
         } catch (\Exception $e) {
-            Simple::log('elastic-worker', 'Error during INDEX INSERT: '.$e);
+            $this->logger->info('Error during INDEX INSERT: '.$e);
         }
     }
 
@@ -539,10 +539,10 @@ class ElasticsearchWorker extends AbstractWorker
                 return "double";
 
             case IndexColumnInterface::FIELD_TYPE_STRING:
-                return "text";
+                return "keyword";
 
             case IndexColumnInterface::FIELD_TYPE_TEXT:
-                return "text"; //TODO see
+                return "keyword";
         }
 
         throw new \Exception($type . " is not supported by Elasticsearch Index");
