@@ -30,21 +30,13 @@ class IsNullRenderer extends AbstractElasticsearchDynamicRenderer
          */
         Assert::isInstanceOf($condition, IsNullCondition::class);
 
-        $operator = 'must';
+        $operator = 'IS NULL';
 
         if ($condition instanceof IsNotNullCondition) {
-            $operator = 'must_not';
+            $operator = 'IS NOT NULL';
         }
 
-        return [
-            'bool' => [
-                $operator => [
-                    'terms' => [
-                        $condition->getFieldName() => 'NULL'
-                    ]
-                ]
-            ]
-        ];
+        return sprintf('%s %s', $this->quoteFieldName($condition->getFieldName(), $prefix), $operator);
     }
 
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool

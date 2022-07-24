@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 
 class RangeRenderer extends AbstractElasticsearchDynamicRenderer
 {
-    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): array
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): string
     {
         /**
          * @var RangeCondition $condition
@@ -32,12 +32,8 @@ class RangeRenderer extends AbstractElasticsearchDynamicRenderer
         $from = $condition->getFrom();
         $to = $condition->getTo();
 
-        return ["range" => [
-            $condition->getFieldName() => [
-                "gte" => $from,
-                "lte" => $to
-            ]
-        ]];
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' >= ' . $from . ' AND ' .
+            $this->quoteFieldName($condition->getFieldName(), $prefix) . ' <= ' . $to;
     }
 
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool

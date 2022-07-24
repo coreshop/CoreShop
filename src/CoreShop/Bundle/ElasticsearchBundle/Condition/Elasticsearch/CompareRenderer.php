@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 
 class CompareRenderer extends AbstractElasticsearchDynamicRenderer
 {
-    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): array
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): string
     {
         /**
          * @var CompareCondition $condition
@@ -32,45 +32,7 @@ class CompareRenderer extends AbstractElasticsearchDynamicRenderer
         $value = $condition->getValue();
         $operator = $condition->getOperator();
 
-        //TODO see what to do here
-        if ($value === "true") {
-            $value = true;
-        }
-
-        if ($operator === "=" || $operator === "!=") {
-            if ($operator === "!=") {
-                $rendered = ["not" =>
-                    [
-                        "match" => [
-                            $condition->getFieldName() => $value
-                        ]
-                    ]
-                ];
-            } else {
-                $rendered = ["match" => [
-                    $condition->getFieldName() => $value
-                ]];
-            }
-        } else {
-            $map = [
-                ">" => "gt",
-                ">=" => "gte",
-                "<" => "lt",
-                "<=" => "lte"
-            ];
-
-            if (array_key_exists($operator, $map)) {
-                $rendered = ["range" => [
-                    $condition->getFieldName() => [
-                        $map[$operator] => $value
-                    ]
-                ]];
-            } else {
-                throw new \Exception($operator . " is not supported for compare method");
-            }
-        }
-
-        return $rendered;
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' ' . $operator . ' ' . $this->quote($value);
     }
 
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
