@@ -536,13 +536,13 @@ class ElasticsearchWorker extends AbstractWorker
                 return "date";
 
             case IndexColumnInterface::FIELD_TYPE_DOUBLE:
-                return "dizbke";
+                return "double";
 
             case IndexColumnInterface::FIELD_TYPE_STRING:
-                return "keyword";
+                return "text";
 
             case IndexColumnInterface::FIELD_TYPE_TEXT:
-                return "keyword"; //TODO see
+                return "text"; //TODO see
         }
 
         throw new \Exception($type . " is not supported by Elasticsearch Index");
