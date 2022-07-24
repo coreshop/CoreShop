@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 
 class LikeRenderer extends AbstractElasticsearchDynamicRenderer
 {
-    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): array
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
          * @var LikeCondition $condition
@@ -32,24 +32,34 @@ class LikeRenderer extends AbstractElasticsearchDynamicRenderer
 
         $value = $condition->getValue();
         $pattern = $condition->getPattern();
-
+        $operator = 'LIKE';
         $patternValue = '';
 
         switch ($pattern) {
-            case "left":
-                $patternValue = '*' . $value;
+            case 'left':
+                $patternValue = '%' . $value;
+
                 break;
-            case "right":
-                $patternValue = $value . '*';
+            case 'right':
+                $patternValue = $value . '%';
+
                 break;
-            case "both":
-                $patternValue = '*' . $value . '*';
+            case 'both':
+                $patternValue = '%' . $value . '%';
+
                 break;
         }
 
-        return ["wildcard" => [
-            $condition->getFieldName() => $patternValue
-        ]];
+        if ($condition instanceof NotLikeCondition) {
+            $operator = 'NOT LIKE';
+        }
+
+        return sprintf(
+            '%s %s %s',
+            $this->quoteFieldName($condition->getFieldName(), $prefix),
+            $operator,
+            $this->quote($patternValue)
+        );
     }
 
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool

@@ -29,7 +29,7 @@ class ConcatRenderer extends AbstractElasticsearchDynamicRenderer
         parent::__construct($connection);
     }
 
-    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): array
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): string
     {
         /**
          * @var ConcatCondition $condition
@@ -47,15 +47,11 @@ class ConcatRenderer extends AbstractElasticsearchDynamicRenderer
             $conditions[] = $this->renderer->render($worker, $subCondition, $prefix);
         }
 
-        $rendered['bool']['must'] = [];
-
         if (count($conditions) > 0) {
-            foreach ($conditions as $operator => $condition) {
-                $rendered['bool']['must'][$operator] = $condition;
-            }
+            return '(' . implode(' ' . trim($condition->getOperator()) . ' ', $conditions) . ')';
         }
 
-        return $rendered;
+        return '';
     }
 
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool

@@ -54,23 +54,48 @@ class Dao
      */
     public function load(QueryBuilder $queryBuilder)
     {
+        $esClient = $this->model->getWorker()->getElasticsearchClient();
+
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
         if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             if (null !== $queryBuilder->getQueryPart('orderBy')) {
-                $queryBuilder->select('DISTINCT q.o_virtualObjectId as o_id');
+                $queryBuilder->select('q.o_virtualObjectId as o_id');
                 $queryBuilder->addGroupBy('q.o_virtualObjectId');
             } else {
-                $queryBuilder->select('DISTINCT q.o_virtualObjectId as o_id');
+                $queryBuilder->select('q.o_virtualObjectId as o_id');
             }
         } else {
-            $queryBuilder->select('DISTINCT q.o_id');
+            $queryBuilder->select('q.o_id as o_id');
         }
 
-        $resultSet = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+        $queryBuilder->groupBy('o_id');
 
-        $this->lastRecordCount = count($resultSet);
+        $orderBys = $queryBuilder->getQueryPart('orderBy');
 
-        return $resultSet;
+        foreach ($orderBys as $orderBy) {
+            $orderBy = str_replace(' asc', '', $orderBy);
+            $orderBy = str_replace(' desc', '', $orderBy);
+            $groupBy = str_replace('`', '', $orderBy);
+            $queryBuilder->addGroupBy($groupBy);
+        }
+
+        $params['body']['query'] = str_replace('`', '', $queryBuilder->getSQL());
+        $esQuery = $esClient->sql()->translate($params)->asArray();
+        $esQuery['size'] = $this->model->getLimit() ?? 1;
+        $esQuery['from'] = $this->model->getOffset() ?? 0;
+        $esQuery['index'] = $this->model->getQueryTableName();
+
+        $resultSet = $esClient->search($esQuery)->asArray();
+
+        $this->lastRecordCount = $resultSet['hits']['total']['value'];
+
+        $results = [];
+
+        foreach ($resultSet['hits']['hits'] as $hit) {
+            $results[]['o_id'] = $hit['_id'];
+        }
+
+        return $results;
     }
 
     /**
@@ -81,90 +106,34 @@ class Dao
      *
      * @return array
      */
-    public function loadGroupByValues(array $filters, $fieldName, $countValues = false)
+    public function loadGroupByValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
     {
-        $this->doLoadGroupByValues($filters);
+        $queryBuilder->from($this->model->getQueryTableName(), 'q');
+        $queryBuilder->groupBy('q.' . $this->quoteIdentifier($fieldName));
+        $queryBuilder->orderBy('q.' . $this->quoteIdentifier($fieldName));
 
-        $results = !empty($this->preparedGroupByValuesResults[$fieldName]) ? $this->preparedGroupByValuesResults[$fieldName] : [];
+        $esClient = $this->model->getWorker()->getElasticsearchClient();
 
-        if ($results) {
-            if ($countValues) {
-                return $results;
+        if ($countValues) {
+            if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+                $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(DISTINCT o_virtualObjectId) AS count');
             } else {
-                $resultsWithoutCounts = [];
-                foreach ($results as $result) {
-                    $resultsWithoutCounts[] = $result['value'];
-                }
-                return $resultsWithoutCounts;
-            }
-        } else {
-            return [];
-        }
-    }
-
-    protected function doLoadGroupByValues(array $filters)
-    {
-        $columns = $this->model->getIndex()->getColumns();
-        //TODO aggregation for system columns
-        $aggregations = [];
-
-        foreach ($columns as $column) {
-            $aggregations[$column->getName()] = [
-                "terms" => [
-                    "field" => $column->getName(),
-                    "order" => ["_term" => "asc"]
-                ]
-            ];
-        }
-
-        $extensions = $this->model->getWorker()->getExtensions($this->model->getIndex());
-
-        foreach ($extensions as $extension) {
-            if ($extension instanceof IndexColumnsExtensionInterface) {
-                foreach ($extension->getSystemColumns() as $systemColumnName => $systemColumnType) {
-                    $aggregations[$systemColumnName] = [
-                        "terms" => [
-                            "field" => $systemColumnName,
-                            "order" => ["_term" => "asc"]
-                        ]
-                    ];
-                }
-            }
-        }
-
-        if (count($aggregations) > 0) {
-            $params = [];
-            $params['index'] = $this->model->getTableName();
-            $params['type'] = "coreshop";
-            $params['body']['_source'] = false;
-            $params['body']['aggs'] = $aggregations;
-            $params['body']['query']['bool']['filter'] = $filters;
-
-            try {
-                $queryResult = $this->model->getWorker()->getElasticsearchClient()->search($params);
-            } catch (\Exception $exception) {
-                dd($params, $exception);
+                $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(*) AS count');
             }
 
-            if ($queryResult['aggregations']) {
-                foreach ($queryResult['aggregations'] as $fieldName => $aggregation) {
-                    $buckets = $aggregation['buckets'];
+            $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());
 
-                    $groupByValueResult = [];
-                    if ($buckets) {
-                        foreach ($buckets as $bucket) {
-                            $groupByValueResult[] = ['value' => $bucket['key'], 'count' => $bucket['doc_count']];
-                        }
-                    }
-
-                    $this->preparedGroupByValuesResults[$fieldName] = $groupByValueResult;
-                }
-            }
-        } else {
-            $this->preparedGroupByValuesResults = [];
+            return $this->mapResults($esClient->sql()->query($params)->asArray());
         }
 
-        $this->preparedGroupByValuesLoaded = true;
+        $queryBuilder->select($this->quoteIdentifier($fieldName));
+        $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());
+
+        $mappedResults = $this->mapResults($esClient->sql()->query($params)->asArray());
+
+        return array_map(function (array $mappedData) use ($fieldName) {
+            return str_replace(',', '', $mappedData[$fieldName]);
+        }, $mappedResults);
     }
 
     /**
@@ -175,23 +144,23 @@ class Dao
      *
      * @return array
      */
-    public function loadGroupByRelationValues(array $filters, $fieldName, $countValues = false)
+    public function loadGroupByRelationValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
     {
-        return $this->loadGroupByRelationValuesAndType($filters, $fieldName, null, $countValues);
+        return $this->loadGroupByRelationValuesAndType($queryBuilder, $fieldName, null, $countValues);
     }
 
     /**
      * Load Grouo by Relation values and type.
      */
-    public function loadGroupByRelationValuesAndType(array $filters, string $fieldName, ?string $type = null, bool $countValues = false): array
+    public function loadGroupByRelationValuesAndType(QueryBuilder $queryBuilder, string $fieldName, ?string $type = null, bool $countValues = false): array
     {
-        return [];
+        $queryBuilder->from($this->model->getRelationTablename(), 'q');
         $esClient = $this->model->getWorker()->getElasticsearchClient();
 
         if ($countValues) {
             $subQueryBuilder = new QueryBuilder($this->database);
             $subQueryBuilder->select($this->quoteIdentifier('o_id'));
-            //$subQueryBuilder->from($this->model->getQueryTableName(), 'q');
+            $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
             $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
 
             if ($this->model->getVariantMode() === ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
@@ -210,12 +179,24 @@ class Dao
                 }
             }
 
-            $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
+            $params['body']['query'] =str_replace('`', '', $subQueryBuilder->getSQL());
+
+            $srcs = $esClient->sql()->query($params)->asArray();
+
+            $srcIds = array_map(function ($item) {
+                return $item[0];
+            }, $srcs['rows']);
+
+            $srcIds = implode(',', $srcIds);
+
+            $queryBuilder->andWhere('src IN (' . $srcIds . ')');
             $queryBuilder->groupBy('dest');
 
-            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
+            $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());
+
+            return $this->mapResults($esClient->sql()->query($params)->asArray());
         }
-        dd('here2');
+
         $queryBuilder->select($this->quoteIdentifier('dest'));
         $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
 
@@ -224,13 +205,26 @@ class Dao
         }
 
         $subQueryBuilder = new QueryBuilder($this->database);
-        $subQueryBuilder->select('o_id');
-        $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
+        $subQueryBuilder->select('src');
+        $subQueryBuilder->from($this->model->getRelationTablename(), 'q');
         $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
-        $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
+
+        $params['body']['query'] =str_replace('`', '', $subQueryBuilder->getSQL());
+
+        $dests = $esClient->sql()->query($params)->asArray();
+
+        $destIds = array_map(function ($item) {
+            return $item[0];
+        }, $dests['rows']);
+
+        $destIds = implode(',', $destIds);
+
+        $queryBuilder->andWhere('src IN (' . $destIds . ')');
         $queryBuilder->groupBy('dest');
 
-        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+        $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());
+
+        $queryResult = $this->mapResults($esClient->sql()->query($params)->asArray());
 
         $result = [];
 
@@ -251,15 +245,21 @@ class Dao
      */
     public function getCount(QueryBuilder $queryBuilder)
     {
+        $esClient = $this->model->getWorker()->getElasticsearchClient();
+
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
         if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             $queryBuilder->select('count(DISTINCT o_virtualObjectId)');
         } else {
             $queryBuilder->select('count(*)');
         }
-        $stmt = $this->database->executeQuery($queryBuilder->getSQL());
 
-        return (int)$stmt->fetchOne();
+        $queryBuilder->setMaxResults(1);
+        $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());
+
+        $queryResult = $this->mapResults($esClient->sql()->query($params)->asArray());
+
+        return $queryResult[0]['count(*)'];
     }
 
     /**
@@ -272,6 +272,20 @@ class Dao
     public function quote($value)
     {
         return $this->database->quote($value);
+    }
+
+    public function mapResults(array $results): array
+    {
+        $mappedResults = [];
+
+        foreach ($results['rows'] as $rowKey => $row) {
+            foreach ($row as $columnKey => $rowVal) {
+                $columnName = $results['columns'][$columnKey]['name'];
+                $mappedResults[$rowKey][$columnName] = $rowVal;
+            }
+        }
+
+        return $mappedResults;
     }
 
     /**

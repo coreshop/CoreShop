@@ -27,6 +27,7 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Order\OrderRendererInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
+use Doctrine\DBAL\Types\Type;
 use Pimcore\Db\Connection;
 use Pimcore\Log\Simple;
 use Pimcore\Tool;
@@ -84,12 +85,20 @@ class ElasticsearchWorker extends AbstractWorker
         $this->createTableSchema($index, $tableName);
         $this->createLocalizedTableSchema($index, $localizedTableName);
         $this->createRelationalTableSchema($index, $relationalTableName);
+        $this->createLocalizedViews($index);
     }
 
     protected function createTableSchema(IndexInterface $index, string $tableName)
     {
         $this->truncateOrCreateTable($tableName);
 
+        $properties = $this->getTableSchemaProperties($index);
+
+        $this->mapTableProperties($tableName, $properties);
+    }
+
+    protected function getTableSchemaProperties(IndexInterface $index): array
+    {
         $properties = [];
 
         foreach ($index->getColumns() as $column) {
@@ -137,15 +146,20 @@ class ElasticsearchWorker extends AbstractWorker
             ];
         }
 
-        Simple::log('elastic-worker', serialize($properties));
-
-        $this->mapTableProperties($tableName, $properties);
+        return $properties;
     }
 
     protected function createLocalizedTableSchema(IndexInterface $index, string $tableName)
     {
         $this->truncateOrCreateTable($tableName);
 
+        $properties = $this->getLocalizedTableProperties($index);
+
+        $this->mapTableProperties($tableName, $properties);
+    }
+
+    protected function getLocalizedTableProperties(IndexInterface $index): array
+    {
         $properties = [];
 
         foreach ($index->getColumns() as $column) {
@@ -183,7 +197,7 @@ class ElasticsearchWorker extends AbstractWorker
             ];
         }
 
-        $this->mapTableProperties($tableName, $properties);
+        return $properties;
     }
 
     protected function createRelationalTableSchema(IndexInterface $index, string $tableName)
@@ -215,38 +229,22 @@ class ElasticsearchWorker extends AbstractWorker
             ];
         }
 
-        Simple::log('elastic-worker', serialize($properties));
-
         $this->mapTableProperties($tableName, $properties);
     }
 
     protected function createLocalizedViews(IndexInterface $index)
     {
-        $queries = [];
         $languages = Tool::getValidLanguages(); //TODO: Use Locale Service
 
         foreach ($languages as $language) {
-            $localizedTable = $this->getLocalizedTablename($index->getName());
             $localizedViewName = $this->getLocalizedViewName($index->getName(), $language);
-            $tableName = $this->getTableName($index->getName());
+            $this->truncateOrCreateTable($localizedViewName);
 
-            // create view
-            $viewQuery = <<<QUERY
-            CREATE OR REPLACE VIEW `{$localizedViewName}` AS
+            $properties = $this->getTableSchemaProperties($index);
+            $properties = array_merge($properties, $this->getLocalizedTableProperties($index));
 
-            SELECT *
-            FROM `{$tableName}`
-            LEFT JOIN {$localizedTable}
-                ON(
-                    {$tableName}.o_id = {$localizedTable}.oo_id AND
-                    {$localizedTable}.language = '{$language}'
-                )
-            QUERY;
-
-            $queries[] = $viewQuery;
+            $this->mapTableProperties($localizedViewName, $properties);
         }
-
-        return $queries;
     }
 
     protected function truncateOrCreateTable(string $tableName)
@@ -300,9 +298,7 @@ class ElasticsearchWorker extends AbstractWorker
             'type' => "coreshop",
             'include_type_name' => true,
             'body'  => [
-                'coreshop' => [
-                    'properties' => $properties
-                ]
+                'properties' => $properties
             ]
         ];
 
@@ -326,8 +322,22 @@ class ElasticsearchWorker extends AbstractWorker
     public function deleteIndexStructures(IndexInterface $index)
     {
         try {
+            $languages = Tool::getValidLanguages();
+
+            foreach ($languages as $language) {
+                $this->client->indices()->delete([
+                    'index' =>  $this->getLocalizedViewName($index->getName(), $language)
+                ]);
+            }
+
             $this->client->indices()->delete([
                 'index' => $this->getTablename($index->getName())
+            ]);
+            $this->client->indices()->delete([
+                'index' => $this->getRelationTablename($index->getName())
+            ]);
+            $this->client->indices()->delete([
+                'index' => $this->getLocalizedTablename($index->getName())
             ]);
         } catch (\Exception $e) {
             Simple::log('elastic-worker', (string)$e);
@@ -414,15 +424,19 @@ class ElasticsearchWorker extends AbstractWorker
         if ($doIndex) {
             $preparedData = $this->prepareData($index, $object);
 
-            $this->doInsertData($this->getTablename($index->getName()), $preparedData['data'], $object);
+            $this->doInsertData($this->getTablename($index->getName()), $preparedData['data'], (string)$object->getId());
 
-            $this->doInsertData($this->getLocalizedTablename($index->getName()), $preparedData['localizedData'], $object);
+            $this->doInsertLocalizedData($index, $preparedData['localizedData'], $object);
+
+            $this->doInsertLocalizedViewData($index, $preparedData['data'], $preparedData['localizedData'], $object);
 
             $this->deleteFromRelationalIndex($index, $object);
 
             if (!empty($preparedData['relation'])) {
                 foreach ($preparedData['relation'] as $relationRow) {
-                    $this->doInsertData($this->getRelationTablename($index->getName()), $relationRow, $object);
+                    $objectId = $relationRow['src'].'_'.$relationRow['dest'].'_'.$relationRow['fieldname'];
+
+                    $this->doInsertData($this->getRelationTablename($index->getName()), $relationRow, $objectId);
                 }
             }
 
@@ -433,19 +447,79 @@ class ElasticsearchWorker extends AbstractWorker
         }
     }
 
-    protected function doInsertData(string $tableName, array $data, IndexableInterface $object): void
+    protected function doInsertData(string $tableName, array $data, string $objectId): void
     {
         $params = [
             'index' => $tableName,
             'type' => 'coreshop',
-            'id' => $object->getId(),
+            'id' => $objectId,
             'body' => $data
         ];
 
         try {
             $this->client->index($params);
         } catch (\Exception $e) {
-            Simple::log('elastic-worker', 'Error during updating index table: '.$e);
+            Simple::log('elastic-worker', 'Error during INDEX INSERT: '.$e);
+        }
+    }
+
+    protected function doInsertLocalizedData(IndexInterface $index, array $data, IndexableInterface $object): void
+    {
+        $columns = $index->getColumns()->toArray();
+        $columnNames = array_map(function (IndexColumnInterface $column) { return $column->getName(); }, $columns);
+
+        foreach ($data['values'] as $language => $values) {
+            $params = [];
+            $params['oo_id'] = $data['oo_id'];
+            $params['language'] = $language;
+
+            foreach ($values as $key => $value) {
+                if (in_array($key, $columnNames)) {
+                    continue;
+                }
+
+                $params[$key] = $value;
+            }
+
+            foreach ($index->getColumns() as $column) {
+                if (!array_key_exists($column->getName(), $values)) {
+                    continue;
+                }
+
+                $params[$column->getName()] = $values[$column->getName()];
+            }
+
+            $this->doInsertData($this->getLocalizedTablename($index->getName()), $params, (string)$object->getId());
+        }
+    }
+
+    protected function doInsertLocalizedViewData(IndexInterface $index, array $data, array $localizedData, IndexableInterface $object): void
+    {
+        $columns = $index->getColumns()->toArray();
+        $columnNames = array_map(function (IndexColumnInterface $column) { return $column->getName(); }, $columns);
+
+        foreach ($localizedData['values'] as $language => $values) {
+            $params = $data;
+            $params['oo_id'] = $localizedData['oo_id'];
+            $params['language'] = $language;
+
+            foreach ($values as $key => $value) {
+                if (in_array($key, $columnNames)) {
+                    continue;
+                }
+
+                $params[$key] = $value;
+            }
+
+            foreach ($index->getColumns() as $column) {
+                if (!array_key_exists($column->getName(), $values)) {
+                    continue;
+                }
+
+                $params[$column->getName()] = $values[$column->getName()];
+            }
+
+            $this->doInsertData($this->getLocalizedViewName($index->getName(), $language), $params, (string)$object->getId());
         }
     }
 

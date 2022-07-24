@@ -20,7 +20,6 @@ use CoreShop\Bundle\ElasticsearchBundle\Worker\ElasticsearchWorker;
 use CoreShop\Bundle\ElasticsearchBundle\Worker\ElasticsearchWorker\Listing\Dao;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Condition\MatchCondition;
-use CoreShop\Component\Index\Condition\NotMatchCondition;
 use CoreShop\Component\Index\Listing\ExtendedListingInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Listing\OrderAwareListingInterface;
@@ -257,24 +256,18 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     public function load(array $options = [])
     {
-        $result = $this->sendRequest($this->getQuery());
+        $queryBuilder = $this->dao->createQueryBuilder();
+        $this->addQueryFromConditions($queryBuilder);
+        $this->addOrderBy($queryBuilder);
+        //$this->addJoins($queryBuilder);
+        $queryBuilder->setMaxResults($this->getLimit());
+        $objectRaws = $this->dao->load($queryBuilder);
 
-        $objectRaws = [];
-
-        if ($result['hits']) {
-            $this->totalCount = $result['hits']['total']['value'];
-
-            foreach ($result['hits']['hits'] as $hit) {
-                $objectRaws[] = $hit['_id'];
-            }
-        }
-
-        // load elements
         $className = $this->index->getClass();
 
         $this->objects = [];
         foreach ($objectRaws as $raw) {
-            $object = $this->loadElementById($raw);
+            $object = $this->loadElementById($raw['o_id']);
 
             if ($object instanceof Concrete) {
                 if ($object->getClassName() === $className) {
@@ -294,14 +287,14 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     public function getGroupByValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
     {
         $excludedFieldName = $fieldName;
-
         if (!$fieldNameShouldBeExcluded) {
             $excludedFieldName = null;
         }
 
-        $filters = $this->addQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
+        $queryBuilder = $this->dao->createQueryBuilder();
+        $this->addQueryFromConditions($queryBuilder, false, $excludedFieldName, \CoreShop\Bundle\IndexBundle\Worker\AbstractListing::VARIANT_MODE_INCLUDE);
 
-        return $this->dao->loadGroupByValues($filters, $fieldName, $countValues);
+        return $this->dao->loadGroupByValues($queryBuilder, $fieldName, $countValues);
     }
 
     public function getGroupByRelationValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
@@ -311,9 +304,10 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
             $excludedFieldName = null;
         }
 
-        $filters = $this->addQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
+        $queryBuilder = $this->dao->createQueryBuilder();
+        $this->addQueryFromConditions($queryBuilder, false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
 
-        return $this->dao->loadGroupByRelationValues($filters, $fieldName, $countValues);
+        return $this->dao->loadGroupByRelationValues($queryBuilder, $fieldName, $countValues);
     }
 
     public function getGroupByRelationValuesAndType(
@@ -327,9 +321,10 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
             $excludedFieldName = null;
         }
 
-        $filters = $this->addQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
+        $queryBuilder = $this->dao->createQueryBuilder();
+        $this->addQueryFromConditions($queryBuilder, false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
 
-        return $this->dao->loadGroupByValues($filters, $fieldName, $countValues);
+        return $this->dao->loadGroupByRelationValuesAndType($queryBuilder, $fieldName, $type, $countValues);
     }
 
     public function getGroupBySystemValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
@@ -363,63 +358,72 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->dao->quote($value);
     }
 
-    protected function addQueryFromConditions($excludeConditions = false, $excludedFieldName = null, $variantMode = null): array
+    protected function addQueryFromConditions(QueryBuilder $queryBuilder, $excludeConditions = false, $excludedFieldName = null, $variantMode = null)
     {
         if ($variantMode == null) {
             $variantMode = $this->getVariantMode();
         }
 
-        $filters[] = $this->getWorker()->renderCondition(new MatchCondition('active', 'true'));
+        $queryBuilder->where($this->getWorker()->renderCondition(new MatchCondition('active', 'true'), 'q'));
 
         $extensions = $this->getWorker()->getExtensions($this->getIndex());
 
         foreach ($extensions as $extension) {
-            if ($extension instanceof ElasticsearchIndexQueryExtensionInterface) {
+            if ($extension instanceof ElasticSearchIndexQueryExtensionInterface) {
                 $conditions = $extension->preConditionQuery($this->getIndex());
                 foreach ($conditions as $cond) {
-                    $filters[] = $this->getWorker()->renderCondition($cond);
+                    $queryBuilder->andWhere($this->getWorker()->renderCondition($cond, 'q'));
                 }
             }
         }
 
         //variant handling and userspecific conditions
-        if ($variantMode == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+        if ($variantMode == \CoreShop\Bundle\IndexBundle\Worker\AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             if (!$excludeConditions) {
-                $filters = array_merge($filters, $this->addUserSpecificConditions($excludedFieldName));
+                $this->addUserSpecificConditions($queryBuilder, $excludedFieldName);
             }
         } else {
             if ($variantMode == AbstractListing::VARIANT_MODE_HIDE) {
-                $filters[] = $this->getWorker()->renderCondition(new NotMatchCondition('o_type', 'variant'));
+                $queryBuilder->andWhere('q.o_type != \'variant\'');
             }
             if (!$excludeConditions) {
-                $filters = array_merge($filters, $this->addUserSpecificConditions($excludedFieldName));
+                $this->addUserSpecificConditions($queryBuilder, $excludedFieldName);
             }
         }
-
-        return $filters;
     }
 
-    protected function addUserSpecificConditions($excludedFieldName = null):array
+    protected function addUserSpecificConditions(QueryBuilder $queryBuilder, $excludedFieldName = null)
     {
-        $renderedConditions = [];
+        $esClient = $this->getWorker()->getElasticsearchClient();
 
+        $relationalTableName = $this->getWorker()->getRelationTablename($this->index->getName());
         foreach ($this->relationConditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {
-                    $renderedConditions[] = $this->getWorker()->renderCondition($cond);
+                    $cond = $this->getWorker()->renderCondition($cond, 'q');
+
+                    $subQuerySql = "SELECT src FROM {$relationalTableName} q WHERE {$cond} GROUP BY src";
+                    $params['body']['query'] = str_replace('`', '', $subQuerySql);
+
+                    $srcs = $esClient->sql()->query($params)->asArray();
+
+                    $srcIds = array_map(function ($item) {
+                        return $item[0];
+                    }, $srcs['rows']);
+
+                    $srcIds = implode(',', $srcIds);
+
+                    $queryBuilder->andWhere("q.o_id IN ({$srcIds})");
                 }
             }
         }
-
         foreach ($this->conditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {
-                    $renderedConditions[] = $this->getWorker()->renderCondition($cond);
+                    $queryBuilder->andWhere($this->getWorker()->renderCondition($cond, 'q'));
                 }
             }
         }
-
-        return $renderedConditions;
     }
 
     protected function addOrderBy(QueryBuilder $queryBuilder)
@@ -475,11 +479,10 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     public function count(): int
     {
         if ($this->totalCount === null) {
-            /*$queryBuilder = $this->dao->createQueryBuilder();
+            $queryBuilder = $this->dao->createQueryBuilder();
             $this->addQueryFromConditions($queryBuilder);
-            $this->addJoins($queryBuilder);
-            $this->totalCount = $this->dao->getCount($queryBuilder);*/
-            $this->totalCount = 0;
+            //$this->addJoins($queryBuilder);
+            $this->totalCount = $this->dao->getCount($queryBuilder);
         }
 
         return $this->totalCount;
@@ -526,45 +529,5 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     public function valid(): bool
     {
         return $this->current() !== false;
-    }
-
-    /**
-     * @param array $params
-     * @return array
-     */
-    protected function sendRequest($params)
-    {
-        $esClient = $this->getWorker()->getElasticsearchClient();
-
-        $result = $esClient->search($params);
-
-        return $result;
-    }
-
-    /**
-     * @return array|string
-     */
-    protected function getQuery()
-    {
-        //user specific filters
-        $filters = $this->addQueryFromConditions();
-
-        $params = [];
-        $params['index'] = $this->getTableName();
-        $params['type'] = "coreshop";
-        $params['body']['_source'] = false;
-        $params['body']['query']['bool']['filter'] = $filters;
-
-        if ($this->orderKey) {
-            if (is_array($this->orderKey)) {
-                foreach ($this->orderKey as $orderKey) {
-                    $params['body']['sort'][] = [$orderKey[0] => ($orderKey[1] ?: "asc")];
-                }
-            } else {
-                $params['body']['sort'][] = [$this->orderKey => ($this->order ?: "asc")];
-            }
-        }
-
-        return $params;
     }
 }
