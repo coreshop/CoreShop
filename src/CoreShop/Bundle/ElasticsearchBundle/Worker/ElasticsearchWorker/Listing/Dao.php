@@ -80,10 +80,19 @@ class Dao
         }
 
         $params['body']['query'] = str_replace('`', '', $queryBuilder->getSQL());
+
         $esQuery = $esClient->sql()->translate($params)->asArray();
-        $esQuery['size'] = $this->model->getLimit() ?? 1;
+
+        $esQuery['size'] = $this->model->getLimit() ?? 0;
         $esQuery['from'] = $this->model->getOffset() ?? 0;
         $esQuery['index'] = $this->model->getQueryTableName();
+        $esQuery['type'] = "coreshop";
+        $esQuery['body']['sort'] = [
+            $this->model->getOrderKey() => $this->model->getOrder()
+        ];
+
+        $esQuery['body']['query'] = $esQuery['query'];
+        unset($esQuery['query']);
 
         $resultSet = $esClient->search($esQuery)->asArray();
 
