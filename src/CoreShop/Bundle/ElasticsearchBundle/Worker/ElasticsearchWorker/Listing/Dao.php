@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ElasticsearchBundle\Worker\ElasticsearchWorker\Listing;
 
 use CoreShop\Bundle\ElasticsearchBundle\Worker\ElasticsearchWorker;
-use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -196,9 +195,11 @@ class Dao
                 return $item[0];
             }, $srcs['rows']);
 
-            $srcIds = implode(',', $srcIds);
+            if (count($srcIds)) {
+                $srcIds = implode(',', $srcIds);
+                $queryBuilder->andWhere('src IN (' . $srcIds . ')');
+            }
 
-            $queryBuilder->andWhere('src IN (' . $srcIds . ')');
             $queryBuilder->groupBy('dest');
 
             $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());
@@ -220,15 +221,17 @@ class Dao
 
         $params['body']['query'] =str_replace('`', '', $subQueryBuilder->getSQL());
 
-        $dests = $esClient->sql()->query($params)->asArray();
+        $srcs = $esClient->sql()->query($params)->asArray();
 
-        $destIds = array_map(function ($item) {
+        $srcIds = array_map(function ($item) {
             return $item[0];
-        }, $dests['rows']);
+        }, $srcs['rows']);
 
-        $destIds = implode(',', $destIds);
+        if (count($srcIds)) {
+            $srcIds = implode(',', $srcIds);
+            $queryBuilder->andWhere('src IN (' . $srcIds . ')');
+        }
 
-        $queryBuilder->andWhere('src IN (' . $destIds . ')');
         $queryBuilder->groupBy('dest');
 
         $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());

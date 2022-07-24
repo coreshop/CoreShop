@@ -411,9 +411,11 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
                         return $item[0];
                     }, $srcs['rows']);
 
-                    $srcIds = implode(',', $srcIds);
+                    if (count($srcIds)) {
+                        $srcIds = implode(',', $srcIds);
 
-                    $queryBuilder->andWhere("q.o_id IN ({$srcIds})");
+                        $queryBuilder->andWhere("q.o_id IN ({$srcIds})");
+                    }
                 }
             }
         }
