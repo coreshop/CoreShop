@@ -1,0 +1,12 @@
+services:
+    ## Renderer
+    CoreShop\Bundle\ElasticsearchBundle\Order\Elasticsearch\AbstractElasticsearchDynamicRenderer:
+        abstract: true
+        arguments:
+            - '@doctrine.dbal.default_connection'
+
+    CoreShop\Bundle\ElasticsearchBundle\Order\Elasticsearch\SimpleOrderRenderer:
+        parent: CoreShop\Bundle\ElasticsearchBundle\Order\Elasticsearch\AbstractElasticsearchDynamicRenderer
+        tags:
+            - { name: coreshop.index.order.renderer, type: elasticsearch_simple }
+

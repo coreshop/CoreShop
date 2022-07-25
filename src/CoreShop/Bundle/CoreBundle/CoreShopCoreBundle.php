@@ -22,6 +22,7 @@ use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
+use CoreShop\Bundle\ElasticsearchBundle\ElasticsearchBundle;
 use CoreShop\Bundle\FixtureBundle\CoreShopFixtureBundle;
 use CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle;
 use CoreShop\Bundle\IndexBundle\CoreShopIndexBundle;
@@ -93,6 +94,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $collection->addBundle(new CoreShopFrontendBundle(), 1800);
         $collection->addBundle(new CoreShopPayumBundle(), 1700);
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
+        $collection->addBundle(new ElasticsearchBundle(), 1400);
     }
 
     protected function getModelNamespace(): string

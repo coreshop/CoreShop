@@ -1,0 +1,42 @@
+services:
+    CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer:
+        abstract: true
+        arguments:
+            - '@doctrine.dbal.default_connection'
+
+    CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\CompareRenderer:
+        parent: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+        tags:
+            - { name: coreshop.index.condition.renderer, type: elasticsearch_compare }
+
+    CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\ConcatRenderer:
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@CoreShop\Component\Index\Condition\ConditionRenderer'
+        tags:
+            - { name: coreshop.index.condition.renderer, type: elasticsearch_concat }
+
+    CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\InRenderer:
+        parent: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+        tags:
+            - { name: coreshop.index.condition.renderer, type: elasticsearch_in }
+
+    CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\IsNullRenderer:
+        parent: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+        tags:
+            - { name: coreshop.index.condition.renderer, type: elasticsearch_is_null }
+
+    CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\IsRenderer:
+        parent: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+        tags:
+            - { name: coreshop.index.condition.renderer, type: elasticsearch_is }
+
+    CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\LikeRenderer:
+        parent: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+        tags:
+            - { name: coreshop.index.condition.renderer, type: elasticsearch_like }
+
+    CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\RangeRenderer:
+        parent: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+        tags:
+            - { name: coreshop.index.condition.renderer, type: elasticsearch_range }

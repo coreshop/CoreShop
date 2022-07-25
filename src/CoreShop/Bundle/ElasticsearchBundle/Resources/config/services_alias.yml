@@ -1,0 +1,71 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.index.worker.elasticsearch:
+        alias: CoreShop\Bundle\ElasticsearchBundle\Worker\ElasticsearchWorker
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Worker\ElasticsearchWorker instead'
+
+    coreshop.filter.condition_type.select:
+        alias: CoreShop\Component\Elasticsearch\Filter\SelectFilterConditionProcessor
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Elasticsearch\Filter\SelectFilterConditionProcessor instead'
+
+    coreshop.filter.condition_type.range:
+        alias: CoreShop\Component\Elasticsearch\Filter\RangeFilterConditionProcessor
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Elasticsearch\Filter\RangeFilterConditionProcessor instead'
+
+    coreshop.filter.condition_type.multiselect:
+        alias: CoreShop\Component\Elasticsearch\Filter\MultiselectFilterConditionProcessor
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Elasticsearch\Filter\MultiselectFilterConditionProcessor instead'
+
+    coreshop.filter.condition_type.relational_multihref:
+        alias: CoreShop\Component\Elasticsearch\Filter\RelationalMultiselectConditionProcessor
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Elasticsearch\Filter\RelationalMultiselectConditionProcessor instead'
+
+    coreshop.filter.condition_type.relational_select:
+        alias: CoreShop\Component\Elasticsearch\Filter\RelationalSelectConditionProcessor
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Elasticsearch\Filter\RelationalSelectConditionProcessor instead'
+
+    coreshop.filter.condition_type.category_select:
+        alias: CoreShop\Component\Elasticsearch\Filter\CategorySelectConditionProcessor
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\CategorySelectConditionProcessor instead'
+
+    coreshop.index.condition.renderer.elasticsearch.abstract:
+        alias: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\AbstractElasticsearchDynamicRenderer instead'
+
+    coreshop.index.condition.renderer.elasticsearch.compare:
+        alias: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\CompareRenderer
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\CompareRenderer instead'
+
+    coreshop.index.condition.renderer.elasticsearch.concat:
+        alias: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\ConcatRenderer
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\ConcatRenderer instead'
+
+    coreshop.index.condition.renderer.elasticsearch.in:
+        alias: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\InRenderer
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\InRenderer instead'
+
+    coreshop.index.condition.renderer.elasticsearch.is_null:
+        alias: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\IsNullRenderer
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\IsNullRenderer instead'
+
+    coreshop.index.condition.renderer.elasticsearch.is:
+        alias: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\IsRenderer
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\IsRenderer instead'
+
+    coreshop.index.condition.renderer.elasticsearch.like:
+        alias: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\LikeRenderer
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\LikeRenderer instead'
+
+    coreshop.index.condition.renderer.elasticsearch.range:
+        alias: CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\RangeRenderer
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ElasticsearchBundle\Condition\Elasticsearch\RangeRenderer instead'
+
+    coreshop.index.order.renderer.elasticsearch.abstract:
+        alias: CoreShop\Bundle\ElasticsearchBundle\Order\Elasticsearch\AbstractElasticsearchDynamicRenderer
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Order\Elasticsearch\AbstractElasticsearchDynamicRenderer instead'
+
+    coreshop.index.order.renderer.elasticsearch.simple:
+        alias: CoreShop\Bundle\ElasticsearchBundle\Order\Elasticsearch\SimpleOrderRenderer
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Order\Elasticsearch\SimpleOrderRenderer instead'
