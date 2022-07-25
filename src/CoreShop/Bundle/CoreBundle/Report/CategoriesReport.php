@@ -96,8 +96,8 @@ class CategoriesReport implements ReportInterface
                 'profit' => $result['profit'],
                 'quantityCount' => $result['quantityCount'],
                 'orderCount' => $result['orderCount'],
-                'salesFormatted' => $this->moneyFormatter->format($result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
-                'profitFormatted' => $this->moneyFormatter->format($result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
+                'salesFormatted' => $this->moneyFormatter->format((int)$result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
+                'profitFormatted' => $this->moneyFormatter->format((int)$result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
             ];
         }
 

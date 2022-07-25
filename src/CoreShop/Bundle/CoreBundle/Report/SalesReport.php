@@ -106,7 +106,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
                 'timestamp' => $date->getTimestamp(),
                 'datetext' => $date->format($dateFormatter),
                 'sales' => $result['total'],
-                'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode()),
+                'salesFormatted' => $this->moneyFormatter->format((int)$result['total'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode()),
             ];
         }
 

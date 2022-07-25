@@ -122,9 +122,9 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($productSales as &$sale) {
-            $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
-            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode(), $locale);
-            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode(), $locale);
+            $sale['salesPriceFormatted'] = $this->moneyFormatter->format((int)$sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
+            $sale['salesFormatted'] = $this->moneyFormatter->format((int)$sale['sales'], $store->getCurrency()->getIsoCode(), $locale);
+            $sale['profitFormatted'] = $this->moneyFormatter->format((int)$sale['profit'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
         }
 
