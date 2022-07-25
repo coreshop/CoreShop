@@ -78,7 +78,7 @@ class Dao
             $queryBuilder->addGroupBy($groupBy);
         }
 
-        $params['body']['query'] = str_replace('`', '', $queryBuilder->getSQL());
+        $params['body']['query'] = $this->formatQueryParams($queryBuilder->getSQL());
 
         $esQuery = $esClient->sql()->translate($params)->asArray();
 
@@ -129,13 +129,13 @@ class Dao
                 $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(*) AS count');
             }
 
-            $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());
+            $params['body']['query'] = $this->formatQueryParams($queryBuilder->getSQL());
 
             return $this->mapResults($esClient->sql()->query($params)->asArray());
         }
 
         $queryBuilder->select($this->quoteIdentifier($fieldName));
-        $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());
+        $params['body']['query'] = $this->formatQueryParams($queryBuilder->getSQL());
 
         $mappedResults = $this->mapResults($esClient->sql()->query($params)->asArray());
 
@@ -187,7 +187,7 @@ class Dao
                 }
             }
 
-            $params['body']['query'] =str_replace('`', '', $subQueryBuilder->getSQL());
+            $params['body']['query'] = $this->formatQueryParams($subQueryBuilder->getSQL());;
 
             $srcs = $esClient->sql()->query($params)->asArray();
 
@@ -202,7 +202,7 @@ class Dao
 
             $queryBuilder->groupBy('dest');
 
-            $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());
+            $params['body']['query'] = $this->formatQueryParams($queryBuilder->getSQL());
 
             return $this->mapResults($esClient->sql()->query($params)->asArray());
         }
@@ -219,7 +219,7 @@ class Dao
         $subQueryBuilder->from($this->model->getRelationTablename(), 'q');
         $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
 
-        $params['body']['query'] =str_replace('`', '', $subQueryBuilder->getSQL());
+        $params['body']['query'] = $this->formatQueryParams($subQueryBuilder->getSQL());
 
         $srcs = $esClient->sql()->query($params)->asArray();
 
@@ -234,7 +234,7 @@ class Dao
 
         $queryBuilder->groupBy('dest');
 
-        $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());
+        $params['body']['query'] = $this->formatQueryParams($queryBuilder->getSQL());
 
         $queryResult = $this->mapResults($esClient->sql()->query($params)->asArray());
 
@@ -267,7 +267,7 @@ class Dao
         }
 
         $queryBuilder->setMaxResults(1);
-        $params['body']['query'] =str_replace('`', '', $queryBuilder->getSQL());
+        $params['body']['query'] = $this->formatQueryParams($queryBuilder->getSQL());
 
         $queryResult = $this->mapResults($esClient->sql()->query($params)->asArray());
 
@@ -284,6 +284,11 @@ class Dao
     public function quote($value)
     {
         return $this->database->quote($value);
+    }
+
+    protected function formatQueryParams(string $sqlQuery): string
+    {
+        return str_replace('`', '', $sqlQuery);
     }
 
     public function mapResults(array $results): array
