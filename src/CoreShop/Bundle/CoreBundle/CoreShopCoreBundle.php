@@ -26,7 +26,7 @@ use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
-use CoreShop\Bundle\ElasticsearchBundle\ElasticsearchBundle;
+use CoreShop\Bundle\IndexElasticBundle\ElasticsearchBundle;
 use CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle;
 use CoreShop\Bundle\IndexBundle\CoreShopIndexBundle;
 use CoreShop\Bundle\InventoryBundle\CoreShopInventoryBundle;
