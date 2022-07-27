@@ -193,7 +193,7 @@ class Money extends DataObject\ClassDefinition\Data implements
 
     public function marshalVersion($object, $data)
     {
-        return $this->getDataForEditmode($data, $object);
+        return $data;
     }
 
     public function unmarshalVersion($object, $data)
