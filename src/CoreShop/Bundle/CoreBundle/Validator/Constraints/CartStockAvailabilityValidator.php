@@ -82,6 +82,10 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
         $product = $cartItem->getProduct();
         $quantity = $cartItem->getDefaultUnitQuantity();
 
+        if (null === $quantity) {
+            $quantity = 0;
+        }
+
         /**
          * @var OrderItemInterface $item
          */
