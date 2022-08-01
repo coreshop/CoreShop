@@ -1,3 +1,27 @@
+# 3.0.0-beta.5
+ > This will be the last BETA for the final release.
+
+## Bugs
+ - [Frontend] fix controller overwriting (https://github.com/coreshop/CoreShop/pull/2017)
+ - Replaced old Registration Service with Customer Manager (https://github.com/coreshop/CoreShop/pull/2020)
+ - Update install guide while it is in beta (https://github.com/coreshop/CoreShop/pull/2019)
+ - [Frontend] fix getQuantityModifier return type (https://github.com/coreshop/CoreShop/pull/2024)
+ - Fix TagManagerEnhancedEcommerce (https://github.com/coreshop/CoreShop/pull/2027)
+ - [ProductBundle] fix saving of Price Rule Conditions and Actions when creating (https://github.com/coreshop/CoreShop/pull/2029)
+ - [FrontendBundle] Consider UrlSlugs in the locale switcher (https://github.com/coreshop/CoreShop/pull/2032)
+ - [DB] Remove Migrate and ClassUpdate rename and fix psalm issues (https://github.com/coreshop/CoreShop/pull/2034)
+ - fix: property must not be accessed before initialization (https://github.com/coreshop/CoreShop/pull/2036)
+ - [MoneyBundle] bugfix unmarshalVersion for coreShopMoney (https://github.com/coreshop/CoreShop/pull/2037)
+ - [ThemeBundle] add document pre_renderer listener to resolve theme (https://github.com/coreshop/CoreShop/pull/2041)
+ - [OrderBundle] fix "coreshop_admin_order_find" route (https://github.com/coreshop/CoreShop/pull/2045)
+ - [Pimcore] add tests for ^10.5 (https://github.com/coreshop/CoreShop/pull/2043)
+ - [Events] fix pimcore events BC break (https://github.com/coreshop/CoreShop/pull/2046)
+ - [Tests] test against pimcore ^11.0 (https://github.com/coreshop/CoreShop/pull/2047)
+ - [CoreBundle] add typecasts for MoneyFormatter in Reports, bugfix SQL (https://github.com/coreshop/CoreShop/pull/2048)
+ - [MoneyBundle] bugfix marshalVersion for coreShopMoney (https://github.com/coreshop/CoreShop/pull/2051)
+ - [MoneyBundle] bugfix setter code for FieldCollection (https://github.com/coreshop/CoreShop/pull/2052)
+ - [CoreBundle] check for null value in CartStockAvailabilityValidator (https://github.com/coreshop/CoreShop/pull/2053)
+
 # 3.0.0-beta.4
 ## Feature
  - [Variants] introduce Variant Bundle (https://github.com/coreshop/CoreShop/pull/1990) @breakone
