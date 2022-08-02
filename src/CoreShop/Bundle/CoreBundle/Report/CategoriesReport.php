@@ -120,7 +120,7 @@ class CategoriesReport implements ReportInterface
             GROUP BY categories.oo_id
             ORDER BY quantityCount DESC
             LIMIT $offset,$limit";
-            $results = $this->db->fetchAll($query, $queryParameters);
+            $results = $this->db->fetchAllAssociative($query, $queryParameters);
         }
 
         $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
