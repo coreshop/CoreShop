@@ -100,7 +100,14 @@ class CategoriesReport implements ReportInterface
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $storeId = $parameterBag->get('store', null);
-        $orderCompleteState = OrderStates::STATE_COMPLETE;
+        $orderStateFilter = $parameterBag->get('orderState');
+        if ($orderStateFilter) {
+            $orderStateFilter = \json_decode($orderStateFilter, true);
+        }
+
+        if (!is_array($orderStateFilter) || !$orderStateFilter || in_array('all', $orderStateFilter, true)) {
+            $orderStateFilter = null;
+        }
 
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
@@ -136,15 +143,47 @@ class CategoriesReport implements ReportInterface
             FROM object_$categoryClassId AS categories
             INNER JOIN object_localized_query_" . $categoryClassId . '_' . $locale . " AS localizedCategories ON localizedCategories.ooo_id = categories.oo_id 
             INNER JOIN dependencies AS catProductDependencies ON catProductDependencies.targetId = categories.oo_id AND catProductDependencies.targettype = \"object\" 
-            INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = catProductDependencies.sourceid
+            INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = catProductDependencies.sourceId
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
             INNER JOIN object_query_$orderClassId AS `orders` ON `orders`.oo_id = orderRelations.src_id
-            WHERE orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            WHERE orders.store = $storeId".(($orderStateFilter !== null) ? " AND `orders`.orderState IN (".rtrim(str_repeat('?,', count($orderStateFilter)), ',').")" : "")." AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
             GROUP BY categories.oo_id
             ORDER BY quantityCount DESC
             LIMIT $offset,$limit";
 
-        $results = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $queryParameters = [];
+
+        if($orderStateFilter !== null) {
+            array_push($queryParameters, ...$orderStateFilter);
+        }
+        $queryParameters[] = $from->getTimestamp();
+        $queryParameters[] = $to->getTimestamp();
+        $results = $this->db->fetchAll($query, $queryParameters);
+
+        if(count($results) === 0) {
+            // when products get assigned to category
+            $query = "
+            SELECT SQL_CALC_FOUND_ROWS
+              `categories`.oo_id as categoryId,
+              `categories`.o_key as categoryKey,
+              `localizedCategories`.name as categoryName,
+              `orders`.store,
+              SUM(orderItems.totalGross) AS sales,
+              SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
+              SUM(orderItems.quantity) AS `quantityCount`,
+              COUNT(orderItems.product__id) AS `orderCount`
+            FROM object_$categoryClassId AS categories
+            INNER JOIN object_localized_query_".$categoryClassId.'_'.$locale." AS localizedCategories ON localizedCategories.ooo_id = categories.oo_id 
+            INNER JOIN dependencies AS catProductDependencies ON catProductDependencies.sourceId = categories.oo_id AND catProductDependencies.sourcetype = \"object\" 
+            INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = catProductDependencies.targetId
+            INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
+            INNER JOIN object_query_$orderClassId AS `orders` ON `orders`.oo_id = orderRelations.src_id
+            WHERE orders.store = $storeId".(($orderStateFilter !== null) ? ' AND `orders`.orderState IN ('.rtrim(str_repeat('?,', count($orderStateFilter)), ',').')' : '')." AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            GROUP BY categories.oo_id
+            ORDER BY quantityCount DESC
+            LIMIT $offset,$limit";
+            $results = $this->db->fetchAll($query, $queryParameters);
+        }
 
         $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 

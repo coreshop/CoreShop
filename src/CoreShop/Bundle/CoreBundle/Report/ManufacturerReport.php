@@ -21,6 +21,7 @@ use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Pimcore\Model\DataObject\ClassDefinition;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ManufacturerReport implements ReportInterface
@@ -110,7 +111,14 @@ class ManufacturerReport implements ReportInterface
         $orderClassId = $this->orderRepository->getClassId();
         $manufacturerClassId = $this->manufacturerRepository->getClassId();
         $orderItemClassId = $this->orderItemRepository->getClassId();
-        $orderCompleteState = OrderStates::STATE_COMPLETE;
+        $orderStateFilter = $parameterBag->get('orderState');
+        if ($orderStateFilter) {
+            $orderStateFilter = \json_decode($orderStateFilter, true);
+        }
+
+        if (!is_array($orderStateFilter) || !$orderStateFilter || in_array('all', $orderStateFilter, true)) {
+            $orderStateFilter = null;
+        }
 
         if (is_null($storeId)) {
             return [];
@@ -119,6 +127,15 @@ class ManufacturerReport implements ReportInterface
         $store = $this->storeRepository->find($storeId);
         if (!$store instanceof StoreInterface) {
             return [];
+        }
+
+        $nameIsLocalized = false;
+        $manufacturerClass = ClassDefinition::getById($manufacturerClassId);
+        if(!$manufacturerClass->getFieldDefinition('name')) {
+            $localizedFields = $manufacturerClass->getFieldDefinition('localizedfields');
+            if($localizedFields instanceof ClassDefinition\Data\Localizedfields && $localizedFields->getFieldDefinition('name')) {
+                $nameIsLocalized = true;
+            }
         }
 
         $query = "
@@ -131,17 +148,23 @@ class ManufacturerReport implements ReportInterface
               SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
               SUM(orderItems.quantity) AS `quantityCount`,
               COUNT(orderItems.product__id) AS `orderCount`
-            FROM object_$manufacturerClassId AS manufacturers
+            FROM ".($nameIsLocalized ? 'object_localized_'.$manufacturerClassId.'_'.$this->localeService->getLocaleCode() : 'object_'.$manufacturerClassId)." AS manufacturers
             INNER JOIN dependencies AS manProductDependencies ON manProductDependencies.targetId = manufacturers.oo_id AND manProductDependencies.targettype = \"object\" 
             INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = manProductDependencies.sourceid
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
             INNER JOIN object_query_$orderClassId AS `orders` ON `orders`.oo_id = orderRelations.src_id
-            WHERE orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            WHERE orders.store = $storeId".(($orderStateFilter !== null) ? " AND `orders`.orderState IN (".rtrim(str_repeat('?,', count($orderStateFilter)), ',').")" : "")." AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
             GROUP BY manufacturers.oo_id
             ORDER BY quantityCount DESC
             LIMIT $offset,$limit";
 
-        $results = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $queryParameters = [];
+        if ($orderStateFilter !== null) {
+            array_push($queryParameters, ...$orderStateFilter);
+        }
+        $queryParameters[] = $from->getTimestamp();
+        $queryParameters[] = $to->getTimestamp();
+        $results = $this->db->fetchAll($query, $queryParameters);
 
         $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 

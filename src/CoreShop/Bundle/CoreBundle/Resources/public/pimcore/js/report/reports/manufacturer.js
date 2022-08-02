@@ -87,5 +87,63 @@ coreshop.report.reports.manufacturer = Class.create(coreshop.report.abstractStor
                 ]
             }
         });
+    },
+
+    getOrderStateField: function () {
+        return this.panel.down('[name=orderState]');
+    },
+
+    getFilterParams: function ($super) {
+        var fields = $super();
+        fields.orderState = JSON.stringify(this.getOrderStateField().getValue());
+        return fields;
+    },
+
+    getDocketItemsForPanel: function ($super) {
+
+        var fields = $super();
+
+        fields.push(
+            {
+                xtype: 'toolbar',
+                dock: 'top',
+                layout: {
+                    type: 'vbox',
+                    align: 'stretch',
+                    pack: 'start',
+                },
+                items: this.getAdditionalFilterFields()
+            }
+        );
+
+        return fields;
+
+    },
+    getAdditionalFilterFields: function () {
+        var fields = [];
+        fields.push({
+            xtype: 'tagfield',
+            fieldLabel: t('coreshop_condition_orderState'),
+            name: 'orderState',
+            value: ['all'],
+            width: 350,
+            store: [
+                ['all', t('all')],
+                ['new', 'new'],
+                ['initialized', 'initialized'],
+                ['cancelled', 'cancelled'],
+                ['complete', 'complete'],
+                ['confirmed', 'confirmed'],
+            ],
+            triggerAction: 'all',
+            filterPickList: true,
+            minChars: 1,
+            typeAhead: true,
+            editable: true,
+            forceSelection: true,
+            queryMode: 'local'
+        });
+
+        return fields;
     }
 });
