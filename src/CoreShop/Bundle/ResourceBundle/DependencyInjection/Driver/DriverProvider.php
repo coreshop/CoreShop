@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver;
 
@@ -23,16 +25,9 @@ final class DriverProvider
     /**
      * @var DriverInterface[]
      */
-    private static $drivers = [];
+    private static array $drivers = [];
 
-    /**
-     * @param MetadataInterface $metadata
-     *
-     * @return DriverInterface
-     *
-     * @throws UnknownDriverException
-     */
-    public static function get(MetadataInterface $metadata)
+    public static function get(MetadataInterface $metadata): DriverInterface
     {
         $type = $metadata->getDriver();
 
@@ -40,13 +35,10 @@ final class DriverProvider
             return self::$drivers[$type];
         }
 
-        switch ($type) {
-            case CoreShopResourceBundle::DRIVER_DOCTRINE_ORM:
-                return self::$drivers[$type] = new DoctrineORMDriver();
-            case CoreShopResourceBundle::DRIVER_PIMCORE:
-                return self::$drivers[$type] = new PimcoreDriver();
-        }
-
-        throw new UnknownDriverException($type);
+        return match ($type) {
+            CoreShopResourceBundle::DRIVER_DOCTRINE_ORM => new DoctrineORMDriver(),
+            CoreShopResourceBundle::DRIVER_PIMCORE => new PimcoreDriver(),
+            default => throw new UnknownDriverException($type),
+        };
     }
 }

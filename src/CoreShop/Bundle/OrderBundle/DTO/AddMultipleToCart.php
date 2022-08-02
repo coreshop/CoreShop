@@ -6,22 +6,18 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\DTO;
 
 class AddMultipleToCart implements AddMultipleToCartInterface
 {
-    /**
-     * @var AddToCartInterface[]
-     */
-    private $items;
+    private array $items;
 
-    /**
-     * @param AddToCartInterface[] $items
-     */
     public function __construct(array $items)
     {
         $this->items = $items;
@@ -30,7 +26,7 @@ class AddMultipleToCart implements AddMultipleToCartInterface
     /**
      * @return AddToCartInterface[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
@@ -38,15 +34,12 @@ class AddMultipleToCart implements AddMultipleToCartInterface
     /**
      * @param AddToCartInterface[] $items
      */
-    public function setItems(array $items)
+    public function setItems(array $items): void
     {
         $this->items = $items;
     }
 
-    /**
-     * @param AddToCartInterface $addToCart
-     */
-    public function addItem(AddToCartInterface $addToCart)
+    public function addItem(AddToCartInterface $addToCart): void
     {
         $this->items[] = $addToCart;
     }

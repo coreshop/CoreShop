@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -19,77 +21,18 @@ use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Context\FixedStoreContext;
-use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class StoreContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $storeFactory;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $currencyFactory;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $countryFactory;
-
-    /**
-     * @var StoreRepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var FixedStoreContext
-     */
-    private $fixedStoreContext;
-
-    /**
-     * @param SharedStorageInterface   $sharedStorage
-     * @param EntityManagerInterface   $entityManager
-     * @param FactoryInterface         $storeFactory
-     * @param StoreRepositoryInterface $storeRepository
-     * @param FactoryInterface         $currencyFactory
-     * @param FactoryInterface         $countryFactory
-     * @param FixedStoreContext        $fixedStoreContext
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        EntityManagerInterface $entityManager,
-        FactoryInterface $storeFactory,
-        StoreRepositoryInterface $storeRepository,
-        FactoryInterface $currencyFactory,
-        FactoryInterface $countryFactory,
-        FixedStoreContext $fixedStoreContext
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->entityManager = $entityManager;
-        $this->storeFactory = $storeFactory;
-        $this->storeRepository = $storeRepository;
-        $this->currencyFactory = $currencyFactory;
-        $this->countryFactory = $countryFactory;
-        $this->fixedStoreContext = $fixedStoreContext;
+    public function __construct(private SharedStorageInterface $sharedStorage, private EntityManagerInterface $entityManager, private FactoryInterface $storeFactory, private FactoryInterface $currencyFactory, private FactoryInterface $countryFactory, private FixedStoreContext $fixedStoreContext)
+    {
     }
 
     /**
      * @Given the site operates on a store in "Austria"
      */
-    public function storeOperatesOnASingleStoreInAustria()
+    public function storeOperatesOnASingleStoreInAustria(): void
     {
         $store = $this->createStore('Austria');
 
@@ -100,7 +43,7 @@ final class StoreContext implements Context
     /**
      * @Given the site operates on a store in "Austria" with gross values
      */
-    public function storeOperatesOnASingleStoreInAustriaWithGrossValues()
+    public function storeOperatesOnASingleStoreInAustriaWithGrossValues(): void
     {
         $store = $this->createStore('Austria', null, null, true);
 
@@ -111,7 +54,7 @@ final class StoreContext implements Context
     /**
      * @Given /^I am in (store "[^"]+")$/
      */
-    public function iAmInStore(StoreInterface $store)
+    public function iAmInStore(StoreInterface $store): void
     {
         $this->fixedStoreContext->setStore($store);
     }
@@ -119,7 +62,7 @@ final class StoreContext implements Context
     /**
      * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+")$/
      */
-    public function siteHasAStoreWithCountryAndCurrency($name, CountryInterface $country, CurrencyInterface $currency)
+    public function siteHasAStoreWithCountryAndCurrency($name, CountryInterface $country, CurrencyInterface $currency): void
     {
         $store = $this->createStore($name, $currency, $country);
 
@@ -129,7 +72,7 @@ final class StoreContext implements Context
     /**
      * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+") and gross values$/
      */
-    public function siteHasAStoreWithCountryAndCurrencyAndGrossValues($name, CountryInterface $country, CurrencyInterface $currency)
+    public function siteHasAStoreWithCountryAndCurrencyAndGrossValues($name, CountryInterface $country, CurrencyInterface $currency): void
     {
         $store = $this->createStore($name, $currency, $country, true);
 
@@ -139,7 +82,7 @@ final class StoreContext implements Context
     /**
      * @Given /^the (store "[^"]+") uses theme "([^"]+)"$/
      */
-    public function theStoreusesTheme(StoreInterface $store, $template)
+    public function theStoreusesTheme(StoreInterface $store, $template): void
     {
         $store->setTemplate($template);
 
@@ -147,14 +90,21 @@ final class StoreContext implements Context
     }
 
     /**
-     * @param string                 $name
-     * @param CurrencyInterface|null $currency
-     * @param CountryInterface|null  $country
-     *
-     * @return StoreInterface
+     * @Given /^the (store "[^"]+") is the default store$/
      */
-    private function createStore($name, CurrencyInterface $currency = null, CountryInterface $country = null, $grossValues = false)
+    public function theStoreIsDefault(StoreInterface $store): void
     {
+        $store->setIsDefault(true);
+
+        $this->saveStore($store);
+    }
+
+    private function createStore(
+        string $name,
+        CurrencyInterface $currency = null,
+        CountryInterface $country = null,
+        $grossValues = false
+    ): StoreInterface {
         /**
          * @var StoreInterface $store
          */
@@ -183,6 +133,13 @@ final class StoreContext implements Context
             $country->setIsoCode('AT');
             $country->setCurrency($currency);
             $country->setActive(true);
+            $country->setAddressFormat('
+                {{ company }}
+                {{ salutation }} {{ firstname }} {{ lastname }}
+                {{ street }}
+                {{ postcode }}
+                {{ country.name }}
+            ');
 
             $this->entityManager->persist($country);
 
@@ -200,10 +157,7 @@ final class StoreContext implements Context
         return $store;
     }
 
-    /**
-     * @param StoreInterface $store
-     */
-    private function saveStore(StoreInterface $store)
+    private function saveStore(StoreInterface $store): void
     {
         $this->entityManager->persist($store);
         $this->entityManager->flush();

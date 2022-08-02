@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
@@ -20,27 +22,10 @@ use JMS\Serializer\JsonSerializationVisitor;
 
 class RelationsHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-
-    /**
-     * @param EntityManagerInterface $manager
-     */
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
-        $this->manager = $manager;
     }
 
-    /**
-     * @param JsonSerializationVisitor $visitor
-     * @param array|\Traversable       $relation
-     * @param array                    $type
-     * @param Context                  $context
-     *
-     * @return array
-     */
     public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
     {
         if ($relation instanceof \Traversable) {
@@ -54,7 +39,7 @@ class RelationsHandler
         }
 
         if (is_array($relation)) {
-            return array_map(function ($rel) use ($manager) {
+            return array_map(function (mixed $rel) use ($manager): mixed {
                 return $this->getSingleEntityRelation($rel, $manager);
             }, $relation);
         }
@@ -62,17 +47,9 @@ class RelationsHandler
         return $this->getSingleEntityRelation($relation, $manager);
     }
 
-    /**
-     * @param JsonDeserializationVisitor $visitor
-     * @param array                      $relation
-     * @param array                      $type
-     * @param Context                    $context
-     *
-     * @return array|object
-     */
     public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
     {
-        $className = isset($type['params'][0]['name']) ? $type['params'][0]['name'] : null;
+        $className = $type['params'][0]['name'] ?? null;
 
         $manager = $this->manager;
 
@@ -106,15 +83,9 @@ class RelationsHandler
         return $objects;
     }
 
-    /**
-     * @param mixed                  $relation
-     * @param EntityManagerInterface $entityManager
-     *
-     * @return array
-     */
     protected function getSingleEntityRelation($relation, EntityManagerInterface $entityManager)
     {
-        $metadata = $entityManager->getClassMetadata(get_class($relation));
+        $metadata = $entityManager->getClassMetadata($relation::class);
 
         $ids = $metadata->getIdentifierValues($relation);
         if (!$metadata->isIdentifierComposite) {
@@ -124,13 +95,6 @@ class RelationsHandler
         return $ids;
     }
 
-    /**
-     * @param mixed                  $id
-     * @param ClassMetadata          $metadata
-     * @param EntityManagerInterface $manager
-     *
-     * @return object|null
-     */
     protected function findById($id, ClassMetadata $metadata, EntityManagerInterface $manager)
     {
         return $manager->find($metadata->getName(), $id);

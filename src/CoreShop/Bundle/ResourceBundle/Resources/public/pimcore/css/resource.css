@@ -14,6 +14,6 @@
     background:url(../img/services.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_settings {
+body.pimcore_version_10 .coreshop_nav_icon_settings {
     background:url(../img/services_white.svg) center center no-repeat !important;
 }

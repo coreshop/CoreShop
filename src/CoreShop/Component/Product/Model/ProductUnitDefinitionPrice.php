@@ -6,15 +6,20 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 
-class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnitDefinitionPriceInterface
+/**
+ * @psalm-suppress MissingConstructor
+ */
+class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnitDefinitionPriceInterface, \Stringable
 {
     /**
      * @var int
@@ -31,58 +36,37 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
      */
     protected $unitDefinition;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId(int $id)
     {
         $this->id = $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice()
     {
-        return (int) $this->price;
+        return $this->price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPrice(int $price)
     {
         $this->price = $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUnitDefinition()
     {
         return $this->unitDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition)
     {
         $this->unitDefinition = $unitDefinition;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $definitionId = $this->getUnitDefinition() instanceof ProductUnitDefinitionInterface ? $this->getUnitDefinition()->getUnitName() : '--';
 

@@ -4,17 +4,17 @@ core_shop_core:
         default:
             steps:
                 customer:
-                  step: coreshop.checkout.step.customer
+                  step: CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep
                   priority: 10
                 address:
-                  step: coreshop.checkout.step.address
+                  step: CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep
                   priority: 20
                 shipping:
-                  step: coreshop.checkout.step.shipping
+                  step: CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep
                   priority: 30
                 payment:
-                  step: coreshop.checkout.step.payment
+                  step: CoreShop\Bundle\CoreBundle\Checkout\Step\PaymentCheckoutStep
                   priority: 40
                 summary:
-                  step: coreshop.checkout.step.summary
+                  step: CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep
                   priority: 50

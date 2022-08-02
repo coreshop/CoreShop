@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Taxation\Model;
 
@@ -17,12 +19,18 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 
-class TaxRate extends AbstractResource implements TaxRateInterface
+/**
+ * @psalm-suppress MissingConstructor
+ */
+class TaxRate extends AbstractResource implements TaxRateInterface, \Stringable
 {
     use ToggleableTrait;
+
     use TimestampableTrait;
+
     use TranslatableTrait {
         TranslatableTrait::__construct as private initializeTranslationsCollection;
+
         TranslatableTrait::getTranslation as private doGetTranslation;
     }
 
@@ -49,64 +57,40 @@ class TaxRate extends AbstractResource implements TaxRateInterface
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName('en'), $this->getId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName($language = null)
+    public function getName(?string $language = null)
     {
         return $this->getTranslation($language)->getName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setName($name, $language = null)
+    public function setName(string $name, ?string $language = null)
     {
         $this->getTranslation($language, false)->setName($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRate()
     {
         return $this->rate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setRate($rate)
     {
         $this->rate = $rate;
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return TaxRateTranslation
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): TaxRateTranslationInterface
     {
-        /** @var TaxRateTranslation $translation */
+        /** @var TaxRateTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
 
         return $translation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createTranslation()
+    protected function createTranslation(): TaxRateTranslationInterface
     {
         return new TaxRateTranslation();
     }

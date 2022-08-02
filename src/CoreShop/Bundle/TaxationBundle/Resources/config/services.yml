@@ -1,12 +1,12 @@
 imports:
-    - { resource: "services/form.yml" }
-    - { resource: "services/pimcore.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/form.yml }
+    - { resource: services/pimcore.yml }
 
 services:
     _defaults:
         public: true
 
-    coreshop.collector.taxes: '@CoreShop\Component\Taxation\Collector\TaxCollector'
     CoreShop\Component\Taxation\Collector\TaxCollectorInterface: '@CoreShop\Component\Taxation\Collector\TaxCollector'
     CoreShop\Component\Taxation\Collector\TaxCollector:
         arguments:

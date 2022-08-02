@@ -1,0 +1,22 @@
+imports:
+    - domain/product.yml
+    - domain/currency.yml
+    - domain/taxation.yml
+    - domain/cart.yml
+    - domain/category.yml
+    - domain/shipping.yml
+    - domain/country.yml
+    - domain/index.yml
+    - domain/index_condition.yml
+    - domain/pimcore.yml
+    - domain/order.yml
+    - domain/seo.yml
+    - domain/cli.yml
+    - domain/filter.yml
+    - domain/tracking.yml
+    - domain/theme.yml
+    - domain/product_quantity_price_rules.yml
+    - domain/menu.yml
+    - domain/version.yml
+    - domain/recycle_bin.yml
+    - domain/optimistic_entity_lock.yml

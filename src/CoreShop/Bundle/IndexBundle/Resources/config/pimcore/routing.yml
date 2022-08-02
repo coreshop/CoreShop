@@ -23,6 +23,7 @@ coreshop_admin_filter:
     type: coreshop.resources
     resource: |
       alias: coreshop.filter
+      clone: true
       additional_routes:
         config:
           path: get-config

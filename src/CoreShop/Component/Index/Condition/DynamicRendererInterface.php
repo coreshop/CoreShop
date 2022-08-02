@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Condition;
 
@@ -19,19 +21,10 @@ interface DynamicRendererInterface
     /**
      * Renders the condition.
      *
-     * @param WorkerInterface    $worker
-     * @param ConditionInterface $condition
-     * @param string             $prefix
      *
      * @return mixed
      */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null);
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null);
 
-    /**
-     * @param WorkerInterface    $worker
-     * @param ConditionInterface $condition
-     *
-     * @return bool
-     */
-    public function supports(WorkerInterface $worker, ConditionInterface $condition);
+    public function supports(WorkerInterface $worker, ConditionInterface $condition): bool;
 }

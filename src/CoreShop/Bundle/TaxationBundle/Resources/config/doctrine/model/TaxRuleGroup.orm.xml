@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Taxation\Model\TaxRuleGroup"
+                       table="coreshop_tax_rule_group">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="name" column="name"/>
+        <field name="active" column="active" type="boolean"/>
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+        <one-to-many field="taxRules" target-entity="CoreShop\Component\Taxation\Model\TaxRuleInterface" mapped-by="taxRuleGroup" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+    </mapped-superclass>
+</doctrine-mapping>

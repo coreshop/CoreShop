@@ -6,46 +6,29 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\Workflow\Workflow;
 
 final class OrderPaymentStateResolver implements StateResolverInterface
 {
-    /**
-     * @var StateMachineManager
-     */
-    private $stateMachineManager;
-
-    /**
-     * @var PaymentRepositoryInterface
-     */
-    private $paymentRepository;
-
-    /**
-     * @param StateMachineManager        $stateMachineManager
-     * @param PaymentRepositoryInterface $paymentRepository
-     */
-    public function __construct(StateMachineManager $stateMachineManager, PaymentRepositoryInterface $paymentRepository)
+    public function __construct(private StateMachineManager $stateMachineManager, private PaymentRepositoryInterface $paymentRepository)
     {
-        $this->stateMachineManager = $stateMachineManager;
-        $this->paymentRepository = $paymentRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolve(OrderInterface $order)
+    public function resolve(OrderInterface $order): void
     {
         $workflow = $this->stateMachineManager->get($order, OrderPaymentTransitions::IDENTIFIER);
         $targetTransition = $this->getTargetTransition($order);
@@ -55,24 +38,14 @@ final class OrderPaymentStateResolver implements StateResolverInterface
         }
     }
 
-    /**
-     * @param Workflow       $workflow
-     * @param OrderInterface $subject
-     * @param string         $transition
-     */
-    private function applyTransition(Workflow $workflow, $subject, string $transition)
+    private function applyTransition(Workflow $workflow, OrderInterface $subject, string $transition): void
     {
         if ($workflow->can($subject, $transition)) {
             $workflow->apply($subject, $transition);
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return string|null
-     */
-    private function getTargetTransition(OrderInterface $order)
+    private function getTargetTransition(OrderInterface $order): ?string
     {
         $refundedPaymentTotal = 0;
         $refundedPayments = $this->getPaymentsWithState($order, PaymentInterface::STATE_REFUNDED);
@@ -125,12 +98,9 @@ final class OrderPaymentStateResolver implements StateResolverInterface
     }
 
     /**
-     * @param OrderInterface $order
-     * @param string         $state
-     *
      * @return PaymentInterface[]
      */
-    private function getPaymentsWithState(OrderInterface $order, string $state)
+    private function getPaymentsWithState(OrderInterface $order, string $state): array
     {
         $payments = $this->paymentRepository->findForPayable($order);
         $filteredPayments = [];

@@ -6,16 +6,18 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\CartItemType;
 use CoreShop\Bundle\OrderBundle\Form\Type\QuantityType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsChoiceType;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,10 +27,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CartItemTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (!$options['allow_units']) {
             return;
@@ -38,11 +37,11 @@ final class CartItemTypeExtension extends AbstractTypeExtension
             $data = $event->getData();
             $form = $event->getForm();
 
-            if (!$data instanceof CartItemInterface) {
+            if (!$data instanceof OrderItemInterface) {
                 return;
             }
 
-            /** @var ProductInterface $product */
+            /** @var ProductInterface|null $product */
             $product = $data->getProduct();
             if (!$product instanceof ProductInterface) {
                 return;
@@ -54,7 +53,7 @@ final class CartItemTypeExtension extends AbstractTypeExtension
                     'html5' => true,
                     'unit_definition' => $data->hasUnitDefinition() ? $data->getUnitDefinition() : null,
                     'label' => 'coreshop.ui.quantity',
-                    'disabled' => $data->getIsGiftItem(),
+                    'disabled' => (bool)$data->getIsGiftItem(),
                 ]);
 
             if (!$product->hasUnitDefinitions()) {
@@ -69,26 +68,12 @@ final class CartItemTypeExtension extends AbstractTypeExtension
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('allow_units', false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType()
-    {
-        return CartItemType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [CartItemType::class];
     }

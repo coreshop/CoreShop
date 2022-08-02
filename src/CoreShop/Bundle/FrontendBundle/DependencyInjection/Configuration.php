@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\DependencyInjection;
 
@@ -33,13 +35,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_frontend');
+        $treeBuilder = new TreeBuilder('core_shop_frontend');
+        /** @var ArrayNodeDefinition $rootNode */
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
@@ -47,16 +47,36 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('view_bundle')->defaultValue('CoreShopFrontend')->end()
             ->end();
 
+        $this->addCategorySection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
         $this->addControllerSection($rootNode);
 
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addControllerSection(ArrayNodeDefinition $node)
+    private function addCategorySection(ArrayNodeDefinition $node): void
+    {
+        $node->children()
+            ->arrayNode('category')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('valid_sort_options')
+                        ->defaultValue(['name'])
+                        ->scalarPrototype()->end()
+                    ->end()
+                    ->scalarNode('default_sort_name')->defaultValue('name')->end()
+                    ->scalarNode('default_sort_direction')
+                        ->defaultValue('asc')
+                        ->validate()
+                            ->ifNotInArray(['asc', 'desc'])
+                            ->thenInvalid('Supported values are asc, desc.')
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function addControllerSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('controllers')
@@ -81,10 +101,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -107,11 +124,6 @@ final class Configuration implements ConfigurationInterface
                                 ->treatNullLike([])
                                 ->scalarPrototype()->end()
                                 ->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/image-thumbnails.yml'])
-                            ->end()
-                            ->arrayNode('translations')
-                                ->treatNullLike([])
-                                ->scalarPrototype()->end()
-                                ->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/translations.yml'])
                             ->end()
                         ->end()
                     ->end()

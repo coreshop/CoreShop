@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
@@ -17,15 +19,8 @@ use Pimcore\Model\DataObject;
 
 class DataLoader implements DataLoaderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataForObject(DataObject\Concrete $data, $loadedObjects = [])
+    public function getDataForObject(DataObject\Concrete $data, array $loadedObjects = []): array
     {
-        if (!$data instanceof DataObject\AbstractObject) {
-            return [];
-        }
-
         $objectData = [];
         DataObject\Service::loadAllObjectFields($data);
 
@@ -40,13 +35,13 @@ class DataLoader implements DataLoaderInterface
 
             $fieldData = $data->$getter();
 
-            if ($def instanceof DataObject\ClassDefinition\Data\ManyToOneRelation || $def instanceof DataObject\ClassDefinition\Data\Href) {
+            if ($def instanceof DataObject\ClassDefinition\Data\ManyToOneRelation) {
                 if ($fieldData instanceof DataObject\Concrete) {
                     if (!in_array($fieldData->getId(), $loadedObjects)) {
                         $objectData[$key] = $this->getDataForObject($fieldData, $loadedObjects);
                     }
                 }
-            } elseif ($def instanceof DataObject\ClassDefinition\Data\ManyToManyRelation || $def instanceof DataObject\ClassDefinition\Data\Multihref) {
+            } elseif ($def instanceof DataObject\ClassDefinition\Data\ManyToManyRelation) {
                 $objectData[$key] = [];
 
                 if (!is_array($fieldData)) {

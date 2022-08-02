@@ -1,0 +1,23 @@
+coreshop_admin_customer:
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.customer
+      no_default_routes: true
+      additional_routes:
+        folder:
+          path: folder-configuration
+          action: folderConfiguration
+          methods:
+            - GET
+
+coreshop_admin_customer_group:
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.customer_group
+      no_default_routes: true
+      additional_routes:
+        folder:
+          path: folder-configuration
+          action: folderConfiguration
+          methods:
+            - GET

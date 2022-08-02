@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
@@ -33,10 +35,7 @@ interface StoreInterface extends BaseStoreInterface, CountriesAwareInterface
      */
     public function getBaseCountry();
 
-    /**
-     * @param CountryInterface $baseCurrency
-     */
-    public function setBaseCountry(CountryInterface $baseCurrency);
+    public function setBaseCountry(CountryInterface $baseCountry);
 
     /**
      * @return Collection|ConfigurationInterface[]
@@ -48,19 +47,11 @@ interface StoreInterface extends BaseStoreInterface, CountriesAwareInterface
      */
     public function hasConfigurations();
 
-    /**
-     * @param ConfigurationInterface $configuration
-     */
     public function addConfiguration(ConfigurationInterface $configuration);
 
-    /**
-     * @param ConfigurationInterface $configuration
-     */
     public function removeConfiguration(ConfigurationInterface $configuration);
 
     /**
-     * @param ConfigurationInterface $configuration
-     *
      * @return bool
      */
     public function hasConfiguration(ConfigurationInterface $configuration);

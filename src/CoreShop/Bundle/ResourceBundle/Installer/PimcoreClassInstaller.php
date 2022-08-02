@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
@@ -20,51 +22,24 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
 {
-    /**
-     * @var array
-     */
-    private $installedClasses = [];
+    private array $installedClasses = [];
 
-    /**
-     * @var array
-     */
-    private $installedCollections = [];
+    private array $installedCollections = [];
 
-    /**
-     * @var array
-     */
-    private $installedBricks = [];
+    private array $installedBricks = [];
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var ClassInstallerInterface
-     */
-    private $classInstaller;
-
-    /**
-     * @param KernelInterface         $kernel
-     * @param ClassInstallerInterface $classInstaller
-     */
-    public function __construct(
-        KernelInterface $kernel,
-        ClassInstallerInterface $classInstaller
-    ) {
-        $this->kernel = $kernel;
-        $this->classInstaller = $classInstaller;
+    public function __construct(private KernelInterface $kernel, private ClassInstallerInterface $classInstaller)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore_classes', $applicationName) : 'coreshop.all.pimcore_classes';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            /**
+             * @var array $pimcoreClasses
+             */
             $pimcoreClasses = $this->kernel->getContainer()->getParameter($parameter);
             $fieldCollections = [];
             $bricks = [];
@@ -97,7 +72,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
                                 'file' => $file,
                             ];
                         }
-                    } catch (\InvalidArgumentException $ex) {
+                    } catch (\InvalidArgumentException) {
                         //File not found, continue with next, maybe add some logging?
                     }
                 }
@@ -142,26 +117,17 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getInstalledClasses()
+    public function getInstalledClasses(): array
     {
         return $this->installedClasses;
     }
 
-    /**
-     * @return array
-     */
-    public function getInstalledCollections()
+    public function getInstalledCollections(): array
     {
         return $this->installedCollections;
     }
 
-    /**
-     * @return array
-     */
-    public function getInstalledBricks()
+    public function getInstalledBricks(): array
     {
         return $this->installedBricks;
     }

@@ -6,14 +6,15 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
@@ -23,48 +24,14 @@ use Webmozart\Assert\Assert;
 
 final class CurrencyContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
-    private $currencyRepository;
-
-    /**
-     * @var CurrencyContextInterface
-     */
-    private $currencyContext;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
-
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyContextInterface    $currencyContext
-     * @param MoneyFormatterInterface     $moneyFormatter
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CurrencyRepositoryInterface $currencyRepository,
-        CurrencyContextInterface $currencyContext,
-        MoneyFormatterInterface $moneyFormatter
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->currencyRepository = $currencyRepository;
-        $this->currencyContext = $currencyContext;
-        $this->moneyFormatter = $moneyFormatter;
+    public function __construct(private CurrencyRepositoryInterface $currencyRepository, private CurrencyContextInterface $currencyContext, private MoneyFormatterInterface $moneyFormatter)
+    {
     }
 
     /**
      * @Then /^the site should be using (currency "[^"]+")$/
      */
-    public function theSiteShouldBeUsingCurrency(CurrencyInterface $currency)
+    public function theSiteShouldBeUsingCurrency(CurrencyInterface $currency): void
     {
         Assert::same(
             $currency->getId(),
@@ -80,17 +47,17 @@ final class CurrencyContext implements Context
     /**
      * @Then /^the (store "[^"]+") should have "([^"]+)" currencies$/
      */
-    public function theStoreShouldHaveXCurrencies(StoreInterface $store, $countOfCurrencies)
+    public function theStoreShouldHaveXCurrencies(StoreInterface $store, $countOfCurrencies): void
     {
         $validCurrencies = $this->currencyRepository->findActiveForStore($store);
 
         Assert::same(
             count($validCurrencies),
-            (int) $countOfCurrencies,
+            (int)$countOfCurrencies,
             sprintf(
                 'Found "%s" valid currencies instead of of "%s"',
                 count($validCurrencies),
-                (int) $countOfCurrencies
+                (int)$countOfCurrencies
             )
         );
     }
@@ -98,9 +65,9 @@ final class CurrencyContext implements Context
     /**
      * @Then /^the amount "([^"]+)" of (currency "[^"]+") in language "([^"]+)" should be formatted "([^"]+)"$/
      */
-    public function currencyShouldBeFormatted($amount, CurrencyInterface $currency, $locale, $shouldBeFormat)
+    public function currencyShouldBeFormatted($amount, CurrencyInterface $currency, $locale, $shouldBeFormat): void
     {
-        $format = $this->moneyFormatter->format((int) $amount, $currency->getIsoCode(), $locale);
+        $format = $this->moneyFormatter->format((int)$amount, $currency->getIsoCode(), $locale);
 
         Assert::eq(
             $format,

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -23,53 +25,13 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CarriersReport implements ReportInterface
 {
-    /**
-     * @var int
-     */
-    private $totalRecords = 0;
+    private int $totalRecords = 0;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var Connection
-     */
-    private $db;
-
-    /**
-     * @var RepositoryInterface
-     */
-    private $carrierRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param RepositoryInterface        $carrierRepository
-     * @param PimcoreRepositoryInterface $orderRepository
-     */
-    public function __construct(
-        RepositoryInterface $storeRepository,
-        Connection $db,
-        RepositoryInterface $carrierRepository,
-        PimcoreRepositoryInterface $orderRepository
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->db = $db;
-        $this->carrierRepository = $carrierRepository;
-        $this->orderRepository = $orderRepository;
+    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private RepositoryInterface $carrierRepository, private PimcoreRepositoryInterface $orderRepository)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -80,7 +42,7 @@ class CarriersReport implements ReportInterface
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();
 
-        if (is_null($storeId)) {
+        if (null === $storeId) {
             return [];
         }
 
@@ -107,7 +69,7 @@ class CarriersReport implements ReportInterface
                 ) t 
               WHERE store = $storeId AND carrier IS NOT NULL AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp GROUP BY carrier";
 
-        $results = $this->db->fetchAll($sql);
+        $results = $this->db->fetchAllAssociative($sql);
         $data = [];
 
         foreach ($results as $result) {
@@ -119,17 +81,14 @@ class CarriersReport implements ReportInterface
 
             $data[] = [
                 'carrier' => $carrier instanceof CarrierInterface ? $carrier->getIdentifier() : $result['carrier'],
-                'data' => (float) $result['percentage'],
+                'data' => (float)$result['percentage'],
             ];
         }
 
-        return array_values($data);
+        return $data;
     }
 
-    /**
-     * @return int
-     */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

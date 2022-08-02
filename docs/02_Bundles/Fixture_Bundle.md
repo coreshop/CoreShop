@@ -4,7 +4,7 @@ Fixture Bundle allows us to Install certain data needed for runtime of CoreShop 
 
 ## Installation
 ```bash
-$ composer require coreshop/fixture-bundle:^2.0
+$ composer require coreshop/fixture-bundle:^3.0
 ```
 
 ### Adding required bundles to kernel

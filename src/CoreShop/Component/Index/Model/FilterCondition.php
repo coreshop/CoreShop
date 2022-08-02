@@ -6,15 +6,20 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class FilterCondition extends AbstractResource implements FilterConditionInterface
 {
     use TimestampableTrait;
@@ -30,6 +35,11 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
     public $type;
 
     /**
+     * @var int
+     */
+    public $sort;
+
+    /**
      * @var string
      */
     public $field;
@@ -40,7 +50,7 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
     public $label;
 
     /**
-     * @var int
+     * @var string
      */
     public $quantityUnit;
 
@@ -49,41 +59,36 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
      */
     public $configuration;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setType($type)
     {
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
+    public function setSort($sort)
+    {
+        $this->sort = $sort;
+    }
+
     public function getLabel()
     {
         return $this->label;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLabel($label)
     {
         $this->label = $label;
@@ -91,17 +96,11 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQuantityUnit()
     {
         return $this->quantityUnit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setQuantityUnit($quantityUnit)
     {
         $this->quantityUnit = $quantityUnit;
@@ -109,17 +108,11 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfiguration()
     {
         return $this->configuration;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setConfiguration($configuration)
     {
         $this->configuration = $configuration;

@@ -6,35 +6,25 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Address\Formatter;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use Pimcore\Placeholder;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 class AddressFormatter implements AddressFormatterInterface
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private Environment $twig, private TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function formatAddress(AddressInterface $address, $asHtml = true)
+    public function formatAddress(AddressInterface $address, bool $asHtml = true): string
     {
         if (method_exists($address, 'getObjectVars')) {
             $objectVars = $address->getObjectVars();
@@ -43,7 +33,6 @@ class AddressFormatter implements AddressFormatterInterface
         }
 
         $objectVars['country'] = $address->getCountry();
-        $objectVars['state'] = $address->getState();
 
         //translate salutation
         if (!empty($address->getSalutation())) {
@@ -51,27 +40,12 @@ class AddressFormatter implements AddressFormatterInterface
             $objectVars['salutation'] = $this->translator->trans($translationKey);
         }
 
-        $placeHolder = new Placeholder();
-
-        $address = $placeHolder->replacePlaceholders($address->getCountry()->getAddressFormat(), $objectVars);
+        $convertedAddress = $this->twig->createTemplate($address->getCountry()->getAddressFormat())->render($objectVars);
 
         if ($asHtml) {
-            $address = nl2br($this->removeEmptyLines($address));
+            $convertedAddress = \nl2br($convertedAddress);
         }
 
-        return $address;
-    }
-
-    /**
-     * @param string $payload
-     * @return string
-     */
-    private function removeEmptyLines(string $payload) : string
-    {
-        $values = array_filter(explode( "\n", $payload), function ($value) {
-            return !empty(trim($value));
-        });
-
-        return implode("\n", $values);
+        return $convertedAddress;
     }
 }

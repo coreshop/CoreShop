@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Model;
 
@@ -22,29 +24,17 @@ interface ProductUnitDefinitionsInterface extends ResourceInterface
      */
     public function getProduct();
 
-    /**
-     * @param ProductInterface $product
-     */
     public function setProduct(ProductInterface $product);
 
     /**
-     * @return ProductUnitDefinitionInterface
+     * @return ProductUnitDefinitionInterface|null
      */
     public function getDefaultUnitDefinition();
 
-    /**
-     * @param ProductUnitDefinitionInterface $defaultUnitDefinition
-     */
     public function setDefaultUnitDefinition(ProductUnitDefinitionInterface $defaultUnitDefinition);
 
-    /**
-     * @param ProductUnitDefinitionInterface $productUnitDefinition
-     */
     public function addUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition);
 
-    /**
-     * @param ProductUnitDefinitionInterface $productUnitDefinition
-     */
     public function removeUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition);
 
     /**
@@ -58,20 +48,12 @@ interface ProductUnitDefinitionsInterface extends ResourceInterface
     public function hasUnitDefinition(ProductUnitDefinitionInterface $unitDefinition);
 
     /**
-     * @param string $identifier
-     *
      * @return ProductUnitDefinitionInterface|null
      */
     public function getUnitDefinition(string $identifier);
 
-    /**
-     * @param \CoreShop\Component\Product\Model\ProductUnitDefinitionInterface $unitDefinition
-     */
     public function addAdditionalUnitDefinition(ProductUnitDefinitionInterface $unitDefinition);
 
-    /**
-     * @param \CoreShop\Component\Product\Model\ProductUnitDefinitionInterface $unitDefinition
-     */
     public function removeAdditionalUnitDefinition(ProductUnitDefinitionInterface $unitDefinition);
 
     /**

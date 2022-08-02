@@ -68,6 +68,7 @@ services:
     coreshop.behat.context.transform.customer:
         class: CoreShop\Behat\Context\Transform\CustomerContext
         arguments:
+            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.customer'
         tags:
             - { name: fob.context_service }
@@ -89,7 +90,6 @@ services:
     coreshop.behat.context.transform.store:
         class: CoreShop\Behat\Context\Transform\StoreContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.store'
         tags:
             - { name: fob.context_service }
@@ -122,8 +122,8 @@ services:
         class: CoreShop\Behat\Context\Transform\CartContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.repository.cart'
-            - '@coreshop.context.cart'
+            - '@coreshop.repository.order'
+            - '@CoreShop\Component\Order\Context\CartContextInterface'
         tags:
             - { name: fob.context_service }
 
@@ -131,7 +131,6 @@ services:
         class: CoreShop\Behat\Context\Transform\AddressContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.repository.address'
         tags:
             - { name: fob.context_service }
 
@@ -162,7 +161,6 @@ services:
         class: CoreShop\Behat\Context\Transform\FilterContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.repository.filter'
         tags:
             - { name: fob.context_service }
 
@@ -209,5 +207,15 @@ services:
         class: CoreShop\Behat\Context\Transform\VersionContext
         arguments:
             - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.variant:
+        class: CoreShop\Behat\Context\Transform\VariantContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop.repository.attribute_group'
+            - '@coreshop.repository.attribute_color'
+            - '@coreshop.repository.attribute_value'
         tags:
             - { name: fob.context_service }

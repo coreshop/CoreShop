@@ -1,31 +1,46 @@
 name: Behat
 on:
   push:
-    branches: [ master, '2.2', '3.0' ]
+    branches: [ 'master' ]
   pull_request:
-    branches: [ master, '2.2', '3.0' ]
+    branches: [ 'master' ]
 
 jobs:
   behat:
     runs-on: ubuntu-latest
     env:
-      PIMCORE_ENVIRONMENT: "test"
-      CORESHOP_TEST: 1
+      APP_ENV: "test"
+      CORESHOP_SKIP_DB_SETUP: "1"
       PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
+      PIMCORE_INSTALL_ADMIN_USERNAME: "admin"
+      PIMCORE_INSTALL_ADMIN_PASSWORD: "admin"
+      PIMCORE_INSTALL_MYSQL_HOST_SOCKET: "127.0.0.1"
+      PIMCORE_INSTALL_MYSQL_USERNAME: "root"
+      PIMCORE_INSTALL_MYSQL_PASSWORD: "root"
+      PIMCORE_INSTALL_MYSQL_DATABASE: "coreshop_test"
+      PIMCORE_INSTALL_MYSQL_PORT: "3306"
+      PIMCORE_KERNEL_CLASS: 'Kernel'
+      PIMCORE_CLASS_DIRECTORY: 'var/tmp/behat/var/classes'
+      PIMCORE_WRITE_TARGET_STATICROUTES: 'settings-store'
+
+    strategy:
+      matrix:
+        php: [ 8.0, 8.1 ]
+        pimcore: [ ^10.4, ^10.5, ^11.0 ]
+        dependencies: [ highest, lowest ]
+        exclude:
+          - php: 8.1
+            dependencies: lowest
+
     services:
-      mysql:
-        image: mysql:5.7
+      database:
+        image: "mariadb:10.5"
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: coreshop_test
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    strategy:
-      matrix:
-        php: [7.2, 7.3, 7.4]
-        symfony: [~3.4, ^4.0]
-        pimcore: [~6.6.0, ~6.7.0, ~6.8.0]
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
     - uses: actions/checkout@v2
@@ -34,19 +49,15 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
+        ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
         extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
 
     - name: Check PHP Version
       run: php -v
 
-    - name: Verify MySQL connection
+    - name: Setup DB
       run: |
-        mysql --version
-        sudo apt-get install -y mysql-client
-        mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
-
-    - name: Copy parameters.yml
-      run: cp app/config/parameters.example.yml app/config/parameters.yml
+        mysql --host 127.0.0.1 --port ${{ job.services.database.ports['3306'] }} -uroot -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
     - name: Get composer cache directory
       id: composer-cache
@@ -59,18 +70,30 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         restore-keys: ${{ runner.os }}-composer-
 
-    - name: Composer install
+    - if: matrix.dependencies == 'highest'
+      name: Install dependencies highest
       run: |
-        composer config minimum-stability dev
-        composer config prefer-stable true
-        composer req pimcore/pimcore:${{ matrix.pimcore }} symfony/symfony:${{ matrix.symfony }} --no-interaction --no-scripts --no-update
-        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+        composer update --no-progress --prefer-dist --optimize-autoloader
+
+    - if: matrix.dependencies == 'lowest'
+      name: Install dependencies lowest
+      run: |
+        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+        composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
 
     - name: Cache clear
       run: bin/console cache:clear
 
     - name: Assets Install
-      run: bin/console assets:install --symlink web
+      run: bin/console assets:install --symlink
+
+    - name: Install Pimcore
+      run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --ignore-existing-config --env=test --skip-database-config
+
+    - name: Install CoreShop
+      run: |
+        bin/console coreshop:install
 
     - name: Run Behat
-      run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist
+      run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default

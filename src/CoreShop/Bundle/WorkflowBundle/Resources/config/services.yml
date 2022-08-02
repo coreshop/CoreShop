@@ -1,2 +1,60 @@
+parameters:
+    coreshop.workflow.manager.history_log_state_identifier: !php/const CoreShop\Bundle\WorkflowBundle\Notes::HISTORY_STATE_LOG
+
 imports:
-    - { resource: 'services/workflow.yml' }
+    - { resource: services_alias.yml }
+
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface: '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager'
+    CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager:
+        arguments:
+            - '@workflow.registry'
+
+    CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface: '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
+    CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier:
+        arguments:
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager'
+
+    CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition:
+        public: true
+        arguments:
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager'
+
+    ## event handler
+    CoreShop\Bundle\WorkflowBundle\EventListener\WorkflowListener:
+        arguments:
+            - '%coreshop.state_machine.callbacks%'
+            - '@service_container'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface: '@CoreShop\Bundle\WorkflowBundle\History\HistoryLogger'
+    CoreShop\Bundle\WorkflowBundle\History\HistoryLogger:
+        arguments:
+            - '@CoreShop\Component\Pimcore\DataObject\NoteService'
+            - '@Pimcore\Translation\Translator'
+            - '%coreshop.workflow.manager.history_log_state_identifier%'
+
+    CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface: '@CoreShop\Bundle\WorkflowBundle\History\StateHistoryLogger'
+    CoreShop\Bundle\WorkflowBundle\History\StateHistoryLogger:
+        arguments:
+            - '@CoreShop\Component\Pimcore\DataObject\NoteService'
+            - '@Pimcore\Translation\Translator'
+            - '%coreshop.workflow.manager.history_log_state_identifier%'
+
+    CoreShop\Bundle\WorkflowBundle\History\HistoryRepositoryInterface: '@CoreShop\Bundle\WorkflowBundle\History\HistoryRepository'
+    CoreShop\Bundle\WorkflowBundle\History\HistoryRepository:
+        arguments:
+            - '%coreshop.workflow.manager.history_log_state_identifier%'
+
+    CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface: '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManager'
+    CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManager:
+        arguments:
+            - '@event_dispatcher'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager'
+            - '@translator'
+            - '@CoreShop\Bundle\WorkflowBundle\History\HistoryRepositoryInterface'
+            - '%coreshop.state_machine.colors%'

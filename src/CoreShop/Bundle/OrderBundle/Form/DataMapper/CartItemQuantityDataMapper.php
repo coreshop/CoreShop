@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Form\DataMapper;
 
@@ -20,48 +22,27 @@ use Symfony\Component\Form\DataMapperInterface;
  */
 class CartItemQuantityDataMapper implements DataMapperInterface
 {
-    /**
-     * @var StorageListItemQuantityModifierInterface
-     */
-    private $cartItemQuantityModifier;
-
-    /**
-     * @var DataMapperInterface
-     */
-    private $propertyPathDataMapper;
-
-    /**
-     * @param StorageListItemQuantityModifierInterface $cartItemQuantityModifier
-     * @param DataMapperInterface                      $propertyPathDataMapper
-     */
-    public function __construct(
-        StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
-        DataMapperInterface $propertyPathDataMapper
-    ) {
-        $this->cartItemQuantityModifier = $cartItemQuantityModifier;
-        $this->propertyPathDataMapper = $propertyPathDataMapper;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function mapDataToForms($data, $forms): void
+    public function __construct(private StorageListItemQuantityModifierInterface $cartItemQuantityModifier, private DataMapperInterface $propertyPathDataMapper)
     {
-        $this->propertyPathDataMapper->mapDataToForms($data, $forms);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function mapFormsToData($forms, &$data): void
+    public function mapDataToForms($viewData, $forms): void
+    {
+        $this->propertyPathDataMapper->mapDataToForms($viewData, $forms);
+    }
+
+    public function mapFormsToData($forms, &$viewData): void
     {
         $formsOtherThanQuantity = [];
         $quantityForm = null;
 
         //First map all the other fields, then map quantity.
-        foreach ($forms as $key => $form) {
+        foreach ($forms as $form) {
             if ('quantity' === $form->getName()) {
                 $quantityForm = $form;
+
+                $targetQuantity = $form->getData();
+                $this->cartItemQuantityModifier->modify($viewData, (float)$targetQuantity);
 
                 continue;
             }
@@ -70,12 +51,12 @@ class CartItemQuantityDataMapper implements DataMapperInterface
         }
 
         if (!empty($formsOtherThanQuantity)) {
-            $this->propertyPathDataMapper->mapFormsToData($formsOtherThanQuantity, $data);
+            $this->propertyPathDataMapper->mapFormsToData($formsOtherThanQuantity, $viewData);
         }
 
         if (null !== $quantityForm) {
             $targetQuantity = $quantityForm->getData();
-            $this->cartItemQuantityModifier->modify($data, (float) $targetQuantity);
+            $this->cartItemQuantityModifier->modify($viewData, (float)$targetQuantity);
         }
     }
 }

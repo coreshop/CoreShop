@@ -6,85 +6,49 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Interpreter;
 
 class RelationalValue implements RelationalValueInterface
 {
-    /**
-     * @var int
-     */
-    protected $destinationId;
+    protected array $params;
 
-    /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @var array
-     */
-    protected $params;
-
-    /**
-     * @param int    $destinationId
-     * @param string $type
-     * @param array $params
-     */
-    public function __construct(int $destinationId, string $type, array $params = [])
+    public function __construct(protected int $destinationId, protected string $type, array $params = [])
     {
-        $this->destinationId = $destinationId;
-        $this->type = $type;
         $this->params = $params;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDestinationId()
+    public function getDestinationId(): int
     {
         return $this->destinationId;
     }
 
-    /**
-     * @param int $destinationId
-     */
-    public function setDestinationId($destinationId)
+    public function setDestinationId(int $destinationId): void
     {
         $this->destinationId = $destinationId;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     */
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }
 
-    /**
-     * @param array $params
-     */
-    public function setParams(array $params)
+    public function setParams(array $params): void
     {
         $this->params = $params;
     }

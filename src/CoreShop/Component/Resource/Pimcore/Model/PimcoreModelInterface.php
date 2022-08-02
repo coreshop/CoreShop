@@ -6,13 +6,16 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\Pimcore\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\Element\ElementInterface;
 
 interface PimcoreModelInterface extends ResourceInterface, ElementInterface
@@ -48,9 +51,14 @@ interface PimcoreModelInterface extends ResourceInterface, ElementInterface
     public function setParent($parent);
 
     /**
-     * @return ElementInterface
+     * @return ElementInterface|null
      */
     public function getParent();
+
+    /**
+     * @return mixed
+     */
+    public function getObjectVar($field);
 
     /**
      * @return mixed
@@ -61,4 +69,14 @@ interface PimcoreModelInterface extends ResourceInterface, ElementInterface
      * @return mixed
      */
     public function delete();
+
+    /**
+     * @return array
+     */
+    public function getChildren(array $type = [], $includingUnpublished = false);
+
+    /**
+     * @return ClassDefinition
+     */
+    public function getClass();
 }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\BatchProcessing;
 
@@ -18,95 +20,50 @@ use Pimcore\Model\DataObject;
 
 final class DataObjectBatchListing implements Iterator, Countable
 {
-    /**
-     * @var DataObject\Listing
-     */
-    private $list;
+    private int $index = 0;
 
-    /**
-     * @var int
-     */
-    private $batchSize;
+    private int $loop = 0;
 
-    /**
-     * @var int
-     */
-    private $index = 0;
+    private int $currentLoopLoaded = -1;
 
-    /**
-     * @var int
-     */
-    private $loop = 0;
+    private int $total = 0;
 
-    /**
-     * @var int
-     */
-    private $currentLoopLoaded = -1;
+    private array $items = [];
 
-    /**
-     * @var int
-     */
-    private $total = 0;
+    private ?array $ids = null;
 
-    /**
-     * @var array
-     */
-    private $items = [];
-    
-    /**
-     * @var array
-     */
-    private $ids = [];
-
-    public function __construct(DataObject\Listing $list, int $batchSize)
+    public function __construct(private DataObject\Listing $list, private int $batchSize)
     {
-        $this->list = $list;
-        $this->batchSize = $batchSize;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function current()
+    public function current(): DataObject
     {
         return $this->items[$this->index];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function next()
+    public function next(): void
     {
-        $this->index++;
+        ++$this->index;
 
         if ($this->index >= $this->batchSize) {
             $this->index = 0;
-            $this->loop++;
+            ++$this->loop;
 
             $this->load();
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function key()
+    public function key(): int
     {
-        return ($this->index + 1) * ($this->loop + 1);
+        return ($this->loop * $this->batchSize) + ($this->index + 1);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->items[$this->index]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->index = 0;
         $this->loop = 0;
@@ -115,16 +72,19 @@ final class DataObjectBatchListing implements Iterator, Countable
         $this->load();
     }
 
-    public function count()
+    public function count(): int
     {
         if (!$this->total) {
             $dao = $this->list->getDao();
 
             if (!method_exists($dao, 'getTotalCount')) {
-                throw new \InvalidArgumentException(sprintf('%s listing class does not support count.',
-                    get_class($this->list)));
+                throw new \InvalidArgumentException(sprintf(
+                    '%s listing class does not support count.',
+                    $this->list::class
+                ));
             }
 
+            /** @psalm-suppress InternalMethod */
             $this->total = $dao->getTotalCount();
         }
 
@@ -134,24 +94,33 @@ final class DataObjectBatchListing implements Iterator, Countable
     /**
      * Load all items based on current state.
      */
-    private function load()
+    private function load(): void
     {
         if (null === $this->ids) {
             $dao = $this->list->getDao();
 
             if (!method_exists($dao, 'loadIdList')) {
-                throw new \InvalidArgumentException(sprintf('%s listing class does not support loadIdList.',
-                    get_class($this->list)));
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        '%s listing class does not support loadIdList.',
+                        $this->list::class
+                    )
+                );
             }
 
+            /** @psalm-suppress InternalMethod */
             $this->ids = $dao->loadIdList();
         }
 
         if ($this->currentLoopLoaded !== $this->loop) {
             $items = [];
 
-            for ($i = 0; $i < $this->batchSize; $i++) {
+            for ($i = 0; $i < $this->batchSize; ++$i) {
                 $idOffset = ($this->loop * $this->batchSize) + $i;
+
+                if (!array_key_exists($idOffset, $this->ids)) {
+                    break;
+                }
 
                 $itemId = $this->ids[$idOffset];
 

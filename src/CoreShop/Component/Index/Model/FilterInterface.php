@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Model;
 
@@ -68,19 +70,11 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
      */
     public function hasPreConditions();
 
-    /**
-     * @param FilterConditionInterface $preCondition
-     */
     public function addPreCondition(FilterConditionInterface $preCondition);
 
-    /**
-     * @param FilterConditionInterface $preCondition
-     */
     public function removePreCondition(FilterConditionInterface $preCondition);
 
     /**
-     * @param FilterConditionInterface $preCondition
-     *
      * @return bool
      */
     public function hasPreCondition(FilterConditionInterface $preCondition);
@@ -95,19 +89,11 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
      */
     public function hasConditions();
 
-    /**
-     * @param FilterConditionInterface $condition
-     */
     public function addCondition(FilterConditionInterface $condition);
 
-    /**
-     * @param FilterConditionInterface $condition
-     */
     public function removeCondition(FilterConditionInterface $condition);
 
     /**
-     * @param FilterConditionInterface $condition
-     *
      * @return bool
      */
     public function hasCondition(FilterConditionInterface $condition);
@@ -117,8 +103,5 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
      */
     public function getIndex();
 
-    /**
-     * @param IndexInterface $index
-     */
     public function setIndex(IndexInterface $index);
 }

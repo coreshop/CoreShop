@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Customer\Context\RequestBased;
 
@@ -20,72 +22,31 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CustomerContext implements CustomerContextInterface
 {
-    /**
-     * @var RequestResolverInterface
-     */
-    private $requestResolver;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @param RequestResolverInterface $requestResolver
-     * @param RequestStack             $requestStack
-     */
-    public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
+    public function __construct(private RequestResolverInterface $requestResolver, private RequestStack $requestStack)
     {
-        $this->requestResolver = $requestResolver;
-        $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCustomer()
+    public function getCustomer(): CustomerInterface
     {
         try {
-            return $this->getCustomerForRequest($this->getMasterRequest());
+            return $this->getCustomerForRequest($this->getMainRequest());
         } catch (\UnexpectedValueException $exception) {
             throw new CustomerNotFoundException($exception);
         }
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return CustomerInterface
-     */
-    private function getCustomerForRequest(Request $request)
+    private function getCustomerForRequest(Request $request): CustomerInterface
     {
-        $customer = $this->requestResolver->findCustomer($request);
-
-        $this->assertCustomerWasFound($customer);
-
-        return $customer;
+        return $this->requestResolver->findCustomer($request);
     }
 
-    /**
-     * @return Request
-     */
-    private function getMasterRequest()
+    private function getMainRequest(): Request
     {
-        $masterRequest = $this->requestStack->getMasterRequest();
+        $masterRequest = $this->requestStack->getMainRequest();
         if (null === $masterRequest) {
             throw new \UnexpectedValueException('There are not any requests on request stack');
         }
 
         return $masterRequest;
-    }
-
-    /**
-     * @param CustomerInterface|null $customer $store
-     */
-    private function assertCustomerWasFound(CustomerInterface $customer = null)
-    {
-        if (null === $customer) {
-            throw new \UnexpectedValueException('Customer was not found for given request');
-        }
     }
 }

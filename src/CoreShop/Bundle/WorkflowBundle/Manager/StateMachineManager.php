@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\WorkflowBundle\Manager;
 
@@ -18,31 +20,16 @@ use Symfony\Component\Workflow\Workflow;
 
 final class StateMachineManager implements StateMachineManagerInterface
 {
-    /**
-     * @var Registry
-     */
-    private $registry;
-
-    /**
-     * @param Registry $registry
-     */
-    public function __construct(Registry $registry)
+    public function __construct(private Registry $registry)
     {
-        $this->registry = $registry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get($subject, $workflowName = null)
+    public function get(object $subject, string $workflowName = null): Workflow
     {
         return $this->registry->get($subject, $workflowName);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTransitionFromState(Workflow $workflow, $subject, string $fromState)
+    public function getTransitionFromState(Workflow $workflow, object $subject, string $fromState): ?string
     {
         /** @var Transition $transition */
         foreach ($workflow->getEnabledTransitions($subject) as $transition) {
@@ -54,10 +41,7 @@ final class StateMachineManager implements StateMachineManagerInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTransitionToState(Workflow $workflow, $subject, string $toState)
+    public function getTransitionToState(Workflow $workflow, object $subject, string $toState): ?string
     {
         /** @var Transition $transition */
         foreach ($workflow->getEnabledTransitions($subject) as $transition) {

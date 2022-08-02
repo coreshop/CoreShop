@@ -6,18 +6,19 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore;
+
+use Pimcore\Model\Document\Email;
 
 class Mail extends \Pimcore\Mail
 {
-    /**
-     * @param array|string $recipients
-     */
-    public function addRecipients($recipients = null)
+    public function addRecipients(array|string $recipients = null)
     {
         $toRecipients = [];
 
@@ -41,9 +42,11 @@ class Mail extends \Pimcore\Mail
             }
         }
 
-        if ($this->getDocument()) {
+        $document = $this->getDocument();
+
+        if ($document instanceof Email) {
             //now add recipients from emailDocument, if given.
-            $storedRecipients = array_filter(explode(';', $this->getDocument()->getTo()));
+            $storedRecipients = array_filter(explode(';', $document->getTo()));
             foreach ($storedRecipients as $multiRecipient) {
                 $toRecipients[] = [$multiRecipient, ''];
             }

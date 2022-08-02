@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Calculator;
 
@@ -18,23 +20,11 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositePurchasableDiscountPriceCalculator implements PurchasableDiscountPriceCalculatorInterface
 {
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
-    protected $discountPriceCalculators;
-
-    /**
-     * @param PrioritizedServiceRegistryInterface $discountPriceCalculators
-     */
-    public function __construct(PrioritizedServiceRegistryInterface $discountPriceCalculators)
+    public function __construct(protected PrioritizedServiceRegistryInterface $discountPriceCalculators)
     {
-        $this->discountPriceCalculators = $discountPriceCalculators;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscountPrice(PurchasableInterface $purchasable, array $context)
+    public function getDiscountPrice(PurchasableInterface $purchasable, array $context): int
     {
         $price = null;
 
@@ -45,7 +35,7 @@ class CompositePurchasableDiscountPriceCalculator implements PurchasableDiscount
             try {
                 $actionPrice = $calculator->getDiscountPrice($purchasable, $context);
                 $price = $actionPrice;
-            } catch (NoPurchasableDiscountPriceFoundException $ex) {
+            } catch (NoPurchasableDiscountPriceFoundException) {
             }
         }
 

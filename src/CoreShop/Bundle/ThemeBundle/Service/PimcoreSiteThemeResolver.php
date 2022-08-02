@@ -6,67 +6,65 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
-use Pimcore\Model\Site;
+use Pimcore\Http\Request\Resolver\DocumentResolver;
+use Pimcore\Model\Document;
+use Pimcore\Tool\Frontend;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-final class PimcoreSiteThemeResolver implements ThemeResolverInterface
+final class PimcoreSiteThemeResolver implements ThemeResolverInterface, DocumentThemeResolverInterface
 {
-    /**
-     * @var ActiveThemeInterface
-     */
-    private $activeTheme;
-
-    /**
-     * @param ActiveThemeInterface $activeTheme
-     */
     public function __construct(
-        ActiveThemeInterface $activeTheme
+        private RequestStack $requestStack,
+        private DocumentResolver $documentResolver
     ) {
-        $this->activeTheme = $activeTheme;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveTheme(/*ActiveThemeInterface $activeTheme*/)
+
+    public function resolveTheme(): string
     {
-        if (\func_num_args() === 0) {
-            trigger_error(
-                'Calling CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface::resolveTheme without the CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface Service is deprecated since 2.1 and will be removed in 3.0.',
-                E_USER_DEPRECATED
-            );
-            $activeTheme = $this->activeTheme;
-        } else {
-            $activeTheme = func_get_arg(0);
+        $request = $this->requestStack->getMainRequest();
+
+        if (!$request) {
+            throw new ThemeNotResolvedException();
         }
 
-        $themes = [];
-        $list = new Site\Listing();
-        $list->load();
-        $sites = $list->getSites();
+        $isAjaxBrickRendering = $request->attributes->get('_route') === 'pimcore_admin_document_page_areabrick-render-index-editmode';
+        $document = null;
 
-        /**
-         * @var Site $site
-         */
-        foreach ($sites as $site) {
-            $themes[] = $site->getRootDocument()->getKey();
-        }
+        if ($isAjaxBrickRendering) {
+            $documentId = $request->request->get('documentId');
 
-        $activeTheme->addThemes($themes);
-
-        try {
-            $currentSite = Site::getCurrentSite();
-
-            if ($theme = $currentSite->getRootDocument()->getKey()) {
-                $activeTheme->setActiveTheme($theme);
+            if ($documentId) {
+                $document = Document::getById((int)$documentId);
             }
-        } catch (\Exception $exception) {
-            throw new ThemeNotResolvedException($exception);
         }
+        else {
+            $document = $this->documentResolver->getDocument($request);
+        }
+
+        if ($document instanceof Document) {
+            return $this->resolveThemeForDocument($document);
+        }
+
+        throw new ThemeNotResolvedException();
+    }
+
+    public function resolveThemeForDocument(Document $document): string
+    {
+        $site = Frontend::getSiteForDocument($document);
+
+        if ($site && $theme = $site->getRootDocument()->getKey()) {
+            return $theme;
+        }
+
+        throw new ThemeNotResolvedException();
     }
 }

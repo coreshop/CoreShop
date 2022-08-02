@@ -5,16 +5,27 @@ core_shop_workflow:
                 after:
                     hold_inventory:
                         on: ['create']
-                        do: ['@coreshop.inventory.order_operator', 'hold']
+                        do: ['@CoreShop\Component\Core\Inventory\Operator\OrderInventoryOperatorInterface', 'hold']
                         args: ['object']
                     cancel_inventory:
                         on: ['cancel']
-                        do: ['@coreshop.inventory.order_operator', 'cancel']
+                        do: ['@CoreShop\Component\Core\Inventory\Operator\OrderInventoryOperatorInterface', 'cancel']
                         args: ['object']
         coreshop_order_payment:
             callbacks:
                 after:
                     sell_inventory:
                         on: ['pay']
-                        do: ['@coreshop.inventory.order_operator', 'sell']
+                        do: ['@CoreShop\Component\Core\Inventory\Operator\OrderInventoryOperatorInterface', 'sell']
+                        args: ['object']
+        coreshop_order_sales_type:
+            callbacks:
+                after:
+                    commit_order:
+                        on: ['order']
+                        do: ['@CoreShop\Component\Order\Committer\OrderCommitterInterface', 'commitOrder']
+                        args: ['object']
+                    commit_quote:
+                        on: ['quote']
+                        do: ['@CoreShop\Component\Order\Committer\QuoteCommitterInterface', 'commitOrder']
                         args: ['object']

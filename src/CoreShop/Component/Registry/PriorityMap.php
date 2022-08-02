@@ -6,19 +6,25 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Registry;
 
 class PriorityMap implements \Iterator, \Countable
 {
-    private $lastSequence = 0;
-    private $list = [];
-    const ORDER_ASC = 'asc';
-    const ORDER_DESC = 'desc';
-    private $order = self::ORDER_ASC;
+    public const ORDER_ASC = 'asc';
+
+    public const ORDER_DESC = 'desc';
+
+    private int $lastSequence = 0;
+
+    private array $list = [];
+
+    private string $order = self::ORDER_ASC;
 
     /**
      * Get scalar key from mixed.
@@ -27,26 +33,26 @@ class PriorityMap implements \Iterator, \Countable
     {
         if (is_object($key)) {
             return spl_object_hash($key);
-        } else {
-            return $key;
         }
+
+        return $key;
     }
 
     /**
      * Add new item to map.
      *
      * @param string $key      name
-     * @param string $value    value
+     * @param mixed  $value    value
      * @param int    $priority priority
      *
      * @return \stdClass
      */
-    public function set($key, $value, $priority = 0)
+    public function set(string $key, mixed $value, int $priority = 0)
     {
         $key = $this->getScalarKey($key);
         $this->list[$key] = new \stdClass();
         $this->list[$key]->value = $value;
-        $this->list[$key]->priority = (int) $priority;
+        $this->list[$key]->priority = $priority;
         $this->list[$key]->sequence = $this->lastSequence++;
 
         return $this->list[$key];
@@ -97,7 +103,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Get list of keys.
      *
-     * @return int[]|string[]
+     * @return array<int, int|string>
      */
     public function getKeys()
     {
@@ -108,10 +114,8 @@ class PriorityMap implements \Iterator, \Countable
 
     /**
      * Get count or map.
-     *
-     * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->list);
     }
@@ -177,7 +181,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Reset iterator.
      */
-    public function rewind()
+    public function rewind(): void
     {
         uasort($this->list, [$this, $this->order . 'SortStrategy']);
         reset($this->list);
@@ -185,10 +189,8 @@ class PriorityMap implements \Iterator, \Countable
 
     /**
      * Get current item.
-     *
-     * @return mixed
      */
-    public function current()
+    public function current(): mixed
     {
         $item = current($this->list);
 
@@ -197,10 +199,8 @@ class PriorityMap implements \Iterator, \Countable
 
     /**
      * Get current key.
-     *
-     * @return mixed
      */
-    public function key()
+    public function key(): mixed
     {
         return key($this->list);
     }
@@ -208,17 +208,15 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Mve iterator next.
      */
-    public function next()
+    public function next(): void
     {
         next($this->list);
     }
 
     /**
      * Check if current key is valid.
-     *
-     * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         return null !== $this->key();
     }

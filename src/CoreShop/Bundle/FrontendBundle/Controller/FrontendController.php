@@ -6,40 +6,50 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class FrontendController extends \Pimcore\Controller\FrontendController
+/**
+ * @property ContainerInterface $container
+ */
+class FrontendController extends AbstractController
 {
-    /**
-     * @var TemplateConfiguratorInterface
-     */
-    protected $templateConfigurator;
+    protected TemplateConfiguratorInterface $templateConfigurator;
 
-    /**
-     * @param TemplateConfiguratorInterface $templateConfigurator
-     */
-    public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator)
+    public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator): void
     {
         $this->templateConfigurator = $templateConfigurator;
     }
 
     /**
-     * @param mixed  $object|null
-     * @param string $route|null
-     * @param array  $parameters
-     * @param int    $referenceType
+     * @return mixed
      *
-     * @return mixed|string
+     * based on Symfony\Component\HttpFoundation\Request::get
      */
-    protected function generateCoreShopUrl($object, $route = null, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    protected function getParameterFromRequest(Request $request, string $key, $default = null)
     {
-        return $this->container->get('coreshop.link_generator')->generate($object, $route, $parameters, $referenceType);
+        if ($request !== $result = $request->attributes->get($key, $request)) {
+            return $result;
+        }
+
+        if ($request->query->has($key)) {
+            return $request->query->all()[$key];
+        }
+
+        if ($request->request->has($key)) {
+            return $request->request->all()[$key];
+        }
+
+        return $default;
     }
 }

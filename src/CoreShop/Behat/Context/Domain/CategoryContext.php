@@ -6,14 +6,15 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
@@ -21,30 +22,14 @@ use Webmozart\Assert\Assert;
 
 final class CategoryContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    private $categoryRepository;
-
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
-    public function __construct(SharedStorageInterface $sharedStorage, CategoryRepositoryInterface $categoryRepository)
+    public function __construct(private CategoryRepositoryInterface $categoryRepository)
     {
-        $this->sharedStorage = $sharedStorage;
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**
      * @Then /^there should be a category "([^"]+)"$/
      */
-    public function thereShouldBeACategoryNamed($name)
+    public function thereShouldBeACategoryNamed($name): void
     {
         $categories = $this->categoryRepository->findBy(['name' => $name]);
 
@@ -58,7 +43,7 @@ final class CategoryContext implements Context
     /**
      * @Then /^the (category "[^"]+") should be child of (category "[^"]+")$/
      */
-    public function theCategoryShouldBeChildOfCategory(CategoryInterface $child, CategoryInterface $parent)
+    public function theCategoryShouldBeChildOfCategory(CategoryInterface $child, CategoryInterface $parent): void
     {
         Assert::eq(
             $child->getParent()->getId(),
@@ -70,7 +55,7 @@ final class CategoryContext implements Context
     /**
      * @Then /^the (product "[^"]+") should be in (category "[^"]+")$/
      */
-    public function theProductShouldBeInCategory(ProductInterface $product, CategoryInterface $category)
+    public function theProductShouldBeInCategory(ProductInterface $product, CategoryInterface $category): void
     {
         Assert::oneOf($category, $product->getCategories());
     }

@@ -28,7 +28,7 @@ CoreShop\Component\Address\Model\Country:
             groups: [Detailed]
         translations:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]
     virtual_properties:
         getZoneName:

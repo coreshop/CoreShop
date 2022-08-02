@@ -6,45 +6,30 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class CategoryContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    private $categoryRepository;
-
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CategoryRepositoryInterface $categoryRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->categoryRepository = $categoryRepository;
+    public function __construct(private SharedStorageInterface $sharedStorage, private CategoryRepositoryInterface $categoryRepository)
+    {
     }
 
     /**
      * @Transform /^category(?:|s) "([^"]+)"$/
      */
-    public function getCategoryByName($categoryName)
+    public function getCategoryByName($categoryName): CategoryInterface
     {
         /**
          * @var \Pimcore\Model\DataObject\Listing\Concrete $list
@@ -60,13 +45,15 @@ final class CategoryContext implements Context
             sprintf('%d categories has been found with name "%s".', count($list->getObjects()), $categoryName)
         );
 
-        return reset($list->getObjects());
+        $objects = $list->getObjects();
+
+        return reset($objects);
     }
 
     /**
      * @Transform /^categories "([^"]+)", "([^"]+)"$/
      */
-    public function getCategoriesByName($category1, $category2)
+    public function getCategoriesByName($category1, $category2): array
     {
         $categories = [];
 
@@ -80,7 +67,7 @@ final class CategoryContext implements Context
     /**
      * @Transform /^category$/
      */
-    public function category()
+    public function category(): CategoryInterface
     {
         return $this->sharedStorage->get('category');
     }

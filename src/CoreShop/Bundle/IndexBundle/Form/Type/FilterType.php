@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
@@ -17,22 +19,24 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class FilterType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class)
             ->add('orderKey', TextType::class)
             ->add('orderDirection', ChoiceType::class, [
-                'choices' => array(
+                'choices' => [
                     'ASC' => 'asc',
                     'DESC' => 'desc',
-                ),
+                ],
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(['groups' => $this->validationGroups])
+                ]
             ])
             ->add('preConditions', FilterPreConditionCollectionType::class)
             ->add('conditions', FilterUserConditionCollectionType::class)
@@ -40,10 +44,7 @@ class FilterType extends AbstractResourceType
             ->add('index', IndexChoiceType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_filter';
     }

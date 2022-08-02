@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,7 +27,12 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
 
         this.data = data;
         this.fieldConfig = fieldConfig;
-        this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        if (pimcore.eventDispatcher !== undefined) {
+            this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        }
+        else {
+            document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+        }
 
     },
 
@@ -39,7 +44,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/product_unit_definitions/get-product-additional-unit-definitions',
+                url: Routing.generate('coreshop_product_unit_definitions_productAdditionalUnitDefinitionsList'),
                 extraParams: {
                     productId: this.object.id
                 },
@@ -71,6 +76,11 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
         return false;
     },
 
+    postSaveObjectNew: function (e)
+    {
+        this.postSaveObject(e.detail.object, e.detail.task);
+    },
+
     postSaveObject: function (object, task) {
 
         var fieldName = this.getName();
@@ -87,7 +97,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
     reloadStoreValuesData: function (object, task, fieldName) {
         this.component.setLoading(true);
         Ext.Ajax.request({
-            url: '/admin/object/get',
+            url: Routing.generate('pimcore_admin_dataobject_dataobject_get'),
             params: {id: object.id},
             ignoreErrors: true,
             success: function (response) {
@@ -219,7 +229,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
                                 this.component.setLoading(true);
 
                                 Ext.Ajax.request({
-                                    url: '/admin/coreshop/products/remove-store-values',
+                                    url: Routing.generate('coreshop_product_removeStoreValues'),
                                     method: 'post',
                                     params: {id: this.object.id, storeValuesId: data.values.id},
                                     ignoreErrors: true,
@@ -257,7 +267,13 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
         this.component = new Ext.Panel(wrapperConfig);
         this.component.add([this.tabPanel]);
         this.component.on('destroy', function () {
-            pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+            if (pimcore.eventDispatcher !== undefined) {
+                pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+            }
+            else {
+                document.removeEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+            }
+
             coreshop.broker.removeListener('pimcore.object.tags.coreShopProductUnitDefinitions.change', this.onUnitDefinitionsChange);
         }.bind(this));
 

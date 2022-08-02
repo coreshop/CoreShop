@@ -6,38 +6,37 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Product\Cloner\ProductClonerInterface;
+use CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner;
+use CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
+use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Pimcore\Model\DataObject;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductVariantUnitSolidifierController extends AdminController
 {
-    const STATUS_ERROR_NO_VARIANTS = 'error_no_variants';
+    public const STATUS_ERROR_NO_VARIANTS = 'error_no_variants';
 
-    const STATUS_ERROR_NO_UNIT_DEFINITIONS = 'error_nno_unit_definitions';
+    public const STATUS_ERROR_NO_UNIT_DEFINITIONS = 'error_nno_unit_definitions';
 
-    const DISPATCH_STRATEGY_ONLY_UNIT_DEFINITIONS = 'strategy_only_unit_definitions';
+    public const DISPATCH_STRATEGY_ONLY_UNIT_DEFINITIONS = 'strategy_only_unit_definitions';
 
-    const DISPATCH_STRATEGY_UNIT_DEFINITIONS_AND_QPR = 'strategy_only_unit_definitions_and_qpr';
+    public const DISPATCH_STRATEGY_UNIT_DEFINITIONS_AND_QPR = 'strategy_only_unit_definitions_and_qpr';
 
-    /**
-     * @param Request $request
-     * @param int     $objectId
-     *
-     * @return JsonResponse
-     */
-    public function checkStatusAction(Request $request, $objectId)
+    public function checkStatusAction(Request $request, int $objectId): Response
     {
         /** @var DataObject\Concrete $object */
         $object = $this->getProductRepository()->find($objectId);
@@ -45,7 +44,7 @@ class ProductVariantUnitSolidifierController extends AdminController
         if (!$object instanceof ProductInterface) {
             return new JsonResponse([
                 'success' => false,
-                'message' => sprintf('%s is not a valid product', $objectId)
+                'message' => sprintf('%s is not a valid product', $objectId),
             ]);
         }
 
@@ -62,25 +61,19 @@ class ProductVariantUnitSolidifierController extends AdminController
 
         if ($errorStatus === false) {
             $strategy = self::DISPATCH_STRATEGY_ONLY_UNIT_DEFINITIONS;
-            if (is_array($object->getQuantityPriceRules()) && count($object->getQuantityPriceRules()) > 0) {
+            if (count($object->getQuantityPriceRules()) > 0) {
                 $strategy = self::DISPATCH_STRATEGY_UNIT_DEFINITIONS_AND_QPR;
             }
         }
 
         return new JsonResponse([
-            'success'     => true,
+            'success' => true,
             'errorStatus' => $errorStatus,
-            'strategy'    => $strategy
+            'strategy' => $strategy,
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param int     $objectId
-     *
-     * @return JsonResponse
-     */
-    public function applyAction(Request $request, $objectId)
+    public function applyAction(Request $request, int $objectId): Response
     {
         $success = true;
         $message = null;
@@ -91,14 +84,13 @@ class ProductVariantUnitSolidifierController extends AdminController
         if (!$object instanceof ProductInterface) {
             return new JsonResponse([
                 'success' => false,
-                'message' => sprintf('%s is not a valid product', $objectId)
+                'message' => sprintf('%s is not a valid product', $objectId),
             ]);
         }
 
         $dispatchedVariants = [];
 
         foreach ($object->getChildren([AbstractObject::OBJECT_TYPE_VARIANT], true) as $variant) {
-
             if (!$variant instanceof ProductInterface) {
                 continue;
             }
@@ -109,7 +101,11 @@ class ProductVariantUnitSolidifierController extends AdminController
                 $success = false;
                 $message = sprintf(
                     'error while cloning unit definition from product %d to variant %d. Error was: %s',
-                    $object->getId(), $variant->getId(), $e->getMessage());
+                    $object->getId(),
+                    $variant->getId(),
+                    $e->getMessage()
+                );
+
                 break;
             }
 
@@ -119,7 +115,11 @@ class ProductVariantUnitSolidifierController extends AdminController
                 $success = false;
                 $message = sprintf(
                     'error while cloning quantity price rules from product %d to variant %d. Error was: %s',
-                    $object->getId(), $variant->getId(), $e->getMessage());
+                    $object->getId(),
+                    $variant->getId(),
+                    $e->getMessage()
+                );
+
                 break;
             }
 
@@ -128,43 +128,32 @@ class ProductVariantUnitSolidifierController extends AdminController
             } catch (\Throwable $e) {
                 $success = false;
                 $message = sprintf('error while saving variant %d. Error was: %s', $variant->getId(), $e->getMessage());
+
                 break;
             }
 
             $dispatchedVariants[] = $variant->getId();
-
         }
 
         return new JsonResponse([
-            'success'          => $success,
-            'message'          => $message,
-            'affectedVariants' => $dispatchedVariants
+            'success' => $success,
+            'message' => $message,
+            'affectedVariants' => $dispatchedVariants,
         ]);
-
     }
 
-    /**
-     * @return ProductRepositoryInterface
-     */
-    protected function getProductRepository()
+    protected function getProductRepository(): ProductRepositoryInterface
     {
         return $this->get('coreshop.repository.product');
     }
 
-    /**
-     * @return ProductClonerInterface
-     */
-    protected function getQuantityPriceRulesCloner()
+    protected function getQuantityPriceRulesCloner(): ProductClonerInterface
     {
-        return $this->get('coreshop.product.cloner.quantity_price_rules');
+        return $this->get(ProductQuantityPriceRulesCloner::class);
     }
 
-    /**
-     * @return ProductClonerInterface
-     */
-    protected function getUnitDefinitionsCloner()
+    protected function getUnitDefinitionsCloner(): ProductClonerInterface
     {
-        return $this->get('coreshop.product.cloner.unit_definitions');
+        return $this->get(ProductUnitDefinitionsCloner::class);
     }
-
 }

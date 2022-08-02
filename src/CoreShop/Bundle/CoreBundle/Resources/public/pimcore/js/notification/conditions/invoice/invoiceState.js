@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -24,9 +24,7 @@ coreshop.notification.rule.conditions.invoiceState = Class.create(coreshop.rules
                     name: 'invoiceState',
                     value: this.data ? this.data.invoiceState : [],
                     width: 250,
-                    store: {
-                        type: 'coreshop_states_invoice'
-                    },
+                    store: pimcore.globalmanager.get('coreshop_states_invoice'),
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,

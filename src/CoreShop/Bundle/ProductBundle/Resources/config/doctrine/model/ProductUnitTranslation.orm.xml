@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+    <mapped-superclass name="CoreShop\Component\Product\Model\ProductUnitTranslation"
+                       table="coreshop_product_unit_translation">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="fullLabel" column="full_label"/>
+        <field name="fullPluralLabel" column="full_plural_label"/>
+        <field name="shortLabel" column="short_label"/>
+        <field name="shortPluralLabel" column="short_plural_label"/>
+
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+    </mapped-superclass>
+</doctrine-mapping>

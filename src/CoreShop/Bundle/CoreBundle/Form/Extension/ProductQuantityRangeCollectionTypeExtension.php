@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
@@ -24,10 +26,7 @@ use Symfony\Component\Form\FormEvents;
 
 class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             /** @var ArrayCollection $data */
@@ -54,7 +53,7 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                 ];
             }
 
-            foreach ($dataCheck as $unitName => $quantityRangesToCheck) {
+            foreach ($dataCheck as $quantityRangesToCheck) {
                 $lastEnd = -1;
 
                 /**
@@ -64,36 +63,25 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                     $realRowIndex = $quantityRangeToCheck['row'];
                     $startingFrom = $quantityRangeToCheck['startingFrom'];
 
-                    if ((float) $startingFrom < 0) {
+                    if ((float)$startingFrom < 0) {
                         $form->addError(new FormError('Field "starting from" in row ' . $realRowIndex . '  needs to be greater or equal than 0'));
 
                         break;
                     }
 
-                    if((float) $startingFrom <= $lastEnd) {
+                    if ((float)$startingFrom <= $lastEnd) {
                         $form->addError(new FormError('Field "starting from" in row ' . $realRowIndex . '  needs to be greater than ' . $lastEnd));
 
                         break;
                     }
 
-                    $lastEnd = (float) $startingFrom;
+                    $lastEnd = (float)$startingFrom;
                 }
             }
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType()
-    {
-        return ProductQuantityRangeCollectionType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [ProductQuantityRangeCollectionType::class];
     }

@@ -1,4 +1,5 @@
 {
+    "id": "cs_company",
     "description": null,
     "parentClass": "CoreShop\\Component\\Core\\Model\\Company",
     "listingParentClass": null,
@@ -7,6 +8,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
@@ -54,7 +56,7 @@
                         "unique": false,
                         "showCharCount": false,
                         "name": "name",
-                        "title": "name",
+                        "title": "coreshop.company.name",
                         "tooltip": "",
                         "mandatory": true,
                         "noteditable": false,
@@ -79,7 +81,7 @@
                         "unique": false,
                         "showCharCount": false,
                         "name": "vatIdentificationNumber",
-                        "title": "VAT Identification Number",
+                        "title": "coreshop.company.vat_identification_number",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,
@@ -94,29 +96,14 @@
                         "visibleSearch": false
                     },
                     {
-                        "fieldtype": "manyToManyRelation",
+                        "fieldtype": "coreShopRelations",
+                        "height": "400",
                         "width": "",
-                        "height": "",
-                        "maxItems": "",
-                        "assetUploadPath": null,
-                        "queryColumnType": "text",
-                        "phpdocType": "array",
                         "relationType": true,
-                        "objectsAllowed": true,
-                        "assetsAllowed": false,
-                        "assetTypes": [],
-                        "documentsAllowed": false,
-                        "documentTypes": [],
-                        "lazyLoading": false,
-                        "classes": [
-                            {
-                                "classes": "CoreShopAddress"
-                            }
-                        ],
                         "pathFormatterClass": "",
+                        "stack": "coreshop.address",
                         "name": "addresses",
-                        "title": "Addresses",
-                        "tooltip": "",
+                        "title": "coreshop.company.addresses",
                         "mandatory": false,
                         "noteditable": false,
                         "index": false,
@@ -137,7 +124,8 @@
     "icon": "\/bundles\/coreshopcustomer\/pimcore\/img\/company.svg",
     "previewUrl": null,
     "group": "CoreShop",
-    "linkGeneratorReference": null,
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,

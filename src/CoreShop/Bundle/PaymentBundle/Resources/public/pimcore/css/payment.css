@@ -7,7 +7,7 @@
     background: url(../img/payment-provider.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_payment_provider {
+body.pimcore_version_10 .coreshop_nav_icon_payment_provider {
     background: url(../img/payment-provider_white.svg) center center no-repeat !important;
 }
 

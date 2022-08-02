@@ -6,7 +6,7 @@
     background: url(../img/countries.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_country {
+body.pimcore_version_10 .coreshop_nav_icon_country {
     background: url(../img/countries_white.svg) center center no-repeat !important;
 }
 
@@ -18,7 +18,7 @@ body.pimcore_version_6 .coreshop_nav_icon_country {
     background: url(../img/zones.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_zone {
+body.pimcore_version_10 .coreshop_nav_icon_zone {
     background: url(../img/zones_white.svg) center center no-repeat !important;
 }
 
@@ -30,7 +30,7 @@ body.pimcore_version_6 .coreshop_nav_icon_zone {
     background: url(../img/state.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_state {
+body.pimcore_version_10 .coreshop_nav_icon_state {
     background: url(../img/state_white.svg) center center no-repeat !important;
 }
 

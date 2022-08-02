@@ -6,38 +6,36 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Translation;
 
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Locale\Context\LocaleNotFoundException;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 
 final class TranslatableEntityLocaleAssigner implements TranslatableEntityLocaleAssignerInterface
 {
-    /**
-     * @var TranslationLocaleProviderInterface
-     */
-    private $translationLocaleProvider;
-
-    /**
-     * @param TranslationLocaleProviderInterface $translationLocaleProvider
-     */
-    public function __construct(TranslationLocaleProviderInterface $translationLocaleProvider)
+    public function __construct(private LocaleContextInterface $localeContext, private TranslationLocaleProviderInterface $translationLocaleProvider)
     {
-        $this->translationLocaleProvider = $translationLocaleProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function assignLocale(TranslatableInterface $translatableEntity)
+    public function assignLocale(TranslatableInterface $translatableEntity): void
     {
-        $localeCode = $this->translationLocaleProvider->getDefaultLocaleCode();
+        $fallbackLocale = $this->translationLocaleProvider->getDefaultLocaleCode();
 
-        $translatableEntity->setCurrentLocale($localeCode);
-        $translatableEntity->setFallbackLocale($localeCode);
+        try {
+            $currentLocale = $this->localeContext->getLocaleCode();
+        } catch (LocaleNotFoundException) {
+            $currentLocale = $fallbackLocale;
+        }
+
+        $translatableEntity->setCurrentLocale($currentLocale);
+        $translatableEntity->setFallbackLocale($currentLocale);
     }
 }

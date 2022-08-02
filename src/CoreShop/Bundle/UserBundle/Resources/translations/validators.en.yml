@@ -1,0 +1,8 @@
+coreshop:
+    form:
+        user:
+            email:
+                unique: 'This email is already used.'
+                must_match: 'The email fields must match.'
+            password:
+                must_match: 'The password fields must match.'

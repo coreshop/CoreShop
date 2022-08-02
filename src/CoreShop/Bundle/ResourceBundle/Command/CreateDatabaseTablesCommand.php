@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
@@ -23,32 +25,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class CreateDatabaseTablesCommand extends Command
 {
-    /**
-     * @var array
-     */
-    private $coreShopResources;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @param array                  $coreShopResources
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(array $coreShopResources, EntityManagerInterface $entityManager)
+    public function __construct(private array $coreShopResources, private EntityManagerInterface $entityManager)
     {
-        $this->coreShopResources = $coreShopResources;
-        $this->entityManager = $entityManager;
-
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:resources:create-tables')
@@ -76,10 +58,7 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ui = new SymfonyStyle($input, $output);
 
@@ -124,10 +103,6 @@ EOT
 
             $ui->text(sprintf('    <info>%s</info> %s executed', count($sqls), $pluralization));
             $ui->success('Database schema updated successfully!');
-        }
-
-        if ($dumpSql || $force) {
-            return 0;
         }
 
         return 0;

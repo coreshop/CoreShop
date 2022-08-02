@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -126,6 +126,7 @@ coreshop.product.unit.builder = Class.create({
             items: this.unitStore.getRange().length === 1 ? [] : [{
                 xtype: 'toolbar',
                 style: 'margin-bottom: 10px; padding: 5px;',
+                itemId: 'additional-unit-toolbar',
                 height: 50,
                 items: ['->', {
                     xtype: 'button',
@@ -204,7 +205,7 @@ coreshop.product.unit.builder = Class.create({
         compositeField = new Ext.form.FieldContainer({
             layout: 'hbox',
             hideLabel: true,
-            itemCls: 'object_field additional-unit-field-container',
+            itemCls: ['object_field', 'additional-unit-field-container'],
             items: unitFieldForm
         });
 
@@ -290,7 +291,7 @@ coreshop.product.unit.builder = Class.create({
 
     dispatchUnitDefinitionChangeEvent: function () {
 
-        var values = this.convertDotNotationToObject(this.getValues()),
+        var values = coreshop.helpers.convertDotNotationToObject(this.getValues()),
             additionalUnitDefinitions = this.getAdditionalUnitDefinitions();
 
         if (values.hasOwnProperty('additionalUnitDefinitions')) {
@@ -349,15 +350,15 @@ coreshop.product.unit.builder = Class.create({
 
     checkAddUnitBlockAvailability: function (comp) {
         var unitDefinitions = comp.query('fieldcontainer'),
-            addButton = comp.query('button[itemId="additional-unit-add-button"]')[0];
+            toolbar = comp.query('toolbar[itemId="additional-unit-toolbar"]')[0];
 
         // no additional units available.
-        if (addButton === undefined) {
+        if (toolbar === undefined) {
             return;
         }
 
         // -1 = default unit store cannot be selected
-        addButton.setVisible(unitDefinitions.length < this.unitStore.getRange().length - 1);
+        toolbar.setVisible(unitDefinitions.length < this.unitStore.getRange().length - 1);
     },
 
     cloneStore: function (store, disallowed) {
@@ -490,25 +491,5 @@ coreshop.product.unit.builder = Class.create({
 
     getValues: function () {
         return this.form.getForm().getFieldValues();
-    },
-
-    convertDotNotationToObject: function (data) {
-        var obj = {};
-
-        Object.keys(data).forEach(function (key) {
-            var val = data[key],
-                step = obj;
-
-            key.split('.').forEach(function (part, index, arr) {
-                if (index === arr.length - 1) {
-                    step[part] = val;
-                } else if (step[part] === undefined) {
-                    step[part] = {};
-                }
-                step = step[part];
-            });
-        });
-
-        return obj;
     }
 });

@@ -6,85 +6,46 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Condition;
 
 class CompareCondition implements ConditionInterface
 {
-    /**
-     * @var string
-     */
-    private $fieldName;
-
-    /**
-     * @var string
-     */
-    private $operator;
-
-    /**
-     * @var string
-     */
-    private $value;
-
-    /**
-     * @param string $fieldName
-     * @param string $operator
-     * @param string $value
-     */
-    public function __construct($fieldName, $operator, $value)
+    public function __construct(private string $fieldName, private string $operator, private string $value)
     {
-        $this->fieldName = $fieldName;
-        $this->operator = $operator;
-        $this->value = $value;
     }
 
-    /**
-     * @return string
-     */
-    public function getFieldName()
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
 
-    /**
-     * @param string $fieldName
-     */
-    public function setFieldName($fieldName)
+    public function setFieldName(string $fieldName): void
     {
         $this->fieldName = $fieldName;
     }
 
-    /**
-     * @return string
-     */
-    public function getOperator()
+    public function getOperator(): string
     {
         return $this->operator;
     }
 
-    /**
-     * @param string $operator
-     */
-    public function setOperator($operator)
+    public function setOperator(string $operator): void
     {
         $this->operator = $operator;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @param string $value
-     */
-    public function setValue($value)
+    public function setValue(string $value): void
     {
         $this->value = $value;
     }

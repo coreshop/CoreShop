@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -17,59 +19,23 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\DataObject\Folder;
 
 final class AddressContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $addressFactory;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $addressRepository;
-
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param FactoryInterface           $addressFactory
-     * @param PimcoreRepositoryInterface $addressRepository
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        FactoryInterface $addressFactory,
-        PimcoreRepositoryInterface $addressRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->addressFactory = $addressFactory;
-        $this->addressRepository = $addressRepository;
+    public function __construct(private SharedStorageInterface $sharedStorage, private FactoryInterface $addressFactory)
+    {
     }
 
     /**
      * @Given /^there is an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
      */
-    public function thereIsAnAddress(CountryInterface $country, $postcode, $city, $street, $nr)
+    public function thereIsAnAddress(CountryInterface $country, $postcode, $city, $street, $nr): void
     {
         $this->createAddress($country, $postcode, $city, $street, $nr);
     }
 
-    /**
-     * @param CountryInterface $country
-     * @param string           $postcode
-     * @param string           $city
-     * @param string           $street
-     * @param string           $nr
-     *
-     * @return AddressInterface
-     */
-    private function createAddress(CountryInterface $country, $postcode, $city, $street, $nr)
+    private function createAddress(CountryInterface $country, string $postcode, string $city, string $street, string $nr): AddressInterface
     {
         /**
          * @var AddressInterface $address
@@ -90,10 +56,7 @@ final class AddressContext implements Context
         return $address;
     }
 
-    /**
-     * @param AddressInterface $address
-     */
-    private function saveAddress(AddressInterface $address)
+    private function saveAddress(AddressInterface $address): void
     {
         $address->save();
 

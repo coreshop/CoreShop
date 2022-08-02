@@ -12,7 +12,7 @@
                 {% set object = pimcore_object(value.value) %}
                 <label class="radio">
                     <input name="{{ fieldName }}" type="radio" value="{{ object.id }}"  {% if currentValues == object.id %}  checked="checked" {% endif %}>
-                    ({{ value.count }}) {% if quantityUnit %} {{ quantityUnit.getAbbreviation }} {% endif %}
+                    ({{ value.count }}) {% if quantityUnit %} {{ quantityUnit.abbreviation }} {% endif %}
                 </label>
             {% endfor %}
         </div>

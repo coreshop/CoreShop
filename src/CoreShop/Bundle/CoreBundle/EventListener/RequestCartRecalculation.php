@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
@@ -16,56 +18,17 @@ use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class RequestCartRecalculation
 {
-    /**
-     * @var CartManagerInterface
-     */
-    private $cartManager;
-
-    /**
-     * @var ShopperContextInterface
-     */
-    private $shopperContext;
-
-    /**
-     * @var ConfigurationServiceInterface
-     */
-    private $configurationService;
-
-    /**
-     * @var RequestHelper
-     */
-    private $pimcoreRequestHelper;
-
-    /**
-     * @param CartManagerInterface          $cartManager
-     * @param ShopperContextInterface       $shopperContext
-     * @param ConfigurationServiceInterface $configurationService
-     * @param RequestHelper                 $pimcoreRequestHelper
-     */
-    public function __construct(
-        CartManagerInterface $cartManager,
-        ShopperContextInterface $shopperContext,
-        ConfigurationServiceInterface $configurationService,
-        RequestHelper $pimcoreRequestHelper
-    ) {
-        $this->cartManager = $cartManager;
-        $this->shopperContext = $shopperContext;
-        $this->configurationService = $configurationService;
-        $this->pimcoreRequestHelper = $pimcoreRequestHelper;
+    public function __construct(private CartManagerInterface $cartManager, private ShopperContextInterface $shopperContext, private ConfigurationServiceInterface $configurationService, private RequestHelper $pimcoreRequestHelper)
+    {
     }
 
-    /**
-     * Force Cart to be recalculated.
-     *
-     * @param GetResponseEvent $event
-     */
-    public function checkPriceRuleState(GetResponseEvent $event)
+    public function checkPriceRuleState(RequestEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

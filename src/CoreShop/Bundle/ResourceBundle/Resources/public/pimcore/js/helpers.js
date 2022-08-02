@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -17,7 +17,7 @@ coreshop.helpers.requestNicePathData = function (targets, responseHandler) {
 
     Ext.Ajax.request({
         method: 'POST',
-        url: "/admin/coreshop/helper/get-nice-path",
+        url: Routing.generate('coreshop_helper_get_nice_path'),
         params: {
             targets: elementData
         },
@@ -53,4 +53,16 @@ coreshop.helpers.convertDotNotationToObject = function (data) {
     });
 
     return obj;
+};
+
+
+coreshop.helpers.removeKey = function (obj) {
+    for(prop in obj) {
+        if (prop === 'id') {
+            delete obj[prop];
+        }
+        else if (typeof obj[prop] === 'object') {
+            coreshop.helpers.removeKey(obj[prop]);
+        }
+    }
 };

@@ -6,41 +6,25 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Component\Index\Listing\ListingInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use Pimcore\Db;
 
 class Dao
 {
-    /**
-     * @var \Pimcore\Db\ConnectionInterface
-     */
-    private $database;
+    private int $lastRecordCount = 0;
 
-    /**
-     * @var MysqlWorker\Listing
-     */
-    private $model;
-
-    /**
-     * @var int
-     */
-    private $lastRecordCount;
-
-    /**
-     * @param MysqlWorker\Listing $model
-     */
-    public function __construct(MysqlWorker\Listing $model)
+    public function __construct(private MysqlWorker\Listing $model, private Connection $database)
     {
-        $this->model = $model;
-        $this->database = Db::get();
     }
 
     /**
@@ -54,7 +38,6 @@ class Dao
     /**
      * Load objects.
      *
-     * @param QueryBuilder $queryBuilder
      *
      * @return array
      */
@@ -62,7 +45,7 @@ class Dao
     {
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
         if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-            if (!is_null($queryBuilder->getQueryPart('orderBy'))) {
+            if (null !== $queryBuilder->getQueryPart('orderBy')) {
                 $queryBuilder->select('DISTINCT q.o_virtualObjectId as o_id');
                 $queryBuilder->addGroupBy('q.o_virtualObjectId');
             } else {
@@ -71,16 +54,17 @@ class Dao
         } else {
             $queryBuilder->select('DISTINCT q.o_id');
         }
-        $result = $this->database->executeQuery($queryBuilder->getSQL());
-        $this->lastRecordCount = $result->rowCount();
 
-        return $result->fetchAll();
+        $resultSet = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+
+        $this->lastRecordCount = count($resultSet);
+
+        return $resultSet;
     }
 
     /**
      * Load Group by values.
      *
-     * @param QueryBuilder $queryBuilder
      * @param string       $fieldName
      * @param bool         $countValues
      *
@@ -99,30 +83,26 @@ class Dao
                 $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(*) AS count');
             }
 
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAll();
-
-            return $result;
-        } else {
-            $queryBuilder->select($this->quoteIdentifier($fieldName));
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $queryResult = $stmt->fetchAll();
-            $result = [];
-
-            foreach ($queryResult as $row) {
-                if ($row[$fieldName]) {
-                    $result[] = $row[$fieldName];
-                }
-            }
-
-            return $result;
+            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
+
+        $queryBuilder->select($this->quoteIdentifier($fieldName));
+        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+
+        $result = [];
+
+        foreach ($queryResult as $row) {
+            if ($row[$fieldName]) {
+                $result[] = $row[$fieldName];
+            }
+        }
+
+        return $result;
     }
 
     /**
      * Load Grouo by Relation values.
      *
-     * @param QueryBuilder $queryBuilder
      * @param string       $fieldName
      * @param bool         $countValues
      *
@@ -135,15 +115,8 @@ class Dao
 
     /**
      * Load Grouo by Relation values and type.
-     *
-     * @param QueryBuilder $queryBuilder
-     * @param string       $fieldName
-     * @param string       $type
-     * @param bool         $countValues
-     *
-     * @return array
      */
-    public function loadGroupByRelationValuesAndType(QueryBuilder $queryBuilder, $fieldName, $type, $countValues = false)
+    public function loadGroupByRelationValuesAndType(QueryBuilder $queryBuilder, string $fieldName, ?string $type = null, bool $countValues = false): array
     {
         $queryBuilder->from($this->model->getRelationTablename(), 'q');
 
@@ -165,17 +138,14 @@ class Dao
                 $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
 
                 if (null !== $type) {
-                    $queryBuilder->where('type = '.$this->quote($type));
+                    $queryBuilder->where('type = ' . $this->quote($type));
                 }
             }
 
             $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
             $queryBuilder->groupBy('dest');
 
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAll();
-
-            return $result;
+            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
 
         $queryBuilder->select($this->quoteIdentifier('dest'));
@@ -192,8 +162,7 @@ class Dao
         $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
         $queryBuilder->groupBy('dest');
 
-        $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-        $queryResult = $stmt->fetchAll();
+        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
 
         $result = [];
 
@@ -209,7 +178,6 @@ class Dao
     /**
      * Get Count.
      *
-     * @param QueryBuilder $queryBuilder
      *
      * @return int
      */
@@ -223,7 +191,7 @@ class Dao
         }
         $stmt = $this->database->executeQuery($queryBuilder->getSQL());
 
-        return $stmt->fetchColumn();
+        return (int)$stmt->fetchOne();
     }
 
     /**
@@ -252,13 +220,8 @@ class Dao
 
     /**
      * returns order by statement for similarity calculations based on given fields and object ids.
-     *
-     * @param array $fields
-     * @param int   $objectId
-     *
-     * @return string
      */
-    public function buildSimilarityOrderBy($fields, $objectId)
+    public function buildSimilarityOrderBy(array $fields, int $objectId): string
     {
         //TODO: similarity
         /*
@@ -336,10 +299,8 @@ class Dao
 
     /**
      * get the record count for the last select query.
-     *
-     * @return int
      */
-    public function getLastRecordCount()
+    public function getLastRecordCount(): int
     {
         return $this->lastRecordCount;
     }

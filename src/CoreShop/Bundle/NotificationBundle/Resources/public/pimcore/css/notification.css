@@ -6,7 +6,7 @@
     background: url(../img/notification-rule.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_notification_rule {
+body.pimcore_version_10 .coreshop_nav_icon_notification_rule {
     background: url(../img/notification-rule_white.svg) center center no-repeat !important;
 }
 

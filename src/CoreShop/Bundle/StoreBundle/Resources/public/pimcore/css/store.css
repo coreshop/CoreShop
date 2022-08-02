@@ -6,6 +6,6 @@
     background: url(../img/store.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_store {
+body.pimcore_version_10 .coreshop_nav_icon_store {
     background: url(../img/store_white.svg) center center no-repeat !important;
 }

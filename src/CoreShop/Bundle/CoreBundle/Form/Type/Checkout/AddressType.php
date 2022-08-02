@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Checkout;
 
@@ -16,52 +18,29 @@ use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
-use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
+use CoreShop\Component\Core\Model\OrderInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddressType extends AbstractResourceType
 {
-    /**
-     * @var AddressFormatterInterface
-     */
-    private $addressFormatHelper;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @param string                    $dataClass
-     * @param string[]                  $validationGroups
-     * @param AddressFormatterInterface $addressFormatHelper
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
-        $dataClass,
+        string $dataClass,
         array $validationGroups,
-        AddressFormatterInterface $addressFormatHelper,
-        TranslatorInterface $translator
+        private AddressFormatterInterface $addressFormatHelper,
+        private TranslatorInterface $translator
     ) {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->addressFormatHelper = $addressFormatHelper;
-        $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $defaultShippingAddress = null;
         $defaultInvoiceAddress = null;
@@ -86,15 +65,11 @@ final class AddressType extends AbstractResourceType
                 'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.shipping',
                 'allowed_address_identifier' => [null, 'shipping'],
-                'choice_attr' => function ($address) {
-                    if ($address instanceof AddressInterface) {
-                        return [
-                            'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($address)]),
-                            'data-address-type' => $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : '',
-                        ];
-                    }
-
-                    return [];
+                'choice_attr' => function (AddressInterface $address) {
+                    return [
+                        'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($address)]),
+                        'data-address-type' => $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : '',
+                    ];
                 },
                 'empty_data' => $defaultShippingAddress,
             ])
@@ -103,20 +78,16 @@ final class AddressType extends AbstractResourceType
                 'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.invoice',
                 'allowed_address_identifier' => [null, 'invoice'],
-                'choice_attr' => function ($address) {
-                    if ($address instanceof AddressInterface) {
-                        return [
-                            'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($address)]),
-                            'data-address-type' => $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : '',
-                        ];
-                    }
-
-                    return [];
+                'choice_attr' => function (AddressInterface $address) {
+                    return [
+                        'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($address)]),
+                        'data-address-type' => $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : '',
+                    ];
                 },
                 'empty_data' => $defaultInvoiceAddress,
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) {
-                /** @var CartInterface $cart */
+                /** @var OrderInterface $cart */
                 $cart = $event->getData();
                 $checkboxData = true;
                 $checkboxDisabled = false;
@@ -161,8 +132,8 @@ final class AddressType extends AbstractResourceType
 
                         if (is_array($choiceList) && count($choiceList) > 0) {
                             $valid = count(array_filter($choiceList, static function (AddressInterface $address) use ($invoiceAddressId) {
-                                    return $address->getId() === (int) $invoiceAddressId;
-                                })) > 0;
+                                return $address->getId() === (int)$invoiceAddressId;
+                            })) > 0;
                         }
                     }
 
@@ -173,15 +144,11 @@ final class AddressType extends AbstractResourceType
                         $message = $this->translator->trans('coreshop.checkout.address.invoice_as_shipping_invalid');
                         $event->getForm()->addError(new FormError($message));
                     }
-
                 }
             });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -189,10 +156,7 @@ final class AddressType extends AbstractResourceType
         $resolver->setAllowedTypes('customer', [CustomerInterface::class]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_checkout_address';
     }

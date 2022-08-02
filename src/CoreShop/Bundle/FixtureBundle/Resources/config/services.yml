@@ -1,20 +1,20 @@
+imports:
+    - { resource: services_alias.yml }
+
 services:
     _defaults:
         public: true
 
-    coreshop.fixture.data.executor: '@CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutor'
     CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutor:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
 
-    coreshop.fixture.update_data_fixtures: '@CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture'
     CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture:
         arguments:
             - '@coreshop.factory.data_fixture'
             - '@coreshop.repository.data_fixture'
 
-    coreshop.fixture.data.loader: '@CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader'
     CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader:
         arguments:
             - '@doctrine.orm.entity_manager'

@@ -6,17 +6,21 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\DefaultCheckoutManagerFactory;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
@@ -29,10 +33,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 
 final class CoreShopCoreExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
-    /**
-     * @var array
-     */
-    private static $bundles = [
+    private static array $bundles = [
         'coreshop_address',
         'coreshop_currency',
         'coreshop_customer',
@@ -49,21 +50,20 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         'coreshop_taxation',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
+        $container->setParameter('coreshop.all.dependant.bundles', []);
 
-        if (array_key_exists('pimcore_admin', $config)) {
-            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
+
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
         }
 
-        $container->setParameter('coreshop.after_logout_redirect_route', $config['after_logout_redirect_route']);
+        $container->setParameter('coreshop.after_logout_redirect_route', $configs['after_logout_redirect_route']);
 
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -73,15 +73,21 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $loader->load('services.yml');
 
-        if (array_key_exists('checkout', $config)) {
-            $this->registerCheckout($container, $config['checkout']);
+        $env = (string)$container->getParameter('kernel.environment');
+        if (str_contains($env, 'test')) {
+            $loader->load('services_test.yml');
         }
 
-        if (array_key_exists('checkout_manager_factory', $config)) {
-            $alias = new Alias(sprintf('coreshop.checkout_manager.factory.%s', $config['checkout_manager_factory']));
+        if (array_key_exists('checkout', $configs)) {
+            $this->registerCheckout($container, $configs['checkout']);
+        }
+
+        if (array_key_exists('checkout_manager_factory', $configs)) {
+            $alias = new Alias(sprintf('coreshop.checkout_manager.factory.%s', $configs['checkout_manager_factory']));
             $alias->setPublic(true);
 
             $container->setAlias('coreshop.checkout_manager.factory', $alias);
+            $container->setAlias(CheckoutManagerFactoryInterface::class, $alias);
         } else {
             throw new \InvalidArgumentException('No valid Checkout Manager has been configured!');
         }
@@ -94,30 +100,23 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
             ->addTag(RegisterReportsPass::REPORT_TAG);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
-        $config = $container->getExtensionConfig($this->getAlias());
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
         foreach ($container->getExtensions() as $name => $extension) {
             if (in_array($name, self::$bundles, true)) {
-                $container->prependExtensionConfig($name, ['driver' => $config['driver']]);
+                $container->prependExtensionConfig($name, ['driver' => $configs['driver']]);
             }
         }
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param array            $config
-     */
-    private function registerCheckout(ContainerBuilder $container, $config)
+    private function registerCheckout(ContainerBuilder $container, array $configs): void
     {
         $availableCheckoutManagerFactories = [];
 
-        foreach ($config as $checkoutIdentifier => $typeConfiguration) {
+        foreach ($configs as $checkoutIdentifier => $typeConfiguration) {
             $stepsLocatorId = sprintf('coreshop.checkout_manager.steps.%s', $checkoutIdentifier);
             $checkoutManagerFactoryId = sprintf('coreshop.checkout_manager.factory.%s', $checkoutIdentifier);
 

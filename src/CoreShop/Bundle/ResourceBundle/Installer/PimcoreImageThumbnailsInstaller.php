@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
@@ -22,27 +24,18 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**<
-     * @param KernelInterface $kernel
-     */
-    public function __construct(KernelInterface $kernel)
+    public function __construct(private KernelInterface $kernel)
     {
-        $this->kernel = $kernel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.image_thumbnails', $applicationName) : 'coreshop.all.pimcore.admin.install.image_thumbnails';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            /**
+             * @var array $thumbnailFilesToInstall
+             */
             $thumbnailFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);
             $thumbnailsToInstall = [];
 
@@ -86,30 +79,25 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
         }
     }
 
-    /**
-     * Check if Image Thumbnail is already installed.
-     *
-     * @param string $name
-     * @param array  $properties
-     *
-     * @return Config
-     */
-    private function installThumbnail($name, $properties)
+    private function installThumbnail(string $name, array $properties): Config
     {
         $thumbnailConfig = new Config();
 
         try {
             /**
-             * @var \Pimcore\Model\Asset\Image\Thumbnail\Config\Dao
+             * @var Config\Dao $dao
              */
             $dao = $thumbnailConfig->getDao();
+            /**
+             * @psalm-suppress InternalMethod
+             */
             $dao->getByName($name);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             //Thumbnail does not exist, so we install it
             $thumbnailConfig = new Config();
             $thumbnailConfig->setName($name);
             $thumbnailConfig->setItems($properties['items']);
-            $thumbnailConfig->setDescription($properties['description']);
+            $thumbnailConfig->setDescription($properties['description'] ?? '');
             $thumbnailConfig->setGroup($properties['group']);
             $thumbnailConfig->setFormat($properties['format']);
             $thumbnailConfig->setQuality($properties['quality']);

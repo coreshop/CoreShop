@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -30,7 +30,7 @@ coreshop.index.fields = Class.create({
             this.classDefinitionTreePanel.destroy();
         }
 
-        this.classDefinitionTreePanel = this.getClassTree('/admin/coreshop/indices/get-class-definition-for-field-selection', this.class);
+        this.classDefinitionTreePanel = this.getClassTree(Routing.generate('coreshop_index_getClassDefinitionForFieldSelection'), this.class);
 
         this.configPanel.add(this.classDefinitionTreePanel);
     },
@@ -227,7 +227,7 @@ coreshop.index.fields = Class.create({
             this.brickKeys = [];
 
             if (this.class) {
-                this.classDefinitionTreePanel = this.getClassTree('/admin/coreshop/indices/get-class-definition-for-field-selection', this.class);
+                this.classDefinitionTreePanel = this.getClassTree(Routing.generate('coreshop_index_getClassDefinitionForFieldSelection'), this.class);
             }
         }
 
@@ -270,7 +270,17 @@ coreshop.index.fields = Class.create({
         });
 
         tree.addListener('itemdblclick', function (tree, record, item, index, e, eOpts) {
-            if (!record.data.root && record.datatype !== 'layout' && record.data.dataType !== 'localizedfields') {
+            if (
+                !record.data.root &&
+                (
+                    record.datatype &&
+                    record.datatype !== 'layout'
+                ) ||
+                (
+                    record.data.dataType &&
+                    record.data.dataType !== 'localizedfields'
+                )
+            ) {
                 var copy = Ext.apply({}, record.data);
 
                 copy.id = Ext.id();
@@ -317,7 +327,29 @@ coreshop.index.fields = Class.create({
 
                     baseNode = tree.getRootNode().appendChild(baseNode);
                     for (var j = 0; j < data[keys[i]].childs.length; j++) {
-                        var node = this.addDataChild.call(baseNode, data[keys[i]].childs[j].fieldtype, data[keys[i]].childs[j], data[keys[i]].nodeType, data[keys[i]].className);
+                        if (
+                            (data[keys[i]].nodeType == 'objectbricks' ||
+                                data[keys[i]].nodeType == 'fieldcollections') &&
+                            data[keys[i]].childs[j].nodeLabel == 'localizedfields') {
+
+                            var text = t(data[keys[i]].childs[j].nodeLabel);
+
+                            var node = {
+                                type: 'layout',
+                                allowDrag: false,
+                                iconCls: 'pimcore_icon_' + data[keys[i]].childs[j].nodeType,
+                                text: text
+                            };
+
+                            node = tree.getRootNode().appendChild(node);
+
+                            for (var k = 0; k < data[keys[i]].childs[j].childs.length; k++) {
+                                var innerNode = this.addDataChild.call(node, data[keys[i]].childs[j].childs[k].fieldtype, data[keys[i]].childs[j].childs[k], data[keys[i]].nodeType, data[keys[i]].className);
+                                node.appendChild(innerNode);
+                            }
+                        } else {
+                            var node = this.addDataChild.call(baseNode, data[keys[i]].childs[j].fieldtype, data[keys[i]].childs[j], data[keys[i]].nodeType, data[keys[i]].className);
+                        }
 
                         baseNode.appendChild(node);
                     }

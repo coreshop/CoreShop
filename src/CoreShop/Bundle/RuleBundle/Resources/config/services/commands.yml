@@ -1,6 +1,6 @@
 services:
     CoreShop\Bundle\RuleBundle\Command\RuleAvailabilityProcessorCommand:
         arguments:
-            - '@coreshop.rule_availability_processor'
+            - '@CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessorInterface'
         tags:
           - { name: console.command, command: coreshop:rules:check-availability }

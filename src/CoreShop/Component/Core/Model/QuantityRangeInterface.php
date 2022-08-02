@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
@@ -22,9 +24,6 @@ interface QuantityRangeInterface extends BaseQuantityRangeInterface
      */
     public function getAmount();
 
-    /**
-     * @param int $amount
-     */
     public function setAmount(int $amount);
 
     /**
@@ -32,9 +31,6 @@ interface QuantityRangeInterface extends BaseQuantityRangeInterface
      */
     public function getCurrency();
 
-    /**
-     * @param CurrencyInterface $currency
-     */
     public function setCurrency(CurrencyInterface $currency = null);
 
     /**
@@ -42,9 +38,6 @@ interface QuantityRangeInterface extends BaseQuantityRangeInterface
      */
     public function getUnitDefinition();
 
-    /**
-     * @param ProductUnitDefinitionInterface|null $unitDefinition
-     */
     public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition = null);
 
     /**
@@ -52,9 +45,6 @@ interface QuantityRangeInterface extends BaseQuantityRangeInterface
      */
     public function hasUnitDefinition();
 
-    /**
-     * @param int $pseudoPrice
-     */
     public function setPseudoPrice(int $pseudoPrice);
 
     /**

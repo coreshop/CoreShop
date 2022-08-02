@@ -1,0 +1,16 @@
+imports:
+    - { resource: 'payum.yml' }
+
+jms_serializer:
+    metadata:
+        directories:
+            core-shop-payum-payment:
+                namespace_prefix: "CoreShop\\Bundle\\PayumPaymentBundle"
+                path: "@CoreShopPayumPaymentBundle/Resources/config/serializer"
+
+core_shop_payment:
+    resources:
+        payment_provider:
+            classes:
+                model: CoreShop\Component\PayumPayment\Model\PaymentProvider
+                admin_controller: CoreShop\Bundle\PayumPaymentBundle\Controller\PaymentProviderController

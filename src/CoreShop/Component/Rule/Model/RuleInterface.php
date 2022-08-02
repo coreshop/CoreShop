@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Rule\Model;
 
@@ -34,27 +36,13 @@ interface RuleInterface extends ResourceInterface, TimestampableInterface, Toggl
      */
     public function getConditions();
 
-    /**
-     * @return bool
-     */
-    public function hasConditions();
+    public function hasConditions(): bool;
 
-    /**
-     * @param ConditionInterface $conditions
-     *
-     * @return bool
-     */
-    public function hasCondition(ConditionInterface $conditions);
+    public function hasCondition(ConditionInterface $condition): bool;
 
-    /**
-     * @param ConditionInterface $conditions
-     */
-    public function addCondition(ConditionInterface $conditions);
+    public function addCondition(ConditionInterface $condition): void;
 
-    /**
-     * @param ConditionInterface $conditions
-     */
-    public function removeCondition(ConditionInterface $conditions);
+    public function removeCondition(ConditionInterface $condition): void;
 
     /**
      * @return Collection|ActionInterface[]
@@ -67,19 +55,11 @@ interface RuleInterface extends ResourceInterface, TimestampableInterface, Toggl
     public function hasActions();
 
     /**
-     * @param ActionInterface $action
-     *
      * @return bool
      */
     public function hasAction(ActionInterface $action);
 
-    /**
-     * @param ActionInterface $action
-     */
     public function addAction(ActionInterface $action);
 
-    /**
-     * @param ActionInterface $action
-     */
     public function removeAction(ActionInterface $action);
 }

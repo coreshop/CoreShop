@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -15,10 +15,13 @@ pimcore.registerNS('coreshop.product.specificprice.object.item');
 coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_price_rule',
+    settingsForm: null,
 
     postSaveObject: function (object, refreshedRuleData, task, fieldName) {
         // remove dirty flag!
         //this.settingsForm.getForm().setValues(this.settingsForm.getForm().getValues());
+        this.conditions.reload(refreshedRuleData.conditions);
+        this.actions.reload(refreshedRuleData.actions);
     },
 
     getPanel: function () {

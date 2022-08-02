@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
@@ -20,87 +22,41 @@ use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\OptionalCheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 
 class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    /**
-     * @var CarriersResolverInterface
-     */
-    private $carriersResolver;
-
-    /**
-     * @var ShippableCarrierValidatorInterface
-     */
-    private $shippableCarrierValidator;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
-     * @var CartManagerInterface
-     */
-    private $cartManager;
-
-    /**
-     * @param CarriersResolverInterface          $carriersResolver
-     * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
-     * @param FormFactoryInterface               $formFactory
-     * @param CartManagerInterface               $cartManager
-     */
-    public function __construct(
-        CarriersResolverInterface $carriersResolver,
-        ShippableCarrierValidatorInterface $shippableCarrierValidator,
-        FormFactoryInterface $formFactory,
-        CartManagerInterface $cartManager
-    ) {
-        $this->carriersResolver = $carriersResolver;
-        $this->shippableCarrierValidator = $shippableCarrierValidator;
-        $this->formFactory = $formFactory;
-        $this->cartManager = $cartManager;
+    public function __construct(private ShippableCarrierValidatorInterface $shippableCarrierValidator, private FormFactoryInterface $formFactory, private CartManagerInterface $cartManager)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'shipping';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRequired(CartInterface $cart)
+    public function isRequired(OrderInterface $cart): bool
     {
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
         return $cart->hasShippableItems();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function doAutoForward(CartInterface $cart)
+    public function doAutoForward(OrderInterface $cart): bool
     {
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
         return $cart->hasShippableItems() === false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate(CartInterface $cart)
+    public function validate(OrderInterface $cart): bool
     {
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
         return $cart->hasShippableItems() === false
             || ($cart->hasItems() &&
@@ -109,12 +65,9 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
                 $this->shippableCarrierValidator->isCarrierValid($cart->getCarrier(), $cart, $cart->getShippingAddress()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function commitStep(CartInterface $cart, Request $request)
+    public function commitStep(OrderInterface $cart, Request $request): bool
     {
-        $form = $this->createForm($request, $this->getCarriers($cart), $cart);
+        $form = $this->createForm($request, $cart);
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -123,51 +76,24 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
                 $this->cartManager->persistCart($cart);
 
                 return true;
-            } else {
-                throw new CheckoutException('Shipping Form is invalid', 'coreshop.ui.error.coreshop_checkout_shipping_form_invalid');
             }
+
+            throw new CheckoutException('Shipping Form is invalid', 'coreshop.ui.error.coreshop_checkout_shipping_form_invalid');
         }
 
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareStep(CartInterface $cart, Request $request)
+    public function prepareStep(OrderInterface $cart, Request $request): array
     {
-        //Get Carriers
-        $carriers = $this->getCarriers($cart);
-
         return [
-            'carriers' => $carriers,
-            'form' => $this->createForm($request, $carriers, $cart)->createView(),
+            'form' => $this->createForm($request, $cart)->createView(),
         ];
     }
 
-    /**
-     * @param CartInterface $cart
-     *
-     * @return array
-     */
-    private function getCarriers(CartInterface $cart)
-    {
-        $carriers = $this->carriersResolver->resolveCarriers($cart, $cart->getShippingAddress());
-
-        return $carriers;
-    }
-
-    /**
-     * @param Request       $request
-     * @param array         $carriers
-     * @param CartInterface $cart
-     *
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function createForm(Request $request, $carriers, CartInterface $cart)
+    private function createForm(Request $request, OrderInterface $cart): FormInterface
     {
         $form = $this->formFactory->createNamed('coreshop', CarrierType::class, $cart, [
-            'carriers' => $carriers,
             'cart' => $cart,
         ]);
 

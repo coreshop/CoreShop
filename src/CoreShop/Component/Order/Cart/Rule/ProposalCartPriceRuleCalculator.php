@@ -6,16 +6,18 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -24,30 +26,11 @@ use Webmozart\Assert\Assert;
 
 class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculatorInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $cartPriceRuleItemFactory;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $actionServiceRegistry;
-
-    /**
-     * @param FactoryInterface         $cartPriceRuleItemFactory
-     * @param ServiceRegistryInterface $actionServiceRegistry
-     */
-    public function __construct(FactoryInterface $cartPriceRuleItemFactory, ServiceRegistryInterface $actionServiceRegistry)
+    public function __construct(private FactoryInterface $cartPriceRuleItemFactory, private ServiceRegistryInterface $actionServiceRegistry)
     {
-        $this->cartPriceRuleItemFactory = $cartPriceRuleItemFactory;
-        $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function calculatePriceRule(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
+    public function calculatePriceRule(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): ?ProposalCartPriceRuleItemInterface
     {
         $priceRuleItem = $cart->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
         $existingPriceRule = null !== $priceRuleItem;
@@ -72,21 +55,23 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
             if ($action instanceof ActionInterface) {
                 $actionCommand = $this->actionServiceRegistry->get($action->getType());
 
+                /**
+                 * @var CartPriceRuleActionProcessorInterface $actionCommand
+                 */
                 Assert::isInstanceOf($actionCommand, CartPriceRuleActionProcessorInterface::class);
 
                 $config = $action->getConfiguration();
                 $config['action'] = $action;
 
-                $result |= $actionCommand->applyRule($cart, $config, $priceRuleItem);
+                $actionResult = $actionCommand->applyRule($cart, $config, $priceRuleItem);
+                $result = $result || $actionResult;
             }
         }
 
         if (!$result) {
-            if ($priceRuleItem instanceof ProposalCartPriceRuleItemInterface) {
-                $cart->removePriceRule($priceRuleItem);
-            }
+            $cart->removePriceRule($priceRuleItem);
 
-            return false;
+            return null;
         }
 
         if (!$existingPriceRule) {

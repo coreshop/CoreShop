@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Fetcher;
 
@@ -19,26 +21,13 @@ use CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidRulesFetcherI
 
 class QuantityRuleFetcher implements QuantityRuleFetcherInterface
 {
-    /**
-     * @var ValidRulesFetcherInterface
-     */
-    private $validRulesFetcher;
-
-    /**
-     * @param ValidRulesFetcherInterface $validRulesFetcher
-     */
-    public function __construct(ValidRulesFetcherInterface $validRulesFetcher)
+    public function __construct(private ValidRulesFetcherInterface $validRulesFetcher)
     {
-        $this->validRulesFetcher = $validRulesFetcher;
     }
 
-    public function fetch(QuantityRangePriceAwareInterface $subject, array $context)
+    public function fetch(QuantityRangePriceAwareInterface $subject, array $context): ProductQuantityPriceRuleInterface
     {
         $quantityPriceRules = $this->getQuantityPriceRulesForSubject($subject, $context);
-
-        if (!is_array($quantityPriceRules)) {
-            throw new NoRuleFoundException();
-        }
 
         if (count($quantityPriceRules) === 0) {
             throw new NoRuleFoundException();
@@ -46,15 +35,11 @@ class QuantityRuleFetcher implements QuantityRuleFetcherInterface
 
         return $quantityPriceRules[0];
     }
-    
-    public function getQuantityPriceRulesForSubject(QuantityRangePriceAwareInterface $subject, array $context)
+
+    public function getQuantityPriceRulesForSubject(QuantityRangePriceAwareInterface $subject, array $context): array
     {
         /** @var ProductQuantityPriceRuleInterface[] $rules */
         $rules = $this->validRulesFetcher->getValidRules($subject, $context);
-
-        if (!is_array($rules)) {
-            return [];
-        }
 
         // sort by priority: higher priority first!
         usort($rules, function (ProductQuantityPriceRuleInterface $a, ProductQuantityPriceRuleInterface $b) {

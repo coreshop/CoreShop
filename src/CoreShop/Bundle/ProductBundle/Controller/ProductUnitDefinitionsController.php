@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductBundle\Controller;
 
@@ -20,17 +22,12 @@ use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\DataObject\Concrete;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductUnitDefinitionsController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function productUnitDefinitionsListAction(Request $request)
+    public function productUnitDefinitionsListAction(Request $request): Response
     {
         $definitions = [];
 
@@ -38,21 +35,14 @@ class ProductUnitDefinitionsController extends ResourceController
         $repository = $this->get('coreshop.repository.stack.product');
 
         /** @var ProductInterface $product */
-        $product = $repository->find($request->get('productId'));
+        $product = $repository->find($this->getParameterFromRequest($request, 'productId'));
 
-        if ($product instanceof ProductInterface) {
-            $definitions = $this->getUnitDefinitionsForProduct($product, 'all');
-        }
+        $definitions = $this->getUnitDefinitionsForProduct($product, 'all');
 
         return $this->viewHandler->handle($definitions);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function productAdditionalUnitDefinitionsListAction(Request $request)
+    public function productAdditionalUnitDefinitionsListAction(Request $request): Response
     {
         $definitions = [];
 
@@ -60,7 +50,7 @@ class ProductUnitDefinitionsController extends ResourceController
         $repository = $this->get('coreshop.repository.stack.product');
 
         /** @var ProductInterface $product */
-        $product = $repository->find($request->get('productId'));
+        $product = $repository->find($this->getParameterFromRequest($request,'productId'));
 
         if ($product instanceof Concrete) {
             $product = VersionHelper::getLatestVersion($product);
@@ -73,13 +63,7 @@ class ProductUnitDefinitionsController extends ResourceController
         return $this->viewHandler->handle($definitions);
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param string           $type
-     *
-     * @return Collection
-     */
-    protected function getUnitDefinitionsForProduct(ProductInterface $product, string $type = 'all')
+    protected function getUnitDefinitionsForProduct(ProductInterface $product, string $type = 'all'): Collection
     {
         $definitions = new ArrayCollection();
 
@@ -89,21 +73,26 @@ class ProductUnitDefinitionsController extends ResourceController
                 ? $productUnitDefinitions->getAdditionalUnitDefinitions()
                 : $productUnitDefinitions->getUnitDefinitions();
         } else {
-            if ($product instanceof Concrete && $product->getClass()->getAllowInherit() && $product->getParent() instanceof ProductInterface) {
-                $definitions = $this->getUnitDefinitionsForProduct($product->getParent(), $type);
+            $parent = $product->getParent();
+
+            if ($parent instanceof ProductInterface && $product instanceof Concrete && $product->getClass()->getAllowInherit()) {
+                $definitions = $this->getUnitDefinitionsForProduct($parent, $type);
             }
         }
 
-        return $definitions->filter(function(ProductUnitDefinitionInterface $unitDefinition) {
+        return $definitions->filter(function (ProductUnitDefinitionInterface $unitDefinition) {
             return null !== $unitDefinition->getId();
         });
     }
 
-    protected function getLatestVersion(Concrete $object)
+    protected function getLatestVersion(Concrete $object): Concrete
     {
         $modificationDate = $object->getModificationDate();
         $latestVersion = $object->getLatestVersion();
         if ($latestVersion) {
+            /**
+             * @psalm-suppress InternalMethod
+             */
             $latestObj = $latestVersion->loadData();
             if ($latestObj instanceof Concrete) {
                 $object = $latestObj;

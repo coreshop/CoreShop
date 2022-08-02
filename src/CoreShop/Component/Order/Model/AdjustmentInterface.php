@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
@@ -16,68 +18,35 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface AdjustmentInterface extends ResourceInterface
 {
-    const SHIPPING = 'shipping';
-    const CART_PRICE_RULE = 'cart_price_rule';
+    public const SHIPPING = 'shipping';
 
-    /**
-     * @return AdjustableInterface|null
-     */
-    public function getAdjustable();
+    public const CART_PRICE_RULE = 'cart_price_rule';
 
-    /**
-     * @return string|null
-     */
-    public function getTypeIdentifier();
+    public function getAdjustable(): ?AdjustableInterface;
 
-    /**
-     * @param string|null $typeIdentifier
-     */
-    public function setTypeIdentifier($typeIdentifier);
+    public function getTypeIdentifier(): ?string;
 
-    /**
-     * @return string|null
-     */
-    public function getLabel();
+    public function setTypeIdentifier(?string $typeIdentifier);
 
-    /**
-     * @param string|null $label
-     */
-    public function setLabel($label);
+    public function getLabel(): ?string;
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getAmount($withTax = true);
+    public function setLabel(?string $label);
 
-    /**
-     * @param int $grossAmount
-     * @param int $netAmount
-     */
+    public function getAmount(bool $withTax = true): int;
+
     public function setAmount(int $grossAmount, int $netAmount);
 
-    /**
-     * @return bool
-     */
-    public function getNeutral();
+    public function getNeutral(): bool;
 
-    /**
-     * @param bool $neutral
-     */
     public function setNeutral(bool $neutral);
 
     /**
      * Adjustments with amount < 0 are called "charges".
-     *
-     * @return bool
      */
-    public function isCharge();
+    public function isCharge(): bool;
 
     /**
      * Adjustments with amount > 0 are called "credits".
-     *
-     * @return bool
      */
-    public function isCredit();
+    public function isCredit(): bool;
 }

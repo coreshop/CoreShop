@@ -6,31 +6,19 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Resource\Repository;
+declare(strict_types=1);
 
-use Pimcore\Model\DataObject\Listing;
+namespace CoreShop\Component\Resource\Repository;
 
 interface PimcoreRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @return string
-     */
-    public function getClassId();
+    public function getClassId(): string;
 
-    /**
-     * @return Listing
-     */
     public function getList();
 
-    /**
-     * @param int  $id
-     * @param bool $force
-     *
-     * @return mixed
-     */
-    public function forceFind($id, $force = true);
+    public function forceFind($id, bool $force = true);
 }

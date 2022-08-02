@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Filter;
 
@@ -21,10 +23,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CategorySelectConditionProcessor implements FilterConditionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = 'categoryIds';
         $includeSubCategories = $condition->getConfiguration()['includeSubCategories'];
@@ -41,12 +40,14 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
                 if (empty($e)) {
                     continue;
                 }
-                if ($parsedValues[$e]) {
-                    $count = (int) $parsedValues[$e]['count'] + (int) $v['count'];
+
+                if (isset($parsedValues[$e])) {
+                    $count = $parsedValues[$e]['count'] + (int)$v['count'];
                 } else {
-                    $count = (int) $v['count'];
+                    $count = (int)$v['count'];
                 }
-                $parsedValues[$e] = ['value' => $e, 'count' => (int) $count];
+
+                $parsedValues[$e] = ['value' => $e, 'count' => $count];
             }
         }
 
@@ -54,7 +55,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
 
         $objects = [];
         foreach ($values as $value) {
-            $object = Concrete::getById($value['value']);
+            $object = Concrete::getById((int)$value['value']);
             if ($object instanceof Concrete) {
                 $objects[] = $object;
             }
@@ -71,10 +72,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = 'categoryIds';
         $includeSubCategories = $condition->getConfiguration()['includeSubCategories'];
@@ -96,7 +94,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
         }
 
         if (!empty($value)) {
-            $value = '%,' . trim($value) . ',%';
+            $value = '%,' . trim((string)$value) . ',%';
             $fieldName = $isPrecondition ? 'PRECONDITION_' . $field : $field;
             $list->addCondition(new LikeCondition($field, 'both', $value), $fieldName);
         }

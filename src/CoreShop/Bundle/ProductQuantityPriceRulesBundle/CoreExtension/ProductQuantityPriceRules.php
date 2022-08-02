@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension;
 
@@ -16,25 +18,31 @@ use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRu
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
+use CoreShop\Bundle\ResourceBundle\Pimcore\CacheMarshallerInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Events;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Repository\ProductQuantityPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class ProductQuantityPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
     Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomRecyclingMarshalInterface,
+    Data\CustomDataCopyInterface,
+    CacheMarshallerInterface
 {
     use TempEntityManagerTrait;
 
@@ -49,6 +57,26 @@ class ProductQuantityPriceRules extends Data implements
      * @var int
      */
     public $height;
+
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return 'array';
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return 'array';
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return 'array';
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return 'array';
+    }
 
     /**
      * @param mixed $object
@@ -77,9 +105,6 @@ class ProductQuantityPriceRules extends Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preSetData($object, $data, $params = [])
     {
         $this->markAsLoaded($object);
@@ -87,33 +112,91 @@ class ProductQuantityPriceRules extends Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function createDataCopy(Concrete $object, $data)
+    {
+        if (!is_array($data)) {
+            return [];
+        }
+
+        if (!$object instanceof QuantityRangePriceAwareInterface) {
+            return [];
+        }
+
+        $newPriceRules = [];
+
+        foreach ($data as $priceRule) {
+            if (!$priceRule instanceof ProductQuantityPriceRuleInterface) {
+                continue;
+            }
+
+            $newPriceRule = clone $priceRule;
+
+            $reflectionClass = new \ReflectionClass($newPriceRule);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, null);
+
+            $property = $reflectionClass->getProperty('product');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, null);
+
+            $property = $reflectionClass->getProperty('conditions');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, new ArrayCollection());
+
+            $property = $reflectionClass->getProperty('ranges');
+            $property->setAccessible(true);
+            $property->setValue($newPriceRule, new ArrayCollection());
+
+            foreach ($priceRule->getConditions() as $condition) {
+                $newCondition = clone $condition;
+
+                $reflectionClass = new \ReflectionClass($newCondition);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($newCondition, null);
+
+                $newPriceRule->addCondition($newCondition);
+            }
+
+            foreach ($priceRule->getRanges() as $range) {
+                $newRange = clone $range;
+
+                $reflectionClass = new \ReflectionClass($newRange);
+                $property = $reflectionClass->getProperty('id');
+                $property->setAccessible(true);
+                $property->setValue($newRange, null);
+
+                if ($reflectionClass->hasProperty('unitDefinition')) {
+                    $property = $reflectionClass->getProperty('unitDefinition');
+                    $property->setAccessible(true);
+                    $property->setValue($newRange, null);
+                }
+
+                $newPriceRule->addRange($newRange);
+            }
+
+            $newPriceRules[] = $newPriceRule;
+        }
+
+        return $newPriceRules;
+    }
+
     public function marshalVersion($object, $data)
     {
         if (!is_array($data)) {
@@ -133,9 +216,6 @@ class ProductQuantityPriceRules extends Data implements
         return $serialized;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalVersion($object, $data)
     {
         if (!is_array($data)) {
@@ -151,7 +231,6 @@ class ProductQuantityPriceRules extends Data implements
             }
 
             $context = DeserializationContext::create();
-            $context->setSerializeNull(false);
             $context->setGroups(['Version']);
             $context->setAttribute('em', $tempEntityManager);
 
@@ -163,20 +242,24 @@ class ProductQuantityPriceRules extends Data implements
         return $entities;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalRecycleData($object, $data)
     {
         return $this->marshalVersion($object, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalRecycleData($object, $data)
     {
         return $this->unmarshalVersion($object, $data);
+    }
+
+    public function marshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->marshalVersion($concrete, $data);
+    }
+
+    public function unmarshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->unmarshalVersion($concrete, $data);
     }
 
     /**
@@ -191,10 +274,21 @@ class ProductQuantityPriceRules extends Data implements
         $calculationBehaviourTypes = [];
         $pricingBehaviourTypes = [];
 
-        foreach ($this->getContainer()->getParameter('coreshop.product_quantity_price_rules.calculators') as $type) {
+        /**
+         * @var array $calculators
+         */
+        $calculators = $this->getContainer()->getParameter('coreshop.product_quantity_price_rules.calculators');
+
+        /**
+         * @var array $actions
+         */
+        $actions = $this->getContainer()->getParameter('coreshop.product_quantity_price_rules.actions');
+
+        foreach ($calculators as $type) {
             $calculationBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_calculator_' . strtolower($type)];
         }
-        foreach ($this->getContainer()->getParameter('coreshop.product_quantity_price_rules.actions') as $type) {
+
+        foreach ($actions as $type) {
             $pricingBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_behaviour_' . strtolower($type)];
         }
 
@@ -241,10 +335,9 @@ class ProductQuantityPriceRules extends Data implements
         $specificPriceRuleRepository = $this->getProductQuantityPriceRuleRepositoryFactory()->createNewRepository($tempEntityManager);
 
         $event = new ProductQuantityPriceRuleValidationEvent($object, $data);
-        $this->getEventDispatcher()->dispatch(Events::RULES_DATA_FROM_EDITMODE_VALIDATION, $event);
+        $this->getEventDispatcher()->dispatch($event, Events::RULES_DATA_FROM_EDITMODE_VALIDATION);
 
         foreach ($event->getData() as $rule) {
-
             $storedRule = null;
             $ruleData = null;
 
@@ -276,7 +369,7 @@ class ProductQuantityPriceRules extends Data implements
                     $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
                 }
 
-                throw new \Exception(implode(PHP_EOL, $errors));
+                throw new \Exception(implode(\PHP_EOL, $errors));
             }
         }
 
@@ -327,9 +420,6 @@ class ProductQuantityPriceRules extends Data implements
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($object, $params = [])
     {
         if (isset($params['force']) && $params['force']) {
@@ -339,9 +429,6 @@ class ProductQuantityPriceRules extends Data implements
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($object, $params = [])
     {
         if ($object instanceof QuantityRangePriceAwareInterface) {
@@ -383,12 +470,12 @@ class ProductQuantityPriceRules extends Data implements
                     $array[$key] = $this->arrayCastRecursive($value);
                 }
                 if ($value instanceof \stdClass) {
-                    $array[$key] = $this->arrayCastRecursive((array) $value);
+                    $array[$key] = $this->arrayCastRecursive((array)$value);
                 }
             }
         }
         if ($array instanceof \stdClass) {
-            return $this->arrayCastRecursive((array) $array);
+            return $this->arrayCastRecursive((array)$array);
         }
 
         return $array;
@@ -407,9 +494,6 @@ class ProductQuantityPriceRules extends Data implements
     }
 
     /**
-     * @param ProductQuantityPriceRuleInterface $storedRule
-     * @param array                             $currentRule
-     *
      * @return ProductQuantityPriceRuleInterface
      *
      * @throws \Doctrine\ORM\ORMException
@@ -425,7 +509,7 @@ class ProductQuantityPriceRules extends Data implements
         $keepIds = [];
         foreach ($currentRanges as $currentRange) {
             if (isset($currentRange['id']) && $currentRange['id'] !== null) {
-                $keepIds[] = (int) $currentRange['id'];
+                $keepIds[] = (int)$currentRange['id'];
             }
         }
 
@@ -448,6 +532,10 @@ class ProductQuantityPriceRules extends Data implements
         return $storedRule;
     }
 
+    public function getForCsvExport($object, $params = [])
+    {
+        return '';
+    }
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -472,6 +560,7 @@ class ProductQuantityPriceRules extends Data implements
     {
         return $this->getContainer()->get('coreshop.repository.product_quantity_price_rule');
     }
+
     /**
      * @return RepositoryFactoryInterface
      */

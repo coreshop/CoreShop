@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Shipping\Rule\Condition;
 
@@ -18,10 +20,7 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 final class PostcodeConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration): bool
     {
         $postcodes = explode(',', $configuration['postcodes']);
 
@@ -41,10 +40,8 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
     /**
      * @param string $postcode
      * @param string $deliveryPostcode
-     *
-     * @return bool
      */
-    private function checkPostCode($postcode, $deliveryPostcode)
+    private function checkPostCode($postcode, $deliveryPostcode): bool
     {
         //Check if postcode has a range
         $deliveryPostcode = str_replace(' ', '', $deliveryPostcode);
@@ -61,13 +58,13 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
                 $toText = preg_replace('/[0-9]+/', '', $toPart);
 
                 if ($fromText === $toText) {
-                    $fromNumber = preg_replace('/\D/', '', $fromPart);
-                    $toNumber = preg_replace('/\D/', '', $toPart);
+                    $fromNumber = (int)preg_replace('/\D/', '', $fromPart);
+                    $toNumber = (int)preg_replace('/\D/', '', $toPart);
 
                     if ($fromNumber < $toNumber) {
                         $postcodes = [];
 
-                        for ($i = $fromNumber; $i <= $toNumber; $i++) {
+                        for ($i = $fromNumber; $i <= $toNumber; ++$i) {
                             $postcodes[] = $fromText . $i;
                         }
                     }

@@ -6,61 +6,31 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Tracking\Extractor;
 
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class OrderExtractor implements TrackingExtractorInterface
 {
-    /**
-     * @var TrackingExtractorInterface
-     */
-    private $extractor;
-
-    /**
-     * @var int
-     */
-    protected $decimalFactor;
-
-    /**
-     * @var int
-     */
-    protected $decimalPrecision;
-
-    /**
-     * @param TrackingExtractorInterface $extractor
-     * @param int                        $decimalFactor
-     * @param int                        $decimalPrecision
-     */
-    public function __construct(TrackingExtractorInterface $extractor, int $decimalFactor, int $decimalPrecision)
+    public function __construct(protected TrackingExtractorInterface $extractor, protected int $decimalFactor, protected int $decimalPrecision)
     {
-        $this->extractor = $extractor;
-        $this->decimalFactor = $decimalFactor;
-        $this->decimalPrecision = $decimalPrecision;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($object)
+    public function supports($object): bool
     {
-        return $object instanceof ProposalInterface;
+        return $object instanceof OrderInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, $data = []): array
     {
-        /**
-         * @var ProposalInterface $object
-         */
         $items = [];
 
         foreach ($object->getItems() as $item) {
@@ -83,12 +53,7 @@ class OrderExtractor implements TrackingExtractorInterface
         );
     }
 
-    /**
-     * @param int $amount
-     *
-     * @return int
-     */
-    protected function parseAmount($amount)
+    protected function parseAmount(int $amount): int
     {
         return (int)round((round($amount / $this->decimalFactor, $this->decimalPrecision)), 0);
     }

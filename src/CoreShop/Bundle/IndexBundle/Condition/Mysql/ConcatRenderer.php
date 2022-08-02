@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Condition\Mysql;
 
@@ -22,29 +24,15 @@ use Webmozart\Assert\Assert;
 
 class ConcatRenderer extends AbstractMysqlDynamicRenderer
 {
-    /**
-     * @var ConditionRendererInterface
-     */
-    private $renderer;
-
-    /**
-     * @param Connection                 $connection
-     * @param ConditionRendererInterface $renderer
-     */
-    public function __construct(Connection $connection, ConditionRendererInterface $renderer)
+    public function __construct(Connection $connection, private ConditionRendererInterface $renderer)
     {
         parent::__construct($connection);
-
-        $this->renderer = $renderer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null)
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): string
     {
         /**
-         * @var $condition ConcatCondition
+         * @var ConcatCondition $condition
          */
         Assert::isInstanceOf($condition, ConcatCondition::class);
 
@@ -52,7 +40,7 @@ class ConcatRenderer extends AbstractMysqlDynamicRenderer
 
         foreach ($condition->getConditions() as $subCondition) {
             /**
-             * @var $subCondition ConditionInterface
+             * @var ConditionInterface $subCondition
              */
             Assert::isInstanceOf($subCondition, ConditionInterface::class);
 
@@ -66,10 +54,7 @@ class ConcatRenderer extends AbstractMysqlDynamicRenderer
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(WorkerInterface $worker, ConditionInterface $condition)
+    public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
     {
         return $worker instanceof MysqlWorker && $condition instanceof ConcatCondition;
     }

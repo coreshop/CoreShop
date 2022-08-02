@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
@@ -16,7 +18,10 @@ use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use CoreShop\Component\Taxation\Model\TaxRule as BaseTaxRule;
 
-class TaxRule extends BaseTaxRule implements TaxRuleInterface
+/**
+ * @psalm-suppress MissingConstructor
+ */
+class TaxRule extends BaseTaxRule implements TaxRuleInterface, \Stringable
 {
     /**
      * @var CountryInterface
@@ -28,10 +33,7 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface
      */
     protected $state;
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $country = $this->getCountry() instanceof CountryInterface ? $this->getCountry()->getName() : 'none';
         $state = $this->getState() instanceof StateInterface ? $this->getState()->getName() : 'none';
@@ -48,9 +50,6 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface
         return $this->country;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCountry(CountryInterface $country = null)
     {
         $this->country = $country;
@@ -58,17 +57,11 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getState()
     {
         return $this->state;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setState(StateInterface $state = null)
     {
         $this->state = $state;

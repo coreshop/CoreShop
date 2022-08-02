@@ -6,96 +6,78 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject\Concrete;
-use Pimcore\Model\Element\ElementInterface;
 use Webmozart\Assert\Assert;
 
-final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
+final class ObjectManager implements \Doctrine\Persistence\ObjectManager
 {
-    /**
-     * @var array
-     */
-    private $repositories = [];
+    private array $repositories = [];
+
+    private array $modelsToUpdate = [];
+
+    private array $modelsToInsert = [];
+
+    private array $modelsToRemove = [];
 
     /**
-     * @var array
+     * @psalm-suppress InvalidReturnType
      */
-    private $modelsToUpdate = [];
-
-    /**
-     * @var array
-     */
-    private $modelsToInsert = [];
-
-    /**
-     * @var array
-     */
-    private $modelsToRemove = [];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function find($className, $id)
+    public function find($className, $id): ?Concrete
     {
+        /**
+         * @var Concrete $className
+         * @psalm-suppress InvalidReturnStatement
+         */
         return $className::getById($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function persist($resource)
+    public function persist($object): void
     {
         /**
-         * @var $resource AbstractModel
+         * @var AbstractModel $object
          */
-        Assert::isInstanceOf($resource, AbstractModel::class);
+        Assert::isInstanceOf($object, AbstractModel::class);
 
-        $id = $this->getResourceId($resource);
-        $className = $this->getResourceClassName($resource);
+        $id = $this->getResourceId($object);
+        $className = $this->getResourceClassName($object);
 
         if ($id) {
-            $this->modelsToUpdate[$className][$id] = $resource;
+            $this->modelsToUpdate[$className][$id] = $object;
         } else {
-            $this->modelsToInsert[$className][] = $resource;
+            $this->modelsToInsert[$className][] = $object;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($resource)
+    public function remove($object): void
     {
-        $id = $this->getResourceId($resource);
-        $className = $this->getResourceClassName($resource);
+        $id = $this->getResourceId($object);
+        $className = $this->getResourceClassName($object);
 
-        if ($resource instanceof Concrete) {
-            $className = $resource->getClassName();
+        if ($object instanceof Concrete) {
+            $className = $object->getClassName();
         }
 
         if ($id) {
-            $this->modelsToRemove[$className][$id] = $resource;
+            $this->modelsToRemove[$className][$id] = $object;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function merge($object)
+    public function merge($object): object
     {
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function clear($objectName = null)
+    public function clear($objectName = null): void
     {
         if (null === $objectName) {
             $this->modelsToRemove = [];
@@ -116,40 +98,29 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function detach($object)
+    public function detach($object): void
     {
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function refresh($object)
+    public function refresh($object): void
     {
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function flush()
+    public function flush(): void
     {
-        foreach ($this->modelsToRemove as $className => $classTypeModels) {
+        foreach ($this->modelsToRemove as $classTypeModels) {
             foreach ($classTypeModels as $model) {
                 $model->delete();
             }
         }
 
         foreach ([$this->modelsToInsert, $this->modelsToUpdate] as $modelsToSave) {
-            foreach ($modelsToSave as $className => $classTypeModels) {
+            foreach ($modelsToSave as $classTypeModels) {
                 foreach ($classTypeModels as $model) {
-                    if ($model instanceof Concrete) {
-                        if (!$model->getPublished()) {
-                            $model->setOmitMandatoryCheck(true);
-                        }
+                    if (($model instanceof Concrete) && !$model->getPublished()) {
+                        $model->setOmitMandatoryCheck(true);
                     }
 
                     $model->save();
@@ -162,10 +133,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         $this->modelsToRemove = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRepository($className)
+    public function getRepository($className): PimcoreRepositoryInterface
     {
         if (!array_key_exists($className, $this->repositories)) {
             throw new \InvalidArgumentException(sprintf('Repository for class %s not found', $className));
@@ -184,7 +152,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    public function initializeObject($obj)
+    public function initializeObject($obj): void
     {
         throw new \InvalidArgumentException('Not implemented');
     }
@@ -194,40 +162,25 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    /**
-     * @param string $className
-     * @param string $repository
-     */
-    public function registerRepository($className, $repository)
+    public function registerRepository(string $className, string $repository): void
     {
         $this->repositories[$className] = $repository;
     }
 
-    /**
-     * @param object $resource
-     *
-     * @return int
-     */
-    private function getResourceId($resource)
+    private function getResourceId(object $resource): int|string
     {
         $id = spl_object_hash($resource);
 
-        if (method_exists($resource, 'getId')) {
+        if (method_exists($resource, 'getId') && $resource->getId()) {
             $id = $resource->getId();
         }
 
         return $id;
     }
 
-
-    /**
-     * @param object $resource
-     *
-     * @return string
-     */
-    private function getResourceClassName($resource)
+    private function getResourceClassName(object $resource): string
     {
-        $className = get_class($resource);
+        $className = $resource::class;
 
         if ($resource instanceof Concrete) {
             $className = $resource->getClassName();

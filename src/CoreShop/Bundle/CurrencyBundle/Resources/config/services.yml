@@ -1,35 +1,33 @@
 imports:
-    - { resource: "services/form.yml" }
-    - { resource: "services/pimcore.yml" }
-    - { resource: "services/twig.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/form.yml }
+    - { resource: services/pimcore.yml }
+    - { resource: services/twig.yml }
 
 services:
     _defaults:
         public: true
 
-    coreshop.currency_converter: '@CoreShop\Component\Currency\Converter\CurrencyConverter'
     CoreShop\Component\Currency\Converter\CurrencyConverterInterface: '@CoreShop\Component\Currency\Converter\CurrencyConverter'
     CoreShop\Component\Currency\Converter\CurrencyConverter:
         arguments:
             - '@coreshop.repository.exchange_rate'
             - '@coreshop.repository.currency'
 
-    coreshop.context.currency.composite: '@CoreShop\Component\Currency\Context\CompositeCurrencyContext'
     CoreShop\Component\Currency\Context\CurrencyContextInterface: '@CoreShop\Component\Currency\Context\CompositeCurrencyContext'
     CoreShop\Component\Currency\Context\CompositeCurrencyContext:
-        decorates: coreshop.context.currency
-        decoration_priority: 256
         public: false
 
-    coreshop.context.currency.cached: '@CoreShop\Component\Currency\Context\CachedCurrencyContext'
     CoreShop\Component\Currency\Context\CachedCurrencyContext:
-        decorates: coreshop.context.currency
+        decorates: CoreShop\Component\Currency\Context\CurrencyContextInterface
         decoration_priority: 255
         arguments:
             - '@CoreShop\Component\Currency\Context\CachedCurrencyContext.inner'
             - '@request_stack'
 
-    coreshop.context.currency.fixed: '@CoreShop\Component\Currency\Context\FixedCurrencyContext'
     CoreShop\Component\Currency\Context\FixedCurrencyContext:
         tags:
             - { name: coreshop.context.currency }
+
+    CoreShop\Component\Currency\Display\DisplayFractionProviderInterface: '@CoreShop\Component\Currency\Display\DefaultDisplayFractionProvider'
+    CoreShop\Component\Currency\Display\DefaultDisplayFractionProvider: ~

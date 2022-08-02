@@ -6,43 +6,31 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Address\Model\ZoneInterface;
-use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Pimcore\Db;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Version;
 
 final class VersionContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage
-    ) {
-        $this->sharedStorage = $sharedStorage;
+    public function __construct(private SharedStorageInterface $sharedStorage)
+    {
     }
 
     /**
      * @Then /^I remember the (product "[^"]+") Version$/
      * @Then /^I remember the (product) Version$/
      */
-    public function iRememberTheProductVersion(Concrete $concrete)
+    public function iRememberTheProductVersion(Concrete $concrete): void
     {
         $concrete->saveVersion();
 
@@ -52,13 +40,27 @@ final class VersionContext implements Context
     /**
      * @Then /^I restore the remembered (product) Version$/
      */
-    public function iRestoreTheRememberedProductVersion(Concrete $concrete)
+    public function iRestoreTheRememberedProductVersion(Concrete $concrete): void
     {
         $key = 'data_object_version_' . $concrete->getId();
 
         $data = $this->restoreVersion($concrete, $key);
 
-        $this->sharedStorage->set('product-version', $concrete->getLatestVersion(true)->loadData());
+        $GLOBALS['data'] = $data;
+
+        $db = Db::get();
+        $versionData = $db->fetchRow("SELECT id,date,versionCount FROM versions WHERE cid = ? AND ctype='object' ORDER BY `versionCount` DESC, `id` DESC LIMIT 1", $concrete->getId());
+        $version = Version::getById($versionData['id']);
+
+//        $version = $concrete->getLatestVersion();
+
+        if (null === $version) {
+            throw new \Exception('No Version found!');
+        }
+
+        $versionData = $version->loadData(false);
+
+        $this->sharedStorage->set('product-version', $versionData);
 
         $data->save();
 
@@ -68,7 +70,7 @@ final class VersionContext implements Context
     /**
      * @Then /^I reset the restored Version$/
      */
-    public function iResetTheRestoredVersion(Concrete $concrete)
+    public function iResetTheRestoredVersion(Concrete $concrete): void
     {
         $product = $this->sharedStorage->get('product');
         $id = $product->getId();
@@ -76,7 +78,7 @@ final class VersionContext implements Context
         $this->sharedStorage->set('product', $product::getById($id, true));
     }
 
-    protected function restoreVersion(Concrete $concrete, $key)
+    private function restoreVersion(Concrete $concrete, string $key): Concrete
     {
         if (!$this->sharedStorage->has($key)) {
             throw new \InvalidArgumentException('No Version remembered');

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Address\Model\Zone" table="coreshop_zone">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="active" column="active" type="boolean" />
+        <field name="name" column="name" type="string" />
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+        <one-to-many field="countries" target-entity="CoreShop\Component\Address\Model\CountryInterface" mapped-by="zone" orphan-removal="false">
+            <cascade>
+                <cascade-persist />
+            </cascade>
+        </one-to-many>
+    </mapped-superclass>
+</doctrine-mapping>

@@ -1,4 +1,4 @@
-Ext.define('CoreShop.store.TaxRuleGroup', {
+Ext.define('CoreShop.taxation.TaxRuleGroup', {
     extend: 'CoreShop.resource.ComboBox',
     alias: 'widget.coreshop.taxRuleGroup',
 

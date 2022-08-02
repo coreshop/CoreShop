@@ -6,59 +6,41 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Twig;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
+use CoreShop\Component\Pimcore\Slug\SluggableInterface;
+use Pimcore\Model\DataObject\Data\UrlSlug;
 use Pimcore\Model\Document;
 use Pimcore\Model\Site;
 use Pimcore\Tool;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class LocaleSwitcherExtension extends AbstractExtension
 {
-    /**
-     * @var Document\Service
-     */
-    private $documentService;
-
-    /**
-     * @var ShopperContextInterface
-     */
-    private $shopperContext;
-
-    /**
-     * @param Document\Service        $documentService
-     * @param ShopperContextInterface $shopperContext
-     */
     public function __construct(
-        Document\Service $documentService,
-        ShopperContextInterface $shopperContext
-    ) {
-        $this->documentService = $documentService;
-        $this->shopperContext = $shopperContext;
-    }
+        private Document\Service $documentService,
+        private ShopperContextInterface $shopperContext,
+        private RequestStack $requestStack
+    ) {}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('coreshop_locale_switcher', [$this, 'getLocalizedLinks']),
         ];
     }
 
-    /**
-     * @param Document $document
-     *
-     * @return array
-     */
-    public function getLocalizedLinks(Document $document)
+    public function getLocalizedLinks(Document $document): array
     {
         $translations = $this->documentService->getTranslations($document);
         $links = [];
@@ -73,14 +55,29 @@ final class LocaleSwitcherExtension extends AbstractExtension
                 if ($site instanceof Site) {
                     $basePath = $site->getRootDocument()->getRealFullPath() . '/';
                 }
-            } catch (\Exception $ex) {
+            } catch (\Exception) {
                 $basePath = '/';
             }
         }
 
+        $object = $this->getMainRequest()->attributes->get('object');
+
         foreach (Tool::getValidLanguages() as $language) {
             $target = $basePath . $language;
-            $localizedDocument = null;
+
+            if ($object instanceof SluggableInterface) {
+                $urlSlug = $object->getSlug($language)[0] ?? null;
+
+                if ($urlSlug instanceof UrlSlug) {
+                    $links[] = [
+                        'language' => $language,
+                        'target' => $urlSlug->getSlug(),
+                        'displayLanguage' => \Locale::getDisplayLanguage($language, $language),
+                    ];
+                }
+
+                continue;
+            }
 
             if (isset($translations[$language])) {
                 $localizedDocument = Document::getById($translations[$language]);
@@ -98,5 +95,16 @@ final class LocaleSwitcherExtension extends AbstractExtension
         }
 
         return $links;
+    }
+
+    private function getMainRequest(): Request
+    {
+        $mainRequest = $this->requestStack->getMainRequest();
+
+        if (null === $mainRequest) {
+            throw new \UnexpectedValueException('There are not any requests on request stack');
+        }
+
+        return $mainRequest;
     }
 }

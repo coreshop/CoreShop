@@ -6,36 +6,25 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\EventListener\Grid;
 
 use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use Pimcore\Model\DataObject;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class ObjectListFilterListener
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $filterServiceRegistry;
-
-    /**
-     * @param ServiceRegistryInterface $filterServiceRegistry
-     */
-    public function __construct(ServiceRegistryInterface $filterServiceRegistry)
+    public function __construct(private ServiceRegistryInterface $filterServiceRegistry)
     {
-        $this->filterServiceRegistry = $filterServiceRegistry;
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function checkObjectList(GenericEvent $event)
+    public function checkObjectList(GenericEvent $event): void
     {
         $list = $event->getArgument('list');
         $context = $event->getArgument('context');
@@ -53,8 +42,6 @@ final class ObjectListFilterListener
         $filterService = $this->filterServiceRegistry->get($filter);
         $data = $filterService->filter($list, $context);
 
-        if ($data instanceof DataObject\Listing) {
-            $event->setArgument('list', $data);
-        }
+        $event->setArgument('list', $data);
     }
 }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Customer;
 
@@ -17,12 +19,11 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface;
 use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Dependency;
 use Pimcore\Model\Element\ElementInterface;
@@ -32,61 +33,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CustomerTransformHelper implements CustomerTransformHelperInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    protected $companyFactory;
-
-    /**
-     * @var ObjectServiceInterface
-     */
-    protected $objectService;
-
-    /**
-     * @var string
-     */
-    protected $companyFolder;
-
-    /**
-     * @var string
-     */
-    protected $addressFolder;
-
-    /**
-     * @param FactoryInterface       $companyFactory
-     * @param ObjectServiceInterface $objectService
-     * @param string                 $companyFolder
-     * @param string                 $addressFolder
-     */
-    public function __construct(
-        FactoryInterface $companyFactory,
-        ObjectServiceInterface $objectService,
-        $companyFolder,
-        $addressFolder
-    ) {
-        $this->companyFactory = $companyFactory;
-        $this->objectService = $objectService;
-        $this->companyFolder = $companyFolder;
-        $this->addressFolder = $addressFolder;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEntityAddressFolderPath(string $rootPath)
+    public function __construct(protected FactoryInterface $companyFactory, protected FolderCreationServiceInterface $folderCreationService)
     {
-        /**
-         * @var DataObject\Folder $folder
-         */
-        $folder = $this->objectService->createFolderByPath(sprintf('%s/%s', $rootPath, $this->addressFolder));
-
-        return $folder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSaveKeyForMoving(ElementInterface $object, ElementInterface $newParent)
+    public function getEntityAddressFolderPath(AddressInterface $address, string $rootPath): DataObject\Folder
+    {
+        return $this->folderCreationService->createFolderForResource(
+            $address,
+            ['prefix' => $rootPath]
+        );
+    }
+
+    public function getSaveKeyForMoving(ElementInterface $object, ElementInterface $newParent): string
     {
         $incrementId = 1;
         $originalKey = $object->getKey();
@@ -96,16 +55,13 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         while (Service::pathExists($newPath, 'object')) {
             $newKey = sprintf('%s-%d', $originalKey, $incrementId);
             $newPath = sprintf('%s/%s', $newParent->getFullPath(), $newKey);
-            $incrementId++;
+            ++$incrementId;
         }
 
         return $newKey;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function moveCustomerToNewCompany(CustomerInterface $customer, array $transformOptions)
+    public function moveCustomerToNewCompany(CustomerInterface $customer, array $transformOptions): CustomerInterface
     {
         $resolver = $this->getMoveOptionsResolver();
 
@@ -123,15 +79,18 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
 
         $company->setValues($options['companyData']);
         $company->setPublished(true);
-        $company->setParent($this->objectService->createFolderByPath(sprintf(
-            '/%s/%s',
-            $this->companyFolder, mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
-        )));
+        $company->setParent(
+            $this->folderCreationService->createFolderForResource(
+                $company,
+                ['suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))]
+            )
+        );
 
+        /** @psalm-suppress InternalMethod */
         $company->setKey(File::getValidFilename($company->getName()));
-        $company->setKey(DataObject\Service::getUniqueKey($company));
 
-        if ($company instanceof AbstractObject) {
+        if ($company instanceof Concrete) {
+            $company->setKey(DataObject\Service::getUniqueKey($company));
             $company->setChildrenSortBy('index');
         }
 
@@ -144,10 +103,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $this->moveCustomerToCompany($customer, $company, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function moveCustomerToExistingCompany(CustomerInterface $customer, CompanyInterface $company, array $transformOptions)
+    public function moveCustomerToExistingCompany(CustomerInterface $customer, CompanyInterface $company, array $transformOptions): CustomerInterface
     {
         $resolver = $this->getMoveOptionsResolver();
 
@@ -160,20 +116,17 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $this->moveCustomerToCompany($customer, $company, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function moveAddressToNewAddressStack(AddressInterface $address, ElementInterface $newHolder, $removeOldRelations = true)
+    public function moveAddressToNewAddressStack(AddressInterface $address, ElementInterface $newHolder, bool $removeOldRelations = true): AddressInterface
     {
         $path = $newHolder->getFullPath();
-        $newParent = $this->getEntityAddressFolderPath($path);
+        $newParent = $this->getEntityAddressFolderPath($address, $path);
 
         if (!$newHolder instanceof AddressesAwareInterface) {
             return $address;
         }
 
         // set new or changed parent
-        if ($this->isNewEntity($address) === true || $address->getParent()->getId() !== $newParent->getId()) {
+        if ($this->isNewEntity($address) === true || $address->getParent()?->getId() !== $newParent->getId()) {
             $address->setParent($newParent);
             $address->setKey($this->getSaveKeyForMoving($address, $newParent));
 
@@ -192,14 +145,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $address;
     }
 
-    /**
-     * @param CustomerInterface $customer
-     * @param CompanyInterface  $company
-     * @param array             $options
-     *
-     * @throws \Exception
-     */
-    protected function moveCustomerToCompany(CustomerInterface $customer, CompanyInterface $company, array $options)
+    private function moveCustomerToCompany(CustomerInterface $customer, CompanyInterface $company, array $options): CustomerInterface
     {
         $customer->setParent($company);
         $customer->setKey($this->getSaveKeyForMoving($customer, $company));
@@ -216,13 +162,10 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
 
         $this->forceSave($customer);
 
-        // @todo: fire post event
+        return $customer;
     }
 
-    /**
-     * @param AddressInterface $address
-     */
-    protected function removeAddressRelations(AddressInterface $address)
+    private function removeAddressRelations(AddressInterface $address): void
     {
         // no need to search for dependencies: address is new.
         if ($this->isNewEntity($address)) {
@@ -230,8 +173,10 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }
 
         $dependenciesObjects = [];
-        $dependenciesResult = Dependency::getBySourceId($address->getId(), 'object');
+        /** @psalm-suppress InternalClass,InternalMethod */
+        $dependenciesResult = Dependency::getBySourceId((int)$address->getId(), 'object');
 
+        /** @psalm-suppress InternalMethod */
         foreach ($dependenciesResult->getRequiredBy() as $r) {
             if ($r['type'] === 'object') {
                 $object = DataObject::getById($r['id']);
@@ -264,15 +209,12 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         }
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    protected function getMoveOptionsResolver()
+    private function getMoveOptionsResolver(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'addressAssignmentType' => 'move',
-            'addressAccessType'     => 'own_only'
+            'addressAccessType' => 'own_only',
         ]);
 
         $resolver->setAllowedTypes('addressAssignmentType', 'string');
@@ -288,29 +230,21 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $resolver;
     }
 
-    /**
-     * @param ElementInterface $element
-     * @param bool             $useVersioning
-     */
-    protected function forceSave(ElementInterface $element, $useVersioning = true)
+    private function forceSave(mixed $element, bool $useVersioning = true): void
     {
         if ($element instanceof Concrete) {
             $element->setOmitMandatoryCheck(true);
         }
 
-        VersionHelper::useVersioning(function () use ($element) {
-            $element->save();
-        }, $useVersioning);
+        if ($element instanceof ElementInterface) {
+            VersionHelper::useVersioning(function () use ($element) {
+                $element->save();
+            }, $useVersioning);
+        }
     }
 
-    /**
-     * @param ElementInterface $element
-     *
-     * @return bool
-     */
-    protected function isNewEntity(ElementInterface $element)
+    private function isNewEntity(ElementInterface $element): bool
     {
         return is_null($element->getId()) || $element->getId() === 0;
     }
-
 }

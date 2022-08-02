@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\EventListener;
 
@@ -17,59 +19,29 @@ use CoreShop\Component\Order\Context\CartNotFoundException;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 final class SessionCartSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var PimcoreContextResolver
-     */
-    private $pimcoreContext;
-
-    /**
-     * @var CartContextInterface
-     */
-    private $cartContext;
-
-    /**
-     * @var string
-     */
-    private $sessionKeyName;
-
-    /**
-     * @param PimcoreContextResolver $pimcoreContextResolver
-     * @param CartContextInterface   $cartContext
-     * @param string                 $sessionKeyName
-     */
-    public function __construct(PimcoreContextResolver $pimcoreContextResolver, CartContextInterface $cartContext, $sessionKeyName)
+    public function __construct(private PimcoreContextResolver $pimcoreContext, private CartContextInterface $cartContext, private string $sessionKeyName)
     {
-        $this->pimcoreContext = $pimcoreContextResolver;
-        $this->cartContext = $cartContext;
-        $this->sessionKeyName = $sessionKeyName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => ['onKernelResponse'],
         ];
     }
 
-    /**
-     * @param FilterResponseEvent $event
-     */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if ($this->pimcoreContext->matchesPimcoreContext($event->getRequest(), PimcoreContextResolver::CONTEXT_ADMIN)) {
             return;
         }
 
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
@@ -80,21 +52,23 @@ final class SessionCartSubscriber implements EventSubscriberInterface
         /** @var Request $request */
         $request = $event->getRequest();
 
-        try {
-            $cart = $this->cartContext->getCart();
-        } catch (CartNotFoundException $exception) {
+        if (!$request->hasSession()) {
             return;
         }
 
-        if (null !== $cart && 0 !== $cart->getId() && null !== $cart->getStore()) {
+        try {
+            $cart = $this->cartContext->getCart();
+        } catch (CartNotFoundException) {
+            return;
+        }
+
+        if (0 !== $cart->getId() && null !== $cart->getStore()) {
             $session = $request->getSession();
 
-            if ($session instanceof SessionInterface) {
-                $session->set(
-                    sprintf('%s.%s', $this->sessionKeyName, $cart->getStore()->getId()),
-                    $cart->getId()
-                );
-            }
+            $session->set(
+                sprintf('%s.%s', $this->sessionKeyName, $cart->getStore()->getId()),
+                $cart->getId()
+            );
         }
     }
 }

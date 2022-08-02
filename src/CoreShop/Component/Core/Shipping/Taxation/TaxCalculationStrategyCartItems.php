@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Shipping\Taxation;
 
@@ -27,42 +29,23 @@ use Webmozart\Assert\Assert;
 
 class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
 {
-    /**
-     * @var TaxCollectorInterface
-     */
-    private $taxCollector;
-
-    /**
-     * @var TaxCalculatorFactoryInterface
-     */
-    private $taxCalculationFactory;
-
-    /**
-     * @var ProportionalIntegerDistributorInterface
-     */
-    private $distributor;
-
     public function __construct(
-        TaxCollectorInterface $taxCollector,
-        TaxCalculatorFactoryInterface $taxCalculationFactory,
-        ProportionalIntegerDistributorInterface $distributor
+        private TaxCollectorInterface $taxCollector,
+        private TaxCalculatorFactoryInterface $taxCalculationFactory,
+        private ProportionalIntegerDistributorInterface $distributor
     ) {
-        $this->taxCollector = $taxCollector;
-        $this->taxCalculationFactory = $taxCalculationFactory;
-        $this->distributor = $distributor;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function calculateShippingTax(
         ShippableInterface $shippable,
         CarrierInterface $carrier,
         AddressInterface $address,
-        int $shippingAmountNet
+        int $shippingAmount,
+        array $context = [],
     ): array {
         /**
          * @var StoreAwareInterface $shippable
+         * @var ShippableInterface $shippable
          */
         Assert::isInstanceOf($shippable, StoreAwareInterface::class);
 
@@ -79,9 +62,9 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
             return [];
         }
 
-        $distributedAmount = $this->distributor->distribute(\array_values($totalAmount), $shippingAmountNet);
+        $distributedAmount = $this->distributor->distribute(\array_values($totalAmount), $shippingAmount);
 
-        return $this->collectTaxes($address, $taxRules, $distributedAmount, $store->getUseGrossPrice());
+        return $this->collectTaxes($address, $taxRules, $distributedAmount, $store->getUseGrossPrice(), $context);
     }
 
     private function collectCartItemsTaxRules(ShippableInterface $cart): array
@@ -93,7 +76,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
          * @var ShippableItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            if ($item instanceof \CoreShop\Component\Core\Model\CartItemInterface &&
+            if ($item instanceof \CoreShop\Component\Core\Model\OrderItemInterface &&
                 $item->getDigitalProduct() === true
             ) {
                 continue;
@@ -124,23 +107,24 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
         AddressInterface $address,
         array $taxRuleGroup,
         array $distributedAmount,
-        bool $useGrossValues
+        bool $useGrossValues,
+        array $context = [],
     ): array {
         $taxes = [];
 
         foreach ($distributedAmount as $i => $amount) {
-            $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($taxRuleGroup[$i], $address);
-
-            if (!$taxCalculator) {
-                continue;
-            }
+            $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress(
+                $taxRuleGroup[$i],
+                $address,
+                $context
+            );
 
             if ($useGrossValues) {
                 $shippingTax = $this->taxCollector->collectTaxesFromGross($taxCalculator, $amount);
-            }
-            else {
+            } else {
                 $shippingTax = $this->taxCollector->collectTaxes($taxCalculator, $amount);
             }
+            /** @psalm-suppress InvalidArgument */
             $taxes = $this->taxCollector->mergeTaxes($shippingTax, $taxes);
         }
 

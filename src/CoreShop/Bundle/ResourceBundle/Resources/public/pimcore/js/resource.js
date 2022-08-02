@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -16,24 +16,26 @@ coreshop.resources = Class.create({
 
     initialize: function () {
         Ext.Ajax.request({
-            url: '/admin/coreshop/resource/config',
+            url: Routing.generate('coreshop_resource_class_map'),
             success: function (response) {
                 var resp = Ext.decode(response.responseText);
 
                 coreshop.class_map = resp.classMap;
                 coreshop.stack = resp.stack;
+                coreshop.full_stack = resp.full_stack;
 
                 coreshop.broker.fireEvent("afterClassMap", coreshop.class_map);
             }.bind(this)
         });
 
-        pimcore.eventDispatcher.registerTarget('coreshopMenuOpen', new (Class.create({
-            coreshopMenuOpen: function(type, item) {
-                if (item.attributes.resource) {
-                    coreshop.global.resource.open(item.attributes.resource, item.attributes.function);
-                }
+        document.addEventListener(coreshop.events.menu.open, (e) => {
+            var item = e.detail.item;
+            var type = e.detail.type;
+
+            if (item.attributes.resource) {
+                coreshop.global.resource.open(item.attributes.resource, item.attributes.function);
             }
-        })));
+        });
 
         coreshop.broker.addListener('resource.register', this.resourceRegistered, this);
     },

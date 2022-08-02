@@ -1,12 +1,13 @@
 imports:
-    - { resource: "coreshop/coreshop_address.yml" }
-    - { resource: "coreshop/coreshop_taxation.yml" }
-    - { resource: "coreshop/coreshop_currency.yml" }
-    - { resource: "coreshop/coreshop_store.yml" }
-    - { resource: "coreshop/coreshop_shipping.yml" }
-    - { resource: "coreshop/coreshop_payment.yml" }
-    - { resource: "coreshop/coreshop_order.yml" }
-    - { resource: "coreshop/coreshop_configuration.yml" }
-    - { resource: "coreshop/coreshop_product.yml" }
-    - { resource: "coreshop/coreshop_customer.yml" }
-    - { resource: "coreshop/coreshop_product_quantity_price_rules.yml" }
+    - { resource: coreshop/coreshop_address.yml }
+    - { resource: coreshop/coreshop_taxation.yml }
+    - { resource: coreshop/coreshop_currency.yml }
+    - { resource: coreshop/coreshop_store.yml }
+    - { resource: coreshop/coreshop_shipping.yml }
+    - { resource: coreshop/coreshop_payment.yml }
+    - { resource: coreshop/coreshop_order.yml }
+    - { resource: coreshop/coreshop_configuration.yml }
+    - { resource: coreshop/coreshop_product.yml }
+    - { resource: coreshop/coreshop_customer.yml }
+    - { resource: coreshop/coreshop_product_quantity_price_rules.yml }
+    - { resource: coreshop/coreshop_user.yml }

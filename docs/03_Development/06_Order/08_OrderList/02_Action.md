@@ -42,12 +42,12 @@ class DemoAction implements GridActionInterface
         $this->shipmentRepository = $shipmentRepository;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop.order.demo';
     }
 
-    public function apply(array $processIds)
+    public function apply(array $processIds): string
     {
         $message = '';
         $transition = 'ship';
@@ -94,7 +94,7 @@ class DemoAction implements GridActionInterface
         return $message;
     }
 
-    public function supports($listType)
+    public function supports(string $listType): bool
     {
         return $listType === 'coreshop_order';
     }

@@ -1,4 +1,4 @@
-Ext.define('CoreShop.store.Zone', {
+Ext.define('CoreShop.address.Zone', {
     extend: 'CoreShop.resource.ComboBox',
     alias: 'widget.coreshop.zone',
 

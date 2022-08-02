@@ -2,84 +2,78 @@ services:
     _defaults:
         public: true
 
-    coreshop.shipping_rule.condition.categories:
-        class: CoreShop\Component\Core\Shipping\Rule\Condition\CategoriesConditionChecker
+    CoreShop\Component\Core\Shipping\Rule\Condition\CategoriesConditionChecker:
         arguments:
             - '@coreshop.repository.category'
         tags:
             - { name: coreshop.shipping_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
 
-    coreshop.shipping_rule.condition.products:
-        class: CoreShop\Component\Core\Shipping\Rule\Condition\ProductsConditionChecker
+    CoreShop\Component\Core\Shipping\Rule\Condition\ProductsConditionChecker:
         arguments:
             - '@coreshop.repository.product'
         tags:
             - { name: coreshop.shipping_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
 
-    coreshop.shipping_rule.condition.countries:
-        class: CoreShop\Component\Core\Shipping\Rule\Condition\CountriesConditionChecker
+    CoreShop\Component\Core\Shipping\Rule\Condition\CountriesConditionChecker:
         tags:
             - { name: coreshop.shipping_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
 
-    coreshop.shipping_rule.condition.zones:
-        class: CoreShop\Component\Core\Shipping\Rule\Condition\ZonesConditionChecker
+    CoreShop\Component\Core\Shipping\Rule\Condition\ZonesConditionChecker:
         tags:
             - { name: coreshop.shipping_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
 
-    coreshop.shipping_rule.condition.customers:
-        class: CoreShop\Component\Core\Shipping\Rule\Condition\CustomersConditionChecker
+    CoreShop\Component\Core\Shipping\Rule\Condition\CustomersConditionChecker:
         tags:
             - { name: coreshop.shipping_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
 
-    coreshop.shipping_rule.condition.customer_groups:
-        class: CoreShop\Component\Core\Shipping\Rule\Condition\CustomerGroupsConditionChecker
+    CoreShop\Component\Core\Shipping\Rule\Condition\CustomerGroupsConditionChecker:
         tags:
             - { name: coreshop.shipping_rule.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
 
-    coreshop.shipping_rule.condition.stores:
-        class: CoreShop\Component\Core\Shipping\Rule\Condition\StoresConditionChecker
+    CoreShop\Component\Core\Shipping\Rule\Condition\StoresConditionChecker:
         tags:
             - { name: coreshop.shipping_rule.condition, type: stores, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType }
 
-    coreshop.shipping_rule.condition.currencies:
-        class: CoreShop\Component\Core\Shipping\Rule\Condition\CurrenciesConditionChecker
+    CoreShop\Component\Core\Shipping\Rule\Condition\CurrenciesConditionChecker:
         tags:
             - { name: coreshop.shipping_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
 
-    coreshop.shipping_rule.action.price:
-        class: CoreShop\Component\Core\Shipping\Rule\Action\PriceActionProcessor
+    CoreShop\Component\Core\Shipping\Rule\Action\PriceActionProcessor:
         arguments:
             - '@coreshop.repository.currency'
-            - '@coreshop.currency_converter'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:
             - { name: coreshop.shipping_rule.action, type: price, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType }
 
-    coreshop.shipping_rule.action.addition_amount:
-        class: CoreShop\Component\Core\Shipping\Rule\Action\AdditionAmountActionProcessor
+    CoreShop\Component\Core\Shipping\Rule\Action\AdditionAmountActionProcessor:
         arguments:
             - '@coreshop.repository.currency'
-            - '@coreshop.currency_converter'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:
             - { name: coreshop.shipping_rule.action, type: additionAmount, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\AdditionAmountActionConfigurationType }
 
-    coreshop.shipping_rule.action.discount_amount:
-        class: CoreShop\Component\Core\Shipping\Rule\Action\DiscountAmountActionProcessor
+    CoreShop\Component\Core\Shipping\Rule\Action\DiscountAmountActionProcessor:
         arguments:
             - '@coreshop.repository.currency'
-            - '@coreshop.currency_converter'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:
             - { name: coreshop.shipping_rule.action, type: discountAmount, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType }
 
-    coreshop.carrier.price_calculator.taxed:
-        class: CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
+    CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface: '@CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator'
+    CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator:
         arguments:
-            - '@coreshop.carrier.price_calculator.default'
+            - '@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface'
             - '@coreshop.registry.shipping.tax_calculation_strategies'
 
-    coreshop.carrier.cart.store_based_resolver:
-        class: CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery
-        decorates: coreshop.carrier.resolver
+    CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery:
+        decorates: CoreShop\Component\Shipping\Resolver\CarriersResolverInterface
         arguments:
-            - '@coreshop.carrier.cart.store_based_resolver.inner'
+            - '@CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery.inner'
             - '@coreshop.repository.carrier'
-            - '@coreshop.shipping.carrier.validator'
+            - '@CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface'
+
+    CoreShop\Component\Core\Shipping\Resolver\CheapestDefaultCarrierResolver:
+        arguments:
+            - '@CoreShop\Component\Shipping\Resolver\CarriersResolverInterface'
+            - '@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'

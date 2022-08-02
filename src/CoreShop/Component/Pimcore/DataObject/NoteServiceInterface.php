@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
@@ -18,55 +20,23 @@ use Pimcore\Model\Element\Note;
 
 interface NoteServiceInterface
 {
+    public function getNoteById(int $id): ?Note;
+
+    public function createPimcoreNoteInstance(Concrete $object, string $noteType): Note;
+
+    public function createAnonymousNoteInstance(string $noteType): Note;
+
     /**
-     * @param int $id
-     *
+     * @return Note[]
+     */
+    public function getObjectNotes(Concrete $object, string $noteType): array;
+
+    public function storeNoteForEmail(Note $note, Document\Email $emailDocument): Note;
+
+    /**
      * @return Note
      */
-    public function getNoteById($id);
+    public function storeNote(Note $note, array $eventParams = []): ?Note;
 
-    /**
-     * @param Concrete $object
-     * @param string   $noteType
-     *
-     * @return Note
-     */
-    public function createPimcoreNoteInstance(Concrete $object, $noteType);
-
-    /**
-     * @param string $noteType
-     *
-     * @return Note
-     */
-    public function createAnonymousNoteInstance($noteType);
-
-    /**
-     * @param Concrete $object
-     * @param string   $noteType
-     *
-     * @return mixed
-     */
-    public function getObjectNotes(Concrete $object, $noteType);
-
-    /**
-     * @param Note           $note
-     * @param Document\Email $emailDocument
-     *
-     * @return Note
-     */
-    public function storeNoteForEmail(Note $note, Document\Email $emailDocument);
-
-    /**
-     * @param Note  $note
-     * @param array $eventParams
-     *
-     * @return Note
-     */
-    public function storeNote(Note $note, $eventParams = []);
-
-    /**
-     * @param int   $noteId
-     * @param array $eventParams
-     */
-    public function deleteNote($noteId, $eventParams = []);
+    public function deleteNote(int $noteId, array $eventParams = []): void;
 }

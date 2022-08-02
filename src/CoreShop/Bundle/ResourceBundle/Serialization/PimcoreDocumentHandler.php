@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
@@ -19,7 +21,7 @@ use Pimcore\Model\Document;
 
 class PimcoreDocumentHandler
 {
-    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
+    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context): ?int
     {
         if ($relation instanceof Document) {
             return $relation->getId();
@@ -30,7 +32,7 @@ class PimcoreDocumentHandler
 
     public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
     {
-        $className = isset($type['params'][0]['name']) ? $type['params'][0]['name'] : null;
+        $className = $type['params'][0]['name'] ?? null;
 
         if (is_array($relation)) {
             $result = [];

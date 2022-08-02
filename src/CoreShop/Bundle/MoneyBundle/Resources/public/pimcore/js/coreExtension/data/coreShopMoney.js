@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -61,7 +61,8 @@ pimcore.object.classes.data.coreShopMoney = Class.create(pimcore.object.classes.
                 fieldLabel: t("default_value"),
                 name: "defaultValue",
                 value: this.datax.defaultValue
-            }, {
+            },
+            {
                 xtype: "panel",
                 bodyStyle: "padding-top: 3px",
                 style: "margin-bottom: 10px",
@@ -71,6 +72,12 @@ pimcore.object.classes.data.coreShopMoney = Class.create(pimcore.object.classes.
 
         if (!this.isInCustomLayoutEditor()) {
             this.specificPanel.add([
+                {
+                    xtype: "checkbox",
+                    fieldLabel: t("nullable"),
+                    name: "nullable",
+                    value: this.datax.nullable
+                },
                 {
                     xtype: "numberfield",
                     fieldLabel: t("min_value"),
@@ -99,6 +106,7 @@ pimcore.object.classes.data.coreShopMoney = Class.create(pimcore.object.classes.
                 defaultValue: source.datax.defaultValue,
                 minValue: source.datax.minValue,
                 maxValue: source.datax.maxValue,
+                nullable: source.datax.nullable,
             });
         }
     }

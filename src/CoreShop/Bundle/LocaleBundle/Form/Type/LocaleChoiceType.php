@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\LocaleBundle\Form\Type;
 
@@ -22,46 +24,37 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class LocaleChoiceType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['multiple']) {
             $builder->addModelTransformer(new CollectionToArrayTransformer());
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
                 'choices' => static function (Options $options) {
                     $locales = Tool::getValidLanguages();
 
-                    usort($locales, static function ($a, $b): int {
+                    usort($locales, static function (string $a, string $b): int {
                         return $a <=> $b;
                     });
 
                     return $locales;
                 },
-                'choice_value' => static function ($value) {
+                'choice_value' => static function (string $value = null) {
                     return $value;
                 },
-                'choice_label' => static function($value) {
+                'choice_label' => static function (string $value) {
                     return $value;
                 },
                 'choice_translation_domain' => false,
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }

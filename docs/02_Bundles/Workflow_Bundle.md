@@ -1,3 +1,6 @@
 # CoreShop Workflow Bundle
 
-TBD
+## Installation
+```bash
+$ composer require coreshop/workflow-bundle:^3.0
+```

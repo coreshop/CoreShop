@@ -37,9 +37,9 @@ core_shop_workflow:
                 after:
                     resolve_state:
                         on: ['complete']
-                        do: ['@coreshop.state_machine_resolver.order_invoice', 'resolve']
+                        do: ['@CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver', 'resolve']
                         args: ['object.getOrder()']
                     add_to_history:
                         on: ['cancel', 'complete']
-                        do: ['@coreshop.workflow.state_history_logger', 'log']
+                        do: ['@CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface', 'log']
                         args: ['object.getOrder()', 'event']

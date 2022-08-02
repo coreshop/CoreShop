@@ -4,7 +4,7 @@ Menu Bundle makes it easy creating Pimcore Menus based on permissions.
 
 ## Installation
 ```bash
-$ composer require coreshop/menu-bundle:^2.1
+$ composer require coreshop/menu-bundle:^3.0
 ```
 
 ### Adding required bundles to kernel

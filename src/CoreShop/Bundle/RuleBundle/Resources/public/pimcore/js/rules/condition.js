@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -17,6 +17,14 @@ coreshop.rules.condition = Class.create({
     initialize: function (conditions) {
         this.conditions = conditions;
         this.dirty = false;
+    },
+
+    reload: function (conditions) {
+        this.conditionsContainer.removeAll();
+
+        Ext.each(conditions, function(condition) {
+            this.addCondition(condition.type, condition, false);
+        }.bind(this));
     },
 
     getLayout: function () {
@@ -135,12 +143,13 @@ coreshop.rules.condition = Class.create({
                 }
             }
 
-            if (conditionClass.data.id) {
-                condition['id'] = conditionClass.data.id;
+            if (conditionClass.id) {
+                condition['id'] = conditionClass.id;
             }
 
             condition['configuration'] = configuration;
             condition['type'] = conditions[i].xparent.type;
+            condition['sort'] = (i + 1);
 
             if (Ext.isFunction(this.prepareCondition)) {
                 condition = this.prepareCondition(condition);

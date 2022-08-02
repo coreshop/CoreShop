@@ -1,4 +1,5 @@
 imports:
-    - { resource: 'services/form.yml' }
-    - { resource: 'services/commands.yml' }
-    - { resource: 'services/rule_active_validator.yml' }
+    - { resource: services_alias.yml }
+    - { resource: services/form.yml }
+    - { resource: services/commands.yml }
+    - { resource: services/rule_active_validator.yml }

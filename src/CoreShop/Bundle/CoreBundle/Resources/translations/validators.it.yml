@@ -1,0 +1,9 @@
+coreshop:
+    form:
+        user:
+            username:
+                unique: 'Il nome utente è già in uso.'
+            password:
+                must_match: 'Le password devono corrispondere.'
+
+

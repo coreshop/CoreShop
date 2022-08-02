@@ -6,47 +6,31 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Pimcore\Model\DataObject\Concrete;
+use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
 final class LinkGeneratorContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var LinkGeneratorInterface
-     */
-    private $linkGenerator;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param LinkGeneratorInterface $linkGenerator
-     */
-    public function __construct(SharedStorageInterface $sharedStorage, LinkGeneratorInterface $linkGenerator)
+    public function __construct(private RouterInterface $router)
     {
-        $this->sharedStorage = $sharedStorage;
-        $this->linkGenerator = $linkGenerator;
     }
 
     /**
      * @Then /^the generated url for (object) should be "([^"]+)"/
      */
-    public function theGeneratedUrlForObjectShouldBe(Concrete $object, $url)
+    public function theGeneratedUrlForObjectShouldBe(Concrete $object, $url): void
     {
-        $generatedUrl = $this->linkGenerator->generate($object, null, ['_locale' => 'en']);
-        $url = str_replace('%id', $object->getId(), $url);
+        $generatedUrl = $object->getClass()->getLinkGenerator()->generate($object, ['_locale' => 'en']);
 
         Assert::eq(
             $generatedUrl,
@@ -62,10 +46,9 @@ final class LinkGeneratorContext implements Context
     /**
      * @Then /^the generated url for (object) with route "([^"]+)" should be "([^"]+)"/
      */
-    public function theGeneratedUrlForObjectWithRouteShouldBe(Concrete $object, $routeName, $url)
+    public function theGeneratedUrlForObjectWithRouteShouldBe(Concrete $object, $routeName, $url): void
     {
-        $generatedUrl = $this->linkGenerator->generate($object, $routeName, ['_locale' => 'en']);
-        $url = str_replace('%id', $object->getId(), $url);
+        $generatedUrl = $object->getClass()->getLinkGenerator()->generate($object, ['_locale' => 'en', 'route' => $routeName]);
 
         Assert::eq(
             $generatedUrl,
@@ -81,9 +64,9 @@ final class LinkGeneratorContext implements Context
     /**
      * @Then /^the generated url for route "([^"]+)" should be "([^"]+)"/
      */
-    public function theGeneratedUrlForRouteShouldBe($route, $url)
+    public function theGeneratedUrlForRouteShouldBe($route, $url): void
     {
-        $generatedUrl = $this->linkGenerator->generate(null, $route, ['_locale' => 'en']);
+        $generatedUrl = $this->router->generate($route, ['_locale' => 'en']);
 
         Assert::eq(
             $generatedUrl,

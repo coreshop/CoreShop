@@ -19,6 +19,8 @@ CoreShop Price Calculation consists of 3 different prices:
  - **Discount**: Discount from promotions
  - **Price**: Retail Price or Discount Price (if available) minus discount rules
 
+The default is always to use store values prices.
+
 ## Calculator Service
 If you want to calculate the Price for a Product, you need to use a special service to do that. There are two options:
 
@@ -30,11 +32,6 @@ If you want to calculate the Price for a Product, you need to use a special serv
 If you want to calculate the price within a Template, you can do so by using the filter ```coreshop_product_price```
 
 <div class="code-section">
-
-```php
-<?php
-echo $this->coreshop_product_price($product);
-```
 
 ```twig
 {{ (product|coreshop_product_price(true)) }}
@@ -65,7 +62,7 @@ final class CustomPriceCalculator implements ProductPriceCalculatorInterface
     /**
      * Used to determine a retail price
      */
-    public function getPrice(ProductInterface $subject, array $context, $withDiscount = true)
+    public function getPrice(ProductInterface $subject, array $context, bool $withDiscount = true): int
     {
         $price = $this->getRetailPrice($subject, $context);
 
@@ -75,7 +72,7 @@ final class CustomPriceCalculator implements ProductPriceCalculatorInterface
     /**
      * Used to determine a retail price
      */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         return $subject->getStorePrice($context['store']);
     }
@@ -83,7 +80,7 @@ final class CustomPriceCalculator implements ProductPriceCalculatorInterface
     /**
      * Used to determine a discount
      */
-    public function getDiscount(ProductInterface $subject, array $context, $price)
+    public function getDiscount(ProductInterface $subject, array $context, int $price): int
     {
         return 0;
     }
@@ -91,9 +88,9 @@ final class CustomPriceCalculator implements ProductPriceCalculatorInterface
     /**
      * Used to determine a discounted price
      */
-    public function getDiscountPrice(ProductInterface $subject, array $context)
+    public function getDiscountPrice(ProductInterface $subject, array $context): int
     {
-        return null;
+        return 0;
     }
 }
 ```

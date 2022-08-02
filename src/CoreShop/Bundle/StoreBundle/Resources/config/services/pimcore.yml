@@ -2,11 +2,11 @@ services:
     _defaults:
         public: true
 
-    coreshop.pimcore.document.tag.store:
+    coreshop.pimcore.document.editable.store:
         class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
         arguments:
             - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
             - 'coreshop.repository.store'
             - 'name'
         tags:
-            - { name: coreshop.pimcore.document.tag, type: coreshop_store }
+            - { name: coreshop.pimcore.document.editable, type: coreshop_store }

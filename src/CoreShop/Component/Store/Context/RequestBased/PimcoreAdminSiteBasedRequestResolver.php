@@ -6,12 +6,16 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Context\RequestBased;
 
+use CoreShop\Component\Store\Context\StoreNotFoundException;
+use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Http\RequestHelper;
 use Pimcore\Model\Document;
@@ -21,61 +25,43 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInterface
 {
-    /**
-     * @var StoreRepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var RequestHelper
-     */
-    private $requestHelper;
-
-    /**
-     * @var Service
-     */
-    private $documentService;
-
-    /**
-     * @param StoreRepositoryInterface $storeRepository
-     * @param RequestHelper            $requestHelper
-     * @param Service                  $documentService
-     */
-    public function __construct(
-        StoreRepositoryInterface $storeRepository,
-        RequestHelper $requestHelper,
-        Service $documentService
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->requestHelper = $requestHelper;
-        $this->documentService = $documentService;
+    public function __construct(private StoreRepositoryInterface $storeRepository, private RequestHelper $requestHelper, private Service $documentService)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findStore(Request $request)
+    public function findStore(Request $request): ?StoreInterface
     {
-        if ($this->requestHelper->isFrontendRequestByAdmin($request)) {
-            $document = $this->documentService->getNearestDocumentByPath($request->getPathInfo());
+        $document = null;
 
-            if ($document instanceof Document) {
-                do {
-                    try {
-                        $site = Site::getByRootId($document->getId());
+        if ($request->attributes->get('_route') === 'pimcore_admin_document_page_save') {
+            $id = $request->request->get('id');
 
-                        if ($site instanceof Site) {
-                            return $this->storeRepository->findOneBySite($site->getId());
-                        }
-                    } catch (\Exception $x) {
-                        //Ignore Exception and continue
-                    }
-
-                    $document = $document->getParent();
-                } while ($document instanceof Document);
+            if ($id) {
+                $document = Document::getById((int)$id);
             }
         }
 
-        return null;
+        if ($this->requestHelper->isFrontendRequestByAdmin($request)) {
+            /** @psalm-suppress InternalMethod */
+            $document = $this->documentService->getNearestDocumentByPath($request->getPathInfo());
+        }
+
+        if ($document instanceof Document) {
+            do {
+                try {
+                    $site = Site::getByRootId($document->getId());
+
+                    if ($site instanceof Site) {
+                        return $this->storeRepository->findOneBySite($site->getId());
+                    }
+                } catch (\Exception) {
+                    //Ignore Exception and continue
+                }
+
+                $document = $document->getParent();
+            } while ($document instanceof Document);
+        }
+
+        throw new StoreNotFoundException();
     }
 }

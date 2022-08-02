@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Taxation\Collector;
 
@@ -20,68 +22,33 @@ use CoreShop\Component\Taxation\Model\TaxRateInterface;
 
 class TaxCollector implements TaxCollectorInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $taxRateRepository;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $taxItemFactory;
-
-    /**
-     * @param RepositoryInterface $taxRateRepository
-     * @param FactoryInterface    $taxItemFactory
-     */
-    public function __construct(
-        RepositoryInterface $taxRateRepository,
-        FactoryInterface $taxItemFactory
-    ) {
-        $this->taxRateRepository = $taxRateRepository;
-        $this->taxItemFactory = $taxItemFactory;
+    public function __construct(private RepositoryInterface $taxRateRepository, private FactoryInterface $taxItemFactory)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = [])
+    public function collectTaxes(TaxCalculatorInterface $taxCalculator, int $price, array $usedTaxes = []): array
     {
-        if ($taxCalculator instanceof TaxCalculatorInterface) {
-            $taxesAmount = $taxCalculator->getTaxesAmount($price, true);
+        $taxesAmount = $taxCalculator->getTaxesAmountAsArray($price);
 
-            if (is_array($taxesAmount)) {
-                foreach ($taxesAmount as $id => $amount) {
-                    $this->addTaxToArray($id, $amount, $usedTaxes);
-                }
-            }
+        foreach ($taxesAmount as $id => $amount) {
+            $this->addTaxToArray($id, $amount, $usedTaxes);
         }
 
         return $usedTaxes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = [])
+    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, int $price, array $usedTaxes = []): array
     {
-        if ($taxCalculator instanceof TaxCalculatorInterface) {
-            $taxesAmount = $taxCalculator->getTaxesAmountFromGross($price, true);
+        $taxesAmount = $taxCalculator->getTaxesAmountFromGrossAsArray($price);
 
-            if (is_array($taxesAmount)) {
-                foreach ($taxesAmount as $id => $amount) {
-                    $this->addTaxToArray($id, $amount, $usedTaxes);
-                }
-            }
+        foreach ($taxesAmount as $id => $amount) {
+            $this->addTaxToArray($id, $amount, $usedTaxes);
         }
 
         return $usedTaxes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function mergeTaxes(array $taxes1, array $taxes2)
+    public function mergeTaxes(array $taxes1, array $taxes2): array
     {
         foreach ($taxes1 as $id => $tax) {
             $this->addTaxToArray($id, $tax->getAmount(), $taxes2);
@@ -90,15 +57,10 @@ class TaxCollector implements TaxCollectorInterface
         return $taxes2;
     }
 
-    /**
-     * @param int   $taxId
-     * @param int   $amount
-     * @param array $usedTaxes
-     */
-    private function addTaxToArray($taxId, $amount, &$usedTaxes)
+    private function addTaxToArray(int $taxId, int $amount, array &$usedTaxes): void
     {
         /**
-         * @var TaxRateInterface $tax
+         * @var TaxRateInterface|null $tax
          */
         $tax = $this->taxRateRepository->find($taxId);
 
@@ -117,6 +79,7 @@ class TaxCollector implements TaxCollectorInterface
             $item = $this->taxItemFactory->createNew();
             $item->setName($tax->getName());
             $item->setRate($tax->getRate());
+            $item->setTaxRate($tax);
             $item->setAmount($amount);
 
             $usedTaxes[$tax->getId()] = $item;

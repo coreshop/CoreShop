@@ -6,19 +6,24 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Payment\Model;
 
-use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
-class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
+/**
+ * @psalm-suppress MissingConstructor
+ */
+class Payment implements PaymentInterface
 {
     use SetValuesTrait;
+
     use TimestampableTrait;
 
     /**
@@ -32,6 +37,11 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
     protected $paymentProvider;
 
     /**
+     * @var int
+     */
+    protected $totalAmount;
+
+    /**
      * @var string
      */
     protected $currencyCode;
@@ -41,15 +51,7 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
      */
     protected $state = PaymentInterface::STATE_NEW;
 
-    /**
-     * @var array|object
-     */
-    protected $details = [];
-
-    /**
-     * @var CurrencyInterface
-     */
-    protected $currency;
+    protected array $details = [];
 
     /**
      * @var \DateTime
@@ -62,106 +64,97 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
     protected $orderId;
 
     /**
-     * {@inheritdoc}
+     * @var string
      */
+    protected $number;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPaymentProvider()
     {
         return $this->paymentProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPaymentProvider(PaymentProviderInterface $paymentProvider)
     {
         $this->paymentProvider = $paymentProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getTotalAmount()
+    {
+        return $this->totalAmount;
+    }
+
+    public function setTotalAmount($amount)
+    {
+        $this->totalAmount = $amount;
+    }
+
     public function getCurrencyCode()
     {
-        return $this->currency->getIsoCode();
+        return $this->currencyCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrency()
+    public function setCurrencyCode($currencyCode)
     {
-        return $this->currency;
+        $this->currencyCode = $currencyCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setCurrency($currency)
-    {
-        $this->currency = $currency;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDatePayment()
     {
         return $this->datePayment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDatePayment($datePayment)
     {
         $this->datePayment = $datePayment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getState()
     {
         return $this->state;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setState($state)
     {
         $this->state = $state;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDetails()
+    public function getDetails(): array
     {
         return $this->details;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDetails($details)
+    public function setDetails(array $details)
     {
-        if ($details instanceof \Traversable) {
-            $details = iterator_to_array($details);
-        }
-
-        if (!is_array($details)) {
-            $details = [];
-        }
-
         $this->details = $details;
+    }
+
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    public function setNumber($number)
+    {
+        $this->number = $number;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
     }
 }

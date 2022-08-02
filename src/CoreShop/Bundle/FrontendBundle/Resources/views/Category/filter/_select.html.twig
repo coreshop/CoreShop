@@ -11,7 +11,7 @@
             {% for value in values %}
                 <label class="radio">
                     <input name="{{ fieldName }}" type="radio" value="{{ value['value'] }}" {% if currentValue == value['value'] %} checked="checked" {% endif %}>
-                    {{ value['value']|trans }} {% if quantityUnit %} {{ quantityUnit.getAbbreviation }} {% endif %}
+                    {{ value['value']|trans }} {% if quantityUnit %} {{ quantityUnit.abbreviation }} {% endif %}
                 </label>
             {% endfor %}
         </div>

@@ -6,28 +6,24 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Shipping\Model;
 
 interface ShippableInterface
 {
     /**
-     * @return ShippableItemInterface[]
+     * @return ShippableItemInterface[]|null
      */
-    public function getItems();
+    public function getItems(): ?array;
 
-    /**
-     * @return float
-     */
-    public function getWeight();
+    public function getWeight(): ?float;
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getSubtotal($withTax = true);
+    public function setWeight(?float $weight);
+
+    public function getSubtotal(bool $withTax = true): int;
 }

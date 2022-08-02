@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\TaxationBundle;
 
@@ -19,30 +21,21 @@ use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 
 final class CoreShopTaxationBundle extends AbstractResourceBundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
         $collection->addBundle(new CoreShopMoneyBundle(), 3600);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Taxation\Model';
     }

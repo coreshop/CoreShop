@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type;
 
@@ -22,27 +24,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class ProductQuantityPriceRuleType extends RuleType
 {
-    /**
-     * @var array
-     */
-    protected $calculatorTypes;
-
-    /**
-     * @param string $dataClass
-     * @param array  $validationGroups
-     * @param array  $calculatorTypes
-     */
-    public function __construct($dataClass, array $validationGroups, array $calculatorTypes)
+    public function __construct(string $dataClass, array $validationGroups, protected array $calculatorTypes)
     {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->calculatorTypes = $calculatorTypes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextareaType::class)
@@ -58,10 +45,7 @@ final class ProductQuantityPriceRuleType extends RuleType
             ->add('ranges', ProductQuantityRangeCollectionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_quantity_price_rule';
     }

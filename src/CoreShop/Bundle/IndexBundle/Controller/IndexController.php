@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
@@ -18,15 +20,11 @@ use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IndexController extends ResourceController
 {
-    /**
-     * Get Worker Types.
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getTypesAction()
+    public function getTypesAction(): Response
     {
         $types = $this->getWorkerTypes();
 
@@ -41,12 +39,7 @@ class IndexController extends ResourceController
         return $this->viewHandler->handle($typesObject);
     }
 
-    /**
-     * Get Index Configurations.
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getConfigAction()
+    public function getConfigAction(): Response
     {
         $interpreters = $this->getInterpreterTypes();
         $interpretersResult = [];
@@ -74,7 +67,10 @@ class IndexController extends ResourceController
             ];
         }
 
-        $fieldTypes = $this->getParameter('coreshop.index.mapping_types');
+        /**
+         * @var array $fieldTypes
+         */
+        $fieldTypes = $this->container->getParameter('coreshop.index.mapping_types');
         $fieldTypesResult = [];
 
         foreach ($fieldTypes as $type) {
@@ -111,16 +107,9 @@ class IndexController extends ResourceController
         );
     }
 
-    /**
-     * Get Pimcore Class Definition.
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getClassDefinitionForFieldSelectionAction(Request $request)
+    public function getClassDefinitionForFieldSelectionAction(Request $request): Response
     {
-        $class = DataObject\ClassDefinition::getByName($request->get('class'));
+        $class = DataObject\ClassDefinition::getByName($this->getParameterFromRequest($request, 'class'));
 
         if (!$class instanceof DataObject\ClassDefinition) {
             return $this->viewHandler->handle([]);
@@ -169,10 +158,7 @@ class IndexController extends ResourceController
         return $this->viewHandler->handle($result);
     }
 
-    /**
-     * @return array
-     */
-    protected function getSystemFields()
+    protected function getSystemFields(): array
     {
         return [
             'systemfields' => [
@@ -214,17 +200,14 @@ class IndexController extends ResourceController
         ];
     }
 
-    /**
-     * @param DataObject\ClassDefinition\Data\Localizedfields $field
-     *
-     * @return array
-     */
-    protected function getLocalizedFields(DataObject\ClassDefinition\Data\Localizedfields $field)
+    protected function getLocalizedFields(DataObject\ClassDefinition\Data\Localizedfields $field): array
     {
-        $result['localizedfields'] = [
-            'nodeLabel' => 'localizedfields',
-            'nodeType' => 'localizedfields',
-            'childs' => [],
+        $result = [
+            'localizedfields' => [
+                'nodeLabel' => 'localizedfields',
+                'nodeType' => 'localizedfields',
+                'childs' => [],
+            ],
         ];
 
         $localizedFields = $field->getFieldDefinitions();
@@ -236,13 +219,7 @@ class IndexController extends ResourceController
         return $result;
     }
 
-    /**
-     * @param array $allowedBricks
-     * @param array $result
-     *
-     * @return mixed
-     */
-    protected function getObjectbrickFields(array $allowedBricks, &$result)
+    protected function getObjectbrickFields(array $allowedBricks, &$result): array
     {
         foreach ($allowedBricks as $brickKey) {
             $brickDefinition = DataObject\Objectbrick\Definition::getByKey($brickKey);
@@ -257,13 +234,28 @@ class IndexController extends ResourceController
                 $result[$key]['childs'] = [];
 
                 foreach ($fields as $field) {
-                    $fieldConfig = $this->getFieldConfiguration($field);
-                    $fieldConfig['getter'] = 'brick';
-                    $fieldConfig['configuration'] = [
-                        'className' => $key,
-                        'key' => $field->getName(),
-                    ];
-                    $result[$key]['childs'][] = $fieldConfig;
+                    if ($field instanceof DataObject\ClassDefinition\Data\Localizedfields) {
+                        $localizedfields = $this->getLocalizedFields($field)['localizedfields'];
+
+                        foreach ($localizedfields['childs'] as &$child) {
+                            $child['getter'] = 'brick';
+                            $child['configuration'] = [
+                                'className' => $key,
+                                'key' => $field->getName(),
+                            ];
+                        }
+
+                        $result[$key]['childs'][] = $localizedfields;
+                    } else {
+                        $fieldConfig = $this->getFieldConfiguration($field);
+
+                        $fieldConfig['getter'] = 'brick';
+                        $fieldConfig['configuration'] = [
+                            'className' => $key,
+                            'key' => $field->getName(),
+                        ];
+                        $result[$key]['childs'][] = $fieldConfig;
+                    }
                 }
             }
         }
@@ -271,15 +263,7 @@ class IndexController extends ResourceController
         return $result;
     }
 
-    /**
-     * @param array $allowedCollections
-     * @param array $result
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     */
-    protected function getFieldcollectionFields(array $allowedCollections, &$result)
+    protected function getFieldcollectionFields(array $allowedCollections, &$result): array
     {
         foreach ($allowedCollections as $type) {
             $definition = DataObject\Fieldcollection\Definition::getByKey($type);
@@ -294,25 +278,33 @@ class IndexController extends ResourceController
             $result[$key]['childs'] = [];
 
             foreach ($fieldDefinition as $fieldcollectionField) {
-                $fieldConfig = $this->getFieldConfiguration($fieldcollectionField);
-                $fieldConfig['getter'] = 'fieldcollection';
-                $fieldConfig['configuration'] = [
-                    'className' => $key,
-                ];
+                if ($fieldcollectionField instanceof DataObject\ClassDefinition\Data\Localizedfields) {
+                    $localizedfields = $this->getLocalizedFields($fieldcollectionField)['localizedfields'];
 
-                $result[$key]['childs'][] = $fieldConfig;
+                    foreach ($localizedfields['childs'] as &$child) {
+                        $child['getter'] = 'fieldcollection';
+                        $child['configuration'] = [
+                            'className' => $key,
+                        ];
+                    }
+
+                    $result[$key]['childs'][] = $localizedfields;
+                } else {
+                    $fieldConfig = $this->getFieldConfiguration($fieldcollectionField);
+
+                    $fieldConfig['getter'] = 'fieldcollection';
+                    $fieldConfig['configuration'] = [
+                        'className' => $key,
+                    ];
+                    $result[$key]['childs'][] = $fieldConfig;
+                }
             }
         }
 
         return $result;
     }
 
-    /**
-     * @param DataObject\ClassDefinition\Data\Classificationstore $field
-     *
-     * @return array
-     */
-    protected function getClassificationStoreFields(DataObject\ClassDefinition\Data\Classificationstore $field)
+    protected function getClassificationStoreFields(DataObject\ClassDefinition\Data\Classificationstore $field): array
     {
         $result = [];
 
@@ -339,23 +331,15 @@ class IndexController extends ResourceController
         return $result;
     }
 
-    /**
-     * @param DataObject\Classificationstore\GroupConfig $config
-     *
-     * @return array
-     */
-    protected function getClassificationStoreGroupConfiguration(DataObject\Classificationstore\GroupConfig $config)
-    {
+    protected function getClassificationStoreGroupConfiguration(
+        DataObject\Classificationstore\GroupConfig $config
+    ): array {
         $result = [];
         $result['nodeLabel'] = $config->getName();
         $result['nodeType'] = 'classificationstore';
         $result['childs'] = [];
 
         $relations = $config->getRelations();
-
-        if (!is_array($relations)) {
-            return $result;
-        }
 
         foreach ($relations as $relation) {
             if ($relation instanceof DataObject\Classificationstore\KeyGroupRelation) {
@@ -370,12 +354,7 @@ class IndexController extends ResourceController
         return $result;
     }
 
-    /**
-     * @param DataObject\ClassDefinition\Data $field
-     *
-     * @return array
-     */
-    protected function getFieldConfiguration(DataObject\ClassDefinition\Data $field)
+    protected function getFieldConfiguration(DataObject\ClassDefinition\Data $field): array
     {
         $definition = [
             'name' => $field->getName(),
@@ -391,14 +370,10 @@ class IndexController extends ResourceController
         return $definition;
     }
 
-    /**
-     * @param DataObject\Classificationstore\KeyConfig   $field
-     * @param DataObject\Classificationstore\GroupConfig $groupConfig
-     *
-     * @return array
-     */
-    protected function getClassificationStoreFieldConfiguration(DataObject\Classificationstore\KeyConfig $field, DataObject\Classificationstore\GroupConfig $groupConfig)
-    {
+    protected function getClassificationStoreFieldConfiguration(
+        DataObject\Classificationstore\KeyConfig $field,
+        DataObject\Classificationstore\GroupConfig $groupConfig
+    ): array {
         $definition = [
             'name' => $field->getName(),
             'getter' => 'classificationstore',
@@ -419,26 +394,26 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
-    protected function getInterpreterTypes()
+    protected function getInterpreterTypes(): array
     {
-        return $this->getParameter('coreshop.index.interpreters');
+        return $this->container->getParameter('coreshop.index.interpreters');
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
-    protected function getGetterTypes()
+    protected function getGetterTypes(): array
     {
-        return $this->getParameter('coreshop.index.getters');
+        return $this->container->getParameter('coreshop.index.getters');
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
-    protected function getWorkerTypes()
+    protected function getWorkerTypes(): array
     {
-        return $this->getParameter('coreshop.index.workers');
+        return $this->container->getParameter('coreshop.index.workers');
     }
 }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Validator\Constraints;
 
@@ -19,10 +21,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class ActiveValidator extends ConstraintValidator
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Active) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Active');
@@ -32,7 +31,6 @@ class ActiveValidator extends ConstraintValidator
             if (!$value->getActive()) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ value }}', $this->formatValue($value))
-                    ->setCode(Active::IS_NOT_ENABLED_ERROR)
                     ->addViolation();
             }
         } else {

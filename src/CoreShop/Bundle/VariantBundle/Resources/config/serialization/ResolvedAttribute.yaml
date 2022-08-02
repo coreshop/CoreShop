@@ -1,0 +1,6 @@
+CoreShop\Component\Variant\Model\Resolved\ResolvedAttribute:
+    attributes:
+        attribute:
+            groups: ['coreshop']
+        products:
+            groups: ['coreshop']

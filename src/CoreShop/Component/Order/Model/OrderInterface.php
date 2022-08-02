@@ -6,97 +6,215 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
 use Carbon\Carbon;
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Customer\Model\CustomerAwareInterface;
+use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
+use Pimcore\Model\DataObject\Fieldcollection;
+use Pimcore\Model\DataObject\Objectbrick;
 
-interface OrderInterface extends SaleInterface, PayableInterface
+interface OrderInterface extends
+    PimcoreModelInterface,
+    CurrencyAwareInterface,
+    StoreAwareInterface,
+    LocaleAwareInterface,
+    AdjustableInterface,
+    ConvertedAdjustableInterface,
+    CustomerAwareInterface,
+    PayableInterface,
+    StorageListInterface
 {
-    /**
-     * @return string
-     */
-    public function getOrderState();
+    public function getToken(): ?string;
+
+    public function setToken(?string $token);
+
+    public function getBackendCreated(): ?bool;
+
+    public function setBackendCreated(?bool $backendCreated);
+
+    public function getSaleState(): ?string;
+
+    public function setSaleState(?string $saleState);
+
+    public function getOrderState(): ?string;
+
+    public function setOrderState(?string $orderState);
+
+    public function getQuoteState(): ?string;
+
+    public function setQuoteState(?string $quoteState);
+
+    public function getShippingState(): ?string;
+
+    public function setShippingState(?string $shippingState);
+
+    public function getInvoiceState(): ?string;
+
+    public function setInvoiceState(?string $invoiceState);
+
+    public function getPaymentState(): ?string;
+
+    public function setPaymentState(?string $paymentState);
+
+    public function getOrderDate(): ?Carbon;
+
+    public function setOrderDate(?Carbon $orderDate);
+
+    public function getOrderNumber(): ?string;
+
+    public function setOrderNumber(?string $orderNumber);
+
+    public function getQuoteNumber(): ?string;
+
+    public function setQuoteNumber(?string $quoteNumber);
+
+    public function getBaseCurrency(): ?CurrencyInterface;
+
+    public function setBaseCurrency(?CurrencyInterface $currency);
+
+    public function getPaymentTotal(): ?int;
+
+    public function setPaymentTotal(int $paymentTotal);
+
+    public function getTotal(bool $withTax = true): int;
+
+    public function setTotal(int $total, bool $withTax = true);
+
+    public function getTotalTax(): int;
+
+    public function getSubtotal(bool $withTax = true): int;
+
+    public function setSubtotal(int $subtotal, bool $withTax = true);
+
+    public function getSubtotalTax(): int;
+
+    public function getDiscount(bool $withTax = true): int;
 
     /**
-     * @param string $orderState
+     * @return OrderItemInterface[]|null
      */
-    public function setOrderState($orderState);
+    public function getItems(): ?array;
 
     /**
-     * @return string
+     * @param OrderItemInterface[] $items
      */
-    public function getShippingState();
+    public function setItems(?array $items);
+
+    public function hasItems(): bool;
 
     /**
-     * @param string $shippingState
+     * @param OrderItemInterface $item
      */
-    public function setShippingState($shippingState);
+    public function addItem($item): void;
 
     /**
-     * @return string
+     * @param OrderItemInterface $item
      */
-    public function getInvoiceState();
+    public function removeItem($item): void;
 
     /**
-     * @param string $invoiceState
+     * @param OrderItemInterface $item
      */
-    public function setInvoiceState($invoiceState);
+    public function hasItem($item): bool;
+
+    public function setConvertedTotal(int $total, bool $withTax = true);
+
+    public function getConvertedTotal(bool $withTax = true): int;
+
+    public function getConvertedPaymentTotal(): ?int;
+
+    public function setConvertedPaymentTotal(?int $convertedPaymentTotal);
+
+    public function getConvertedTotalTax(): int;
+
+    public function getConvertedSubtotal(bool $withTax = true): int;
+
+    public function setConvertedSubtotal(int $subtotal, bool $withTax = true);
+
+    public function getConvertedSubtotalTax(): int;
+
+    public function getConvertedDiscount(bool $withTax = true): int;
 
     /**
-     * @return string
+     * @return Fieldcollection
      */
-    public function getPaymentState();
+    public function getConvertedTaxes();
+
+    public function setConvertedTaxes(?Fieldcollection $taxes);
+
+    public function getConvertedShipping(bool $withTax = true): int;
+
+    public function getConvertedShippingTax(): int;
+
+    public function getShippingAddress(): ?AddressInterface;
+
+    public function setShippingAddress(?AddressInterface $shippingAddress);
+
+    public function getInvoiceAddress(): ?AddressInterface;
+
+    public function setInvoiceAddress(?AddressInterface $invoiceAddress);
 
     /**
-     * @param string $paymentState
+     * @return Fieldcollection
      */
-    public function setPaymentState($paymentState);
+    public function getTaxes();
+
+    public function setTaxes(?Fieldcollection $taxes);
+
+    public function getComment(): ?string;
+
+    public function setComment(?string $comment);
+
+    public function getAdditionalData(): ?Objectbrick;
+
+    public function setAdditionalData(?Objectbrick $additionalData);
 
     /**
-     * @return Carbon
+     * @return Fieldcollection|null
      */
-    public function getOrderDate();
+    public function getPriceRuleItems();
+
+    public function setPriceRuleItems(Fieldcollection $priceRuleItems);
 
     /**
-     * @param Carbon $orderDate
+     * @return ProposalCartPriceRuleItemInterface[]
      */
-    public function setOrderDate($orderDate);
+    public function getPriceRules(): array;
 
-    /**
-     * @return string
-     */
-    public function getOrderNumber();
+    public function hasPriceRules(): bool;
 
-    /**
-     * @param string $orderNumber
-     */
-    public function setOrderNumber($orderNumber);
+    public function addPriceRule(ProposalCartPriceRuleItemInterface $priceRule): void;
 
-    /**
-     * @return string
-     */
-    public function getToken();
+    public function removePriceRule(ProposalCartPriceRuleItemInterface $priceRule): void;
 
-    /**
-     * @param string $token
-     */
-    public function setToken($token);
+    public function hasPriceRule(ProposalCartPriceRuleItemInterface $priceRule): bool;
 
-    /**
-     * @return PaymentProviderInterface
-     */
-    public function getPaymentProvider();
+    public function hasCartPriceRule(
+        CartPriceRuleInterface $cartPriceRule,
+        CartPriceRuleVoucherCodeInterface $voucherCode = null
+    ): bool;
 
-    /**
-     * @param PaymentProviderInterface $paymentProvider
-     *
-     * @return PaymentProviderInterface
-     */
-    public function setPaymentProvider($paymentProvider);
+    public function getPriceRuleByCartPriceRule(
+        CartPriceRuleInterface $cartPriceRule,
+        CartPriceRuleVoucherCodeInterface $voucherCode = null
+    ): ?ProposalCartPriceRuleItemInterface;
+
+    public function getPaymentProvider(): ?PaymentProviderInterface;
+
+    public function setPaymentProvider(?PaymentProviderInterface $paymentProvider);
 }

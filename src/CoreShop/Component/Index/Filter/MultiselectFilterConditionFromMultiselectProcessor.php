@@ -6,14 +6,15 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Filter;
 
 use CoreShop\Component\Index\Condition\ConcatCondition;
-use CoreShop\Component\Index\Condition\InCondition;
 use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
@@ -23,10 +24,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class MultiselectFilterConditionFromMultiselectProcessor implements FilterConditionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = $condition->getConfiguration()['field'];
         $rawValues = $list->getGroupByValues($field, true);
@@ -40,8 +38,9 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
                     continue;
                 }
 
-                if ($values[$e]) {
+                if (array_key_exists($e, $values)) {
                     $values[$e]['count'] += $v['count'];
+
                     continue;
                 }
 
@@ -52,19 +51,16 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
         return [
             'type' => 'multiselect',
             'label' => $condition->getLabel(),
-            'currentValues' => array_map(function($value) {
+            'currentValues' => array_map(static function (string $value) {
                 return trim($value, ',');
             }, $currentFilter[$field] ?: []),
             'values' => array_values($values),
             'fieldName' => $field,
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
+            'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById($condition->getQuantityUnit()) : null,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = $condition->getConfiguration()['field'];
         $values = $parameterBag->get($field);
@@ -85,12 +81,12 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
             $likeConditions = [];
 
             foreach ($values as $v) {
-                $v = ',' . $v . ',' ;
+                $v = ',' . $v . ',';
 
                 $likeConditions[] = new LikeCondition($field, 'both', $v);
             }
 
-            unset ($v);
+            unset($v);
 
             $list->addCondition(new ConcatCondition($field, 'OR', $likeConditions), $fieldName);
         }

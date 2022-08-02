@@ -38,7 +38,6 @@ namespace AppBundle\Filter;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 
 class MyFilterCondition extends FilterConditionProcessorInterface
 {

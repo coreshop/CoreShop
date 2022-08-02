@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
@@ -20,14 +22,14 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class ProductStoreValuesAdminGetListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AdminEvents::OBJECT_GET_PRE_SEND_DATA => 'prepareData',
         ];
     }
 
-    public function prepareData(GenericEvent $event)
+    public function prepareData(GenericEvent $event): void
     {
         $object = $event->getArgument('object');
         if (!$object instanceof ProductInterface) {
@@ -52,7 +54,7 @@ final class ProductStoreValuesAdminGetListener implements EventSubscriberInterfa
 
         $data = $event->getArgument('data');
 
-        foreach ($data['data']['storeValues'] as $storeId => &$storeValues) {
+        foreach ($data['data']['storeValues'] as &$storeValues) {
             $values = $storeValues['values'] ?? [];
 
             if (!isset($values['product'])) {
@@ -64,7 +66,7 @@ final class ProductStoreValuesAdminGetListener implements EventSubscriberInterfa
             }
         }
 
-        unset ($storeValues);
+        unset($storeValues);
 
         $event->setArgument('data', $data);
     }

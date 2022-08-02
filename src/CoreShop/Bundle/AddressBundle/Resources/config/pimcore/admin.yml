@@ -5,6 +5,7 @@ core_shop_address:
             resource_country: '/bundles/coreshopaddress/pimcore/js/resource/country.js'
             resource_state: '/bundles/coreshopaddress/pimcore/js/resource/state.js'
             resource_zone: '/bundles/coreshopaddress/pimcore/js/resource/zone.js'
+            resource_country_salutation: '/bundles/coreshopaddress/pimcore/js/resource/country_salutation.js'
             country_item: '/bundles/coreshopaddress/pimcore/js/country/item.js'
             country_panel: '/bundles/coreshopaddress/pimcore/js/country/panel.js'
             state_item: '/bundles/coreshopaddress/pimcore/js/state/item.js'

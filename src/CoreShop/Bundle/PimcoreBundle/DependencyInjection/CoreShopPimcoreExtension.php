@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection;
 
@@ -23,12 +25,9 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopPimcoreExtension extends AbstractPimcoreExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
@@ -38,7 +37,7 @@ final class CoreShopPimcoreExtension extends AbstractPimcoreExtension
             $loader->load('services/data_hub.yml');
         }
 
-        $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
 
         $loader->load('services.yml');
 

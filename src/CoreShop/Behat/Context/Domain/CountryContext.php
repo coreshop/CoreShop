@@ -6,14 +6,15 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
@@ -26,56 +27,14 @@ use Webmozart\Assert\Assert;
 
 final class CountryContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var CountryRepositoryInterface
-     */
-    private $countryRepository;
-
-    /**
-     * @var CountryContextInterface
-     */
-    private $countryContext;
-
-    /**
-     * @var AddressFormatterInterface
-     */
-    private $addressFormatter;
-
-    /**
-     * @var GeoLiteBasedRequestResolver
-     */
-    private $geoLiteResolver;
-
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param CountryRepositoryInterface  $countryRepository
-     * @param CountryContextInterface     $countryContext
-     * @param AddressFormatterInterface   $addressFormatter
-     * @param GeoLiteBasedRequestResolver $geoLiteResolver
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CountryRepositoryInterface $countryRepository,
-        CountryContextInterface $countryContext,
-        AddressFormatterInterface $addressFormatter,
-        GeoLiteBasedRequestResolver $geoLiteResolver
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->countryRepository = $countryRepository;
-        $this->countryContext = $countryContext;
-        $this->addressFormatter = $addressFormatter;
-        $this->geoLiteResolver = $geoLiteResolver;
+    public function __construct(private CountryRepositoryInterface $countryRepository, private CountryContextInterface $countryContext, private AddressFormatterInterface $addressFormatter, private GeoLiteBasedRequestResolver $geoLiteResolver)
+    {
     }
 
     /**
      * @Then /^there should be a country "([^"]+)"$/
      */
-    public function thereShouldBeACountryCalled($name)
+    public function thereShouldBeACountryCalled($name): void
     {
         $countries = $this->countryRepository->findByName($name, 'en');
 
@@ -89,20 +48,24 @@ final class CountryContext implements Context
     /**
      * @Then /^the (country "[^"]+") should use (currency "[^"]+")$/
      */
-    public function theCountryShouldUseCurrency(CountryInterface $country, CurrencyInterface $currency)
+    public function theCountryShouldUseCurrency(CountryInterface $country, CurrencyInterface $currency): void
     {
         Assert::eq(
             $country->getCurrency()->getId(),
             $currency->getId(),
-            sprintf('%s country should use currency %s but uses %s instead.', $country->getName(),
-                $currency->getIsoCode(), $country->getCurrency()->getIsoCode())
+            sprintf(
+                '%s country should use currency %s but uses %s instead.',
+                $country->getName(),
+                $currency->getIsoCode(),
+                $country->getCurrency()->getIsoCode()
+            )
         );
     }
 
     /**
      * @Then /^I (?:|still )should be in (country "[^"]+")$/
      */
-    public function iShouldBeInCountry(CountryInterface $country)
+    public function iShouldBeInCountry(CountryInterface $country): void
     {
         $actualCountry = $this->countryContext->getCountry();
 
@@ -122,7 +85,7 @@ final class CountryContext implements Context
     /**
      * @Then /^the (address) should format to "([^"]+)"$/
      */
-    public function theAddressShouldFormatTo(AddressInterface $address, $formattedAddress)
+    public function theAddressShouldFormatTo(AddressInterface $address, $formattedAddress): void
     {
         $actualFormattedAddress = $this->addressFormatter->formatAddress($address);
 
@@ -141,7 +104,7 @@ final class CountryContext implements Context
      * @Then /^when I check the geo-lite resolver with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
      * @Then /^when I check the geo-lite resolver again with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
      */
-    public function whenIcheckTheGeoLiteResolver($ipAddress, $countryIso)
+    public function whenIcheckTheGeoLiteResolver($ipAddress, $countryIso): void
     {
         $request = Request::create(
             'localhost',
@@ -150,7 +113,7 @@ final class CountryContext implements Context
             [],
             [],
             [
-                'REMOTE_ADDR' => $ipAddress
+                'REMOTE_ADDR' => $ipAddress,
             ]
         );
 

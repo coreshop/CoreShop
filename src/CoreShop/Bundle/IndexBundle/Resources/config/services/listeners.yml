@@ -18,5 +18,12 @@ services:
         arguments:
             - '@CoreShop\Component\Index\Service\IndexUpdaterService'
         tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.postAdd, method: onPostUpdate }
             - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: onPostUpdate }
             - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: onPostDelete }
+
+    CoreShop\Bundle\IndexBundle\EventListener\UpdateIndexListener:
+        arguments:
+            - '@coreshop.registry.index.worker'
+        tags:
+            - { name: doctrine.orm.entity_listener, event: preUpdate, method: onPreUpdate, entity: '%coreshop.model.index.class%' }

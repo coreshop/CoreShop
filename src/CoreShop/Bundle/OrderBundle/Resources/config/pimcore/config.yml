@@ -1,6 +1,6 @@
 imports:
-    - { resource: "admin.yml" }
-    - { resource: "workflow.yml" }
+    - { resource: admin.yml }
+    - { resource: workflow.yml }
 
 pimcore:
     objects:

@@ -6,51 +6,40 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Listing;
 
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Order\OrderInterface;
-use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Model\DataObject\Concrete;
-use Zend\Paginator\Adapter\AdapterInterface;
-use Zend\Paginator\AdapterAggregateInterface;
+use Pimcore\Model\Paginator\PaginateListingInterface;
 
-interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
+interface ListingInterface extends \Countable, PaginateListingInterface
 {
-    /**
-     * Order Key Price.
-     */
-    const ORDERKEY_PRICE = 'orderkey_price';
-
     /**
      * Variant mode defines how to consider variants in product list results
      * - does not consider variants in search results.
      */
-    const VARIANT_MODE_HIDE = 'hide';
+    public const VARIANT_MODE_HIDE = 'hide';
 
     /**
      * Variant mode defines how to consider variants in product list results
      * - considers variants in search results and returns objects and variants.
      */
-    const VARIANT_MODE_INCLUDE = 'include';
+    public const VARIANT_MODE_INCLUDE = 'include';
 
     /**
      * Variant mode defines how to consider variants in product list results
      * - considers variants in search results but only returns corresponding objects in search results.
      */
-    const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
-
-    /**
-     * @param IndexInterface  $index
-     * @param WorkerInterface $worker
-     */
-    public function __construct(IndexInterface $index, WorkerInterface $worker);
+    public const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
 
     /**
      * Returns all products valid for this search.
@@ -60,11 +49,15 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     public function getObjects();
 
     /**
+     * @return PimcoreModelInterface[]
+     */
+    public function getItems($offset, $itemCountPerPage);
+
+    /**
      * Adds filter condition to product list
      * Fieldname is optional but highly recommended - needed for resetting condition based on fieldname
      * and exclude functionality in group by results.
      *
-     * @param ConditionInterface $condition
      * @param string             $fieldName
      */
     public function addCondition(ConditionInterface $condition, $fieldName);
@@ -74,7 +67,6 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * Fieldname is optional but highly recommended - needed for resetting condition based on fieldname
      * and exclude functionality in group by results.
      *
-     * @param ConditionInterface $condition
      * @param string             $fieldName
      */
     public function addQueryCondition(ConditionInterface $condition, $fieldName);
@@ -82,7 +74,6 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * Adds relation condition to product list.
      *
-     * @param ConditionInterface $condition
      * @param string             $fieldName
      */
     public function addRelationCondition(ConditionInterface $condition, $fieldName);
@@ -153,16 +144,6 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     public function getOffset();
 
     /**
-     * @param PimcoreModelInterface $category
-     */
-    public function setCategory(PimcoreModelInterface $category);
-
-    /**
-     * @return PimcoreModelInterface
-     */
-    public function getCategory();
-
-    /**
      * @param bool $enabled
      */
     public function setEnabled($enabled);
@@ -185,7 +166,6 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * loads search results from index and returns them.
      *
-     * @param array $options
      *
      * @return Concrete[]
      */
@@ -233,31 +213,14 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * returns order by statement for similarity calculations based on given fields and object ids
      * returns cosine similarity calculation.
-     *
-     * @param string $fields
-     * @param int    $objectId
-     *
-     * @return string
      */
-    public function buildSimilarityOrderBy($fields, $objectId);
+    public function buildSimilarityOrderBy(array $fields, int $objectId): string;
 
-    /**
-     * @return IndexInterface
-     */
-    public function getIndex();
+    public function getIndex(): IndexInterface;
 
-    /**
-     * @param IndexInterface $index
-     */
-    public function setIndex(IndexInterface $index);
+    public function setIndex(IndexInterface $index): void;
 
-    /**
-     * @return string
-     */
-    public function getLocale();
+    public function getLocale(): ?string;
 
-    /**
-     * @param string $locale
-     */
-    public function setLocale($locale);
+    public function setLocale(string $locale): void;
 }

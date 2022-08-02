@@ -1,27 +1,26 @@
 parameters:
-    coreshop.security.frontend_regex: "^/(?!admin)[^/]++"
+    coreshop.security.frontend_regex: "^/(?!admin)[^/]*"
 
 pimcore:
     security:
         encoder_factories:
-            '%coreshop.model.customer.class%': coreshop.security.customer.password_encoder_factory
+            '%coreshop.model.user.class%': coreshop.security.user.password_encoder_factory
 
 security:
     providers:
-        coreshop_customer:
-            id: coreshop.security.customer.user_provider
+        coreshop_user:
+            id: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
 
     firewalls:
         coreshop_frontend:
             anonymous: ~
-            provider: coreshop_customer
+            provider: coreshop_user
             pattern: '%coreshop.security.frontend_regex%'
             context: shop
-            logout_on_user_change: true
             form_login:
                 login_path: coreshop_login
                 check_path: coreshop_login_check
-                provider: coreshop_customer
+                provider: coreshop_user
                 failure_path: coreshop_login
                 default_target_path: coreshop_index
                 use_forward: false
@@ -35,7 +34,7 @@ security:
                 path: coreshop_logout
                 target: coreshop_login
                 invalidate_session: false
-                success_handler: coreshop.handler.shop_logout
+                success_handler: CoreShop\Bundle\CoreBundle\EventListener\ShopUserLogoutHandler
 
     access_control:
         - { path: "%coreshop.security.frontend_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }

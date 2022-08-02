@@ -13,7 +13,7 @@ CoreShop\Component\Product\Model\ProductUnit:
             groups: [List, Detailed]
         translations:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]
     virtual_properties:
         getFullLabel:

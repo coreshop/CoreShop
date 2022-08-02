@@ -5,14 +5,14 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
 
-pimcore.registerNS('coreshop.index.interpreters.objectproperty');
+pimcore.registerNS('coreshop.index.interpreters.objectProperty');
 
-coreshop.index.interpreters.objectproperty = Class.create(coreshop.index.interpreters.abstract, {
+coreshop.index.interpreters.objectProperty = Class.create(coreshop.index.interpreters.abstract, {
 
     getLayout: function (record, interpreterConfig) {
         return [

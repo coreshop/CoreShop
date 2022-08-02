@@ -5,7 +5,7 @@ services:
     CoreShop\Bundle\IndexBundle\Command\IndexCommand:
         arguments:
           - '@coreshop.repository.index'
-          - '@coreshop.index.updater'
+          - '@CoreShop\Component\Index\Service\IndexUpdaterServiceInterface'
           - '@event_dispatcher'
         tags:
           - { name: console.command, command: coreshop:index }

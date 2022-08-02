@@ -6,75 +6,34 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
+use Doctrine\Persistence\ObjectManager;
 
 final class TaxRuleGroupContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $taxRuleGroupFactory;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $taxRuleFactory;
-
-    /**
-     * @var RepositoryInterface
-     */
-    private $taxRuleGroupRepository;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager          $objectManager
-     * @param FactoryInterface       $taxRuleGroupFactory
-     * @param FactoryInterface       $taxRuleFactory
-     * @param RepositoryInterface    $taxRuleGroupRepository
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FactoryInterface $taxRuleGroupFactory,
-        FactoryInterface $taxRuleFactory,
-        RepositoryInterface $taxRuleGroupRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->taxRuleGroupFactory = $taxRuleGroupFactory;
-        $this->taxRuleFactory = $taxRuleFactory;
-        $this->taxRuleGroupRepository = $taxRuleGroupRepository;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FactoryInterface $taxRuleGroupFactory, private FactoryInterface $taxRuleFactory)
+    {
     }
 
     /**
      * @Given /^the site has a tax rule group "([^"]+)"$/
      */
-    public function theSiteHasATaxRuleGroup($name)
+    public function theSiteHasATaxRuleGroup($name): void
     {
         $this->createTaxRuleGroup($name);
     }
@@ -83,7 +42,7 @@ final class TaxRuleGroupContext implements Context
      * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/
      * @Given /^the ([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/
      */
-    public function theTaxRuleGroupHasATaxRuleForCountryWithTax(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
+    public function theTaxRuleGroupHasATaxRuleForCountryWithTax(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate): void
     {
         /**
          * @var TaxRuleInterface $taxRule
@@ -102,7 +61,7 @@ final class TaxRuleGroupContext implements Context
      * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it combines all rules$/
      * @Given /^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it combines all rules$/
      */
-    public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndCombination(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
+    public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndCombination(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate): void
     {
         /**
          * @var TaxRuleInterface $taxRule
@@ -121,7 +80,7 @@ final class TaxRuleGroupContext implements Context
      * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it calculates them one after another$/
      * @Given /^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it calculates them one after another$/
      */
-    public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndOneAfterAnother(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
+    public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndOneAfterAnother(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate): void
     {
         /**
          * @var TaxRuleInterface $taxRule
@@ -139,7 +98,7 @@ final class TaxRuleGroupContext implements Context
     /**
      * @param string $name
      */
-    private function createTaxRuleGroup($name)
+    private function createTaxRuleGroup($name): void
     {
         /**
          * @var TaxRuleGroupInterface $taxRule
@@ -150,10 +109,7 @@ final class TaxRuleGroupContext implements Context
         $this->saveTaxRuleGroup($taxRule);
     }
 
-    /**
-     * @param TaxRuleGroupInterface $taxRuleGroup
-     */
-    private function saveTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup)
+    private function saveTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup): void
     {
         $this->objectManager->persist($taxRuleGroup);
         $this->objectManager->flush();

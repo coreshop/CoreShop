@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Customer\Model;
 
@@ -18,23 +20,11 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 
 interface CompanyInterface extends ResourceInterface, PimcoreModelInterface, EquatableInterface
 {
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): ?string;
 
-    /**
-     * @param string $name
-     */
-    public function setName($name);
+    public function setName(?string $name);
 
-    /**
-     * @return string
-     */
-    public function getVatIdentificationNumber();
+    public function getVatIdentificationNumber(): ?string;
 
-    /**
-     * @param string $vatIdentificationNumber
-     */
-    public function setVatIdentificationNumber($vatIdentificationNumber);
+    public function setVatIdentificationNumber(?string $vatIdentificationNumber);
 }

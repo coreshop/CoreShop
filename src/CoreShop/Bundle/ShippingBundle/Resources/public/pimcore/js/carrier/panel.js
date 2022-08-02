@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -21,12 +21,12 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_carriers',
     type: 'coreshop_carriers',
 
-    url: {
-        add: '/admin/coreshop/carriers/add',
-        delete: '/admin/coreshop/carriers/delete',
-        get: '/admin/coreshop/carriers/get',
-        list: '/admin/coreshop/carriers/list',
-        config: '/admin/coreshop/carriers/get-config'
+    routing: {
+        add: 'coreshop_carrier_add',
+        delete: 'coreshop_carrier_delete',
+        get: 'coreshop_carrier_get',
+        list: 'coreshop_carrier_list',
+        config: 'coreshop_carrier_getConfig'
     },
 
     /**
@@ -46,7 +46,7 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
         pimcore.globalmanager.add('coreshop_shipping_tax_calculation_strategies', this.taxCalculationStrategyStore);
 
         Ext.Ajax.request({
-            url: this.url.config,
+            url: Routing.generate(this.routing.config),
             method: 'get',
             success: function (response) {
                 try {

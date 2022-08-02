@@ -6,64 +6,31 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
+/** @psalm-suppress DeprecatedInterface */
 final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
 {
-    /**
-     * @var LinkGeneratorInterface
-     */
-    private $linkGenerator;
-
-    /**
-     * @var string
-     */
-    private $routeName;
-
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
-
-    /**
-     * @param LinkGeneratorInterface $linkGenerator
-     * @param string                 $routeName
-     * @param SessionInterface       $session
-     * @param StoreContextInterface  $storeContext
-     */
-    public function __construct(
-        LinkGeneratorInterface $linkGenerator,
-        $routeName,
-        SessionInterface $session,
-        StoreContextInterface $storeContext
-    ) {
-        $this->linkGenerator = $linkGenerator;
-        $this->routeName = $routeName;
-        $this->session = $session;
-        $this->storeContext = $storeContext;
+    public function __construct(private RouterInterface $router, private string $routeName, private SessionInterface $session, private StoreContextInterface $storeContext)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onLogoutSuccess(Request $request)
+    public function onLogoutSuccess(Request $request): Response
     {
         $store = $this->storeContext->getStore();
 
@@ -71,6 +38,6 @@ final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
             $this->session->remove('coreshop.cart.' . $store->getId());
         }
 
-        return new RedirectResponse($this->linkGenerator->generate(null, $this->routeName, ['_locale' => $request->getLocale()]));
+        return new RedirectResponse($this->router->generate($this->routeName, ['_locale' => $request->getLocale()]));
     }
 }

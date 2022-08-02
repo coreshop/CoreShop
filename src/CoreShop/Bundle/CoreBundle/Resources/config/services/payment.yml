@@ -5,18 +5,10 @@ services:
     coreshop.form_registry.payment.settings:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    coreshop.payment.store_based_payment_provider_resolver: '@CoreShop\Component\Core\Payment\Resolver\StoreBasedPaymentProviderResolver'
     CoreShop\Component\Core\Payment\Resolver\StoreBasedPaymentProviderResolver:
         decoration_priority: 10
-        decorates: coreshop.payment.payment_provider_resolver
+        decorates: CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface
         arguments:
             - '@coreshop.repository.payment_provider'
-            - '@coreshop.context.store'
+            - '@CoreShop\Component\Store\Context\StoreContextInterface'
 
-    coreshop.payment.event_based_payment_provider_resolver: '@CoreShop\Bundle\CoreBundle\Payment\Resolver\EventBasedPaymentProviderResolver'
-    CoreShop\Bundle\CoreBundle\Payment\Resolver\EventBasedPaymentProviderResolver:
-        decoration_priority: 5
-        decorates: 'coreshop.payment.payment_provider_resolver'
-        arguments:
-            - '@CoreShop\Bundle\CoreBundle\Payment\Resolver\EventBasedPaymentProviderResolver.inner'
-            - '@event_dispatcher'

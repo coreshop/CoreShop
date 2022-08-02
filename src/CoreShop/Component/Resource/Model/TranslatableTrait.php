@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\Model;
 
@@ -20,30 +22,23 @@ trait TranslatableTrait
 {
     /**
      * @var ArrayCollection|PersistentCollection|TranslationInterface[]
+     * @psalm-var Collection
      */
     protected $translations;
 
     /**
      * @var array|TranslationInterface[]
      */
-    protected $translationsCache = [];
+    protected array $translationsCache = [];
 
-    /**
-     * @var string
-     */
-    protected $currentLocale;
+    protected ?string $currentLocale = null;
 
     /**
      * Cache current translation. Useful in Doctrine 2.4+.
-     *
-     * @var TranslationInterface
      */
-    protected $currentTranslation;
+    protected ?TranslationInterface $currentTranslation = null;
 
-    /**
-     * @var string
-     */
-    protected $fallbackLocale;
+    protected ?string $fallbackLocale = null;
 
     public function __construct()
     {
@@ -55,13 +50,7 @@ trait TranslatableTrait
         $this->translations = new ArrayCollection();
     }
 
-    /**
-     * @param string|null $locale
-     * @param bool        $useFallbackTranslation
-     *
-     * @return TranslationInterface
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(string $locale = null, bool $useFallbackTranslation = true): TranslationInterface
     {
         $locale = $locale ?: $this->currentLocale;
         if (null === $locale) {
@@ -98,28 +87,17 @@ trait TranslatableTrait
         return $translation;
     }
 
-    /**
-     * @return Collection|TranslationInterface[]
-     */
-    public function getTranslations()
+    public function getTranslations(): Collection
     {
         return $this->translations;
     }
 
-    /**
-     * @param TranslationInterface $translation
-     *
-     * @return bool
-     */
-    public function hasTranslation(TranslationInterface $translation)
+    public function hasTranslation(TranslationInterface $translation): bool
     {
         return isset($this->translationsCache[$translation->getLocale()]) || $this->translations->containsKey($translation->getLocale());
     }
 
-    /**
-     * @param TranslationInterface $translation
-     */
-    public function addTranslation(TranslationInterface $translation)
+    public function addTranslation(TranslationInterface $translation): void
     {
         if (!$this->hasTranslation($translation)) {
             $this->translationsCache[$translation->getLocale()] = $translation;
@@ -129,10 +107,7 @@ trait TranslatableTrait
         }
     }
 
-    /**
-     * @param TranslationInterface $translation
-     */
-    public function removeTranslation(TranslationInterface $translation)
+    public function removeTranslation(TranslationInterface $translation): void
     {
         if ($this->translations->removeElement($translation)) {
             unset($this->translationsCache[$translation->getLocale()]);
@@ -141,26 +116,18 @@ trait TranslatableTrait
         }
     }
 
-    /**
-     * @param string $currentLocale
-     */
-    public function setCurrentLocale($currentLocale)
+    public function setCurrentLocale(string $locale): void
     {
-        $this->currentLocale = $currentLocale;
+        $this->currentLocale = $locale;
     }
 
-    /**
-     * @param string $fallbackLocale
-     */
-    public function setFallbackLocale($fallbackLocale)
+    public function setFallbackLocale(string $locale): void
     {
-        $this->fallbackLocale = $fallbackLocale;
+        $this->fallbackLocale = $locale;
     }
 
     /**
      * Create resource translation model.
-     *
-     * @return TranslationInterface
      */
-    abstract protected function createTranslation();
+    abstract protected function createTranslation(): TranslationInterface;
 }

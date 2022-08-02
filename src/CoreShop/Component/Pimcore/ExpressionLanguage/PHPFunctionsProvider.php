@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\ExpressionLanguage;
 
@@ -17,9 +19,9 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
-        return array(
+        return [
             ExpressionFunction::fromPHP('sprintf'),
             ExpressionFunction::fromPHP('substr'),
             ExpressionFunction::fromPHP('strlen'),
@@ -45,6 +47,8 @@ class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
             ExpressionFunction::fromPHP('implode'),
             ExpressionFunction::fromPHP('is_array'),
             ExpressionFunction::fromPHP('count'),
-        );
+            ExpressionFunction::fromPHP('dirname'),
+            ExpressionFunction::fromPHP('basename'),
+        ];
     }
 }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
@@ -17,13 +19,18 @@ use CoreShop\Component\Rule\Model\RuleTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class CartPriceRule implements CartPriceRuleInterface
 {
     use RuleTrait {
         initializeRuleCollections as private initializeRules;
     }
+
     use TranslatableTrait {
         initializeTranslationCollection as private initializeTranslationsCollection;
+
         getTranslation as private doGetTranslation;
     }
 
@@ -60,25 +67,16 @@ class CartPriceRule implements CartPriceRuleInterface
         $this->voucherCodes = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return $this->description;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDescription($description)
     {
         $this->description = $description;
@@ -86,17 +84,11 @@ class CartPriceRule implements CartPriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIsVoucherRule()
     {
         return $this->isVoucherRule;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIsVoucherRule($isVoucherRule)
     {
         $this->isVoucherRule = $isVoucherRule;
@@ -104,25 +96,16 @@ class CartPriceRule implements CartPriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVoucherCodes()
     {
         return $this->voucherCodes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasVoucherCodes()
     {
         return !$this->voucherCodes->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode)
     {
         if (!$this->hasVoucherCode($cartPriceRuleVoucherCode)) {
@@ -131,9 +114,6 @@ class CartPriceRule implements CartPriceRuleInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode)
     {
         if ($this->hasVoucherCode($cartPriceRuleVoucherCode)) {
@@ -142,37 +122,22 @@ class CartPriceRule implements CartPriceRuleInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode)
     {
         return $this->voucherCodes->contains($cartPriceRuleVoucherCode);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLabel($language = null)
+    public function getLabel(?string $language = null)
     {
         return $this->getTranslation($language)->getLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setLabel($label, $language = null)
+    public function setLabel(string $label, ?string $language = null)
     {
         $this->getTranslation($language)->setLabel($label);
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return CartPriceRuleTranslationInterface
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): CartPriceRuleTranslationInterface
     {
         /** @var CartPriceRuleTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
@@ -180,10 +145,7 @@ class CartPriceRule implements CartPriceRuleInterface
         return $translation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createTranslation()
+    protected function createTranslation(): CartPriceRuleTranslationInterface
     {
         return new CartPriceRuleTranslation();
     }

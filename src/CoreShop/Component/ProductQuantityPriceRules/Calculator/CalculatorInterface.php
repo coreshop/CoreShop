@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Calculator;
 
@@ -20,15 +22,7 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 interface CalculatorInterface
 {
     /**
-     * @param ProductQuantityPriceRuleInterface $quantityPriceRule
-     * @param QuantityRangePriceAwareInterface  $subject
-     * @param float                             $quantity
-     * @param int                               $originalPrice
-     * @param array                             $context
-     *
      * @throws NoPriceFoundException
-     *
-     * @return int
      */
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
@@ -36,22 +30,15 @@ interface CalculatorInterface
         float $quantity,
         int $originalPrice,
         array $context
-    );
+    ): int;
 
     /**
-     * @param QuantityRangeInterface           $range
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param int                              $originalPrice
-     * @param array                            $context
-     *
      * @throws NoPriceFoundException
-     *
-     * @return int
      */
     public function calculateForRange(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,
         int $originalPrice,
         array $context
-    );
+    ): int;
 }

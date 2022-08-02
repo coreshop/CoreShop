@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <mapped-superclass name="CoreShop\Component\PayumPayment\Model\PaymentSecurityToken" table="coreshop_payment_security_token">
+        <id name="hash" type="string" length="100" />
+        <field name="details" column="details" type="object" nullable="true" />
+        <field name="afterUrl" column="afterUrl" type="text" nullable="true" />
+        <field name="targetUrl" column="targetUrl" type="text" nullable="true" />
+        <field name="gatewayName" column="gatewayName" type="string" length="255" nullable="false" />
+    </mapped-superclass>
+</doctrine-mapping>

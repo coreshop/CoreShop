@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -19,7 +19,10 @@ coreshop.resource.item = Class.create({
         save: ''
     },
 
-    multiShopSettings: false,
+    routing: {
+        save: null,
+        clone: null,
+    },
 
     initialize: function (parentPanel, data, panelKey, type) {
         this.parentPanel = parentPanel;
@@ -50,15 +53,14 @@ coreshop.resource.item = Class.create({
     getPanel: function () {
         var items = this.getItems();
 
-        panel = new Ext.panel.Panel({
+        return new Ext.panel.Panel({
             title: this.getTitleText(),
+            itemId: this.panelKey,
             closable: true,
             iconCls: this.iconCls,
             layout: 'border',
             items: items
         });
-
-        return panel;
     },
 
     getTitleText: function () {
@@ -85,7 +87,7 @@ coreshop.resource.item = Class.create({
             var saveData = this.getSaveData();
 
             saveData['id'] = this.data.id;
-            saveData = this.convertDotNotationToObject(saveData);
+            saveData = coreshop.helpers.convertDotNotationToObject(saveData);
 
             if (saveData.hasOwnProperty('stores')) {
                 var stores = [];
@@ -98,7 +100,7 @@ coreshop.resource.item = Class.create({
             }
 
             Ext.Ajax.request({
-                url: this.url.save,
+                url: this.routing.save ? Routing.generate(this.routing.save) : this.url.save,
                 method: 'post',
                 jsonData: saveData,
                 success: function (response) {
@@ -133,6 +135,48 @@ coreshop.resource.item = Class.create({
                 }.bind(this)
             });
         }
+    },
+
+    clone: function () {
+
+        var saveData = this.getSaveData();
+        saveData = coreshop.helpers.convertDotNotationToObject(saveData);
+        coreshop.helpers.removeKey(saveData);
+
+        if (saveData.hasOwnProperty('stores')) {
+            var stores = [];
+
+            saveData.stores.forEach(function (store) {
+                stores.push(store + "");
+            });
+
+            saveData.stores = stores;
+        }
+
+        Ext.Ajax.request({
+            url: Routing.generate(this.routing.clone),
+            method: 'post',
+            jsonData: saveData,
+            success: function (response) {
+                try {
+                    if (this.parentPanel.store) {
+                        this.parentPanel.store.load();
+                    }
+
+                    this.parentPanel.refresh();
+
+                    var res = Ext.decode(response.responseText);
+
+                    if (res.success) {
+                        pimcore.helpers.showNotification(t('success'), t('coreshop_clone_success'), 'success');
+                    } else {
+                        pimcore.helpers.showNotification(t('error'), t('coreshop_clone_error'), 'error', res.message);
+                    }
+                } catch (e) {
+                    pimcore.helpers.showNotification(t('error'), t('coreshop_clone_error'), 'error');
+                }
+            }.bind(this)
+        });
     },
 
     postSave: function (result) {

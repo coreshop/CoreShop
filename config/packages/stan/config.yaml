@@ -1,0 +1,17 @@
+imports:
+    - { resource: ../../config.yaml }
+
+doctrine:
+    dbal:
+        connections:
+            default:
+                url: '%pimcore_test.db.dsn%'
+                host: ''
+                port: ''
+                dbname: ''
+                user: ''
+                password: ''
+
+parameters:
+    pimcore_test.db.dsn: '%env(PIMCORE_TEST_DB_DSN)%'
+    env(PIMCORE_TEST_DB_DSN): ~

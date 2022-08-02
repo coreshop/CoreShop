@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -16,44 +18,20 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
 
 final class CategoryContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $categoryFactory;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    private $categoryRepository;
-
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param FactoryInterface            $categoryFactory
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
-    public function __construct(SharedStorageInterface $sharedStorage, FactoryInterface $categoryFactory, CategoryRepositoryInterface $categoryRepository)
+    public function __construct(private SharedStorageInterface $sharedStorage, private FactoryInterface $categoryFactory)
     {
-        $this->sharedStorage = $sharedStorage;
-        $this->categoryFactory = $categoryFactory;
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**
      * @Given /^the site has a category "([^"]+)"$/
      */
-    public function theSiteHasACategory(string $categoryName)
+    public function theSiteHasACategory(string $categoryName): void
     {
         $category = $this->createCategory($categoryName);
 
@@ -63,7 +41,7 @@ final class CategoryContext implements Context
     /**
      * @Given /^the site has two categories "([^"]+)" and "([^"]+)"$/
      */
-    public function theSiteHasTwoCategories(string $categoryName, string $categoryName2)
+    public function theSiteHasTwoCategories(string $categoryName, string $categoryName2): void
     {
         $category = $this->createCategory($categoryName);
         $category2 = $this->createCategory($categoryName2);
@@ -76,20 +54,14 @@ final class CategoryContext implements Context
      * @Given /^the (category) is child of (category "[^"]+")$/
      * @Given /^the (category "[^"]+") is child of (category "[^"]+")$/
      */
-    public function categoryIsChildOfAnotherCategory(CategoryInterface $child, CategoryInterface $parent)
+    public function categoryIsChildOfAnotherCategory(CategoryInterface $child, CategoryInterface $parent): void
     {
         $child->setParent($parent);
 
         $this->saveCategory($child);
     }
 
-    /**
-     * @param string              $categoryName
-     * @param StoreInterface|null $store
-     *
-     * @return CategoryInterface
-     */
-    private function createCategory(string $categoryName, StoreInterface $store = null)
+    private function createCategory(string $categoryName, StoreInterface $store = null): CategoryInterface
     {
         if (null === $store && $this->sharedStorage->has('store')) {
             $store = $this->sharedStorage->get('store');
@@ -109,10 +81,7 @@ final class CategoryContext implements Context
         return $category;
     }
 
-    /**
-     * @param CategoryInterface $category
-     */
-    private function saveCategory(CategoryInterface $category)
+    private function saveCategory(CategoryInterface $category): void
     {
         $category->save();
         $this->sharedStorage->set('category', $category);

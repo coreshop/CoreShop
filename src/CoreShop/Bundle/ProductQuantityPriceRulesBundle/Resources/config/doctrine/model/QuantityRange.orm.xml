@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+
+    <mapped-superclass name="CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange"
+                       table="coreshop_product_quantity_price_rule_range">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="rangeStartingFrom" column="range_starting_from" type="float"/>
+        <field name="pricingBehaviour" column="pricing_behaviour"/>
+        <field name="percentage" column="percentage" type="float"/>
+        <field name="highlighted" column="highlighted" type="boolean"/>
+
+        <many-to-one field="rule" target-entity="CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface" inversed-by="ranges">
+            <join-column name="rule_id" referenced-column-name="id"/>
+        </many-to-one>
+    </mapped-superclass>
+</doctrine-mapping>

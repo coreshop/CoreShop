@@ -6,46 +6,34 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class CurrencyContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
-    private $currencyRepository;
-
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param CurrencyRepositoryInterface $currencyRepository
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CurrencyRepositoryInterface $currencyRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->currencyRepository = $currencyRepository;
+    public function __construct(private SharedStorageInterface $sharedStorage, private CurrencyRepositoryInterface $currencyRepository)
+    {
     }
 
     /**
      * @Transform /^currency "([^"]+)"$/
      */
-    public function getCurrencyByIso($iso)
+    public function getCurrencyByIso($iso): CurrencyInterface
     {
+        /**
+         * @var CurrencyInterface[] $currencies
+         */
         $currencies = $this->currencyRepository->findBy(['isoCode' => $iso]);
 
         Assert::eq(
@@ -60,7 +48,7 @@ final class CurrencyContext implements Context
     /**
      * @Transform /^currency$/
      */
-    public function latestCurrency()
+    public function latestCurrency(): CurrencyInterface
     {
         return $this->sharedStorage->get('currency');
     }

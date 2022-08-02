@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DataHub\QueryType;
 
@@ -26,9 +28,6 @@ class Multiselect extends Base
      */
     protected $repository;
 
-    /**
-     * @param Service $graphQlService
-     */
     public function __construct(Service $graphQlService, RepositoryInterface $repository)
     {
         parent::__construct($graphQlService);
@@ -36,9 +35,6 @@ class Multiselect extends Base
         $this->repository = $repository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->enrichConfig($fieldDefinition, $class, $attribute, [
@@ -48,17 +44,11 @@ class Multiselect extends Base
         ], $container);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
         return Type::listOf(Type::int());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResolver($attribute, $fieldDefinition, $class)
     {
         $resolver = new MultiResourceResolver($fieldDefinition, $this->repository);

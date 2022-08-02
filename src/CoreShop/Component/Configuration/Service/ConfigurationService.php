@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Configuration\Service;
 
@@ -19,37 +21,11 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ConfigurationService implements ConfigurationServiceInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var ConfigurationRepositoryInterface
-     */
-    protected $configurationRepository;
-
-    /**
-     * @var FactoryInterface
-     */
-    protected $configurationFactory;
-
-    /**
-     * @param EntityManagerInterface           $entityManager
-     * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param FactoryInterface                 $configurationFactory
-     */
-    public function __construct(EntityManagerInterface $entityManager, ConfigurationRepositoryInterface $configurationRepository, FactoryInterface $configurationFactory)
+    public function __construct(protected EntityManagerInterface $entityManager, protected ConfigurationRepositoryInterface $configurationRepository, protected FactoryInterface $configurationFactory)
     {
-        $this->entityManager = $entityManager;
-        $this->configurationRepository = $configurationRepository;
-        $this->configurationFactory = $configurationFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get($key, $returnObject = false)
+    public function get(string $key, bool $returnObject = false): mixed
     {
         $config = $this->configurationRepository->findByKey($key);
 
@@ -60,10 +36,7 @@ class ConfigurationService implements ConfigurationServiceInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function set($key, $data)
+    public function set(string $key, mixed $data): ConfigurationInterface
     {
         $config = $this->get($key, true);
 
@@ -79,10 +52,7 @@ class ConfigurationService implements ConfigurationServiceInterface
         return $config;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($key)
+    public function remove(string $key): void
     {
         $config = $this->get($key, true);
 

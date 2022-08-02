@@ -1,0 +1,10 @@
+sylius_theme:
+    context: CoreShop\Bundle\ThemeBundle\Context\ThemeContext
+    sources:
+        filesystem:
+            enabled: true
+            filename: composer.json
+            scan_depth: 1
+            directories:
+                - "%kernel.project_dir%/app/Resources/themes"
+                - "%kernel.project_dir%/themes"

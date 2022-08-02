@@ -12,7 +12,7 @@
                         {% for carrier in availableCarriers %}
                             <tr>
                                 <td><strong>{{ carrier.name }}</strong></td>
-                                <td>{{ currency.convertAndFormat(carrier.price) }} {% if carrier.isFreeShipping %}<span class="badge badge-pill badge-success">{{ 'coreshop.ui.cart.shipment.is_free_shipping'|trans }}</span>{% endif %}</td>
+                                <td>{{ currency.format(carrier.price, cart.currency.isoCode) }} {% if carrier.isFreeShipping %}<span class="badge badge-pill badge-success">{{ 'coreshop.ui.cart.shipment.is_free_shipping'|trans }}</span>{% endif %}</td>
                                 {# <td>{{ currency.convertAndFormat(carrier.priceWithoutTax) }}</td> #}
                             </tr>
                         {% endfor %}

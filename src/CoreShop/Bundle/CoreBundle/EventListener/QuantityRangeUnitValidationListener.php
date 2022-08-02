@@ -6,41 +6,29 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRuleValidationEvent;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRuleValidationEvent;
 use Pimcore\Model\Element\ValidationException;
 
 final class QuantityRangeUnitValidationListener
 {
-    /**
-     * @var RepositoryInterface
-     */
-    protected $productUnitDefinitionRepository;
-
-    /**
-     * @param RepositoryInterface $productUnitDefinitionRepository
-     */
-    public function __construct(RepositoryInterface $productUnitDefinitionRepository)
+    public function __construct(protected RepositoryInterface $productUnitDefinitionRepository)
     {
-        $this->productUnitDefinitionRepository = $productUnitDefinitionRepository;
     }
 
-    /**
-     * @param ProductQuantityPriceRuleValidationEvent $event
-     *
-     * @throws ValidationException
-     */
-    public function validate(ProductQuantityPriceRuleValidationEvent $event)
+    public function validate(ProductQuantityPriceRuleValidationEvent $event): void
     {
         $object = $event->getObject();
         $data = $event->getData();
@@ -54,22 +42,12 @@ final class QuantityRangeUnitValidationListener
             return;
         }
 
-        if (!is_array($data)) {
-            return;
-        }
-
         foreach ($data as $rule) {
             $this->validateRule($rule, $object);
         }
     }
 
-    /**
-     * @param array            $rule
-     * @param ProductInterface $product
-     *
-     * @throws ValidationException
-     */
-    protected function validateRule(array $rule, ProductInterface $product)
+    private function validateRule(array $rule, ProductInterface $product): void
     {
         if (!isset($rule['ranges']) || !is_array($rule['ranges'])) {
             return;
@@ -78,7 +56,6 @@ final class QuantityRangeUnitValidationListener
         $ranges = $rule['ranges'];
 
         foreach ($ranges as $range) {
-
             if (!isset($range['unitDefinition']) || !is_int($range['unitDefinition'])) {
                 continue;
             }

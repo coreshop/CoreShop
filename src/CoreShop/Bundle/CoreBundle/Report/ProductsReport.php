@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -28,77 +30,13 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ProductsReport implements ReportInterface, ExportReportInterface
 {
-    /**
-     * @var int
-     */
-    private $totalRecords = 0;
+    private int $totalRecords = 0;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var Connection
-     */
-    private $db;
-
-    /**
-     * @var LocaleContextInterface
-     */
-    private $localeContext;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
-
-    /**
-     * @var StackRepository
-     */
-    private $productStackRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderItemRepository;
-
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param MoneyFormatterInterface    $moneyFormatter
-     * @param LocaleContextInterface     $localeContext
-     * @param PimcoreRepositoryInterface $orderRepository,
-     * @param PimcoreRepositoryInterface $orderItemRepository
-     * @param StackRepository            $productStackRepository
-     */
-    public function __construct(
-        RepositoryInterface $storeRepository,
-        Connection $db,
-        MoneyFormatterInterface $moneyFormatter,
-        LocaleContextInterface $localeContext,
-        PimcoreRepositoryInterface $orderRepository,
-        PimcoreRepositoryInterface $orderItemRepository,
-        StackRepository $productStackRepository
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->db = $db;
-        $this->moneyFormatter = $moneyFormatter;
-        $this->localeContext = $localeContext;
-        $this->orderRepository = $orderRepository;
-        $this->orderItemRepository = $orderItemRepository;
-        $this->productStackRepository = $productStackRepository;
+    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeContext, private PimcoreRepositoryInterface $orderRepository, private PimcoreRepositoryInterface $orderItemRepository, private StackRepository $productStackRepository)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -112,7 +50,11 @@ class ProductsReport implements ReportInterface, ExportReportInterface
             $orderStateFilter = null;
         }
 
-        $storeId = $parameterBag->get('store', null);
+        $storeId = $parameterBag->get('store');
+
+        if (null === $storeId) {
+            return [];
+        }
 
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
@@ -126,10 +68,6 @@ class ProductsReport implements ReportInterface, ExportReportInterface
 
         $locale = $this->localeContext->getLocaleCode();
 
-        if (is_null($storeId)) {
-            return [];
-        }
-
         $store = $this->storeRepository->find($storeId);
         if (!$store instanceof StoreInterface) {
             return [];
@@ -142,7 +80,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
             }
 
-            $union = join(' UNION ALL ', $unionData);
+            $union = implode(' UNION ALL ', $unionData);
 
             $query = "
               SELECT SQL_CALC_FOUND_ROWS
@@ -195,37 +133,32 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         $queryParameters[] = $to->getTimestamp();
 
 
-        $productSales = $this->db->fetchAll($query, $queryParameters);
+        $productSales = $this->db->fetchAllAssociative($query, $queryParameters);
 
-        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($productSales as &$sale) {
-            $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
-            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode(), $locale);
-            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode(), $locale);
+            $sale['salesPriceFormatted'] = $this->moneyFormatter->format((int)$sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
+            $sale['salesFormatted'] = $this->moneyFormatter->format((int)$sale['sales'], $store->getCurrency()->getIsoCode(), $locale);
+            $sale['profitFormatted'] = $this->moneyFormatter->format((int)$sale['profit'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
         }
 
         return array_values($productSales);
     }
 
-    public function getExportReportData(ParameterBag $parameterBag)
+    public function getExportReportData(ParameterBag $parameterBag): array
     {
         $data = $this->getReportData($parameterBag);
 
         foreach ($data as &$entry) {
-            unset($entry['salesPrice']);
-            unset($entry['sales']);
-            unset($entry['profit']);
+            unset($entry['salesPrice'], $entry['sales'], $entry['profit']);
         }
 
         return $data;
     }
 
-    /**
-     * @return int
-     */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Taxation\Calculator;
 
@@ -19,67 +21,63 @@ interface TaxCalculatorInterface
     /**
      * DISABLE_METHOD only use this tax.
      */
-    const DISABLE_METHOD = 0;
+    public const DISABLE_METHOD = 0;
 
     /**
      * COMBINE_METHOD sum taxes
      * eg: 100€ * (10% + 15%).
      */
-    const COMBINE_METHOD = 1;
+    public const COMBINE_METHOD = 1;
 
     /**
      * ONE_AFTER_ANOTHER_METHOD apply taxes one after another
      * eg: (100€ * 10%) * 15%.
      */
-    const ONE_AFTER_ANOTHER_METHOD = 2;
+    public const ONE_AFTER_ANOTHER_METHOD = 2;
 
     /**
      * Compute and add the taxes to the specified price.
-     *
-     * @param int $price
-     *
-     * @return int
      */
-    public function applyTaxes($price);
+    public function applyTaxes(int $price): int;
 
     /**
      * Compute and remove the taxes to the specified price.
-     *
-     * @param int $price
-     *
-     * @return int
      */
-    public function removeTaxes($price);
+    public function removeTaxes(int $price): int;
 
     /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
      *
-     * @param int  $price
-     * @param bool $asArray
      *
-     * @return int|array $taxes_amount
+     * @return int $taxes_amount
      */
-    public function getTaxesAmountFromGross($price, $asArray = false);
+    public function getTaxesAmountFromGross(int $price): int;
 
     /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
      *
-     * @param int  $price
-     * @param bool $asArray
      *
-     * @return int|array $taxes_amount
+     * @return int[] $taxes_amount
      */
-    public function getTaxesAmount($price, $asArray = false);
+    public function getTaxesAmountFromGrossAsArray(int $price): array;
+
+    /**
+     * Return the tax amount associated to each taxes of the TaxCalculator.
+     */
+    public function getTaxesAmount(int $price): int;
+
+    /**
+     * Return the tax amount associated to each taxes of the TaxCalculator.
+     */
+    public function getTaxesAmountAsArray(int $price): array;
 
     /**
      * Compute Total Rate.
-     *
-     * @return float
      */
-    public function getTotalRate();
+    public function getTotalRate(): float;
 
     /**
      * @return TaxRateInterface[]
      */
-    public function getTaxRates();
+    public function getTaxRates(): array;
 }

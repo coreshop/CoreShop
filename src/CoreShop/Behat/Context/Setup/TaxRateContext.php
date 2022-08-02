@@ -6,63 +6,30 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 final class TaxRateContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $taxRateFactory;
-
-    /**
-     * @var RepositoryInterface
-     */
-    private $taxRateRepository;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager          $objectManager
-     * @param FactoryInterface       $taxRateFactory
-     * @param RepositoryInterface    $taxRateRepository
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FactoryInterface $taxRateFactory,
-        RepositoryInterface $taxRateRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->taxRateFactory = $taxRateFactory;
-        $this->taxRateRepository = $taxRateRepository;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FactoryInterface $taxRateFactory)
+    {
     }
 
     /**
      * @Given /^the site has a tax rate "([^"]+)" with "([^"]+)%" rate$/
      */
-    public function theSiteHasATaxRate($name, $rate)
+    public function theSiteHasATaxRate($name, float $rate): void
     {
         $this->createTaxRate($name, $rate);
     }
@@ -70,17 +37,14 @@ final class TaxRateContext implements Context
     /**
      * @Given /^the (tax rate "[^"]+") is active$/
      */
-    public function theTaxRateIsActive(TaxRateInterface $taxRate)
+    public function theTaxRateIsActive(TaxRateInterface $taxRate): void
     {
         $taxRate->setActive(true);
 
         $this->saveTaxRate($taxRate);
     }
 
-    /**
-     * @param string $name
-     */
-    private function createTaxRate($name, $rate)
+    private function createTaxRate(string $name, float $rate): void
     {
         /**
          * @var TaxRateInterface $taxRate
@@ -92,10 +56,7 @@ final class TaxRateContext implements Context
         $this->saveTaxRate($taxRate);
     }
 
-    /**
-     * @param TaxRateInterface $taxRate
-     */
-    private function saveTaxRate(TaxRateInterface $taxRate)
+    private function saveTaxRate(TaxRateInterface $taxRate): void
     {
         $this->objectManager->persist($taxRate);
         $this->objectManager->flush();

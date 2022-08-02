@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\MenuBundle;
 
@@ -16,7 +18,6 @@ use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\MenuBundle\DependencyInjection\CompilerPass\MenuBuilderPass;
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
-use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
@@ -24,44 +25,29 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopMenuBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         $collection->addBundle(new KnpMenuBundle());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
         $container->addCompilerPass(new MenuBuilderPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Menu';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Menu Bundle';
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         $bundleName = 'coreshop/pimcore-bundle';
 
@@ -72,16 +58,6 @@ final class CoreShopMenuBundle extends AbstractPimcoreBundle implements Dependen
 
             if (InstalledVersions::isInstalled($bundleName)) {
                 return InstalledVersions::getVersion($bundleName);
-            }
-        }
-
-        if (class_exists(Versions::class)) {
-            if (isset(Versions::VERSIONS[$bundleName])) {
-                return Versions::getVersion($bundleName);
-            }
-
-            if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
-                return Versions::getVersion('coreshop/core-shop');
             }
         }
 

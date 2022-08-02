@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
@@ -16,92 +18,69 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\SummaryType;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStepInterface
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
-     * @param FormFactoryInterface $formFactory
-     */
-    public function __construct(FormFactoryInterface $formFactory)
+    public function __construct(private FormFactoryInterface $formFactory, private RouterInterface $router)
     {
-        $this->formFactory = $formFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'summary';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function doAutoForward(CartInterface $cart)
+    public function doAutoForward(OrderInterface $cart): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getResponse(CartInterface $cart, Request $request)
+    public function getResponse(OrderInterface $cart, Request $request): RedirectResponse
     {
-        $checkoutFinisherUrl = $request->get('checkout_finisher');
+        $form = $this->createForm($request, $cart);
 
-        return new RedirectResponse($checkoutFinisherUrl);
+        $submitOrder = $form->get('submitOrder');
+
+        $nextAction = $submitOrder instanceof ClickableInterface && $submitOrder->isClicked()
+            ? 'coreshop_checkout_do'
+            : 'coreshop_cart_create_quote';
+
+        return new RedirectResponse($this->router->generate($nextAction));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate(CartInterface $cart)
+    public function validate(OrderInterface $cart): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function commitStep(CartInterface $cart, Request $request)
+    public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $cart);
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 return true;
-            } else {
-                throw new CheckoutException('Summary Form is invalid', 'coreshop.ui.error.coreshop_checkout_summary_form_invalid');
             }
+
+            throw new CheckoutException('Summary Form is invalid', 'coreshop.ui.error.coreshop_checkout_summary_form_invalid');
         }
 
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareStep(CartInterface $cart, Request $request)
+    public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return ['form' => $this->createForm($request, $cart)->createView()];
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function createForm(Request $request, CartInterface $cart)
+    private function createForm(Request $request, OrderInterface $cart): FormInterface
     {
         $form = $this->formFactory->createNamed('coreshop', SummaryType::class, $cart);
 

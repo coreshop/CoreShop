@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Validator\Constraints;
 
@@ -17,7 +19,6 @@ use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use Symfony\Component\ExpressionLanguage\SyntaxError;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -25,94 +26,55 @@ use Webmozart\Assert\Assert;
 
 final class UniqueEntityValidator extends ConstraintValidator
 {
-    /**
-     * @var ExpressionLanguage
-     */
-    protected $expressionLanguage;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @param ExpressionLanguage $expressionLanguage
-     * @param ContainerInterface $container
-     */
-    public function __construct(ExpressionLanguage $expressionLanguage, ContainerInterface $container)
+    public function __construct(protected ExpressionLanguage $expressionLanguage, protected ContainerInterface $container)
     {
-        $this->expressionLanguage = $expressionLanguage;
-        $this->container = $container;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    protected function evaluateExpression($value)
+    protected function evaluateExpression(array $value): array
     {
-        if (is_array($value)) {
-            foreach ($value as $i => $item) {
-                $value[$i] = $this->evaluateExpression($item);
-            }
-
-            return $value;
+        foreach ($value as $i => $item) {
+            $value[$i] = $this->evaluateExpression($item);
         }
 
-        try {
-            return $this->expressionLanguage->evaluate($value, ['container' => $this->container,]);
-        } catch (SyntaxError $e) {
-            // do not throw any exception but simple return value instead
-            return $value;
-        }
+        return $value;
     }
 
-    /**
-     * @param Concrete   $entity
-     * @param Constraint $constraint
-     */
-    public function validate($entity, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
-        Assert::isInstanceOf($entity, Concrete::class);
+        /**
+         * @var Concrete $value
+         */
+        Assert::isInstanceOf($value, Concrete::class);
 
         if (!$constraint instanceof UniqueEntity) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\UniqueEntity');
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\UniqueEntity');
         }
 
-        if (!is_array($constraint->fields) && !is_string($constraint->fields)) {
-            throw new UnexpectedTypeException($constraint->fields, 'array');
-        }
-
-        $fields = $this->evaluateExpression((array)$constraint->fields);
+        $fields = $this->evaluateExpression($constraint->fields);
 
         if (0 === count($fields)) {
             throw new ConstraintDefinitionException('At least one field has to be specified.');
         }
 
-        if (null === $entity) {
-            return;
-        }
-
         $errorPath = $fields[0];
         $criteria = [];
         foreach ($fields as $fieldName) {
-            $getter = 'get'.ucfirst($fieldName);
-            if (!method_exists($entity, $getter)) {
+            $getter = 'get' . ucfirst($fieldName);
+            if (!method_exists($value, $getter)) {
                 throw new ConstraintDefinitionException(
                     sprintf(
                         'The field "%s" is not mapped by Concrete, so it cannot be validated for uniqueness.',
-                    $fieldName
+                        $fieldName
                     )
                 );
             }
-            $criteria[$fieldName] = $entity->$getter();
+            $criteria[$fieldName] = $value->$getter();
         }
 
-        $values = (array)$constraint->values;
+        $values = $constraint->values;
 
-        foreach ($values as $field => $value) {
-            $criteria[$field] = $value;
+        foreach ($values as $field => $fieldValue) {
+            $criteria[$field] = $fieldValue;
         }
 
         $condition = [];
@@ -123,16 +85,16 @@ final class UniqueEntityValidator extends ConstraintValidator
 
                 foreach ($criteriaValue as $criteriaSubValue) {
                     if (null === $criteriaSubValue) {
-                        $subConditions[] = $criteriaName.' IS NULL';
+                        $subConditions[] = $criteriaName . ' IS NULL';
                     } else {
-                        $subConditions[] = $criteriaName.' = ?';
+                        $subConditions[] = $criteriaName . ' = ?';
                         $values[] = $criteriaSubValue;
                     }
                 }
 
-                $condition[] = '('.implode(' OR ', $subConditions).')';
+                $condition[] = '(' . implode(' OR ', $subConditions) . ')';
             } else {
-                $condition[] = $criteriaName.' = ?';
+                $condition[] = $criteriaName . ' = ?';
                 $values[] = $criteriaValue;
             }
         }
@@ -140,25 +102,23 @@ final class UniqueEntityValidator extends ConstraintValidator
         /**
          * @var DataObject\Listing\Concrete $list
          */
-        $list = $entity::getList();
+        $list = $value::getList();
         $list->setCondition(implode(' AND ', $condition), $values);
+        $list->setUnpublished(true);
         $elements = $list->load();
 
         if (count($elements) > 0) {
-            /**
-             * @var Concrete $foundElement
-             */
             $foundElement = $elements[0];
 
-            if ($constraint->allowSameEntity && count($elements) === 1 && $entity->getId() === $foundElement->getId()) {
+            if ($constraint->allowSameEntity && count($elements) === 1 && $value->getId() === $foundElement->getId()) {
                 return;
             }
 
-            $this->context->buildViolation($this->evaluateExpression($constraint->message))
+            $this->context->buildViolation($this->evaluateExpression([$constraint->message])[0])
                 ->atPath($errorPath)
                 ->setParameter('{{ value }}', $criteria[$fields[0]])
                 ->setInvalidValue($criteria[$fields[0]])
-                ->setCause($entity)
+                ->setCause($value)
                 ->addViolation();
         }
     }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Configuration;
 
@@ -19,26 +21,11 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface ConfigurationServiceInterface extends BaseConfigurationServiceInterface
 {
     /**
-     * @param string              $key
-     * @param StoreInterface|null $store
-     * @param bool                $returnObject
-     *
      * @return ConfigurationInterface|mixed|null
      */
-    public function getForStore($key, StoreInterface $store = null, $returnObject = false);
+    public function getForStore(string $key, StoreInterface $store = null, bool $returnObject = false): mixed;
 
-    /**
-     * @param string              $key
-     * @param mixed               $data
-     * @param StoreInterface|null $store
-     *
-     * @return ConfigurationInterface
-     */
-    public function setForStore($key, $data, StoreInterface $store = null);
+    public function setForStore(string $key, mixed $data, StoreInterface $store = null): ConfigurationInterface;
 
-    /**
-     * @param string              $key
-     * @param StoreInterface|null $store
-     */
-    public function removeForStore($key, StoreInterface $store = null);
+    public function removeForStore(string $key, StoreInterface $store = null): void;
 }

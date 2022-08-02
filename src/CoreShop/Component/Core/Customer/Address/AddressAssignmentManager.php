@@ -6,37 +6,27 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Customer\Address;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Customer\CustomerTransformHelperInterface;
 use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface;
+use CoreShop\Component\Core\Customer\CustomerTransformHelperInterface;
 use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 
 final class AddressAssignmentManager implements AddressAssignmentManagerInterface
 {
-    /**
-     * @var CustomerTransformHelperInterface
-     */
-    protected $customerTransformHelper;
-
-    /**
-     * @param CustomerTransformHelperInterface $customerTransformHelper
-     */
-    public function __construct(CustomerTransformHelperInterface $customerTransformHelper)
+    public function __construct(protected CustomerTransformHelperInterface $customerTransformHelper)
     {
-        $this->customerTransformHelper = $customerTransformHelper;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true)
+    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true): ?array
     {
         if ($customer->getAddressAccessType() !== CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY) {
             return null;
@@ -46,17 +36,14 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
         $companyKey = $useTranslationKeys ? 'coreshop.form.customer.address_affiliation.company' : 'Company';
 
         return [
-            $ownKey     => CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN,
+            $ownKey => CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN,
             $companyKey => CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_COMPANY,
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function detectAddressAffiliationForCustomer(CustomerInterface $customer, AddressInterface $address)
+    public function detectAddressAffiliationForCustomer(CustomerInterface $customer, AddressInterface $address): ?string
     {
-        if ($address->getId() === 0) {
+        if (null === $address->getId() || 0 === $address->getId()) {
             return null;
         }
 
@@ -67,18 +54,15 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
 
         if ($customer->hasAddress($address)) {
             return CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN;
-        } elseif ($company->hasAddress($address)) {
+        }
+        if ($company->hasAddress($address)) {
             return CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_COMPANY;
         }
 
         throw new \InvalidArgumentException(sprintf('Could not determine address affiliation for customer "%s"', $customer->getId()));
-
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function checkAddressAffiliationPermissionForCustomer(CustomerInterface $customer, AddressInterface $address)
+    public function checkAddressAffiliationPermissionForCustomer(CustomerInterface $customer, AddressInterface $address): bool
     {
         if ($address->getId() === 0) {
             return true;
@@ -98,16 +82,13 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
         }
 
         if ($customer->getAddressAccessType() === CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY) {
-            return $customer->hasAddress($address) || $company instanceof CompanyInterface && $company->hasAddress($address);
+            return $customer->hasAddress($address) || ($company instanceof CompanyInterface && $company->hasAddress($address));
         }
 
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function allocateAddressByAffiliation(CustomerInterface $customer, AddressInterface $address, ?string $affiliation)
+    public function allocateAddressByAffiliation(CustomerInterface $customer, AddressInterface $address, ?string $affiliation): AddressInterface
     {
         $company = $customer->getCompany();
 
@@ -134,8 +115,6 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
             $customer->setDefaultAddress($address);
         }
 
-        $address = $this->customerTransformHelper->moveAddressToNewAddressStack($address, $relationEntity);
-
-        return $address;
+        return $this->customerTransformHelper->moveAddressToNewAddressStack($address, $relationEntity);
     }
 }

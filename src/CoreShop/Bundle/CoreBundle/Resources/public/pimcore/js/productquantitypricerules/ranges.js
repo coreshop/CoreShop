@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -23,7 +23,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
         unitDefinitionModelName = 'coreshop.product.model.productUnitDefinitions';
         proxy = {
             type: 'ajax',
-            url: '/admin/coreshop/product_unit_definitions/get-product-unit-definitions',
+            url: Routing.generate('coreshop_product_unit_definitions_productUnitDefinitionsList'),
             extraParams: {
                 productId: this.objectId
             },

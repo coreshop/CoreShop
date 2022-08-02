@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
@@ -24,25 +26,12 @@ use Symfony\Component\Form\FormInterface;
 
 class IndexType extends AbstractResourceType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $formTypeRegistry;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
+    public function __construct(string $dataClass, array $validationGroups, private FormTypeRegistryInterface $formTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups);
-
-        $this->formTypeRegistry = $formTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class)
@@ -89,21 +78,17 @@ class IndexType extends AbstractResourceType
     }
 
     /**
-     * @param FormInterface $form
      * @param string        $configurationType
      */
-    protected function addConfigurationFields(FormInterface $form, $configurationType)
+    protected function addConfigurationFields(FormInterface $form, $configurationType): void
     {
         $form->add('configuration', $configurationType);
     }
 
     /**
-     * @param FormInterface $form
      * @param mixed         $data
-     *
-     * @return string|null
      */
-    protected function getRegistryIdentifier(FormInterface $form, $data = null)
+    protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
         if (null !== $data && null !== $data->getWorker()) {
             return $data->getWorker();
@@ -116,10 +101,7 @@ class IndexType extends AbstractResourceType
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index';
     }

@@ -1,0 +1,17 @@
+coreshop:
+    product:
+        allowed_attribute_groups: "Erlaubte Attribut-Gruppen"
+        attributes: "Attribute"
+
+    attribute_group:
+        name: "Name"
+        show_in_list: "In Produkt-Kachel anzeigen"
+
+    attribute:
+        name: "Name"
+        value_text: "Wert"
+        value_color: "Farbe"
+        attribute_group: "Attribut Gruppe"
+
+
+

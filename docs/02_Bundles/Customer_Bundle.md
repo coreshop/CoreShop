@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-$ composer require coreshop/customer-bundle:^2.0
+$ composer require coreshop/customer-bundle:^3.0
 ```
 
 ### Adding required bundles to kernel

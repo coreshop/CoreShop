@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\WorkflowBundle\EventListener;
 
@@ -20,30 +22,11 @@ use Symfony\Component\Workflow\Event\Event;
 
 class WorkflowListener implements EventSubscriberInterface
 {
-    /**
-     * @var array
-     */
-    private $callbackConfig;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @param array              $callbackConfig
-     * @param ContainerInterface $container
-     */
-    public function __construct(array $callbackConfig, ContainerInterface $container)
+    public function __construct(protected array $callbackConfig, protected ContainerInterface $container)
     {
-        $this->callbackConfig = $callbackConfig;
-        $this->container = $container;
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'workflow.enter' => ['onTransitionEnter'],
@@ -51,10 +34,7 @@ class WorkflowListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param Event $event
-     */
-    public function onTransitionEnter(Event $event)
+    public function onTransitionEnter(Event $event): void
     {
         if (!isset($this->callbackConfig[$event->getWorkflowName()])) {
             return;
@@ -71,10 +51,7 @@ class WorkflowListener implements EventSubscriberInterface
         $this->applyTransition($transitionName, $event, $beforeActions);
     }
 
-    /**
-     * @param Event $event
-     */
-    public function onTransitionCompleted(Event $event)
+    public function onTransitionCompleted(Event $event): void
     {
         if (!isset($this->callbackConfig[$event->getWorkflowName()])) {
             return;
@@ -91,18 +68,13 @@ class WorkflowListener implements EventSubscriberInterface
         $this->applyTransition($transitionName, $event, $afterActions);
     }
 
-    /**
-     * @param string $transitionName
-     * @param Event  $event
-     * @param array  $actions
-     */
-    public function applyTransition($transitionName, Event $event, $actions)
+    public function applyTransition(string $transitionName, Event $event, array $actions): void
     {
         foreach ($actions as $callback) {
             if ($callback['enabled'] === false) {
-                continue;   
+                continue;
             }
-            
+
             if (!in_array($transitionName, $callback['on'])) {
                 continue;
             }
@@ -117,19 +89,9 @@ class WorkflowListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param Event $event
-     * @param array $callable
-     * @param array $callableArgs
-     *
-     * @return mixed
-     */
-    public function call(Event $event, array $callable, $callableArgs = [])
+    public function call(Event $event, array $callable, array $callableArgs = []): void
     {
-        if (is_array($callable)
-            && is_string($callable[0])
-            && 0 === strpos($callable[0], '@')
-        ) {
+        if (is_string($callable[0]) && str_starts_with($callable[0], '@')) {
             $serviceId = substr($callable[0], 1);
             $callable[0] = $this->container->get($serviceId);
         }
@@ -139,7 +101,7 @@ class WorkflowListener implements EventSubscriberInterface
         } else {
             $expr = new ExpressionLanguage();
             $args = array_map(
-                function ($arg) use ($expr, $event) {
+                function (mixed $arg) use ($expr, $event): mixed {
                     if (!is_string($arg)) {
                         return $arg;
                     }
@@ -157,14 +119,9 @@ class WorkflowListener implements EventSubscriberInterface
         call_user_func_array($callable, $args);
     }
 
-    /**
-     * @param array $callbacks
-     *
-     * @return array
-     */
-    protected function setCallbacksPriority(array $callbacks)
+    protected function setCallbacksPriority(array $callbacks): array
     {
-        uasort($callbacks, function ($a, $b) {
+        uasort($callbacks, static function (array $a, array $b) {
             if ($a['priority'] === $b['priority']) {
                 return 0;
             }

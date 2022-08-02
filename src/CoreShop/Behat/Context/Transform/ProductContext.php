@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Transform;
 
@@ -21,26 +23,8 @@ use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    private $productRepository;
-
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param ProductRepositoryInterface $productRepository
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ProductRepositoryInterface $productRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->productRepository = $productRepository;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ProductRepositoryInterface $productRepository)
+    {
     }
 
     /**
@@ -64,7 +48,36 @@ final class ProductContext implements Context
             sprintf('%d products has been found with name "%s".', count($list->getObjects()), $productName)
         );
 
-        $product = \reset($list->getObjects());
+        $objects = $list->getObjects();
+        $product = \reset($objects);
+
+        //This is to not run into cache issues
+        return $this->productRepository->forceFind($product->getId());
+    }
+
+    /**
+     * @Transform /^product with key "([^"]+)"$/
+     * @Transform /^variant with key "([^"]+)"$/
+     */
+    public function getProductByKey($productName)
+    {
+        /**
+         * @var \Pimcore\Model\DataObject\Listing\Concrete $list
+         */
+        $list = $this->productRepository->getList();
+        $list->setLocale('en');
+        $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
+        $list->setCondition('o_key = ?', [$productName]);
+        $list->load();
+
+        Assert::eq(
+            count($list->getObjects()),
+            1,
+            sprintf('%d products has been found with key "%s".', count($list->getObjects()), $productName)
+        );
+
+        $objects = $list->getObjects();
+        $product = \reset($objects);
 
         //This is to not run into cache issues
         return $this->productRepository->forceFind($product->getId());
@@ -73,7 +86,7 @@ final class ProductContext implements Context
     /**
      * @Transform /^product(?:|s) "([^"]+)" with unit "([^"]+)"$/
      */
-    public function getProductWithUnitName($productName, $productUnit)
+    public function getProductWithUnitName($productName, $productUnit): array
     {
         /**
          * @var ProductInterface $product
@@ -95,7 +108,7 @@ final class ProductContext implements Context
     /**
      * @Transform /^products "([^"]+)", "([^"]+)"$/
      */
-    public function getProductsByName($product1, $product2)
+    public function getProductsByName(string $product1, string $product2): array
     {
         $products = [];
 
@@ -109,7 +122,7 @@ final class ProductContext implements Context
     /**
      * @Transform /^product/
      */
-    public function product()
+    public function product(): ProductInterface
     {
         return $this->sharedStorage->get('product');
     }
@@ -118,7 +131,7 @@ final class ProductContext implements Context
      * @Transform /^variant(?:|s)/
      * @Transform /^variant(?:|s)/
      */
-    public function variant()
+    public function variant(): ProductInterface
     {
         return $this->sharedStorage->get('variant');
     }

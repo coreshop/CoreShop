@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\Order;
 
@@ -21,23 +23,11 @@ use Pimcore\Model\Document\Email;
 
 final class OrderMailNoteEventListener
 {
-    /**
-     * @var NoteServiceInterface
-     */
-    private $noteService;
-
-    /**
-     * @param NoteServiceInterface $noteService
-     */
-    public function __construct(NoteServiceInterface $noteService)
+    public function __construct(private NoteServiceInterface $noteService)
     {
-        $this->noteService = $noteService;
     }
 
-    /**
-     * @param MailEvent $mailEvent
-     */
-    public function onOrderMailSent(MailEvent $mailEvent)
+    public function onOrderMailSent(MailEvent $mailEvent): void
     {
         $subject = $mailEvent->getSubject();
         $params = $mailEvent->getParams();
@@ -47,38 +37,40 @@ final class OrderMailNoteEventListener
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param Email          $emailDocument
-     * @param Mail           $mail
-     * @param array          $params
-     *
-     * @return bool
-     */
-    private function addOrderNote(OrderInterface $order, Email $emailDocument, Mail $mail, $params = [])
+    private function addOrderNote(OrderInterface $order, Email $emailDocument, Mail $mail, array $params = []): void
     {
+        /** @psalm-suppress InvalidArgument */
         $noteInstance = $this->noteService->createPimcoreNoteInstance($order, Notes::NOTE_EMAIL);
 
         $noteInstance->setTitle('Order Mail');
 
         $noteInstance->addData('document', 'text', $emailDocument->getId());
+        /** @psalm-suppress InternalMethod */
         $noteInstance->addData('subject', 'text', $mail->getSubjectRendered());
 
         $mailTos = [];
-        $recipients = isset($params['recipient']) && !empty($params['recipient']) ? $params['recipient'] : $mail->getTo();
+        if (isset($params['recipient']) && !empty($params['recipient'])) {
+            $recipients = $params['recipient'];
 
-        if (is_array($recipients)) {
-            foreach ($recipients as $mail => $name) {
-                if ($name) {
-                    $mailTos[] = sprintf('%s <%s>', $name, $mail);
-                } else {
-                    $mailTos[] = $mail;
+            if (is_array($recipients)) {
+                foreach ($recipients as $mail => $name) {
+                    if ($name) {
+                        $mailTos[] = sprintf('%s <%s>', $name, $mail);
+                    } else {
+                        $mailTos[] = $mail;
+                    }
                 }
+            } elseif (is_string($recipients)) {
+                $mailTos[] = $recipients;
             }
-        } elseif (is_string($recipients)) {
-            $mailTos[] = $recipients;
-        }
+        } else {
+            $recipients = $mail->getTo();
 
+            foreach ($recipients as $recipient) {
+                $mailTos[] = sprintf('%s <%s>', $recipient->getName(), $recipient->getAddress());
+            }
+        }
+        
         $noteInstance->addData('recipient', 'text', (empty($mailTos) ? '--' : implode(', ', $mailTos)));
 
         unset($params['recipient']);
@@ -90,7 +82,5 @@ final class OrderMailNoteEventListener
         }
 
         $this->noteService->storeNoteForEmail($noteInstance, $emailDocument);
-
-        return true;
     }
 }

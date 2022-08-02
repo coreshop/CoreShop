@@ -1,0 +1,10 @@
+coreshop:
+    form:
+        user:
+            email:
+                registerd: 'A user with this email address is already registered.'
+            username:
+                unique: 'This username is already used.'
+            password:
+                must_match: 'The password fields must match.'
+

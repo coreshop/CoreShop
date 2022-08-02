@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order;
 
@@ -17,30 +19,30 @@ final class Notes
     /**
      * Note Identifier for Payment.
      */
-    const NOTE_PAYMENT = 'payment';
+    public const NOTE_PAYMENT = 'payment';
 
     /**
      * Note Identifier for Order History State Logging.
      */
-    const ORDER_HISTORY_STATE_LOG = 'order_state_change';
+    public const ORDER_HISTORY_STATE_LOG = 'order_state_change';
 
     /**
      * Note Identifier for Update Order.
      */
-    const NOTE_UPDATE_ORDER = 'update_order';
+    public const NOTE_UPDATE_ORDER = 'update_order';
 
     /**
      * Note Identifier for Update Order Item.
      */
-    const NOTE_UPDATE_ORDER_ITEM = 'update_order_item';
+    public const NOTE_UPDATE_ORDER_ITEM = 'update_order_item';
 
     /**
      * Note Identifier for emails.
      */
-    const NOTE_EMAIL = 'email';
+    public const NOTE_EMAIL = 'email';
 
     /**
      * Note Identifier for order comments.
      */
-    const NOTE_ORDER_COMMENT = 'order_comment';
+    public const NOTE_ORDER_COMMENT = 'order_comment';
 }

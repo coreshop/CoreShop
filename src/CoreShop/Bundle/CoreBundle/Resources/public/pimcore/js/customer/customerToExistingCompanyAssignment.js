@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -26,7 +26,7 @@ coreshop.core.customer.customerToCompanyAssigner = Class.create(coreshop.core.cu
         } else if (data.type === 'company') {
             this.companyId = data.id;
             this.companyData = data;
-            this.validateAssignment([this.customerId, this.companyId])
+            this.validateAssignment({customerId: this.customerId, companyId: this.companyId})
         } else {
             Ext.Msg.alert(t('error'), 'Cannot process next step. Invalid data received.');
         }
@@ -175,8 +175,7 @@ coreshop.core.customer.customerToCompanyAssigner = Class.create(coreshop.core.cu
         };
 
         this.submitForm(
-            'dispatch-existing-assignment',
-            [this.customerId, this.companyId],
+            Routing.generate('coreshop_admin_customer_company_modifier_dispatch_existing_assignment', {customerId: this.customerId, companyId: this.comapnyId}),
             submitValues,
             windowPanel
         );

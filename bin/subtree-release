@@ -8,7 +8,7 @@ LAST_TAG=`git tag -l  --sort=committerdate | tail -n1`
 
 function split()
 {
-    SHA1_TAG=`./bin/splitsh-lite --prefix=$1 --target=tags/$LAST_TAG`
+    SHA1_TAG=`./bin/splitsh-lite-arm --prefix=$1 --target=tags/$LAST_TAG`
     git push $2 "$SHA1_TAG:$CURRENT_BRANCH" $LAST_TAG
 }
 
@@ -35,7 +35,10 @@ split 'src/CoreShop/Component/StorageList' storage-list
 split 'src/CoreShop/Component/Inventory' inventory
 split 'src/CoreShop/Component/SEO' seo
 split 'src/CoreShop/Component/Tracking' tracking
+split 'src/CoreShop/Component/User' user
+split 'src/CoreShop/Component/PayumPayment' payum-payment
 split 'src/CoreShop/Component/ProductQuantityPriceRules' product-quantity-price-rules
+split 'src/CoreShop/Component/Variant' variant
 
 split 'src/CoreShop/Bundle/AddressBundle' address-bundle
 split 'src/CoreShop/Bundle/ConfigurationBundle' configuration-bundle
@@ -66,4 +69,7 @@ split 'src/CoreShop/Bundle/PimcoreBundle' pimcore-bundle
 split 'src/CoreShop/Bundle/ThemeBundle' theme-bundle
 split 'src/CoreShop/Bundle/ProductQuantityPriceRulesBundle' product-quantity-price-rules-bundle
 split 'src/CoreShop/Bundle/MenuBundle' menu-bundle
+split 'src/CoreShop/Bundle/PayumPaymentBundle' payum-payment-bundle
+split 'src/CoreShop/Bundle/UserBundle' user-bundle
 split 'src/CoreShop/Bundle/OptimisticEntityLockBundle' optimistic-entity-lock-bundle
+split 'src/CoreShop/Bundle/VariantBundle' variant-bundle

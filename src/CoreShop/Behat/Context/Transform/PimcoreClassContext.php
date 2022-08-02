@@ -6,16 +6,17 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Pimcore\DataObject\ClassLoader;
 use Pimcore\Cache\Runtime;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
@@ -24,36 +25,23 @@ use Webmozart\Assert\Assert;
 
 final class PimcoreClassContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var ClassStorageInterface
-     */
-    private $classStorage;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface  $classStorage
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ClassStorageInterface $classStorage
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->classStorage = $classStorage;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ClassStorageInterface $classStorage)
+    {
     }
 
     /**
      * @Transform /^class "([^"]+)"$/
      */
-    public function class($name)
+    public function class($name): ClassDefinition
     {
         Runtime::clear();
 
-        ClassLoader::forceLoadDataObjectClass($name);
+        $fqcp = sprintf('%s/DataObject/%s.php', PIMCORE_CLASS_DIRECTORY, $name);
+        $fqcn = sprintf('\\Pimcore\\Model\\DataObject\\%s', $name);
+
+        if (file_exists($fqcp) && !class_exists($fqcn)) {
+            require_once $fqcp;
+        }
 
         $classDefinition = ClassDefinition::getByName($name);
 
@@ -65,7 +53,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Transform /^behat-class "([^"]+)"$/
      */
-    public function behatClass($name)
+    public function behatClass($name): ClassDefinition
     {
         return $this->class($this->classStorage->get($name));
     }
@@ -73,7 +61,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Transform /^field-collection "([^"]+)"$/
      */
-    public function fieldCollection($name)
+    public function fieldCollection($name): Definition
     {
         $name = $this->classStorage->get($name);
 
@@ -87,16 +75,15 @@ final class PimcoreClassContext implements Context
     /**
      * @Transform /^object-instance$/
      */
-    public function objectInstance()
+    public function objectInstance(): Concrete
     {
         return $this->sharedStorage->get('object-instance');
     }
 
-
     /**
      * @Transform /^object-instance-2$/
      */
-    public function objectInstance2()
+    public function objectInstance2(): Concrete
     {
         return $this->sharedStorage->get('object-instance-2');
     }
@@ -104,7 +91,7 @@ final class PimcoreClassContext implements Context
     /**
      * @Transform /^object-instance "([^"]+)"$/
      */
-    public function objectInstanceWithKey($key)
+    public function objectInstanceWithKey($key): Concrete
     {
         return Concrete::getByPath('/' . $key);
     }
@@ -113,7 +100,7 @@ final class PimcoreClassContext implements Context
      * @Transform /^definition/
      * @Transform /^definitions/
      */
-    public function definition()
+    public function definition(): ClassDefinition|Definition
     {
         Runtime::clear();
 

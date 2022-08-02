@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
@@ -16,8 +18,11 @@ use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
+use Pimcore\Model\DataObject;
+use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -25,84 +30,31 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ResourceController extends AdminController
 {
-    /**
-     * @var string
-     */
-    protected $permission;
-
-    /**
-     * @var RepositoryInterface
-     */
-    protected $repository;
-
-    /**
-     * @var MetadataInterface
-     */
-    protected $metadata;
-
-    /**
-     * @var FactoryInterface
-     */
-    protected $factory;
-
-    /**
-     * @var ObjectManager
-     */
-    protected $manager;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var ResourceFormFactoryInterface
-     */
-    protected $resourceFormFactory;
-
-    /**
-     * @var ErrorSerializer
-     */
-    protected $formErrorSerializer;
-
-    /**
-     * @param MetadataInterface            $metadata
-     * @param RepositoryInterface          $repository
-     * @param FactoryInterface             $factory
-     * @param ObjectManager                $manager
-     * @param ViewHandler                  $viewHandler
-     * @param EventDispatcherInterface     $eventDispatcher
-     * @param ResourceFormFactoryInterface $resourceFormFactory
-     * @param ErrorSerializer              $formErrorSerializer
-     */
     public function __construct(
-        MetadataInterface $metadata,
-        RepositoryInterface $repository,
-        FactoryInterface $factory,
-        ObjectManager $manager,
+        protected MetadataInterface $metadata,
+        protected RepositoryInterface $repository,
+        protected FactoryInterface $factory,
+        protected ObjectManager $manager,
         ViewHandler $viewHandler,
-        EventDispatcherInterface $eventDispatcher,
-        ResourceFormFactoryInterface $resourceFormFactory,
-        ErrorSerializer $formErrorSerializer
+        protected EventDispatcherInterface $eventDispatcher,
+        protected ResourceFormFactoryInterface $resourceFormFactory,
+        protected ErrorSerializer $formErrorSerializer
     ) {
         parent::__construct($viewHandler);
-
-        $this->metadata = $metadata;
-        $this->repository = $repository;
-        $this->factory = $factory;
-        $this->manager = $manager;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->resourceFormFactory = $resourceFormFactory;
-        $this->formErrorSerializer = $formErrorSerializer;
     }
 
     /**
      * @throws AccessDeniedException
      */
-    protected function isGrantedOr403()
+    protected function isGrantedOr403(): void
     {
         if ($this->metadata->hasParameter('permission')) {
             $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
+
+            /**
+             * @var User $user
+             * @psalm-var User $user
+             */
             $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
 
             if ($user->isAllowed($permission)) {
@@ -113,53 +65,48 @@ class ResourceController extends AdminController
         }
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         $data = $this->repository->findAll();
 
         return $this->viewHandler->handle($data, ['group' => 'List']);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function getAction(Request $request)
+    public function getAction(Request $request): JsonResponse
     {
         $this->isGrantedOr403();
 
-        $resources = $this->findOr404($request->get('id'));
+        $resources = $this->findOr404((int)$this->getParameterFromRequest($request, 'id'));
 
         return $this->viewHandler->handle(['data' => $resources, 'success' => true], ['group' => 'Detailed']);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function saveAction(Request $request)
+    public function saveAction(Request $request): JsonResponse
     {
         $this->isGrantedOr403();
 
-        $resource = $this->findOr404($request->get('id'));
+        $resource = $this->findOr404($this->getParameterFromRequest($request, 'id'));
 
         $form = $this->resourceFormFactory->create($this->metadata, $resource);
         $handledForm = $form->handleRequest($request);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
+            /**
+             * @var ResourceInterface $resource
+             */
             $resource = $form->getData();
 
             $this->eventDispatcher->dispatchPreEvent('save', $this->metadata, $resource, $request);
 
             $this->manager->persist($resource);
             $this->manager->flush();
+
+            $this->manager->clear();
+
+            /**
+             * @var ResourceInterface $resource
+             */
+            $resource = $this->repository->find($resource->getId());
 
             $this->eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);
 
@@ -168,54 +115,84 @@ class ResourceController extends AdminController
 
         $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
 
-        return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
+        return $this->viewHandler->handle(['success' => false, 'message' => implode(\PHP_EOL, $errors)]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function addAction(Request $request)
+    public function cloneAction(Request $request): JsonResponse
     {
         $this->isGrantedOr403();
 
-        $name = $request->get('name');
+        $resource = $this->factory->createNew();
+        $form = $this->resourceFormFactory->create($this->metadata, $resource);
+        $handledForm = $form->handleRequest($request);
 
-        if (strlen($name) <= 0) {
-            return $this->viewHandler->handle(['success' => false]);
-        } else {
-            $resource = $this->factory->createNew();
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
+            /**
+             * @var ResourceInterface $resource
+             */
+            $resource = $form->getData();
 
-            if ($resource instanceof ResourceInterface) {
-                $resource->setValue('name', $name);
+            $this->eventDispatcher->dispatchPreEvent('clone', $this->metadata, $resource, $request);
+
+            if (method_exists($resource, 'getName')) {
+                $resource->setValue('name', sprintf('%s - %s', $resource->getName(), time()));
             }
-
-            foreach ($request->request->all() as $key => $value) {
-                $resource->setValue($key, $value);
-            }
-
-            $this->eventDispatcher->dispatchPreEvent('create', $this->metadata, $resource, $request);
 
             $this->manager->persist($resource);
             $this->manager->flush();
 
-            $this->eventDispatcher->dispatchPostEvent('create', $this->metadata, $resource, $request);
+            $this->manager->clear();
+
+            /**
+             * @var ResourceInterface $resource
+             */
+            $resource = $this->repository->find($resource->getId());
+
+            $this->eventDispatcher->dispatchPostEvent('clone', $this->metadata, $resource, $request);
 
             return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
         }
+
+        $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
+
+        return $this->viewHandler->handle(['success' => false, 'message' => implode(\PHP_EOL, $errors)]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function deleteAction(Request $request)
+    public function addAction(Request $request): JsonResponse
     {
         $this->isGrantedOr403();
 
-        $id = $request->get('id');
+        $name = $this->getParameterFromRequest($request, 'name');
+
+        if (strlen($name) <= 0) {
+            return $this->viewHandler->handle(['success' => false]);
+        }
+
+        $resource = $this->factory->createNew();
+
+        if ($resource instanceof ResourceInterface) {
+            $resource->setValue('name', $name);
+        }
+
+        foreach ($request->request->all() as $key => $value) {
+            $resource->setValue($key, $value);
+        }
+
+        $this->eventDispatcher->dispatchPreEvent('create', $this->metadata, $resource, $request);
+
+        $this->manager->persist($resource);
+        $this->manager->flush();
+
+        $this->eventDispatcher->dispatchPostEvent('create', $this->metadata, $resource, $request);
+
+        return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
+    }
+
+    public function deleteAction(Request $request): JsonResponse
+    {
+        $this->isGrantedOr403();
+
+        $id = $this->getParameterFromRequest($request, 'id');
 
         $resource = $this->repository->find($id);
 
@@ -233,14 +210,41 @@ class ResourceController extends AdminController
         return $this->viewHandler->handle(['success' => false]);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return ResourceInterface
-     *
-     * @throws NotFoundHttpException
-     */
-    protected function findOr404($id)
+    public function folderConfigurationAction(): JsonResponse
+    {
+        $this->isGrantedOr403();
+
+        $repo = $this->repository;
+
+        if (!$repo instanceof PimcoreRepositoryInterface) {
+            throw new \InvalidArgumentException('Only Supported with Pimcore Repositories');
+        }
+
+        $name = null;
+        $folderId = null;
+
+        $folderPath = $this->metadata->getParameter('path');
+
+        if (is_array($folderPath)) {
+            $folderPath = reset($folderPath);
+        }
+
+        $customerClassDefinition = DataObject\ClassDefinition::getById($repo->getClassId());
+
+        $folder = DataObject::getByPath('/' . $folderPath);
+
+        if ($folder instanceof DataObject\Folder) {
+            $folderId = $folder->getId();
+        }
+
+        if ($customerClassDefinition instanceof DataObject\ClassDefinition) {
+            $name = $customerClassDefinition->getName();
+        }
+
+        return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
+    }
+
+    protected function findOr404(int $id): ResourceInterface
     {
         $model = $this->repository->find($id);
 

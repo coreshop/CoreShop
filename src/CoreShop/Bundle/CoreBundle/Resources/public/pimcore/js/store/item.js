@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -27,7 +27,7 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                     store: {
                         proxy: {
                             type: 'ajax',
-                            url: '/admin/coreshop/countries/list-active',
+                            url: Routing.generate('coreshop_country_listActive'),
                             reader: {
                                 type: 'json',
                             }
@@ -43,7 +43,7 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                 },
                 {
                     xtype: 'checkbox',
-                    fieldLabel: t('coreshop_base_use_gross_prices'),
+                    fieldLabel: t('coreshop_use_gross_prices'),
                     value: this.data.useGrossPrice,
                     name: 'useGrossPrice'
                 },

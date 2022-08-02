@@ -6,15 +6,18 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Bundle\CoreBundle\Event\RequestNewsletterConfirmationEvent;
-use CoreShop\Bundle\CustomerBundle\Event\RequestPasswordChangeEvent;
+use CoreShop\Bundle\UserBundle\Event\RequestPasswordChangeEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Core\Notification\Rule\Condition\User\UserTypeChecker;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\Model\DataObject\Concrete;
@@ -23,19 +26,16 @@ use Webmozart\Assert\Assert;
 
 final class CustomerListener extends AbstractNotificationRuleListener
 {
-    /**
-     * @param RequestPasswordChangeEvent $event
-     */
-    public function applyPasswordRequestResetRule(RequestPasswordChangeEvent $event)
+    public function applyPasswordRequestResetRule(RequestPasswordChangeEvent $event): void
     {
-        Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
+        Assert::isInstanceOf($event->getUser(), UserInterface::class);
 
         /**
-         * @var CustomerInterface $user
+         * @var UserInterface $user
          */
-        $user = $event->getCustomer();
+        $user = $event->getUser();
 
-        $params = $this->prepareCustomerParameters($user);
+        $params = $this->prepareUserParameters($user);
         $params = array_merge(
             $params,
             [
@@ -44,26 +44,24 @@ final class CustomerListener extends AbstractNotificationRuleListener
             ]
         );
 
-        $this->rulesProcessor->applyRules('user', $event->getCustomer(), $params);
+        $this->rulesProcessor->applyRules('user', $user->getCustomer(), $params);
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function applyRegisterCustomerRule(GenericEvent $event)
+    public function applyRegisterCustomerRule(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
         /**
-         * @var CustomerInterface $user
+         * @var CustomerInterface $customer
          */
-        $user = $event->getSubject();
+        $customer = $event->getSubject();
+        $user = $customer->getUser();
 
-        if ($user->getIsGuest() === true) {
+        if (!$user instanceof UserInterface) {
             return;
         }
 
-        $params = $this->prepareCustomerParameters($user);
+        $params = $this->prepareUserParameters($user);
         $params = array_merge(
             $params,
             [
@@ -71,74 +69,62 @@ final class CustomerListener extends AbstractNotificationRuleListener
             ]
         );
 
-        $this->rulesProcessor->applyRules('user', $user, $params);
+        $this->rulesProcessor->applyRules('user', $customer, $params);
     }
 
-    /**
-     * @param RequestNewsletterConfirmationEvent $event
-     */
-    public function applyNewsletterConfirmRequestRule(RequestNewsletterConfirmationEvent $event)
+    public function applyNewsletterConfirmRequestRule(RequestNewsletterConfirmationEvent $event): void
     {
-        Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
+        $customer = $event->getCustomer();
+        $user = $customer->getUser();
 
-        /**
-         * @var CustomerInterface $user
-         */
-        $user = $event->getCustomer();
-
-        if ($user->getIsGuest() === true) {
+        if (!$user instanceof UserInterface) {
             return;
         }
 
-        if (!$user instanceof Concrete) {
+        if (!$customer instanceof Concrete) {
             return;
         }
 
-        $user->setNewsletterToken(hash('md5', $user->getId() . $user->getEmail() . mt_rand() . time()));
+        $customer->setNewsletterToken(hash('md5', $customer->getId() . $customer->getEmail() . mt_rand() . time()));
 
         VersionHelper::useVersioning(
-            function () use ($user) {
-                $user->save();
+            function () use ($customer) {
+                $customer->save();
             },
             false
         );
 
         $confirmLink = $event->getConfirmLink();
-        $confirmLink = $confirmLink . (parse_url(
-            $confirmLink,
-            PHP_URL_QUERY
-        ) ? '&' : '?') . 'token=' . $user->getNewsletterToken();
+        $confirmLink .= (parse_url($confirmLink, \PHP_URL_QUERY) ? '&' : '?') . 'token=' . $customer->getNewsletterToken();
 
-        $params = $this->prepareCustomerParameters($user);
+        $params = $this->prepareUserParameters($user);
         $params = array_merge(
             $params,
             [
                 'type' => UserTypeChecker::TYPE_NEWSLETTER_DOUBLE_OPT_IN,
                 'confirmLink' => $confirmLink,
-                'token' => $user->getNewsletterToken(),
+                'token' => $customer->getNewsletterToken(),
             ]
         );
 
-        $this->rulesProcessor->applyRules('user', $user, $params);
+        $this->rulesProcessor->applyRules('user', $customer, $params);
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function applyNewsletterConfirmed(GenericEvent $event)
+    public function applyNewsletterConfirmed(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
         /**
-         * @var CustomerInterface $user
+         * @var CustomerInterface $customer
          */
-        $user = $event->getSubject();
+        $customer = $event->getSubject();
+        $user = $customer->getUser();
 
-        if ($user->getIsGuest() === true) {
+        if (!$user instanceof UserInterface) {
             return;
         }
 
-        $params = $this->prepareCustomerParameters($user);
+        $params = $this->prepareUserParameters($user);
         $params = array_merge(
             $params,
             [
@@ -146,24 +132,20 @@ final class CustomerListener extends AbstractNotificationRuleListener
             ]
         );
 
-        $this->rulesProcessor->applyRules('user', $user, $params);
+        $this->rulesProcessor->applyRules('user', $customer, $params);
     }
 
-    /**
-     * @param CustomerInterface $customer
-     *
-     * @return array
-     */
-    private function prepareCustomerParameters(CustomerInterface $customer)
+    private function prepareUserParameters(UserInterface $user): array
     {
         return [
             '_locale' => $this->shopperContext->getLocaleCode(),
-            'recipient' => $customer->getEmail(),
-            'gender' => $customer->getGender(),
-            'firstname' => $customer->getFirstname(),
-            'lastname' => $customer->getLastname(),
-            'email' => $customer->getEmail(),
-            'object' => $customer,
+            'recipient' => $user->getCustomer()->getEmail(),
+            'gender' => $user->getCustomer()->getGender(),
+            'firstname' => $user->getCustomer()->getFirstname(),
+            'lastname' => $user->getCustomer()->getLastname(),
+            'email' => $user->getCustomer()->getEmail(),
+            'object' => $user->getCustomer(),
+            'user' => $user,
             'store' => $this->shopperContext->hasStore() ? $this->shopperContext->getStore() : null,
         ];
     }

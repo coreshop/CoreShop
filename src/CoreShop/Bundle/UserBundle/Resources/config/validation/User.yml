@@ -1,0 +1,5 @@
+CoreShop\Component\User\Model\User:
+    getters:
+        plainPassword:
+            - NotBlank: { groups: [coreshop] }
+

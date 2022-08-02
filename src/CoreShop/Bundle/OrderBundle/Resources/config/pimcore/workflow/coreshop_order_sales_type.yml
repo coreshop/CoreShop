@@ -1,0 +1,39 @@
+framework:
+    workflows:
+        coreshop_order_sales_type:
+            type: 'state_machine'
+            marking_store:
+                service: coreshop.state_machine.marking_store.order_sales_type_pimcore_marking_store
+            supports: CoreShop\Component\Order\Model\Order
+
+core_shop_workflow:
+    state_machine:
+        coreshop_order_sales_type:
+            places:
+                - cart
+                - order
+                - quote
+            transitions:
+                order:
+                    from: [cart]
+                    to: order
+                quote:
+                    from: [cart]
+                    to:   quote
+                cart:
+                    from: [cart]
+                    to:   cart
+            place_colors:
+                cart: '#61c2cb'
+                order: '#feb624'
+                quote: '#f2583e'
+            transition_colors:
+                order: '#feb624'
+                quote: '#f2583e'
+            callbacks:
+                after:
+                    add_to_history:
+                        priority: 10
+                        on: ['order', 'quote']
+                        do: ['@CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface', 'log']
+                        args: ['object', 'event']

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Shipping\Resolver;
 
@@ -20,32 +22,11 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CarriersResolver implements CarriersResolverInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $carrierRepository;
-
-    /**
-     * @var ShippableCarrierValidatorInterface
-     */
-    private $shippableCarrierValidator;
-
-    /**
-     * @param RepositoryInterface                $carrierRepository
-     * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
-     */
-    public function __construct(
-        RepositoryInterface $carrierRepository,
-        ShippableCarrierValidatorInterface $shippableCarrierValidator
-    ) {
-        $this->carrierRepository = $carrierRepository;
-        $this->shippableCarrierValidator = $shippableCarrierValidator;
+    public function __construct(private RepositoryInterface $carrierRepository, private ShippableCarrierValidatorInterface $shippableCarrierValidator)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address)
+    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address): array
     {
         /**
          * @var CarrierInterface[] $carriers

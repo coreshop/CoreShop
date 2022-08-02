@@ -6,14 +6,19 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Rule\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Condition implements ConditionInterface
 {
     use SetValuesTrait;
@@ -29,21 +34,25 @@ class Condition implements ConditionInterface
     protected $type;
 
     /**
+     * @var int
+     */
+    protected $sort;
+
+    /**
      * @var array
      */
     protected $configuration;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
     public function setType($type)
     {
         $this->type = $type;
@@ -51,38 +60,25 @@ class Condition implements ConditionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setConfiguration(array $configuration)
+    public function getSort()
     {
-        $this->configuration = $configuration;
-
-        return $this;
+        return $this->sort;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getType()
+    public function setSort($sort)
     {
-        return $this->type;
+        $this->sort = $sort;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfiguration()
     {
         return $this->configuration;
     }
 
-    public function __clone()
+    public function setConfiguration(array $configuration)
     {
-        if ($this->id === null) {
-            return;
-        }
+        $this->configuration = $configuration;
 
-        $this->id = null;
+        return $this;
     }
 }

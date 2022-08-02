@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -28,79 +30,23 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class SalesReport implements ReportInterface, ExportReportInterface, PortletInterface, ExportPortletInterface
 {
-    /**
-     * @var int
-     */
-    private $totalRecords = 0;
+    private int $totalRecords = 0;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var Connection
-     */
-    private $db;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
-
-    /**
-     * @var LocaleContextInterface
-     */
-    private $localeContext;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param MoneyFormatterInterface    $moneyFormatter
-     * @param LocaleContextInterface     $localeContext
-     * @param PimcoreRepositoryInterface $orderRepository,
-     */
-    public function __construct(
-        RepositoryInterface $storeRepository,
-        Connection $db,
-        MoneyFormatterInterface $moneyFormatter,
-        LocaleContextInterface $localeContext,
-        PimcoreRepositoryInterface $orderRepository
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->db = $db;
-        $this->moneyFormatter = $moneyFormatter;
-        $this->localeContext = $localeContext;
-        $this->orderRepository = $orderRepository;
+    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeContext, private PimcoreRepositoryInterface $orderRepository)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPortletData(ParameterBag $parameterBag)
+    public function getPortletData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
     }
 
-    /**
-     * @param ParameterBag $parameterBag
-     *
-     * @return array
-     */
-    protected function getData(ParameterBag $parameterBag)
+    protected function getData(ParameterBag $parameterBag): array
     {
         $groupBy = $parameterBag->get('groupBy', 'day');
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
@@ -118,7 +64,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
         $dateFormatter = null;
         $groupSelector = '';
 
-        if (is_null($storeId)) {
+        if (null === $storeId) {
             return [];
         }
 
@@ -151,7 +97,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
               WHERE orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? 
               GROUP BY " . $groupSelector;
 
-        $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
+        $results = $this->db->fetchAllAssociative($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
 
         foreach ($results as $result) {
             $date = Carbon::createFromTimestamp($result['orderDate']);
@@ -160,17 +106,14 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
                 'timestamp' => $date->getTimestamp(),
                 'datetext' => $date->format($dateFormatter),
                 'sales' => $result['total'],
-                'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode()),
+                'salesFormatted' => $this->moneyFormatter->format((int)$result['total'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode()),
             ];
         }
 
-        return array_values($data);
+        return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExportReportData(ParameterBag $parameterBag)
+    public function getExportReportData(ParameterBag $parameterBag): array
     {
         $data = $this->getReportData($parameterBag);
 
@@ -179,25 +122,21 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
         foreach ($data as &$entry) {
             $entry['timestamp'] = $formatter->format($entry['timestamp']);
 
-            unset($entry['datetext']);
-            unset($entry['sales']);
+            unset($entry['datetext'], $entry['sales']);
         }
 
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExportPortletData(ParameterBag $parameterBag)
+    public function getExportPortletData(ParameterBag $parameterBag): array
     {
         return $this->getExportReportData($parameterBag);
     }
 
     /**
-     * @return int
+     * {@inheritd}
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

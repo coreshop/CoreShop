@@ -1,0 +1,4 @@
+CoreShop\Component\Variant\Model\AttributeValueInterface:
+    attributes:
+        valueText:
+            groups: ['coreshop']

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Model;
 
@@ -16,11 +18,16 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 
-class ProductUnit extends AbstractResource implements ProductUnitInterface
+/**
+ * @psalm-suppress MissingConstructor
+ */
+class ProductUnit extends AbstractResource implements ProductUnitInterface, \Stringable
 {
     use TimestampableTrait;
+
     use TranslatableTrait {
         TranslatableTrait::__construct as private initializeTranslationsCollection;
+
         TranslatableTrait::getTranslation as private doGetTranslation;
     }
 
@@ -29,119 +36,74 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
      */
     protected $id;
 
-    /**
-     * @var string
-     */
-    protected $name;
+    protected ?string $name = null;
 
     public function __construct()
     {
         $this->initializeTranslationsCollection();
     }
 
-    /**
-     * @param int $id
-     */
     public function setId(int $id)
     {
         $this->id = $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFullLabel($language = null)
+    public function getFullLabel(?string $language = null): ?string
     {
         return $this->getTranslation($language)->getFullLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setFullLabel($fullLabel, $language = null)
+    public function setFullLabel(string $fullLabel, ?string $language = null): void
     {
         $this->getTranslation($language, false)->setFullLabel($fullLabel);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFullPluralLabel($language = null)
+    public function getFullPluralLabel(?string $language = null): ?string
     {
         return $this->getTranslation($language)->getFullPluralLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setFullPluralLabel($fullPluralLabel, $language = null)
+    public function setFullPluralLabel(string $fullPluralLabel, ?string $language = null): void
     {
         $this->getTranslation($language, false)->setFullPluralLabel($fullPluralLabel);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortLabel($language = null)
+    public function getShortLabel(?string $language = null): ?string
     {
         return $this->getTranslation($language)->getShortLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setShortLabel($shortLabel, $language = null)
+    public function setShortLabel(string $shortLabel, ?string $language = null): void
     {
         $this->getTranslation($language, false)->setShortLabel($shortLabel);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortPluralLabel($language = null)
+    public function getShortPluralLabel(?string $language = null): ?string
     {
         return $this->getTranslation($language)->getShortPluralLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setShortPluralLabel($shortPluralLabel, $language = null)
+    public function setShortPluralLabel(string $shortPluralLabel, ?string $language = null): void
     {
         $this->getTranslation($language, false)->setShortPluralLabel($shortPluralLabel);
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return ProductUnitTranslationInterface
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): ProductUnitTranslationInterface
     {
         /** @var ProductUnitTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
@@ -149,18 +111,12 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
         return $translation;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%d)', $this->getName(), $this->getId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createTranslation()
+    protected function createTranslation(): ProductUnitTranslationInterface
     {
         return new ProductUnitTranslation();
     }

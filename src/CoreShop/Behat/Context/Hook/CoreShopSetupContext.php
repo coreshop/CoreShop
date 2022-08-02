@@ -6,67 +6,41 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\NotificationRuleListenerInterface;
-use CoreShop\Bundle\NotificationBundle\Events;
+use CoreShop\Behat\Service\Setup;
+use CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListenerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class CoreShopSetupContext implements Context
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var NotificationRuleListenerInterface
-     */
-    private $notificationRuleListener;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param EntityManagerInterface            $entityManager
-     * @param NotificationRuleListenerInterface $notificationRuleListener
-     * @param EventDispatcherInterface          $eventDispatcher
-     */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        NotificationRuleListenerInterface $notificationRuleListener,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->entityManager = $entityManager;
-        $this->notificationRuleListener = $notificationRuleListener;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(private EntityManagerInterface $entityManager, private NotificationRuleListenerInterface $notificationRuleListener)
+    {
     }
 
     /**
      * @BeforeSuite
      */
-    public static function setupPimcore()
+    public static function setupPimcore(): void
     {
         if (getenv('CORESHOP_SKIP_DB_SETUP')) {
             return;
         }
 
-        \CoreShop\Test\Setup::setupCoreShop();
+        Setup::setupCoreShop();
     }
 
     /**
      * @BeforeScenario
      */
-    public function purgeIndexTables()
+    public function purgeIndexTables(): void
     {
         $connection = $this->entityManager->getConnection();
         $schemaManager = $connection->getSchemaManager();
@@ -75,13 +49,13 @@ final class CoreShopSetupContext implements Context
         $views = $schemaManager->listViews();
 
         foreach ($tables as $tbl) {
-            if (strpos($tbl, 'coreshop_index_mysql_') === 0) {
+            if (str_starts_with($tbl, 'coreshop_index_mysql_')) {
                 $schemaManager->dropTable($tbl);
             }
         }
 
         foreach ($views as $view) {
-            if (strpos($view->getName(), 'coreshop_index_mysql_') === 0) {
+            if (str_starts_with($view->getName(), 'coreshop_index_mysql_')) {
                 $schemaManager->dropView($view->getName());
             }
         }
@@ -90,15 +64,8 @@ final class CoreShopSetupContext implements Context
     /**
      * @BeforeScenario
      */
-    public function clearNotificationRuleListener()
+    public function clearNotificationRuleListener(): void
     {
         $this->notificationRuleListener->clear();
-
-        $function = function (GenericEvent $event) {
-            $this->notificationRuleListener->applyNewFired($event->getSubject());
-        };
-
-        $this->eventDispatcher->removeListener(Events::PRE_APPLY, $function);
-        $this->eventDispatcher->addListener(Events::PRE_APPLY, $function);
     }
 }

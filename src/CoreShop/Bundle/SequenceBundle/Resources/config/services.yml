@@ -1,8 +1,10 @@
+imports:
+    - { resource: services_alias.yml }
+
 services:
     _defaults:
         public: true
 
-    coreshop.sequence.generator: '@CoreShop\Component\Sequence\Generator\SequenceGenerator'
     CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface: '@CoreShop\Component\Sequence\Generator\SequenceGenerator'
     CoreShop\Component\Sequence\Generator\SequenceGenerator:
         arguments:

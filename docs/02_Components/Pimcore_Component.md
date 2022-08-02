@@ -154,66 +154,6 @@ use CoreShop\Component\Pimcore\Migration\SharedTranslation;
 SharedTranslation::add('key', 'en', 'value');
 ```
 
-### Placeholder Features
-CoreShop also extends Pimcores Placeholder features with an additional feature to use the Symfony Expression Language.
-
-#### Expression Placeholder
-
-```
-%Expression(expression, {'expression' : 'parameter(\'kernel.environment\')'});
-```
-
-```
-%Expression(expression, {'expression' : 'object(1).getProperty(\'test\')'});
-```
-
-```
-%Expression(product, {'expression' : 'value.getProperty(\'test\')'});
-```
-
-```
-%Expression(expression, {'expression' : 'service(\'coreshop.money_formatter\').format(100, \'EUR\', \'en\')'});
-```
-
-#### Twig Placeholder
-
-```
-%Twig(keyOfParams, {'template' : ':Mail/includes:files.html.twig'});
-```
-
-This will render your twig view with following parameters:
-
- - keyOfParams: valueForKeyOfParams
- - value: valueForKeyOfParams
- - config: Placeholder Config
- - params: all params available in the mail
- - placeholder: object for the placeholder
-
-### Routing Features
-
-#### Link Generator
-The CoreShop Link Generator is a wrapper arounds Symfony Routing Component, and helps you to easier generate routes for Pimcore Objects and Symfony Routes with one function.
-
-```php
-//Generate a route for a Pimcore Object with a Link Generator
-
-$this->get('coreshop.link_generator')->generate($product, 'route_product', ['foo' => 'bar']);
-
-//Generate a route for a Symfony Route or Pimcore Static Routes Route
-
-$this->get('coreshop.link_generator')->generate(null, 'overview', ['foo' => 'bar']);
-```
-
-CoreShop also provides your with twig helpers for that:
-
-```twig
-{{ coreshop_path(product, 'coreshop_product_detail') }}
-
-{{ coreshop_path('coreshop_cart_remove_price_rule', {'code' : priceRule.voucherCode }) }}
-
-coreshop_path('coreshop_index')
-```
-
 ### Twig Features
 CoreShop adds a lot of additional twig functions to make a developers live even more enjoyable :)
 

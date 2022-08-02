@@ -6,46 +6,29 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use Webmozart\Assert\Assert;
 
 final class CustomerContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var CustomerContextInterface
-     */
-    private $customerContext;
-
-    /**
-     * @param SharedStorageInterface   $sharedStorage
-     * @param CustomerContextInterface $customerContext
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        CustomerContextInterface $customerContext
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->customerContext = $customerContext;
+    public function __construct(private CustomerContextInterface $customerContext)
+    {
     }
 
     /**
      * @Then /^I should be logged in with (email "[^"]+")$/
      */
-    public function iShouldBeLoggedInWithEmail(CustomerInterface $customer)
+    public function iShouldBeLoggedInWithEmail(CustomerInterface $customer): void
     {
         Assert::same(
             $customer->getId(),
@@ -61,7 +44,7 @@ final class CustomerContext implements Context
     /**
      * @Then /^It should throw an error deleting the (customer "[^"]+")$/
      */
-    public function itShouldThrowAnErrorDeletingCustomer(CustomerInterface $customer)
+    public function itShouldThrowAnErrorDeletingCustomer(CustomerInterface $customer): void
     {
         Assert::throws(function () use ($customer) {
             $customer->delete();
@@ -71,7 +54,7 @@ final class CustomerContext implements Context
     /**
      * @Then /^It should not throw an error deleting the (customer "[^"]+")$/
      */
-    public function itShouldNotThrowAnErrorDeletingTheCustomer(CustomerInterface $customer)
+    public function itShouldNotThrowAnErrorDeletingTheCustomer(CustomerInterface $customer): void
     {
         $customer->delete();
     }

@@ -6,16 +6,18 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -23,24 +25,11 @@ use Webmozart\Assert\Assert;
 
 class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $actionServiceRegistry;
-
-    /**
-     * @param ServiceRegistryInterface $actionServiceRegistry
-     */
-    public function __construct(
-        ServiceRegistryInterface $actionServiceRegistry
-    ) {
-        $this->actionServiceRegistry = $actionServiceRegistry;
+    public function __construct(private ServiceRegistryInterface $actionServiceRegistry)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function unProcess(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
+    public function unProcess(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool
     {
         $priceRuleItem = $cart->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
 

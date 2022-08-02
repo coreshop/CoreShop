@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Address\Repository;
 
@@ -18,23 +20,17 @@ use Doctrine\ORM\QueryBuilder;
 
 interface CountryRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @return QueryBuilder
-     */
-    public function createListQueryBuilder();
+    public function createListQueryBuilder(): QueryBuilder;
 
     /**
-     * @param string $name
-     * @param string $locale
-     *
      * @return CountryInterface[]
      */
-    public function findByName($name, $locale);
+    public function findByName(string $name, string $locale): array;
 
     /**
      * @param string $code
      *
      * @return CountryInterface
      */
-    public function findByCode($code);
+    public function findByCode(string $code): ?CountryInterface;
 }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
@@ -21,38 +23,15 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class ORMTranslatableListener implements EventSubscriber
 {
-    /**
-     * @var RegistryInterface
-     */
-    private $resourceMetadataRegistry;
-
-    /**
-     * @var TranslatableEntityLocaleAssignerInterface
-     */
-    private $translatableEntityLocaleAssigner;
-
-    /**
-     * @param RegistryInterface  $resourceMetadataRegistry
-     * @param ContainerInterface $container
-     */
-    public function __construct(
-        RegistryInterface $resourceMetadataRegistry,
-        ContainerInterface $container
-    ) {
-        $this->resourceMetadataRegistry = $resourceMetadataRegistry;
-        $this->translatableEntityLocaleAssigner = $container->get('coreshop.translatable_entity_locale_assigner');
+    public function __construct(private RegistryInterface $resourceMetadataRegistry, private TranslatableEntityLocaleAssignerInterface $translatableEntityLocaleAssigner)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::loadClassMetadata,
@@ -60,17 +39,15 @@ final class ORMTranslatableListener implements EventSubscriber
         ];
     }
 
-    /**
-     * Add mapping to translatable entities.
-     *
-     * @param LoadClassMetadataEventArgs $eventArgs
-     */
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
+        /**
+         * @var ClassMetadataInfo $classMetadata
+         */
         $classMetadata = $eventArgs->getClassMetadata();
         $reflection = $classMetadata->reflClass;
 
-        if (!$reflection || $reflection->isAbstract()) {
+        if ($reflection->isAbstract()) {
             return;
         }
 
@@ -83,10 +60,7 @@ final class ORMTranslatableListener implements EventSubscriber
         }
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
 
@@ -97,18 +71,13 @@ final class ORMTranslatableListener implements EventSubscriber
         $this->translatableEntityLocaleAssigner->assignLocale($entity);
     }
 
-    /**
-     * Add mapping data to a translatable entity.
-     *
-     * @param ClassMetadata $metadata
-     */
-    private function mapTranslatable(ClassMetadata $metadata)
+    private function mapTranslatable(ClassMetadataInfo $metadata): void
     {
         $className = $metadata->name;
 
         try {
             $resourceMetadata = $this->resourceMetadataRegistry->getByClass($className);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             return;
         }
 
@@ -132,18 +101,13 @@ final class ORMTranslatableListener implements EventSubscriber
         }
     }
 
-    /**
-     * Add mapping data to a translation entity.
-     *
-     * @param ClassMetadata $metadata
-     */
-    private function mapTranslation(ClassMetadata $metadata)
+    private function mapTranslation(ClassMetadataInfo $metadata): void
     {
         $className = $metadata->name;
 
         try {
             $resourceMetadata = $this->resourceMetadataRegistry->getByClass($className);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             return;
         }
 
@@ -180,7 +144,7 @@ final class ORMTranslatableListener implements EventSubscriber
         ];
 
         if (!$this->hasUniqueConstraint($metadata, $columns)) {
-            $constraints = isset($metadata->table['uniqueConstraints']) ? $metadata->table['uniqueConstraints'] : [];
+            $constraints = $metadata->table['uniqueConstraints'] ?? [];
 
             $constraints[$metadata->getTableName() . '_uniq_trans'] = [
                 'columns' => $columns,
@@ -192,15 +156,7 @@ final class ORMTranslatableListener implements EventSubscriber
         }
     }
 
-    /**
-     * Check if a unique constraint has been defined.
-     *
-     * @param ClassMetadata $metadata
-     * @param array         $columns
-     *
-     * @return bool
-     */
-    private function hasUniqueConstraint(ClassMetadata $metadata, array $columns)
+    private function hasUniqueConstraint(ClassMetadataInfo $metadata, array $columns): bool
     {
         if (!isset($metadata->table['uniqueConstraints'])) {
             return false;

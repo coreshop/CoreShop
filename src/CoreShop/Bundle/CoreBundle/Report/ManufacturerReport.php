@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -26,77 +28,13 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ManufacturerReport implements ReportInterface
 {
-    /**
-     * @var int
-     */
-    private $totalRecords = 0;
+    private int $totalRecords = 0;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var Connection
-     */
-    private $db;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
-
-    /**
-     * @var LocaleContextInterface
-     */
-    private $localeService;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $manufacturerRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderItemRepository;
-
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param MoneyFormatterInterface    $moneyFormatter
-     * @param LocaleContextInterface     $localeService
-     * @param PimcoreRepositoryInterface $manufacturerRepository
-     * @param PimcoreRepositoryInterface $orderRepository
-     * @param PimcoreRepositoryInterface $orderItemRepository
-     */
-    public function __construct(
-        RepositoryInterface $storeRepository,
-        Connection $db,
-        MoneyFormatterInterface $moneyFormatter,
-        LocaleContextInterface $localeService,
-        PimcoreRepositoryInterface $manufacturerRepository,
-        PimcoreRepositoryInterface $orderRepository,
-        PimcoreRepositoryInterface $orderItemRepository
-    ) {
-        $this->storeRepository = $storeRepository;
-        $this->db = $db;
-        $this->moneyFormatter = $moneyFormatter;
-        $this->localeService = $localeService;
-        $this->manufacturerRepository = $manufacturerRepository;
-        $this->orderRepository = $orderRepository;
-        $this->orderItemRepository = $orderItemRepository;
+    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeService, private PimcoreRepositoryInterface $manufacturerRepository, private PimcoreRepositoryInterface $orderRepository, private PimcoreRepositoryInterface $orderItemRepository)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -120,7 +58,7 @@ class ManufacturerReport implements ReportInterface
             $orderStateFilter = null;
         }
 
-        if (is_null($storeId)) {
+        if (null === $storeId) {
             return [];
         }
 
@@ -164,9 +102,9 @@ class ManufacturerReport implements ReportInterface
         }
         $queryParameters[] = $from->getTimestamp();
         $queryParameters[] = $to->getTimestamp();
-        $results = $this->db->fetchAll($query, $queryParameters);
+        $results = $this->db->fetchAllAssociative($query, $queryParameters);
 
-        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 
         $data = [];
         foreach ($results as $result) {
@@ -178,18 +116,18 @@ class ManufacturerReport implements ReportInterface
                 'profit' => $result['profit'],
                 'quantityCount' => $result['quantityCount'],
                 'orderCount' => $result['orderCount'],
-                'salesFormatted' => $this->moneyFormatter->format($result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
-                'profitFormatted' => $this->moneyFormatter->format($result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
+                'salesFormatted' => $this->moneyFormatter->format((int)$result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
+                'profitFormatted' => $this->moneyFormatter->format((int)$result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
             ];
         }
 
-        return array_values($data);
+        return $data;
     }
 
     /**
-     * @return int
+     * {@@inheritdoc}
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

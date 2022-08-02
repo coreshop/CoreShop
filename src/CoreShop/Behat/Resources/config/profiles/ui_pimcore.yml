@@ -1,0 +1,34 @@
+ui_pimcore:
+    formatters:
+        pretty:
+            verbose: true
+            paths: false
+            snippets: false
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: behat-bootstrap.php
+            kernel:
+                path: src/BehatKernel.php
+                class: BehatKernel
+                environment: test
+
+        FriendsOfBehat\MinkDebugExtension:
+            directory: etc/build
+            clean_start: false
+            screenshot: true
+
+        Behat\MinkExtension:
+            base_url: "http://localhost:9080/index_test.php/"
+            sessions:
+                default:
+                    panther:
+                        options:
+                            browser: chrome
+            show_auto: false
+
+        Robertfausk\Behat\PantherExtension: ~
+
+    gherkin:
+        filters:
+            tags: '@ui_pimcore&&~@wip'

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Context\Currency;
 
@@ -21,40 +23,11 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class StoreAwareCurrencyContext implements CurrencyContextInterface
 {
-    /**
-     * @var CurrencyContextInterface
-     */
-    private $currencyContext;
-
-    /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
-    private $currencyRepository;
-
-    /**
-     * @param CurrencyContextInterface    $currencyContext
-     * @param StoreContextInterface       $storeContext
-     * @param CurrencyRepositoryInterface $currencyRepository
-     */
-    public function __construct(
-        CurrencyContextInterface $currencyContext,
-        StoreContextInterface $storeContext,
-        CurrencyRepositoryInterface $currencyRepository
-    ) {
-        $this->currencyContext = $currencyContext;
-        $this->storeContext = $storeContext;
-        $this->currencyRepository = $currencyRepository;
+    public function __construct(private CurrencyContextInterface $currencyContext, private StoreContextInterface $storeContext, private CurrencyRepositoryInterface $currencyRepository)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrency()
+    public function getCurrency(): CurrencyInterface
     {
         /** @var StoreInterface $store */
         $store = $this->storeContext->getStore();
@@ -62,35 +35,27 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
         try {
             $currency = $this->currencyContext->getCurrency();
 
-            if (!$currency instanceof CurrencyInterface || !$this->isAvailableCurrency($currency, $store)) {
+            if (!$this->isAvailableCurrency($currency, $store)) {
                 return $store->getCurrency();
             }
 
             return $currency;
-        } catch (CurrencyNotFoundException $exception) {
+        } catch (CurrencyNotFoundException) {
             return $store->getCurrency();
         }
     }
 
-    /**
-     * @param CurrencyInterface $currency
-     * @param StoreInterface    $store
-     *
-     * @return bool
-     */
-    private function isAvailableCurrency(CurrencyInterface $currency, StoreInterface $store)
+    private function isAvailableCurrency(CurrencyInterface $currency, StoreInterface $store): bool
     {
         return in_array($currency->getIsoCode(), array_map(function (CurrencyInterface $currency) {
             return $currency->getIsoCode();
-        }, $this->getCurrenciesForStore($store)));
+        }, $this->getCurrenciesForStore($store)), true);
     }
 
     /**
-     * @param StoreInterface $store
-     *
      * @return CurrencyInterface[]
      */
-    private function getCurrenciesForStore(StoreInterface $store)
+    private function getCurrenciesForStore(StoreInterface $store): array
     {
         return $this->currencyRepository->findActiveForStore($store);
     }

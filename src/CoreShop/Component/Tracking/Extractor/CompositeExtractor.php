@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Tracking\Extractor;
 
@@ -16,30 +18,15 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 class CompositeExtractor implements TrackingExtractorInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $extractorRegistry;
-
-    /**
-     * @param ServiceRegistryInterface $extractorRegistry
-     */
-    public function __construct(ServiceRegistryInterface $extractorRegistry)
+    public function __construct(private ServiceRegistryInterface $extractorRegistry)
     {
-        $this->extractorRegistry = $extractorRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($object)
+    public function supports($object): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, $data = []): array
     {
         /**

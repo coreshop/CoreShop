@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 
@@ -27,47 +29,24 @@ use CoreShop\Component\Index\Order\OrderInterface;
 use CoreShop\Component\Index\Order\SimpleOrder;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
-use Zend\Paginator\Adapter\AdapterInterface;
 
 class Listing extends AbstractListing implements OrderAwareListingInterface, ExtendedListingInterface
 {
-    /**
-     * @var null|PimcoreModelInterface[]
-     */
-    protected $objects = null;
+    protected ?array $objects = null;
 
-    /**
-     * @var null|int
-     */
-    protected $totalCount = null;
+    protected ?int $totalCount = null;
 
-    /**
-     * @var string
-     */
-    protected $variantMode = ListingInterface::VARIANT_MODE_INCLUDE;
+    protected string $variantMode = ListingInterface::VARIANT_MODE_INCLUDE;
 
-    /**
-     * @var int
-     */
-    protected $limit;
+    protected ?int $limit = null;
 
-    /**
-     * @var int
-     */
-    protected $offset;
+    protected ?int $offset = null;
 
-    /**
-     * @var PimcoreModelInterface
-     */
-    protected $category;
-
-    /**
-     * @var Dao
-     */
-    protected $dao;
+    protected Dao $dao;
 
     /**
      * @var OrderInterface|string|null
@@ -75,53 +54,48 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     protected $order;
 
     /**
-     * @var string | array
+     * @var string|array
      */
     protected $orderKey;
 
-    /**
-     * @var bool
-     */
-    protected $enabled = true;
+    protected bool $enabled = true;
 
     /**
-     * @var ConditionInterface[]
+     * @var array<string, ConditionInterface[]>
      */
-    protected $conditions = [];
+    protected array $conditions = [];
 
     /**
      * @var OrderInterface[]
      */
-    protected $orders = [];
+    protected array $orders = [];
 
     /**
-     * @var ConditionInterface[]
+     * @var array<string, ConditionInterface[]>
      */
-    protected $relationConditions = [];
+    protected array $relationConditions = [];
 
     /**
-     * @var ConditionInterface[][]
+     * @var array<string, ConditionInterface[]>
      */
-    protected $queryConditions = [];
+    protected array $queryConditions = [];
 
     /**
      * @var string[][]
      */
-    protected $queryJoins = [];
+    protected array $queryJoins = [];
 
-    /**
-     * @var MysqlWorker
-     */
-    protected $worker;
+    protected WorkerInterface $worker;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(IndexInterface $index, WorkerInterface $worker)
+    public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection)
     {
         parent::__construct($index, $worker);
 
-        $this->dao = new Dao($this);
+        if (!$this->worker instanceof MysqlWorker) {
+            throw new \InvalidArgumentException('Worker needs to be a MysqlWorker');
+        }
+
+        $this->dao = new Dao($this, $connection);
     }
 
     /**
@@ -129,12 +103,14 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
      */
     public function getWorker()
     {
-        return $this->worker;
+        /**
+         * @var MysqlWorker $worker
+         */
+        $worker = $this->worker;
+
+        return $worker;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getObjects()
     {
         if ($this->objects === null) {
@@ -144,36 +120,33 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->objects;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCondition(ConditionInterface $condition, $fieldName)
     {
         $this->objects = null;
+
+        if (!array_key_exists($fieldName, $this->conditions)) {
+            $this->conditions[$fieldName] = [];
+        }
+
         $this->conditions[$fieldName][] = $condition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resetCondition($fieldName)
     {
         $this->objects = null;
         unset($this->conditions[$fieldName]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addRelationCondition(ConditionInterface $condition, $fieldName)
     {
+        if (!array_key_exists($fieldName, $this->relationConditions)) {
+            $this->relationConditions[$fieldName] = [];
+        }
+
         $this->objects = null;
         $this->relationConditions[$fieldName][] = $condition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resetConditions()
     {
         $this->conditions = [];
@@ -184,27 +157,22 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         $this->objects = null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addQueryCondition(ConditionInterface $condition, $fieldName)
     {
+        if (!array_key_exists($fieldName, $this->queryConditions)) {
+            $this->queryConditions[$fieldName] = [];
+        }
+
         $this->objects = null;
         $this->queryConditions[$fieldName][] = $condition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resetQueryCondition($fieldName)
     {
         $this->objects = null;
         unset($this->queryConditions[$fieldName]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOrder($order)
     {
         if ($this->order instanceof SimpleOrder) {
@@ -213,52 +181,34 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         $this->objects = null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addOrder(OrderInterface $order)
     {
         $this->objects = null;
         $this->orders[] = $order;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resetOrder()
     {
         $this->orders = [];
         $this->order = null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOrder()
     {
         return $this->order instanceof SimpleOrder ? $this->order->getDirection() : null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOrderKey($orderKey)
     {
         $this->objects = null;
         $this->order = new SimpleOrder($orderKey, 'ASC');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOrderKey()
     {
         return $this->order instanceof SimpleOrder ? $this->order->getKey() : null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLimit($limit)
     {
         if ($this->limit != $limit) {
@@ -267,17 +217,11 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         $this->limit = $limit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLimit()
     {
         return $this->limit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOffset($offset)
     {
         if ($this->offset != $offset) {
@@ -286,67 +230,32 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         $this->offset = $offset;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOffset()
     {
         return $this->offset;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setCategory(PimcoreModelInterface $category)
-    {
-        $this->objects = null;
-        $this->category = $category;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getEnabled()
     {
         return $this->enabled;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setVariantMode($variantMode)
     {
         $this->objects = null;
         $this->variantMode = $variantMode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVariantMode()
     {
         return $this->variantMode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $options = [])
     {
         $queryBuilder = $this->dao->createQueryBuilder();
@@ -356,7 +265,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         $queryBuilder->setMaxResults($this->getLimit());
         $queryBuilder->setFirstResult($this->getOffset());
         $objectRaws = $this->dao->load($queryBuilder);
-        $this->totalCount = $this->dao->getLastRecordCount();
+        $this->totalCount = $this->count();
         $className = $this->index->getClass();
         $this->objects = [];
         foreach ($objectRaws as $raw) {
@@ -372,17 +281,11 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->objects;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function loadElementById($elementId)
     {
         return AbstractObject::getById($elementId);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGroupByValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
     {
         $excludedFieldName = $fieldName;
@@ -396,9 +299,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->dao->loadGroupByValues($queryBuilder, $fieldName, $countValues);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGroupByRelationValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
     {
         $excludedFieldName = $fieldName;
@@ -412,9 +312,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->dao->loadGroupByRelationValues($queryBuilder, $fieldName, $countValues);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGroupByRelationValuesAndType(
         $fieldName,
         $type,
@@ -432,77 +329,52 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->dao->loadGroupByRelationValuesAndType($queryBuilder, $fieldName, $type, $countValues);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGroupBySystemValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true)
     {
         // not supported with mysql tables
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildSimilarityOrderBy($fields, $objectId)
+    public function buildSimilarityOrderBy(array $fields, int $objectId): string
     {
         return $this->dao->buildSimilarityOrderBy($fields, $objectId);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTableName()
     {
-        return $this->worker->getTablename($this->index);
+        return $this->getWorker()->getTablename($this->index->getName());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueryTableName()
     {
-        return $this->worker->getLocalizedViewName($this->index, $this->getLocale());
+        return $this->getWorker()->getLocalizedViewName($this->index->getName(), $this->getLocale());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRelationTablename()
     {
-        return $this->worker->getRelationTablename($this->index);
+        return $this->getWorker()->getRelationTablename($this->index->getName());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function quote($value)
     {
         return $this->dao->quote($value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function addQueryFromConditions(QueryBuilder $queryBuilder, $excludeConditions = false, $excludedFieldName = null, $variantMode = null)
     {
         if ($variantMode == null) {
             $variantMode = $this->getVariantMode();
         }
 
-        $queryBuilder->where($this->worker->renderCondition(new MatchCondition('active', 1), 'q'));
+        $queryBuilder->where($this->getWorker()->renderCondition(new MatchCondition('active', '1'), 'q'));
 
-        if ($this->getCategory()) {
-            $categoryCondition = ',' . $this->getCategory()->getId() . ',';
-            $queryBuilder->andWhere($this->worker->renderCondition(new LikeCondition('parentCategoryIds', 'both', $categoryCondition), 'q'));
-        }
         $extensions = $this->getWorker()->getExtensions($this->getIndex());
 
         foreach ($extensions as $extension) {
             if ($extension instanceof MysqlIndexQueryExtensionInterface) {
                 $conditions = $extension->preConditionQuery($this->getIndex());
                 foreach ($conditions as $cond) {
-                    $queryBuilder->andWhere($this->worker->renderCondition($cond, 'q'));
+                    $queryBuilder->andWhere($this->getWorker()->renderCondition($cond, 'q'));
                 }
             }
         }
@@ -521,27 +393,22 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
             }
         }
 
-        if (is_array($this->queryConditions)) {
-            $searchString = '';
-            foreach ($this->queryConditions as $condition) {
-                if ($condition instanceof ConditionInterface) {
-                    $searchString .= '+' . $condition->getValues() . '+ ';
-                }
-            }
-            //$condition .= ' AND '.$this->dao->buildFulltextSearchWhere(["name"], $searchString); //TODO: Load array("name") from any configuration (cause its also used by indexservice)
-        }
+//        $searchString = '';
+//        foreach ($this->queryConditions as $condition) {
+//            if ($condition instanceof ConditionInterface) {
+//                $searchString .= '+' . $condition->getValues() . '+ ';
+//            }
+//        }
+        //$condition .= ' AND '.$this->dao->buildFulltextSearchWhere(["name"], $searchString); //TODO: Load array("name") from any configuration (cause its also used by indexservice)
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function addUserSpecificConditions(QueryBuilder $queryBuilder, $excludedFieldName = null)
     {
-        $relationalTableName = $this->worker->getRelationTablename($this->index);
+        $relationalTableName = $this->getWorker()->getRelationTablename($this->index->getName());
         foreach ($this->relationConditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {
-                    $cond = $this->worker->renderCondition($cond, 'q');
+                    $cond = $this->getWorker()->renderCondition($cond, 'q');
                     $queryBuilder->andWhere('q.o_id IN (SELECT DISTINCT src FROM ' . $relationalTableName . ' q WHERE ' . $cond . ')');
                 }
             }
@@ -549,29 +416,23 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         foreach ($this->conditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {
-                    $queryBuilder->andWhere($this->worker->renderCondition($cond, 'q'));
+                    $queryBuilder->andWhere($this->getWorker()->renderCondition($cond, 'q'));
                 }
             }
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function addOrderBy(QueryBuilder $queryBuilder)
     {
         if ($this->order instanceof SimpleOrder) {
-            $queryBuilder->add('orderBy', $this->worker->renderOrder($this->order, 'q'));
+            $queryBuilder->add('orderBy', $this->getWorker()->renderOrder($this->order, 'q'));
         }
 
         foreach ($this->orders as $order) {
-            $queryBuilder->add('orderBy', $this->worker->renderOrder($order, 'q'));
+            $queryBuilder->add('orderBy', $this->getWorker()->renderOrder($order, 'q'));
         }
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     */
     public function addJoins(QueryBuilder $queryBuilder)
     {
         foreach ($this->queryJoins as $table => $tableJoins) {
@@ -580,7 +441,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
                 continue;
             }
             $joinName = $tableJoins['joinTableAlias'];
-            $objectKeyField = isset($tableJoins['objectKeyField']) ? $tableJoins['objectKeyField'] : 'o_id';
+            $objectKeyField = $tableJoins['objectKeyField'] ?? 'o_id';
 
             $function = 'join';
             switch (strtolower($joinType)) {
@@ -611,10 +472,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         }
     }
 
-    /**
-     * @return int|null
-     */
-    public function count()
+    public function count(): int
     {
         if ($this->totalCount === null) {
             $queryBuilder = $this->dao->createQueryBuilder();
@@ -626,22 +484,15 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->totalCount;
     }
 
-    /**
-     * @return PimcoreModelInterface|bool
-     */
-    public function current()
+    public function current(): \CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface|bool
     {
         $this->getObjects();
-        $var = current($this->objects);
 
-        return $var;
+        return current($this->objects);
     }
 
     /**
-     * @param int $offset
-     * @param int $itemCountPerPage
-     *
-     * @return PimcoreModelInterface[]|null
+     * @inheritdoc
      */
     public function getItems($offset, $itemCountPerPage)
     {
@@ -651,51 +502,28 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->getObjects();
     }
 
-    /**
-     * Return a fully configured Paginator Adapter from this method.
-     *
-     * @return AdapterInterface
-     */
-    public function getPaginatorAdapter()
-    {
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function key()
+    public function key(): mixed
     {
         $this->getObjects();
-        $var = key($this->objects);
 
-        return $var;
+        return key($this->objects);
     }
 
-    /**
-     * @return PimcoreModelInterface|bool
-     */
-    public function next()
+    public function next(): void
     {
         $this->getObjects();
-        $var = next($this->objects);
 
-        return $var;
+        next($this->objects);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->getObjects();
         reset($this->objects);
     }
 
-    /**
-     * @return bool
-     */
-    public function valid()
+    public function valid(): bool
     {
-        $var = $this->current() !== false;
-
-        return $var;
+        return $this->current() !== false;
     }
 }

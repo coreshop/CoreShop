@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\MenuBundle\Renderer;
 
@@ -19,45 +21,24 @@ use Twig\Environment;
 
 class JsonRenderer implements RendererInterface
 {
-    /**
-     * @var Environment
-     */
-    private $environment;
+    private array $defaultOptions;
 
-    /**
-     * @var PimcoreGuard
-     */
-    private $guard;
-
-    /**
-     * @var array
-     */
-    private $defaultOptions;
-
-    /**
-     * @param Environment  $environment
-     * @param string       $template
-     * @param PimcoreGuard $guard
-     * @param array        $defaultOptions
-     */
     public function __construct(
-        Environment $environment,
-        $template,
-        PimcoreGuard $guard,
-        array $defaultOptions = array()
+        private Environment $environment,
+        string $template,
+        private PimcoreGuard $guard,
+        array $defaultOptions = []
     ) {
-        $this->environment = $environment;
-        $this->guard = $guard;
-        $this->defaultOptions = array_merge(array(
+        $this->defaultOptions = array_merge([
             'depth' => null,
             'matchingDepth' => null,
             'template' => $template,
             'compressed' => false,
             'clear_matcher' => true,
-        ), $defaultOptions);
+        ], $defaultOptions);
     }
 
-    public function render(ItemInterface $item, array $options = array())
+    public function render(ItemInterface $item, array $options = []): string
     {
         $options = array_merge($this->defaultOptions, $options);
 
@@ -65,7 +46,7 @@ class JsonRenderer implements RendererInterface
 
         $items = $this->recursiveProcessMenuItems($item);
 
-        $html = $this->environment->render(
+        return $this->environment->render(
             $options['template'],
             [
                 'item' => $this->renderItem($item),
@@ -73,11 +54,9 @@ class JsonRenderer implements RendererInterface
                 'options' => $options,
             ]
         );
-
-        return $html;
     }
 
-    protected function renderItem(ItemInterface $item)
+    protected function renderItem(ItemInterface $item): array
     {
         return [
             'id' => strtolower($item->getName()),
@@ -86,7 +65,7 @@ class JsonRenderer implements RendererInterface
         ];
     }
 
-    protected function recursiveProcessMenuItems(ItemInterface $item)
+    protected function recursiveProcessMenuItems(ItemInterface $item): array
     {
         $items = [];
 
@@ -108,13 +87,13 @@ class JsonRenderer implements RendererInterface
         return $items;
     }
 
-    public function reorderMenuItems(ItemInterface $menu)
+    public function reorderMenuItems(ItemInterface $menu): void
     {
-        $menuOrderArray = array();
-        $addLast = array();
-        $alreadyTaken = array();
+        $menuOrderArray = [];
+        $addLast = [];
+        $alreadyTaken = [];
 
-        foreach ($menu->getChildren() as $key => $menuItem) {
+        foreach ($menu->getChildren() as $menuItem) {
             if ($menuItem->hasChildren()) {
                 $this->reorderMenuItems($menuItem);
             }
@@ -150,9 +129,9 @@ class JsonRenderer implements RendererInterface
 
                 $menuOrderArray = array_merge(
                     array_slice($menuOrderArray, 0, $position),
-                    array($value),
-                array_slice($menuOrderArray, $position)
-                    );
+                    [$value],
+                    array_slice($menuOrderArray, $position)
+                );
             }
         }
 
@@ -161,7 +140,7 @@ class JsonRenderer implements RendererInterface
 
         // add items without ordernumber to the end
         if (count($addLast)) {
-            foreach ($addLast as $key => $value) {
+            foreach ($addLast as $value) {
                 $menuOrderArray[] = $value;
             }
         }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Model;
 
@@ -20,13 +22,15 @@ abstract class AbstractPriceRule implements PriceRuleInterface
     use RuleTrait  {
         initializeRuleCollections as private initializeRules;
     }
+
     use TranslatableTrait {
         initializeTranslationCollection as private initializeTranslationsCollection;
+
         getTranslation as private doGetTranslation;
     }
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -51,25 +55,16 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         $this->initializeTranslationsCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDescription($description)
     {
         $this->description = $description;
@@ -77,17 +72,11 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         return $this->priority;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPriority($priority)
     {
         $this->priority = $priority;
@@ -95,45 +84,27 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLabel($language = null)
+    public function getLabel(?string $language = null)
     {
         return $this->getTranslation($language)->getLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setLabel($label, $language = null)
+    public function setLabel(string $label, ?string $language = null)
     {
         $this->getTranslation($language)->setLabel($label);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStopPropagation()
     {
         return $this->stopPropagation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setStopPropagation($stopPropagation)
     {
         $this->stopPropagation = $stopPropagation;
     }
 
-    /**
-     * @param null $locale
-     * @param bool $useFallbackTranslation
-     *
-     * @return PriceRuleTranslationInterface
-     */
-    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    public function getTranslation(?string $locale = null, bool $useFallbackTranslation = true): PriceRuleTranslationInterface
     {
         /** @var ProductPriceRuleTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);

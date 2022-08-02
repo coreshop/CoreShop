@@ -6,87 +6,52 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Security;
 
-use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
+use CoreShop\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ObjectUserProvider implements UserProviderInterface
 {
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    protected $customerRepository;
-
-    /**
-     * @var string
-     */
-    protected $className;
-
-    /**
-     * @var string
-     */
-    protected $loginIdentifier;
-
-    /**
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param string                      $className
-     * @param string                      $loginIdentifier
-     */
-    public function __construct(
-        CustomerRepositoryInterface $customerRepository,
-        $className,
-        $loginIdentifier
-    )
+    public function __construct(protected UserRepositoryInterface $userRepository, protected string $className)
     {
-        $this->customerRepository = $customerRepository;
-        $this->className = $className;
-        $this->loginIdentifier = $loginIdentifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function loadUserByUsername($userNameOrEmailAddress)
+    public function loadUserByUsername(string $username): ?UserInterface
     {
-        $customer = $this->customerRepository->findUniqueByLoginIdentifier($this->loginIdentifier, $userNameOrEmailAddress, false);
+        return $this->loadUserByIdentifier($username);
+    }
 
-        if ($customer instanceof CustomerInterface) {
-            return $customer;
+    public function loadUserByIdentifier(string $identifier): ?UserInterface
+    {
+        $user = $this->userRepository->findByLoginIdentifier($identifier);
+
+        if ($user instanceof UserInterface) {
+            return $user;
         }
 
-        throw new UsernameNotFoundException(sprintf('User with email address or username "%s" was not found', $userNameOrEmailAddress));
+        throw new UserNotFoundException(sprintf('User with email address or username "%s" was not found', $identifier));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): ?UserInterface
     {
-        if (!$user instanceof CustomerInterface) {
+        if (!$user instanceof \CoreShop\Component\Core\Model\UserInterface) {
             throw new UnsupportedUserException();
         }
 
-        /**
-         * @var CustomerInterface $refreshedUser
-         */
-        $refreshedUser = $this->customerRepository->find($user->getId());
-
-        return $refreshedUser;
+        return $this->userRepository->find($user->getId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return $class === $this->className;
     }

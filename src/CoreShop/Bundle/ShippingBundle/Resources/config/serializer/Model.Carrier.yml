@@ -15,7 +15,7 @@ CoreShop\Component\Shipping\Model\Carrier:
             expose: true
             type: string
             groups: [Detailed]
-        isFree:
+        hideFromCheckout:
             expose: true
             type: boolean
             groups: [Detailed]
@@ -29,9 +29,9 @@ CoreShop\Component\Shipping\Model\Carrier:
             groups: [Detailed]
         shippingRules:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]
         translations:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]

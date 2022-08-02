@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
@@ -20,22 +22,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 final class FilterConditionMultiselectType extends AbstractType
 {
     /**
-     * @var string[]
-     */
-    protected $validationGroups = [];
-
-    /**
      * @param string[] $validationGroups
      */
-    public function __construct(array $validationGroups)
+    public function __construct(protected array $validationGroups)
     {
-        $this->validationGroups = $validationGroups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('field', TextType::class)
@@ -46,10 +39,7 @@ final class FilterConditionMultiselectType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_filter_condition_type_multiselect';
     }

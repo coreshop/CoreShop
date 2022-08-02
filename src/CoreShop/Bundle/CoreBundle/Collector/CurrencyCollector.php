@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Collector;
 
@@ -16,90 +18,67 @@ use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class CurrencyCollector extends DataCollector
 {
-    /**
-     * @var CurrencyContextInterface
-     */
-    private $currencyContext;
-
-    /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyContextInterface    $currencyContext
-     * @param StoreContextInterface       $storeContext
-     * @param bool                        $currencyChangeSupport
-     */
     public function __construct(
         CurrencyRepositoryInterface $currencyRepository,
-        CurrencyContextInterface $currencyContext,
+        private CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext,
+        private PimcoreContextResolver $pimcoreContext,
         $currencyChangeSupport = false
     ) {
-        $this->currencyContext = $currencyContext;
-
         try {
             $this->data = [
                 'currency' => null,
                 'currencies' => $currencyRepository->findActiveForStore($storeContext->getStore()),
                 'currency_change_support' => $currencyChangeSupport,
             ];
-        } catch (\Exception $ex) {
+        } catch (\Exception) {
             //If some goes wrong, we just ignore it
         }
     }
 
-    /**
-     * @return CurrencyInterface
-     */
-    public function getCurrency()
+    public function getCurrency(): ?CurrencyInterface
     {
-        return $this->data['currency'];
+        return $this->data['currency'] ?? null;
     }
 
-    /**
-     * @return CurrencyInterface[]
-     */
-    public function getCurrencies()
+    public function getCurrencies(): array
     {
         return $this->data['currencies'];
     }
 
-    /**
-     * @return bool
-     */
-    public function isCurrencyChangeSupported()
+    public function isCurrencyChangeSupported(): bool
     {
         return $this->data['currency_change_support'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
+        if ($this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
+            $this->data['admin'] = true;
+
+            return;
+        }
+
         try {
             $this->data['currency'] = $this->currencyContext->getCurrency();
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             //If some goes wrong, we just ignore it
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop.currency_collector';
     }

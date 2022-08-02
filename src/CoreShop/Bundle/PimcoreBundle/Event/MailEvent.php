@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\Event;
 
@@ -18,77 +20,37 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class MailEvent extends GenericEvent
 {
-    /**
-     * @var Email
-     */
-    protected $emailDocument;
+    protected array $params;
 
-    /**
-     * @var Mail
-     */
-    protected $mail;
+    protected bool $shouldSendMail = true;
 
-    /**
-     * @var array
-     */
-    protected $params;
-
-    /**
-     * @var bool
-     */
-    protected $shouldSendMail = true;
-
-    /**
-     * @param mixed $subject
-     * @param Email $emailDocument
-     * @param Mail  $mail
-     * @param array $params
-     */
-    public function __construct($subject, Email $emailDocument, Mail $mail, array $params = [])
+    public function __construct($subject, protected Email $emailDocument, protected Mail $mail, array $params = [])
     {
         parent::__construct($subject);
-
-        $this->emailDocument = $emailDocument;
-        $this->mail = $mail;
         $this->params = $params;
     }
 
-    /**
-     * @return Email
-     */
-    public function getEmailDocument()
+    public function getEmailDocument(): Email
     {
         return $this->emailDocument;
     }
 
-    /**
-     * @return Mail
-     */
-    public function getMail()
+    public function getMail(): Mail
     {
         return $this->mail;
     }
 
-    /**
-     * @return array
-     */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }
 
-    /**
-     * @return bool
-     */
-    public function getShouldSendMail()
+    public function getShouldSendMail(): bool
     {
         return $this->shouldSendMail;
     }
 
-    /**
-     * @param bool $shouldSendMail
-     */
-    public function setShouldSendMail($shouldSendMail)
+    public function setShouldSendMail(bool $shouldSendMail): void
     {
         $this->shouldSendMail = $shouldSendMail;
     }

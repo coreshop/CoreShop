@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Model;
 
@@ -17,6 +19,9 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Filter extends AbstractResource implements FilterInterface
 {
     use TimestampableTrait;
@@ -67,25 +72,16 @@ class Filter extends AbstractResource implements FilterInterface
         $this->conditions = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name)
     {
         $this->name = $name;
@@ -93,17 +89,11 @@ class Filter extends AbstractResource implements FilterInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResultsPerPage()
     {
         return $this->resultsPerPage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setResultsPerPage($resultsPerPage)
     {
         $this->resultsPerPage = $resultsPerPage;
@@ -111,17 +101,11 @@ class Filter extends AbstractResource implements FilterInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOrderDirection()
     {
         return $this->orderDirection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOrderDirection($orderDirection)
     {
         $this->orderDirection = $orderDirection;
@@ -129,17 +113,11 @@ class Filter extends AbstractResource implements FilterInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOrderKey()
     {
         return $this->orderKey;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOrderKey($orderKey)
     {
         $this->orderKey = $orderKey;
@@ -147,17 +125,11 @@ class Filter extends AbstractResource implements FilterInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIndex()
     {
         return $this->index;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIndex(IndexInterface $index)
     {
         $this->index = $index;
@@ -165,25 +137,16 @@ class Filter extends AbstractResource implements FilterInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPreConditions()
     {
         return $this->preConditions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasPreConditions()
     {
         return !$this->preConditions->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addPreCondition(FilterConditionInterface $preCondition)
     {
         if (!$this->hasPreCondition($preCondition)) {
@@ -191,9 +154,6 @@ class Filter extends AbstractResource implements FilterInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removePreCondition(FilterConditionInterface $preCondition)
     {
         if ($this->hasPreCondition($preCondition)) {
@@ -201,33 +161,21 @@ class Filter extends AbstractResource implements FilterInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasPreCondition(FilterConditionInterface $preCondition)
     {
         return $this->preConditions->contains($preCondition);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConditions()
     {
         return $this->conditions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasConditions()
     {
         return !$this->conditions->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCondition(FilterConditionInterface $condition)
     {
         if (!$this->hasCondition($condition)) {
@@ -235,9 +183,6 @@ class Filter extends AbstractResource implements FilterInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeCondition(FilterConditionInterface $condition)
     {
         if ($this->hasCondition($condition)) {
@@ -245,9 +190,6 @@ class Filter extends AbstractResource implements FilterInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCondition(FilterConditionInterface $condition)
     {
         return $this->conditions->contains($condition);

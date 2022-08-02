@@ -1,58 +1,52 @@
 services:
     CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand:
-        abstract: true
         arguments:
             - '@kernel'
-            - '@coreshop.installer.checker.command_directory'
+            - '@CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker'
 
     CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand:
         parent: CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand
-        public: true
         tags:
           - { name: console.command, command: coreshop:install:resources }
 
     CoreShop\Bundle\CoreBundle\Command\InstallDatabaseCommand:
-        public: true
         arguments:
             - '@kernel'
-            - '@coreshop.installer.checker.command_directory'
-            - '@coreshop.commands_provider.database_setup'
+            - '@CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker'
+            - '@CoreShop\Bundle\CoreBundle\Installer\Provider\DatabaseSetupCommandsProvider'
         tags:
           - { name: console.command, command: coreshop:install:database }
 
     CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand:
         parent: CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand
-        public: true
         tags:
           - { name: console.command, command: coreshop:install:demo }
 
     CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand:
         parent: CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand
-        public: true
         tags:
           - { name: console.command, command: coreshop:install:fixtures }
 
     CoreShop\Bundle\CoreBundle\Command\InstallFoldersCommand:
-        public: true
         arguments:
             - '@kernel'
-            - '@coreshop.installer.checker.command_directory'
-            - '@coreshop.installer.executor.folder_installer'
+            - '@CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker'
+            - '@CoreShop\Bundle\CoreBundle\Installer\Executor\FolderInstallerProvider'
         tags:
           - { name: console.command, command: coreshop:install:folders }
 
     CoreShop\Bundle\CoreBundle\Command\InstallCommand:
         parent: CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand
-        public: true
         arguments:
-            $migrationManager: '@Pimcore\Migrations\MigrationManager'
-            $bundle: "@=service('kernel').getBundle('CoreShopCoreBundle')"
-            $installer: '@CoreShop\Bundle\CoreBundle\Installer'
+            - '@CoreShop\Bundle\CoreBundle\Installer'
         tags:
           - { name: console.command, command: coreshop:install }
 
     CoreShop\Bundle\CoreBundle\Command\MigrateCommand:
-        public: true
         tags:
             - { name: console.command, command: coreshop:migrate }
+
+    CoreShop\Bundle\CoreBundle\Command\MigrationGenerateCommand:
+        tags:
+            - { name: console.command, command: coreshop:migration:generate }
 

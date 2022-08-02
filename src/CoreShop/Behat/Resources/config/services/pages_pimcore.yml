@@ -1,0 +1,44 @@
+services:
+    CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage:
+        arguments:
+            $session: '@behat.mink.default_session'
+            $minkParameters: '@behat.mink.parameters'
+
+    CoreShop\Behat\Page\Pimcore\AbstractPimcorePage:
+        parent: FriendsOfBehat\PageObjectExtension\Page\SymfonyPage
+
+    CoreShop\Behat\Page\Pimcore\LoginPageInterface: '@CoreShop\Behat\Page\Pimcore\LoginPage'
+    CoreShop\Behat\Page\Pimcore\LoginPage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcorePage
+
+    CoreShop\Behat\Page\Pimcore\PWAPageInterface: '@CoreShop\Behat\Page\Pimcore\PWAPage'
+    CoreShop\Behat\Page\Pimcore\PWAPage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcorePage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\CountryPageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\CountryPage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\CountryPage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\StatePageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\StatePage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\StatePage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\TaxRatePageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\TaxRatePage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\TaxRatePage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\TaxRuleGroupPageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\TaxRuleGroupPage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\TaxRuleGroupPage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\ZonePageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\ZonePage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\ZonePage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\ExchangeRatePageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\ExchangeRatePage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\ExchangeRatePage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage

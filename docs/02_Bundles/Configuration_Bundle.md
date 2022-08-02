@@ -1,4 +1,6 @@
 # CoreShop Configuration Bundle
 
-    - Doctrine Mappings
-
+## Installation
+```bash
+$ composer require coreshop/configuration-bundle:^3.0
+```

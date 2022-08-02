@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Transform;
 
@@ -20,32 +22,14 @@ use Webmozart\Assert\Assert;
 
 final class ProductSpecificPriceRuleContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var ProductSpecificPriceRuleRepositoryInterface
-     */
-    private $productSpecificPriceRuleRepository;
-
-    /**
-     * @param SharedStorageInterface                      $sharedStorage
-     * @param ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->productSpecificPriceRuleRepository = $productSpecificPriceRuleRepository;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository)
+    {
     }
 
     /**
      * @Transform /^specific price rule "([^"]+)"$/
      */
-    public function getPriceRuleByProductAndName($ruleName)
+    public function getPriceRuleByProductAndName(string $ruleName): ProductSpecificPriceRuleInterface
     {
         $rule = $this->productSpecificPriceRuleRepository->findOneBy(['name' => $ruleName]);
 
@@ -57,7 +41,7 @@ final class ProductSpecificPriceRuleContext implements Context
     /**
      * @Transform /^(specific price rule)$/
      */
-    public function getLatestSpecificPriceRule()
+    public function getLatestSpecificPriceRule(): ProductSpecificPriceRuleInterface
     {
         $resource = $this->sharedStorage->getLatestResource();
 

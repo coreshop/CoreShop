@@ -3,8 +3,8 @@
 You need a running instance of Pimcore on your system before you can install CoreShop. 
 
 You can setup your own example:
-
- - Install with composer ```composer require coreshop/core-shop dev-master```
+ - Allow dev version to be installed: ```composer config "minimum-stability" "dev"``` and ```composer config "prefer-stable" "true"```
+ - Install with composer ```composer require coreshop/core-shop ^3.0```
  - Run enable Bundle command
     ```php bin/console pimcore:bundle:enable CoreShopCoreBundle```
  - Run Install Command

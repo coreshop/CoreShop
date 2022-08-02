@@ -6,39 +6,35 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Pimcore;
 
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\AbstractDriver;
-use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Factory\PimcoreRepositoryFactory;
-use CoreShop\Component\Resource\Factory\RepositoryFactory;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class PimcoreDriver extends AbstractDriver
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getType()
+    public function getType(): string
     {
         return CoreShopResourceBundle::DRIVER_DOCTRINE_ORM;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ContainerBuilder $container, MetadataInterface $metadata)
+    public function load(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         parent::load($container, $metadata);
 
@@ -59,10 +55,7 @@ final class PimcoreDriver extends AbstractDriver
         $this->addRepositoryFactory($container, $metadata);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setClassesParameters(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function setClassesParameters(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         parent::setClassesParameters($container, $metadata);
 
@@ -71,27 +64,36 @@ final class PimcoreDriver extends AbstractDriver
         }
     }
 
-    /**
-     * @param ContainerBuilder  $container
-     * @param MetadataInterface $metadata
-     */
-    protected function addDefaultPimcoreController(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addDefaultPimcoreController(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $this->addPimcoreController($container, $metadata, $metadata->getClass('pimcore_controller'));
     }
 
-    protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, $classValue, $suffix = null)
+    protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, string $classValue, string $suffix = null): void
     {
         $definition = new Definition($classValue);
+
+        $classes = array_merge([$classValue], class_parents($classValue));
+        foreach ($classes as $parent) {
+            if ($container->hasDefinition($parent)) {
+                $definition = new ChildDefinition($parent);
+
+                break;
+            }
+        }
+
         $definition
+            ->setClass($classValue)
             ->setPublic(true)
             ->setArguments([
                 $this->getMetadataDefinition($metadata),
                 new Reference($metadata->getServiceId('repository')),
                 new Reference($metadata->getServiceId('factory')),
-                new Reference('coreshop.resource_controller.view_handler'),
+                new Reference(ViewHandlerInterface::class),
             ])
-            ->addMethodCall('setContainer', [new Reference('service_container')]);
+            ->addMethodCall('setContainer', [new Reference('service_container')])
+            ->addTag('controller.service_arguments')
+        ;
 
         $serviceId = $metadata->getServiceId('pimcore_controller');
 
@@ -102,16 +104,12 @@ final class PimcoreDriver extends AbstractDriver
         $container->setDefinition($serviceId, $definition);
     }
 
-    /**
-     * @param ContainerBuilder  $container
-     * @param MetadataInterface $metadata
-     */
-    protected function addPimcoreClass(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addPimcoreClass(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $folder = $metadata->getParameter('path');
 
         if (!is_array($folder)) {
-            $folders[$metadata->getName()] = $folder;
+            $folders = [$metadata->getName() => $folder];
         } else {
             $folders = $folder;
         }
@@ -127,6 +125,9 @@ final class PimcoreDriver extends AbstractDriver
                 $allPaths = [];
 
                 if ($container->hasParameter($parameterName)) {
+                    /**
+                     * @var array $allPaths
+                     */
                     $allPaths = $container->getParameter($parameterName);
                 }
 
@@ -137,19 +138,18 @@ final class PimcoreDriver extends AbstractDriver
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $repositoryClassParameterName = sprintf('%s.repository.%s.class', $metadata->getApplicationName(), $metadata->getName());
         $repositoryClass = PimcoreRepository::class;
 
         if ($container->hasParameter($repositoryClassParameterName)) {
+            /** @var string $repositoryClass */
             $repositoryClass = $container->getParameter($repositoryClassParameterName);
         }
 
         if ($metadata->hasClass('repository')) {
+            /** @var string $repositoryClass */
             $repositoryClass = $metadata->getClass('repository');
         }
 
@@ -174,20 +174,19 @@ final class PimcoreDriver extends AbstractDriver
         }
     }
 
-     /**
-     * {@inheritdoc}
-     */
-    protected function addRepositoryFactory(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addRepositoryFactory(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $repositoryFactoryClassParameterName = sprintf('%s.repository.factory.%s.class', $metadata->getApplicationName(), $metadata->getName());
         $repositoryFactoryClass = PimcoreRepositoryFactory::class;
         $repositoryClass = PimcoreRepository::class;
 
         if ($container->hasParameter($repositoryFactoryClassParameterName)) {
+            /** @var string $repositoryFactoryClass */
             $repositoryFactoryClass = $container->getParameter($repositoryFactoryClassParameterName);
         }
 
         if ($metadata->hasClass('repository')) {
+            /** @var string $repositoryClass */
             $repositoryClass = $metadata->getClass('repository');
         }
 
@@ -212,12 +211,9 @@ final class PimcoreDriver extends AbstractDriver
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function addManager(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addManager(ContainerBuilder $container, MetadataInterface $metadata): void
     {
-        $alias = new Alias('pimcore.dao.object_manager');
+        $alias = new Alias(ObjectManager::class);
         $alias->setPublic(true);
 
         $container->setAlias(

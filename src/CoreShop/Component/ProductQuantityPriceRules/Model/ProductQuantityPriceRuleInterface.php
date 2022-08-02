@@ -6,13 +6,14 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Model;
 
-use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\Common\Collections\Collection;
 
@@ -39,33 +40,6 @@ interface ProductQuantityPriceRuleInterface extends RuleInterface
     public function setCalculationBehaviour($calculationBehaviour);
 
     /**
-     * @return Collection|ConditionInterface[]
-     */
-    public function getConditions();
-
-    /**
-     * @return bool
-     */
-    public function hasConditions();
-
-    /**
-     * @param ConditionInterface $conditions
-     *
-     * @return bool
-     */
-    public function hasCondition(ConditionInterface $conditions);
-
-    /**
-     * @param ConditionInterface $conditions
-     */
-    public function addCondition(ConditionInterface $conditions);
-
-    /**
-     * @param ConditionInterface $conditions
-     */
-    public function removeCondition(ConditionInterface $conditions);
-
-    /**
      * @return Collection|QuantityRangeInterface[]
      */
     public function getRanges();
@@ -76,20 +50,12 @@ interface ProductQuantityPriceRuleInterface extends RuleInterface
     public function hasRanges();
 
     /**
-     * @param QuantityRangeInterface $priceRange
-     *
      * @return bool
      */
     public function hasRange(QuantityRangeInterface $priceRange);
 
-    /**
-     * @param QuantityRangeInterface $priceRange
-     */
     public function addRange(QuantityRangeInterface $priceRange);
 
-    /**
-     * @param QuantityRangeInterface $priceRange
-     */
     public function removeRange(QuantityRangeInterface $priceRange);
 
     /**
@@ -108,7 +74,7 @@ interface ProductQuantityPriceRuleInterface extends RuleInterface
     public function getProduct();
 
     /**
-     * @param int $id
+     * @param int $product
      */
-    public function setProduct($id);
+    public function setProduct($product);
 }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Pimcore\Repository;
 
@@ -24,23 +26,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface, ProductVariantRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findLatestByStore(StoreInterface $store, $count = 8)
+    public function findLatestByStore(StoreInterface $store, int $count = 8): array
     {
         $conditions = [
             ['condition' => 'active = ?', 'variable' => 1],
             ['condition' => 'stores LIKE ?', 'variable' => '%,' . $store->getId() . ',%'],
         ];
 
-        return $this->findBy($conditions, ['o_creationDate DESC'], $count);
+        /** @psalm-suppress InvalidScalarArgument */
+        return $this->findBy($conditions, ['o_creationDate' => 'DESC'], $count);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllVariants(ProductInterface $product, $recursive = true)
+    public function findAllVariants(ProductInterface $product, bool $recursive = true): array
     {
         $list = $this->getList();
         $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
@@ -48,40 +45,53 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         if ($recursive) {
             $list->setCondition('o_path LIKE ?', [$product->getRealFullPath() . '/%']);
         } else {
-            $list->setCondition('o_parentId =', [$product->getId()]);
+            $list->setCondition('o_parentId = ?', [$product->getId()]);
         }
 
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store)
+    public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
         $list = $this->getList();
         $dao = $list->getDao();
 
-        $db = \Pimcore\Db::get();
-        $query = $db->select()
-            ->from($dao->getTableName(), ['oo_id'])
-            ->where('o_path LIKE ?', $product->getRealFullPath() . '/%')
-            ->where('stores LIKE ?', '%,' . $store->getId() . ',%')
-            ->where('o_type = ?', 'variant');
+        /** @psalm-suppress InternalMethod */
+        $query = $this->connection->createQueryBuilder()
+            ->select()
+            ->from($dao->getTableName())
+            ->select('oo_id')
+            ->where('o_path LIKE :path')
+            ->andWhere('stores LIKE :stores')
+            ->andWhere('o_type = :variant')
+            ->setParameter('path', $product->getRealFullPath() . '/%')
+            ->setParameter('stores', '%,' . $store->getId() . ',%')
+            ->setParameter('variant', 'variant');
 
         $variantIds = [];
 
-        foreach ($query->execute()->fetchAll() as $column) {
+        $result = $this->connection->fetchAllAssociative($query->getSQL(), $query->getParameters());
+
+        foreach ($result as $column) {
             $variantIds[] = $column['oo_id'];
         }
 
         return $variantIds;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProducts($options = [])
+    public function getProducts(array $options = []): array
+    {
+        $list = $this->getProductsListing($options);
+
+        /**
+         * @var ProductInterface[] $products
+         */
+        $products = $list->load();
+
+        return $products;
+    }
+
+    public function getProductsListing(array $options = []): Listing
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -103,15 +113,14 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $resolver->setAllowedTypes('order_key_quote', 'bool');
         $resolver->setAllowedTypes('order', 'string');
         $resolver->setAllowedTypes('object_types', ['null', 'array']);
-        $resolver->setAllowedTypes('return_type', 'string');
-        $resolver->setAllowedValues('return_type', ['objects', 'list']);
-        $resolver->setAllowedValues('object_types', function ($value) {
+        $resolver->setAllowedValues('object_types', function (?array $value) {
             $valid = [
                 null,
                 AbstractObject::OBJECT_TYPE_FOLDER,
                 AbstractObject::OBJECT_TYPE_OBJECT,
                 AbstractObject::OBJECT_TYPE_VARIANT,
             ];
+
             return $value === null || !array_diff($value, $valid);
         });
 
@@ -136,7 +145,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
                 }
             }
             if (count($categoryIds) > 0) {
-                $list->addConditionParam('(o_id IN (SELECT DISTINCT src_id FROM object_relations_' . $classId . ' WHERE fieldname = "categories" AND dest_id IN (' . join(',', $categoryIds) . ')))');
+                $list->addConditionParam('(o_id IN (SELECT DISTINCT src_id FROM object_relations_' . $classId . ' WHERE fieldname = "categories" AND dest_id IN (' . implode(',', $categoryIds) . ')))');
             }
         }
 
@@ -147,18 +156,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $list->setOrderKey($listOptions['order_key'], $listOptions['order_key_quote']);
         $list->setOrder($listOptions['order']);
 
-        if ($listOptions['return_type'] === 'objects') {
-            /**
-             * @var ProductInterface[] $products
-             */
-            $products = $list->load();
-
-            return $products;
-        }
-
-        /**
-         * @var Listing $list
-         */
         return $list;
     }
 }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\EventListener;
 
@@ -22,28 +24,13 @@ use Pimcore\Model\DataObject\ClassDefinition;
 
 final class IndexObjectListener
 {
-    /**
-     * @var IndexUpdaterServiceInterface
-     */
-    private $indexUpdaterService;
+    private array $validObjectTypes = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
 
-    /**
-     * @var array
-     */
-    private $validObjectTypes = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
-
-    /**
-     * @param IndexUpdaterServiceInterface $indexUpdaterService
-     */
-    public function __construct(IndexUpdaterServiceInterface $indexUpdaterService)
+    public function __construct(private IndexUpdaterServiceInterface $indexUpdaterService)
     {
-        $this->indexUpdaterService = $indexUpdaterService;
     }
 
-    /**
-     * @param ElementEventInterface $event
-     */
-    public function onPostUpdate(ElementEventInterface $event)
+    public function onPostUpdate(ElementEventInterface $event): void
     {
         if ($event instanceof DataObjectEvent) {
             $object = $event->getObject();
@@ -59,17 +46,13 @@ final class IndexObjectListener
             });
 
             $classDefinition = ClassDefinition::getById($object->getClassId());
-            if ($classDefinition->getAllowInherit() || $classDefinition->getAllowVariants()) {
+            if ($classDefinition && ($classDefinition->getAllowInherit() || $classDefinition->getAllowVariants())) {
                 $this->updateInheritableChildren($object, $isVersionEvent);
             }
         }
     }
 
-    /**
-     * @param AbstractObject $object
-     * @param bool $isVersionChange
-     */
-    private function updateInheritableChildren(AbstractObject $object, bool $isVersionChange)
+    private function updateInheritableChildren(AbstractObject $object, bool $isVersionChange): void
     {
         if (!$object->hasChildren($this->validObjectTypes)) {
             return;
@@ -78,7 +61,7 @@ final class IndexObjectListener
         $children = $object->getChildren($this->validObjectTypes);
         /** @var AbstractObject $child */
         foreach ($children as $child) {
-            if (get_class($child) === get_class($object)) {
+            if ($child instanceof IndexableInterface && $child::class === $object::class) {
                 InheritanceHelper::useInheritedValues(function () use ($child, $isVersionChange) {
                     $this->indexUpdaterService->updateIndices($child, $isVersionChange);
                 });
@@ -87,10 +70,7 @@ final class IndexObjectListener
         }
     }
 
-    /**
-     * @param ElementEventInterface $event
-     */
-    public function onPostDelete(ElementEventInterface $event)
+    public function onPostDelete(ElementEventInterface $event): void
     {
         if ($event instanceof DataObjectEvent) {
             $object = $event->getObject();

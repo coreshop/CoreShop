@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
@@ -17,16 +19,20 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class StackClassesPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasParameter('coreshop.all.pimcore_classes') || !$container->hasParameter('coreshop.all.stack')) {
             return;
         }
 
+        /**
+         * @var array $classes
+         */
         $classes = $container->getParameter('coreshop.all.pimcore_classes');
+
+        /**
+         * @var array $stack
+         */
         $stack = $container->getParameter('coreshop.all.stack');
 
         $classStack = [];
@@ -34,18 +40,18 @@ final class StackClassesPass implements CompilerPassInterface
         $classStackPimcoreClassId = [];
 
         foreach ($stack as $alias => $interface) {
-            list($applicationName, $name) = explode('.', $alias);
+            [$applicationName, $name] = explode('.', $alias);
 
             $classStack[$alias] = [];
             $classStackPimcoreClassName[$alias] = [];
             $classStackPimcoreClassId[$alias] = [];
 
-            foreach ($classes as $key => $definition) {
+            foreach ($classes as $definition) {
                 if (!@interface_exists($definition['classes']['interface'])) {
                     continue;
                 }
 
-                if (in_array($interface, class_implements($definition['classes']['interface']))) {
+                if (in_array($interface, class_implements($definition['classes']['interface'])) || $interface === $definition['classes']['interface']) {
                     $classStack[$alias][] = $definition['classes']['model'];
 
                     $fullClassName = $definition['classes']['model'];

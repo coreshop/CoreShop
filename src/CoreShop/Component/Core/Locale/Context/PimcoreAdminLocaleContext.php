@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Locale\Context;
 
@@ -23,48 +25,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class PimcoreAdminLocaleContext implements LocaleContextInterface
 {
-    /**
-     * @var PimcoreContextResolver
-     */
-    private $pimcoreContextResolver;
-
-    /**
-     * @var TokenStorageUserResolver
-     */
-    private $tokenStorageUserResolver;
-
-    /**
-     * @var TranslationLocaleProviderInterface
-     */
-    private $localeProvider;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @param PimcoreContextResolver             $pimcoreContextResolver
-     * @param TokenStorageUserResolver           $tokenStorageUserResolver
-     * @param TranslationLocaleProviderInterface $localeProvider
-     * @param RequestStack                       $requestStack
-     */
-    public function __construct(
-        PimcoreContextResolver $pimcoreContextResolver,
-        TokenStorageUserResolver $tokenStorageUserResolver,
-        TranslationLocaleProviderInterface $localeProvider,
-        RequestStack $requestStack
-    ) {
-        $this->pimcoreContextResolver = $pimcoreContextResolver;
-        $this->tokenStorageUserResolver = $tokenStorageUserResolver;
-        $this->localeProvider = $localeProvider;
-        $this->requestStack = $requestStack;
+    public function __construct(private PimcoreContextResolver $pimcoreContextResolver, private TokenStorageUserResolver $tokenStorageUserResolver, private TranslationLocaleProviderInterface $localeProvider, private RequestStack $requestStack)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
         $request = $this->requestStack->getCurrentRequest();
 

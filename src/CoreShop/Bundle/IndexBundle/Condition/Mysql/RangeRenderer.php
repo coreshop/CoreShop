@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Condition\Mysql;
 
@@ -20,29 +22,21 @@ use Webmozart\Assert\Assert;
 
 class RangeRenderer extends AbstractMysqlDynamicRenderer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null)
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): string
     {
         /**
-         * @var $condition RangeCondition
+         * @var RangeCondition $condition
          */
         Assert::isInstanceOf($condition, RangeCondition::class);
 
         $from = $condition->getFrom();
         $to = $condition->getTo();
 
-        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' >= ' . $from . ' AND ' . $this->quoteFieldName(
-            $condition->getFieldName(),
-            $prefix
-        ) . ' <= ' . $to;
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' >= ' . $from . ' AND ' .
+            $this->quoteFieldName($condition->getFieldName(), $prefix) . ' <= ' . $to;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(WorkerInterface $worker, ConditionInterface $condition)
+    public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
     {
         return $worker instanceof MysqlWorker && $condition instanceof RangeCondition;
     }

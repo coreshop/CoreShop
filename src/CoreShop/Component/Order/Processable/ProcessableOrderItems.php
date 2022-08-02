@@ -6,43 +6,26 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Processable;
 
-use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 
 class ProcessableOrderItems implements ProcessableInterface
 {
-    /**
-     * @var OrderDocumentRepositoryInterface
-     */
-    protected $documentsRepository;
-
-    /**
-     * @var string
-     */
-    protected $stateCancelled;
-
-    /**
-     * @param OrderDocumentRepositoryInterface $documentsRepository
-     * @param string                           $stateCancelled
-     */
-    public function __construct(OrderDocumentRepositoryInterface $documentsRepository, $stateCancelled)
+    public function __construct(protected OrderDocumentRepositoryInterface $documentsRepository, protected string $stateCancelled)
     {
-        $this->documentsRepository = $documentsRepository;
-        $this->stateCancelled = $stateCancelled;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProcessableItems(OrderInterface $order)
+    public function getProcessableItems(OrderInterface $order): array
     {
         $items = $order->getItems();
         $processedItems = $this->getProcessedItems($order);
@@ -71,10 +54,7 @@ class ProcessableOrderItems implements ProcessableInterface
         return $processAbleItems;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProcessedItems(OrderInterface $order)
+    public function getProcessedItems(OrderInterface $order): array
     {
         $documents = $this->documentsRepository->getDocumentsNotInState($order, $this->stateCancelled);
         $processedItems = [];
@@ -99,18 +79,12 @@ class ProcessableOrderItems implements ProcessableInterface
         return $processedItems;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isFullyProcessed(OrderInterface $order)
+    public function isFullyProcessed(OrderInterface $order): bool
     {
         return count($this->getProcessableItems($order)) === 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isProcessable(OrderInterface $order)
+    public function isProcessable(OrderInterface $order): bool
     {
         return !$this->isFullyProcessed($order) && $order->getOrderState() !== OrderStates::STATE_CANCELLED;
     }

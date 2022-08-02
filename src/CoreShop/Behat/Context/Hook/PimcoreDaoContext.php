@@ -6,49 +6,41 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
+use Doctrine\DBAL\Connection;
 use Pimcore\Cache;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\DataObject\Objectbrick;
+use Pimcore\Model\User;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDaoContext implements Context
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @param KernelInterface          $kernel
-     * @param OrderRepositoryInterface $orderRepository
-     */
-    public function __construct(KernelInterface $kernel, OrderRepositoryInterface $orderRepository)
+    public function __construct(
+        private KernelInterface $kernel,
+        private OrderRepositoryInterface $orderRepository,
+        private Connection $connection
+    )
     {
-        $this->kernel = $kernel;
-        $this->orderRepository = $orderRepository;
     }
 
     /**
      * @BeforeScenario
      */
-    public function setKernel()
+    public function setKernel(): void
     {
         \Pimcore::setKernel($this->kernel);
     }
@@ -56,7 +48,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeObjects()
+    public function purgeObjects(): void
     {
         Cache::clearAll();
         Cache\Runtime::clear();
@@ -85,12 +77,15 @@ final class PimcoreDaoContext implements Context
         foreach ($list->getObjects() as $obj) {
             $obj->delete();
         }
+
+        //Force
+        $this->connection->executeQuery('DELETE FROM objects WHERE o_id <> 1');
     }
 
     /**
      * @BeforeScenario
      */
-    public function purgeBricks()
+    public function purgeBricks(): void
     {
         $list = new Objectbrick\Definition\Listing();
         $list->load();
@@ -100,7 +95,7 @@ final class PimcoreDaoContext implements Context
                 continue;
             }
 
-            if (strpos($brick->getKey(), 'Behat') === 0) {
+            if (str_starts_with($brick->getKey(), 'Behat')) {
                 $brick->delete();
             }
         }
@@ -109,7 +104,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function clearRuntimeCacheScenario()
+    public function clearRuntimeCacheScenario(): void
     {
         //Clearing it here is totally fine, since each scenario has its own separated context of objects
         \Pimcore\Cache\Runtime::clear();
@@ -118,7 +113,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeStep
      */
-    public function clearRuntimeCacheStep()
+    public function clearRuntimeCacheStep(): void
     {
         //We should not clear Pimcore Objects here, otherwise we lose the reference to it
         //and end up having the same object twice
@@ -126,7 +121,7 @@ final class PimcoreDaoContext implements Context
         $keepItems = [];
 
         foreach ($copy as $key => $value) {
-            if (strpos($key, 'object_') === 0) {
+            if (str_starts_with($key, 'object_')) {
                 $keepItems[] = $key;
             }
         }
@@ -137,7 +132,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeClasses()
+    public function purgeClasses(): void
     {
         $list = new ClassDefinition\Listing();
         $list->setCondition('name LIKE ?', ['Behat%']);
@@ -155,7 +150,32 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function disableGlobalInheritance()
+    public function clearBehatAdminUser(): void
+    {
+        $user = User::getByName('behat-admin');
+
+        if ($user) {
+            $user->delete();
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearSlugs(): void
+    {
+        $this->connection->executeQuery('DELETE FROM `object_url_slugs`');
+
+        $reflection = new \ReflectionClass(DataObject\Data\UrlSlug::class);
+        $cacheProperty = $reflection->getProperty('cache');
+        $cacheProperty->setAccessible(true);
+        $reflection->setStaticPropertyValue('cache', []);
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function disableGlobalInheritance(): void
     {
         AbstractObject::setGetInheritedValues(false);
     }
@@ -163,7 +183,7 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeFieldCollections()
+    public function purgeFieldCollections(): void
     {
         $list = new Fieldcollection\Definition\Listing();
         $list->load();
@@ -173,7 +193,7 @@ final class PimcoreDaoContext implements Context
                 continue;
             }
 
-            if (strpos($collection->getKey(), 'Behat') === 0) {
+            if (str_starts_with($collection->getKey(), 'Behat')) {
                 $collection->delete();
             }
         }

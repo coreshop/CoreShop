@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Pimcore\GridColumnConfig\Operator;
 
@@ -20,44 +22,22 @@ use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
 
 class StorePrice extends AbstractOperator
 {
-    /**
-     * @var int
-     */
-    private $storeId;
+    private int $storeId;
 
-    /**
-     * @var StoreRepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
-
-    /**
-     * @param StoreRepositoryInterface $storeRepository
-     * @param MoneyFormatterInterface  $moneyFormatter
-     * @param \stdClass                $config
-     * @param null                     $context
-     */
     public function __construct(
-        StoreRepositoryInterface $storeRepository,
-        MoneyFormatterInterface $moneyFormatter,
+        private StoreRepositoryInterface $storeRepository,
+        private MoneyFormatterInterface $moneyFormatter,
         \stdClass $config,
         $context = null
     ) {
         parent::__construct($config, $context);
-
-        $this->storeRepository = $storeRepository;
-        $this->moneyFormatter = $moneyFormatter;
         $this->storeId = $config->storeId;
     }
 
     /**
      * @param \Pimcore\Model\Element\ElementInterface $element
      *
-     * @return null|\stdClass|string
+     * @return \stdClass|string|null
      */
     public function getLabeledValue($element)
     {
@@ -73,7 +53,7 @@ class StorePrice extends AbstractOperator
             return $result;
         }
 
-        $price = $element->getStorePrice($store);
+        $price = $element->getStoreValuesOfType('price', $store);
 
         $result->value = $this->moneyFormatter->format($price, $store->getCurrency()->getIsoCode());
 

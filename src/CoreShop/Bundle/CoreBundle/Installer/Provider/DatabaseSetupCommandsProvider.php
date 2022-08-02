@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Installer\Provider;
 
@@ -23,38 +25,21 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProviderInterface
 {
-    /**
-     * @var Registry
-     */
-    private $doctrineRegistry;
-
-    /**
-     * @param Registry $doctrineRegistry
-     */
-    public function __construct(Registry $doctrineRegistry)
+    public function __construct(private Registry $doctrineRegistry)
     {
-        $this->doctrineRegistry = $doctrineRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
+    public function getCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper): array
     {
         return array_merge($this->getRequiredCommands($input, $output, $questionHelper), [
             'coreshop:install:fixtures',
         ]);
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param QuestionHelper  $questionHelper
-     *
-     * @return array
-     */
-    private function getRequiredCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
+    private function getRequiredCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper): array
     {
+        $commands = [];
+
         if ($input->getOption('no-interaction')) {
             $commands['coreshop:resources:drop-tables'] = ['application-name' => 'coreshop', '--force' => true];
         }
@@ -62,14 +47,7 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
         return $this->setupDatabase($input, $output, $questionHelper);
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param QuestionHelper  $questionHelper
-     *
-     * @return array
-     */
-    private function setupDatabase(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
+    private function setupDatabase(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper): array
     {
         $outputStyle = new SymfonyStyle($input, $output);
 
@@ -90,18 +68,12 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
         return [];
     }
 
-    /**
-     * @return bool
-     */
-    private function isSchemaPresent()
+    private function isSchemaPresent(): bool
     {
         return in_array('coreshop_store', $this->getSchemaManager()->listTableNames());
     }
 
-    /**
-     * @return AbstractSchemaManager
-     */
-    private function getSchemaManager()
+    private function getSchemaManager(): AbstractSchemaManager
     {
         /**
          * @var EntityManager $manager

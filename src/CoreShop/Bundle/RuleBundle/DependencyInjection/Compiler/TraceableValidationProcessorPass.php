@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler;
 
@@ -22,10 +24,9 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class TraceableValidationProcessorPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public const RULE_CONDITIONS_VALIDATIONS_PROCESSOR = 'coreshop.rule.conditions.validation_processor';
+
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->getParameter('kernel.debug')) {
             return;
@@ -33,31 +34,18 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
 
         $validationProcessors = [];
 
-        foreach ($container->getServiceIds() as $serviceId) {
-            if (!$container->hasDefinition($serviceId)) {
-                continue;
-            }
+        foreach ($container->findTaggedServiceIds(self::RULE_CONDITIONS_VALIDATIONS_PROCESSOR) as $serviceId => $tags) {
+            $newServiceId = sprintf('%s.decorated', $serviceId);
+            $serviceIdInner = sprintf('%s.inner', $newServiceId);
 
-            $definition = $container->getDefinition($serviceId);
+            $decorator = new Definition(TraceableRuleConditionsValidationProcessor::class);
+            $decorator->setDecoratedService($serviceId);
+            $decorator->setArguments([new Reference($serviceIdInner)]);
+            $decorator->setPublic(true);
 
-            if (!@class_exists($definition->getClass())) {
-                continue;
-            }
+            $container->setDefinition($newServiceId, $decorator);
 
-            if (in_array(RuleConditionsValidationProcessorInterface::class, class_implements($definition->getClass()))) {
-                //Add Decorator
-                $newServiceId = sprintf('%s.decorated', $serviceId);
-                $serviceIdInner = sprintf('%s.inner', $newServiceId);
-
-                $decorator = new Definition(TraceableRuleConditionsValidationProcessor::class);
-                $decorator->setDecoratedService($serviceId);
-                $decorator->setArguments(array(new Reference($serviceIdInner)));
-                $decorator->setPublic(true);
-
-                $container->setDefinition($newServiceId, $decorator);
-
-                $validationProcessors[] = new Reference($newServiceId);
-            }
+            $validationProcessors[] = new Reference($newServiceId);
         }
 
         if (count($validationProcessors) > 0) {
@@ -66,7 +54,7 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
                 $validationProcessors,
             ]);
             $collector->addTag('data_collector', [
-                'template' => 'CoreShopRuleBundle:Collector:rule.html.twig',
+                'template' => '@CoreShopRule/Collector/rule.html.twig',
                 'id' => 'coreshop.rule_collector',
             ]);
 

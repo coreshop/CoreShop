@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,7 +22,12 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
         this.unitBuilder = {};
         this.unitStore = pimcore.globalmanager.get('coreshop_product_units');
         this.fieldConfig = fieldConfig;
-        this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        if (pimcore.eventDispatcher !== undefined) {
+            this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        }
+        else {
+            document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+        }
     },
 
     getGridColumnEditor: function (field) {
@@ -44,8 +49,11 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
             border: true,
             layout: 'fit',
             style: 'margin: 10px 0;',
-            collapsible: true,
-            collapsed: true
+            collapsible: {
+                direction: 'left',
+                collapsed: true,
+                dynamic: true
+            }
         };
 
         this.fieldConfig.datatype = 'layout';
@@ -71,7 +79,12 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
 
         this.component = new Ext.Panel(wrapperConfig);
         this.component.on('destroy', function () {
-            pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+            if (pimcore.eventDispatcher !== undefined) {
+                pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+            }
+            else {
+                document.removeEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+            }
         }.bind(this));
 
         this.initiateUnitStoreField();
@@ -124,6 +137,11 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
         return this.fieldConfig.name;
     },
 
+    postSaveObjectNew: function (e)
+    {
+        this.postSaveObject(e.detail.object, e.detail.task);
+    },
+
     postSaveObject: function (object, task) {
 
         var fieldName = this.getName();
@@ -144,7 +162,7 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
     reloadUnitValuesData: function (object, task, fieldName) {
         this.component.setLoading(true);
         Ext.Ajax.request({
-            url: '/admin/object/get',
+            url: Routing.generate('pimcore_admin_dataobject_dataobject_get'),
             params: {id: object.id},
             ignoreErrors: true,
             success: function (response) {

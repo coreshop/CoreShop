@@ -1,0 +1,36 @@
+@domain @menu
+Feature: In order to allow better menu structures
+  we build the menu for CoreShop in PHP Services
+
+  Scenario: Default Menu structure
+    Then the menu "coreshop.main" should have a child with ID "coreshop_order_by_number"
+    And the menu "coreshop.main" should have a child with ID "coreshop_quote_by_number"
+    And the menu "coreshop.main" should have a child with ID "coreshop_settings"
+    And the menu "coreshop.main" should have a child with ID "coreshop_pricerules"
+    And the menu "coreshop.main" child with id "coreshop_pricerules" should have a child with ID "coreshop_cart_pricerules"
+    And the menu "coreshop.main" child with id "coreshop_pricerules" should have a child with ID "coreshop_product_pricerules"
+    And the menu "coreshop.main" should have a child with ID "coreshop_localization"
+    And the menu "coreshop.main" child with id "coreshop_localization" should have a child with ID "coreshop_countries"
+    And the menu "coreshop.main" child with id "coreshop_localization" should have a child with ID "coreshop_states"
+    And the menu "coreshop.main" child with id "coreshop_localization" should have a child with ID "coreshop_currencies"
+    And the menu "coreshop.main" child with id "coreshop_localization" should have a child with ID "coreshop_exchange_rates"
+    And the menu "coreshop.main" child with id "coreshop_localization" should have a child with ID "coreshop_zones"
+    And the menu "coreshop.main" child with id "coreshop_localization" should have a child with ID "coreshop_taxes"
+    And the menu "coreshop.main" child with id "coreshop_localization" should have a child with ID "coreshop_taxrulegroups"
+    And the menu "coreshop.main" should have a child with ID "coreshop_order"
+    And the menu "coreshop.main" child with id "coreshop_order" should have a child with ID "coreshop_orders"
+    And the menu "coreshop.main" child with id "coreshop_order" should have a child with ID "coreshop_order_create"
+    And the menu "coreshop.main" child with id "coreshop_order" should have a child with ID "coreshop_quotes"
+    And the menu "coreshop.main" child with id "coreshop_order" should have a child with ID "coreshop_quotes"
+    And the menu "coreshop.main" should have a child with ID "coreshop_shipping"
+    And the menu "coreshop.main" child with id "coreshop_shipping" should have a child with ID "coreshop_carriers"
+    And the menu "coreshop.main" child with id "coreshop_shipping" should have a child with ID "coreshop_carriers_shipping_rules"
+    And the menu "coreshop.main" should have a child with ID "coreshop_product"
+    And the menu "coreshop.main" child with id "coreshop_product" should have a child with ID "coreshop_indexes"
+    And the menu "coreshop.main" child with id "coreshop_product" should have a child with ID "coreshop_filters"
+    And the menu "coreshop.main" child with id "coreshop_product" should have a child with ID "coreshop_product_units"
+    And the menu "coreshop.main" should have a child with ID "coreshop_notification_rules"
+    And the menu "coreshop.main" should have a child with ID "coreshop_payment_providers"
+    And the menu "coreshop.main" should have a child with ID "coreshop_stores"
+    And the menu "coreshop.main" should have a child with ID "coreshop_about"
+

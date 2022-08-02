@@ -1,0 +1,10 @@
+coreshop:
+    variant:
+        product:
+            attributes:
+                wrong: "Falsche Attribute zugwiesen. Es ist nur 1 Attribut pro Gruppe erlaubt. Bitte überprüfen Sie auch die erlaubten Attribut Gruppen."
+        attribute:
+            attribute_type:
+                wrong: "Falscher Attribut Typ"
+            attribute_group:
+                wrong: "Keine Attribut Gruppe vorhanden. Bitte erstellen Sie die Attribute unterhalb einer Attribut Gruppe."

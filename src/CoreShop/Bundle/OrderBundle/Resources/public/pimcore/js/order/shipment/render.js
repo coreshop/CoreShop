@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -37,7 +37,7 @@ coreshop.shipment.render = Class.create({
     },
 
     loadDocument: function (shipmentId) {
-        var frameUrl = '/admin/coreshop/order-shipment/render?id=' + shipmentId;
+        var frameUrl = Routing.generate('coreshop_admin_order_shipment_render', {id: shipmentId});
 
         //check for native/plugin PDF viewer
         if (this.hasNativePDFViewer()) {

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Shipping\Model\ShippingRuleGroup"
+                       table="coreshop_shipping_rule_group">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="priority" column="priority" type="integer"/>
+        <field name="stopPropagation" column="stopPropagation" type="boolean"/>
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+        <many-to-one field="carrier" target-entity="CoreShop\Component\Shipping\Model\CarrierInterface" inversed-by="shippingRules">
+            <join-column name="carrierId" referenced-column-name="id" nullable="false"/>
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </many-to-one>
+
+        <many-to-one field="shippingRule" target-entity="CoreShop\Component\Shipping\Model\ShippingRuleInterface">
+            <join-column name="shippingRuleId" referenced-column-name="id" nullable="true"/>
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </many-to-one>
+    </mapped-superclass>
+</doctrine-mapping>

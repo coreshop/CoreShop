@@ -1,3 +1,6 @@
 # CoreShop Notification Bundle
 
-TBD
+## Installation
+```bash
+$ composer require coreshop/notification-bundle:^3.0
+```

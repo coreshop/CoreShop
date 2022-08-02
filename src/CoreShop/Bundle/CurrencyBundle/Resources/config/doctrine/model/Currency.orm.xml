@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Currency\Model\Currency" table="coreshop_currency">
+        <indexes>
+            <index name="isoCode" columns="isoCode" />
+        </indexes>
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="isoCode" column="isoCode" length="3" type="string" nullable="true" />
+        <field name="name" column="name" type="string"/>
+        <field name="numericIsoCode" column="numericIsoCode" type="integer" nullable="true"/>
+        <field name="symbol" column="symbol" type="string" nullable="true"/>
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+    </mapped-superclass>
+</doctrine-mapping>

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\StoreBundle\Form\Type;
 
@@ -23,37 +25,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class StoreChoiceType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @param RepositoryInterface $storeRepository
-     */
-    public function __construct(RepositoryInterface $storeRepository)
+    public function __construct(private RepositoryInterface $storeRepository)
     {
-        $this->storeRepository = $storeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['multiple']) {
             $builder->addModelTransformer(new CollectionToArrayTransformer());
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
+                    /**
+                     * @var StoreInterface[] $stores
+                     */
                     $stores = $this->storeRepository->findAll();
 
                     usort($stores, function (StoreInterface $a, StoreInterface $b): int {
@@ -68,18 +58,12 @@ final class StoreChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_store_choice';
     }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Event;
 
@@ -17,20 +19,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class CustomerRegistrationEvent extends GenericEvent
 {
-    /**
-     * @var CustomerInterface
-     */
-    private $customer;
+    private CustomerInterface $customer;
 
-    /**
-     * @var array
-     */
-    private $data;
+    private array $data;
 
-    /**
-     * @param CustomerInterface $customer
-     * @param array             $data
-     */
     public function __construct(CustomerInterface $customer, array $data)
     {
         parent::__construct($customer);
@@ -39,18 +31,12 @@ final class CustomerRegistrationEvent extends GenericEvent
         $this->data = $data;
     }
 
-    /**
-     * @return CustomerInterface
-     */
-    public function getCustomer()
+    public function getCustomer(): CustomerInterface
     {
         return $this->customer;
     }
 
-    /**
-     * @return array
-     */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\WorkflowBundle\MarkingStore;
 
@@ -18,45 +20,20 @@ use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 
 class OrmPersistentMarkingStore implements MarkingStoreInterface
 {
-    /**
-     * Origin marking store.
-     *
-     * @var MarkingStoreInterface
-     */
-    private $originMarkingStore;
-
-    /**
-     * Doctrine registry.
-     *
-     * @var Registry
-     */
-    private $doctrineRegistry;
-
-    /**
-     * @param MarkingStoreInterface $originMarkingStore origin marking store
-     * @param Registry              $doctrineRegistry   doctrine registry
-     */
-    public function __construct(MarkingStoreInterface $originMarkingStore, Registry $doctrineRegistry)
+    public function __construct(private MarkingStoreInterface $originMarkingStore, private Registry $doctrineRegistry)
     {
-        $this->originMarkingStore = $originMarkingStore;
-        $this->doctrineRegistry = $doctrineRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getMarking($subject)
+    public function getMarking($subject): Marking
     {
         return $this->originMarkingStore->getMarking($subject);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setMarking($subject, Marking $marking)
+    public function setMarking($subject, Marking $marking, array $context = []): void
     {
         $this->originMarkingStore->setMarking($subject, $marking);
-        $manager = $this->doctrineRegistry->getManagerForClass(get_class($subject));
+        $manager = $this->doctrineRegistry->getManagerForClass($subject::class);
+
         $manager->persist($subject);
         $manager->flush();
     }

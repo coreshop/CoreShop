@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -34,7 +34,17 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
         this.panels = [];
         this.conditions = data.conditions;
         this.actions = data.actions;
-        this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        if (pimcore.eventDispatcher !== undefined) {
+            this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        }
+        else {
+            document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+        }
+    },
+
+    postSaveObjectNew: function (e)
+    {
+        this.postSaveObject(e.detail.object, e.detail.task);
     },
 
     postSaveObject: function (object, task) {
@@ -53,7 +63,7 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
     reloadPriceRuleData: function (object, task, fieldName) {
         this.component.setLoading(true);
         Ext.Ajax.request({
-            url: '/admin/object/get',
+            url: Routing.generate('pimcore_admin_dataobject_dataobject_get'),
             params: {id: object.id},
             ignoreErrors: true,
             success: function (response) {

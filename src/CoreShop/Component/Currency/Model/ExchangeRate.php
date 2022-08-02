@@ -6,18 +6,24 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Currency\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class ExchangeRate implements ExchangeRateInterface
 {
     use SetValuesTrait;
+
     use TimestampableTrait;
 
     /**
@@ -45,9 +51,6 @@ class ExchangeRate implements ExchangeRateInterface
         $this->creationDate = new \DateTime();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
@@ -77,12 +80,9 @@ class ExchangeRate implements ExchangeRateInterface
         return $this->fromCurrency;
     }
 
-    /**
-     * @param CurrencyInterface $fromCurrency
-     */
-    public function setFromCurrency(CurrencyInterface $fromCurrency)
+    public function setFromCurrency(CurrencyInterface $currency)
     {
-        $this->fromCurrency = $fromCurrency;
+        $this->fromCurrency = $currency;
     }
 
     /**
@@ -93,11 +93,8 @@ class ExchangeRate implements ExchangeRateInterface
         return $this->toCurrency;
     }
 
-    /**
-     * @param CurrencyInterface $toCurrency
-     */
-    public function setToCurrency(CurrencyInterface $toCurrency)
+    public function setToCurrency(CurrencyInterface $currency)
     {
-        $this->toCurrency = $toCurrency;
+        $this->toCurrency = $currency;
     }
 }

@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -40,7 +40,7 @@ coreshop.core.customer.abstractCustomerModifier = Class.create({
 
     loadEntityDetail: function (entityType, entityId) {
         Ext.Ajax.request({
-            url: '/admin/coreshop/customer-company-modifier/get-entity-details/' + entityType + '/' + entityId,
+            url: Routing.generate('coreshop_admin_customer_company_modifier_get_entity_details', {type: entityType, objectId: entityId}),
             method: 'GET',
             callback: function (request, success, rawResponse) {
                 try {
@@ -60,7 +60,7 @@ coreshop.core.customer.abstractCustomerModifier = Class.create({
     validateAssignment: function (endPointParams) {
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/customer-company-modifier/validate-assignment/' + endPointParams.join('/'),
+            url: Routing.generate('coreshop_admin_customer_company_modifier_validate_assignment', endPointParams),
             method: 'GET',
             callback: function (request, success, rawResponse) {
                 try {
@@ -81,12 +81,12 @@ coreshop.core.customer.abstractCustomerModifier = Class.create({
         });
     },
 
-    submitForm: function (endPointName, endPointParams, formValues, windowPanel) {
+    submitForm: function (url, formValues, windowPanel) {
 
         windowPanel.setLoading(true);
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/customer-company-modifier/' + endPointName + '/' + endPointParams.join('/'),
+            url: url,
             method: 'POST',
             params: formValues,
             callback: this.onFormSubmissionComplete.bind(this, windowPanel)

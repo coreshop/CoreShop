@@ -24,14 +24,6 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType:
-        tags:
-            - { name: form.type }
-
-    CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType:
-        tags:
-            - { name: form.type }
-
     CoreShop\Bundle\CustomerBundle\Form\Type\CustomerSelectionType:
         arguments:
             - '@coreshop.repository.customer'

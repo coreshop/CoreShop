@@ -6,68 +6,40 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Model;
 
+use CoreShop\Component\Pimcore\Slug\SluggableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-interface CategoryInterface extends PimcoreModelInterface
+interface CategoryInterface extends PimcoreModelInterface, SluggableInterface
 {
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getName($language = null);
+    public function getName(?string $language = null): ?string;
 
-    /**
-     * @param string $name
-     * @param string $language
-     *
-     * @return string
-     */
-    public function setName($name, $language = null);
+    public function setName(?string $name, ?string $language = null);
 
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getDescription($language = null);
+    public function getDescription(?string $language = null): ?string;
 
-    /**
-     * @param string $description
-     * @param string $language
-     *
-     * @return string
-     */
-    public function setDescription($description, $language = null);
+    public function setDescription(?string $description, ?string $language = null);
 
-    /**
-     * @return CategoryInterface
-     */
-    public function getParentCategory();
+    public function getParentCategory(): ?self;
 
-    /**
-     * @param CategoryInterface $parentCategory
-     */
-    public function setParentCategory($parentCategory);
+    public function setParentCategory(?self $parentCategory);
 
     /**
      * @return CategoryInterface[]
      */
-    public function getChildCategories();
+    public function getChildCategories(): array;
 
-    /**
-     * @return bool
-     */
-    public function hasChildCategories();
+    public function hasChildCategories(): bool;
 
     /**
      * @return CategoryInterface[]
      */
-    public function getHierarchy();
+    public function getHierarchy(): array;
 }

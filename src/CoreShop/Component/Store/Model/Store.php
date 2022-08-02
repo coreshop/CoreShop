@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Store\Model;
 
@@ -16,9 +18,13 @@ use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
-class Store extends AbstractResource implements StoreInterface
+/**
+ * @psalm-suppress MissingConstructor
+ */
+class Store extends AbstractResource implements StoreInterface, \Stringable
 {
     use TimestampableTrait;
+
     use CurrencyAwareTrait;
 
     /**
@@ -46,10 +52,7 @@ class Store extends AbstractResource implements StoreInterface
      */
     protected $siteId = 0;
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
@@ -62,9 +65,6 @@ class Store extends AbstractResource implements StoreInterface
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId($id)
     {
         $this->id = $id;

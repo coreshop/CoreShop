@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Interpreter;
 
@@ -20,27 +22,21 @@ class NestedInterpreter implements InterpreterInterface
 {
     use NestedTrait;
 
-    /**
-     * @param ServiceRegistryInterface $interpreterRegistry
-     */
     public function __construct(ServiceRegistryInterface $interpreterRegistry)
     {
         $this->interpreterRegistry = $interpreterRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
-    {
+    public function interpret(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): mixed {
         $this->assert($interpreterConfig);
 
-        return $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($indexable, $config) {
-            if ($interpreter instanceof InterpreterInterface) {
-                return $interpreter->interpret($value, $indexable, $config, $interpreterConfig);
-            }
-
-            return $value;
+        return $this->loop($value, $interpreterConfig, function (mixed $value, InterpreterInterface $interpreter, array $interpreterConfig) use ($indexable, $config): mixed {
+            return $interpreter->interpret($value, $indexable, $config, $interpreterConfig);
         });
     }
 }

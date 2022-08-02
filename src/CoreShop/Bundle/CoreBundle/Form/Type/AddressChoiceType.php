@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
@@ -23,30 +25,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddressChoiceType extends AbstractType
 {
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $customerRepository;
-
-    /**
-     * @var CustomerAddressAllocatorInterface
-     */
-    private $customerAddressAllocator;
-
-    /**
-     * @param PimcoreRepositoryInterface $customerRepository
-     * @param CustomerAddressAllocatorInterface $customerAddressAllocator
-     */
-    public function __construct(PimcoreRepositoryInterface $customerRepository, CustomerAddressAllocatorInterface $customerAddressAllocator)
+    public function __construct(private PimcoreRepositoryInterface $customerRepository, private CustomerAddressAllocatorInterface $customerAddressAllocator)
     {
-        $this->customerRepository = $customerRepository;
-        $this->customerAddressAllocator = $customerAddressAllocator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('customer');
         $resolver
@@ -59,29 +42,21 @@ final class AddressChoiceType extends AbstractType
                         $customer = $this->customerRepository->find($options['customer']);
                         $allowedAddressIdentifier = $options['allowed_address_identifier'];
 
-                        if (!$customer instanceof CustomerInterface) {
-                            throw new \InvalidArgumentException('Customer needs to be set');
-                        }
-
                         $addresses = $this->customerAddressAllocator->allocateForCustomer($customer);
 
                         if (empty($allowedAddressIdentifier)) {
                             return $addresses;
                         }
 
-                        return array_filter($addresses, function (AddressInterface $address) use ($allowedAddressIdentifier) {
+                        return array_filter($addresses, static function (AddressInterface $address) use ($allowedAddressIdentifier): bool {
                             $addressIdentifierName = $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : null;
 
                             return in_array($addressIdentifierName, $allowedAddressIdentifier);
                         });
                     },
                     'choice_value' => 'id',
-                    'choice_label' => function ($address) {
-                        if ($address instanceof AddressInterface) {
-                            return sprintf('%s %s', $address->getStreet(), $address->getNumber());
-                        }
-
-                        return null;
+                    'choice_label' => function (AddressInterface $address) {
+                        return sprintf('%s %s', $address->getStreet(), $address->getNumber());
                     },
                     'choice_translation_domain' => false,
                     'active' => true,
@@ -91,18 +66,12 @@ final class AddressChoiceType extends AbstractType
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_customer_address_choice';
     }

@@ -6,105 +6,59 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Cart;
 
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\CartEvents;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
-use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
-use CoreShop\Component\StorageList\StorageListModifierInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
-class CartModifier implements StorageListModifierInterface
+class CartModifier implements CartModifierInterface
 {
-    /**
-     * @var StorageListItemQuantityModifierInterface
-     */
-    protected $cartItemQuantityModifier;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var StorageListItemResolverInterface
-     */
-    protected $cartItemResolver;
-
-    /**
-     * @param StorageListItemQuantityModifierInterface $cartItemQuantityModifier
-     * @param EventDispatcherInterface                 $eventDispatcher
-     * @param StorageListItemResolverInterface         $cartItemResolver
-     */
-    public function __construct(
-        StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
-        EventDispatcherInterface $eventDispatcher,
-        StorageListItemResolverInterface $cartItemResolver = null
-    ) {
-        $this->cartItemQuantityModifier = $cartItemQuantityModifier;
-        $this->eventDispatcher = $eventDispatcher;
-
-        if (null === $cartItemResolver) {
-            @trigger_error(
-                'Not passing a StorageListItemResolverInterface as third argument is deprecated since 2.1.1 and will be removed with 3.0.0',
-                E_USER_DEPRECATED
-            );
-
-            $this->cartItemResolver = new CartItemResolver();
-        }
-        else {
-            $this->cartItemResolver = $cartItemResolver;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addToList(StorageListInterface $storageList, StorageListItemInterface $item)
+    public function __construct(protected StorageListItemQuantityModifierInterface $cartItemQuantityModifier, protected EventDispatcherInterface $eventDispatcher, protected ?\CoreShop\Component\StorageList\StorageListItemResolverInterface $cartItemResolver = null)
     {
-        return $this->resolveItem($storageList, $item);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item)
+    public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void
+    {
+        $this->resolveItem($storageList, $item);
+    }
+
+    public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         /**
-         * @var $storageList CartInterface
-         * @var $item        CartItemInterface
+         * @var OrderInterface $storageList
+         * @var OrderItemInterface $item
          */
-        Assert::isInstanceOf($storageList, CartInterface::class);
-        Assert::isInstanceOf($item, CartItemInterface::class);
+        Assert::isInstanceOf($storageList, OrderInterface::class);
+        Assert::isInstanceOf($item, OrderItemInterface::class);
 
         $this->eventDispatcher->dispatch(
-            'coreshop.cart.remove_add_pre',
-            new GenericEvent($storageList, ['item' => $item])
+            new GenericEvent($storageList, ['item' => $item]),
+            CartEvents::PRE_REMOVE_ITEM
         );
 
         $storageList->removeItem($item);
         $item->delete();
 
         $this->eventDispatcher->dispatch(
-            'coreshop.cart.remove_add_post',
-            new GenericEvent($storageList, ['item' => $item])
+            new GenericEvent($storageList, ['item' => $item]),
+            CartEvents::POST_REMOVE_ITEM
         );
     }
 
-    /**
-     * @param StorageListInterface     $storageList
-     * @param StorageListItemInterface $storageListItem
-     */
-    private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)
+    private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem): void
     {
         foreach ($storageList->getItems() as $item) {
             if ($this->cartItemResolver->equals($item, $storageListItem)) {
@@ -117,6 +71,16 @@ class CartModifier implements StorageListModifierInterface
             }
         }
 
+        $this->eventDispatcher->dispatch(
+            new GenericEvent($storageList, ['item' => $storageListItem]),
+            CartEvents::PRE_ADD_ITEM
+        );
+
         $storageList->addItem($storageListItem);
+
+        $this->eventDispatcher->dispatch(
+            new GenericEvent($storageList, ['item' => $storageListItem]),
+            CartEvents::POST_ADD_ITEM
+        );
     }
 }

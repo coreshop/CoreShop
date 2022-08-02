@@ -11,6 +11,10 @@ CoreShop\Component\Rule\Model\Action:
             expose: true
             type: string
             groups: [Detailed, Version]
+        sort:
+            expose: true
+            type: int
+            groups: [ Detailed, Version ]
         configuration:
             expose: true
             type: array

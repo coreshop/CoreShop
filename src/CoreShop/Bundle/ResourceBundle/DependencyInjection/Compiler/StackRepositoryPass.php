@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
@@ -22,20 +24,25 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class StackRepositoryPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasParameter('coreshop.all.stack.pimcore_class_names') ||
             !$container->hasParameter('coreshop.all.stack')) {
             return;
         }
 
+        /**
+         * @var array $stackConfig
+         */
         $stackConfig = $container->getParameter('coreshop.all.stack');
 
-        foreach ($container->getParameter('coreshop.all.stack.fqcns') as $alias => $classes) {
-            list($applicationName, $name) = explode('.', $alias);
+        /**
+         * @var array $fqcns
+         */
+        $fqcns = $container->getParameter('coreshop.all.stack.fqcns');
+
+        foreach ($fqcns as $alias => $classes) {
+            [$applicationName, $name] = explode('.', $alias);
 
             $definition = new Definition(Metadata::class);
             $definition

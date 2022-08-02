@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -71,8 +71,6 @@ coreshop.index.interpreters.iterator = Class.create(coreshop.index.interpreters.
 
     getInterpreterPanelLayout : function (type, record, parentConfig, config) {
         if (type) {
-            type = type.toLowerCase();
-
             if (coreshop.index.interpreters[type]) {
                 this.interpreterPanelClass = new coreshop.index.interpreters[type];
 

@@ -1,17 +1,16 @@
 {% import _self as generator %}
-{% set pages = paginator.getPages() %}
+{% set pages = paginator.getPaginationData %}
 
 {% macro generate_seo_pagination_url(page) %}
-    {% spaceless %}
-        {% if page == 1 %}
-            {% set pageUrl = pimcore_url({ page: null }) %}
-        {% else %}
-            {% set pageUrl = pimcore_url({ page: page }) %}
-        {% endif %}
+{% apply spaceless %}
+    {% if page == 1 %}
+        {% set pageUrl = pimcore_url({ page: null }) %}
+    {% else %}
+        {% set pageUrl = pimcore_url({ page: page }) %}
+    {% endif %}
 
-        {{ pageUrl }}
-        {#{{ optimizedUrl }}#}
-    {% endspaceless %}
+    {{ pageUrl }}
+{% endapply %}
 {% endmacro %}
 
 {% if pages.pageCount > 1 %}
@@ -20,7 +19,7 @@
             <ul class="pagination">
                 {% if pages.previous is defined %}
                     {% if pages.previous %}
-                        <li class="page-item"><a class="page-link" href="{{ generator.generate_seo_pagination_url(pages.first) }}">«</a></li>
+                        <li class="page-item"><a class="page-link" href="{{ generator.generate_seo_pagination_url(pages.previous) }}">«</a></li>
                     {% endif %}
                 {% endif %}
 
@@ -30,7 +29,7 @@
 
                 {% if pages.next is defined %}
                     {% if pages.next %}
-                        <li class="page-item"><a class="page-link" href="{{ pimcore_url({ page: pages.last }) }}">»</a></li>
+                        <li class="page-item"><a class="page-link" href="{{ pimcore_url({ page: pages.next }) }}">»</a></li>
                     {% endif %}
                 {% endif %}
             </ul>

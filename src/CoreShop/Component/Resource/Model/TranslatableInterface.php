@@ -6,50 +6,33 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Model;
+
+use Doctrine\Common\Collections\Collection;
 
 interface TranslatableInterface
 {
     /**
-     * @return TranslationInterface[]
+     * @return Collection|TranslatableInterface[]
+     * @psalm-return Collection
      */
-    public function getTranslations();
+    public function getTranslations(): Collection;
 
-    /**
-     * @param string|null $locale
-     *
-     * @return TranslationInterface
-     */
-    public function getTranslation($locale = null);
+    public function getTranslation(string $locale = null): TranslationInterface;
 
-    /**
-     * @param TranslationInterface $translation
-     *
-     * @return bool
-     */
-    public function hasTranslation(TranslationInterface $translation);
+    public function hasTranslation(TranslationInterface $translation): bool;
 
-    /**
-     * @param TranslationInterface $translation
-     */
-    public function addTranslation(TranslationInterface $translation);
+    public function addTranslation(TranslationInterface $translation): void;
 
-    /**
-     * @param TranslationInterface $translation
-     */
-    public function removeTranslation(TranslationInterface $translation);
+    public function removeTranslation(TranslationInterface $translation): void;
 
-    /**
-     * @param string $locale
-     */
-    public function setCurrentLocale($locale);
+    public function setCurrentLocale(string $locale): void;
 
-    /**
-     * @param string $locale
-     */
-    public function setFallbackLocale($locale);
+    public function setFallbackLocale(string $locale): void;
 }

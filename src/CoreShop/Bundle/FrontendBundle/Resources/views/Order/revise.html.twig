@@ -22,7 +22,7 @@
             {% endif %}
         {% endif %}
 
-        {{ form_start(form, {'action': coreshop_path(order, 'coreshop_order_revise', {'token': order.token}), 'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_start(form, {'action': path('coreshop_order_revise', {'token': order.token}), 'attr': {'novalidate': 'novalidate'}}) }}
 
         {{ form_row(form.paymentProvider) }}
 

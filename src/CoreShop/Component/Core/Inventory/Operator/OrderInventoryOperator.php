@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Inventory\Operator;
 
@@ -16,28 +18,16 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\OrderPaymentStates;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Webmozart\Assert\Assert;
 
 final class OrderInventoryOperator implements OrderInventoryOperatorInterface
 {
-    /**
-     * @var ObjectManager
-     */
-    private $productEntityManager;
-
-    /**
-     * @param ObjectManager $productEntityManager
-     */
-    public function __construct(ObjectManager $productEntityManager)
+    public function __construct(private ObjectManager $productEntityManager)
     {
-        $this->productEntityManager = $productEntityManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function cancel(OrderInterface $order)
+    public function cancel(OrderInterface $order): void
     {
         if (in_array(
             $order->getPaymentState(),
@@ -52,10 +42,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->release($order);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hold(OrderInterface $order)
+    public function hold(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
         foreach ($order->getItems() as $orderItem) {
@@ -69,17 +56,14 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
                 continue;
             }
 
-            $product->setOnHold($product->getOnHold() + $orderItem->getDefaultUnitQuantity());
+            $product->setOnHold($product->getOnHold() + (int)ceil($orderItem->getDefaultUnitQuantity()));
             $this->productEntityManager->persist($product);
         }
 
         $this->productEntityManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function sell(OrderInterface $order)
+    public function sell(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
         foreach ($order->getItems() as $orderItem) {
@@ -94,7 +78,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
             }
 
             Assert::greaterThanEq(
-                ($product->getOnHold() - $orderItem->getDefaultUnitQuantity()),
+                ($product->getOnHold() - (int)ceil($orderItem->getDefaultUnitQuantity())),
                 0,
                 sprintf(
                     'Not enough units to decrease on hold quantity from the inventory of a product "%s".',
@@ -103,7 +87,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
             );
 
             Assert::greaterThanEq(
-                ($product->getOnHand() - $orderItem->getDefaultUnitQuantity()),
+                ($product->getOnHand() - (int)ceil($orderItem->getDefaultUnitQuantity())),
                 0,
                 sprintf(
                     'Not enough units to decrease on hand quantity from the inventory of a product "%s".',
@@ -111,18 +95,15 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
                 )
             );
 
-            $product->setOnHold($product->getOnHold() - $orderItem->getDefaultUnitQuantity());
-            $product->setOnHand($product->getOnHand() - $orderItem->getDefaultUnitQuantity());
+            $product->setOnHold($product->getOnHold() - (int)ceil($orderItem->getDefaultUnitQuantity()));
+            $product->setOnHand($product->getOnHand() - (int)ceil($orderItem->getDefaultUnitQuantity()));
             $this->productEntityManager->persist($product);
         }
 
         $this->productEntityManager->flush();
     }
 
-    /**
-     * @param OrderInterface $order
-     */
-    public function release(OrderInterface $order)
+    public function release(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
         foreach ($order->getItems() as $orderItem) {
@@ -137,24 +118,21 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
             }
 
             Assert::greaterThanEq(
-                ($product->getOnHold() - $orderItem->getDefaultUnitQuantity()),
+                ($product->getOnHold() - (int)ceil($orderItem->getDefaultUnitQuantity())),
                 0,
                 sprintf(
                     'Not enough units to decrease on hold quantity from the inventory of a product "%s".',
                     $product->getName()
                 )
             );
-            $product->setOnHold($product->getOnHold() - $orderItem->getDefaultUnitQuantity());
+            $product->setOnHold($product->getOnHold() - (int)ceil($orderItem->getDefaultUnitQuantity()));
             $this->productEntityManager->persist($product);
         }
 
         $this->productEntityManager->flush();
     }
 
-    /**
-     * @param OrderInterface $order
-     */
-    public function giveBack(OrderInterface $order)
+    public function giveBack(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
         foreach ($order->getItems() as $orderItem) {
@@ -168,7 +146,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
                 continue;
             }
 
-            $product->setOnHand($product->getOnHand() + $orderItem->getDefaultUnitQuantity());
+            $product->setOnHand($product->getOnHand() + (int)ceil($orderItem->getDefaultUnitQuantity()));
             $this->productEntityManager->persist($product);
         }
 

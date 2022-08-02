@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -40,7 +40,8 @@ coreshop.filter.conditions.range = Class.create(coreshop.filter.conditions.abstr
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.configuration.preSelectMin
+                value: this.data.configuration.preSelectMin,
+                plugins: ['clearbutton'],
             },
             {
                 xtype: 'combo',
@@ -55,7 +56,8 @@ coreshop.filter.conditions.range = Class.create(coreshop.filter.conditions.abstr
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.configuration.preSelectMax
+                value: this.data.configuration.preSelectMax,
+                plugins: ['clearbutton'],
             }
         ];
     }

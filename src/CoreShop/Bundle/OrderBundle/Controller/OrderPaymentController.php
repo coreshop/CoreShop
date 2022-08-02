@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
@@ -17,6 +19,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
@@ -24,19 +27,16 @@ use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class OrderPaymentController extends PimcoreController
 {
-    /**
-     * @param Request $request
-     *
-     * @return mixed
-     */
-    public function updateStateAction(Request $request)
+    public function updateStateAction(Request $request): JsonResponse
     {
-        $payment = $this->getPaymentRepository()->find($request->get('id'));
-        $transition = $request->get('transition');
+        $payment = $this->getPaymentRepository()->find($this->getParameterFromRequest($request, 'id'));
+        $transition = $this->getParameterFromRequest($request, 'transition');
 
         if (!$payment instanceof PaymentInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'invalid payment']);
@@ -53,22 +53,15 @@ class OrderPaymentController extends PimcoreController
         return $this->viewHandler->handle(['success' => true]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     *
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function addPaymentAction(Request $request)
+    public function addPaymentAction(Request $request): JsonResponse
     {
         //TODO: Use Form here
 
-        $orderId = $request->get('o_id');
+        $orderId = $this->getParameterFromRequest($request, 'o_id');
         $order = $this->getSaleRepository()->find($orderId);
-        $amount = (float) $request->get('amount', 0) * $this->getParameter('coreshop.currency.decimal_factor');
+        $amount = (int)round($this->getParameterFromRequest($request, 'amount', 0) * $this->container->getParameter('coreshop.currency.decimal_factor'));
 
-        $paymentProviderId = $request->get('paymentProvider');
+        $paymentProviderId = $this->getParameterFromRequest($request, 'paymentProvider');
 
         if (!$order instanceof OrderInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
@@ -76,10 +69,11 @@ class OrderPaymentController extends PimcoreController
 
         $payments = $this->getPaymentRepository()->findForPayable($order);
         $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
-        $totalPayed = array_sum(array_map(function (PaymentInterface $payment) {
-            if ($payment->getState() === PaymentInterface::STATE_CANCELLED ||
-                $payment->getState() === PaymentInterface::STATE_FAILED ||
-                $payment->getState() === PaymentInterface::STATE_REFUNDED) {
+        $totalPayed = array_sum(array_map(static function (PaymentInterface $payment) {
+            $state = $payment->getState();
+            if ($state === PaymentInterface::STATE_CANCELLED ||
+                $state === PaymentInterface::STATE_FAILED ||
+                $state === PaymentInterface::STATE_REFUNDED) {
                 return 0;
             }
 
@@ -90,7 +84,10 @@ class OrderPaymentController extends PimcoreController
             $totalPaymentWouldBe = $totalPayed + $amount;
 
             if ($totalPaymentWouldBe > $order->getTotal()) {
-                return $this->viewHandler->handle(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
+                return $this->viewHandler->handle([
+                    'success' => false,
+                    'message' => 'Payed Amount is greater than order amount',
+                ]);
             }
 
             $tokenGenerator = new UniqueTokenGenerator(true);
@@ -103,7 +100,11 @@ class OrderPaymentController extends PimcoreController
             $payment = $this->getPaymentFactory()->createNew();
             $payment->setNumber($orderNumber);
             $payment->setPaymentProvider($paymentProvider);
-            $payment->setCurrency($order->getCurrency());
+
+            if (method_exists($payment, 'setCurrency')) {
+                $payment->setCurrency($order->getBaseCurrency());
+            }
+
             $payment->setTotalAmount($amount);
             $payment->setState(PaymentInterface::STATE_NEW);
             $payment->setDatePayment(Carbon::now());
@@ -127,55 +128,37 @@ class OrderPaymentController extends PimcoreController
         return $this->viewHandler->handle(
             [
                 'success' => false,
-                'message' => sprintf('Payment Provider %s not found', $request->get('paymentProvider')),
+                'message' => sprintf('Payment Provider %s not found', $this->getParameterFromRequest($request, 'paymentProvider')),
             ]
         );
     }
 
-    /**
-     * @return PaymentRepositoryInterface
-     */
-    private function getPaymentRepository()
+    private function getPaymentRepository(): PaymentRepositoryInterface
     {
         return $this->get('coreshop.repository.payment');
     }
 
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getEntityManager()
+    private function getEntityManager(): EntityManager
     {
         return $this->get('doctrine.orm.entity_manager');
     }
 
-    /**
-     * @return PaymentProviderRepositoryInterface
-     */
-    private function getPaymentProviderRepository()
+    private function getPaymentProviderRepository(): PaymentProviderRepositoryInterface
     {
         return $this->get('coreshop.repository.payment_provider');
     }
 
-    /**
-     * @return FactoryInterface
-     */
-    private function getPaymentFactory()
+    private function getPaymentFactory(): FactoryInterface
     {
         return $this->get('coreshop.factory.payment');
     }
 
-    /**
-     * @return StateMachineManager
-     */
-    protected function getStateMachineManager()
+    protected function getStateMachineManager(): StateMachineManager
     {
         return $this->get('coreshop.state_machine_manager');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSaleRepository()
+    protected function getSaleRepository(): OrderRepositoryInterface
     {
         return $this->get('coreshop.repository.order');
     }

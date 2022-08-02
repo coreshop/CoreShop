@@ -1,0 +1,35 @@
+imports:
+    - { resource: ../../config.yaml }
+    - { resource: ../../../src/CoreShop/Behat/Resources/config/services.yml }
+
+pimcore:
+    targeting:
+        enabled: false
+
+doctrine:
+    dbal:
+        connections:
+            default:
+                url: '%pimcore_test.db.dsn%'
+                host: ''
+                port: ''
+                dbname: ''
+                user: ''
+                password: ''
+
+parameters:
+    pimcore_test.db.dsn: '%env(PIMCORE_TEST_DB_DSN)%'
+    env(PIMCORE_TEST_DB_DSN): ~
+
+framework:
+    session:
+        handler_id:  ~
+        storage_id: session.storage.mock_file
+        name: MOCKSESSID
+
+monolog:
+    handlers:
+        main:
+            level: error
+        console:
+            channels: ['!event', '!doctrine', '!console', '!cache']

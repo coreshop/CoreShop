@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Customer\Address;
 
@@ -23,11 +25,13 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
     /**
      * @param array $context
      * @param Data  $fieldDefinition
-     *
-     * @return array
      */
-    public function getOptions($context, $fieldDefinition)
+    public function getOptions($context, $fieldDefinition): array
     {
+        if (!isset($context['object'])) {
+            return [];
+        }
+
         $object = $context['object'];
 
         if (!$object instanceof CustomerInterface) {
@@ -37,8 +41,8 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
         $types = [
             [
                 'value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY,
-                'key'   => 'coreshop.admin.company.address_access.own_only'
-            ]
+                'key' => 'coreshop.company.address_access.own_only',
+            ],
         ];
 
         if (!$object->getCompany() instanceof CompanyInterface) {
@@ -47,37 +51,24 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
 
         $types[] = [
             'value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_COMPANY_ONLY,
-            'key'   => 'coreshop.admin.company.address_access.company_only'
+            'key' => 'coreshop.company.address_access.company_only',
         ];
 
         $types[] = [
             'value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY,
-            'key'   => 'coreshop.admin.company.address_access.own_and_company'
+            'key' => 'coreshop.company.address_access.own_and_company',
         ];
 
         return $types;
     }
 
-    /**
-     * @param array $context
-     * @param Data  $fieldDefinition
-     *
-     * @return mixed
-     */
-    public function getDefaultValue($context, $fieldDefinition)
+    public function getDefaultValue($context, $fieldDefinition): string
     {
         return CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY;
     }
 
-    /**
-     * @param array $context
-     * @param Data $fieldDefinition
-     *
-     * @return bool
-     */
-    public function hasStaticOptions($context, $fieldDefinition)
+    public function hasStaticOptions($context, $fieldDefinition): bool
     {
         return false;
     }
-
 }

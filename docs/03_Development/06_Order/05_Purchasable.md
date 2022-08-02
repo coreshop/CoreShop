@@ -20,25 +20,19 @@ As an example, we create a ProductSetCalculator, which takes prices of each cons
 namespace AppBundle\CoreShop\Order\Calculator;
 
 use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Order\Exception\NoPurchasablePriceFoundException;use CoreShop\Component\Order\Model\PurchasableInterface;
 use Pimcore\Model\Product\ProductSet;
 
 final class ProductSetCalculator implements PurchasablePriceCalculatorInterface
 {
-    /**
-     * @var PurchasablePriceCalculatorInterface
-     */
-    private $purchasablePriceCalculator;
+    private PurchasablePriceCalculatorInterface $purchasablePriceCalculator;
 
-    /**
-     * @param PurchasablePriceCalculatorInterface $purchasablePriceCalculator
-     */
     public function __construct(PurchasablePriceCalculatorInterface $purchasablePriceCalculator)
     {
         $this->purchasablePriceCalculator = $purchasablePriceCalculator;
     }
 
-    public function getPrice(PurchasableInterface $purchasable)
+    public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int
     {
         if ($purchasable instanceof ProductSet) {
             $price = 0;
@@ -50,7 +44,7 @@ final class ProductSetCalculator implements PurchasablePriceCalculatorInterface
             return $price;
         }
 
-        return null;
+        throw new NoPurchasablePriceFoundException($this);
     }
 
 }

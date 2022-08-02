@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Locale\Context;
 
@@ -17,24 +19,16 @@ use Pimcore\Tool;
 
 class PimcoreLocaleContext implements LocaleContextInterface
 {
-    /**
-     * @var LocaleServiceInterface
-     */
-    private $pimcoreLocaleService;
-
-    /**
-     * @param LocaleServiceInterface $pimcoreLocaleService
-     */
-    public function __construct(LocaleServiceInterface $pimcoreLocaleService)
+    public function __construct(private LocaleServiceInterface $pimcoreLocaleService)
     {
-        $this->pimcoreLocaleService = $pimcoreLocaleService;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
+        /**
+         * @var string|null $pimcoreLocale
+         * @psalm-var string|null $pimcoreLocale
+         */
         $pimcoreLocale = $this->pimcoreLocaleService->findLocale();
 
         if (null === $pimcoreLocale) {

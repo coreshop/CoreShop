@@ -5,19 +5,16 @@ services:
     coreshop.behat.context.domain.product:
         class: CoreShop\Behat\Context\Domain\ProductContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.context.shopper'
-            - '@coreshop.repository.product'
-            - '@coreshop.product.price_calculator'
-            - '@coreshop.product.taxed_price_calculator'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+            - '@CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface'
+            - '@CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.product_specific_price_rule:
         class: CoreShop\Behat\Context\Domain\ProductSpecificPriceRuleContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.context.shopper'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
             - '@coreshop.product_specific_price_rule.processor'
         tags:
             - { name: fob.context_service }
@@ -25,8 +22,7 @@ services:
     coreshop.behat.context.domain.product_price_rule:
         class: CoreShop\Behat\Context\Domain\ProductPriceRuleContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.context.shopper'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
             - '@coreshop.product_price_rule.processor'
         tags:
             - { name: fob.context_service }
@@ -34,33 +30,29 @@ services:
     coreshop.behat.context.domain.customer:
         class: CoreShop\Behat\Context\Domain\CustomerContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.context.customer'
+            - '@CoreShop\Component\Customer\Context\CustomerContextInterface'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.currency:
         class: CoreShop\Behat\Context\Domain\CurrencyContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.currency'
-            - '@coreshop.context.currency'
-            - '@coreshop.money_formatter'
+            - '@CoreShop\Component\Currency\Context\CurrencyContextInterface'
+            - '@CoreShop\Component\Currency\Formatter\MoneyFormatterInterface'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.exchange_rate:
         class: CoreShop\Behat\Context\Domain\ExchangeRateContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.currency_converter'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.tax_rate:
         class: CoreShop\Behat\Context\Domain\TaxRateContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.tax_rate'
         tags:
             - { name: fob.context_service }
@@ -68,27 +60,24 @@ services:
     coreshop.behat.context.domain.tax_rule_group:
         class: CoreShop\Behat\Context\Domain\TaxRuleGroupContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.factory.address'
             - '@coreshop.repository.tax_rule_group'
             - '@coreshop.repository.tax_rule'
-            - '@coreshop.taxation.factory.tax_calculator'
-            - '@coreshop.context.country'
+            - '@CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface'
+            - '@CoreShop\Component\Address\Context\CountryContextInterface'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.cart:
         class: CoreShop\Behat\Context\Domain\CartContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.context.cart'
+            - '@CoreShop\Component\Order\Context\CartContextInterface'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.category:
         class: CoreShop\Behat\Context\Domain\CategoryContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.category'
         tags:
             - { name: fob.context_service }
@@ -96,22 +85,21 @@ services:
     coreshop.behat.context.domain.shipping:
         class: CoreShop\Behat\Context\Domain\ShippingContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.carrier'
             - '@coreshop.shipping_rule.processor'
             - '@coreshop.factory.address'
-            - '@coreshop.carrier.price_calculator'
-            - '@coreshop.carrier.shipping_rule.checker'
+            - '@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface'
+            - '@CoreShop\Component\Shipping\Validator\ShippingRuleCarrierValidator'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.country:
         class: CoreShop\Behat\Context\Domain\CountryContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.country'
-            - '@coreshop.context.country'
-            - '@coreshop.address.formatter'
+            - '@CoreShop\Component\Address\Context\CountryContextInterface'
+            - '@CoreShop\Component\Address\Formatter\AddressFormatterInterface'
             - '@CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver'
         tags:
             - { name: fob.context_service }
@@ -119,7 +107,6 @@ services:
     coreshop.behat.context.domain.index:
         class: CoreShop\Behat\Context\Domain\IndexContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.index'
             - '@doctrine.orm.entity_manager'
         tags:
@@ -128,7 +115,6 @@ services:
     coreshop.behat.context.domain.pimcore_class:
         class: CoreShop\Behat\Context\Domain\PimcoreClassContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.behat.class_storage'
         tags:
             - { name: fob.context_service }
@@ -136,49 +122,37 @@ services:
     coreshop.behat.context.domain.order:
         class: CoreShop\Behat\Context\Domain\OrderContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.state_machine_manager'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.notification_rule:
         class: CoreShop\Behat\Context\Domain\NotificationContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.behat.notification_rule_listener'
+            - '@CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListener'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.seo:
         class: CoreShop\Behat\Context\Domain\SEOContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.seo.presentation'
-            - '@Pimcore\Templating\Helper\HeadTitle'
-            - '@Pimcore\Templating\Helper\HeadMeta'
+            - '@CoreShop\Component\SEO\SEOPresentationInterface'
+            - '@Pimcore\Twig\Extension\Templating\HeadTitle'
+            - '@Pimcore\Twig\Extension\Templating\HeadMeta'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.link_generator:
         class: CoreShop\Behat\Context\Domain\LinkGeneratorContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.link_generator'
-        tags:
-            - { name: fob.context_service }
-
-    coreshop.behat.context.domain.placeholder:
-        class: CoreShop\Behat\Context\Domain\PlaceholderContext
-        arguments:
-            - '@coreshop.behat.shared_storage'
+            - '@router'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.pimcore:
         class: CoreShop\Behat\Context\Domain\PimcoreContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '%kernel.root_dir%/../web'
+            - '%kernel.project_dir%/public'
             - '%coreshop.all.pimcore.admin.js%'
             - '%coreshop.all.pimcore.admin.css%'
             - '%coreshop.all.pimcore.admin.editmode_js%'
@@ -189,18 +163,16 @@ services:
     coreshop.behat.context.domain.filter:
         class: CoreShop\Behat\Context\Domain\FilterContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.filter'
-            - '@coreshop.factory.filter.list'
-            - '@coreshop.filter.processor'
+            - '@CoreShop\Component\Index\Factory\FilteredListingFactoryInterface'
+            - '@CoreShop\Component\Index\Filter\FilterProcessorInterface'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.tracking:
         class: CoreShop\Behat\Context\Domain\TrackingContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.tracking.extractor'
+            - '@CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface'
             - '@coreshop.registry.tracking.tracker'
         tags:
             - { name: fob.context_service }
@@ -208,7 +180,6 @@ services:
     coreshop.behat.context.domain.index_condition:
         class: CoreShop\Behat\Context\Domain\IndexConditionContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.registry.index.worker'
         tags:
             - { name: fob.context_service }
@@ -216,9 +187,7 @@ services:
     coreshop.behat.context.domain.cart_price_rule:
         class: CoreShop\Behat\Context\Domain\CartPriceRuleContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.context.shopper'
-            - '@coreshop.cart_price_rule.rule_validation.processor'
+            - '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface'
         tags:
             - { name: fob.context_service }
 
@@ -232,17 +201,14 @@ services:
     coreshop.behat.context.domain.theme:
         class: CoreShop\Behat\Context\Domain\ThemeContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.theme.resolver'
-            - '@coreshop.theme.active_theme'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.product_quantity_price_rule:
         class: CoreShop\Behat\Context\Domain\ProductQuantityPriceRuleContext
         arguments:
-            - '@coreshop.behat.shared_storage'
-            - '@coreshop.context.shopper'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
             - '@coreshop.product_quantity_price_rules.processor'
         tags:
             - { name: fob.context_service }
@@ -250,7 +216,6 @@ services:
     coreshop.behat.context.domain.product_unit:
         class: CoreShop\Behat\Context\Domain\ProductUnitContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.product_unit'
         tags:
             - { name: fob.context_service }
@@ -258,13 +223,19 @@ services:
     coreshop.behat.context.domain.menu:
         class: CoreShop\Behat\Context\Domain\MenuContext
         arguments:
-            - '@coreshop.behat.shared_storage'
             - '@knp_menu.menu_provider'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.domain.recycle_bin:
         class: CoreShop\Behat\Context\Domain\RecycleBinContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.variant:
+        class: CoreShop\Behat\Context\Domain\VariantContext
         arguments:
             - '@coreshop.behat.shared_storage'
         tags:

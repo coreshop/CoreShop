@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
@@ -22,31 +24,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $getterTypeRegistry;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $interpreterTypeRegistry;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry, FormTypeRegistryInterface $getterTypeRegistry, FormTypeRegistryInterface $interpreterTypeRegistry)
+    public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry, private FormTypeRegistryInterface $getterTypeRegistry, private FormTypeRegistryInterface $interpreterTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups, $formTypeRegistry);
-
-        $this->getterTypeRegistry = $getterTypeRegistry;
-        $this->interpreterTypeRegistry = $interpreterTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options = [])
+    public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         parent::buildForm($builder, $options);
 
@@ -125,30 +108,25 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     }
 
     /**
-     * @param FormInterface $form
      * @param string        $configurationType
      */
-    protected function addGetterConfigurationFields(FormInterface $form, $configurationType)
+    protected function addGetterConfigurationFields(FormInterface $form, $configurationType): void
     {
         $form->add('getterConfig', $configurationType);
     }
 
     /**
-     * @param FormInterface $form
      * @param string        $configurationType
      */
-    protected function addInterpreterConfigurationFields(FormInterface $form, $configurationType)
+    protected function addInterpreterConfigurationFields(FormInterface $form, $configurationType): void
     {
         $form->add('interpreterConfig', $configurationType);
     }
 
     /**
-     * @param FormInterface $form
      * @param mixed         $data
-     *
-     * @return string|null
      */
-    protected function getGetterRegistryIdentifier(FormInterface $form, $data = null)
+    protected function getGetterRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
         if (null !== $data && null !== $data->getGetter()) {
             return $data->getGetter();
@@ -158,12 +136,9 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     }
 
     /**
-     * @param FormInterface $form
      * @param mixed         $data
-     *
-     * @return string|null
      */
-    protected function getInterpreterRegistryIdentifier(FormInterface $form, $data = null)
+    protected function getInterpreterRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
         if (null !== $data && null !== $data->getInterpreter()) {
             return $data->getInterpreter();
@@ -172,10 +147,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_column';
     }

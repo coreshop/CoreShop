@@ -1,5 +1,6 @@
 imports:
-    - { resource: "services/form.yml" }
-    - { resource: "services/workflow.yml" }
-    - { resource: "services/resolver.yml" }
-    - { resource: "services/pimcore.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/form.yml }
+    - { resource: services/workflow.yml }
+    - { resource: services/resolver.yml }
+    - { resource: services/pimcore.yml }

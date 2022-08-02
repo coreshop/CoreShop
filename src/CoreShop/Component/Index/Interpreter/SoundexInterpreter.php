@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Interpreter;
 
@@ -17,12 +19,13 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 class SoundexInterpreter implements InterpreterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
-    {
-        if (is_null($value)) {
+    public function interpret(
+        mixed $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        array $interpreterConfig = []
+    ): mixed {
+        if (null === $value) {
             return null;
         }
 
@@ -30,11 +33,11 @@ class SoundexInterpreter implements InterpreterInterface
             sort($value);
             $string = implode(' ', $value);
         } else {
-            $string = (string) $value;
+            $string = (string)$value;
         }
 
         $soundEx = soundex($string);
 
-        return (int) ord(substr($soundEx, 0, 1)) . substr($soundEx, 1);
+        return ord($soundEx[0]) . substr($soundEx, 1);
     }
 }

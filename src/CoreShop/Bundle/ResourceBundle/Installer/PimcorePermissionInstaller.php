@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
@@ -21,40 +23,30 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcorePermissionInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    /**
-     * @param KernelInterface $kernel
-     * @param Connection      $connection
-     */
-    public function __construct(KernelInterface $kernel, Connection $connection)
+    public function __construct(private KernelInterface $kernel, private Connection $connection)
     {
-        $this->kernel = $kernel;
-        $this->connection = $connection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.permissions', $applicationName) : 'coreshop.all.permissions';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            /**
+             * @var array $permissionGroups
+             */
             $permissionGroups = $this->kernel->getContainer()->getParameter($parameter);
 
             if ($parameter !== 'coreshop.all.permissions') {
-                $permissionGroups = [
-                    $applicationName => $permissionGroups,
-                ];
+                if (null !== $applicationName) {
+                    $permissionGroups = [
+                        $applicationName => $permissionGroups,
+                    ];
+                } else {
+                    $permissionGroups = [
+                        'all' => $permissionGroups,
+                    ];
+                }
             }
 
             $progress = new ProgressBar($output);
@@ -62,7 +54,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
             $progress->setEmptyBarCharacter(' ');
             $progress->setProgressCharacter('<comment>░</comment>');
             $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
-            $progress->start(count($permissionGroups, COUNT_RECURSIVE));
+            $progress->start(count($permissionGroups, \COUNT_RECURSIVE));
 
             $columns = array_map(function (Column $column) {
                 return $column->getName();

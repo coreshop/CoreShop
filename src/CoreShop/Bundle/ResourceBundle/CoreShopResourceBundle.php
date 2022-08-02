@@ -6,15 +6,18 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle;
 
 use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\PimcoreCachePass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreRepositoriesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreResourcesPass;
@@ -23,25 +26,24 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackClassesPass
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackRepositoryPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\ValidatorAutoMappingFixPass;
 use JMS\SerializerBundle\JMSSerializerBundle;
-use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopResourceBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
-    const DRIVER_DOCTRINE_ORM = 'doctrine/orm';
-    const DRIVER_PIMCORE = 'pimcore';
+    public const DRIVER_DOCTRINE_ORM = 'doctrine/orm';
 
-    const PIMCORE_MODEL_TYPE_OBJECT = 'object';
-    const PIMCORE_MODEL_TYPE_FIELD_COLLECTION = 'fieldcollection';
-    const PIMCORE_MODEL_TYPE_BRICK = 'brick';
+    public const DRIVER_PIMCORE = 'pimcore';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public const PIMCORE_MODEL_TYPE_OBJECT = 'object';
+
+    public const PIMCORE_MODEL_TYPE_FIELD_COLLECTION = 'fieldcollection';
+
+    public const PIMCORE_MODEL_TYPE_BRICK = 'brick';
+
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -53,39 +55,29 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $container->addCompilerPass(new StackRepositoryPass());
         $container->addCompilerPass(new RegisterPimcoreRepositoriesPass());
         $container->addCompilerPass(new ValidatorAutoMappingFixPass());
+        $container->addCompilerPass(new PimcoreCachePass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         $collection->addBundle(new JMSSerializerBundle(), 3900);
         $collection->addBundle(new \CoreShop\Bundle\PimcoreBundle\CoreShopPimcoreBundle(), 3850);
         $collection->addBundle(new \CoreShop\Bundle\OptimisticEntityLockBundle\CoreShopOptimisticEntityLockBundle(), 3800);
+        $collection->addBundle(new \CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle(), 3850);
         $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
     }
 
-    /**
-     * @return string
-     */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Resource';
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Resource Bundle';
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         $bundleName = 'coreshop/pimcore-bundle';
 
@@ -99,16 +91,6 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
             }
         }
 
-        if (class_exists(Versions::class)) {
-            if (isset(Versions::VERSIONS[$bundleName])) {
-                return Versions::getVersion($bundleName);
-            }
-
-            if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
-                return Versions::getVersion('coreshop/core-shop');
-            }
-        }
-
         if (class_exists(Version::class)) {
             return Version::getVersion();
         }
@@ -116,10 +98,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         return '';
     }
 
-    /**
-     * @return string[]
-     */
-    public static function getAvailableDrivers()
+    public static function getAvailableDrivers(): array
     {
         return [
             self::DRIVER_DOCTRINE_ORM,

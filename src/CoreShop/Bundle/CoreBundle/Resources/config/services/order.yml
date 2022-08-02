@@ -12,50 +12,23 @@ services:
         tags:
             - {name: form.type}
 
-    coreshop.core.order.transformer.cart_to_order:
-        class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
-        decorates: coreshop.order.transformer.cart_to_order
+    CoreShop\Component\Core\Order\Transformer\OrderToShipmentTransformer:
+        decorates: CoreShop\Component\Order\Transformer\OrderToShipmentTransformer
         decoration_priority: 10
         arguments:
-            - '@coreshop.core.order.transformer.cart_to_order.inner'
+            - '@CoreShop\Component\Core\Order\Transformer\OrderToShipmentTransformer.inner'
 
-    coreshop.core.order.transformer.cart_to_quote:
-        class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
-        decorates: coreshop.order.transformer.cart_to_quote
-        arguments:
-            - '@coreshop.core.order.transformer.cart_to_quote.inner'
-
-    coreshop.core.order.transformer.cart_item_to_order_item:
-        class: CoreShop\Component\Core\Order\Transformer\CartItemToSaleItemTransformer
-        decorates: coreshop.order.transformer.cart_item_to_order_item
-        arguments:
-            - '@coreshop.core.order.transformer.cart_item_to_order_item.inner'
-
-    coreshop.core.order.transformer.cart_item_to_quote_item:
-        class: CoreShop\Component\Core\Order\Transformer\CartItemToSaleItemTransformer
-        decorates: coreshop.order.transformer.cart_item_to_quote_item
-        arguments:
-            - '@coreshop.core.order.transformer.cart_item_to_quote_item.inner'
-
-    coreshop.core.order.transformer.order_to_shipment:
-        class: CoreShop\Component\Core\Order\Transformer\OrderToShipmentTransformer
-        decorates: coreshop.order.transformer.order_to_shipment
+    CoreShop\Component\Core\Order\Transformer\OrderItemToShipmentItemTransformer:
+        decorates: CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer
         decoration_priority: 10
         arguments:
-            - '@coreshop.core.order.transformer.order_to_shipment.inner'
-
-    coreshop.core.order_shipment.transformer.order_item_to_shipment_item:
-        class: CoreShop\Component\Core\Order\Transformer\OrderItemToShipmentItemTransformer
-        decorates: coreshop.order_shipment.transformer.order_item_to_shipment_item
-        decoration_priority: 10
-        arguments:
-            - '@coreshop.core.order_shipment.transformer.order_item_to_shipment_item.inner'
+            - '@CoreShop\Component\Core\Order\Transformer\OrderItemToShipmentItemTransformer.inner'
 
     coreshop.maintenance.cart.expire_task:
-        class: CoreShop\Bundle\CoreBundle\Maintenance\ProposalExpireTask
+        class: CoreShop\Bundle\CoreBundle\Maintenance\OrderExpireTask
         arguments:
-            - '@coreshop.configuration.service'
-            - '@coreshop.cart.expire'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
+            - '@CoreShop\Bundle\OrderBundle\Expiration\CartExpiration'
             - 'cart'
             - '%coreshop.cart.expiration.days%'
             - { anonymous: '%coreshop.cart.expiration.anonymous%', customer: '%coreshop.cart.expiration.customer%'}
@@ -63,10 +36,10 @@ services:
             - { name: pimcore.maintenance.task, type: coreshop_expire_carts }
 
     coreshop.maintenance.order.expire_task:
-        class: CoreShop\Bundle\CoreBundle\Maintenance\ProposalExpireTask
+        class: CoreShop\Bundle\CoreBundle\Maintenance\OrderExpireTask
         arguments:
-            - '@coreshop.configuration.service'
-            - '@coreshop.order.expire'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
+            - '@CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration'
             - 'order'
             - '%coreshop.order.expiration.days%'
             - []
@@ -78,7 +51,7 @@ services:
         decorates: coreshop.order.number_generator.default
         arguments:
             - '@coreshop.order.number_generator.prefix_suffix.inner'
-            - '@coreshop.configuration.service'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
             - 'system.order.prefix'
             - 'system.order.suffix'
 
@@ -87,7 +60,7 @@ services:
         decorates: coreshop.quote.number_generator.default
         arguments:
             - '@coreshop.quote.number_generator.prefix_suffix.inner'
-            - '@coreshop.configuration.service'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
             - 'system.quote.prefix'
             - 'system.quote.suffix'
 
@@ -96,7 +69,7 @@ services:
         decorates: coreshop.order_invoice.number_generator.default
         arguments:
             - '@coreshop.order_invoice.number_generator.prefix_suffix.inner'
-            - '@coreshop.configuration.service'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
             - 'system.invoice.prefix'
             - 'system.invoice.suffix'
 
@@ -105,22 +78,21 @@ services:
         decorates: coreshop.order_shipment.number_generator.default
         arguments:
             - '@coreshop.order_shipment.number_generator.prefix_suffix.inner'
-            - '@coreshop.configuration.service'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
             - 'system.shipment.prefix'
             - 'system.shipment.suffix'
 
-    coreshop.mail.processor.order: '@CoreShop\Bundle\CoreBundle\Order\OrderMailProcessor'
+    CoreShop\Component\Core\Order\OrderMailProcessorInterface: '@CoreShop\Bundle\CoreBundle\Order\OrderMailProcessor'
     CoreShop\Bundle\CoreBundle\Order\OrderMailProcessor:
         arguments:
            - '@monolog.logger.pimcore'
-           - '@coreshop.money_formatter'
+           - '@CoreShop\Component\Currency\Formatter\MoneyFormatterInterface'
            - '@coreshop.repository.order_invoice'
            - '@coreshop.repository.order_shipment'
            - '@coreshop.renderer.order.pdf'
-           - '@coreshop.theme.helper'
-           - '@coreshop.mail_processor'
+           - '@CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface'
+           - '@CoreShop\Component\Pimcore\Mail\MailProcessorInterface'
 
-    coreshop.core.cart_item.quantity_modifier: '@CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier'
     CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier:
         decorates: coreshop.cart_item.quantity_modifier
 
@@ -128,3 +100,26 @@ services:
         decorates: 'CoreShop\Component\Order\Cart\CartContextResolver'
         arguments:
             - '@CoreShop\Component\Core\Cart\CartContextResolver.inner'
+
+
+    CoreShop\Component\Order\Committer\OrderCommitterInterface: '@CoreShop\Component\Core\Order\Committer\OrderCommitter'
+    CoreShop\Component\Core\Order\Committer\OrderCommitter:
+        arguments:
+            - '@CoreShop\Component\Order\Manager\CartManagerInterface'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
+            - '@coreshop.order.number_generator.default'
+            - '@CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface'
+            - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
+
+    CoreShop\Component\Order\Committer\QuoteCommitterInterface: '@CoreShop\Component\Core\Order\Committer\QuoteCommitter'
+    CoreShop\Component\Core\Order\Committer\QuoteCommitter:
+        arguments:
+            - '@CoreShop\Component\Order\Manager\CartManagerInterface'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
+            - '@coreshop.quote.number_generator.default'
+            - '@CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface'
+            - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
+
+    CoreShop\Bundle\CoreBundle\Twig\AddToCartExtension:
+        tags:
+            - { name: twig.extension }

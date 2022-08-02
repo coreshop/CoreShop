@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FixtureBundle\Command;
 
@@ -23,40 +25,22 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 class LoadDataFixturesCommand extends Command
 {
-    const COMMAND_NAME = 'coreshop:fixture:data:load';
+    public const COMMAND_NAME = 'coreshop:fixture:data:load';
 
-    const MAIN_FIXTURES_TYPE = DataFixturesExecutorInterface::MAIN_FIXTURES;
-    const DEMO_FIXTURES_TYPE = DataFixturesExecutorInterface::DEMO_FIXTURES;
+    public const MAIN_FIXTURES_TYPE = DataFixturesExecutorInterface::MAIN_FIXTURES;
 
-    const MAIN_FIXTURES_PATH = 'Fixtures/Data/Application';
-    const DEMO_FIXTURES_PATH = 'Fixtures/Data/Demo';
+    public const DEMO_FIXTURES_TYPE = DataFixturesExecutorInterface::DEMO_FIXTURES;
 
-    /**
-     * @var DataFixturesLoader
-     */
-    protected $fixtureLoader;
+    public const MAIN_FIXTURES_PATH = 'Fixtures/Data/Application';
 
-    /**
-     * @var DataFixturesExecutorInterface
-     */
-    protected $fixtureExecutor;
+    public const DEMO_FIXTURES_PATH = 'Fixtures/Data/Demo';
 
-    /**
-     * @param DataFixturesLoader            $fixtureLoader
-     * @param DataFixturesExecutorInterface $fixtureExecutor
-     */
-    public function __construct(DataFixturesLoader $fixtureLoader, DataFixturesExecutorInterface $fixtureExecutor)
+    public function __construct(protected DataFixturesLoader $fixtureLoader, protected DataFixturesExecutorInterface $fixtureExecutor)
     {
-        $this->fixtureLoader = $fixtureLoader;
-        $this->fixtureExecutor = $fixtureExecutor;
-
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName(static::COMMAND_NAME)
             ->setDescription('Load data fixtures.')
@@ -87,10 +71,7 @@ class LoadDataFixturesCommand extends Command
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fixtures = null;
 
@@ -100,7 +81,7 @@ class LoadDataFixturesCommand extends Command
             $output->writeln('');
             $output->writeln(sprintf('<error>%s</error>', $ex->getMessage()));
 
-            return $ex->getCode() == 0 ? 1 : $ex->getCode();
+            return 1;
         }
 
         if (!empty($fixtures)) {
@@ -115,9 +96,6 @@ class LoadDataFixturesCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
      * @return array
      *
      * @throws \RuntimeException if loading of data fixtures should be terminated
@@ -153,8 +131,6 @@ class LoadDataFixturesCommand extends Command
     /**
      * Output list of fixtures.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      * @param array           $fixtures
      */
     protected function outputFixtures(InputInterface $input, OutputInterface $output, $fixtures)
@@ -166,15 +142,13 @@ class LoadDataFixturesCommand extends Command
             )
         );
         foreach ($fixtures as $fixture) {
-            $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', get_class($fixture)));
+            $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $fixture::class));
         }
     }
 
     /**
      * Process fixtures.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      * @param array           $fixtures
      */
     protected function processFixtures(InputInterface $input, OutputInterface $output, $fixtures)
@@ -187,26 +161,19 @@ class LoadDataFixturesCommand extends Command
         );
 
         $this->fixtureExecutor->setLogger(
-            function ($message) use ($output) {
+            function (string $message) use ($output) {
                 $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
             }
         );
         $this->fixtureExecutor->execute($fixtures, $this->getTypeOfFixtures($input));
     }
 
-    /**
-     * @param InputInterface $input
-     *
-     * @return string
-     */
-    protected function getTypeOfFixtures(InputInterface $input)
+    protected function getTypeOfFixtures(InputInterface $input): string
     {
-        return $input->getOption('fixtures-type');
+        return (string)$input->getOption('fixtures-type');
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return string
      */
     protected function getFixtureRelativePath(InputInterface $input)
@@ -215,6 +182,6 @@ class LoadDataFixturesCommand extends Command
             ? self::DEMO_FIXTURES_PATH
             : self::MAIN_FIXTURES_PATH;
 
-        return str_replace('/', DIRECTORY_SEPARATOR, '/' . $fixtureRelativePath);
+        return str_replace('/', \DIRECTORY_SEPARATOR, '/' . $fixtureRelativePath);
     }
 }

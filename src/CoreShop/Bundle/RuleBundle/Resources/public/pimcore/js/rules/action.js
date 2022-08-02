@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -17,6 +17,14 @@ coreshop.rules.action = Class.create({
     initialize: function (actions) {
         this.actions = actions;
         this.dirty = false;
+    },
+
+    reload: function (actions) {
+        this.actionsContainer.removeAll();
+
+        Ext.each(actions, function(action) {
+            this.addAction(action.type, action, false);
+        }.bind(this));
     },
 
     getLayout: function () {
@@ -127,12 +135,14 @@ coreshop.rules.action = Class.create({
                 }
             }
 
-            if (actionClass.data.id) {
-                action['id'] = actionClass.data.id;
+            if (actionClass.id) {
+                action['id'] = actionClass.id;
             }
 
             action['configuration'] = configuration;
             action['type'] = actions[i].xparent.type;
+            action['sort'] = (i + 1);
+
             actionData.push(action);
 
             if (Ext.isFunction(this.prepareAction)) {

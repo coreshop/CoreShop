@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
@@ -21,6 +23,7 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRetailPr
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableWholesalePriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartContextsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartProcessorPass;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface;
@@ -37,23 +40,22 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopOrderExtension extends AbstractModelExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
-        $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
+        $loader->load('services.yml');
 
-        if (array_key_exists('pimcore_admin', $config)) {
-            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
+        $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
+
+        if (array_key_exists('pimcore_admin', $configs)) {
+            $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
         }
 
-        if (array_key_exists('stack', $config)) {
-            $this->registerStack('coreshop', $config['stack'], $container);
+        if (array_key_exists('stack', $configs)) {
+            $this->registerStack('coreshop', $configs['stack'], $container);
         }
 
         $bundles = $container->getParameter('kernel.bundles');
@@ -62,12 +64,12 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             $loader->load('services/data_hub.yml');
         }
 
-        $container->setParameter('coreshop.order.legacy_serialization', $config['legacy_serialization']);
-        $container->setParameter('coreshop.cart.expiration.days', $config['expiration']['cart']['days']);
-        $container->setParameter('coreshop.cart.expiration.anonymous', $config['expiration']['cart']['anonymous']);
-        $container->setParameter('coreshop.cart.expiration.customer', $config['expiration']['cart']['customer']);
+        $container->setParameter('coreshop.order.legacy_serialization', $configs['legacy_serialization']);
+        $container->setParameter('coreshop.cart.expiration.days', $configs['expiration']['cart']['days']);
+        $container->setParameter('coreshop.cart.expiration.anonymous', $configs['expiration']['cart']['anonymous']);
+        $container->setParameter('coreshop.cart.expiration.customer', $configs['expiration']['cart']['customer']);
 
-        $container->setParameter('coreshop.order.expiration.days', $config['expiration']['order']['days']);
+        $container->setParameter('coreshop.order.expiration.days', $configs['expiration']['order']['days']);
 
         $loader->load('services.yml');
 

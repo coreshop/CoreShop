@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DataHub\Resolver;
 
@@ -18,17 +20,8 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class ResourceResolver
 {
-    /**
-     * @var Data
-     */
-    public $fieldDefinition;
-
-    /**
-     * @param Data $fieldDefinition
-     */
-    public function __construct(Data $fieldDefinition)
+    public function __construct(public Data $fieldDefinition)
     {
-        $this->fieldDefinition = $fieldDefinition;
     }
 
     public function resolve($value = null, $args = [], $context = [], ResolveInfo $resolveInfo = null)

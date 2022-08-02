@@ -1,0 +1,9 @@
+services:
+    FriendsOfBehat\PageObjectExtension\Element\Element:
+        arguments:
+            $session: '@behat.mink.default_session'
+            $minkParameters: '@behat.mink.parameters'
+
+    CoreShop\Behat\Element\Frontend\Account\RegisterElementInterface: '@CoreShop\Behat\Element\Frontend\Account\RegisterElement'
+    CoreShop\Behat\Element\Frontend\Account\RegisterElement:
+        parent: FriendsOfBehat\PageObjectExtension\Element\Element

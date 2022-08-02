@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -21,70 +23,20 @@ use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pimcore\Tool\Console;
+use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Process\Process;
 
 final class CountryContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $countryFactory;
-
-    /**
-     * @var CountryRepositoryInterface
-     */
-    private $countryRepository;
-
-    /**
-     * @var FixedCountryContext
-     */
-    private $fixedCountryContext;
-
-    /**
-     * @var string
-     */
-    private $kernelRootDirectory;
-
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param ObjectManager              $objectManager
-     * @param FactoryInterface           $countryFactory
-     * @param CountryRepositoryInterface $countryRepository
-     * @param FixedCountryContext        $fixedCountryContext
-     * @param string                     $kernelRootDirectory
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
-        FactoryInterface $countryFactory,
-        CountryRepositoryInterface $countryRepository,
-        FixedCountryContext $fixedCountryContext,
-        string $kernelRootDirectory
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
-        $this->countryFactory = $countryFactory;
-        $this->countryRepository = $countryRepository;
-        $this->fixedCountryContext = $fixedCountryContext;
-        $this->kernelRootDirectory = $kernelRootDirectory;
+    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FactoryInterface $countryFactory, private CountryRepositoryInterface $countryRepository, private FixedCountryContext $fixedCountryContext, private string $kernelRootDirectory)
+    {
     }
 
     /**
      * @Given /^the (country "[^"]+") is valid for (store "[^"]+")$/
      * @Given /^the (country) is valid for (store "[^"]+")$/
      */
-    public function currencyIsValidForStore(CountryInterface $country, StoreInterface $store)
+    public function currencyIsValidForStore(CountryInterface $country, StoreInterface $store): void
     {
         $store->addCountry($country);
 
@@ -95,7 +47,7 @@ final class CountryContext implements Context
     /**
      * @Given /^the (country "[^"]+") is invalid for (store "[^"]+")$/
      */
-    public function currencyIsInValidForStore(CountryInterface $country, StoreInterface $store)
+    public function currencyIsInValidForStore(CountryInterface $country, StoreInterface $store): void
     {
         $store->removeCountry($country);
 
@@ -106,7 +58,7 @@ final class CountryContext implements Context
     /**
      * @Given /^the site has a country "([^"]+)" with (currency "[^"]+")$/
      */
-    public function theSiteHasACountry($name, CurrencyInterface $currency)
+    public function theSiteHasACountry($name, CurrencyInterface $currency): void
     {
         $this->createCountry($name, $currency);
     }
@@ -114,7 +66,7 @@ final class CountryContext implements Context
     /**
      * @Then /^the (country "[^"]+") is in (zone "[^"]+")$/
      */
-    public function theCountryIsInZone(CountryInterface $country, ZoneInterface $zone)
+    public function theCountryIsInZone(CountryInterface $country, ZoneInterface $zone): void
     {
         $country->setZone($zone);
 
@@ -124,7 +76,7 @@ final class CountryContext implements Context
     /**
      * @Then /^the (country "[^"]+") is active$/
      */
-    public function theCountryIsActive(CountryInterface $country)
+    public function theCountryIsActive(CountryInterface $country): void
     {
         $country->setActive(true);
 
@@ -134,7 +86,7 @@ final class CountryContext implements Context
     /**
      * @Given /^I am in (country "[^"]+")$/
      */
-    public function iAmInCountry(CountryInterface $country)
+    public function iAmInCountry(CountryInterface $country): void
     {
         $this->fixedCountryContext->setCountry($country);
     }
@@ -143,7 +95,7 @@ final class CountryContext implements Context
      * @Given /^the (countries) address format is "(.*)"$/
      * @Given /^the (countries "[^"]+") address format is "(.*)"$/
      */
-    public function theCountriesAddressFormatIs(CountryInterface $country, $format)
+    public function theCountriesAddressFormatIs(CountryInterface $country, $format): void
     {
         $country->setAddressFormat(str_replace("'", '"', $format));
 
@@ -153,22 +105,24 @@ final class CountryContext implements Context
     /**
      * @Given /^I downloaded the GeoLite2 DB$/
      */
-    public function iDownloadedTheGeoLite2DB()
+    public function iDownloadedTheGeoLite2DB(): void
     {
-        $cmd = sprintf(
-            '%s/etc/geoipupdate/geoipupdate -f %s/etc/geoipupdate/GeoIP.conf -d %s/var/config/',
-            $this->kernelRootDirectory,
-            $this->kernelRootDirectory,
-            $this->kernelRootDirectory
+        $process = new Process(
+            [
+                sprintf('%s/etc/geoipupdate/geoipupdate', $this->kernelRootDirectory),
+                '-f',
+                sprintf('%s/etc/geoipupdate/GeoIP.conf', $this->kernelRootDirectory),
+                '-d',
+                sprintf('%s/var/config/', $this->kernelRootDirectory),
+            ]
         );
-
-        Console::exec($cmd);
+        $process->run();
     }
 
     /**
      * @param string $name
      */
-    private function createCountry($name, CurrencyInterface $currency)
+    private function createCountry($name, CurrencyInterface $currency): void
     {
         $country = $this->countryRepository->findByName($name, 'en');
 
@@ -186,10 +140,7 @@ final class CountryContext implements Context
         }
     }
 
-    /**
-     * @param CountryInterface $country
-     */
-    private function saveCountry(CountryInterface $country)
+    private function saveCountry(CountryInterface $country): void
     {
         $this->objectManager->persist($country);
         $this->objectManager->flush();

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
@@ -19,49 +21,33 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 {
-    /**
-     * @var CodeTracker
-     */
-    public $codeTracker;
+    protected CodeTracker $codeTracker;
 
-    /**
-     * @var ConfigResolverInterface
-     */
-    public $config;
+    protected ConfigResolverInterface $config;
 
-    /**
-     * @var bool
-     */
-    protected $dataLayerIncluded = false;
+    protected bool $dataLayerIncluded = false;
 
-    /**
-     * @param TrackerInterface $tracker
-     */
-    public function setTracker(TrackerInterface $tracker)
+    public function setTracker(TrackerInterface $tracker): void
     {
         // not implemented in GTM. Use CodeTracker instead.
     }
 
-    /**
-     * @param CodeTracker $tracker
-     */
-    public function setCodeTracker(CodeTracker $tracker)
+    public function setCodeTracker(CodeTracker $tracker): void
     {
         $this->codeTracker = $tracker;
     }
 
-    /**
-     * @param ConfigResolverInterface $config
-     */
-    public function setConfigResolver(ConfigResolverInterface $config)
+    public function getCodeTracker(): CodeTracker
+    {
+        return $this->codeTracker;
+    }
+
+    public function setConfigResolver(ConfigResolverInterface $config): void
     {
         $this->config = $config;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -70,10 +56,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackProduct($product)
+    public function trackProduct($product): void
     {
         $this->ensureDataLayer();
 
@@ -90,10 +73,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         $this->codeTracker->addCodePart($result);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackProductImpression($product)
+    public function trackProductImpression($product): void
     {
         $this->ensureDataLayer();
 
@@ -111,38 +91,29 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         $this->codeTracker->addCodePart($result);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCartAdd($cart, $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, $quantity = 1): void
     {
         $this->ensureDataLayer();
         $this->trackCartAction($product, 'add', $quantity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCartRemove($cart, $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, $quantity = 1): void
     {
         $this->ensureDataLayer();
         $this->trackCartAction($product, 'remove', $quantity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null): void
     {
         $this->ensureDataLayer();
 
-        $parameters = [];
+        $actionData = [];
         $actionData['products'] = $cart['items'];
         $actionField = [];
 
-        if (!is_null($stepIdentifier) || !is_null($checkoutOption)) {
+        if (null !== $stepIdentifier || null !== $checkoutOption) {
             $actionField['step'] = $stepIdentifier + 1;
-            if (!is_null($checkoutOption)) {
+            if (null !== $checkoutOption) {
                 $actionField['option'] = $checkoutOption;
             }
         }
@@ -155,16 +126,14 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
             $actionData['actionField'] = $actionField;
         }
 
+        $parameters = [];
         $parameters['actionData'] = $actionData;
 
         $result = $this->renderTemplate('checkout', $parameters);
         $this->codeTracker->addCodePart($result);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutComplete($order)
+    public function trackCheckoutComplete($order): void
     {
         $this->ensureDataLayer();
 
@@ -174,22 +143,19 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
             $actionData['products'][] = $item;
         }
 
+        $parameters = [];
         $parameters['actionData'] = $actionData;
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
         $this->codeTracker->addCodePart($result);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function trackCartAction($product, $action, $quantity = 1)
+    protected function trackCartAction($product, $action, $quantity = 1): void
     {
         $this->ensureDataLayer();
 
-        $product['quantity'] = 1;
+        $product['quantity'] = $quantity;
 
-        $parameters = [];
         $actionData = [$action => []];
 
         if ($action === 'add') {
@@ -198,6 +164,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $actionData[$action]['products'][] = $product;
 
+        $parameters = [];
         $parameters['actionData'] = $actionData;
         $parameters['event'] = $action === 'remove' ? 'csRemoveFromCart' : 'csAddToCart';
 
@@ -205,50 +172,29 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         $this->codeTracker->addCodePart($result);
     }
 
-    /**
-     * Transform ActionData into gtag data array.
-     *
-     * @param array $actionData
-     *
-     * @return array
-     */
-    protected function transformOrder($actionData)
+    protected function transformOrder($actionData): array
     {
         return [
             'id' => $actionData['id'],
             'affiliation' => $actionData['affiliation'] ?: '',
-            'total' => $actionData['total'],
+            'revenue' => $actionData['total'],
             'tax' => $actionData['totalTax'],
             'shipping' => $actionData['shipping'],
             'currency' => $actionData['currency'],
         ];
     }
 
-    /**
-     * Transform product action into gtag data object.
-     *
-     * @param array $item
-     *
-     * @return array
-     */
-    protected function transformProductAction($item)
+    protected function transformProductAction($item): array
     {
         return $this->filterNullValues([
             'id' => $item['id'],
             'name' => $item['name'],
             'category' => $item['category'],
-            'brand' => $item['brand'],
-            'variant' => $item['variant'],
             'price' => round($item['price'], 2),
-            'quantity' => $item['quantity'] ?: 1,
-            'list_position' => $item['position'],
         ]);
     }
 
-    /**
-     * Makes sure data layer is included once before any call.
-     */
-    protected function ensureDataLayer()
+    protected function ensureDataLayer(): void
     {
         if ($this->dataLayerIncluded) {
             return;

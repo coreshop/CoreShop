@@ -6,107 +6,77 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Transformer;
 
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderDocumentItemInterface;
-use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use Webmozart\Assert\Assert;
 
 class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformerInterface
 {
-    /**
-     * @var ObjectServiceInterface
-     */
-    private $objectService;
-
-    /**
-     * @var string
-     */
-    private $pathForItems;
-
-    /**
-     * @var TransformerEventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param ObjectServiceInterface              $objectService
-     * @param string                              $pathForItems
-     * @param TransformerEventDispatcherInterface $eventDispatcher
-     */
-    public function __construct(
-        ObjectServiceInterface $objectService,
-        $pathForItems,
-        TransformerEventDispatcherInterface $eventDispatcher
-    ) {
-        $this->objectService = $objectService;
-        $this->pathForItems = $pathForItems;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(protected FolderCreationServiceInterface $folderCreationService, protected TransformerEventDispatcherInterface $eventDispatcher)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function transform(OrderDocumentInterface $shipment, OrderItemInterface $orderItem, OrderDocumentItemInterface $shipmentItem, $quantity, $options = [])
-    {
-        /**
-         * @var OrderInvoiceInterface      $shipment
-         * @var OrderItemInterface         $orderItem
-         * @var OrderShipmentItemInterface $shipmentItem
-         */
-        Assert::isInstanceOf($orderItem, OrderItemInterface::class);
-        Assert::isInstanceOf($shipment, OrderDocumentInterface::class);
-        Assert::isInstanceOf($shipmentItem, OrderShipmentItemInterface::class);
+    public function transform(
+        OrderDocumentInterface $orderDocument,
+        OrderItemInterface $orderItem,
+        OrderDocumentItemInterface $documentItem,
+        int $quantity,
+        array $options = []
+    ): OrderDocumentItemInterface {
+        Assert::isInstanceOf($documentItem, OrderShipmentItemInterface::class);
 
         $this->eventDispatcher->dispatchPreEvent(
             'shipment_item',
-            $shipmentItem,
+            $documentItem,
             [
-                'shipment' => $shipment,
+                'shipment' => $orderDocument,
                 'order' => $orderItem->getOrder(),
                 'order_item' => $orderItem,
                 'options' => $options,
             ]
         );
 
-        $itemFolder = $this->objectService->createFolderByPath($shipment->getFullPath() . '/' . $this->pathForItems);
+        $itemFolder = $this->folderCreationService->createFolderForResource($documentItem, ['prefix' => $orderDocument->getFullPath()]);
 
-        $shipmentItem->setKey($orderItem->getKey());
-        $shipmentItem->setParent($itemFolder);
-        $shipmentItem->setPublished(true);
+        $documentItem->setKey($orderItem->getKey());
+        $documentItem->setParent($itemFolder);
+        $documentItem->setPublished(true);
 
-        $shipmentItem->setOrderItem($orderItem);
-        $shipmentItem->setQuantity($quantity);
-        $shipmentItem->setTotal($orderItem->getItemPrice(true) * $quantity, true);
-        $shipmentItem->setTotal($orderItem->getItemPrice(false) * $quantity, false);
+        $documentItem->setOrderItem($orderItem);
+        $documentItem->setQuantity($quantity);
+        $documentItem->setTotal($orderItem->getItemPrice(true) * $quantity, true);
+        $documentItem->setTotal($orderItem->getItemPrice(false) * $quantity, false);
 
-        $shipmentItem->setBaseTotal($orderItem->getBaseItemPrice(true) * $quantity, true);
-        $shipmentItem->setBaseTotal($orderItem->getBaseItemPrice(false) * $quantity, false);
+        $documentItem->setConvertedTotal($orderItem->getConvertedItemPrice(true) * $quantity, true);
+        $documentItem->setConvertedTotal($orderItem->getConvertedItemPrice(false) * $quantity, false);
 
-        VersionHelper::useVersioning(function () use ($shipmentItem) {
-            $shipmentItem->save();
+        VersionHelper::useVersioning(function () use ($documentItem) {
+            $documentItem->save();
         }, false);
 
         $this->eventDispatcher->dispatchPostEvent(
             'shipment_item',
-            $shipmentItem,
+            $documentItem,
             [
-                'shipment' => $shipment,
+                'shipment' => $orderDocument,
                 'order' => $orderItem->getOrder(),
                 'order_item' => $orderItem,
                 'options' => $options,
             ]
         );
 
-        return $shipmentItem;
+        return $documentItem;
     }
 }

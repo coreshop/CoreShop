@@ -6,53 +6,41 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Shipping\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
+use CoreShop\Component\Shipping\Exception\NoShippingPriceFoundException;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
 {
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
-    private $shippingCalculatorRegistry;
-
-    /**
-     * @param PrioritizedServiceRegistryInterface $shippingCalculatorRegistry
-     */
-    public function __construct(
-        PrioritizedServiceRegistryInterface $shippingCalculatorRegistry
-    ) {
-        $this->shippingCalculatorRegistry = $shippingCalculatorRegistry;
+    public function __construct(private PrioritizedServiceRegistryInterface $shippingCalculatorRegistry)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int
     {
-        $netPrice = 0;
+        $price = 0;
 
         /**
          * @var CarrierPriceCalculatorInterface $calculator
          */
         foreach ($this->shippingCalculatorRegistry->all() as $calculator) {
-            $price = $calculator->getPrice($carrier, $shippable, $address);
-
-            if (false !== $price && null !== $price) {
-                $netPrice = $price;
-
-                break;
+            try {
+                $price = $calculator->getPrice($carrier, $shippable, $address, $context);
+            } catch (NoShippingPriceFoundException) {
+                continue;
             }
         }
 
-        return $netPrice;
+        return $price;
     }
 }

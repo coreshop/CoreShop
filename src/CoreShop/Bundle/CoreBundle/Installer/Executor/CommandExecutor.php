@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Installer\Executor;
 
@@ -21,43 +23,11 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 final class CommandExecutor
 {
-    /**
-     * @var InputInterface
-     */
-    private $input;
-
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    /**
-     * @var Application
-     */
-    private $application;
-
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param Application     $application
-     */
-    public function __construct(InputInterface $input, OutputInterface $output, Application $application)
+    public function __construct(private InputInterface $input, private OutputInterface $output, private Application $application)
     {
-        $this->input = $input;
-        $this->output = $output;
-        $this->application = $application;
     }
 
-    /**
-     * @param string               $command
-     * @param array                $parameters
-     * @param OutputInterface|null $output
-     *
-     * @return $this
-     *
-     * @throws \Exception
-     */
-    public function runCommand($command, $parameters = [], OutputInterface $output = null)
+    public function runCommand($command, $parameters = [], OutputInterface $output = null): self
     {
         $parameters = array_merge(
             ['command' => $command],
@@ -84,10 +54,7 @@ final class CommandExecutor
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    private function getDefaultParameters()
+    private function getDefaultParameters(): array
     {
         $defaultParameters = ['--no-debug' => true];
 

@@ -6,65 +6,34 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\AddressesAwareInterface;
+use CoreShop\Component\Address\Model\DefaultAddressAwareInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface as BaseCustomerInterface;
+use CoreShop\Component\User\Model\UserAwareInterface;
 
-interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterface
+interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterface, UserAwareInterface, DefaultAddressAwareInterface
 {
-    /**
-     * @return string
-     */
-    public function getAddressAccessType();
+    public function getAddressAccessType(): ?string;
 
-    /**
-     * @param string $addressAccessType
-     */
-    public function setAddressAccessType($addressAccessType);
+    public function setAddressAccessType(?string $addressAccessType);
 
-    /**
-     * @return AddressInterface
-     */
-    public function getDefaultAddress();
+    public function getNewsletterActive(): ?bool;
 
-    /**
-     * @param AddressInterface $address
-     */
-    public function setDefaultAddress($address);
+    public function setNewsletterActive(?bool $newsletterActive);
 
-    /**
-     * @return bool
-     */
-    public function getNewsletterActive();
+    public function getNewsletterConfirmed(): ?bool;
 
-    /**
-     * @param bool $newsletterActive
-     */
-    public function setNewsletterActive($newsletterActive);
+    public function setNewsletterConfirmed(?bool $newsletterConfirmed);
 
-    /**
-     * @return bool
-     */
-    public function getNewsletterConfirmed();
+    public function getNewsletterToken(): ?string;
 
-    /**
-     * @param bool $newsletterConfirmed
-     */
-    public function setNewsletterConfirmed($newsletterConfirmed);
-
-    /**
-     * @return string
-     */
-    public function getNewsletterToken();
-
-    /**
-     * @param string $newsletterToken
-     */
-    public function setNewsletterToken($newsletterToken);
+    public function setNewsletterToken(?string $newsletterToken);
 }

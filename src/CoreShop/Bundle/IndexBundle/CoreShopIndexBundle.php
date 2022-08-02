@@ -6,17 +6,19 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle;
 
 use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\Application\Version;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterColumnTypePass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterConditionRendererTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterExtensionsPass;
-use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterColumnTypePass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterConditionTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterPreConditionTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterUserConditionTypesPass;
@@ -27,34 +29,27 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRender
 use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopIndexBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
         $collection->addBundle(new CoreShopMenuBundle(), 4000);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -70,34 +65,22 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         $container->addCompilerPass(new RegisterFilterUserConditionTypesPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Index\Model';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Index';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Index Bundle';
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         $bundleName = 'coreshop/pimcore-bundle';
 
@@ -111,16 +94,6 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
             }
         }
 
-        if (class_exists(Versions::class)) {
-            if (isset(Versions::VERSIONS[$bundleName])) {
-                return Versions::getVersion($bundleName);
-            }
-
-            if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
-                return Versions::getVersion('coreshop/core-shop');
-            }
-        }
-
         if (class_exists(Version::class)) {
             return Version::getVersion();
         }
@@ -128,10 +101,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getInstaller()
+    public function getInstaller(): ?Installer
     {
         if ($this->container->has(Installer::class)) {
             /**
@@ -145,50 +115,27 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAdminIframePath()
+    public function getAdminIframePath(): ?string
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getJsPaths()
-    {
-        $bundles = $this->container->getParameter('kernel.bundles');
-
-        if (!array_key_exists('CoreShopCoreBundle', $bundles)) {
-            return [
-                '/admin/coreshop/coreshop.index/menu.js',
-            ];
-        }
-
-        return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCssPaths()
+    public function getJsPaths(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEditmodeJsPaths()
+    public function getCssPaths(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEditmodeCssPaths()
+    public function getEditmodeJsPaths(): array
+    {
+        return [];
+    }
+
+    public function getEditmodeCssPaths(): array
     {
         return [];
     }

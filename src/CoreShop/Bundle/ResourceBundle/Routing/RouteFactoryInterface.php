@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Routing;
 
@@ -17,10 +19,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 interface RouteFactoryInterface
 {
-    /**
-     * @return RouteCollection
-     */
-    public function createRouteCollection();
+    public function createRouteCollection(): RouteCollection;
 
     /**
      * @param string       $path         The path pattern to match
@@ -31,8 +30,6 @@ interface RouteFactoryInterface
      * @param string|array $schemes      A required URI scheme or an array of restricted schemes
      * @param string|array $methods      A required HTTP method or an array of restricted methods
      * @param string       $condition    A condition that should evaluate to true for the route to match
-     *
-     * @return Route
      */
-    public function createRoute($path, array $defaults = [], array $requirements = [], array $options = [], $host = '', $schemes = [], $methods = [], $condition = '');
+    public function createRoute($path, array $defaults = [], array $requirements = [], array $options = [], $host = '', string|array $schemes = [], string|array $methods = [], $condition = ''): Route;
 }

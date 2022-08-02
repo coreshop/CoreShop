@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Installer\Checker;
 
@@ -18,25 +20,13 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class CommandDirectoryChecker
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * @param Filesystem $filesystem
-     */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(private Filesystem $filesystem)
     {
-        $this->filesystem = $filesystem;
     }
 
-    public function ensureDirectoryExists($directory, OutputInterface $output)
+    public function ensureDirectoryExists(string $directory, OutputInterface $output): void
     {
         if (is_dir($directory)) {
             return;
@@ -46,7 +36,7 @@ final class CommandDirectoryChecker
             $this->filesystem->mkdir($directory, 0755);
 
             $output->writeln(sprintf('<comment>Created "%s" directory.</comment>', realpath($directory)));
-        } catch (IOException $exception) {
+        } catch (IOException) {
             $output->writeln('');
             $output->writeln('<error>Cannot run command due to unexisting directory (tried to create it automatically, failed).</error>');
             $output->writeln('');
@@ -59,7 +49,7 @@ final class CommandDirectoryChecker
         }
     }
 
-    public function ensureDirectoryIsWritable($directory, OutputInterface $output)
+    public function ensureDirectoryIsWritable(string $directory, OutputInterface $output): void
     {
         if (is_writable($directory)) {
             return;
@@ -69,7 +59,7 @@ final class CommandDirectoryChecker
             $this->filesystem->chmod($directory, 0755);
 
             $output->writeln(sprintf('<comment>Changed "%s" permissions to 0755.</comment>', realpath($directory)));
-        } catch (IOException $exception) {
+        } catch (IOException) {
             $output->writeln('');
             $output->writeln('<error>Cannot run command due to bad directory permissions (tried to change permissions to 0755).</error>');
             $output->writeln('');
@@ -82,7 +72,7 @@ final class CommandDirectoryChecker
         }
     }
 
-    public function setCommandName($name)
+    public function setCommandName(string $name): void
     {
         $this->name = $name;
     }

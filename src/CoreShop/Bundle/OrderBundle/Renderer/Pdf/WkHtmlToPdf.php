@@ -6,40 +6,24 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Renderer\Pdf;
 
 use Pimcore\Tool\Console;
+use Symfony\Component\Process\Process;
 
 final class WkHtmlToPdf implements PdfRendererInterface
 {
-    /**
-     * @var string
-     */
-    private $kernelCacheDir;
-
-    /**
-     * @var string
-     */
-    private $kernelRootDir;
-
-    /**
-     * @param string $kernelCacheDir
-     * @param string $kernelRootDir
-     */
-    public function __construct($kernelCacheDir, $kernelRootDir)
+    public function __construct(private string $kernelCacheDir, private string $kernelRootDir)
     {
-        $this->kernelCacheDir = $kernelCacheDir;
-        $this->kernelRootDir = $kernelRootDir;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function fromString($string, $header = '', $footer = '', $config = [])
+    public function fromString(string $string, string $header = '', string $footer = '', array $config = []): string
     {
         $bodyHtml = $this->createHtmlFile($string);
         $headerHtml = $this->createHtmlFile($header);
@@ -80,10 +64,8 @@ final class WkHtmlToPdf implements PdfRendererInterface
      * Creates an Temporary HTML File.
      *
      * @param string $string
-     *
-     * @return string|null
      */
-    private function createHtmlFile($string)
+    private function createHtmlFile($string): ?string
     {
         if ($string) {
             $tmpHtmlFile = $this->kernelCacheDir . '/' . uniqid() . '.htm';
@@ -97,12 +79,10 @@ final class WkHtmlToPdf implements PdfRendererInterface
 
     /**
      * @param string $string
-     *
-     * @return mixed|null|string|string[]
      */
-    private function replaceUrls($string)
+    private function replaceUrls($string): string
     {
-        $hostUrl = $this->kernelRootDir . '/web';
+        $hostUrl = $this->kernelRootDir . '/public';
         $replacePrefix = '';
 
         //matches all links
@@ -111,9 +91,9 @@ final class WkHtmlToPdf implements PdfRendererInterface
             foreach ($matches[0] as $key => $value) {
                 $path = $matches[2][$key];
 
-                if (strpos($path, '//') === 0) {
+                if (str_starts_with($path, '//')) {
                     $absolutePath = 'http:' . $path;
-                } elseif (strpos($path, '/') === 0) {
+                } elseif (str_starts_with($path, '/')) {
                     $absolutePath = preg_replace('@^' . $replacePrefix . '/@', '/', $path);
                     $absolutePath = $hostUrl . $absolutePath;
                 } else {
@@ -131,7 +111,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
         }
 
         preg_match_all("@srcset\s*=[\"'](.*?)[\"']@is", $string, $matches);
-        foreach ((array) $matches[1] as $i => $value) {
+        foreach ($matches[1] as $i => $value) {
             $parts = explode(',', $value);
             foreach ($parts as $key => $v) {
                 $parts[$key] = $hostUrl . trim($v);
@@ -155,7 +135,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
      *
      * @throws \Exception
      */
-    private function convert($httpSource, $config = [])
+    private function convert($httpSource, $config = []): string
     {
         $tmpPdfFile = $this->kernelCacheDir . '/' . uniqid() . '.pdf';
         $options = ' ';
@@ -191,11 +171,11 @@ final class WkHtmlToPdf implements PdfRendererInterface
             $command = $wkHtmlTopPfBinary . $options;
         }
 
-        $execCommand = $command . ' ' . $httpSource . ' ' . $tmpPdfFile;
-        Console::exec($execCommand);
+        $process = Process::fromShellCommandline($command . ' ' . $httpSource . ' ' . $tmpPdfFile);
+        $process->run();
 
         if (!file_exists($tmpPdfFile)) {
-            throw new \Exception(sprintf('wkhtmltopdf pdf conversion failed. This could be a command error. Executed command was: "%s"', $execCommand));
+            throw new \Exception(sprintf('wkhtmltopdf pdf conversion failed. This could be a command error. Executed command was: "%s"', $process->getCommandLine()));
         }
 
         $pdfContent = file_get_contents($tmpPdfFile);
@@ -206,29 +186,18 @@ final class WkHtmlToPdf implements PdfRendererInterface
         return $pdfContent;
     }
 
-    /**
-     * @param string $file
-     */
-    private function unlinkFile($file)
+    private function unlinkFile($file): void
     {
         @unlink($file);
     }
 
-    /**
-     * Find the wkHtmlToPdf library.
-     *
-     * @return bool|string
-     */
-    private function getWkHtmlToPdfBinary()
+    private function getWkHtmlToPdfBinary(): string
     {
-        return Console::getExecutable('wkhtmltopdf');
+        return (string)Console::getExecutable('wkhtmltopdf', true);
     }
 
-    /**
-     * @return bool
-     */
-    private function getXvfbBinary()
+    private function getXvfbBinary(): string
     {
-        return Console::getExecutable('xvfb-run');
+        return (string)Console::getExecutable('xvfb-run', false);
     }
 }

@@ -2,11 +2,11 @@ services:
     _defaults:
         public: true
 
-    coreshop.pimcore.document.tag.carrier:
+    coreshop.pimcore.document.editable.carrier:
         class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
         arguments:
             - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
             - 'coreshop.repository.carrier'
-            - 'name'
+            - 'title'
         tags:
-            - { name: coreshop.pimcore.document.tag, type: coreshop_carrier }
+            - { name: coreshop.pimcore.document.editable, type: coreshop_carrier }

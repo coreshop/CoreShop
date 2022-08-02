@@ -25,5 +25,5 @@ CoreShop\Component\Payment\Model\PaymentProvider:
             groups: [Detailed]
         translations:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]

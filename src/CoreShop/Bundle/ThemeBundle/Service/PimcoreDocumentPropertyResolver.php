@@ -6,64 +6,82 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
 use Pimcore\Http\Request\Resolver\DocumentResolver;
+use Pimcore\Http\Request\Resolver\SiteResolver;
+use Pimcore\Model\Document;
+use Pimcore\Model\Site;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface
+final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface, DocumentThemeResolverInterface
 {
-    /**
-     * @var ActiveThemeInterface
-     */
-    private $activeTheme;
-
-    /**
-     * @var DocumentResolver
-     */
-    private $documentResolver;
-
-    /**
-     * @param ActiveThemeInterface $activeTheme
-     * @param DocumentResolver     $documentResolver
-     */
     public function __construct(
-        ActiveThemeInterface $activeTheme,
-        DocumentResolver $documentResolver
+        private RequestStack $requestStack,
+        private DocumentResolver $documentResolver,
+        private Document\Service $documentService,
+        private SiteResolver $siteResolver
     ) {
-        $this->activeTheme = $activeTheme;
-        $this->documentResolver = $documentResolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveTheme(/*ActiveThemeInterface $activeTheme*/)
+    public function resolveTheme(): string
     {
-        if (\func_num_args() === 0) {
-            trigger_error(
-                'Calling CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface::resolveTheme without the CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface Service is deprecated since 2.1 and will be removed in 3.0.',
-                E_USER_DEPRECATED
-            );
-            $activeTheme = $this->activeTheme;
-        } else {
-            $activeTheme = func_get_arg(0);
-        }
-
         try {
-            $document = $this->documentResolver->getDocument();
+            $request = $this->requestStack->getMainRequest();
 
-            if ($document && $document->getProperty('theme')) {
-                $theme = $document->getProperty('theme');
+            if (!$request) {
+                throw new ThemeNotResolvedException();
+            }
 
-                $activeTheme->addTheme($theme);
-                $activeTheme->setActiveTheme($theme);
+            $site = $this->siteResolver->getSite($request);
+
+            $isAjaxBrickRendering = $request->attributes->get('_route') === 'pimcore_admin_document_page_areabrick-render-index-editmode';
+            $document = null;
+
+            if ($isAjaxBrickRendering) {
+                $documentId = $request->request->get('documentId');
+
+                if ($documentId) {
+                    $document = Document::getById((int)$documentId);
+                }
+            }
+            else {
+                $document = $this->documentResolver->getDocument($request);
+            }
+
+            if (!$document) {
+                $basePath = '';
+
+                if ($site instanceof Site) {
+                    $basePath = $site->getRootPath();
+                }
+
+                /**
+                 * @psalm-suppress InternalMethod
+                 */
+                $document = $this->documentService->getNearestDocumentByPath($basePath . $request->getPathInfo());
+            }
+
+            if ($document instanceof Document && $document->getProperty('theme')) {
+                return $document->getProperty('theme');
             }
         } catch (\Exception $ex) {
             throw new ThemeNotResolvedException($ex);
+        }
+
+        throw new ThemeNotResolvedException();
+    }
+
+    public function resolveThemeForDocument(Document $document): string
+    {
+        if ($document->getProperty('theme')) {
+            return $document->getProperty('theme');
         }
 
         throw new ThemeNotResolvedException();

@@ -17,3 +17,9 @@ services:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
         tags:
             - { name: doctrine.event_subscriber, priority: 8192 }
+
+    CoreShop\Bundle\ResourceBundle\Doctrine\ResourceMappingDriverChain:
+        decorates: 'doctrine.orm.default_metadata_driver'
+        arguments:
+            - '@CoreShop\Bundle\ResourceBundle\Doctrine\ResourceMappingDriverChain.inner'
+            - '@coreshop.resource_registry'

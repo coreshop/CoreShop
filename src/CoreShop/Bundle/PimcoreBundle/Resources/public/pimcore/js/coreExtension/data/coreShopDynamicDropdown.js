@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -61,7 +61,7 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/class/get-tree',
+                url: Routing.generate('pimcore_admin_dataobject_class_gettree'),
             },
             fields: ['name', 'id'],
             autoLoad: true,
@@ -95,7 +95,7 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/dynamic-dropdown/methods',
+                url: Routing.generate('coreshop_dynamic_dropdown_methods'),
                 extraParams: {
                     className: this.classesCombo.getValue()
                 },

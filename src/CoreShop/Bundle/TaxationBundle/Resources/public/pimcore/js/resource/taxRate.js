@@ -1,4 +1,4 @@
-Ext.define('CoreShop.store.TaxRate', {
+Ext.define('CoreShop.taxation.TaxRate', {
     extend: 'CoreShop.resource.ComboBox',
     alias: 'widget.coreshop.taxRate',
 

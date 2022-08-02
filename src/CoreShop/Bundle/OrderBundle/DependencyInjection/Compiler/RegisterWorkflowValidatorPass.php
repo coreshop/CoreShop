@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler;
 
@@ -21,10 +23,7 @@ class RegisterWorkflowValidatorPass implements CompilerPassInterface
 {
     public const WORKFLOW_VALIDATOR_TAG = 'coreshop.workflow.validator';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->findTaggedServiceIds(self::WORKFLOW_VALIDATOR_TAG) as $id => $attributes) {
             $definition = $container->findDefinition($id);
@@ -35,16 +34,10 @@ class RegisterWorkflowValidatorPass implements CompilerPassInterface
                 }
 
                 if (!isset($tag['manager'])) {
-                    throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `manager` attribute.');
+                    throw new \InvalidArgumentException('Tagged Condition `' . $id . '` needs to have `manager` attribute.');
                 }
 
                 $manager = $container->getDefinition($tag['manager']);
-
-                if (!$manager) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Workflow Manager with identifier %s not found', $tag['manager'])
-                    );
-                }
 
                 $priority = isset($tag['priority']) ? (int)$tag['priority'] : 0;
 

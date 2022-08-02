@@ -2,7 +2,6 @@ services:
     _defaults:
         public: true
 
-    coreshop.context.locale.pimcore_admin: '@CoreShop\Component\Core\Locale\Context\PimcoreAdminLocaleContext'
     CoreShop\Component\Core\Locale\Context\PimcoreAdminLocaleContext:
         arguments:
             - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'

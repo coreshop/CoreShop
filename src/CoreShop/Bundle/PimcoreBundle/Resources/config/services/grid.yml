@@ -2,11 +2,9 @@ services:
     _defaults:
         public: true
 
-    coreshop.pimcore_controller.grid:
-        alias: 'CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController'
-        public: true
-
     CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController:
+        calls:
+            - [setContainer, ['@service_container']]
         tags:
             - { name: controller.service_arguments }
 

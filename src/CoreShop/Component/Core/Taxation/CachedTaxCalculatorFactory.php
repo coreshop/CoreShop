@@ -6,42 +6,34 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Taxation;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\StateInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {
-    /**
-     * @var TaxCalculatorFactoryInterface
-     */
-    private $taxCalculatorFactory;
+    private array $cache = [];
 
-    /**
-     * @var array
-     */
-    private $cache = [];
-
-    /**
-     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     */
-    public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory)
+    public function __construct(private TaxCalculatorFactoryInterface $taxCalculatorFactory)
     {
-        $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaxCalculatorForAddress(TaxRuleGroupInterface $taxRuleGroup, AddressInterface $address)
-    {
+    public function getTaxCalculatorForAddress(
+        TaxRuleGroupInterface $taxRuleGroup,
+        AddressInterface $address,
+        array $context = [],
+    ): TaxCalculatorInterface {
         $cacheIdentifier = sprintf(
             '%s.%s.%s',
             $taxRuleGroup->getId(),
@@ -49,8 +41,18 @@ class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
             ($address->getState() instanceof StateInterface ? $address->getState()->getId() : 0)
         );
 
+        foreach ($context as $key => $value) {
+            if ($value instanceof ResourceInterface) {
+                $cacheIdentifier .= '-'.$key.'-'.$value->getId();
+            }
+        }
+
         if (!array_key_exists($cacheIdentifier, $this->cache)) {
-            $this->cache[$cacheIdentifier] = $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address);
+            $this->cache[$cacheIdentifier] = $this->taxCalculatorFactory->getTaxCalculatorForAddress(
+                $taxRuleGroup,
+                $address,
+                $context
+            );
         }
 
         return $this->cache[$cacheIdentifier];

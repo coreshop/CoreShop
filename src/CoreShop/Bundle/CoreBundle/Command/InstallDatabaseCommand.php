@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Command;
 
@@ -21,43 +23,26 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class InstallDatabaseCommand extends AbstractInstallCommand
 {
-    /**
-     * @var DatabaseSetupCommandsProviderInterface
-     */
-    protected $databaseSetupCommand;
-
-    /**
-     * @param KernelInterface                        $kernel
-     * @param CommandDirectoryChecker                $directoryChecker
-     * @param DatabaseSetupCommandsProviderInterface $databaseSetupCommand
-     */
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
-        DatabaseSetupCommandsProviderInterface $databaseSetupCommand
+        protected DatabaseSetupCommandsProviderInterface $databaseSetupCommand
     ) {
-        $this->databaseSetupCommand = $databaseSetupCommand;
-
         parent::__construct($kernel, $directoryChecker);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:install:database')
             ->setDescription('Install CoreShop database.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command creates CoreShop database.
 EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $outputStyle = new SymfonyStyle($input, $output);

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -28,6 +30,8 @@ use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Variant\Model\AttributeGroupInterface;
+use CoreShop\Component\Variant\Model\AttributeInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Folder;
@@ -37,74 +41,30 @@ use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
-    private $sharedStorage;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $productFactory;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $productUnitDefinitions;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $productUnitDefinition;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $productUnitDefinitionPriceFactory;
-
-    /**
-     * @var ProductUnitDefinitionsCloner
-     */
-    private $unitDefinitionsCloner;
-
-    /**
-     * @var ProductQuantityPriceRulesCloner
-     */
-    private $quantityPriceRulesCloner;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface       $productFactory
-     * @param FactoryInterface       $productUnitDefinitions
-     * @param FactoryInterface       $productUnitDefinition
-     * @param FactoryInterface       $productUnitDefinitionPriceFactory
-     * @param ProductUnitDefinitionsCloner $unitDefinitionsCloner
-     * @param ProductQuantityPriceRulesCloner $quantityPriceRulesCloner
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        FactoryInterface $productFactory,
-        FactoryInterface $productUnitDefinitions,
-        FactoryInterface $productUnitDefinition,
-        FactoryInterface $productUnitDefinitionPriceFactory,
-        ProductUnitDefinitionsCloner $unitDefinitionsCloner,
-        ProductQuantityPriceRulesCloner $quantityPriceRulesCloner
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->productFactory = $productFactory;
-        $this->productUnitDefinitions = $productUnitDefinitions;
-        $this->productUnitDefinition = $productUnitDefinition;
-        $this->productUnitDefinitionPriceFactory = $productUnitDefinitionPriceFactory;
-        $this->unitDefinitionsCloner = $unitDefinitionsCloner;
-        $this->quantityPriceRulesCloner = $quantityPriceRulesCloner;
+    public function __construct(private SharedStorageInterface $sharedStorage, private FactoryInterface $productFactory, private FactoryInterface $productUnitDefinitions, private FactoryInterface $productUnitDefinition, private FactoryInterface $productUnitDefinitionPriceFactory, private ProductUnitDefinitionsCloner $unitDefinitionsCloner, private ProductQuantityPriceRulesCloner $quantityPriceRulesCloner)
+    {
     }
 
     /**
      * @Given /^the site has a product "([^"]+)"$/
+     * @Given /^the site has another product "([^"]+)"$/
      */
-    public function theSiteHasAProduct(string $productName)
+    public function theSiteHasAProduct(string $productName): void
     {
         $product = $this->createSimpleProduct($productName);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the site has a product "([^"]+)" with key "([^"]+)"$/
+     * @Given /^the site has another product "([^"]+)" with key "([^"]+)"$/
+     */
+    public function theSiteHasAProductWithKey(string $productName, string $key): void
+    {
+        $product = $this->createSimpleProduct($productName);
+
+        $product->setKey($key);
 
         $this->saveProduct($product);
     }
@@ -113,7 +73,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") has a meta title "([^"]+)"$/
      * @Given /^the (products) meta title is "([^"]+)"$/
      */
-    public function theProductHasAMetaTitle(ProductInterface $product, $metaTitle)
+    public function theProductHasAMetaTitle(ProductInterface $product, $metaTitle): void
     {
         $product->setPimcoreMetaTitle($metaTitle);
 
@@ -124,7 +84,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") has a meta description "([^"]+)"$/
      * @Given /^the (products) meta description is "([^"]+)"$/
      */
-    public function theProductHasAMetaDescription(ProductInterface $product, $metaDescription)
+    public function theProductHasAMetaDescription(ProductInterface $product, $metaDescription): void
     {
         $product->setPimcoreMetaDescription($metaDescription);
 
@@ -132,9 +92,10 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the site has a product "([^"]+)" priced at ([^"]+)$/
+     * @Given /^the site has a product "([^"]+)" priced at (\d+)$/
+     * @Given /^the site has a product "([^"]+)" priced at (\d+) for (store "[^"]+")$/
      */
-    public function theSiteHasAProductPricedAt(string $productName, int $price = 100, StoreInterface $store = null)
+    public function theSiteHasAProductPricedAt(string $productName, int $price = 100, StoreInterface $store = null): void
     {
         $product = $this->createProduct($productName, $price, $store);
 
@@ -142,7 +103,20 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") is (:?also) priced at (\d+) for (store "[^"]+")$/
+     * @Given /^the (product) is priced at (\d+) for (store "[^"]+")$/
+     */
+    public function theProductIsPriced(ProductInterface $product, int $price, StoreInterface $store): void
+    {
+        $product->setStores(array_merge($product->getStores(), [$store->getId()]));
+        $product->setStoreValuesOfType('price', $price, $store);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+)$/
+     * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+) for (store "[^"]+")$/
      * @Given /^the (product) has a variant "([^"]+)" priced at ([^"]+)$/
      */
     public function theProductHasAVariantPricedAt(
@@ -150,7 +124,7 @@ final class ProductContext implements Context
         string $productName,
         int $price = 100,
         StoreInterface $store = null
-    ) {
+    ): void {
         $variant = $this->createVariant($product, $productName, $price, $store);
 
         $this->saveProduct($variant);
@@ -163,17 +137,111 @@ final class ProductContext implements Context
     public function theProductHasAVariant(
         ProductInterface $product,
         string $productName
-    ) {
+    ): void {
         $variant = $this->createSimpleVariant($product, $productName);
 
+        $variant->setKey(File::getValidFilename($productName));
+
         $this->saveProduct($variant);
+    }
+
+    /**
+     * @Given /^the (product) has variants for all values of (attribute group "[^"]+") and (attribute group "[^"]+")$/
+     */
+    public function theProductHasVaraintsForAllValuesOfAttributeGroup(
+        ProductInterface $product,
+        AttributeGroupInterface $group1,
+        AttributeGroupInterface $group2,
+    ): void
+    {
+        $product->setAllowedAttributeGroups([$group1, $group2]);
+        $product->save();
+
+        /**
+         * @var AttributeInterface $attribute1
+         */
+        foreach ($group1->getChildren([AbstractObject::OBJECT_TYPE_OBJECT]) as $attribute1) {
+            /**
+             * @var AttributeInterface $attribute2
+             */
+            foreach ($group2->getChildren([AbstractObject::OBJECT_TYPE_OBJECT]) as $attribute2) {
+                $variant = $this->createSimpleVariant(
+                    $product,
+                    sprintf(
+                        '%s %s %s',
+                        $product->getName(),
+                        $attribute1->getName(),
+                        $attribute2->getName()
+                    )
+                );
+                $variant->setKey(File::getValidFilename(sprintf(
+                    '%s %s %s',
+                    $product->getName(),
+                    $attribute1->getName(),
+                    $attribute2->getName()
+                )));
+                $variant->setAttributes([
+                    $attribute1,
+                    $attribute2
+                ]);
+                $variant->setPublished(true);
+                $this->saveProduct($variant);
+            }
+        }
+    }
+
+    /**
+     * @Given /^the (product) has variants for all values of (attribute group "[^"]+") and (attribute group "[^"]+") and (attribute group "[^"]+")$/
+     */
+    public function theProductHasVaraintsForAllValuesOf3AttributeGroups(
+        ProductInterface $product,
+        AttributeGroupInterface $group1,
+        AttributeGroupInterface $group2,
+        AttributeGroupInterface $group3,
+    ): void
+    {
+        $product->setAllowedAttributeGroups([$group1, $group2, $group3]);
+        $product->save();
+
+        /**
+         * @var AttributeInterface $attribute1
+         */
+        foreach ($group1->getChildren([AbstractObject::OBJECT_TYPE_OBJECT]) as $attribute1) {
+            /**
+             * @var AttributeInterface $attribute2
+             */
+            foreach ($group2->getChildren([AbstractObject::OBJECT_TYPE_OBJECT]) as $attribute2) {
+                /**
+                 * @var AttributeInterface $attribute3
+                 */
+                foreach ($group3->getChildren([AbstractObject::OBJECT_TYPE_OBJECT]) as $attribute3) {
+                    $variant = $this->createSimpleVariant(
+                        $product,
+                        sprintf(
+                            '%s %s %s %s',
+                            $product->getName(),
+                            $attribute1->getName(),
+                            $attribute2->getName(),
+                            $attribute3->getName(),
+                        )
+                    );
+                    $variant->setAttributes([
+                        $attribute1,
+                        $attribute2,
+                        $attribute3,
+                    ]);
+                    $variant->setPublished(true);
+                    $this->saveProduct($variant);
+                }
+            }
+        }
     }
 
     /**
      * @Given /^the (product "[^"]+") is in (category "[^"]+")$/
      * @Given /^([^"]+) is in (category "[^"]+")$/
      */
-    public function theProductIsInCategory(ProductInterface $product, CategoryInterface $category)
+    public function theProductIsInCategory(ProductInterface $product, CategoryInterface $category): void
     {
         $product->setCategories([$category]);
 
@@ -184,7 +252,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") has (tax rule group "[^"]+")$/
      * @Given /^the (product) has the (tax rule group "[^"]+")$/
      */
-    public function theProductHasTaxRuleGroup(ProductInterface $product, TaxRuleGroupInterface $taxRuleGroup)
+    public function theProductHasTaxRuleGroup(ProductInterface $product, TaxRuleGroupInterface $taxRuleGroup): void
     {
         $product->setTaxRule($taxRuleGroup);
 
@@ -195,7 +263,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") host description is "([^"]+)"$/
      * @Given /^the (products) short description is "([^"]+)"$/
      */
-    public function theProductHasAShortDescription(ProductInterface $product, $description)
+    public function theProductHasAShortDescription(ProductInterface $product, $description): void
     {
         $product->setShortDescription($description);
 
@@ -206,7 +274,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") weighs ([^"]+)kg$/
      * @Given /^the (product) weighs ([^"]+)kg$/
      */
-    public function theProductWeighsKg(ProductInterface $product, $kg)
+    public function theProductWeighsKg(ProductInterface $product, float $kg): void
     {
         $product->setWeight($kg);
 
@@ -217,7 +285,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") measurements are ([^"]+)x([^"]+)x([^"]+)$/
      * @Given /^the (product) measurements are ([^"]+)x([^"]+)x([^"]+)$/
      */
-    public function theProductsMeasurementsAre(ProductInterface $product, $width, $height, $depth)
+    public function theProductsMeasurementsAre(ProductInterface $product, float $width, float $height, float $depth): void
     {
         $product->setWidth($width);
         $product->setHeight($height);
@@ -227,10 +295,27 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") is active and published and available for (store "[^"]+")$/
+     * @Given /^the (product) is active and published and available for (store "[^"]+")$/
+     * @Given /^the (product) is active and published and available$/
+     */
+    public function theProductIsActivePublishedAndAvailableForStore(ProductInterface $product, StoreInterface $store = null): void
+    {
+        $product->setActive(true);
+        $product->setPublished(true);
+
+        if (null !== $store) {
+            $product->setStores([$store->getId()]);
+        }
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the (product "[^"]+") ean is "([^"]+)"$/
      * @Given /^the (products) ean is "([^"]+)"$/
      */
-    public function theProductsEanIs(ProductInterface $product, $ean)
+    public function theProductsEanIs(ProductInterface $product, $ean): void
     {
         $product->setEan($ean);
 
@@ -241,7 +326,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") is active$/
      * @Given /^the (product) is active$/
      */
-    public function theProductIsActive(ProductInterface $product)
+    public function theProductIsActive(ProductInterface $product): void
     {
         $product->setActive(true);
 
@@ -252,7 +337,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") is not active$/
      * @Given /^the (product) is not active$/
      */
-    public function theProductIsNotActive(ProductInterface $product)
+    public function theProductIsNotActive(ProductInterface $product): void
     {
         $product->setActive(false);
 
@@ -260,10 +345,56 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") is stock tracked$/
+     * @Given /^the (product) is stock tracked$/
+     */
+    public function theProductIsTracked(ProductInterface $product): void
+    {
+        $product->setIsTracked(true);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") is not stock tracked$/
+     * @Given /^the (product) is not stock tracked$/
+     */
+    public function theProductIsNotTracked(ProductInterface $product): void
+    {
+        $product->setIsTracked(false);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has (\d+) on hand$/
+     * @Given /^the (product) has (\d+) on hand$/
+     */
+    public function theProductHasOnHand(ProductInterface $product, int $onHand): void
+    {
+        $product->setOnHand($onHand);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has (\d+) on hold$/
+     * @Given /^the (product) has (\d+) on hold$/
+     */
+    public function theProductHasOnHold(ProductInterface $product, int $onHold): void
+    {
+        $product->setOnHold($onHold);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the (product "[^"]+") is published$/
      * @Given /^the (product) is published$/
+     * @Given /^the (variant "[^"]+") is published$/
+     * @Given /^the (variant) is published$/
      */
-    public function theProductIsPublished(ProductInterface $product)
+    public function theProductIsPublished(ProductInterface $product): void
     {
         $product->setPublished(true);
 
@@ -273,8 +404,10 @@ final class ProductContext implements Context
     /**
      * @Given /^the (product "[^"]+") is not published$/
      * @Given /^the (product) is not published$/
+     * @Given /^the (variant "[^"]+") is not published$/
+     * @Given /^the (variant) is not published$/
      */
-    public function theProductIsNotPublished(ProductInterface $product)
+    public function theProductIsNotPublished(ProductInterface $product): void
     {
         $product->setPublished(false);
 
@@ -285,7 +418,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") sku is "([^"]+)"$/
      * @Given /^the (products) sku is "([^"]+)"$/
      */
-    public function theProductsSkuIs(ProductInterface $product, $sku)
+    public function theProductsSkuIs(ProductInterface $product, $sku): void
     {
         $product->setSku($sku);
 
@@ -296,7 +429,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") has (manufacturer "[^"]+")$/
      * @Given /^the (products) has (manufacturer "[^"]+")$/
      */
-    public function theProductHasManufacturer(ProductInterface $product, ManufacturerInterface $manufacturer)
+    public function theProductHasManufacturer(ProductInterface $product, ManufacturerInterface $manufacturer): void
     {
         $product->setManufacturer($manufacturer);
 
@@ -307,9 +440,9 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") has a price of ([^"]+) for (store "[^"]+")$/
      * @Given /^the (products) price is ([^"]+) for (store "[^"]+")$/
      */
-    public function theProductHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store)
+    public function theProductHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store): void
     {
-        $product->setStorePrice($price, $store);
+        $product->setStoreValuesOfType('price', $price, $store);
 
         $this->saveProduct($product);
     }
@@ -318,9 +451,9 @@ final class ProductContext implements Context
      * @Given /^the (variant "[^"]+") has a price of ([^"]+) for (store "[^"]+")$/
      * @Given /^the (variants) price is ([^"]+) for (store "[^"]+")$/
      */
-    public function theVariantHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store)
+    public function theVariantHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store): void
     {
-        $product->setStorePrice($price, $store);
+        $product->setStoreValuesOfType('price', $price, $store);
 
         $this->saveProduct($product);
     }
@@ -329,9 +462,19 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") has a minimum order quantity of "([^"]+)"$/
      * @Given /^the (product) has a minimum order quantity of "([^"]+)"$/
      */
-    public function theProductHasAMinimumOrderQuantity(ProductInterface $product, int $miminumQuantity)
+    public function theProductHasAMinimumOrderQuantity(ProductInterface $product, int $miminumQuantity): void
     {
         $product->setMinimumQuantityToOrder($miminumQuantity);
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has a maximum order quantity of "([^"]+)"$/
+     * @Given /^the (product) has a maximum order quantity of "([^"]+)"$/
+     */
+    public function theProductHasAMaximumOrderQuantity(ProductInterface $product, int $maximumQuantity): void
+    {
+        $product->setMaximumQuantityToOrder($maximumQuantity);
         $this->saveProduct($product);
     }
 
@@ -339,7 +482,7 @@ final class ProductContext implements Context
      * @Given /^the (product) has the default (unit "[^"]+")$/
      * @Given /^the (product "[^"]+") has the default (unit "[^"]+")"$/
      */
-    public function theProductHasTheDefaultUnit(ProductInterface $product, ProductUnitInterface $unit)
+    public function theProductHasTheDefaultUnit(ProductInterface $product, ProductUnitInterface $unit): void
     {
         $definitions = $this->getOrCreateUnitDefinitions($product->getUnitDefinitions());
 
@@ -357,12 +500,12 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("\d++")$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+")$/
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price (\d+)$/
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+)$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+")$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+")$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("[^"]+") and price (\d+)$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+)$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
      */
     public function theProductHasAnAdditionalUnit(
         ProductInterface $product,
@@ -370,7 +513,7 @@ final class ProductContext implements Context
         $conversionRate,
         int $price = null,
         int $precison = 0
-    ) {
+    ): void {
         $definitions = $this->getOrCreateUnitDefinitions($product->getUnitDefinitions());
 
         /**
@@ -378,7 +521,7 @@ final class ProductContext implements Context
          */
         $defaultUnitDefinition = $this->productUnitDefinition->createNew();
         $defaultUnitDefinition->setUnit($unit);
-        $defaultUnitDefinition->setConversionRate((float) $conversionRate);
+        $defaultUnitDefinition->setConversionRate((float)$conversionRate);
         $defaultUnitDefinition->setPrecision($precison);
 
         $definitions->addAdditionalUnitDefinition($defaultUnitDefinition);
@@ -393,15 +536,15 @@ final class ProductContext implements Context
              */
             $productUnitDefinitionPrice = $this->productUnitDefinitionPriceFactory->createNew();
             $productUnitDefinitionPrice->setUnitDefinition($defaultUnitDefinition);
-            $productUnitDefinitionPrice->setPrice((int) $price);
+            $productUnitDefinitionPrice->setPrice($price);
 
             /**
              * @var ProductStoreValuesInterface $storeValues
              */
-            $storeValues = $product->getStoreValues($store);
+            $storeValues = $product->getStoreValuesForStore($store);
             $storeValues->addProductUnitDefinitionPrice($productUnitDefinitionPrice);
 
-            $product->setStoreValues($storeValues, $store);
+            $product->setStoreValuesForStore($storeValues, $store);
         }
 
         $this->saveProduct($product);
@@ -410,17 +553,21 @@ final class ProductContext implements Context
     /**
      * @Given /^I copy the (product)$/
      */
-    public function iCopyTheProduct(ProductInterface $product)
+    public function iCopyTheProduct(ProductInterface $product): void
     {
         $objectService = new Service();
         $newObject = $objectService->copyAsChild($product->getParent(), $product);
+        
+        $newObject->setKey($product->getKey() . '-copy');
+        $newObject->save();
 
         $this->sharedStorage->set('copied-object', $newObject);
     }
+
     /**
      * @Given /^I copy the (products) unit-definitions and quantity-price-rules to all variants$/
      */
-    public function iCopyTheUnitDefinitionsAndQuantityPriceRulesToAllVariants(ProductInterface $product)
+    public function iCopyTheUnitDefinitionsAndQuantityPriceRulesToAllVariants(ProductInterface $product): void
     {
         /**
          * @var Concrete $product
@@ -428,7 +575,6 @@ final class ProductContext implements Context
         Assert::isInstanceOf($product, Concrete::class);
 
         foreach ($product->getChildren([AbstractObject::OBJECT_TYPE_VARIANT], true) as $variant) {
-
             if (!$variant instanceof ProductInterface) {
                 continue;
             }
@@ -448,17 +594,12 @@ final class ProductContext implements Context
         return $definitions;
     }
 
-    /**
-     * @param string $productName
-     *
-     * @return ProductInterface
-     */
-    private function createSimpleProduct(string $productName)
+    private function createSimpleProduct(string $productName): ProductInterface
     {
         /** @var ProductInterface $product */
         $product = $this->productFactory->createNew();
 
-        $product->setKey(File::getValidFilename($productName));
+        $product->setKey(File::getValidFilename(sprintf('%s - %s', $productName, uniqid('', true))));
         $product->setParent(Folder::getByPath('/'));
 
         foreach (Tool::getValidLanguages() as $lang) {
@@ -468,14 +609,7 @@ final class ProductContext implements Context
         return $product;
     }
 
-    /**
-     * @param string              $productName
-     * @param int                 $price
-     * @param StoreInterface|null $store
-     *
-     * @return ProductInterface
-     */
-    private function createProduct(string $productName, int $price = 100, StoreInterface $store = null)
+    private function createProduct(string $productName, int $price = 100, StoreInterface $store = null): ProductInterface
     {
         /** @var ProductInterface $product */
         $product = $this->createSimpleProduct($productName);
@@ -486,22 +620,16 @@ final class ProductContext implements Context
 
         if (null !== $store) {
             $product->setStores([$store->getId()]);
-            $product->setStorePrice($price, $store);
+            $product->setStoreValuesOfType('price', $price, $store);
         }
 
         return $product;
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param string           $productName
-     *
-     * @return ProductInterface
-     */
     private function createSimpleVariant(
         ProductInterface $product,
         string $productName
-    ) {
+    ): ProductInterface {
         $variant = $this->createSimpleProduct($productName);
         $variant->setParent($product);
 
@@ -512,20 +640,12 @@ final class ProductContext implements Context
         return $variant;
     }
 
-    /**
-     * @param ProductInterface    $product
-     * @param string              $productName
-     * @param int                 $price
-     * @param StoreInterface|null $store
-     *
-     * @return ProductInterface
-     */
     private function createVariant(
         ProductInterface $product,
         string $productName,
         int $price = 100,
         StoreInterface $store = null
-    ) {
+    ): ProductInterface {
         $variant = $this->createSimpleVariant($product, $productName);
 
         if (null === $store && $this->sharedStorage->has('store')) {
@@ -534,16 +654,13 @@ final class ProductContext implements Context
 
         if (null !== $store) {
             $variant->setStores([$store->getId()]);
-            $variant->setStorePrice($price, $store);
+            $variant->setStoreValuesOfType('price', $price, $store);
         }
 
         return $variant;
     }
 
-    /**
-     * @param ProductInterface $product
-     */
-    private function saveProduct(ProductInterface $product)
+    private function saveProduct(ProductInterface $product): void
     {
         $product->save();
 

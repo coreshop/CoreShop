@@ -6,96 +6,49 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\PayumBundle\Controller;
 
 use CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactoryInterface;
 use CoreShop\Bundle\PayumBundle\Factory\GetStatusFactoryInterface;
 use CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactoryInterface;
+use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Payment\OrderPaymentProviderInterface;
-use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
 use Payum\Core\Request\Generic;
-use Payum\Core\Request\GetStatusInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Payum\Core\Security\TokenInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PaymentController extends Controller
+class PaymentController extends AbstractController
 {
-    /**
-     * @var OrderPaymentProviderInterface
-     */
-    private $orderPaymentProvider;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @var GetStatusFactoryInterface
-     */
-    private $getStatusRequestFactory;
-
-    /**
-     * @var ResolveNextRouteFactoryInterface
-     */
-    private $resolveNextRouteRequestFactory;
-
-    /**
-     * @var ConfirmOrderFactoryInterface
-     */
-    private $confirmOrderFactory;
-
-    /**
-     * @param OrderPaymentProviderInterface    $orderPaymentProvider
-     * @param PimcoreRepositoryInterface       $orderRepository
-     * @param GetStatusFactoryInterface        $getStatusRequestFactory
-     * @param ResolveNextRouteFactoryInterface $resolveNextRouteRequestFactory
-     * @param ConfirmOrderFactoryInterface     $confirmOrderFactory
-     */
-    public function __construct(
-        OrderPaymentProviderInterface $orderPaymentProvider,
-        PimcoreRepositoryInterface $orderRepository,
-        GetStatusFactoryInterface $getStatusRequestFactory,
-        ResolveNextRouteFactoryInterface $resolveNextRouteRequestFactory,
-        ConfirmOrderFactoryInterface $confirmOrderFactory
-    ) {
-        $this->orderPaymentProvider = $orderPaymentProvider;
-        $this->orderRepository = $orderRepository;
-        $this->getStatusRequestFactory = $getStatusRequestFactory;
-        $this->resolveNextRouteRequestFactory = $resolveNextRouteRequestFactory;
-        $this->confirmOrderFactory = $confirmOrderFactory;
+    public function __construct(private OrderPaymentProviderInterface $orderPaymentProvider, private PimcoreRepositoryInterface $orderRepository, private GetStatusFactoryInterface $getStatusRequestFactory, private ResolveNextRouteFactoryInterface $resolveNextRouteRequestFactory, private ConfirmOrderFactoryInterface $confirmOrderFactory)
+    {
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function prepareCaptureAction(Request $request)
+    public function prepareCaptureAction(Request $request): RedirectResponse
     {
-        /**
-         * @var $order OrderInterface
-         */
         if ($request->attributes->has('token')) {
             $property = 'token';
             $identifier = $request->attributes->get('token');
         } else {
             $property = 'o_id';
-            $identifier = $request->get('order');
+            $identifier = $request->attributes->get('order');
         }
 
         /**
-         * @var OrderInterface $order
+         * @var OrderInterface|null $order
          */
         $order = $this->orderRepository->findOneBy([$property => $identifier]);
 
@@ -103,9 +56,10 @@ class PaymentController extends Controller
             throw new NotFoundHttpException(sprintf('Order with %s "%s" does not exist.', $property, $identifier));
         }
 
+        /**
+         * @var PaymentInterface $payment
+         */
         $payment = $this->orderPaymentProvider->provideOrderPayment($order);
-
-        $request->getSession()->set('coreshop_order_id', $order->getId());
 
         $storage = $this->getPayum()->getStorage($payment);
         $storage->update($payment);
@@ -115,20 +69,11 @@ class PaymentController extends Controller
         return $this->redirect($token->getTargetUrl());
     }
 
-    /**
-     * Here we return from the Payment Provider and process the result.
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     *
-     * @throws \Exception
-     */
-    public function afterCaptureAction(Request $request)
+    public function afterCaptureAction(Request $request): RedirectResponse
     {
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 
-        /** @var Generic|GetStatusInterface $status */
+        /** @var Generic $status */
         $status = $this->getStatusRequestFactory->createNewWithModel($token);
         $this->getPayum()->getGateway($token->getGatewayName())->execute($status);
 
@@ -142,20 +87,12 @@ class PaymentController extends Controller
         return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
     }
 
-    /**
-     * @return Payum
-     */
-    protected function getPayum()
+    protected function getPayum(): Payum
     {
         return $this->get('payum');
     }
 
-    /**
-     * @param PaymentInterface $payment
-     *
-     * @return mixed
-     */
-    private function provideTokenBasedOnPayment(PaymentInterface $payment)
+    private function provideTokenBasedOnPayment(PaymentInterface $payment): TokenInterface
     {
         /** @var PaymentProviderInterface $paymentMethod */
         $paymentMethod = $payment->getPaymentProvider();

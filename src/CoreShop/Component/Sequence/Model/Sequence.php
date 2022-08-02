@@ -6,14 +6,19 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Sequence\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 class Sequence implements SequenceInterface
 {
     use SetValuesTrait;
@@ -33,33 +38,21 @@ class Sequence implements SequenceInterface
      */
     protected $index = 0;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIndex()
     {
         return $this->index;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setType($type)
     {
         $this->type = $type;
@@ -67,6 +60,6 @@ class Sequence implements SequenceInterface
 
     public function incrementIndex()
     {
-        $this->index++;
+        ++$this->index;
     }
 }

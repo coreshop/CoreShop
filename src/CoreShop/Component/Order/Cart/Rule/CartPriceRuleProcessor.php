@@ -6,44 +6,25 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Cart\Rule;
 
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 {
-    /**
-     * @var CartPriceRuleValidationProcessorInterface
-     */
-    private $cartPriceRuleValidator;
-
-    /**
-     * @var ProposalCartPriceRuleCalculatorInterface
-     */
-    private $proposalCartPriceRuleCalculator;
-
-    /**
-     * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param ProposalCartPriceRuleCalculatorInterface  $proposalCartPriceRuleCalculator
-     */
-    public function __construct(
-        CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
-        ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
-    ) {
-        $this->cartPriceRuleValidator = $cartPriceRuleValidator;
-        $this->proposalCartPriceRuleCalculator = $proposalCartPriceRuleCalculator;
+    public function __construct(private CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator, private ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator)
+    {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
+    public function process(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool
     {
         if ($this->cartPriceRuleValidator->isValidCartRule($cart, $cartPriceRule, $voucherCode)) {
             $this->proposalCartPriceRuleCalculator->calculatePriceRule($cart, $cartPriceRule, $voucherCode);

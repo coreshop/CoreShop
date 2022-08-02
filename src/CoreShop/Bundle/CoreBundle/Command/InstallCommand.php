@@ -6,28 +6,28 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Command;
 
 use CoreShop\Bundle\CoreBundle\Installer;
 use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
-use Pimcore\Migrations\MigrationManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Exception\RuntimeException;
 
 final class InstallCommand extends AbstractInstallCommand
 {
     /**
-     * @var array
+     * @var array<int, array>
      */
-    private $commands = [
+    private array $commands = [
         [
             'command' => 'resources',
             'message' => 'Install Pimcore Classes.',
@@ -42,59 +42,28 @@ final class InstallCommand extends AbstractInstallCommand
         ],
     ];
 
-    /**
-     * @var Installer
-     */
-    private $installer;
-
-    /**
-     * @var MigrationManager
-     */
-    private $migrationManager;
-
-    /**
-     * @var Bundle
-     */
-    private $bundle;
-
-    /**
-     * @param KernelInterface         $kernel
-     * @param CommandDirectoryChecker $directoryChecker
-     * @param Installer               $installer
-     * @param MigrationManager        $migrationManager
-     * @param Bundle                  $bundle
-     */
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
-        Installer $installer,
-        MigrationManager $migrationManager,
-        Bundle $bundle
-    ) {
+        protected Installer $installer
+    )
+    {
         parent::__construct($kernel, $directoryChecker);
-
-        $this->installer = $installer;
-        $this->migrationManager = $migrationManager;
-        $this->bundle = $bundle;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:install')
             ->setDescription('Installs CoreShop.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command installs CoreShop.
 EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
@@ -109,51 +78,34 @@ EOT
         foreach ($this->commands as $step => $command) {
             try {
                 $outputStyle->newLine();
-                $outputStyle->section(sprintf(
-                    'Step %d of %d. <info>%s</info>',
-                    $step + 1,
-                    count($this->commands),
-                    $command['message']
-                ));
-                $this->commandExecutor->runCommand('coreshop:install:' . $command['command'], [], $output);
-            } catch (RuntimeException $exception) {
+                $outputStyle->section(
+                    sprintf(
+                        'Step %d of %d. <info>%s</info>',
+                        $step + 1,
+                        count($this->commands),
+                        $command['message']
+                    )
+                );
+                $this->commandExecutor->runCommand('coreshop:install:'.$command['command'], [], $output);
+            } catch (RuntimeException) {
                 $errored = true;
             }
         }
 
-        $installConfiguration = $this->installer->getInstallMigrationConfiguration();
-        $this->migrationManager->markVersionAsMigrated($installConfiguration->getVersion($installConfiguration->getLatestVersion()));
-
-        $migrationConfiguration = $this->migrationManager->getBundleConfiguration($this->bundle);
-        $this->migrationManager->markVersionAsMigrated($migrationConfiguration->getVersion($migrationConfiguration->getLatestVersion()));
+        $this->installer->markAllMigrationsInstalled();
 
         $outputStyle->newLine(2);
         $outputStyle->success($this->getProperFinalMessage($errored));
-        $outputStyle->writeln(sprintf(
-            'You can now open your store at the following path under the website root: <info>/</info>'
-        ));
+        $outputStyle->writeln(
+            sprintf(
+                'You can now open your store at the following path under the website root: <info>/</info>'
+            )
+        );
 
         return 0;
     }
 
-    /**
-     * @param bool $errored
-     *
-     * @return string
-     */
-    private function getProperFinalMessage($errored)
-    {
-        if ($errored) {
-            return 'CoreShop has been installed, but some error occurred.';
-        }
-
-        return 'CoreShop has been successfully installed.';
-    }
-
-    /**
-     * @return string
-     */
-    private function getCoreShopLogo()
+    private function getCoreShopLogo(): string
     {
         return '<fg=red>                                          
                                        %%%%%%%%%%                                    
@@ -193,5 +145,14 @@ EOT
                                     %%%%%%%%%%%%%%%%%                                
                                         %%%%%%%%%                                                                                                                                 
 </>';
+    }
+
+    private function getProperFinalMessage(bool $errored): string
+    {
+        if ($errored) {
+            return 'CoreShop has been installed, but some error occurred.';
+        }
+
+        return 'CoreShop has been successfully installed.';
     }
 }

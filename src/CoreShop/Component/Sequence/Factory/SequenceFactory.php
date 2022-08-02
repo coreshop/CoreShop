@@ -6,43 +6,33 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Sequence\Factory;
 
 use CoreShop\Component\Resource\Exception\UnsupportedMethodException;
+use CoreShop\Component\Sequence\Model\SequenceInterface;
 
 class SequenceFactory implements SequenceFactoryInterface
 {
     /**
-     * @var string
+     * @psalm-param class-string $className
      */
-    private $className;
-
-    /**
-     * @param string $className
-     */
-    public function __construct($className)
-    {
-        $this->className = $className;
+    public function __construct(
+        private string $className
+    ) {
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws UnsupportedMethodException
-     */
     public function createNew()
     {
         throw new UnsupportedMethodException('createNew');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createWithType($type)
+    public function createWithType(string $type): SequenceInterface
     {
         $sequence = new $this->className();
         $sequence->setType($type);

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\SEO\Extractor;
 
@@ -20,26 +22,32 @@ use Webmozart\Assert\Assert;
 
 final class ImageExtractor implements ExtractorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($object)
+    public function supports($object): bool
     {
         return $object instanceof SEOImageAwareInterface &&
             $object->getImage() instanceof Image;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
+    public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
-        Assert::isInstanceOf($object, SEOImageAwareInterface::class);
-
         /**
          * @var SEOImageAwareInterface $object
          */
-        $ogImage = Tool::getHostUrl() . $object->getImage()->getThumbnail('seo');
+        Assert::isInstanceOf($object, SEOImageAwareInterface::class);
+
+        /**
+         * @var Image\Thumbnail $thumbnail
+         */
+        $thumbnail = $object->getImage()->getThumbnail('coreshop_seo');
+        $path = $thumbnail->getPath();
+
+        if (str_starts_with($path, 'http')) {
+            $ogImage = $path;
+        }
+        else {
+            $ogImage = Tool::getHostUrl() . $path;
+        }
+
         $seoMetadata->addExtraProperty('og:image', $ogImage);
     }
 }

@@ -6,63 +6,37 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension\Document;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Pimcore\Model\Document\Tag;
+use Pimcore\Model\Document\Editable;
 
-class Select extends Tag
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
+class Select extends Editable
 {
     /**
      * @var ResourceInterface|null
      */
     public $resource;
 
-    /**
-     * @var string
-     */
-    protected $repositoryName;
-
-    /**
-     * @var string
-     */
-    protected $nameProperty;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @param string $repositoryName
-     * @param string $nameProperty
-     * @param string $type
-     */
-    public function __construct(string $repositoryName, string $nameProperty, string $type)
+    public function __construct(protected string $repositoryName, protected string $nameProperty, protected string $type)
     {
-        parent::__construct();
-
-        $this->repositoryName = $repositoryName;
-        $this->nameProperty = $nameProperty;
-        $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function frontend()
     {
         return '';
@@ -74,7 +48,7 @@ class Select extends Tag
     }
 
     /**
-     * @return null|ResourceInterface
+     * @return ResourceInterface|null
      */
     public function getResourceObject()
     {
@@ -94,10 +68,7 @@ class Select extends Tag
         return !$this->getResourceObject() instanceof ResourceInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptions()
+    public function getConfig()
     {
         $data = $this->getRepository()->findAll();
         $result = [];
@@ -112,16 +83,13 @@ class Select extends Tag
                 $this->getResourceName($resource),
             ];
         }
-        $options = parent::getOptions();
 
+        $options = parent::getConfig();
         $options['store'] = $result;
 
         return $options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDataFromEditmode($data)
     {
         $this->resource = $data;
@@ -129,9 +97,6 @@ class Select extends Tag
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDataFromResource($data)
     {
         $this->resource = $data;
@@ -150,8 +115,6 @@ class Select extends Tag
     }
 
     /**
-     * @param ResourceInterface $resource
-     *
      * @return mixed
      */
     protected function getResourceName(ResourceInterface $resource)
@@ -163,7 +126,7 @@ class Select extends Tag
                 sprintf(
                     'Property with Name %s does not exist in resource %s',
                     $this->nameProperty,
-                    get_class($resource)
+                    $resource::class
                 )
             );
         }

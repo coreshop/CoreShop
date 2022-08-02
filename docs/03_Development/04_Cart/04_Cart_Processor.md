@@ -29,12 +29,12 @@ For example, we create a Cart Processor, which calculates a custom field in our 
 
 namespace AppBundle\CoreShop\Order\Cart\Processor;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 
 final class CustomCartProcessor implements CartProcessorInterface
 {
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $cart->setCustomField(uniqid());
     }

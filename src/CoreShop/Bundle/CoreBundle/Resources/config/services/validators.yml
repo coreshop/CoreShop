@@ -1,18 +1,17 @@
 services:
     CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartAvailabilityValidator:
         arguments:
-            - '@coreshop.inventory.availability_checker'
+            - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
             - '@CoreShop\Component\Order\Cart\CartItemResolver'
         tags:
             - { name: validator.constraint_validator, alias: coreshop_add_to_cart_availability }
 
     CoreShop\Bundle\CoreBundle\Validator\Constraints\CartStockAvailabilityValidator:
         arguments:
-            - '@coreshop.inventory.availability_checker'
+            - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
         tags:
             - { name: validator.constraint_validator, alias: coreshop_cart_stock_availability }
 
-    coreshop.validator.quantity_validator: '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
     CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService: ~
 
     CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartMaximumQuantityValidator:
@@ -29,13 +28,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: coreshop_add_to_cart_minimum_quantity }
 
-    CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartQuantityValidator:
-        arguments:
-            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
-            - '@CoreShop\Component\Order\Cart\CartItemResolver'
-        tags:
-            - { name: validator.constraint_validator, alias: coreshop_add_to_cart_quantity }
-
     CoreShop\Bundle\CoreBundle\Validator\Constraints\CartMaximumQuantityValidator:
         arguments:
             - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
@@ -48,8 +40,15 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: coreshop_cart_minimum_quantity }
 
-    CoreShop\Bundle\CoreBundle\Validator\Constraints\CartQuantityValidator:
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\UniqueCustomerValidator:
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+            - '@coreshop.repository.user'
+            - '%coreshop.customer.security.login_identifier%'
         tags:
-            - { name: validator.constraint_validator, alias: coreshop_cart_quantity }
+            - { name: validator.constraint_validator, alias: coreshop_unique_customer }
+
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\RegisteredUserValidator:
+        arguments:
+            - '@coreshop.repository.customer'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_registered_user }

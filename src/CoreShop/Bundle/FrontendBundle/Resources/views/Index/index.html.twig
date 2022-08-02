@@ -1,5 +1,5 @@
 {% extends '@CoreShopFrontend/layout-column.html.twig' %}
 
 {% block center %}
-    {{ render(controller('coreshop.frontend.controller.product:latestAction')) }}
+    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\ProductController::latestAction')) }}
 {% endblock %}

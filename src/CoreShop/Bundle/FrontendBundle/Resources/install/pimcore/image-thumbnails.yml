@@ -89,3 +89,13 @@ thumbnails:
         arguments:
           width: 250
           height: 150
+  coreshop_seo:
+    items:
+      - method: scaleByWidth
+        arguments:
+          width: 1200
+  coreshop_productQuote:
+    items:
+      - method: scaleByWidth
+        arguments:
+          width: 400

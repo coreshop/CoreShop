@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -16,8 +16,9 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_filters',
 
-    url: {
-        save: '/admin/coreshop/filters/save'
+    routing: {
+        save: 'coreshop_filter_save',
+        clone: 'coreshop_filter_clone',
     },
 
     indexFieldsStore: null,
@@ -31,6 +32,10 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
             forceLayout: true,
             iconCls: this.iconCls,
             buttons: [{
+                text: t('clone'),
+                iconCls: 'pimcore_icon_clone',
+                handler: this.clone.bind(this)
+            }, {
                 text: t('save'),
                 iconCls: 'pimcore_icon_apply',
                 handler: this.save.bind(this)
@@ -85,7 +90,7 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
     getFieldsForIndex: function (forceReload) {
         if (!this.indexFieldsStore) {
             var proxy = new Ext.data.HttpProxy({
-                url: '/admin/coreshop/filters/get-fields-for-index'
+                url: Routing.generate('coreshop_filter_getFieldsForIndex')
             });
 
             var reader = new Ext.data.JsonReader({}, [

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Detector;
 
@@ -21,36 +23,17 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 interface QuantityReferenceDetectorInterface
 {
     /**
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param array                            $context
-     *
      * @throws NoRuleFoundException
-     *
-     * @return ProductQuantityPriceRuleInterface
      */
-    public function detectRule(QuantityRangePriceAwareInterface $subject, array $context);
+    public function detectRule(QuantityRangePriceAwareInterface $subject, array $context): ProductQuantityPriceRuleInterface;
 
     /**
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param float                            $quantity
-     * @param int                              $originalPrice
-     * @param array                            $context
-     *
      * @throws NoPriceFoundException
-     *
-     * @return int
      */
-    public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, float $quantity, int $originalPrice, array $context);
+    public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, float $quantity, int $originalPrice, array $context): int;
 
     /**
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param QuantityRangeInterface           $range
-     * @param int                              $originalPrice
-     * @param array                            $context
-     *
      * @throws NoPriceFoundException
-     *
-     * @return int
      */
-    public function detectRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context);
+    public function detectRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context): int;
 }

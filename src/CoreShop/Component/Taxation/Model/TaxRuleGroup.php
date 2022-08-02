@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Taxation\Model;
 
@@ -18,9 +20,13 @@ use CoreShop\Component\Resource\Model\ToggleableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
+/**
+ * @psalm-suppress MissingConstructor
+ */
+class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface, \Stringable
 {
     use ToggleableTrait;
+
     use TimestampableTrait;
 
     /**
@@ -43,10 +49,7 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
         $this->taxRules = new ArrayCollection();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
@@ -59,41 +62,26 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxRules()
     {
         return $this->taxRules;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasTaxRules()
     {
         return !$this->taxRules->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addTaxRule(TaxRuleInterface $taxRule)
     {
         if (!$this->hasTaxRule($taxRule)) {
@@ -103,9 +91,6 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeTaxRule(TaxRuleInterface $taxRule)
     {
         if ($this->hasTaxRule($taxRule)) {
@@ -114,9 +99,6 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasTaxRule(TaxRuleInterface $taxRule)
     {
         return $this->taxRules->contains($taxRule);

@@ -2,7 +2,7 @@
 
 ## Installation
 ```bash
-$ composer require coreshop/order-bundle:^2.0
+$ composer require coreshop/order-bundle:^3.0
 ```
 
 ### Adding required bundles to kernel

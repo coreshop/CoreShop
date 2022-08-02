@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FixtureBundle\Fixture\Sorter;
 
@@ -24,16 +26,13 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
  */
 final class DataFixturesSorter
 {
-    /** @var array */
-    private $orderedFixtures = [];
+    private array $orderedFixtures = [];
 
-    /** @var array */
-    private $fixtures = [];
+    private array $fixtures = [];
 
     /**
      * Returns the array of data fixtures to execute.
      *
-     * @param array $fixtures
      *
      * @return array $fixtures
      */
@@ -68,16 +67,20 @@ final class DataFixturesSorter
         $this->orderedFixtures = $this->fixtures;
         usort(
             $this->orderedFixtures,
-            function ($a, $b) {
+            static function (mixed $a, mixed $b) {
                 if ($a instanceof OrderedFixtureInterface && $b instanceof OrderedFixtureInterface) {
                     if ($a->getOrder() === $b->getOrder()) {
                         return 0;
                     }
 
                     return $a->getOrder() < $b->getOrder() ? -1 : 1;
-                } elseif ($a instanceof OrderedFixtureInterface) {
+                }
+
+                if ($a instanceof OrderedFixtureInterface) {
                     return $a->getOrder() === 0 ? 0 : 1;
-                } elseif ($b instanceof OrderedFixtureInterface) {
+                }
+
+                if ($b instanceof OrderedFixtureInterface) {
                     return $b->getOrder() === 0 ? 0 : -1;
                 }
 
@@ -114,11 +117,12 @@ final class DataFixturesSorter
 
         // First we determine which classes has dependencies and which don't
         foreach ($this->fixtures as $fixture) {
-            $fixtureClass = get_class($fixture);
+            $fixtureClass = $fixture::class;
 
             if ($fixture instanceof OrderedFixtureInterface) {
                 continue;
-            } elseif ($fixture instanceof DependentFixtureInterface) {
+            }
+            if ($fixture instanceof DependentFixtureInterface) {
                 $dependenciesClasses = $fixture->getDependencies();
 
                 $this->validateDependencies($fixtureClass, $dependenciesClasses);
@@ -134,10 +138,12 @@ final class DataFixturesSorter
         // Now we order fixtures by sequence
         $sequence = 1;
         $lastCount = -1;
+        $count = 0;
+        $unsequencedClasses = [];
 
         while (($count = count($unsequencedClasses = $this->getUnsequencedClasses($sequenceForClasses))) > 0
             && $count !== $lastCount) {
-            foreach ($unsequencedClasses as $key => $class) {
+            foreach ($unsequencedClasses as $class) {
                 $fixture = $this->fixtures[$class];
                 $dependencies = $fixture->getDependencies();
                 $unsequencedDependencies = $this->getUnsequencedClasses($sequenceForClasses, $dependencies);
@@ -159,14 +165,13 @@ final class DataFixturesSorter
             $msg .= 'This case would produce a CircularReferenceException.';
 
             throw new CircularReferenceException(sprintf($msg, implode(',', $unsequencedClasses)));
-        } else {
-            // We order the classes by sequence
-            asort($sequenceForClasses);
+        }
+        // We order the classes by sequence
+        asort($sequenceForClasses);
 
-            foreach ($sequenceForClasses as $class => $sequence) {
-                // If fixtures were ordered
-                $orderedFixtures[] = $this->fixtures[$class];
-            }
+        foreach ($sequenceForClasses as $class => $sequence) {
+            // If fixtures were ordered
+            $orderedFixtures[] = $this->fixtures[$class];
         }
 
         $this->orderedFixtures = array_merge($this->orderedFixtures, $orderedFixtures);
@@ -213,16 +218,13 @@ final class DataFixturesSorter
     }
 
     /**
-     * @param array      $sequences
-     * @param null|array $classes
-     *
      * @return array
      */
     private function getUnsequencedClasses(array $sequences, array $classes = null)
     {
-        $unsequencedClasses = array();
+        $unsequencedClasses = [];
 
-        if (is_null($classes)) {
+        if (null === $classes) {
             $classes = array_keys($sequences);
         }
 

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
@@ -25,23 +27,11 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**<
-     * @param KernelInterface $kernel
-     */
-    public function __construct(KernelInterface $kernel)
+    public function __construct(private KernelInterface $kernel)
     {
-        $this->kernel = $kernel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf(
             '%s.pimcore.admin.install.documents',
@@ -49,6 +39,9 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
         ) : 'coreshop.all.pimcore.admin.install.documents';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            /**
+             * @var array $documentFilesToInstall
+             */
             $documentFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);
             $docsToInstall = [];
 
@@ -143,22 +136,21 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
         }
     }
 
-    /**
-     * @param Document $rootDocument
-     * @param string   $language
-     * @param array    $properties
-     *
-     * @return Document|null
-     */
-    private function installDocument(Document $rootDocument, $language, $properties)
+    private function installDocument(Document $rootDocument, string $language, array $properties): ?Document
     {
         $path = $rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'] . '/' . $properties['key'];
 
         if (!Document\Service::pathExists($path)) {
             $class = 'Pimcore\\Model\\Document\\' . ucfirst($properties['type']);
 
+            /**
+             * @psalm-suppress InternalMethod
+             */
             if (\Pimcore\Tool::classExists($class)) {
-                /** @var Document\Page $document */
+                /**
+                 * @var Document $document
+                 * @psalm-var class-string $class
+                 */
                 $document = new $class();
                 $document->setParent(
                     Document::getByPath($rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'])
@@ -167,48 +159,43 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 $document->setKey(Service::getValidKey($properties['key'], 'document'));
                 $document->setProperty('language', $language, 'text', true);
 
-                if (isset($properties['title'])) {
-                    $document->setTitle($properties['title']);
-                }
-                if (isset($properties['module'])) {
-                    $document->setModule($properties['module']);
-                }
-                if (isset($properties['controller'])) {
-                    $document->setController($properties['controller']);
-                }
-                if (isset($properties['action'])) {
-                    $document->setAction($properties['action']);
-                }
-                if (isset($properties['template'])) {
-                    $document->setTemplate($properties['template']);
-                }
+                if ($document instanceof Document\PageSnippet) {
+                    if ($document instanceof Document\Page && isset($properties['title'])) {
+                        $document->setTitle($properties['title']);
+                    }
 
-                if (array_key_exists('content', $properties)) {
-                    foreach ($properties['content'] as $fieldLanguage => $fields) {
-                        if ($fieldLanguage !== $language) {
-                            continue;
-                        }
+                    if (isset($properties['controller'])) {
+                        $document->setController($properties['controller']);
+                    }
+                    if (isset($properties['template'])) {
+                        $document->setTemplate($properties['template']);
+                    }
 
-                        foreach ($fields as $key => $field) {
-                            $type = $field['type'];
-                            $content = null;
-
-                            if (array_key_exists('value', $field)) {
-                                $content = $field['value'];
+                    if (array_key_exists('content', $properties)) {
+                        foreach ($properties['content'] as $fieldLanguage => $fields) {
+                            if ($fieldLanguage !== $language) {
+                                continue;
                             }
 
-                            if (!empty($content)) {
-                                if ($type === 'objectProperty') {
-                                    $document->setValue($key, $content);
-                                } else {
-                                    $document->setRawElement($key, $type, $content);
+                            foreach ($fields as $key => $field) {
+                                $type = $field['type'];
+                                $content = null;
+
+                                if (array_key_exists('value', $field)) {
+                                    $content = $field['value'];
+                                }
+
+                                if (!empty($content)) {
+                                    if ($type === 'objectProperty') {
+                                        $document->setValue($key, $content);
+                                    } else {
+                                        $document->setRawEditable($key, $type, $content);
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                if ($document instanceof Document\PageSnippet) {
                     $document->setMissingRequiredEditable(false);
                 }
 

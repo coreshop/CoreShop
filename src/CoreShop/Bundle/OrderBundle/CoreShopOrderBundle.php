@@ -6,15 +6,16 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle;
 
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
-use CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle;
 use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleActionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleConditionPass;
@@ -37,20 +38,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopOrderBundle extends AbstractResourceBundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -66,16 +61,12 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $container->addCompilerPass(new PurchasableWholesalePriceCalculatorsPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
         $collection->addBundle(new CoreShopWorkflowBundle(), 3600);
         $collection->addBundle(new CoreShopRuleBundle(), 3500);
-        $collection->addBundle(new CoreShopLocaleBundle(), 3400);
         $collection->addBundle(new CoreShopCustomerBundle(), 3100);
         $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
         $collection->addBundle(new CoreShopStoreBundle(), 2500);
@@ -83,10 +74,7 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopMoneyBundle(), 1550);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModelNamespace()
+    protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Order\Model';
     }

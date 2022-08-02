@@ -7,10 +7,6 @@ CoreShop\Component\Product\Model\ProductUnitDefinitions:
             type: integer
             xml_attribute: true
             groups: [List, Detailed, Version]
-        product:
-            expose: true
-            type: integer
-            groups: [List, Detailed]
         defaultUnitDefinition:
             expose: true
             type: CoreShop\Component\Product\Model\ProductUnitDefinition

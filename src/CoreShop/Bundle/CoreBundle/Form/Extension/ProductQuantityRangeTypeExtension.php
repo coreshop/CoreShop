@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
@@ -26,10 +28,7 @@ use Symfony\Component\Form\FormInterface;
 
 final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('amount', MoneyType::class, [])
@@ -43,9 +42,6 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
         }
     }
 
-    /**
-     * @param FormEvent $event
-     */
     public function roundQuantity(FormEvent $event)
     {
         $form = $event->getForm();
@@ -56,17 +52,15 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
             return;
         }
 
-        $quantity = (float) str_replace(',', '.', $event->getData());
-        $formattedQuantity = round($quantity, $scale, PHP_ROUND_HALF_UP);
+        $quantity = (float)str_replace(',', '.', $event->getData());
+        $formattedQuantity = round($quantity, $scale, \PHP_ROUND_HALF_UP);
 
         if ($quantity !== $formattedQuantity) {
-            $event->setData((string) $formattedQuantity);
+            $event->setData((string)$formattedQuantity);
         }
     }
 
     /**
-     * @param FormInterface $form
-     *
      * @return int|null
      */
     protected function getScale(FormInterface $form)
@@ -89,18 +83,7 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType()
-    {
-        return ProductQuantityRangeType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [ProductQuantityRangeType::class];
     }

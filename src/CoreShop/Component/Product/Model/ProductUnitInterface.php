@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Model;
 
@@ -18,65 +20,23 @@ use CoreShop\Component\Resource\Model\TranslatableInterface;
 
 interface ProductUnitInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface
 {
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): ?string;
 
-    /**
-     * @param string $identifier
-     */
-    public function setName(string $identifier);
+    public function setName(string $name): void;
 
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getFullLabel($language = null);
+    public function getFullLabel(?string $language = null): ?string;
 
-    /**
-     * @param string $fullLabel
-     * @param string $language
-     */
-    public function setFullLabel($fullLabel, $language = null);
+    public function setFullLabel(string $fullLabel, ?string $language = null): void;
 
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getFullPluralLabel($language = null);
+    public function getFullPluralLabel(?string $language = null): ?string;
 
-    /**
-     * @param string $fullPluralLabel
-     * @param string $language
-     */
-    public function setFullPluralLabel($fullPluralLabel, $language = null);
+    public function setFullPluralLabel(string $fullPluralLabel, ?string $language = null): void;
 
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getShortLabel($language = null);
+    public function getShortLabel(?string $language = null): ?string;
 
-    /**
-     * @param string $shortLabel
-     * @param string $language
-     */
-    public function setShortLabel($shortLabel, $language = null);
+    public function setShortLabel(string $shortLabel, ?string $language = null): void;
 
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getShortPluralLabel($language = null);
+    public function getShortPluralLabel(?string $language = null): ?string;
 
-    /**
-     * @param string $shortPluralLabel
-     * @param string $language
-     */
-    public function setShortPluralLabel($shortPluralLabel, $language = null);
+    public function setShortPluralLabel(string $shortPluralLabel, ?string $language = null): void;
 }

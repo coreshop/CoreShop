@@ -3,15 +3,15 @@
 {% block center %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-            {% for cat in category.getHierarchy() %}
-                <li class="breadcrumb-item active"><a href="{{ coreshop_path(cat, 'coreshop_category_list') }}">{{ cat.getName }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            {% for cat in category.hierarchy %}
+                <li class="breadcrumb-item active"><a href="{{ pimcore_object_path(cat) }}">{{ cat.name }}</a></li>
             {% endfor %}
         </ol>
     </nav>
 
     <h2 class="main-heading2">
-        {{ category.getName }}
+        {{ category.name }}
     </h2>
 
     <div class="product-filter">
@@ -56,7 +56,7 @@
     </div>
 
     <div class="row">
-        {% for product in paginator %}
+        {% for product in paginator.items %}
             {% include '@CoreShopFrontend/Category/_'~type~'.html.twig' with {
                 product: product,
             } only %}

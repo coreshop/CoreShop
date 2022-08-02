@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Rule\Model;
 
@@ -21,7 +23,9 @@ use Doctrine\Common\Collections\Collection;
 trait RuleTrait
 {
     use TimestampableTrait;
+
     use SetValuesTrait;
+
     use ToggleableTrait;
 
     /**
@@ -30,7 +34,7 @@ trait RuleTrait
     public $name;
 
     /**
-     * @var Collection|RuleInterface[]
+     * @var Collection|ConditionInterface[]
      */
     protected $conditions;
 
@@ -71,83 +75,53 @@ trait RuleTrait
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConditions()
     {
         return $this->conditions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasConditions()
+    public function hasConditions(): bool
     {
         return !$this->conditions->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasCondition(ConditionInterface $condition)
+    public function hasCondition(ConditionInterface $condition): bool
     {
         return $this->conditions->contains($condition);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addCondition(ConditionInterface $condition)
+    public function addCondition(ConditionInterface $condition): void
     {
         if (!$this->hasCondition($condition)) {
             $this->conditions->add($condition);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removeCondition(ConditionInterface $condition)
+    public function removeCondition(ConditionInterface $condition): void
     {
         $this->conditions->removeElement($condition);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getActions()
     {
         return $this->actions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasActions()
     {
         return !$this->actions->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAction(ActionInterface $action)
     {
         return $this->actions->contains($action);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addAction(ActionInterface $action)
     {
         if (!$this->hasAction($action)) {
@@ -155,9 +129,6 @@ trait RuleTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeAction(ActionInterface $action)
     {
         $this->actions->removeElement($action);

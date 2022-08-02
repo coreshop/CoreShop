@@ -6,63 +6,38 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ThemeBundle\Service;
+
+use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
+use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 
 final class ThemeHelper implements ThemeHelperInterface
 {
-    /**
-     * @var ThemeResolverInterface
-     */
-    private $themeResolver;
-
-    /**
-     * @var ActiveThemeInterface
-     */
-    private $activeTheme;
-
-    /**
-     * @param ThemeResolverInterface $themeResolver
-     * @param ActiveThemeInterface   $activeTheme
-     */
-    public function __construct(
-        ThemeResolverInterface $themeResolver,
-        ActiveThemeInterface $activeTheme
-    ) {
-        $this->themeResolver = $themeResolver;
-        $this->activeTheme = $activeTheme;
+    public function __construct(private ThemeRepositoryInterface $themeRepository, private SettableThemeContext $themeContext)
+    {
     }
 
-    /**
-     * @param string   $themeName
-     * @param \Closure $function
-     *
-     * @return mixed
-     */
-    public function useTheme($themeName, \Closure $function)
+    public function useTheme(string $themeName, \Closure $function)
     {
-        try {
-            $this->themeResolver->resolveTheme($this->activeTheme);
+        $backupTheme = $this->themeContext->getTheme();
+        $theme = $this->themeRepository->findOneByName($themeName);
 
-            $backupTheme = $this->activeTheme->getActiveTheme();
-            $this->activeTheme->setActiveTheme($themeName);
-
-            $result = $function();
-
-            if (in_array($backupTheme, $this->activeTheme->getThemes())) {
-                $this->activeTheme->setActiveTheme($backupTheme);
-            } else {
-                $this->activeTheme->setActiveTheme('standard');
-            }
-
-            return $result;
-        } catch (ThemeNotResolvedException $exception) {
-            return $function();
+        if ($theme) {
+            $this->themeContext->setTheme($theme);
         }
+
+        $result = $function();
+
+        if ($backupTheme) {
+            $this->themeContext->setTheme($backupTheme);
+        }
+
+        return $result;
     }
 }
-
-class_alias(ThemeHelper::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeHelper');

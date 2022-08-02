@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Model;
 
@@ -21,9 +23,6 @@ interface QuantityRangeInterface extends ResourceInterface
      */
     public function getRangeStartingFrom();
 
-    /**
-     * @param float $rangeStartingFrom
-     */
     public function setRangeStartingFrom(float $rangeStartingFrom);
 
     /**
@@ -31,9 +30,6 @@ interface QuantityRangeInterface extends ResourceInterface
      */
     public function getPricingBehaviour();
 
-    /**
-     * @param string $pricingBehaviour
-     */
     public function setPricingBehaviour(string $pricingBehaviour);
 
     /**
@@ -41,9 +37,6 @@ interface QuantityRangeInterface extends ResourceInterface
      */
     public function getPercentage();
 
-    /**
-     * @param float $percentage
-     */
     public function setPercentage(float $percentage);
 
     /**
@@ -56,9 +49,6 @@ interface QuantityRangeInterface extends ResourceInterface
      */
     public function isHighlighted();
 
-    /**
-     * @param bool $highlighted
-     */
     public function setHighlighted(bool $highlighted);
 
     /**
@@ -67,7 +57,7 @@ interface QuantityRangeInterface extends ResourceInterface
     public function getRule();
 
     /**
-     * @param ProductQuantityPriceRuleInterface $rule
+     * @param ProductQuantityPriceRuleInterface|null $rule
      */
     public function setRule($rule);
 }

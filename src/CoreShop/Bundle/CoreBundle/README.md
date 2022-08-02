@@ -4,14 +4,14 @@ CoreShop Core Bundle
 CoreShop
 ------
 
-![CoreShop](http://www.coreshop.org/assets/img/logo-full.svg)
+![CoreShop](https://www.coreshop.org/assets/img/logo-full.svg)
 
 CoreShop is an eCommerce Solution for Pimcore. It is build from decoupled components to get highest quality of code. [Read more on coreshop.org](http://www.coreshop.org)
 
 Documentation
 -------------
 
-Documentation is available on [**coreshop.org**](https://docs.coreshop.org/2.1.0/Bundles/Core_Bundle.html).
+Documentation is available on [**coreshop.org**](https://docs.coreshop.org/3.0.0/Bundles/Core_Bundle.html).
 
 Bug tracking
 ------------

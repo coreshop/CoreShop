@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -15,8 +15,8 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_carrier',
 
-    url: {
-        save: '/admin/coreshop/carriers/save'
+    routing: {
+        save: 'coreshop_carrier_save'
     },
 
     initialize: function (parentPanel, data, panelKey, type) {
@@ -136,6 +136,12 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                         valueField: 'value',
                         displayField: 'label',
                         store: pimcore.globalmanager.get('coreshop_shipping_tax_calculation_strategies')
+                    },
+                    {
+                        xtype: 'checkbox',
+                        name: 'hideFromCheckout',
+                        fieldLabel: t('coreshop_carrier_hideFromCheckout'),
+                        value: this.data.hideFromCheckout
                     }
                 ]
             }]
@@ -268,13 +274,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
             bodyStyle: 'padding:10px;',
             autoScroll: true,
             border: false,
-            items: [{
-                xtype: 'checkbox',
-                name: 'isFree',
-                fieldLabel: t('coreshop_carrier_isFree'),
-                width: 250,
-                value: this.data.isFree
-            }, this.getShippingRulesGrid()]
+            items: [this.getShippingRulesGrid()]
         });
 
         return this.shippingLocationAndCosts;

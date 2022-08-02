@@ -2,4 +2,4 @@ coreshop_payment_after:
     path: /cs/after-pay
     methods: [GET, POST]
     defaults:
-        _controller: coreshop.frontend.controller.payment:afterCaptureAction
+        _controller: CoreShop\Bundle\PayumBundle\Controller\PaymentController::afterCaptureAction

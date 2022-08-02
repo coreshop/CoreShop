@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
@@ -24,15 +26,12 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
  */
 final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         try {
             $resources = $container->getParameter('coreshop.resources');
             $resolveTargetEntityListener = $container->findDefinition('doctrine.orm.listeners.resolve_target_entity');
-        } catch (InvalidArgumentException $exception) {
+        } catch (InvalidArgumentException) {
             return;
         }
 
@@ -72,7 +71,7 @@ final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
         });
 
         $interfaces = array_map(static function (array $classes): string {
-            return (string) current($classes);
+            return current($classes);
         }, $interfaces);
 
         foreach ($resources as $alias => $configuration) {

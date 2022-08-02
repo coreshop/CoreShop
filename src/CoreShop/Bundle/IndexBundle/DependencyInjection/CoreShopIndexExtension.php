@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection;
 
@@ -21,6 +23,7 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRendererTypesPass;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Index\Condition\DynamicRendererInterface;
 use CoreShop\Component\Index\Extension\IndexExtensionInterface;
@@ -37,19 +40,16 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopIndexExtension extends AbstractModelExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
 
         $bundles = $container->getParameter('kernel.bundles');
 
-        $container->setParameter('coreshop.index.mapping_types', array_keys($config['mapping_types']));
+        $container->setParameter('coreshop.index.mapping_types', array_keys($configs['mapping_types']));
 
         $loader->load('services.yml');
 
@@ -66,7 +66,7 @@ final class CoreShopIndexExtension extends AbstractModelExtension
             $loader->load('services/data_hub.yml');
         }
 
-        $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
 
         $container
             ->registerForAutoconfiguration(DynamicRendererInterface::class)

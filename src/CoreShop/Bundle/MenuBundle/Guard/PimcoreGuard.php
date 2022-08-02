@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\MenuBundle\Guard;
 
@@ -18,20 +20,11 @@ use Pimcore\Model\User;
 
 class PimcoreGuard
 {
-    /**
-     * @var TokenStorageUserResolver
-     */
-    private $tokenStorageUserResolver;
-
-    /**
-     * @param TokenStorageUserResolver $tokenStorageUserResolver
-     */
-    public function __construct(TokenStorageUserResolver $tokenStorageUserResolver)
+    public function __construct(private TokenStorageUserResolver $tokenStorageUserResolver)
     {
-        $this->tokenStorageUserResolver = $tokenStorageUserResolver;
     }
 
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): bool
     {
         if (!$item->getAttribute('permission')) {
             return true;
@@ -40,7 +33,7 @@ class PimcoreGuard
         $user = $this->tokenStorageUserResolver->getUser();
 
         if ($user instanceof User) {
-            return $user->isAllowed($item->getAttribute('permission'));
+            return $user->isAllowed((string)$item->getAttribute('permission'));
         }
 
         return false;

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FixtureBundle\Event;
 
@@ -19,12 +21,12 @@ final class FixturesEvents
      *
      * @var string
      */
-    const DATA_FIXTURES_PRE_LOAD = 'coreshop.data_fixtures.pre_load';
+    public const DATA_FIXTURES_PRE_LOAD = 'coreshop.data_fixtures.pre_load';
 
     /**
      * This event is raised after data fixtures are loaded.
      *
      * @var string
      */
-    const DATA_FIXTURES_POST_LOAD = 'coreshop.data_fixtures.post_load';
+    public const DATA_FIXTURES_POST_LOAD = 'coreshop.data_fixtures.post_load';
 }

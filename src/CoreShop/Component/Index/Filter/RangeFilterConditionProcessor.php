@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Filter;
 
@@ -21,10 +23,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = $condition->getConfiguration()['field'];
         $rawValues = $list->getGroupByValues($field, true);
@@ -33,12 +32,12 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
         $maxValue = count($rawValues) > 0 ? $rawValues[count($rawValues) - 1]['value'] : 0;
 
         $currentValueMin = $minValue;
-        if (isset($currentFilter["$field-min"]) && ('' !== (string)$currentFilter["$field-min"]) ) {
+        if (isset($currentFilter["$field-min"]) && ('' !== (string)$currentFilter["$field-min"])) {
             $currentValueMin = $currentFilter["$field-min"];
         }
 
         $currentValueMax = $maxValue;
-        if (isset($currentFilter["$field-max"]) && ('' !== (string)$currentFilter["$field-max"]) ) {
+        if (isset($currentFilter["$field-max"]) && ('' !== (string)$currentFilter["$field-max"])) {
             $currentValueMax = $currentFilter["$field-max"];
         }
 
@@ -52,14 +51,11 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             'values' => array_values($rawValues),
             'fieldName' => $field,
             'stepCount' => $condition->getConfiguration()['stepCount'],
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
+            'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById($condition->getQuantityUnit()) : null,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = $condition->getConfiguration()['field'];
 
@@ -99,7 +95,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
                 $fieldName = 'PRECONDITION_' . $fieldName;
             }
 
-            $list->addCondition(new RangeCondition($field, $valueMin, $valueMax), $fieldName);
+            $list->addCondition(new RangeCondition($field, (float)$valueMin, (float)$valueMax), $fieldName);
         }
 
         return $currentFilter;

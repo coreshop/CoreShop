@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
@@ -16,17 +18,14 @@ use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Barcode;
 use Faker\Provider\Lorem;
 
 class ProductWithUnitFixture extends AbstractProductFixture
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $stores = $this->container->get('coreshop.repository.store')->findAll();
 
@@ -36,7 +35,7 @@ class ProductWithUnitFixture extends AbstractProductFixture
         $faker->addProvider(new Lorem($faker));
         $faker->addProvider(new Barcode($faker));
 
-        for ($i = 0; $i < $productsCount; $i++) {
+        for ($i = 0; $i < $productsCount; ++$i) {
             $product = $this->createProduct('products-with-unit');
 
             $productUnitDefinitionFactory = $this->container->get('coreshop.factory.product_unit_definition');
@@ -80,7 +79,7 @@ class ProductWithUnitFixture extends AbstractProductFixture
                 /**
                  * @var ProductStoreValuesInterface $storeValues
                  */
-                $storeValues = $product->getStoreValues($store);
+                $storeValues = $product->getStoreValuesForStore($store);
 
                 if (null === $storeValues) {
                     $storeValues = $storeValuesFactory->createNew();
@@ -94,19 +93,19 @@ class ProductWithUnitFixture extends AbstractProductFixture
                  */
                 $cartonPrice = $productUnitDefinitionPriceFactory->createNew();
                 $cartonPrice->setUnitDefinition($cartonDefinition);
-                $cartonPrice->setPrice($product->getStorePrice($store) * 20);
+                $cartonPrice->setPrice($product->getStoreValuesOfType('price', $store) * 20);
 
                 /**
                  * @var ProductUnitDefinitionPriceInterface $palettePrice
                  */
                 $palettePrice = $productUnitDefinitionPriceFactory->createNew();
-                $palettePrice->setPrice($product->getStorePrice($store) * 20 * 38);
+                $palettePrice->setPrice($product->getStoreValuesOfType('price', $store) * 20 * 38);
                 $palettePrice->setUnitDefinition($paletteDefinition);
 
                 $storeValues->addProductUnitDefinitionPrice($cartonPrice);
                 $storeValues->addProductUnitDefinitionPrice($palettePrice);
 
-                $product->setStoreValues($storeValues, $store);
+                $product->setStoreValuesForStore($storeValues, $store);
             }
 
             $product->save();

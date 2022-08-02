@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\FixtureBundle\Fixture\Loader;
 
@@ -24,47 +26,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DataFixturesLoader extends ContainerAwareLoader
 {
-    /** @var EntityManager */
-    protected $em;
+    protected array $loadedFixtures = [];
 
-    /** @var array */
-    protected $loadedFixtures;
+    protected ?\ReflectionProperty $ref = null;
 
-    /** @var \ReflectionProperty */
-    protected $ref;
-
-    /**
-     * @var UpdateDataFixturesFixture
-     */
-    protected $updateDataFixturesFixture;
-
-    /**
-     * @var DataFixtureRepositoryInterface
-     */
-    protected $dataFixtureRepository;
-
-    /**
-     * @param EntityManager                  $em
-     * @param ContainerInterface             $container
-     * @param UpdateDataFixturesFixture      $updateDataFixturesFixture
-     * @param DataFixtureRepositoryInterface $dataFixtureRepository
-     */
     public function __construct(
-        EntityManager $em,
+        protected EntityManager $em,
         ContainerInterface $container,
-        UpdateDataFixturesFixture $updateDataFixturesFixture,
-        DataFixtureRepositoryInterface $dataFixtureRepository
+        protected UpdateDataFixturesFixture $updateDataFixturesFixture,
+        protected DataFixtureRepositoryInterface $dataFixtureRepository
     ) {
         parent::__construct($container);
-
-        $this->em = $em;
-        $this->updateDataFixturesFixture = $updateDataFixturesFixture;
-        $this->dataFixtureRepository = $dataFixtureRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFixtures()
     {
         $sorter = new DataFixturesSorter();
@@ -85,12 +59,12 @@ class DataFixturesLoader extends ContainerAwareLoader
                 if ($fixture instanceof VersionedFixtureInterface) {
                     $version = $fixture->getVersion();
                 }
-                $toBeLoadFixtureClassNames[get_class($fixture)] = $version;
+                $toBeLoadFixtureClassNames[$fixture::class] = $version;
             }
 
             $updateFixture = $this->updateDataFixturesFixture;
             $updateFixture->setDataFixtures($toBeLoadFixtureClassNames);
-            $fixtures[get_class($updateFixture)] = $updateFixture;
+            $fixtures[$updateFixture::class] = $updateFixture;
         }
 
         return $fixtures;
@@ -105,7 +79,7 @@ class DataFixturesLoader extends ContainerAwareLoader
      */
     protected function isFixtureAlreadyLoaded($fixtureObject)
     {
-        if (!is_array($this->loadedFixtures) || count($this->loadedFixtures) === 0) {
+        if (count($this->loadedFixtures) === 0) {
             $this->loadedFixtures = [];
 
             $loadedFixtures = $this->dataFixtureRepository->findAll();
@@ -117,9 +91,9 @@ class DataFixturesLoader extends ContainerAwareLoader
 
         $alreadyLoaded = false;
 
-        if (isset($this->loadedFixtures[get_class($fixtureObject)])) {
+        if (isset($this->loadedFixtures[$fixtureObject::class])) {
             $alreadyLoaded = true;
-            $loadedVersion = $this->loadedFixtures[get_class($fixtureObject)];
+            $loadedVersion = $this->loadedFixtures[$fixtureObject::class];
             if ($fixtureObject instanceof VersionedFixtureInterface
                 && version_compare($loadedVersion, $fixtureObject->getVersion()) == -1
             ) {

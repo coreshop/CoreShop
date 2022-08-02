@@ -6,49 +6,47 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Context\RequestBased;
 
+use CoreShop\Component\Customer\Context\CustomerNotFoundException;
+use CoreShop\Component\Customer\Model\CustomerInterface;
+use Laminas\Stdlib\PriorityQueue;
 use Symfony\Component\HttpFoundation\Request;
-use Zend\Stdlib\PriorityQueue;
 
 final class CompositeRequestResolver implements RequestResolverInterface
 {
     /**
      * @var PriorityQueue|RequestResolverInterface[]
+     * @psalm-var PriorityQueue<RequestResolverInterface>
      */
-    private $requestResolvers;
+    private PriorityQueue $requestResolvers;
 
     public function __construct()
     {
         $this->requestResolvers = new PriorityQueue();
     }
 
-    /**
-     * @param RequestResolverInterface $requestResolver
-     * @param int                      $priority
-     */
-    public function addResolver(RequestResolverInterface $requestResolver, $priority = 0)
+    public function addResolver(RequestResolverInterface $requestResolver, int $priority = 0): void
     {
         $this->requestResolvers->insert($requestResolver, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findCustomer(Request $request)
+    public function findCustomer(Request $request): CustomerInterface
     {
         foreach ($this->requestResolvers as $requestResolver) {
-            $customer = $requestResolver->findCustomer($request);
-
-            if (null !== $customer) {
-                return $customer;
+            try {
+                return $requestResolver->findCustomer($request);
+            } catch (CustomerNotFoundException) {
+                //Ignore and continue
             }
         }
 
-        return null;
+        throw new CustomerNotFoundException();
     }
 }

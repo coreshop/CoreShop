@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\StorageList;
 
@@ -18,37 +20,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SessionStorageManager implements StorageListManagerInterface
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $sessionListFactory;
-
-    /**
-     * @param SessionInterface $session
-     * @param string           $name
-     * @param FactoryInterface $sessionListFactory
-     */
-    public function __construct(SessionInterface $session, string $name, FactoryInterface $sessionListFactory)
+    public function __construct(private SessionInterface $session, private string $name, private FactoryInterface $sessionListFactory)
     {
-        $this->session = $session;
-        $this->name = $name;
-        $this->sessionListFactory = $sessionListFactory;
     }
 
-    /**
-     * @return StorageListInterface
-     */
-    public function getStorageList()
+    public function getStorageList(): StorageListInterface
     {
         $list = $this->session->get($this->name);
 
@@ -59,23 +35,13 @@ class SessionStorageManager implements StorageListManagerInterface
         return $list;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasStorageList()
+    public function hasStorageList(): bool
     {
         return $this->session->has($this->name);
     }
 
-    /**
-     * @param StorageListInterface $storageList
-     *
-     * @return bool
-     */
-    public function persist(StorageListInterface $storageList)
+    public function persist(StorageListInterface $storageList): void
     {
         $this->session->set($this->name, $storageList);
-
-        return true;
     }
 }

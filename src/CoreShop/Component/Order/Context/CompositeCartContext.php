@@ -6,44 +6,41 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Context;
 
-use Zend\Stdlib\PriorityQueue;
+use CoreShop\Component\Order\Model\OrderInterface;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeCartContext implements CartContextInterface
 {
     /**
      * @var PriorityQueue|CartContextInterface[]
+     * @psalm-var PriorityQueue<CartContextInterface>
      */
-    private $cartContexts;
+    private PriorityQueue $cartContexts;
 
     public function __construct()
     {
         $this->cartContexts = new PriorityQueue();
     }
 
-    /**
-     * @param CartContextInterface $cartContext
-     * @param int                  $priority
-     */
-    public function addContext(CartContextInterface $cartContext, $priority = 0)
+    public function addContext(CartContextInterface $cartContext, int $priority = 0): void
     {
         $this->cartContexts->insert($cartContext, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCart()
+    public function getCart(): OrderInterface
     {
         foreach ($this->cartContexts as $cartContext) {
             try {
                 return $cartContext->getCart();
-            } catch (CartNotFoundException $exception) {
+            } catch (CartNotFoundException) {
                 continue;
             }
         }

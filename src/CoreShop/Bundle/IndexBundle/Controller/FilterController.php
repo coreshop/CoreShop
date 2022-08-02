@@ -6,26 +6,25 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Component\Index\Factory\ListingFactoryInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FilterController extends ResourceController
 {
-    /**
-     * Get Index Configurations.
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getConfigAction()
+    public function getConfigAction(): Response
     {
         return $this->viewHandler->handle(
             [
@@ -36,9 +35,9 @@ class FilterController extends ResourceController
         );
     }
 
-    public function getFieldsForIndexAction(Request $request)
+    public function getFieldsForIndexAction(Request $request): Response
     {
-        $index = $this->get('coreshop.repository.index')->find($request->get('index'));
+        $index = $this->get('coreshop.repository.index')->find($this->getParameterFromRequest($request, 'index'));
 
         if ($index instanceof IndexInterface) {
             $columns = [
@@ -56,18 +55,19 @@ class FilterController extends ResourceController
         return $this->viewHandler->handle(false);
     }
 
-    public function getValuesForFilterFieldAction(Request $request)
+    public function getValuesForFilterFieldAction(Request $request): Response
     {
-        $index = $this->get('coreshop.repository.index')->find($request->get('index'));
+        $index = $this->get('coreshop.repository.index')->find($this->getParameterFromRequest($request, 'index'));
 
         if ($index instanceof IndexInterface) {
             /**
              * @var WorkerInterface $worker
              */
             $worker = $this->get('coreshop.registry.index.worker')->get($index->getWorker());
-            $list = $this->get('coreshop.factory.index.list')->createList($index);
+            $list = $this->get(ListingFactoryInterface::class)->createList($index);
+            $list->setLocale($request->getLocale());
             $filterGroupHelper = $worker->getFilterGroupHelper();
-            $field = $request->get('field');
+            $field = $this->getParameterFromRequest($request, 'field');
             $column = null;
 
             foreach ($index->getColumns() as $column) {
@@ -88,18 +88,18 @@ class FilterController extends ResourceController
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
-    protected function getPreConditionTypes()
+    protected function getPreConditionTypes(): array
     {
-        return $this->getParameter('coreshop.filter.pre_condition_types');
+        return $this->container->getParameter('coreshop.filter.pre_condition_types');
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
-    protected function getUserConditionTypes()
+    protected function getUserConditionTypes(): array
     {
-        return $this->getParameter('coreshop.filter.user_condition_types');
+        return $this->container->getParameter('coreshop.filter.user_condition_types');
     }
 }

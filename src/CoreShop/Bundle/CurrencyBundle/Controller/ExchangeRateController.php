@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CurrencyBundle\Controller;
 
@@ -19,14 +21,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ExchangeRateController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function saveAction(Request $request)
+    public function saveAction(Request $request): JsonResponse
     {
-        $resource = $this->repository->find($request->get('id'));
+        $resource = $this->repository->find($this->getParameterFromRequest($request, 'id'));
 
         if (!$resource instanceof ResourceInterface) {
             $resource = $this->factory->createNew();
@@ -53,6 +50,6 @@ class ExchangeRateController extends ResourceController
 
         $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
 
-        return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
+        return $this->viewHandler->handle(['success' => false, 'message' => implode(\PHP_EOL, $errors)]);
     }
 }

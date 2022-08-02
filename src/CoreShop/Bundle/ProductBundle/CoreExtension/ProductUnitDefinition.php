@@ -6,24 +6,31 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
+use CoreShop\Bundle\ResourceBundle\Pimcore\CacheMarshallerInterface;
+use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 
+/**
+ * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+ */
 class ProductUnitDefinition extends Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
     Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    CacheMarshallerInterface
 {
     /**
      * Static type of this element.
@@ -44,45 +51,50 @@ class ProductUnitDefinition extends Data implements
      */
     public $allowEmpty = false;
 
-    /**
-     * @return string | array
-     */
-    public function getQueryColumnType()
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return '\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return '\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getQueryColumnType(): string|array
     {
         return 'int(11)';
     }
 
-    /**
-     * @return string | array
-     */
-    public function getColumnType()
+    public function getColumnType(): string|array
     {
         return 'int(11)';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
-            if ((int) $data) {
+            if ((int)$data) {
                 return $this->getDataFromResource($data, $object, $params);
             }
         }
@@ -90,9 +102,6 @@ class ProductUnitDefinition extends Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preGetData($object, $params = [])
     {
         /**
@@ -117,9 +126,6 @@ class ProductUnitDefinition extends Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForResource($data, $object = null, $params = [])
     {
         if ($data instanceof ProductUnitDefinitionInterface) {
@@ -129,21 +135,15 @@ class ProductUnitDefinition extends Data implements
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        if ((int) $data > 0) {
+        if ((int)$data > 0) {
             return $this->getRepository()->find($data);
         }
 
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
         if ($data instanceof ProductUnitDefinitionInterface) {
@@ -153,49 +153,72 @@ class ProductUnitDefinition extends Data implements
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function createDataCopy(Concrete $object, $data)
+    {
+        if (!$data instanceof ProductUnitDefinitionsInterface) {
+            return null;
+        }
+
+        if (!$object instanceof ProductInterface) {
+            return null;
+        }
+
+        $data->setProduct($object);
+
+        $reflectionClass = new \ReflectionClass($data);
+        $property = $reflectionClass->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($data, null);
+
+        foreach ($data->getUnitDefinitions() as $unitDefinition) {
+            $reflectionClass = new \ReflectionClass($unitDefinition);
+            $property = $reflectionClass->getProperty('id');
+            $property->setAccessible(true);
+            $property->setValue($unitDefinition, null);
+        }
+
+        return $data;
+    }
+
     public function marshalVersion($object, $data)
     {
         return $this->getDataForEditmode($data, $object);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalVersion($object, $data)
     {
-        return $this->getDataFromEditmode($data, $object);
+        if (is_array($data) && isset($data['id'])) {
+            return $this->getRepository()->find($data['id']);
+        }
+
+        return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalRecycleData($object, $data)
     {
         return $this->marshalVersion($object, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalRecycleData($object, $data)
     {
         return $this->unmarshalVersion($object, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function marshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->marshalVersion($concrete, $data);
+    }
+
+    public function unmarshalForCache(Concrete $concrete, mixed $data): mixed
+    {
+        return $this->unmarshalVersion($concrete, $data);
+    }
+
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         $parsedData = [
@@ -221,20 +244,19 @@ class ProductUnitDefinition extends Data implements
         return $parsedData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         return !$data instanceof ProductUnitDefinitionInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionPreview($data, $object = null, $params = [])
     {
         return $data;
+    }
+
+    public function getForCsvExport($object, $params = [])
+    {
+        return '';
     }
 
     /**

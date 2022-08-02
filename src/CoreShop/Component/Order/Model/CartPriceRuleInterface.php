@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
@@ -19,17 +21,11 @@ use Doctrine\Common\Collections\Collection;
 interface CartPriceRuleInterface extends RuleInterface, TranslatableInterface
 {
     /**
-     * @param string|null $language
-     *
      * @return string
      */
-    public function getLabel($language = null);
+    public function getLabel(string $language = null);
 
-    /**
-     * @param string      $label
-     * @param string|null $language
-     */
-    public function setLabel($label, $language = null);
+    public function setLabel(string $label, string $language = null);
 
     /**
      * @return string
@@ -61,19 +57,11 @@ interface CartPriceRuleInterface extends RuleInterface, TranslatableInterface
      */
     public function hasVoucherCodes();
 
-    /**
-     * @param CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode
-     */
     public function addVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode);
 
-    /**
-     * @param CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode
-     */
     public function removeVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode);
 
     /**
-     * @param CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode
-     *
      * @return bool
      */
     public function hasVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode);

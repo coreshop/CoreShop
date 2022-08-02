@@ -2,7 +2,7 @@
 
 ## Installation
 ```bash
-$ composer require coreshop/pimcore-bundle:^2.0
+$ composer require coreshop/pimcore-bundle:^3.0
 ```
 
 ### Activating Bundle

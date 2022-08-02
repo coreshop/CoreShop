@@ -21,7 +21,7 @@ CoreShop\Component\Index\Model\FilterCondition:
             groups: [Detailed]
         quantityUnit:
             expose: true
-            type: integer
+            type: string
             groups: [Detailed]
         configuration:
             expose: true

@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
@@ -24,12 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CustomerTransformerController extends AdminController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function checkForNameDuplicatesAction(Request $request)
+    public function checkForNameDuplicatesAction(Request $request): JsonResponse
     {
         $error = false;
         $message = null;
@@ -39,34 +36,27 @@ class CustomerTransformerController extends AdminController
 
         if ($value !== null) {
             $list = $this->getCompanyRepository()->getList();
-            $list->addConditionParam(sprintf('name LIKE "%%%s%%"', $value));
-            $foundObjects = $list->getObjects();
+            $list->addConditionParam(sprintf('name LIKE "%%%s%%"', (string)$value));
+            $foundObjects = $list->getData();
         }
 
         /** @var CompanyInterface $maybeDuplicate */
         foreach ($foundObjects as $maybeDuplicate) {
             $objects[] = [
-                'id'   => $maybeDuplicate->getId(),
+                'id' => $maybeDuplicate->getId(),
                 'name' => $maybeDuplicate->getName(),
-                'path' => $maybeDuplicate->getFullPath()
+                'path' => $maybeDuplicate->getFullPath(),
             ];
         }
 
         return $this->json([
             'success' => !$error,
             'message' => $message,
-            'list'    => $objects
+            'list' => $objects,
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param string  $type
-     * @param int     $objectId
-     *
-     * @return JsonResponse
-     */
-    public function getEntityDetailsAction(Request $request, string $type, $objectId)
+    public function getEntityDetailsAction(string $type, int $objectId): JsonResponse
     {
         $error = false;
         $message = null;
@@ -82,7 +72,7 @@ class CustomerTransformerController extends AdminController
                 $data = [
                     'type' => $type,
                     'name' => sprintf('%s %s', $object->getFirstname(), $object->getLastname()),
-                    'id'   => $object->getId()
+                    'id' => $object->getId(),
                 ];
             }
         } elseif ($type === 'company') {
@@ -93,7 +83,7 @@ class CustomerTransformerController extends AdminController
                 $data = [
                     'type' => $type,
                     'name' => sprintf('%s', $object->getName()),
-                    'id'   => $object->getId()
+                    'id' => $object->getId(),
                 ];
             }
         }
@@ -101,18 +91,11 @@ class CustomerTransformerController extends AdminController
         return $this->json([
             'success' => !$error,
             'message' => $message,
-            'data'    => $data
+            'data' => $data,
         ]);
     }
 
-    /**
-     * @param Request  $request
-     * @param int      $customerId
-     * @param int|null $companyId
-     *
-     * @return JsonResponse
-     */
-    public function validateAssignmentAction(Request $request, $customerId, $companyId)
+    public function validateAssignmentAction(int $customerId, int $companyId = null): JsonResponse
     {
         $error = false;
         $message = null;
@@ -128,7 +111,7 @@ class CustomerTransformerController extends AdminController
             return $this->json([
                 'success' => !$error,
                 'message' => $message,
-                'data'    => $data
+                'data' => $data,
             ]);
         }
 
@@ -139,7 +122,7 @@ class CustomerTransformerController extends AdminController
             return $this->json([
                 'success' => !$error,
                 'message' => $message,
-                'data'    => $data
+                'data' => $data,
             ]);
         }
 
@@ -153,39 +136,31 @@ class CustomerTransformerController extends AdminController
         if ($error === false) {
             foreach ($customer->getAddresses() as $address) {
                 $availableCustomerAddresses[] = [
-                    'id'   => $address->getId(),
+                    'id' => $address->getId(),
                     'path' => $address->getFullPath(),
                 ];
             }
 
             $data = [
-                'addresses' => $availableCustomerAddresses
+                'addresses' => $availableCustomerAddresses,
             ];
         }
 
         return $this->json([
             'success' => !$error,
             'message' => $message,
-            'data'    => $data
+            'data' => $data,
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param int     $customerId
-     * @param int     $companyId
-     *
-     * @return JsonResponse
-     */
-    public function dispatchExistingAssignmentAction(Request $request, $customerId, $companyId)
+    public function dispatchExistingAssignmentAction(Request $request, int $customerId, int $companyId): JsonResponse
     {
         $error = false;
         $formError = false;
         $message = null;
-        $data = null;
 
-        $addressAssignmentType = $request->get('addressAssignmentType');
-        $addressAccessType = $request->get('addressAccessType');
+        $addressAssignmentType = $this->getParameterFromRequest($request, 'addressAssignmentType');
+        $addressAccessType = $this->getParameterFromRequest($request, 'addressAccessType');
 
         /** @var CustomerInterface $customer */
         $customer = $this->getCustomerRepository()->find($customerId);
@@ -195,7 +170,7 @@ class CustomerTransformerController extends AdminController
 
         $options = [
             'addressAssignmentType' => $addressAssignmentType,
-            'addressAccessType'     => $addressAccessType,
+            'addressAccessType' => $addressAccessType,
         ];
 
         try {
@@ -210,42 +185,35 @@ class CustomerTransformerController extends AdminController
         }
 
         return $this->json([
-            'success'    => !$error && !$formError,
-            'formError'  => $formError,
-            'message'    => $message,
+            'success' => !$error && !$formError,
+            'formError' => $formError,
+            'message' => $message,
             'customerId' => $customerId,
-            'companyId'  => $companyId
+            'companyId' => $companyId,
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param int $customerId
-     *
-     * @return JsonResponse
-     */
-    public function dispatchNewAssignmentAction(Request $request, $customerId)
+    public function dispatchNewAssignmentAction(Request $request, int $customerId): JsonResponse
     {
         $error = false;
         $formError = false;
         $message = null;
-        $data = null;
 
         $companyId = null;
 
-        $addressAssignmentType = $request->get('addressAssignmentType');
-        $addressAccessType = $request->get('addressAccessType');
-        $newCompanyName = $request->get('newCompanyName');
+        $addressAssignmentType = $this->getParameterFromRequest($request, 'addressAssignmentType');
+        $addressAccessType = $this->getParameterFromRequest($request, 'addressAccessType');
+        $newCompanyName = $this->getParameterFromRequest($request, 'newCompanyName');
 
         /** @var CustomerInterface $customer */
         $customer = $this->getCustomerRepository()->find($customerId);
 
         $options = [
             'addressAssignmentType' => $addressAssignmentType,
-            'addressAccessType'     => $addressAccessType,
-            'companyData'           => [
-                'name' => $newCompanyName
-            ]
+            'addressAccessType' => $addressAccessType,
+            'companyData' => [
+                'name' => $newCompanyName,
+            ],
         ];
 
         try {
@@ -253,7 +221,6 @@ class CustomerTransformerController extends AdminController
 
             $customerId = $customer->getId();
             $companyId = $customer->getCompany()->getId();
-
         } catch (ValidationException $e) {
             $error = true;
             $formError = true;
@@ -264,34 +231,25 @@ class CustomerTransformerController extends AdminController
         }
 
         return $this->json([
-            'success'    => !$error && !$formError,
-            'formError'  => $formError,
-            'message'    => $message,
+            'success' => !$error && !$formError,
+            'formError' => $formError,
+            'message' => $message,
             'customerId' => $customerId,
-            'companyId'  => $companyId
+            'companyId' => $companyId,
         ]);
     }
 
-    /**
-     * @return CustomerRepositoryInterface
-     */
-    protected function getCustomerRepository()
+    protected function getCustomerRepository(): CustomerRepositoryInterface
     {
         return $this->get('coreshop.repository.customer');
     }
 
-    /**
-     * @return CompanyRepositoryInterface
-     */
-    protected function getCompanyRepository()
+    protected function getCompanyRepository(): CompanyRepositoryInterface
     {
         return $this->get('coreshop.repository.company');
     }
 
-    /**
-     * @return CustomerTransformHelperInterface
-     */
-    protected function getCustomerTransformerHelper()
+    protected function getCustomerTransformerHelper(): CustomerTransformHelperInterface
     {
         return $this->get(CustomerTransformHelperInterface::class);
     }

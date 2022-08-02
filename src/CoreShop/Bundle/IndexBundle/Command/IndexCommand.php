@@ -6,15 +6,18 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Command;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
-use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
+use CoreShop\Component\Pimcore\BatchProcessing\DataObjectBatchListing;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
@@ -23,47 +26,20 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class IndexCommand extends Command
 {
-    /**
-     * @var RepositoryInterface
-     */
-    protected $indexRepository;
-
-    /**
-     * @var IndexUpdaterServiceInterface
-     */
-    protected $indexUpdater;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @param RepositoryInterface          $indexRepository
-     * @param IndexUpdaterServiceInterface $indexUpdater
-     * @param EventDispatcherInterface     $eventDispatcher
-     */
     public function __construct(
-        RepositoryInterface $indexRepository,
-        IndexUpdaterServiceInterface $indexUpdater,
-        EventDispatcherInterface $eventDispatcher
+        private RepositoryInterface $indexRepository,
+        private IndexUpdaterServiceInterface $indexUpdater,
+        private EventDispatcherInterface $eventDispatcher
     ) {
-        $this->indexRepository = $indexRepository;
-        $this->indexUpdater = $indexUpdater;
-        $this->eventDispatcher = $eventDispatcher;
-
         parent::__construct();
     }
 
-    /**
-     * configure command.
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:index')
@@ -76,15 +52,7 @@ final class IndexCommand extends Command
             );
     }
 
-    /**
-     * Execute command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $indices = $classesToUpdate = [];
         $indexIds = $input->getArgument('indices');
@@ -142,15 +110,19 @@ final class IndexCommand extends Command
             $class = ucfirst($class);
 
             /**
-             * @var Listing $list
+             * @psalm-var class-string $list
              */
             $list = '\Pimcore\Model\DataObject\\' . $class . '\Listing';
+            /**
+             * @var Listing $list
+             * @psalm-suppress UndefinedClass
+             */
             $list = new $list();
 
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
             $perLoop = 10;
 
-            $batchList = new BatchListing($list, $perLoop);
+            $batchList = new DataObjectBatchListing($list, $perLoop);
 
             $batchLists[$class] = $batchList;
 
@@ -160,7 +132,7 @@ final class IndexCommand extends Command
         $this->dispatchInfo('start', $total);
 
         /**
-         * @var BatchListing $batchList
+         * @var DataObjectBatchListing $batchList
          */
         foreach ($batchLists as $class => $batchList) {
             $total = $batchList->count();
@@ -187,6 +159,10 @@ final class IndexCommand extends Command
 
                 $this->dispatchInfo('progress', sprintf('Index %s (%s)', $object->getFullPath(), $object->getId()));
 
+                if (!$object instanceof IndexableInterface) {
+                    continue;
+                }
+
                 $this->indexUpdater->updateIndices($object);
             }
 
@@ -204,12 +180,8 @@ final class IndexCommand extends Command
         return 0;
     }
 
-    /**
-     * @param string $type
-     * @param string $info
-     */
-    private function dispatchInfo(string $type, string $info)
+    private function dispatchInfo(string $type, $info): void
     {
-        $this->eventDispatcher->dispatch(sprintf('coreshop.index.%s', $type), new GenericEvent($info));
+        $this->eventDispatcher->dispatch(new GenericEvent($info), sprintf('coreshop.index.%s', $type));
     }
 }

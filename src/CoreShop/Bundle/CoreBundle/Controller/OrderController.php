@@ -6,82 +6,91 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Controller\OrderController as BaseOrderController;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Core\Model\OrderItemInterface;
-use CoreShop\Component\Order\Model\SaleInterface;
-use CoreShop\Component\Order\Model\SaleItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface as CoreOrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface as CoreOrderItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 
 class OrderController extends BaseOrderController
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepareSale(SaleInterface $sale)
+    protected function prepareSale(OrderInterface $order): array
     {
-        $order = parent::prepareSale($sale);
+        $serialized = parent::prepareSale($order);
 
-        if ($sale instanceof OrderInterface) {
-            $order['carrier'] = $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getId() : null;
+        if ($order instanceof CoreOrderInterface) {
+            $serialized['carrier'] = $order->getCarrier() instanceof CarrierInterface ? $order->getCarrier()->getId() : null;
+            $serialized['shipping'] = $order->getShipping();
         }
 
-        return $order;
+        return $serialized;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDetails(SaleInterface $sale)
+    protected function getDetails(OrderInterface $order): array
     {
-        $order = parent::getDetails($sale);
+        $serialized = parent::getDetails($order);
 
-        if ($sale instanceof OrderInterface) {
-            $carrierIdentifier = $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null;
-
-            $order['shippingPayment'] = [
-                'carrier' => $carrierIdentifier,
-                'weight' => $sale->getWeight(),
-                'cost' => $sale->getShipping(),
+        if ($order instanceof CoreOrderInterface) {
+            $serialized['shippingPayment'] = [
+                'carrier' => $order->getCarrier() instanceof CarrierInterface ? $order->getCarrier()->getIdentifier() : null,
+                'weight' => $order->getWeight(),
+                'cost' => $order->getShipping(),
             ];
 
-            foreach($order['shipments'] as &$shipment) {
-                if (isset($shipment['carrierName'])) {
-                    continue;
-                }
-
-                $shipment['carrierName'] = $carrierIdentifier;
+            if ($order->getCarrier()) {
+                $serialized['carrierInfo'] = [
+                    'name' => $order->getCarrier()->getTitle(),
+                ];
             }
         }
 
-        return $order;
+        return $serialized;
     }
 
-    /**
-     * @param SaleItemInterface $item
-     *
-     * @return array
-     */
-    protected function prepareSaleItem(SaleItemInterface $item)
+    protected function getSummary(OrderInterface $order): array
     {
-        $itemData = parent::prepareSaleItem($item);
+        $serialized = parent::getSummary($order);
 
-        if (!$item instanceof OrderItemInterface) {
-            return $itemData;
+        if ($order instanceof CoreOrderInterface && $order->getShipping() > 0) {
+            $serialized[] = [
+                'key' => 'shipping',
+                'value' => $order->getShipping(),
+                'convertedValue' => $order->getConvertedShipping(),
+            ];
+
+            $serialized[] = [
+                'key' => 'shipping_tax',
+                'value' => $order->getShippingTax(),
+                'convertedValue' => $order->getConvertedShippingTax(),
+            ];
+        }
+
+        return $serialized;
+    }
+
+    protected function prepareSaleItem(OrderItemInterface $item): array
+    {
+        $serialized = parent::prepareSaleItem($item);
+
+        if (!$item instanceof CoreOrderItemInterface) {
+            return $serialized;
         }
 
         if (!is_string($item->getUnitIdentifier())) {
-            return $itemData;
+            return $serialized;
         }
 
-        $itemData['unit'] = $item->hasUnit() ? $item->getUnit()->getFullLabel() : $item->getUnitIdentifier();
+        $serialized['unit'] = $item->hasUnitDefinition() ? $item->getUnitDefinition()->getUnit()->getFullLabel() : $item->getUnitIdentifier();
 
-        return $itemData;
+        return $serialized;
     }
 }

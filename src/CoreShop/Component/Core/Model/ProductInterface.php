@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
@@ -20,8 +22,8 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
-use CoreShop\Component\Store\Model\StoresAwareInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
 
 interface ProductInterface extends
     BaseProductInterface,
@@ -32,81 +34,35 @@ interface ProductInterface extends
     SEOImageAwareInterface,
     SEOOpenGraphAwareInterface,
     QuantityRangePriceAwareInterface,
-    PimcoreStoresAwareInterface
+    PimcoreStoresAwareInterface,
+    ProductVariantAwareInterface
 {
     /**
-     * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
-     *
-     * @return int|array
+     * @return \CoreShop\Component\Core\Model\ProductStoreValuesInterface[]
      */
-    public function getStorePrice(\CoreShop\Component\Store\Model\StoreInterface $store = null);
+    public function getStoreValues(): array;
 
-    /**
-     * @param int                                                 $price
-     * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
-     */
-    public function setStorePrice($price, \CoreShop\Component\Store\Model\StoreInterface $store = null);
+    public function setStoreValues(array $storeValues): self;
 
-    /**
-     * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
-     *
-     * @return array|ProductStoreValuesInterface
-     */
-    public function getStoreValues(\CoreShop\Component\Store\Model\StoreInterface $store = null);
+    public function getStoreValuesForStore(\CoreShop\Component\Store\Model\StoreInterface $store): ?\CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 
-    /**
-     * @param array|ProductStoreValuesInterface                   $storeValues
-     * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
-     */
-    public function setStoreValues($storeValues, \CoreShop\Component\Store\Model\StoreInterface $store = null);
+    public function setStoreValuesForStore(ProductStoreValuesInterface $storeValues, \CoreShop\Component\Store\Model\StoreInterface $store): self;
 
-    /**
-     * @param string                                         $type
-     * @param \CoreShop\Component\Store\Model\StoreInterface $store
-     *
-     * @return mixed
-     */
     public function getStoreValuesOfType(string $type, \CoreShop\Component\Store\Model\StoreInterface $store);
 
-    /**
-     * @param string                                         $type
-     * @param mixed                                          $value
-     * @param \CoreShop\Component\Store\Model\StoreInterface $store
-     */
-    public function setStoreValuesOfType(string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store);
+    public function setStoreValuesOfType(string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store): self;
 
-    /**
-     * @param TaxRuleGroupInterface $taxRule
-     */
-    public function setTaxRule($taxRule);
+    public function setTaxRule(?TaxRuleGroupInterface $taxRule);
 
-    /**
-     * @return bool
-     */
-    public function getDigitalProduct();
+    public function getDigitalProduct(): ?bool;
 
-    /**
-     * @param bool $digitalProduct
-     */
-    public function setDigitalProduct($digitalProduct);
+    public function setDigitalProduct(?bool $digitalProduct);
 
-    /**
-     * @return null|int
-     */
-    public function getMinimumQuantityToOrder();
+    public function getMinimumQuantityToOrder(): ?int;
 
-    /**
-     * @param null|int $minimumQuantity
-     */
-    public function setMinimumQuantityToOrder($minimumQuantity);
+    public function setMinimumQuantityToOrder(?int $minimumQuantity);
 
-    /**
-     * @return null|int
-     */
-    public function getMaximumQuantityToOrder();
+    public function getMaximumQuantityToOrder(): ?int;
 
-    /**
-     * @param null|int $maximumQuantity
-     */
-    public function setMaximumQuantityToOrder($maximumQuantity);
+    public function setMaximumQuantityToOrder(?int $maximumQuantity);
 }

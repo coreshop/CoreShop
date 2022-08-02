@@ -6,9 +6,11 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\DataHub\Resolver;
 
@@ -17,44 +19,21 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DoctrineToOne
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $graphName;
-
-    /**
-     * @var DoctrineProvider
-     */
-    private $typeProvider;
-
-    public function __construct(
-        DoctrineProvider $provider,
-        string $name,
-        string $graphName
-    ) {
-        $this->name = $name;
-        $this->graphName = $graphName;
-        $this->typeProvider = $provider;
+    public function __construct(private DoctrineProvider $typeProvider, private string $name, private string $graphName)
+    {
     }
 
     /**
      * Generate the definition for the GraphQL field.
-     *
-     * @return array
      */
-    public function getDefinition()
+    public function getDefinition(): array
     {
         $outputType = $this->typeProvider->getType($this->graphName);
 
-        $args = array();
+        $args = [];
 
         // Create and return the definition array
-        return array(
+        return [
             'name' => $this->name,
             'type' => $outputType,
             'args' => $args,
@@ -71,6 +50,6 @@ class DoctrineToOne
 
                 return $propertyAccessor->getValue($value, $this->name);
             },
-        );
+        ];
     }
 }

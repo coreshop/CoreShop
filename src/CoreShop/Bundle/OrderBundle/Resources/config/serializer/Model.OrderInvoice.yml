@@ -20,7 +20,7 @@ CoreShop\Component\Order\Model\OrderInvoice:
         invoiceDate:
             serialized_name: invoiceDate
             exp: object.getInvoiceDate()
-            type: integer
+            type: carbon
             groups: [Detailed]
         invoiceNumber:
             serialized_name: invoiceNumber
@@ -39,6 +39,6 @@ CoreShop\Component\Order\Model\OrderInvoice:
             groups: [Detailed]
         items:
             serialized_name: items
-            exp: object.getItems
+            exp: object.getItems()
             type: array
             groups: [Detailed]

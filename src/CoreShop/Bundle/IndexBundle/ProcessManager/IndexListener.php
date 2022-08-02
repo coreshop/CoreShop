@@ -6,50 +6,29 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
+
+declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\ProcessManager;
 
 use Carbon\Carbon;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use ProcessManagerBundle\Factory\ProcessFactoryInterface;
 use ProcessManagerBundle\Logger\ProcessLogger;
 use ProcessManagerBundle\Model\ProcessInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class IndexListener
 {
-    /**
-     * @var ProcessInterface
-     */
-    private $process;
+    private ?ProcessInterface $process = null;
 
-    /**
-     * @var ProcessFactoryInterface
-     */
-    private $processFactory;
-
-    /**
-     * @var ProcessLogger
-     */
-    private $processLogger;
-
-    /**
-     * @param FactoryInterface $processFactory
-     * @param ProcessLogger    $processLogger
-     */
-    public function __construct(FactoryInterface $processFactory, ProcessLogger $processLogger)
+    public function __construct(private FactoryInterface $processFactory, private ProcessLogger $processLogger)
     {
-        $this->processFactory = $processFactory;
-        $this->processLogger = $processLogger;
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function onClasssesEvent(GenericEvent $event)
+    public function onClasssesEvent(GenericEvent $event): void
     {
         if (null === $this->process) {
             $date = Carbon::now();
@@ -70,10 +49,7 @@ final class IndexListener
         }
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function onStartEvent(GenericEvent $event)
+    public function onStartEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->setTotal($event->getSubject());
@@ -83,10 +59,7 @@ final class IndexListener
         }
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function onProgressEvent(GenericEvent $event)
+    public function onProgressEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->progress();
@@ -96,10 +69,7 @@ final class IndexListener
         }
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function onStatusEvent(GenericEvent $event)
+    public function onStatusEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->setMessage($event->getSubject());
@@ -109,10 +79,7 @@ final class IndexListener
         }
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function onFinishedEvent(GenericEvent $event)
+    public function onFinishedEvent(GenericEvent $event): void
     {
         if ($this->process) {
             $this->process->setProgress($this->process->getTotal());
