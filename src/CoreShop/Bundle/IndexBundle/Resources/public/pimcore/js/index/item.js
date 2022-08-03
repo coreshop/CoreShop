@@ -17,7 +17,8 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
     iconCls: 'coreshop_icon_indexes',
 
     routing: {
-        save: 'coreshop_index_save'
+        save: 'coreshop_index_save',
+        clone: 'coreshop_index_clone',
     },
 
     getPanel: function () {
@@ -29,6 +30,10 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
             forceLayout: true,
             iconCls: this.iconCls,
             buttons: [{
+                text: t('clone'),
+                iconCls: 'pimcore_icon_clone',
+                handler: this.clone.bind(this)
+            }, {
                 text: t('save'),
                 iconCls: 'pimcore_icon_apply',
                 handler: this.save.bind(this)
