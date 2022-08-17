@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Cart\Rule\Action;
 
-use CoreShop\Component\Core\Model\OrderItemInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\CartItem\Rule\Action\CartItemPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
