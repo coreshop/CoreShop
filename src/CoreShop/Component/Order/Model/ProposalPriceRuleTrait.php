@@ -93,7 +93,7 @@ trait ProposalPriceRuleTrait
             for ($i = 0, $c = $items->getCount(); $i < $c; ++$i) {
                 $item = $items->get($i);
 
-                if (!$item instanceof ProposalCartPriceRuleItem) {
+                if (!$item instanceof PriceRuleItemInterface) {
                     continue;
                 }
 
@@ -123,7 +123,7 @@ trait ProposalPriceRuleTrait
 
         if ($items instanceof Fieldcollection) {
             foreach ($items as $item) {
-                if (!$item instanceof ProposalCartPriceRuleItem) {
+                if (!$item instanceof PriceRuleItemInterface) {
                     continue;
                 }
 

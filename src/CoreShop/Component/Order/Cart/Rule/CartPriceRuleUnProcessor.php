@@ -47,6 +47,14 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
                 }
             }
 
+            foreach ($cart->getItems() as $item) {
+                $itemPriceRuleItem = $item->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
+
+                if ($itemPriceRuleItem) {
+                    $item->removePriceRule($itemPriceRuleItem);
+                }
+            }
+
             $cart->removePriceRule($priceRuleItem);
 
             return true;

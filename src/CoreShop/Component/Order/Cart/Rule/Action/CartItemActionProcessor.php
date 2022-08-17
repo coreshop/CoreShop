@@ -69,6 +69,7 @@ class CartItemActionProcessor implements CartPriceRuleActionProcessorInterface
             $priceRuleItem->setDiscount(0, false);
 
             if (!$this->isValid($item, $cartPriceRuleItem, $configuration['conditions'], $params)) {
+                $item->removePriceRule($priceRuleItem);
                 continue;
             }
 
