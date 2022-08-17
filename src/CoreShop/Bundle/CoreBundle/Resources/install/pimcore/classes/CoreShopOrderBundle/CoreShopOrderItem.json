@@ -1391,6 +1391,52 @@
                                     }
                                 ],
                                 "locked": false
+                            },
+                            {
+                                "fieldtype": "panel",
+                                "labelWidth": 100,
+                                "name": "price_rules",
+                                "type": null,
+                                "region": null,
+                                "title": "coreshop.order.price_rules",
+                                "width": null,
+                                "height": null,
+                                "collapsible": false,
+                                "collapsed": false,
+                                "bodyStyle": "",
+                                "datatype": "layout",
+                                "permissions": null,
+                                "childs": [
+                                    {
+                                        "fieldtype": "fieldcollections",
+                                        "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
+                                        "allowedTypes": [
+                                            "CoreShopPriceRuleItem"
+                                        ],
+                                        "lazyLoading": true,
+                                        "maxItems": "",
+                                        "disallowAddRemove": false,
+                                        "disallowReorder": false,
+                                        "collapsed": false,
+                                        "collapsible": false,
+                                        "border": false,
+                                        "name": "priceRuleItems",
+                                        "title": "coreshop.order.price_rules",
+                                        "tooltip": "",
+                                        "mandatory": false,
+                                        "noteditable": true,
+                                        "index": false,
+                                        "locked": false,
+                                        "style": "",
+                                        "permissions": null,
+                                        "datatype": "data",
+                                        "relationType": false,
+                                        "invisible": false,
+                                        "visibleGridView": false,
+                                        "visibleSearch": false
+                                    }
+                                ],
+                                "locked": false
                             }
                         ],
                         "locked": false

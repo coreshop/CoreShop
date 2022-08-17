@@ -8,7 +8,7 @@ Feature: Adding a new cart rule
     Given the site operates on a store in "Austria"
     Given the site has a currency "Euro" with iso "EUR"
     Given I am in country "Austria"
-    Given the site has two categories "Shoes" and "Coats"
+    Given the site has two categories "Schoes" and "Coats"
     Given the site has a product "Shoe" priced at 100
     Given the site has a product "Shoe 2" priced at 150
     Given the site has a product "Jacket" priced at 400

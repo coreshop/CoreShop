@@ -21,7 +21,7 @@ use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use Webmozart\Assert\Assert;
 
 class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInterface
@@ -33,7 +33,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     public function applyRule(
         OrderInterface $cart,
         array $configuration,
-        ProposalCartPriceRuleItemInterface $cartPriceRuleItem
+        PriceRuleItemInterface $cartPriceRuleItem
     ): bool {
         $discount = $this->getDiscount($cart, $configuration);
 
@@ -49,7 +49,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     public function unApplyRule(
         OrderInterface $cart,
         array $configuration,
-        ProposalCartPriceRuleItemInterface $cartPriceRuleItem
+        PriceRuleItemInterface $cartPriceRuleItem
     ): bool {
         return true;
     }

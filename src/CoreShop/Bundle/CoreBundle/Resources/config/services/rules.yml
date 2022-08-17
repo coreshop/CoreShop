@@ -174,6 +174,15 @@ services:
             - '@coreshop.factory.adjustment'
             - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
 
+    coreshop.cart_price_rule.cart_item_rule_applier:
+        class: CoreShop\Component\Core\CartItem\Rule\Applier\CartItemRuleApplier
+        arguments:
+            - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
+            - '@CoreShop\Component\Taxation\Collector\TaxCollectorInterface'
+            - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
+            - '@coreshop.factory.adjustment'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
+
     # Rules Availability Check
     coreshop.maintenance.rule_availability_task:
         class: CoreShop\Bundle\CoreBundle\Maintenance\RuleAvailabilityTask
@@ -189,3 +198,34 @@ services:
             - '@coreshop.product.rules.fetcher'
         tags:
             - { name: twig.extension }
+
+    # Cart Item Price Rule ACTIONS
+    coreshop.cart_item_price_rule.action.discount_amount:
+        class: CoreShop\Component\Core\CartItem\Rule\Action\DiscountAmountActionProcessor
+        arguments:
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
+            - '@coreshop.repository.currency'
+            - '@coreshop.cart_price_rule.cart_item_rule_applier'
+        tags:
+            - { name: coreshop.cart_item_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
+
+    coreshop.cart_item_price_rule.action.discount_percent:
+        class: CoreShop\Component\Core\CartItem\Rule\Action\DiscountPercentActionProcessor
+        arguments:
+            - '@coreshop.cart_price_rule.cart_item_rule_applier'
+        tags:
+            - { name: coreshop.cart_item_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
+
+    coreshop.cart_item_price_rule.condition.products:
+        class: CoreShop\Component\Core\CartItem\Rule\Condition\ProductsConditionChecker
+        arguments:
+            - '@coreshop.repository.product'
+        tags:
+            - { name: coreshop.cart_item_price_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
+
+    coreshop.cart_item_price_rule.condition.categories:
+        class: CoreShop\Component\Core\CartItem\Rule\Condition\CategoriesConditionChecker
+        arguments:
+            - '@coreshop.repository.category'
+        tags:
+            - { name: coreshop.cart_item_price_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }

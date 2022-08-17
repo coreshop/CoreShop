@@ -18,7 +18,7 @@ use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterf
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use Webmozart\Assert\Assert;
@@ -33,7 +33,7 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
     {
         $priceRuleItem = $cart->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
 
-        if ($priceRuleItem instanceof ProposalCartPriceRuleItemInterface) {
+        if ($priceRuleItem instanceof PriceRuleItemInterface) {
             foreach ($cartPriceRule->getActions() as $action) {
                 if ($action instanceof ActionInterface) {
                     $actionCommand = $this->actionServiceRegistry->get($action->getType());

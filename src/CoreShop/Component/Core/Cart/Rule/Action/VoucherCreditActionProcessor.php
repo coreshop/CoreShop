@@ -19,7 +19,7 @@ use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 
 class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterface
@@ -31,7 +31,7 @@ class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterf
     public function applyRule(
         OrderInterface $cart,
         array $configuration,
-        ProposalCartPriceRuleItemInterface $cartPriceRuleItem
+        PriceRuleItemInterface $cartPriceRuleItem
     ): bool {
         if (!$cartPriceRuleItem->getVoucherCode()) {
             return false;
@@ -66,7 +66,7 @@ class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterf
     public function unApplyRule(
         OrderInterface $cart,
         array $configuration,
-        ProposalCartPriceRuleItemInterface $cartPriceRuleItem
+        PriceRuleItemInterface $cartPriceRuleItem
     ): bool {
         return true;
     }
