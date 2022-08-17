@@ -211,7 +211,7 @@ class EntityMerger
             }
 
             if (!($assoc['type'] & ClassMetadata::TO_MANY &&
-                $assoc['orphanRemoval'] &&
+                isset($assoc['orphanRemoval']) && $assoc['orphanRemoval'] &&
                 $origData->getOwner())) {
                 continue;
             }
