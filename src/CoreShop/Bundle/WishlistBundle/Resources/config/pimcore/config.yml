@@ -1,0 +1,30 @@
+core_shop_storage_list:
+    list:
+        wishlist:
+            context:
+                tag: coreshop.context.wishlist
+            processor:
+                tag: coreshop.processor.wishlist
+            services:
+                manager: CoreShop\Component\StorageList\Manager\StorageListPimcoreModelManager
+                modifier: CoreShop\Component\Wishlist\Wishlist\WishlistModifier
+            session:
+                enabled: true
+                key: 'coreshop.wishlist'
+            form:
+                type: CoreShop\Bundle\WishlistBundle\Form\Type\WishlistType
+                add_type: CoreShop\Bundle\WishlistBundle\Form\Type\AddToWishlistType
+            resource:
+                product_repository: coreshop.repository.stack.wishlist_product
+                repository: coreshop.repository.wishlist
+                item_repository: coreshop.repository.wishlist_item
+                factory: coreshop.factory.wishlist
+                item_factory: coreshop.factory.wishlist_item
+            routes:
+                summary: coreshop_wishlist_summary
+                index: coreshop_index
+            templates:
+                add_to_cart: '@CoreShopFrontend/Product/_addToWishlist.html.twig'
+                summary: '@CoreShopFrontend/Wishlist/summary.html.twig'
+            controller:
+                enabled: true

@@ -15,10 +15,16 @@ declare(strict_types=1);
 namespace CoreShop\Component\Wishlist\Model;
 
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 abstract class WishlistItem extends AbstractPimcoreModel implements WishlistItemInterface
 {
+    public function getStorageList(): StorageListInterface
+    {
+        return $this->getWishlist();
+    }
+
     public function getWishlist(): WishlistInterface
     {
         $parent = $this->getParent();

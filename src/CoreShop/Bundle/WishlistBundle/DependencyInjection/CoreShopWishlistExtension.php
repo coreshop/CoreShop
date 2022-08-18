@@ -15,8 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\WishlistBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
-use CoreShop\Bundle\WishlistBundle\DependencyInjection\Compiler\RegisterWishlistContextsPass;
-use CoreShop\Component\Wishlist\Context\WishlistContextInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -41,9 +39,5 @@ final class CoreShopWishlistExtension extends AbstractModelExtension
         }
 
         $loader->load('services.yml');
-
-        $container
-            ->registerForAutoconfiguration(WishlistContextInterface::class)
-            ->addTag(RegisterWishlistContextsPass::WISHLIST_CONTEXT_TAG);
     }
 }

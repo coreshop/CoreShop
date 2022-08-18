@@ -18,23 +18,23 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Locale\Context\LocaleNotFoundException;
+use CoreShop\Component\StorageList\Context\StorageListContextInterface;
+use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
-use CoreShop\Component\Wishlist\Context\WishlistContextInterface;
-use CoreShop\Component\Wishlist\Context\WishlistNotFoundException;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
 
-final class StoreBasedWishlistContext implements WishlistContextInterface
+final class StoreBasedWishlistContext implements StorageListContextInterface
 {
     private ?WishlistInterface $wishlist = null;
 
     public function __construct(
-        private WishlistContextInterface $wishlistContext,
+        private StorageListContextInterface $wishlistContext,
         private ShopperContextInterface $shopperContext
     )
     {
     }
 
-    public function getWishlist(): WishlistInterface
+    public function getStorageList(): WishlistInterface
     {
         if (null !== $this->wishlist) {
             return $this->wishlist;
@@ -43,19 +43,15 @@ final class StoreBasedWishlistContext implements WishlistContextInterface
         /**
          * @var \CoreShop\Component\Core\Model\WishlistInterface $wishlist
          */
-        $wishlist = $this->wishlistContext->getwishlist();
+        $wishlist = $this->wishlistContext->getStorageList();
 
         try {
             /** @var StoreInterface $store */
             $store = $this->shopperContext->getStore();
 
             $wishlist->setStore($store);
-        } catch (StoreNotFoundException $exception) {
-            throw new WishlistNotFoundException('CoreShop was not able to prepare the wishlist.', $exception);
-        } catch (CurrencyNotFoundException $exception) {
-            throw new WishlistNotFoundException('CoreShop was not able to prepare the wishlist.', $exception);
-        } catch (LocaleNotFoundException $exception) {
-            throw new WishlistNotFoundException('CoreShop was not able to prepare the wishlist.', $exception);
+        } catch (StoreNotFoundException|CurrencyNotFoundException|LocaleNotFoundException $exception) {
+            throw new StorageListNotFoundException('CoreShop was not able to prepare the wishlist.', $exception);
         }
 
         if ($this->shopperContext->hasCustomer()) {

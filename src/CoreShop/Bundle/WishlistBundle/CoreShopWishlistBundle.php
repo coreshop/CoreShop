@@ -14,13 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\WishlistBundle;
 
-use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
-use CoreShop\Bundle\WishlistBundle\DependencyInjection\Compiler\RegisterWishlistContextsPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
+use CoreShop\Bundle\StorageListBundle\CoreShopStorageListBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopWishlistBundle extends AbstractResourceBundle
 {
@@ -31,19 +28,11 @@ final class CoreShopWishlistBundle extends AbstractResourceBundle
         ];
     }
 
-    public function build(ContainerBuilder $container): void
-    {
-        parent::build($container);
-
-        $container->addCompilerPass(new RegisterWishlistContextsPass());
-    }
-
     public static function registerDependentBundles(BundleCollection $collection): void
     {
         parent::registerDependentBundles($collection);
 
-        $collection->addBundle(new CoreShopCustomerBundle(), 3100);
-        $collection->addBundle(new CoreShopStoreBundle(), 2500);
+        $collection->addBundle(new CoreShopStorageListBundle());
     }
 
     protected function getModelNamespace(): string

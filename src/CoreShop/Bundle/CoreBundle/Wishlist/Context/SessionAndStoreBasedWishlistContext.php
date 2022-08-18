@@ -15,14 +15,14 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Wishlist\Context;
 
 use CoreShop\Component\Core\Wishlist\Repository\WishlistRepositoryInterface;
+use CoreShop\Component\StorageList\Context\StorageListContextInterface;
+use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
-use CoreShop\Component\Wishlist\Context\WishlistContextInterface;
-use CoreShop\Component\Wishlist\Context\WishlistNotFoundException;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-final class SessionAndStoreBasedWishlistContext implements WishlistContextInterface
+final class SessionAndStoreBasedWishlistContext implements StorageListContextInterface
 {
     private ?WishlistInterface $wishlist = null;
 
@@ -34,7 +34,7 @@ final class SessionAndStoreBasedWishlistContext implements WishlistContextInterf
     ) {
     }
 
-    public function getWishlist(): WishlistInterface
+    public function getStorageList(): WishlistInterface
     {
         if (null !== $this->wishlist) {
             return $this->wishlist;
@@ -43,17 +43,17 @@ final class SessionAndStoreBasedWishlistContext implements WishlistContextInterf
         try {
             $store = $this->storeContext->getStore();
         } catch (StoreNotFoundException $exception) {
-            throw new WishlistNotFoundException($exception->getMessage(), $exception);
+            throw new StorageListNotFoundException($exception->getMessage(), $exception);
         }
 
         if (!$this->session->has(sprintf('%s.%s', $this->sessionKeyName, $store->getId()))) {
-            throw new WishlistNotFoundException('CoreShop was not able to find the wishlist in session');
+            throw new StorageListNotFoundException('CoreShop was not able to find the wishlist in session');
         }
 
         $wishlistId = $this->session->get(sprintf('%s.%s', $this->sessionKeyName, $store->getId()));
 
         if (!is_int($wishlistId)) {
-            throw new WishlistNotFoundException('CoreShop was not able to find the wishlist in session');
+            throw new StorageListNotFoundException('CoreShop was not able to find the wishlist in session');
         }
 
         /**
@@ -68,7 +68,7 @@ final class SessionAndStoreBasedWishlistContext implements WishlistContextInterf
         if (null === $wishlist) {
             $this->session->remove(sprintf('%s.%s', $this->sessionKeyName, $store->getId()));
 
-            throw new WishlistNotFoundException('CoreShop was not able to find the wishlist in session');
+            throw new StorageListNotFoundException('CoreShop was not able to find the wishlist in session');
         }
 
         $this->wishlist = $wishlist;

@@ -17,14 +17,13 @@ namespace CoreShop\Bundle\CoreBundle\Wishlist\Context;
 use CoreShop\Component\Core\Wishlist\Repository\WishlistRepositoryInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
-use CoreShop\Component\Order\Context\CartNotFoundException;
+use CoreShop\Component\StorageList\Context\StorageListContextInterface;
+use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
-use CoreShop\Component\Wishlist\Context\WishlistContextInterface;
-use CoreShop\Component\Wishlist\Context\WishlistNotFoundException;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
 
-final class CustomerAndStoreBasedWishlistContext implements WishlistContextInterface
+final class CustomerAndStoreBasedWishlistContext implements StorageListContextInterface
 {
     public function __construct(
         private CustomerContextInterface $customerContext,
@@ -33,24 +32,24 @@ final class CustomerAndStoreBasedWishlistContext implements WishlistContextInter
     ) {
     }
 
-    public function getWishlist(): WishlistInterface
+    public function getStorageList(): WishlistInterface
     {
         try {
             $store = $this->storeContext->getStore();
         } catch (StoreNotFoundException) {
-            throw new WishlistNotFoundException('CoreShop was not able to find the cart, as there is no current store.');
+            throw new StorageListNotFoundException('CoreShop was not able to find the cart, as there is no current store.');
         }
 
         try {
             $customer = $this->customerContext->getCustomer();
         } catch (CustomerNotFoundException) {
-            throw new WishlistNotFoundException('CoreShop was not able to find the wishlist, as there is no logged in user.');
+            throw new StorageListNotFoundException('CoreShop was not able to find the wishlist, as there is no logged in user.');
         }
 
         $wishlist = $this->wishlistRepository->findLatestByStoreAndCustomer($store, $customer);
 
         if (null === $wishlist) {
-            throw new WishlistNotFoundException(
+            throw new StorageListNotFoundException(
                 'CoreShop was not able to find the wishlist for currently logged in user.'
             );
         }

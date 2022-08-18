@@ -17,6 +17,7 @@ namespace CoreShop\Component\Wishlist\Wishlist;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListItemResolverInterface;
+use CoreShop\Component\StorageList\StorageListModifierInterface;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
 use CoreShop\Component\Wishlist\Model\WishlistItemInterface;
 use CoreShop\Component\Wishlist\WishlistEvents;
@@ -24,7 +25,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
-class WishlistModifier implements WishlistModifierInterface
+class WishlistModifier implements StorageListModifierInterface
 {
     public function __construct(
         protected EventDispatcherInterface $eventDispatcher,

@@ -18,15 +18,14 @@ use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Core\Model\WishlistInterface;
-use CoreShop\Component\Wishlist\Context\WishlistContextInterface;
-use CoreShop\Component\Wishlist\Context\WishlistNotFoundException;
-use CoreShop\Component\Wishlist\Manager\WishlistManagerInterface;
+use CoreShop\Component\StorageList\Context\StorageListContextInterface;
+use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 final class WishlistBlamerListener
 {
     public function __construct(
-        private WishlistContextInterface $wishlistContext
+        private StorageListContextInterface $wishlistContext
     )
     {
     }
@@ -68,14 +67,14 @@ final class WishlistBlamerListener
     private function getWishlist(): ?WishlistInterface
     {
         try {
-            $wishlist = $this->wishlistContext->getWishlist();
+            $wishlist = $this->wishlistContext->getStorageList();
 
             if ($wishlist instanceof WishlistInterface) {
                 return $wishlist;
             }
 
             return null;
-        } catch (WishlistNotFoundException) {
+        } catch (StorageListNotFoundException) {
             return null;
         }
     }

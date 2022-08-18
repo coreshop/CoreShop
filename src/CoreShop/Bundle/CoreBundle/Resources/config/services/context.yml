@@ -42,7 +42,7 @@ services:
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'
 
     CoreShop\Component\Core\Context\StoreBasedWishlistContext:
-        decorates: CoreShop\Component\Wishlist\Context\WishlistContext
+        decorates: coreshop.context.storage_list.wishlist
         arguments:
             - '@CoreShop\Component\Core\Context\StoreBasedWishlistContext.inner'
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'
