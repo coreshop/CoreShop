@@ -176,9 +176,6 @@ class StorageListController extends AbstractController
 
     public function removeItemAction(Request $request): Response
     {
-        /**
-         * @var StorageListItemInterface $storageListItem
-         */
         $storageListItem = $this->itemRepository->find($request->query->get('item'));
         $storageList = $this->context->getStorageList();
 
