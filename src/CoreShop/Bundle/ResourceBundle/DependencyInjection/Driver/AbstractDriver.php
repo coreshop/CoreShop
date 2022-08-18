@@ -51,7 +51,7 @@ abstract class AbstractDriver implements DriverInterface
             $container->setParameter(sprintf('%s.model.%s.class', $metadata->getApplicationName(), $metadata->getName()), $metadata->getClass('model'));
         }
         if ($metadata->hasClass('interface')) {
-            $container->setParameter(sprintf('%s.interface.%s', $metadata->getApplicationName(), $metadata->getName()), $metadata->getClass('model'));
+            $container->setParameter(sprintf('%s.interface.%s', $metadata->getApplicationName(), $metadata->getName()), $metadata->getClass('interface'));
         }
         if ($metadata->hasClass('admin_controller')) {
             $container->setParameter(sprintf('%s.admin_controller.%s.class', $metadata->getApplicationName(), $metadata->getName()), $metadata->getClass('admin_controller'));
