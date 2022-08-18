@@ -8,6 +8,7 @@ imports:
     - { resource: services/order_invoice.yml }
     - { resource: services/order_shipment.yml }
     - { resource: services/cart-price-rules.yml }
+    - { resource: services/cart-item-price-rules.yml }
     - { resource: services/workflow.yml }
     - { resource: services/pdf.yml }
     - { resource: services/purchasable.yml }

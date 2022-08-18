@@ -1,0 +1,86 @@
+parameters:
+    coreshop.form.type.cart_item_price_rule.rule_action.validation_groups: [coreshop]
+    coreshop.form.type.cart_item_price_rule.rule_condition.validation_groups: [coreshop]
+
+services:
+    _defaults:
+        public: true
+
+    # Forms
+    CoreShop\Bundle\OrderBundle\Form\Type\CartItemPriceRuleActionType:
+        arguments:
+            - '%coreshop.model.rule_action.class%'
+            - '%coreshop.form.type.cart_item_price_rule.rule_action.validation_groups%'
+            - '@coreshop.form_registry.cart_item_price_rule.actions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\CartItemPriceRuleActionCollectionType:
+        arguments:
+            - '@coreshop.registry.cart_item_price_rule.actions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\CartItemPriceRuleConditionCollectionType:
+        arguments:
+            - '@coreshop.registry.cart_item_price_rule.conditions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\CartItemPriceRuleActionChoiceType:
+        arguments:
+            - '%coreshop.cart_item_price_rule.actions%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\CartItemPriceRuleConditionType:
+        arguments:
+            - '%coreshop.model.rule_condition.class%'
+            - '%coreshop.form.type.cart_item_price_rule.rule_condition.validation_groups%'
+            - '@coreshop.form_registry.cart_item_price_rule.conditions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\CartItemPriceRuleConditionChoiceType:
+        arguments:
+            - '%coreshop.cart_item_price_rule.conditions%'
+        tags:
+            - { name: form.type }
+
+    # Services
+    coreshop.registry.cart_item_price_rule.conditions:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
+            - cart-item-price-rule-conditions
+        tags:
+            - { name: coreshop.registry, type_hint: cartItemPriceRuleConditions }
+
+    coreshop.form_registry.cart_item_price_rule.conditions:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+    coreshop.registry.cart_item_price_rule.actions:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Order\CartItem\Rule\Action\CartItemPriceRuleActionProcessorInterface
+            - cart-item-price-rule-actions
+        tags:
+            - { name: coreshop.registry, type_hint: cartItemPriceRuleActions }
+
+    coreshop.form_registry.cart_item_price_rule.actions:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+    # Price Rule Processor
+    coreshop.cart_item_price_rule.conditions.validation.processor:
+        class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
+        shared: false
+        arguments:
+            - '@coreshop.registry.cart_item_price_rule.conditions'
+            - 'Cart Item Price Rules'
+        tags:
+            - { name: coreshop.rule.conditions.validation_processor }
+
+    # CONDITIONS
+    CoreShop\Component\Order\CartItem\Rule\Condition\AmountConditionChecker:
+        tags:
+            - { name: coreshop.cart_item_price_rule.condition, type: amount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType }

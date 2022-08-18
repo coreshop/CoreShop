@@ -17,7 +17,7 @@ namespace CoreShop\Component\Core\Cart\Rule\Action;
 use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 
 class SurchargePercentActionProcessor implements CartPriceRuleActionProcessorInterface
 {
@@ -25,7 +25,7 @@ class SurchargePercentActionProcessor implements CartPriceRuleActionProcessorInt
     {
     }
 
-    public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
+    public function applyRule(OrderInterface $cart, array $configuration, PriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $discount = $this->getDiscount($cart, $configuration);
 
@@ -38,7 +38,7 @@ class SurchargePercentActionProcessor implements CartPriceRuleActionProcessorInt
         return true;
     }
 
-    public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
+    public function unApplyRule(OrderInterface $cart, array $configuration, PriceRuleItemInterface $cartPriceRuleItem): bool
     {
         return true;
     }

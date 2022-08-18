@@ -84,8 +84,10 @@ interface OrderItemInterface extends
 
     public function getTotalTax(): int;
 
+    public function getDiscount(bool $withTax = true): int;
+
     /**
-     * @return Fieldcollection
+     * @return Fieldcollection|null
      */
     public function getTaxes();
 
@@ -137,4 +139,34 @@ interface OrderItemInterface extends
     public function getConvertedItemDiscount(bool $withTax = true): int;
 
     public function setConvertedItemDiscount(int $convertedItemDiscount, bool $withTax = true);
+
+    /**
+     * @return Fieldcollection|null
+     */
+    public function getPriceRuleItems();
+
+    public function setPriceRuleItems(Fieldcollection $priceRuleItems);
+
+    /**
+     * @return PriceRuleItemInterface[]
+     */
+    public function getPriceRules(): array;
+
+    public function hasPriceRules(): bool;
+
+    public function addPriceRule(PriceRuleItemInterface $priceRule): void;
+
+    public function removePriceRule(PriceRuleItemInterface $priceRule): void;
+
+    public function hasPriceRule(PriceRuleItemInterface $priceRule): bool;
+
+    public function hasCartPriceRule(
+        CartPriceRuleInterface $cartPriceRule,
+        CartPriceRuleVoucherCodeInterface $voucherCode = null
+    ): bool;
+
+    public function getPriceRuleByCartPriceRule(
+        CartPriceRuleInterface $cartPriceRule,
+        CartPriceRuleVoucherCodeInterface $voucherCode = null
+    ): ?PriceRuleItemInterface;
 }

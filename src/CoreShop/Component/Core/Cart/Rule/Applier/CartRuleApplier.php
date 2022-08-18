@@ -21,7 +21,7 @@ use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -39,17 +39,17 @@ class CartRuleApplier implements CartRuleApplierInterface
     {
     }
 
-    public function applyDiscount(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false): void
+    public function applyDiscount(OrderInterface $cart, PriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false): void
     {
         $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, false);
     }
 
-    public function applySurcharge(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false): void
+    public function applySurcharge(OrderInterface $cart, PriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false): void
     {
         $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, true);
     }
 
-    protected function apply(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
+    protected function apply(OrderInterface $cart, PriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
     {
         $context = $this->cartContextResolver->resolveCartContext($cart);
 

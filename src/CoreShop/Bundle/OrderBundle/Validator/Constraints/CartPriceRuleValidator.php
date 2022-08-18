@@ -17,7 +17,7 @@ namespace CoreShop\Bundle\OrderBundle\Validator\Constraints;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Symfony\Component\Validator\Constraint;
@@ -46,7 +46,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
         }
 
         foreach ($ruleItems as $ruleItem) {
-            if (!$ruleItem instanceof ProposalCartPriceRuleItemInterface) {
+            if (!$ruleItem instanceof PriceRuleItemInterface) {
                 return;
             }
 

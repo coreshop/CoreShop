@@ -19,7 +19,7 @@ use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface
 use CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculatorInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -39,7 +39,7 @@ final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
         }
 
         foreach ($priceRuleItems->getItems() as $index => $item) {
-            if (!$item instanceof ProposalCartPriceRuleItemInterface) {
+            if (!$item instanceof PriceRuleItemInterface) {
                 continue;
             }
 

@@ -17,9 +17,9 @@ namespace CoreShop\Component\Order\Cart\Rule;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 
 interface ProposalCartPriceRuleCalculatorInterface
 {
-    public function calculatePriceRule(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): ?ProposalCartPriceRuleItemInterface;
+    public function calculatePriceRule(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): ?PriceRuleItemInterface;
 }

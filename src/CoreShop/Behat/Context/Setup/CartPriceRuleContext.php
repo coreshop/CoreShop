@@ -28,6 +28,7 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleActionType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleConditionType;
+use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\CartItemActionConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargeAmountConfigurationType;
@@ -53,6 +54,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use Doctrine\Persistence\ObjectManager;
+use JMS\Serializer\Serializer;
 use Symfony\Component\Form\FormFactoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -62,8 +64,18 @@ final class CartPriceRuleContext implements Context
 
     use ActionFormTrait;
 
-    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FormFactoryInterface $formFactory, private FormTypeRegistryInterface $conditionFormTypeRegistry, private FormTypeRegistryInterface $actionFormTypeRegistry, private FactoryInterface $cartPriceRuleFactory, private CartPriceRuleVoucherRepositoryInterface $cartPriceRuleVoucherRepository, private CartPriceRuleProcessorInterface $cartPriceRuleProcessor, private CartManagerInterface $cartManager, private FactoryInterface $cartPriceRuleVoucherCodeFactory)
-    {
+    public function __construct(
+        private SharedStorageInterface $sharedStorage,
+        private ObjectManager $objectManager,
+        private FormFactoryInterface $formFactory,
+        private FormTypeRegistryInterface $conditionFormTypeRegistry,
+        private FormTypeRegistryInterface $actionFormTypeRegistry,
+        private FactoryInterface $cartPriceRuleFactory,
+        private CartPriceRuleVoucherRepositoryInterface $cartPriceRuleVoucherRepository,
+        private CartPriceRuleProcessorInterface $cartPriceRuleProcessor,
+        private CartManagerInterface $cartManager,
+        private FactoryInterface $cartPriceRuleVoucherCodeFactory,
+    ) {
     }
 
     /**
@@ -474,20 +486,151 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    private function addCondition(CartPriceRuleInterface $rule, ConditionInterface $condition): void
+    /**
+     * @Given /^the (cart rule "[^"]+") has a cart-item-action action$/
+     * @Given /^the (cart rule) has a cart-item-action action$/
+     */
+    public function theCartPriceRuleHasACartItemActionAction(CartPriceRuleInterface $rule): void
+    {
+        $this->assertActionForm(CartItemActionConfigurationType::class, 'cartItemAction');
+
+        $action = $this->addAction($rule, $this->createActionWithForm('cartItemAction', [
+            'actions' => [],
+            'conditions' => [],
+        ]));
+
+        $this->sharedStorage->set('cart-item-action-action', $action);
+    }
+
+    /**
+     * @Given /^the (cart item action) has a condition amount with value "([^"]+)" to "([^"]+)"$/
+     */
+    public function theCartItemActionHasAAmountCondition(ActionInterface $action, $minAmount, $maxAmount): void
+    {
+        $this->assertConditionForm(AmountConfigurationType::class, 'amount');
+
+        $this->actionAddCondition($action, $this->createConditionWithForm('amount', [
+            'minAmount' => $minAmount,
+            'maxAmount' => $maxAmount,
+        ]));
+    }
+
+    /**
+     * @Given /^the (cart item action) has a condition products with (product "[^"]+")$/
+     * @Given /^the (cart item action) has a condition products with (product "[^"]+") and (product "[^"]+")$/
+     */
+    public function theCartItemActionHasAProductCondition(ActionInterface $action, ProductInterface $product, ProductInterface $product2 = null): void
+    {
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $configuration = [
+            'products' => [
+                $product->getId(),
+            ],
+            'include_variants' => false,
+        ];
+
+        if (null !== $product2) {
+            $configuration['products'][] = $product2->getId();
+        }
+
+        $this->actionAddCondition($action, $this->createConditionWithForm('products', $configuration));
+    }
+
+    /**
+     * @Given /^the (cart item action) has a condition categories with (category "[^"]+")$/
+     */
+    public function theCartItemActionHasACategoriesCondition(ActionInterface $action, CategoryInterface $category): void
+    {
+        $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
+
+        $this->actionAddCondition($action, $this->createConditionWithForm('categories', [
+            'categories' => [$category->getId()],
+        ]));
+    }
+
+    /**
+     * @Given /^the (cart item action) has a action discount-percent with ([^"]+)% discount$/
+     */
+    public function theCartItemActionHasADiscountPercentAction(ActionInterface $action, $discount): void
+    {
+        $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
+
+        $this->actionAddAction($action, $this->createActionWithForm('discountPercent', [
+            'percent' => (int)$discount,
+        ]));
+    }
+
+    /**
+     * @Given /^the (cart item action) has a action discount with ([^"]+) in (currency "[^"]+") off$/
+     * @Given /^the (cart item action) has a action discount with ([^"]+) in (currency "[^"]+") off applied on ([^"]+)$/
+     */
+    public function theCartItemActionHasADiscountAmountAction(ActionInterface $action, $amount, CurrencyInterface $currency, string $appliedOn = 'total'): void
+    {
+        $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
+
+        $this->actionAddAction($action, $this->createActionWithForm('discountAmount', [
+            'amount' => (int)$amount,
+            'currency' => $currency->getId(),
+            'applyOn' => $appliedOn,
+        ]));
+    }
+
+    private function actionAddCondition(ActionInterface $action, ConditionInterface $condition): ConditionInterface
+    {
+        $config = $action->getConfiguration();
+
+        if (!isset($config['conditions'])) {
+            $config['conditions'] = [];
+        }
+
+        $config['conditions'][] = $condition;
+
+        $action->setConfiguration($config);
+
+        $this->objectManager->persist($action);
+        $this->objectManager->flush();
+
+        return $condition;
+    }
+
+
+    private function actionAddAction(ActionInterface $action, ActionInterface $newAction): ActionInterface
+    {
+        $config = $action->getConfiguration();
+
+        if (!isset($config['actions'])) {
+            $config['actions'] = [];
+        }
+
+        $config['actions'][] = $newAction;
+
+        $action->setConfiguration($config);
+
+        $this->objectManager->persist($action);
+        $this->objectManager->flush();
+
+        return $newAction;
+    }
+
+    private function addCondition(CartPriceRuleInterface $rule, ConditionInterface $condition): ConditionInterface
     {
         $rule->addCondition($condition);
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();
+
+        return $condition;
     }
 
-    private function addAction(CartPriceRuleInterface $rule, ActionInterface $action): void
+    private function addAction(CartPriceRuleInterface $rule, ActionInterface $action): ActionInterface
     {
         $rule->addAction($action);
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();
+
+        return $action;
     }
 
     protected function getConditionFormRegistry(): FormTypeRegistryInterface
