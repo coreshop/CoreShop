@@ -29,7 +29,7 @@
     "coreshop/taxation": "^3.0",
     "coreshop/address": "^3.0",
     "coreshop/rule": "^3.0",
-    "pimcore/pimcore": "^10.4",
+    "pimcore/pimcore": "^10.4 || ^11.0",
     "laminas/laminas-stdlib": "^3.6"
   },
   "require-dev": {
@@ -54,5 +54,8 @@
     "branch-alias": {
       "dev-master": "3.0-dev"
     }
+  },
+  "config": {
+    "sort-packages": true
   }
 }

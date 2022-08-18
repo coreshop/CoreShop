@@ -20,7 +20,7 @@ interface ClassUpdateInterface
 {
     public function save(): bool;
 
-    public function getProperty(string $property): array;
+    public function getProperty(string $property): mixed;
 
     public function setProperty(string $property, $value): void;
 

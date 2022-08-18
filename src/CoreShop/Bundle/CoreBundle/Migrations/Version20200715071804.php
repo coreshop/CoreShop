@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace C0oreShop\Bundle\CoreBundle\Migrations;
+namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
