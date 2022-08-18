@@ -12,16 +12,14 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\Core\Wishlist\Repository;
+namespace CoreShop\Component\StorageList\Core\Repository;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use CoreShop\Component\StorageList\Core\Repository\CustomerAndStoreAwareRepositoryInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use CoreShop\Component\Wishlist\Model\WishlistInterface;
 
-interface WishlistRepositoryInterface extends
-    \CoreShop\Component\Wishlist\Repository\WishlistRepositoryInterface,
-    CustomerAndStoreAwareRepositoryInterface
+interface CustomerAndStoreAwareRepositoryInterface extends PimcoreRepositoryInterface
 {
-    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?WishlistInterface;
+    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?StorageListInterface;
 }

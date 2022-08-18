@@ -20,6 +20,8 @@ interface StorageListInterface
 
     public function getItems(): ?array;
 
+    public function setItems(?array $items);
+
     public function hasItems(): bool;
 
     public function addItem($item): void;

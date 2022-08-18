@@ -12,22 +12,23 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\CoreBundle\EventListener;
+namespace CoreShop\Bundle\StorageListBundle\Core\EventListener;
 
 use CoreShop\Component\Core\Model\WishlistInterface;
 use CoreShop\Component\Order\Context\CartNotFoundException;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-final class SessionWishlistSubscriber implements EventSubscriberInterface
+final class SessionStoreStorageListSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private PimcoreContextResolver $pimcoreContext,
-        private StorageListContextInterface $wishlistContext,
+        private StorageListContextInterface $context,
         private string $sessionKeyName
     ) {
     }
@@ -61,20 +62,21 @@ final class SessionWishlistSubscriber implements EventSubscriberInterface
         }
 
         try {
-            /**
-             * @var WishlistInterface $wishlist
-             */
-            $wishlist = $this->wishlistContext->getWishlist();
+            $storageList = $this->context->getStorageList();
         } catch (CartNotFoundException) {
             return;
         }
+        
+        if (!$storageList instanceof StoreAwareInterface) {
+            return;
+        }
 
-        if (0 !== $wishlist->getId() && null !== $wishlist->getStore()) {
+        if (0 !== $storageList->getId() && null !== $storageList->getStore()) {
             $session = $request->getSession();
 
             $session->set(
-                sprintf('%s.%s', $this->sessionKeyName, $wishlist->getStore()->getId()),
-                $wishlist->getId()
+                sprintf('%s.%s', $this->sessionKeyName, $storageList->getStore()->getId()),
+                $storageList->getId()
             );
         }
     }

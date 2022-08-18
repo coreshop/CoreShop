@@ -12,21 +12,20 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\CoreBundle\EventListener;
+namespace CoreShop\Bundle\StorageListBundle\Core\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\UserInterface;
-use CoreShop\Component\Core\Model\WishlistInterface;
+use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
-final class WishlistBlamerListener
+final class StorageListBlamerListener
 {
-    public function __construct(
-        private StorageListContextInterface $wishlistContext
-    )
+    public function __construct(private StorageListContextInterface $context)
     {
     }
 
@@ -55,27 +54,27 @@ final class WishlistBlamerListener
 
     private function blame(CustomerInterface $user): void
     {
-        $wishlist = $this->getWishlist();
+        $storageList = $this->getStorageList();
 
-        if (null === $wishlist) {
+        if (null === $storageList) {
+            return;
+        }
+        
+        if (!$storageList instanceof CustomerAwareInterface) {
             return;
         }
 
-        $wishlist->setCustomer($user);
+        $storageList->setCustomer($user);
     }
 
-    private function getWishlist(): ?WishlistInterface
+    private function getStorageList(): ?StorageListInterface
     {
         try {
-            $wishlist = $this->wishlistContext->getStorageList();
-
-            if ($wishlist instanceof WishlistInterface) {
-                return $wishlist;
-            }
-
-            return null;
+            return $this->context->getStorageList();
         } catch (StorageListNotFoundException) {
             return null;
         }
+
+        return null;
     }
 }

@@ -24,13 +24,13 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscount
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasablePriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRetailPriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableWholesalePriceCalculatorsPass;
-use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartContextsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartProcessorPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterWorkflowValidatorPass;
 use CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
+use CoreShop\Bundle\StorageListBundle\CoreShopStorageListBundle;
 use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
 use CoreShop\Bundle\WorkflowBundle\CoreShopWorkflowBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
@@ -49,13 +49,12 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
     {
         parent::build($container);
 
+        $container->addCompilerPass(new RegisterCartProcessorPass());
         $container->addCompilerPass(new CartPriceRuleActionPass());
         $container->addCompilerPass(new CartPriceRuleConditionPass());
         $container->addCompilerPass(new RegisterWorkflowValidatorPass());
-        $container->addCompilerPass(new RegisterCartProcessorPass());
         $container->addCompilerPass(new PurchasablePriceCalculatorsPass());
         $container->addCompilerPass(new PurchasableDiscountCalculatorsPass());
-        $container->addCompilerPass(new RegisterCartContextsPass());
         $container->addCompilerPass(new PurchasableDiscountPriceCalculatorsPass());
         $container->addCompilerPass(new PurchasableRetailPriceCalculatorsPass());
         $container->addCompilerPass(new PurchasableWholesalePriceCalculatorsPass());
@@ -72,6 +71,7 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopStoreBundle(), 2500);
         $collection->addBundle(new CoreShopPaymentBundle(), 2200);
         $collection->addBundle(new CoreShopMoneyBundle(), 1550);
+        $collection->addBundle(new CoreShopStorageListBundle(), 100);
     }
 
     protected function getModelNamespace(): string

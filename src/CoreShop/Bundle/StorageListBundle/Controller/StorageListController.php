@@ -87,8 +87,8 @@ class StorageListController extends AbstractController
 
     public function addItemAction(Request $request): Response
     {
-        $redirect = $request->get('redirect');
-        $product = $this->productRepository->find($request->get('product'));
+        $redirect = (string)$request->query->get('_redirect', $this->generateUrl($this->indexRoute));
+        $product = $this->productRepository->find($request->query->get('product'));
         $storageList = $this->context->getStorageList();
 
         if (!$product instanceof ResourceInterface) {
@@ -112,8 +112,6 @@ class StorageListController extends AbstractController
         );
 
         if ($request->isMethod('POST')) {
-            $redirect = $request->get('_redirect', $this->generateUrl($this->summaryRoute));
-
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
@@ -136,6 +134,9 @@ class StorageListController extends AbstractController
                 return $this->redirect($redirect);
             }
 
+            /**
+             * @var FormError $error
+             */
             foreach ($form->getErrors(true, true) as $error) {
                 $this->addFlash('error', $error->getMessage());
             }
@@ -158,8 +159,14 @@ class StorageListController extends AbstractController
             ]);
         }
 
+        $template = $request->query->get('template');
+
+        if (null !== $template) {
+            $template = $this->templateAddToList;
+        }
+
         return $this->render(
-            $request->get('template', $this->templateAddToList),
+            $template,
             [
                 'form' => $form->createView(),
                 'product' => $product,
@@ -172,7 +179,7 @@ class StorageListController extends AbstractController
         /**
          * @var StorageListItemInterface $storageListItem
          */
-        $storageListItem = $this->itemRepository->find($request->get('item'));
+        $storageListItem = $this->itemRepository->find($request->query->get('item'));
         $storageList = $this->context->getStorageList();
 
         if (!$storageListItem instanceof StorageListItemInterface) {
@@ -211,6 +218,9 @@ class StorageListController extends AbstractController
             $session = $request->getSession();
 
             if ($session instanceof Session) {
+                /**
+                 * @var FormError $error
+                 */
                 foreach ($form->getErrors() as $error) {
                     $session->getFlashBag()->add('error', $error->getMessage());
                 }

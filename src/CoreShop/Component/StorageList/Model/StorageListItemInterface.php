@@ -16,11 +16,14 @@ namespace CoreShop\Component\StorageList\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
+/**
+ * @method setProduct($product)
+ */
 interface StorageListItemInterface
 {
-    public function equals(self $storageListItem): bool;
-
     public function getId();
+
+    public function equals(self $storageListItem): bool;
 
     public function getProduct(): ?ResourceInterface;
 

@@ -15,15 +15,19 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\StorageListBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\StorageListBundle\Core\EventListener\SessionStoreStorageListSubscriber;
+use CoreShop\Bundle\StorageListBundle\Core\EventListener\StorageListBlamerListener;
 use CoreShop\Bundle\StorageListBundle\DependencyInjection\Compiler\RegisterStorageListPass;
-use CoreShop\Bundle\StorageListBundle\DependencyInjection\Compiler\RegisterStorageListProcessorPass;
 use CoreShop\Bundle\StorageListBundle\EventListener\SessionSubscriber;
+use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Context\StorageListFactoryContext;
-use CoreShop\Component\StorageList\Processor\CompositeStorageListProcessor;
-use CoreShop\Component\StorageList\Processor\StorageListProcessorInterface;
+use CoreShop\Component\StorageList\Core\Context\CustomerAndStoreBasedStorageListContext;
+use CoreShop\Component\StorageList\Core\Context\SessionAndStoreBasedStorageListContext;
+use CoreShop\Component\StorageList\Core\Context\StoreBasedStorageListContext;
 use CoreShop\Component\StorageList\StorageListsManager;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
@@ -46,26 +50,13 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
         foreach ($configs['list'] as $name => $list) {
             $isDefaultContextInterface = $list['context']['interface'] === StorageListContextInterface::class;
             $isDefaultContextComposite = $list['context']['composite'] === CompositeStorageListContext::class;
-            $isDefaultProcessorInterface = $list['processor']['interface'] === StorageListProcessorInterface::class;
-            $isDefaultProcessorComposite = $list['processor']['composite'] === CompositeStorageListProcessor::class;
 
             $contextCompositeServiceName = $isDefaultContextComposite ? 'coreshop.context.storage_list.' . $name : $list['context']['composite'];
-            $processorCompositeServiceName = $isDefaultProcessorComposite ? 'coreshop.processor.storage_list.' . $name : $list['processor']['composite'];
 
             if (!interface_exists($list['context']['interface'])) {
                 throw new \RuntimeException(
                     sprintf(
                         'Interface %s for Storage List Context "%s" does not exist',
-                        $list['context']['interface'],
-                        $name,
-                    )
-                );
-            }
-
-            if (!interface_exists($list['processor']['interface'])) {
-                throw new \RuntimeException(
-                    sprintf(
-                        'Interface %s for Storage List Processor "%s" does not exist',
                         $list['context']['interface'],
                         $name,
                     )
@@ -79,35 +70,16 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $container->setDefinition($contextCompositeServiceName, $compositeService);
             }
 
-            if (!$isDefaultContextInterface && !$container->has($list['context']['interface'])) {
+            if (!$isDefaultContextInterface && !$container->hasDefinition($list['context']['interface'])) {
                 $interfaceAlias = new Alias($contextCompositeServiceName, true);
 
                 $container->setAlias($list['context']['interface'], $interfaceAlias);
-            }
-
-            if (!$container->has($list['processor']['composite'])) {
-                $compositeService = new Definition($list['processor']['composite']);
-                $compositeService->setPublic(true);
-
-                $container->setDefinition($processorCompositeServiceName, $compositeService);
-            }
-
-            if (!$isDefaultProcessorInterface && !$container->has($list['processor']['interface'])) {
-                $interfaceAlias = new Alias($processorCompositeServiceName, true);
-
-                $container->setAlias($list['processor']['interface'], $interfaceAlias);
             }
 
             if (!$isDefaultContextInterface) {
                 $container
                     ->registerForAutoconfiguration($list['context']['interface'])
                     ->addTag($list['context']['tag']);
-            }
-
-            if (!$isDefaultProcessorInterface) {
-                $container
-                    ->registerForAutoconfiguration($list['processor']['interface'])
-                    ->addTag($list['processor']['tag']);
             }
 
             $factoryContextDefinition = new Definition(StorageListFactoryContext::class);
@@ -119,10 +91,10 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
             if ($list['session']['enabled']) {
                 $sessionSubscriber = new Definition(SessionSubscriber::class, [
                     new Reference(PimcoreContextResolver::class),
-                    new Reference($processorCompositeServiceName),
+                    new Reference($contextCompositeServiceName),
                     $list['session']['key']
                 ]);
-                
+
                 $container->setDefinition('coreshop.storage_list.session_subscriber.' . $name, $sessionSubscriber);
             }
             if ($list['controller']['enabled']) {
@@ -160,19 +132,73 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $name,
                 new Reference($list['services']['manager']),
                 new Reference($contextCompositeServiceName),
-                new Reference($processorCompositeServiceName),
                 new Reference($list['services']['modifier']),
             ]);
+
+            if (interface_exists(CustomerAwareInterface::class) && interface_exists(StoreAwareInterface::class)) {
+                $implements = \class_implements($list['resource']['interface']);
+
+                if (isset($implements[StoreAwareInterface::class], $implements[CustomerAwareInterface::class])) {
+                    $customerAndStoreBasedContextDefinition = new Definition(CustomerAndStoreBasedStorageListContext::class);
+                    $customerAndStoreBasedContextDefinition->setArgument('$customerContext', new Reference('coreshop.context.customer'));
+                    $customerAndStoreBasedContextDefinition->setArgument('$storeContext', new Reference('coreshop.context.store'));
+                    $customerAndStoreBasedContextDefinition->setArgument('$repository', new Reference($list['resource']['repository']));
+                    $customerAndStoreBasedContextDefinition->addTag($list['context']['tag'], ['priority' => 777]);
+
+                    $container->setDefinition('coreshop.storage_list.context.customer_and_store_based.' . $name, $customerAndStoreBasedContextDefinition);
+
+                    if ($list['services']['enable_default_store_based_decorator']) {
+                        $storeBasedContextDefinition = new Definition(StoreBasedStorageListContext::class);
+                        $storeBasedContextDefinition->setDecoratedService($contextCompositeServiceName);
+                        $storeBasedContextDefinition->setArgument(
+                            '$context',
+                            new Reference('coreshop.storage_list.context.store_based.'.$name.'.inner')
+                        );
+                        $storeBasedContextDefinition->setArgument(
+                            '$shopperContext',
+                            new Reference('coreshop.context.shopper')
+                        );
+
+                        $container->setDefinition(
+                            'coreshop.storage_list.context.store_based.'.$name,
+                            $storeBasedContextDefinition
+                        );
+                    }
+
+                    if ($list['session']['enabled']) {
+                        $sessionAndStoreBasedContextDefinition = new Definition(
+                            SessionAndStoreBasedStorageListContext::class
+                        );
+                        $sessionAndStoreBasedContextDefinition->setArgument('$session', new Reference('session'));
+                        $sessionAndStoreBasedContextDefinition->setArgument('$sessionKeyName', $list['session']['key']);
+                        $sessionAndStoreBasedContextDefinition->setArgument('$repository', new Reference($list['resource']['repository']));
+                        $sessionAndStoreBasedContextDefinition->setArgument('$storeContext', new Reference('coreshop.context.store'));
+                        $sessionAndStoreBasedContextDefinition->addTag($list['context']['tag'], ['priority' => 555]);
+
+                        $container->setDefinition('coreshop.storage_list.context.session_and_store_based.' . $name, $sessionAndStoreBasedContextDefinition);
+
+                        $sessionAndStoreSubscriber = new Definition(SessionStoreStorageListSubscriber::class);
+                        $sessionAndStoreSubscriber->setArgument('$pimcoreContext', new Reference(PimcoreContextResolver::class));
+                        $sessionAndStoreSubscriber->setArgument('$context', new Reference($contextCompositeServiceName));
+                        $sessionAndStoreSubscriber->setArgument('$sessionKeyName', $list['session']['key']);
+                        $sessionAndStoreSubscriber->addTag('kernel.event_subscriber');
+
+                        $container->setDefinition('coreshop.storage_list.session_and_store_subscriber.' . $name, $sessionAndStoreSubscriber);
+                    }
+
+                    $blamer = new Definition(StorageListBlamerListener::class);
+                    $blamer->setArgument('$context', new Reference($contextCompositeServiceName));
+                    $blamer->addTag('kernel.event_listener', ['event' => 'security.interactive_login', 'method' => 'onInteractiveLogin']);
+                    $blamer->addTag('kernel.event_listener', ['event' => 'coreshop.customer.register', 'method' => 'onRegisterEvent']);
+
+                    $container->setDefinition('coreshop.storage_list.blamer.' . $name, $blamer);
+                }
+            }
 
             (new RegisterStorageListPass(
                 $list['context']['interface'],
                 $contextCompositeServiceName,
                 $list['context']['tag']
-            ))->process($container);
-            (new RegisterStorageListProcessorPass(
-                $list['processor']['interface'],
-                $processorCompositeServiceName,
-                $list['processor']['tag']
             ))->process($container);
         }
     }

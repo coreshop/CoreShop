@@ -21,7 +21,6 @@ class StorageListsManager
 {
     private array $lists = [];
     private array $managers = [];
-    private array $processors = [];
     private array $contexts = [];
     private array $modifiers = [];
 
@@ -29,13 +28,11 @@ class StorageListsManager
         string $name,
         StorageListManagerInterface $manager,
         StorageListContextInterface $context,
-        StorageListProcessorInterface $processor,
         StorageListModifierInterface $modifier,
     ): void {
         $this->lists[] = $name;
         $this->managers[$name] = $manager;
         $this->contexts[$name] = $context;
-        $this->processors[$name] = $processor;
         $this->modifiers[$name] = $modifier;
     }
 
@@ -52,11 +49,6 @@ class StorageListsManager
     public function getContext(string $name): StorageListContextInterface
     {
         return $this->contexts[$name];
-    }
-
-    public function getProcessor(string $name): StorageListProcessorInterface
-    {
-        return $this->processors[$name];
     }
 
     public function getModifier(string $name): StorageListModifierInterface

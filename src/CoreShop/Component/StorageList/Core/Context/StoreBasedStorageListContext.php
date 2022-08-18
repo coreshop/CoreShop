@@ -12,44 +12,54 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\Core\Context;
+namespace CoreShop\Component\StorageList\Core\Context;
 
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
+use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\Locale\Context\LocaleNotFoundException;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
-use CoreShop\Component\Wishlist\Model\WishlistInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 
-final class StoreBasedWishlistContext implements StorageListContextInterface
+final class StoreBasedStorageListContext implements StorageListContextInterface
 {
-    private ?WishlistInterface $wishlist = null;
+    private ?StorageListInterface $storageList = null;
 
     public function __construct(
-        private StorageListContextInterface $wishlistContext,
+        private StorageListContextInterface $context,
         private ShopperContextInterface $shopperContext
     )
     {
     }
 
-    public function getStorageList(): WishlistInterface
+    public function getStorageList(): StorageListInterface
     {
-        if (null !== $this->wishlist) {
-            return $this->wishlist;
+        if (null !== $this->storageList) {
+            return $this->storageList;
         }
 
         /**
-         * @var \CoreShop\Component\Core\Model\WishlistInterface $wishlist
+         * @var StorageListInterface $storageList
          */
-        $wishlist = $this->wishlistContext->getStorageList();
+        $storageList = $this->context->getStorageList();
+
+        if (!$storageList instanceof StoreAwareInterface) {
+            throw new StorageListNotFoundException();
+        }
+
+        if (!$storageList instanceof CustomerAwareInterface) {
+            throw new StorageListNotFoundException();
+        }
 
         try {
             /** @var StoreInterface $store */
             $store = $this->shopperContext->getStore();
-
-            $wishlist->setStore($store);
+            $storageList->setStore($store);
         } catch (StoreNotFoundException|CurrencyNotFoundException|LocaleNotFoundException $exception) {
             throw new StorageListNotFoundException('CoreShop was not able to prepare the wishlist.', $exception);
         }
@@ -59,11 +69,11 @@ final class StoreBasedWishlistContext implements StorageListContextInterface
              * @var CustomerInterface $customer
              */
             $customer = $this->shopperContext->getCustomer();
-            $wishlist->setCustomer($customer);
+            $storageList->setCustomer($customer);
         }
 
-        $this->wishlist = $wishlist;
+        $this->storageList = $storageList;
 
-        return $wishlist;
+        return $storageList;
     }
 }

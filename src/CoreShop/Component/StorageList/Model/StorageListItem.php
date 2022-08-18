@@ -16,7 +16,7 @@ namespace CoreShop\Component\StorageList\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
-class StorageListItem implements StorageListItemInterface
+abstract class StorageListItem implements StorageListItemInterface
 {
     protected float $quantity = 0;
 

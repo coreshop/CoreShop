@@ -22,10 +22,18 @@ use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
 class OrderRepository extends PimcoreRepository implements OrderRepositoryInterface
 {
+    public function findLatestByStoreAndCustomer(
+        StoreInterface $store,
+        CustomerInterface $customer
+    ): ?StorageListInterface {
+        return $this->findLatestCartByStoreAndCustomer($store, $customer);
+    }
+
     public function findCartByCustomer(CustomerInterface $customer): array
     {
         $list = $this->getList();
