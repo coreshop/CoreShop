@@ -14,9 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StorageListBundle\Core\EventListener;
 
-use CoreShop\Component\Core\Model\WishlistInterface;
-use CoreShop\Component\Order\Context\CartNotFoundException;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
+use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -63,7 +62,7 @@ final class SessionStoreStorageListSubscriber implements EventSubscriberInterfac
 
         try {
             $storageList = $this->context->getStorageList();
-        } catch (CartNotFoundException) {
+        } catch (StorageListNotFoundException) {
             return;
         }
         

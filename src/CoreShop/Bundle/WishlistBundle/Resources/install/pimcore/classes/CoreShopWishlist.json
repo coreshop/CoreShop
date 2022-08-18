@@ -2,7 +2,7 @@
     "id": "cs_wishlist",
     "description": "",
     "modificationDate": 1652873185,
-    "parentClass": "",
+    "parentClass": "CoreShop\\Component\\Wishlist\\Model\\Wishlist",
     "implementsInterfaces": "",
     "listingParentClass": "",
     "useTraits": "",
