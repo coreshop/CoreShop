@@ -34,9 +34,25 @@ class CartPriceRuleController extends ResourceController
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
+        $itemActions = $this->getCartItemConfigActions();
+        $itemConditions = $this->getCartItemConfigConditions();
+
         return $this->viewHandler->handle([
             'actions' => array_keys($actions),
             'conditions' => array_keys($conditions),
+            'itemActions' => array_keys($itemActions),
+            'itemConditions' => array_keys($itemConditions),
+        ]);
+    }
+
+    public function getCartItemConfigAction(Request $request): JsonResponse
+    {
+        $itemActions = $this->getCartItemConfigActions();
+        $itemConditions = $this->getCartItemConfigConditions();
+
+        return $this->viewHandler->handle([
+            'actions' => array_keys($itemActions),
+            'conditions' => array_keys($itemConditions),
         ]);
     }
 
@@ -217,5 +233,21 @@ class CartPriceRuleController extends ResourceController
     protected function getConfigConditions(): array
     {
         return $this->container->getParameter('coreshop.cart_price_rule.conditions');
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getCartItemConfigActions(): array
+    {
+        return $this->container->getParameter('coreshop.cart_item_price_rule.actions');
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getCartItemConfigConditions(): array
+    {
+        return $this->container->getParameter('coreshop.cart_item_price_rule.conditions');
     }
 }

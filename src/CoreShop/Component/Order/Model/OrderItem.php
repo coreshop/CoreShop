@@ -25,7 +25,9 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     use AdjustableTrait;
 
     use ConvertedAdjustableTrait;
-
+    
+    use ProposalPriceRuleTrait;
+    
     public function equals(StorageListItemInterface $storageListItem): bool
     {
         if ($this->getIsGiftItem()) {
@@ -210,6 +212,11 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         } while ($parent !== null);
 
         throw new \Exception('Order Item does not have a valid Order');
+    }
+
+    public function getDiscount(bool $withTax = true): int
+    {
+        return $this->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $withTax);
     }
 
     public function getSubtotalNet(): int

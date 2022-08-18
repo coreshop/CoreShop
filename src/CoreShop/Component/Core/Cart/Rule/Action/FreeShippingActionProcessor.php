@@ -18,7 +18,7 @@ use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterf
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 
 final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorInterface
 {
@@ -26,7 +26,7 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
     {
     }
 
-    public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
+    public function applyRule(OrderInterface $cart, array $configuration, PriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $shippingAdjustments = $cart->getAdjustments(AdjustmentInterface::SHIPPING);
 
@@ -45,7 +45,7 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
         return true;
     }
 
-    public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
+    public function unApplyRule(OrderInterface $cart, array $configuration, PriceRuleItemInterface $cartPriceRuleItem): bool
     {
         return true;
     }

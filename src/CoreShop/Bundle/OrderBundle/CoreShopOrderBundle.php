@@ -17,6 +17,8 @@ namespace CoreShop\Bundle\OrderBundle;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
 use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
+use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartItemPriceRuleActionPass;
+use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartItemPriceRuleConditionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleActionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleConditionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountCalculatorsPass;
@@ -51,6 +53,8 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
 
         $container->addCompilerPass(new CartPriceRuleActionPass());
         $container->addCompilerPass(new CartPriceRuleConditionPass());
+        $container->addCompilerPass(new CartItemPriceRuleActionPass());
+        $container->addCompilerPass(new CartItemPriceRuleConditionPass());
         $container->addCompilerPass(new RegisterWorkflowValidatorPass());
         $container->addCompilerPass(new RegisterCartProcessorPass());
         $container->addCompilerPass(new PurchasablePriceCalculatorsPass());

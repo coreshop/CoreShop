@@ -17,7 +17,7 @@ namespace CoreShop\Component\Order\Cart\Rule\Condition;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 
 class VoucherConditionChecker extends AbstractConditionChecker
@@ -53,7 +53,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
             $valid = true;
             if ($cart->hasPriceRules()) {
                 foreach ($cart->getPriceRuleItems() as $rule) {
-                    if ($rule instanceof ProposalCartPriceRuleItemInterface) {
+                    if ($rule instanceof PriceRuleItemInterface) {
                         if ($rule->getCartPriceRule()->getIsVoucherRule() && $rule->getVoucherCode() !== $storedCode->getCode()) {
                             $valid = false;
 

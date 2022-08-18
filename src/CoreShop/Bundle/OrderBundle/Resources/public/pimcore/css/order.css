@@ -134,6 +134,10 @@ body.pimcore_version_10 .coreshop_nav_icon_cart_create {
     background: url(../img/currencies.svg) center center no-repeat !important;
 }
 
+.coreshop_rule_icon_action_cartItemAction {
+    background: url(../img/orders.svg) center center no-repeat !important;
+}
+
 .x-tool-coreshop-add {
     background: url(../img/add.svg) center center no-repeat !important;
 }
