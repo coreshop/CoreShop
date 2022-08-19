@@ -6,8 +6,6 @@ use CoreShop\Bundle\StorageListBundle\Controller\StorageListController;
 use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Factory\AddToStorageListFactory;
-use CoreShop\Component\StorageList\Processor\CompositeStorageListProcessor;
-use CoreShop\Component\StorageList\Processor\StorageListProcessorInterface;
 use CoreShop\Component\StorageList\SessionStorageManager;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -44,14 +42,6 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('interface')->defaultValue(StorageListContextInterface::class)->end()
                                     ->scalarNode('composite')->defaultValue(CompositeStorageListContext::class)->end()
-                                    ->scalarNode('tag')->cannotBeEmpty()->end()
-                                ->end()
-                            ->end()
-                            ->arrayNode('processor')
-                                ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->scalarNode('interface')->defaultValue(StorageListProcessorInterface::class)->end()
-                                    ->scalarNode('composite')->defaultValue(CompositeStorageListProcessor::class)->end()
                                     ->scalarNode('tag')->cannotBeEmpty()->end()
                                 ->end()
                             ->end()

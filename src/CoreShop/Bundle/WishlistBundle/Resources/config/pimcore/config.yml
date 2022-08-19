@@ -3,8 +3,6 @@ core_shop_storage_list:
         wishlist:
             context:
                 tag: coreshop.context.wishlist
-            processor:
-                tag: coreshop.processor.wishlist
             services:
                 manager: CoreShop\Component\StorageList\Manager\StorageListPimcoreModelManager
                 modifier: CoreShop\Component\Wishlist\Wishlist\WishlistModifier

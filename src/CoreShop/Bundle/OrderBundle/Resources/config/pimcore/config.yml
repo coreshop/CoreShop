@@ -23,8 +23,6 @@ core_shop_storage_list:
                 interface: CoreShop\Component\Order\Context\CartContextInterface
                 composite: CoreShop\Component\Order\Context\CompositeCartContext
                 tag: coreshop.context.cart
-            processor:
-                tag: coreshop.cart_processor
             services:
                 manager: CoreShop\Bundle\OrderBundle\Manager\CartManager
                 modifier: CoreShop\Component\Order\Cart\CartModifier
