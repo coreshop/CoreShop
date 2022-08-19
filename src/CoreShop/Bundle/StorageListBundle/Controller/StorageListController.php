@@ -87,8 +87,8 @@ class StorageListController extends AbstractController
 
     public function addItemAction(Request $request): Response
     {
-        $redirect = (string)$request->query->get('_redirect', $this->generateUrl($this->indexRoute));
-        $product = $this->productRepository->find($request->query->get('product'));
+        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl($this->indexRoute));
+        $product = $this->productRepository->find($this->getParameterFromRequest($request, 'product'));
         $storageList = $this->context->getStorageList();
 
         if (!$product instanceof ResourceInterface) {
@@ -159,11 +159,7 @@ class StorageListController extends AbstractController
             ]);
         }
 
-        $template = $request->query->get('template');
-
-        if (null !== $template) {
-            $template = $this->templateAddToList;
-        }
+        $template = $this->getParameterFromRequest($request, 'template', $this->templateAddToList);
 
         return $this->render(
             $template,
@@ -176,7 +172,7 @@ class StorageListController extends AbstractController
 
     public function removeItemAction(Request $request): Response
     {
-        $storageListItem = $this->itemRepository->find($request->query->get('item'));
+        $storageListItem = $this->itemRepository->find($this->getParameterFromRequest($request, 'item'));
         $storageList = $this->context->getStorageList();
 
         if (!$storageListItem instanceof StorageListItemInterface) {
@@ -237,5 +233,28 @@ class StorageListController extends AbstractController
         StorageListItemInterface $storageListItem
     ): AddToStorageListInterface {
         return $this->addToStorageListFactory->createWithStorageListAndStorageListItem($storageList, $storageListItem);
+    }
+
+
+    /**
+     * @return mixed
+     *
+     * based on Symfony\Component\HttpFoundation\Request::get
+     */
+    protected function getParameterFromRequest(Request $request, string $key, $default = null)
+    {
+        if ($request !== $result = $request->attributes->get($key, $request)) {
+            return $result;
+        }
+
+        if ($request->query->has($key)) {
+            return $request->query->all()[$key];
+        }
+
+        if ($request->request->has($key)) {
+            return $request->request->all()[$key];
+        }
+
+        return $default;
     }
 }
