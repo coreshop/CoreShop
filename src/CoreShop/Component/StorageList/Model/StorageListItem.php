@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\StorageList\Model;
 
-class StorageListItem implements StorageListItemInterface
+use CoreShop\Component\Resource\Model\ResourceInterface;
+
+abstract class StorageListItem implements StorageListItemInterface
 {
     protected float $quantity = 0;
 
@@ -32,12 +34,12 @@ class StorageListItem implements StorageListItemInterface
         return $this->product ? $this->product->getId() : 0;
     }
 
-    public function getProduct()
+    public function getProduct(): ResourceInterface
     {
         return $this->product;
     }
 
-    public function setProduct($product)
+    public function setProduct(ResourceInterface $product)
     {
         $this->product = $product;
     }

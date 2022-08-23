@@ -105,16 +105,11 @@
             {% if coreshop_add_to_cart_available(product) %}
                 <div class="options">
                     <div class="cart-button btn-group">
-                        <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" class="btn btn-wishlist">
-                            <i class="fa fa-heart"></i>
-                        </a>
+                        {{ render(url('coreshop_partial_wishlist_add', {'product': product.id})) }}
 
-                        {% if coreshop_inventory_is_available(product) %}
-                            {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
-                        {% endif %}
+                        {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
                     </div>
                 </div>
-
                 <hr/>
             {% endif %}
 

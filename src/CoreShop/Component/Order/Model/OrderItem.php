@@ -16,6 +16,7 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -197,6 +198,11 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         }
 
         return $totalTax;
+    }
+
+    public function getStorageList(): StorageListInterface
+    {
+        return $this->getOrder();
     }
 
     public function getOrder(): OrderInterface

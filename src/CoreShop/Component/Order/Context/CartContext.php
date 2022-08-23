@@ -21,11 +21,18 @@ use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
 
 final class CartContext implements CartContextInterface
 {
     public function __construct(private FactoryInterface $cartFactory)
     {
+    }
+
+    public function getStorageList(): OrderInterface
+    {
+        return $this->getCart();
     }
 
     public function getCart(): OrderInterface

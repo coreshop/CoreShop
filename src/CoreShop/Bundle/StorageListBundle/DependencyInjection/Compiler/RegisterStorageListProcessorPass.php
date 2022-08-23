@@ -12,23 +12,19 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler;
+namespace CoreShop\Bundle\StorageListBundle\DependencyInjection\Compiler;
 
-use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Context\CompositeCartContext;
 use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
-final class RegisterCartContextsPass extends PrioritizedCompositeServicePass
+final class RegisterStorageListProcessorPass extends PrioritizedCompositeServicePass
 {
-    public const CART_CONTEXT_TAG = 'coreshop.context.cart';
-
-    public function __construct()
+    public function __construct(string $serviceId, string $compositeId, string $tagName)
     {
         parent::__construct(
-            CartContextInterface::class,
-            CompositeCartContext::class,
-            self::CART_CONTEXT_TAG,
-            'addContext'
+            $serviceId,
+            $compositeId,
+            $tagName,
+            'addProcessor'
         );
     }
 }

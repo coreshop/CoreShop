@@ -15,15 +15,11 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\Money;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
-interface PurchasableInterface
+interface PurchasableInterface extends ResourceInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
-
     public function getName($language = null): ?string;
 
     public function getWholesaleBuyingPrice(): ?Money;

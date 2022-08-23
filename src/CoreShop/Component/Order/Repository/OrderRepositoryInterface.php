@@ -17,9 +17,10 @@ namespace CoreShop\Component\Order\Repository;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\StorageList\Core\Repository\CustomerAndStoreAwareRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
-interface OrderRepositoryInterface extends PimcoreRepositoryInterface
+interface OrderRepositoryInterface extends PimcoreRepositoryInterface, CustomerAndStoreAwareRepositoryInterface
 {
     public function findCartByCustomer(CustomerInterface $customer): array;
 
