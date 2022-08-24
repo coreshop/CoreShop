@@ -5,7 +5,7 @@
 
     {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
 
-    {% if wishlist.hasItems %}
+    {% if storage_list.hasItems %}
     <div class="table-responsive shopping-wishlist-table">
         <table class="table table-bordered">
             <thead>
@@ -25,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in wishlist.items %}
+            {% for item in storage_list.items %}
                 {% set product = item.product %}
                 {% set productUrl = pimcore_object_path(product) %}
                 <tr class="shopping-wishlist-item">
@@ -45,7 +45,7 @@
                         {{ currency.getPrice(product) }}
                     </td>
                     <td class="text-center">
-                        <a href="{{ path('coreshop_wishlist_remove', {product: product.id}) }}" title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-danger tool-tip" data-id="{{ product.id }}">
+                        <a href="{{ path('coreshop_wishlist_remove', {wishlistItem: item.id}) }}" title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-danger tool-tip" data-id="{{ item.id }}">
                             <i class="fa fa-times-circle"></i>
                         </a>
                     </td>

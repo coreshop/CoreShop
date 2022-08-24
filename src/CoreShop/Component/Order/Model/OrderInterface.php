@@ -192,17 +192,17 @@ interface OrderInterface extends
     public function setPriceRuleItems(Fieldcollection $priceRuleItems);
 
     /**
-     * @return ProposalCartPriceRuleItemInterface[]
+     * @return PriceRuleItemInterface[]
      */
     public function getPriceRules(): array;
 
     public function hasPriceRules(): bool;
 
-    public function addPriceRule(ProposalCartPriceRuleItemInterface $priceRule): void;
+    public function addPriceRule(PriceRuleItemInterface $priceRule): void;
 
-    public function removePriceRule(ProposalCartPriceRuleItemInterface $priceRule): void;
+    public function removePriceRule(PriceRuleItemInterface $priceRule): void;
 
-    public function hasPriceRule(ProposalCartPriceRuleItemInterface $priceRule): bool;
+    public function hasPriceRule(PriceRuleItemInterface $priceRule): bool;
 
     public function hasCartPriceRule(
         CartPriceRuleInterface $cartPriceRule,
@@ -212,7 +212,7 @@ interface OrderInterface extends
     public function getPriceRuleByCartPriceRule(
         CartPriceRuleInterface $cartPriceRule,
         CartPriceRuleVoucherCodeInterface $voucherCode = null
-    ): ?ProposalCartPriceRuleItemInterface;
+    ): ?PriceRuleItemInterface;
 
     public function getPaymentProvider(): ?PaymentProviderInterface;
 

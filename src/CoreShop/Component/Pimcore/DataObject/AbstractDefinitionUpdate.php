@@ -33,7 +33,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 
     abstract public function save(): bool;
 
-    public function getProperty(string $property): array
+    public function getProperty(string $property): mixed
     {
         return $this->jsonDefinition[$property];
     }

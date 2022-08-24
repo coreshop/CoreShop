@@ -1,0 +1,4 @@
+CoreShop\Component\Wishlist\Model\Wishlist:
+    getters:
+        items:
+            - Valid: { groups: ['coreshop'] }

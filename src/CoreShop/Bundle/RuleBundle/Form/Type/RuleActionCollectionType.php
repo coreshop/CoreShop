@@ -24,11 +24,15 @@ class RuleActionCollectionType extends AbstractConfigurationCollectionType
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
+
+        $resolver->setDefault('nested', false);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->setDataMapper(new ActionsFormMapper($builder->getDataMapper()));
+        if (!$options['nested']) {
+            $builder->setDataMapper(new ActionsFormMapper($builder->getDataMapper()));
+        }
     }
 
     public function getBlockPrefix(): string

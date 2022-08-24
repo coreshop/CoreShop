@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
 use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
 use CoreShop\Bundle\CoreBundle\Application\Version;
@@ -43,6 +44,7 @@ use CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle;
 use CoreShop\Bundle\TrackingBundle\CoreShopTrackingBundle;
 use CoreShop\Bundle\UserBundle\CoreShopUserBundle;
 use CoreShop\Bundle\VariantBundle\CoreShopVariantBundle;
+use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
@@ -93,6 +95,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $collection->addBundle(new CoreShopFrontendBundle(), 1800);
         $collection->addBundle(new CoreShopPayumBundle(), 1700);
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
+        $collection->addBundle(new CoreShopWishlistBundle(), 1500);
     }
 
     protected function getModelNamespace(): string
@@ -117,7 +120,21 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
 
     public function getComposerVersion(): string
     {
-        return Versions::getVersion('coreshop/core-shop');
+        if (class_exists(InstalledVersions::class)) {
+            return InstalledVersions::getVersion('coreshop/core-shop');
+        }
+
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
+        if (class_exists(Versions::class)) {
+            /**
+             * @psalm-suppress DeprecatedClass
+             */
+            return Versions::getVersion('coreshop/core-shop');
+        }
+
+        return '';
     }
 
     public function getInstaller(): Installer

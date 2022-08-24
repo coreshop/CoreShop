@@ -17,40 +17,7 @@ namespace CoreShop\Component\Order\Model;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreFieldcollection;
 
-abstract class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implements ProposalCartPriceRuleItemInterface
+abstract class ProposalCartPriceRuleItem extends PriceRuleItem
 {
-    public function getId()
-    {
-        return $this->getObject()->getId() . '_cart_price_rule_' . $this->getIndex();
-    }
 
-    public function getDiscount(bool $withTax = true): int
-    {
-        return $withTax ? $this->getDiscountGross() : $this->getDiscountNet();
-    }
-
-    public function setDiscount(int $discount, bool $withTax = true)
-    {
-        $withTax ? $this->setDiscountGross($discount) : $this->setDiscountNet($discount);
-    }
-
-    public function getDiscountNet(): int
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    public function setDiscountNet(int $discountNet)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    public function getDiscountGross(): int
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    public function setDiscountGross(int $discountGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
 }

@@ -15,20 +15,20 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 
 interface CartRuleApplierInterface
 {
     public function applyDiscount(
         OrderInterface $cart,
-        ProposalCartPriceRuleItemInterface $cartPriceRuleItem,
+        PriceRuleItemInterface $cartPriceRuleItem,
         int $discount,
         bool $withTax = false
     ): void;
 
     public function applySurcharge(
         OrderInterface $cart,
-        ProposalCartPriceRuleItemInterface $cartPriceRuleItem,
+        PriceRuleItemInterface $cartPriceRuleItem,
         int $discount,
         bool $withTax = false
     ): void;

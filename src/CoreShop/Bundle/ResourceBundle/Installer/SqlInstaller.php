@@ -14,14 +14,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
-use Pimcore\Db;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 final class SqlInstaller implements ResourceInstallerInterface
 {
-    public function __construct(private KernelInterface $kernel)
+    public function __construct(
+        private KernelInterface $kernel,
+        private Connection $connection
+    )
     {
     }
 
@@ -41,14 +44,12 @@ final class SqlInstaller implements ResourceInstallerInterface
             $progress->setProgressCharacter('<comment>░</comment>');
             $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
 
-            $db = Db::get();
-
             $progress->start(count($sqlFilesToExecute));
 
             foreach ($sqlFilesToExecute as $sqlFile) {
                 $progress->setMessage(sprintf('<info>Execute SQL File %s</info>', $sqlFile));
 
-                $db->executeQuery(file_get_contents($this->kernel->locateResource($sqlFile)));
+                $this->connection->executeQuery(file_get_contents($this->kernel->locateResource($sqlFile)));
 
                 $progress->advance();
             }

@@ -20,7 +20,7 @@ use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Resource\Model\TranslationInterface;
 use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -62,7 +62,7 @@ final class ORMTranslatableListener implements EventSubscriber
 
     public function postLoad(LifecycleEventArgs $args): void
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         if (!$entity instanceof TranslatableInterface) {
             return;

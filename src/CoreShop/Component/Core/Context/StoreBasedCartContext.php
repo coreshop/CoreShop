@@ -27,8 +27,16 @@ final class StoreBasedCartContext implements CartContextInterface
 {
     private ?OrderInterface $cart = null;
 
-    public function __construct(private CartContextInterface $cartContext, private ShopperContextInterface $shopperContext)
+    public function __construct(
+        private CartContextInterface $cartContext,
+        private ShopperContextInterface $shopperContext
+    )
     {
+    }
+
+    public function getStorageList(): OrderInterface
+    {
+        return $this->getCart();
     }
 
     public function getCart(): OrderInterface

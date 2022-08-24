@@ -77,6 +77,9 @@ final class PimcoreDaoContext implements Context
         foreach ($list->getObjects() as $obj) {
             $obj->delete();
         }
+
+        //Force
+        $this->connection->executeQuery('DELETE FROM objects WHERE o_id <> 1');
     }
 
     /**
@@ -164,9 +167,12 @@ final class PimcoreDaoContext implements Context
         $this->connection->executeQuery('DELETE FROM `object_url_slugs`');
 
         $reflection = new \ReflectionClass(DataObject\Data\UrlSlug::class);
-        $cacheProperty = $reflection->getProperty('cache');
-        $cacheProperty->setAccessible(true);
-        $reflection->setStaticPropertyValue('cache', []);
+
+        if ($reflection->hasProperty('cache')) {
+            $cacheProperty = $reflection->getProperty('cache');
+            $cacheProperty->setAccessible(true);
+            $reflection->setStaticPropertyValue('cache', []);
+        }
     }
 
     /**

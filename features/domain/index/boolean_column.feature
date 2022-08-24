@@ -30,6 +30,6 @@ Feature: Adding a object index
       | key         | value | type     |
       | enabled     | true  | checkbox |
       | booleanTest | null  | checkbox  |
-    Then the index column "booleanTest" for object-instance "test1" should have value "0"
-    Then the index column "booleanTest" for object-instance "test2" should have value "1"
-    Then the index column "booleanTest" for object-instance "test3" should have value "0"
+    Then the index column "booleanTest" for object-instance "test1" should have integer value "0"
+    Then the index column "booleanTest" for object-instance "test2" should have integer value "1"
+    Then the index column "booleanTest" for object-instance "test3" should have integer value "0"

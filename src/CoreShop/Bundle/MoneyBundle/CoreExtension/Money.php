@@ -193,12 +193,16 @@ class Money extends DataObject\ClassDefinition\Data implements
 
     public function marshalVersion($object, $data)
     {
-        return $this->getDataForEditmode($data, $object);
+        return $data;
     }
 
     public function unmarshalVersion($object, $data)
     {
-        return $this->getDataFromEditmode($data, $object);
+        if (is_numeric($data)) {
+            return $data;
+        }
+
+        return $this->nullable ? null : 0;
     }
 
     public function marshalRecycleData($object, $data)
@@ -460,7 +464,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
         $code .= '* @return \\Pimcore\\Model\\DataObject\\Fieldcollection\\Data\\' . ucfirst($fieldcollectionDefinition->getKey()) . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' ('.($this->nullable ? '?' : '').' ' . '$' . $key . ") {\n";
+        $code .= 'public function set' . ucfirst($key) . ' ('.($this->nullable ? '?' : '').'int ' . '$' . $key . ") {\n";
         $code .= "\t" . '$fd = $this->getDefinition()->getFieldDefinition("' . $key . '");' . "\n";
 
         if ($this instanceof DataObject\ClassDefinition\Data\EncryptedField) {

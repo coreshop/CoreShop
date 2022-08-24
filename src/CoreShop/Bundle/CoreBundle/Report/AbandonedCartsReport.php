@@ -89,10 +89,9 @@ final class AbandonedCartsReport implements ReportInterface, ExportReportInterfa
                         LEFT JOIN coreshop_payment_provider AS `pg` ON `pg`.id = cart.paymentProvider
                         WHERE cart.items <> ''
                           AND cart.store = $storeId
-                          AND cart.order__id IS NULL
                           AND cart.o_creationDate > ?
                           AND cart.o_creationDate < ?
-                          AND cart.saleState === '" . OrderSaleStates::STATE_CART . "'
+                          AND cart.saleState = '" . OrderSaleStates::STATE_CART . "'
                      GROUP BY cart.oo_id
                      ORDER BY cart.o_creationDate DESC
                      LIMIT $offset,$limit";

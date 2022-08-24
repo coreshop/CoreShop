@@ -1,0 +1,4 @@
+CoreShop\Component\Variant\Model\ProductVariantAwareInterface:
+    attributes:
+        id:
+            groups: ['coreshop']

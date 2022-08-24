@@ -39,7 +39,7 @@
     "coreshop/product-quantity-price-rules": "^3.0",
     "coreshop/storage-list": "^3.0",
     "coreshop/workflow-bundle": "^3.0",
-    "pimcore/pimcore": "^10.3",
+    "pimcore/pimcore": "^10.4",
     "laminas/laminas-stdlib": "^3.6"
   },
   "require-dev": {
@@ -64,5 +64,8 @@
     "branch-alias": {
       "dev-master": "3.0-dev"
     }
+  },
+  "config": {
+    "sort-packages": true
   }
 }

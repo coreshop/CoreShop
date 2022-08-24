@@ -15,17 +15,17 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Cart\Rule\Action;
 
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 
 interface CartPriceRuleActionProcessorInterface
 {
     /**
      * Apply Rule to Cart.
      */
-    public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool;
+    public function applyRule(OrderInterface $cart, array $configuration, PriceRuleItemInterface $cartPriceRuleItem): bool;
 
     /**
      * Remove Rule from Cart.
      */
-    public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool;
+    public function unApplyRule(OrderInterface $cart, array $configuration, PriceRuleItemInterface $cartPriceRuleItem): bool;
 }
