@@ -39,7 +39,7 @@ final class Version20220824065814 extends AbstractMigration implements Container
         }
 
         if (!class_exists(CoreShopWishlistItem::class)) {
-            $classInstaller->createClass($kernel->locateResource('@CoreShopWishlistBundle/Resources/install/pimcore/classes/CoreShopWishlistItem.json'), 'CoreShopWishlist');
+            $classInstaller->createClass($kernel->locateResource('@CoreShopWishlistBundle/Resources/install/pimcore/classes/CoreShopWishlistItem.json'), 'CoreShopWishlistItem');
         }
     }
 
