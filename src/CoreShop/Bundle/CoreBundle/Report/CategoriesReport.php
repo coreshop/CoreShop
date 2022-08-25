@@ -43,7 +43,7 @@ class CategoriesReport implements ReportInterface
             $orderStateFilter = \json_decode($orderStateFilter, true);
         }
 
-        if (!is_array($orderStateFilter) || !$orderStateFilter || in_array('all', $orderStateFilter, true)) {
+        if (!is_array($orderStateFilter) || !$orderStateFilter) {
             $orderStateFilter = null;
         }
 
