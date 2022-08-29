@@ -25,6 +25,7 @@ use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Pimcore\Bundle\EcommerceFrameworkBundle\Model\AbstractOrder;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ProductsReport implements ReportInterface, ExportReportInterface
@@ -40,6 +41,15 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $objectTypeFilter = $parameterBag->get('objectType', 'all');
+        $orderStateFilter = $parameterBag->get('orderState');
+        if($orderStateFilter) {
+            $orderStateFilter = \json_decode($orderStateFilter, true);
+        }
+
+        if (!is_array($orderStateFilter) || !$orderStateFilter) {
+            $orderStateFilter = null;
+        }
+
         $storeId = $parameterBag->get('store');
 
         if (null === $storeId) {
@@ -55,7 +65,6 @@ class ProductsReport implements ReportInterface, ExportReportInterface
 
         $orderClassId = $this->orderRepository->getClassId();
         $orderItemClassId = $this->orderItemRepository->getClassId();
-        $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         $locale = $this->localeContext->getLocaleCode();
 
@@ -64,6 +73,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
             return [];
         }
 
+        $queryParameters = [];
         if ($objectTypeFilter === 'container') {
             $unionData = [];
             foreach ($this->productStackRepository->getClassIds() as $id) {
@@ -85,7 +95,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON products.o_id = orderItems.mainObjectId
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderClassId AS `order` ON `order`.oo_id = orderRelations.src_id
-                WHERE products.o_type = 'object' AND `order`.store = $storeId AND `order`.orderState = '$orderCompleteState' AND `order`.orderDate > ? AND `order`.orderDate < ?
+                WHERE products.o_type = 'object' AND `order`.store = $storeId".(($orderStateFilter !== null) ? " AND `order`.orderState IN (".rtrim(str_repeat('?,', count($orderStateFilter)), ',').")":"")." AND `order`.orderDate > ? AND `order`.orderDate < ?
                 GROUP BY products.o_id
             LIMIT $offset,$limit";
         } else {
@@ -111,13 +121,19 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
                 INNER JOIN object_localized_query_" . $orderItemClassId . '_' . $locale . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
-                WHERE `orders`.store = $storeId AND $productTypeCondition AND `orders`.orderState = '$orderCompleteState' AND `orders`.orderDate > ? AND `orders`.orderDate < ?
+                WHERE `orders`.store = $storeId AND $productTypeCondition".(($orderStateFilter !== null) ? " AND `orders`.orderState IN (".rtrim(str_repeat('?,', count($orderStateFilter)),',').")" : "")." AND `orders`.orderDate > ? AND `orders`.orderDate < ?
                 GROUP BY orderItems.objectId
                 ORDER BY orderCount DESC
                 LIMIT $offset,$limit";
         }
+        if ($orderStateFilter !== null) {
+            array_push($queryParameters, ...$orderStateFilter);
+        }
+        $queryParameters[] = $from->getTimestamp();
+        $queryParameters[] = $to->getTimestamp();
 
-        $productSales = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
+
+        $productSales = $this->db->fetchAllAssociative($query, $queryParameters);
 
         $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 

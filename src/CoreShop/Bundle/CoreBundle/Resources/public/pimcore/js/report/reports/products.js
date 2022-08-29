@@ -27,9 +27,14 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstractStore, {
         return this.panel.down('[name=objectType]');
     },
 
+    getOrderStateField: function () {
+        return this.panel.down('[name=orderState]');
+    },
+
     getFilterParams: function ($super) {
         var fields = $super();
         fields.objectType = this.getObjectTypeField().getValue();
+        fields.orderState = JSON.stringify(this.getOrderStateField().getValue());
         return fields;
     },
 
@@ -57,6 +62,11 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstractStore, {
             {
                 xtype: 'toolbar',
                 dock: 'top',
+                layout: {
+                    type: 'vbox',
+                    align: 'stretch',
+                    pack: 'start',
+                },
                 items: this.getAdditionalFilterFields()
             }
         );
@@ -99,6 +109,24 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstractStore, {
             hidden: true,
             height: 40,
             html: t('coreshop_report_products_types_container_description')
+        });
+
+        fields.push({
+            xtype: 'tagfield',
+            fieldLabel: t('coreshop_condition_orderState'),
+            name: 'orderState',
+            value: ['all'],
+            width: 350,
+            store: pimcore.globalmanager.get('coreshop_states_order'),
+            displayField: 'label',
+            valueField: 'state',
+            triggerAction: 'all',
+            filterPickList: true,
+            minChars: 1,
+            typeAhead: true,
+            editable: true,
+            forceSelection: true,
+            queryMode: 'local'
         });
 
         return fields;
