@@ -16,17 +16,20 @@ namespace CoreShop\Component\StorageList;
 
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SessionStorageManager implements StorageListManagerInterface
 {
-    public function __construct(private SessionInterface $session, private string $name, private FactoryInterface $sessionListFactory)
+    public function __construct(
+        private RequestStack $requestStack,
+        private string $name,
+        private FactoryInterface $sessionListFactory)
     {
     }
 
     public function getStorageList(): StorageListInterface
     {
-        $list = $this->session->get($this->name);
+        $list = $this->requestStack->getSession()->get($this->name);
 
         if (!$list instanceof StorageListInterface) {
             $list = $this->sessionListFactory->createNew();
@@ -37,11 +40,11 @@ class SessionStorageManager implements StorageListManagerInterface
 
     public function hasStorageList(): bool
     {
-        return $this->session->has($this->name);
+        return $this->$this->requestStack->getSession()->has($this->name);
     }
 
     public function persist(StorageListInterface $storageList): void
     {
-        $this->session->set($this->name, $storageList);
+        $this->$this->requestStack->getSession()->set($this->name, $storageList);
     }
 }

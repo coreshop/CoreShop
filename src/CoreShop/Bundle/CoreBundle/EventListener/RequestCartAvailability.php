@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class RequestCartAvailability
 {
-    public function __construct(private CartManagerInterface $cartManager, private ShopperContextInterface $shopperContext, private RequestHelper $pimcoreRequestHelper, private Session $session)
+    public function __construct(private CartManagerInterface $cartManager, private ShopperContextInterface $shopperContext, private RequestHelper $pimcoreRequestHelper)
     {
     }
 
@@ -60,7 +60,13 @@ final class RequestCartAvailability
             return;
         }
 
-        $this->session->getFlashBag()->add('coreshop_global_error', 'coreshop.ui.global_error.cart_has_changed');
+        $session = $event->getRequest()->getSession();
+
+        if (!$session instanceof Session) {
+            return;
+        }
+
+        $session->getFlashBag()->add('coreshop_global_error', 'coreshop.ui.global_error.cart_has_changed');
         $cart->setNeedsRecalculation(false);
         $this->cartManager->persistCart($cart);
 

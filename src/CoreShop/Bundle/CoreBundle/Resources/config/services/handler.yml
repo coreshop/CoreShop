@@ -6,5 +6,4 @@ services:
         arguments:
             - '@router'
             - '%coreshop.after_logout_redirect_route%'
-            - '@session'
             - '@CoreShop\Component\Store\Context\StoreContextInterface'

@@ -62,7 +62,6 @@ services:
            - '@CoreShop\Component\Order\Manager\CartManagerInterface'
            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
            - '@Pimcore\Http\RequestHelper'
-           - '@session'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability, priority: 7 }
 

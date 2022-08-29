@@ -169,7 +169,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                         $sessionAndStoreBasedContextDefinition = new Definition(
                             SessionAndStoreBasedStorageListContext::class
                         );
-                        $sessionAndStoreBasedContextDefinition->setArgument('$session', new Reference('session'));
+                        $sessionAndStoreBasedContextDefinition->setArgument('$requestStack', new Reference('request_stack'));
                         $sessionAndStoreBasedContextDefinition->setArgument('$sessionKeyName', $list['session']['key']);
                         $sessionAndStoreBasedContextDefinition->setArgument('$repository', new Reference($list['resource']['repository']));
                         $sessionAndStoreBasedContextDefinition->setArgument('$storeContext', new Reference('coreshop.context.store'));
