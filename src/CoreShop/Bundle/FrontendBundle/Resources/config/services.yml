@@ -1,5 +1,4 @@
 imports:
-    - { resource: services/wishlist.yml }
     - { resource: services_alias.yml }
 
 services:

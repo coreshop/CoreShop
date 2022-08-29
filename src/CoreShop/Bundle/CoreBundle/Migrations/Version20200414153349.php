@@ -85,10 +85,14 @@ class Version20200414153349 extends AbstractMigration implements ContainerAwareI
 
             $classUpdater = new ClassUpdate($class);
 
-            $classUpdater->setProperty('generateTypeDeclarations', true);
+            if (!$classUpdater->getProperty('generateTypeDeclarations')) {
+                $classUpdater->setProperty('generateTypeDeclarations', true);
+            }
 
             foreach ($fields as $field => $config) {
-                $classUpdater->replaceFieldProperties($field, $config);
+                if ($classUpdater->hasField($field)) {
+                    $classUpdater->replaceFieldProperties($field, $config);
+                }
             }
 
             $classUpdater->save();

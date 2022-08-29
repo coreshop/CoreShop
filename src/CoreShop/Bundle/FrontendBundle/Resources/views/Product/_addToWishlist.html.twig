@@ -1,0 +1,12 @@
+{% form_theme form '@CoreShopFrontend/Form/theme.html.twig' %}
+
+{{ form_start(form, {'action': path('coreshop_wishlist_add', {'product': product.id})}) }}
+    {{ form_errors(form) }}
+
+    <button type="submit" href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" class="btn btn-wishlist">
+        <i class="fa fa-heart"></i>
+    </button>
+
+    {{ form_row(form._token) }}
+{{ form_end(form, {'render_rest': false}) }}
+

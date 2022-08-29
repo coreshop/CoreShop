@@ -21,8 +21,6 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscount
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasablePriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRetailPriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableWholesalePriceCalculatorsPass;
-use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartContextsPass;
-use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartProcessorPass;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface;
@@ -100,13 +98,5 @@ final class CoreShopOrderExtension extends AbstractModelExtension
         $container
             ->registerForAutoconfiguration(PurchasableWholesalePriceCalculatorInterface::class)
             ->addTag(PurchasableWholesalePriceCalculatorsPass::PURCHASABLE_WHOLESALE_PRICE_CALCULATOR_TAG);
-
-        $container
-            ->registerForAutoconfiguration(CartContextInterface::class)
-            ->addTag(RegisterCartContextsPass::CART_CONTEXT_TAG);
-
-        $container
-            ->registerForAutoconfiguration(CartProcessorInterface::class)
-            ->addTag(RegisterCartProcessorPass::CART_PROCESSOR_TAG);
     }
 }

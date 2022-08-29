@@ -64,7 +64,7 @@ class CustomersReport implements ReportInterface
 
         foreach ($results as &$result) {
             $result['salesFormatted'] = $this->moneyFormatter->format(
-                $result['sales'],
+                (int)$result['sales'],
                 'EUR',
                 $this->localeContext->getLocaleCode()
             );

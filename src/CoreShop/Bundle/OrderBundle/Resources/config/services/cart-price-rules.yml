@@ -124,6 +124,18 @@ services:
         arguments:
             - '@coreshop.cart_price_rule.conditions.validation.processor'
 
+    # Cart Price Rule ACTIONS
+    coreshop.cart_price_rule.action.order_item_action:
+        class: CoreShop\Component\Order\Cart\Rule\Action\CartItemActionProcessor
+        arguments:
+            - '@coreshop.cart_item_price_rule.conditions.validation.processor'
+            - '@coreshop.registry.cart_item_price_rule.actions'
+            - '@coreshop.repository.cart_price_rule_voucher_code'
+            - '@coreshop.factory.price_rule_item'
+            - '@coreshop.factory.adjustment'
+        tags:
+            - { name: coreshop.cart_price_rule.action, type: cartItemAction, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\CartItemActionConfigurationType }
+
     # Cart Price Rule CONDITIONS
     coreshop.cart_price_rule.condition.nested:
         class: CoreShop\Component\Rule\Condition\NestedConditionChecker

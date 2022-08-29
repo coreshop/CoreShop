@@ -24,6 +24,7 @@ use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Variant\Model\ProductVariantAwareInterface;
+use CoreShop\Component\Wishlist\Model\WishlistProductInterface;
 
 interface ProductInterface extends
     BaseProductInterface,
@@ -35,7 +36,8 @@ interface ProductInterface extends
     SEOOpenGraphAwareInterface,
     QuantityRangePriceAwareInterface,
     PimcoreStoresAwareInterface,
-    ProductVariantAwareInterface
+    ProductVariantAwareInterface,
+    WishlistProductInterface
 {
     /**
      * @return \CoreShop\Component\Core\Model\ProductStoreValuesInterface[]

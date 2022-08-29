@@ -98,10 +98,6 @@ services:
         alias: CoreShop\Component\Order\Context\FixedCartContext
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Context\FixedCartContext instead'
 
-    coreshop.context.cart.session_based:
-        alias: CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext instead'
-
     coreshop.context.cart.new:
         alias: CoreShop\Component\Order\Context\CartContext
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Context\CartContext instead'

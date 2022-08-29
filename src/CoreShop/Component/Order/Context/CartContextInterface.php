@@ -15,11 +15,17 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Context;
 
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 
-interface CartContextInterface
+interface CartContextInterface extends StorageListContextInterface
 {
     /**
      * @throws CartNotFoundException
      */
     public function getCart(): OrderInterface;
+
+    /**
+     * @throws CartNotFoundException
+     */
+    public function getStorageList(): OrderInterface;
 }

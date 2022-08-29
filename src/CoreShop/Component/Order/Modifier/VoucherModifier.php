@@ -16,7 +16,7 @@ namespace CoreShop\Component\Order\Modifier;
 
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -35,7 +35,7 @@ class VoucherModifier implements VoucherModifierInterface
         }
 
         foreach ($priceRuleItems->getItems() as $item) {
-            if (!$item instanceof ProposalCartPriceRuleItemInterface) {
+            if (!$item instanceof PriceRuleItemInterface) {
                 continue;
             }
 
@@ -67,7 +67,7 @@ class VoucherModifier implements VoucherModifierInterface
         }
 
         foreach ($priceRuleItems->getItems() as $item) {
-            if (!$item instanceof ProposalCartPriceRuleItemInterface) {
+            if (!$item instanceof PriceRuleItemInterface) {
                 continue;
             }
 

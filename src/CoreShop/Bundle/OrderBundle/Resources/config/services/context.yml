@@ -6,40 +6,10 @@ services:
         tags:
             - { name: coreshop.context.cart, priority: -100 }
 
-    CoreShop\Bundle\OrderBundle\Context\CustomerAndStoreBasedCartContext:
-        arguments:
-            - '@CoreShop\Component\Customer\Context\CustomerContextInterface'
-            - '@CoreShop\Component\Store\Context\StoreContextInterface'
-            - '@coreshop.repository.order'
-            - '@Pimcore\Http\RequestHelper'
-        tags:
-            - { name: coreshop.context.cart, priority: -777 }
-
-    CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext:
-        arguments:
-            - '@request_stack'
-            - '%coreshop.session.cart%'
-            - '@coreshop.repository.order'
-            - '@CoreShop\Component\Store\Context\StoreContextInterface'
-        tags:
-            - { name: coreshop.context.cart, priority: -555 }
-
     CoreShop\Component\Order\Context\CartContext:
+        decorates: 'coreshop.storage_list.context.factory.order'
         arguments:
             - '@coreshop.factory.order'
-        tags:
-            - { name: coreshop.context.cart, priority: -999 }
-
-    CoreShop\Component\Order\Context\CartContextInterface: '@CoreShop\Component\Order\Context\CompositeCartContext'
-    CoreShop\Component\Order\Context\CompositeCartContext: ~
-
-    CoreShop\Bundle\OrderBundle\EventListener\SessionCartSubscriber:
-        arguments:
-            - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
-            - '@CoreShop\Component\Order\Context\CartContextInterface'
-            - '%coreshop.session.cart%'
-        tags:
-            - { name: kernel.event_subscriber }
 
     CoreShop\Component\Order\Cart\CartContextResolverInterface: '@CoreShop\Component\Order\Cart\CartContextResolver'
     CoreShop\Component\Order\Cart\CartContextResolver: ~

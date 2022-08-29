@@ -11,6 +11,12 @@ parameters:
         - '**/ProcessManager/IndexProcess.php'
         - '**/DataHub/*.php'
         - 'vendor/***'
+        - 'Core/EventListener/SessionStoreStorageListSubscriber.php'
+        - 'Core/EventListener/StorageListBlamerListener.php'
+        - 'Core/Context/CustomerAndStoreBasedStorageListContext.php'
+        - 'Core/Context/SessionAndStoreBasedStorageListContext.php'
+        - 'Core/Context/StoreBasedStorageListContext.php'
+        - 'Core/Repository/CustomerAndStoreAwareRepositoryInterface.php'
 
     ignoreErrors:
         # Magic calls

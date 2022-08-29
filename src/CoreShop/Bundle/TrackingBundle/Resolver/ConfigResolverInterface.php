@@ -18,5 +18,8 @@ use Pimcore\Config\Config as ConfigObject;
 
 interface ConfigResolverInterface
 {
+    /**
+     * @psalm-suppress DeprecatedClass
+     */
     public function getGoogleConfig(): ?ConfigObject;
 }

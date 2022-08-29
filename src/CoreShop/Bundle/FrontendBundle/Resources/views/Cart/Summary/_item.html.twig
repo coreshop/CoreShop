@@ -57,7 +57,10 @@
         {% endif %}
     </td>
     <td class="text-right cart-item-total-price" {{ coreshop_test_html_attribute('cart-item-total-price', item.name) }}>
-        {{ currency.convertAndFormat(item.subtotal) }}
+        {% if item.discount != 0 %}
+            <s>({{ currency.convertAndFormat(item.discount) }})</s>
+        {% endif %}
+        {{ currency.convertAndFormat(item.total) }}
     </td>
     <td class="text-center">
         {% if not item.isGiftItem %}

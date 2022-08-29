@@ -15,36 +15,23 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Context;
 
 use CoreShop\Component\Order\Model\OrderInterface;
-use Laminas\Stdlib\PriorityQueue;
+use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
 
-final class CompositeCartContext implements CartContextInterface
+final class CompositeCartContext extends CompositeStorageListContext implements CartContextInterface
 {
-    /**
-     * @var PriorityQueue|CartContextInterface[]
-     * @psalm-var PriorityQueue<CartContextInterface>
-     */
-    private PriorityQueue $cartContexts;
-
-    public function __construct()
-    {
-        $this->cartContexts = new PriorityQueue();
-    }
-
-    public function addContext(CartContextInterface $cartContext, int $priority = 0): void
-    {
-        $this->cartContexts->insert($cartContext, $priority);
-    }
-
     public function getCart(): OrderInterface
     {
-        foreach ($this->cartContexts as $cartContext) {
-            try {
-                return $cartContext->getCart();
-            } catch (CartNotFoundException) {
-                continue;
-            }
+        return $this->getStorageList();
+    }
+
+    public function getStorageList(): OrderInterface
+    {
+        $order = parent::getStorageList();
+
+        if (!$order instanceof OrderInterface) {
+            throw new CartNotFoundException();
         }
 
-        throw new CartNotFoundException();
+        return $order;
     }
 }

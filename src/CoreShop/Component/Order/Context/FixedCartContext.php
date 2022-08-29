@@ -29,6 +29,11 @@ final class FixedCartContext implements CartContextInterface
         throw new CartNotFoundException();
     }
 
+    public function getStorageList(): OrderInterface
+    {
+        return $this->getCart();
+    }
+
     public function setCart(OrderInterface $cart): void
     {
         $this->cart = $cart;

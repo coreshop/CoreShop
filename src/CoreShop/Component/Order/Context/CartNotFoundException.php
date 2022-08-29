@@ -14,10 +14,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Context;
 
-class CartNotFoundException extends \RuntimeException
+use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
+
+class CartNotFoundException extends StorageListNotFoundException
 {
     public function __construct($message = null, \Exception $previousException = null)
     {
-        parent::__construct($message ?: 'CoreShop was not able to figure out the current cart.', 0, $previousException);
+        parent::__construct($message ?: 'CoreShop was not able to figure out the current cart.', $previousException);
     }
 }

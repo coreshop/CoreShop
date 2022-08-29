@@ -15,9 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Storage;
 
 use CoreShop\Component\Resource\Storage\StorageInterface;
-use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class SessionStorage implements StorageInterface
 {

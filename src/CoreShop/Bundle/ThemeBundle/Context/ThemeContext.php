@@ -41,7 +41,7 @@ final class ThemeContext implements ThemeContextInterface
     {
         $request = $this->requestStack->getMainRequest();
 
-        if (!$request) {
+        if (!$request || null !== $this->settableThemeContext->getTheme()) {
             return $this->settableThemeContext->getTheme();
         }
 

@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Service;
 
 use CoreShop\Component\User\Model\UserInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionFactory;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
@@ -26,7 +26,7 @@ final class SecurityService implements SecurityServiceInterface
     private string $sessionTokenVariable;
 
     public function __construct(
-        private RequestStack $requestStack,
+        private SessionFactory $sessionFactory,
         private CookieSetterInterface $cookieSetter,
         private string $firewallContextName
     ) {
@@ -66,8 +66,10 @@ final class SecurityService implements SecurityServiceInterface
     private function setToken(TokenInterface $token): void
     {
         $serializedToken = serialize($token);
-        $this->requestStack->getSession()->set($this->sessionTokenVariable, $serializedToken);
-        $this->requestStack->getSession()->save();
-        $this->cookieSetter->setCookie($this->requestStack->getSession()->getName(), $this->requestStack->getSession()->getId());
+        $session = $this->sessionFactory->createSession();
+        $session->set($this->sessionTokenVariable, $serializedToken);
+        $session->save();
+
+        $this->cookieSetter->setCookie($session->getName(), $session->getId());
     }
 }

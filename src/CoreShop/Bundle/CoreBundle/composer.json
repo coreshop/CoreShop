@@ -50,6 +50,7 @@
     "coreshop/menu-bundle": "^3.0",
     "coreshop/user-bundle": "^3.0",
     "coreshop/variant-bundle": "^3.0",
+    "coreshop/wishlist-bundle": "^3.0",
     "coreshop/core": "^3.0",
     "fakerphp/faker": "^1.16",
     "rinvex/countries": "^7.3",
@@ -77,5 +78,8 @@
     "branch-alias": {
       "dev-master": "3.0-dev"
     }
+  },
+  "config": {
+    "sort-packages": true
   }
 }

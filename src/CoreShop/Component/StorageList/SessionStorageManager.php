@@ -16,9 +16,7 @@ namespace CoreShop\Component\StorageList;
 
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
-use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SessionStorageManager implements StorageListManagerInterface
 {

@@ -16,7 +16,7 @@ namespace CoreShop\Component\StorageList\Model;
 
 use Webmozart\Assert\Assert;
 
-class StorageList implements StorageListInterface
+abstract class StorageList implements StorageListInterface
 {
     protected array $items;
 

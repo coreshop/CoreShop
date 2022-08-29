@@ -19,14 +19,17 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
 /** @psalm-suppress DeprecatedInterface */
 final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
 {
-    public function __construct(private RouterInterface $router, private string $routeName, private StoreContextInterface $storeContext)
+    public function __construct(
+        private RouterInterface $router,
+        private string $routeName,
+        private StoreContextInterface $storeContext
+    )
     {
     }
 

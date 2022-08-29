@@ -28,7 +28,7 @@ use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Notes;
 use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\OrderPaymentStates;
@@ -390,7 +390,7 @@ class OrderController extends PimcoreController
             $rules = [];
 
             foreach ($order->getPriceRuleItems()->getItems() as $ruleItem) {
-                if ($ruleItem instanceof ProposalCartPriceRuleItemInterface) {
+                if ($ruleItem instanceof PriceRuleItemInterface) {
                     $rule = $ruleItem->getCartPriceRule();
 
                     $ruleData = [

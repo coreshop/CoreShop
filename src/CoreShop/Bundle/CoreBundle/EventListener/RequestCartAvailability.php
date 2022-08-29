@@ -60,8 +60,13 @@ final class RequestCartAvailability
             return;
         }
 
+        $session = $event->getRequest()->getSession();
 
-        $event->getRequest()->getSession()->getFlashBag()->add('coreshop_global_error', 'coreshop.ui.global_error.cart_has_changed');
+        if (!$session instanceof Session) {
+            return;
+        }
+
+        $session->getFlashBag()->add('coreshop_global_error', 'coreshop.ui.global_error.cart_has_changed');
         $cart->setNeedsRecalculation(false);
         $this->cartManager->persistCart($cart);
 

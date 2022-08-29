@@ -96,6 +96,8 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
         $customerList = $customerRepository->getList();
         $batchList = new DataObjectBatchListing($customerList, 100);
 
+        $doneUsers = [];
+
         /**
          * @var CustomerInterface $customer
          */
@@ -104,15 +106,19 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
                 continue;
             }
 
+            $loginIdentifier = $this->container->getParameter('coreshop.customer.security.login_identifier') === 'username' && method_exists($customer, 'getUsername') ?
+                $customer->getUsername() :
+                $customer->getEmail();
+
+            if (in_array($loginIdentifier, $doneUsers, true)) {
+                continue;
+            }
+
             /**
              * @var UserInterface $user
              */
             $user = $this->container->get('coreshop.factory.user')->createNew();
-            $user->setLoginIdentifier(
-                $this->container->getParameter('coreshop.customer.security.login_identifier') === 'username' && method_exists($customer, 'getUsername') ?
-                    $customer->getUsername() :
-                    $customer->getEmail()
-            );
+            $user->setLoginIdentifier($loginIdentifier );
             $user->setPassword($customer->getPassword());
             $user->setParent(Service::createFolderByPath(sprintf(
                 '/%s/%s',
@@ -122,6 +128,8 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
             $user->setCustomer($customer);
             $user->setKey($customer->getEmail());
             $user->save();
+
+            $doneUsers[] = $loginIdentifier;
 
             $customer->setUser($user);
             $customer->save();

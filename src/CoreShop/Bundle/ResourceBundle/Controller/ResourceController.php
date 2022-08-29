@@ -135,7 +135,7 @@ class ResourceController extends AdminController
             $this->eventDispatcher->dispatchPreEvent('clone', $this->metadata, $resource, $request);
 
             if (method_exists($resource, 'getName')) {
-                $resource->setValue('name', sprintf('%s - %s', $resource->getName(), time()));
+                $resource->setValue('name', sprintf('%s%s', $resource->getName(), time()));
             }
 
             $this->manager->persist($resource);

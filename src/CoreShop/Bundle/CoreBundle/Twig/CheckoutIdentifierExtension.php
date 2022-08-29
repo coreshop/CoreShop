@@ -26,7 +26,12 @@ use Twig\TwigFunction;
 
 final class CheckoutIdentifierExtension extends AbstractExtension
 {
-    public function __construct(private RequestStack $requestStack, private RouterInterface $router, private CheckoutManagerFactoryInterface $checkoutManagerFactory, private CartContextInterface $cartContext)
+    public function __construct(
+        private RequestStack $requestStack,
+        private RouterInterface $router,
+        private CheckoutManagerFactoryInterface $checkoutManagerFactory,
+        private CartContextInterface $cartContext
+    )
     {
     }
 

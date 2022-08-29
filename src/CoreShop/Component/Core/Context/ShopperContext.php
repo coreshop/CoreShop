@@ -28,6 +28,8 @@ use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Locale\Context\LocaleNotFoundException;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreInterface;
@@ -121,6 +123,11 @@ class ShopperContext implements ShopperContextInterface
     public function getCart(): OrderInterface
     {
         return $this->cartContext->getCart();
+    }
+
+    public function getStorageList(): OrderInterface
+    {
+        return $this->getCart();
     }
 
     public function getContext(): array
