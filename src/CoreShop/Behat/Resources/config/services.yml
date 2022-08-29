@@ -53,6 +53,7 @@ services:
         class: CoreShop\Behat\Service\SecurityService
         arguments:
             - '@session.factory'
+            - '@request_stack'
             - '@CoreShop\Behat\Service\CookieSetterInterface'
             - 'shop'
 

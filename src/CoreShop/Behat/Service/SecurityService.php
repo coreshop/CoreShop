@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Service;
 
 use CoreShop\Component\User\Model\UserInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionFactory;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -27,6 +27,7 @@ final class SecurityService implements SecurityServiceInterface
 
     public function __construct(
         private SessionFactory $sessionFactory,
+        private RequestStack $requestStack,
         private CookieSetterInterface $cookieSetter,
         private string $firewallContextName
     ) {
