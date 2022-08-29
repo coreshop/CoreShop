@@ -23,7 +23,7 @@ final class CartItemPriceRuleActionCollectionType extends RuleActionCollectionTy
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefault('entry_type', CartPriceRuleActionType::class);
+        $resolver->setDefault('entry_type', CartItemPriceRuleActionType::class);
     }
 
     public function getBlockPrefix(): string
