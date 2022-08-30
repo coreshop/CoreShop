@@ -20,6 +20,8 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class SerializedData extends Input
 {
+    private $instance;
+
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->enrichConfig(
@@ -36,6 +38,10 @@ class SerializedData extends Input
 
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
-        return new SerializedDataType();
+        if (!$this->instance instanceof SerializedDataType){
+            $this->instance = new SerializedDataType();
+            return $this->instance;
+        }
+        return $this->instance;
     }
 }
