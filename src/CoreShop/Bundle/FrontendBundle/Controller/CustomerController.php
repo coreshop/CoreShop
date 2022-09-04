@@ -49,6 +49,8 @@ class CustomerController extends FrontendController
 
     public function profileAction(): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE');
+
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
@@ -62,6 +64,8 @@ class CustomerController extends FrontendController
 
     public function ordersAction(): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ORDERS');
+
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
@@ -76,6 +80,8 @@ class CustomerController extends FrontendController
 
     public function orderDetailAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ORDER_DETAIL');
+
         $orderId = $this->getParameterFromRequest($request, 'order');
         $customer = $this->getCustomer();
 
@@ -101,6 +107,8 @@ class CustomerController extends FrontendController
 
     public function addressesAction(): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ADDRESSES');
+
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
@@ -122,6 +130,14 @@ class CustomerController extends FrontendController
 
         $addressId = $this->getParameterFromRequest($request, 'address');
         $address = $this->get('coreshop.repository.address')->find($addressId);
+
+        if ($address instanceof AddressInterface) {
+            $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_EDIT');
+        }
+        else {
+            $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_ADD');
+        }
+
         $addressAssignmentManager = $this->get(AddressAssignmentManagerInterface::class);
 
         $eventType = 'update';
@@ -178,6 +194,8 @@ class CustomerController extends FrontendController
 
     public function addressDeleteAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_DELETE');
+
         $customer = $this->getCustomer();
         $addressAssignmentManager = $this->get(AddressAssignmentManagerInterface::class);
 
@@ -208,6 +226,8 @@ class CustomerController extends FrontendController
 
     public function settingsAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_SETTINGS');
+
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
@@ -241,6 +261,8 @@ class CustomerController extends FrontendController
 
     public function changePasswordAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_CHANGE_PASSWORD');
+
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {

@@ -51,6 +51,7 @@ class StorageListController extends AbstractController
     protected string $templateSummary;
 
     public function __construct(
+        string $identifier,
         FormFactoryInterface $formFactory,
         RepositoryInterface $repository,
         RepositoryInterface $productRepository,
@@ -67,6 +68,7 @@ class StorageListController extends AbstractController
         string $templateAddToList,
         string $templateSummary
     ) {
+        $this->identifier = $identifier;
         $this->formFactory = $formFactory;
         $this->repository = $repository;
         $this->productRepository = $productRepository;
@@ -84,9 +86,11 @@ class StorageListController extends AbstractController
         $this->templateSummary = $templateSummary;
     }
 
-
     public function addItemAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)));
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_ADD_ITEM', strtoupper($this->identifier)));
+
         $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl($this->indexRoute));
         $product = $this->productRepository->find($this->getParameterFromRequest($request, 'product'));
         $storageList = $this->context->getStorageList();
@@ -172,6 +176,9 @@ class StorageListController extends AbstractController
 
     public function removeItemAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)));
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_REMOVE_ITEM', strtoupper($this->identifier)));
+
         $storageListItem = $this->itemRepository->find($this->getParameterFromRequest($request, 'item'));
         $storageList = $this->context->getStorageList();
 
@@ -193,6 +200,9 @@ class StorageListController extends AbstractController
 
     public function summaryAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)));
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_SUMMARY', strtoupper($this->identifier)));
+
         $list = $this->context->getStorageList();
         $form = $this->formFactory->createNamed('coreshop', $this->form, $list);
         $form->handleRequest($request);

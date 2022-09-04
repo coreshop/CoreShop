@@ -112,6 +112,8 @@ class CategoryController extends FrontendController
 
     public function detail(Request $request, CategoryInterface $category): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CATEGORY_SHOW');
+
         $listModeDefault = $this->getConfigurationService()->getForStore('system.category.list.mode');
         $gridPerPageAllowed = $this->getConfigurationService()->getForStore('system.category.grid.per_page');
         $gridPerPageDefault = $this->getConfigurationService()->getForStore('system.category.grid.per_page.default');

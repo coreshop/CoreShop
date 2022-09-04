@@ -41,6 +41,8 @@ class CheckoutController extends FrontendController
 
     public function processAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CHECKOUT');
+
         if (!$this->getCart()->hasItems()) {
             return $this->redirectToRoute('coreshop_cart_summary');
         }
@@ -149,6 +151,8 @@ class CheckoutController extends FrontendController
 
     public function doCheckoutAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_ORDER_CREATE');
+
         $cart = $this->getCart();
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
 
