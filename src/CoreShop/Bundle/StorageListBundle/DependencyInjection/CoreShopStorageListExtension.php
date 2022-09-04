@@ -107,6 +107,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                     $controllerDefinition = new Definition($class);
                 }
 
+                $controllerDefinition->setArgument('$identifier', $name);
                 $controllerDefinition->setArgument('$formFactory', new Reference('form.factory'));
                 $controllerDefinition->setArgument('$repository', new Reference($list['resource']['repository']));
                 $controllerDefinition->setArgument('$productRepository', new Reference($list['resource']['product_repository']));

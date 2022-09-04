@@ -20,9 +20,6 @@ use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 
-/**
- * @method renameIndexStructures(IndexInterface $index, string $oldName, string $newName);
- */
 interface WorkerInterface
 {
     /**
@@ -79,4 +76,6 @@ interface WorkerInterface
      * @return FilterGroupHelperInterface
      */
     public function getFilterGroupHelper();
+
+    public function renameIndexStructures(IndexInterface $index, string $oldName, string $newName): void;
 }

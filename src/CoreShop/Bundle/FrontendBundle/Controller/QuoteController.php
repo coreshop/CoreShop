@@ -25,6 +25,8 @@ class QuoteController extends FrontendController
 {
     public function showAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('CORESHOP_QUOTE_DETAIL');
+
         $quote = $this->get('coreshop.repository.order')->find($this->getParameterFromRequest($request, 'quote'));
 
         try {

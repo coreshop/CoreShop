@@ -56,6 +56,8 @@ class CartController extends FrontendController
 
     public function createQuoteAction(Request $request, StateMachineManagerInterface $machineManager)
     {
+        $this->denyAccessUnlessGranted('CORESHOP_QUOTE_CREATE');
+
         $order = $this->getCart();
         $workflow = $machineManager->get($order, OrderSaleTransitions::IDENTIFIER);
         $workflow->apply($order, OrderSaleTransitions::TRANSITION_QUOTE);
@@ -65,6 +67,9 @@ class CartController extends FrontendController
 
     public function summaryAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CART');
+        $this->denyAccessUnlessGranted('CORESHOP_CART_SUMMARY');
+
         $cart = $this->getCart();
         $form = $this->get('form.factory')->createNamed('coreshop', CartType::class, $cart);
         $form->handleRequest($request);
@@ -133,6 +138,9 @@ class CartController extends FrontendController
 
     public function shipmentCalculationAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CART');
+        $this->denyAccessUnlessGranted('CORESHOP_CART_CALCULATE_SHIPMENT');
+
         $cart = $this->getCart();
         $form = $this->get('form.factory')->createNamed('coreshop', ShippingCalculatorType::class, null, [
             'action' => $this->generateUrl('coreshop_cart_check_shipment'),
@@ -178,6 +186,9 @@ class CartController extends FrontendController
 
     public function addItemAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CART');
+        $this->denyAccessUnlessGranted('CORESHOP_CART_ADD_ITEM');
+
         $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_index'));
 
         $product = $this->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
@@ -264,6 +275,9 @@ class CartController extends FrontendController
 
     public function removeItemAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CART');
+        $this->denyAccessUnlessGranted('CORESHOP_CART_REMOVE_ITEM');
+
         $cartItem = $this->get('coreshop.repository.order_item')->find($this->getParameterFromRequest($request, 'cartItem'));
 
         if (!$cartItem instanceof OrderItemInterface) {
@@ -286,6 +300,9 @@ class CartController extends FrontendController
 
     public function removePriceRuleAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CART');
+        $this->denyAccessUnlessGranted('CORESHOP_CART_REMOVE_PRICE_RULE');
+
         $code = $this->getParameterFromRequest($request, 'code');
         $cart = $this->getCart();
 

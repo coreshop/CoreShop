@@ -32,24 +32,32 @@
                             {{ address|coreshop_format_address }}
                             <br/>
                             <br/>
-                            <a href="{{ path('coreshop_customer_address_edit', {name: address.street, address: address.id}) }}" class="btn btn-success">
-                                {{ 'coreshop.ui.edit'|trans }}
-                            </a>
-                            <a href="{{ path('coreshop_customer_address_delete', {address: address.id}) }}" class="btn btn-danger">
-                                {{ 'coreshop.ui.delete'|trans }}
-                            </a>
+                            {% if is_granted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_EDIT') %}
+                                <a href="{{ path('coreshop_customer_address_edit', {name: address.street, address: address.id}) }}" class="btn btn-success">
+                                    {{ 'coreshop.ui.edit'|trans }}
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_DELETE') %}
+                                <a href="{{ path('coreshop_customer_address_delete', {address: address.id}) }}" class="btn btn-danger">
+                                    {{ 'coreshop.ui.delete'|trans }}
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
-        <div class="row">
-            <div class="col-12">
-                <a href="{{ path('coreshop_customer_address_new') }}" class="btn btn-success">
-                    {{ 'coreshop.ui.add_new_address'|trans }}
-                </a>
+
+        {% if is_granted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_ADD') %}
+            <div class="row">
+                <div class="col-12">
+                    <a href="{{ path('coreshop_customer_address_new') }}" class="btn btn-success">
+                        {{ 'coreshop.ui.add_new_address'|trans }}
+                    </a>
+                </div>
             </div>
-        </div>
+        {% endif %}
     </section>
 </div>
 {% endblock %}

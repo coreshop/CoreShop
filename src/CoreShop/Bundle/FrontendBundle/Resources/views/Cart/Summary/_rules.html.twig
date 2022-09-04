@@ -13,7 +13,7 @@
                 {% endif %}
             </td>
             <td colspan="1" class="text-left cart-sub-total">
-                {% if priceRule.cartPriceRule.isVoucherRule %}
+                {% if priceRule.cartPriceRule.isVoucherRule and is_granted('CORESHOP_CART_REMOVE_PRICE_RULE') %}
                 <a title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-danger tool-tip" href="{{ path('coreshop_cart_remove_price_rule', {'code' : priceRule.voucherCode }) }}">
                     <i class="fa fa-times-circle"></i>
                 </a>

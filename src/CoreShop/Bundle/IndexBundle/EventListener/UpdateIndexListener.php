@@ -46,9 +46,6 @@ final class UpdateIndexListener
          */
         $worker = $this->workerServiceRegistry->get($workerType);
 
-        //BC Safe, remove in CoreShop 3.0 and add renamedIndexStructures to interface of Workers
-        if (method_exists($worker, 'renameIndexStructures')) {
-            $worker->renameIndexStructures($index, $oldName, $newName);
-        }
+        $worker->renameIndexStructures($index, $oldName, $newName);
     }
 }

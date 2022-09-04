@@ -34,7 +34,7 @@
                         {{ product_price.display_product_price(product) }}
                     </div>
 
-                    {% if coreshop_add_to_cart_available(product) %}
+                    {% if coreshop_add_to_cart_available(product) and is_granted('CORESHOP_CART_ADD_ITEM') %}
                         <div class="cart-button btn-group">
                             {% if coreshop_inventory_is_available(product) %}
                                 {{ render(url('coreshop_partial_wishlist_add', {'product': product.id})) }}
