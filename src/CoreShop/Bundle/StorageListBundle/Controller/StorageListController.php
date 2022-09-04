@@ -34,56 +34,25 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class StorageListController extends AbstractController
 {
-    protected FormFactoryInterface $formFactory;
-    protected RepositoryInterface $repository;
-    protected RepositoryInterface $productRepository;
-    protected RepositoryInterface $itemRepository;
-    protected StorageListContextInterface $context;
-    protected StorageListItemFactoryInterface $storageListItemFactory;
-    protected AddToStorageListFactoryInterface $addToStorageListFactory;
-    protected StorageListModifierInterface $modifier;
-    protected StorageListManagerInterface $manager;
-    protected string $addToStorageListForm;
-    protected string $form;
-    protected string $summaryRoute;
-    protected string $indexRoute;
-    protected string $templateAddToList;
-    protected string $templateSummary;
-
     public function __construct(
-        string $identifier,
-        FormFactoryInterface $formFactory,
-        RepositoryInterface $repository,
-        RepositoryInterface $productRepository,
-        RepositoryInterface $itemRepository,
-        StorageListContextInterface $context,
-        StorageListItemFactoryInterface $storageListItemFactory,
-        AddToStorageListFactoryInterface $addToStorageListFactory,
-        StorageListModifierInterface $modifier,
-        StorageListManagerInterface $manager,
-        string $addToStorageListForm,
-        string $form,
-        string $summaryRoute,
-        string $indexRoute,
-        string $templateAddToList,
-        string $templateSummary
+        protected string $identifier,
+        protected FormFactoryInterface $formFactory,
+        protected RepositoryInterface $repository,
+        protected RepositoryInterface $productRepository,
+        protected RepositoryInterface $itemRepository,
+        protected StorageListContextInterface $context,
+        protected StorageListItemFactoryInterface $storageListItemFactory,
+        protected AddToStorageListFactoryInterface $addToStorageListFactory,
+        protected StorageListModifierInterface $modifier,
+        protected StorageListManagerInterface $manager,
+        protected string $addToStorageListForm,
+        protected string $form,
+        protected string $summaryRoute,
+        protected string $indexRoute,
+        protected string $templateAddToList,
+        protected string $templateSummary
     ) {
-        $this->identifier = $identifier;
-        $this->formFactory = $formFactory;
-        $this->repository = $repository;
-        $this->productRepository = $productRepository;
-        $this->itemRepository = $itemRepository;
-        $this->context = $context;
-        $this->storageListItemFactory = $storageListItemFactory;
-        $this->addToStorageListFactory = $addToStorageListFactory;
-        $this->modifier = $modifier;
-        $this->manager = $manager;
-        $this->addToStorageListForm = $addToStorageListForm;
-        $this->form = $form;
-        $this->summaryRoute = $summaryRoute;
-        $this->indexRoute = $indexRoute;
-        $this->templateAddToList = $templateAddToList;
-        $this->templateSummary = $templateSummary;
+
     }
 
     public function addItemAction(Request $request): Response
