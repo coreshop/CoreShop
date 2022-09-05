@@ -92,7 +92,7 @@ translations:
     coreshop.product.is_tracked:
         languages:
             en: 'Is Tracked'
-            de: 'Lgaerstand verwalten'
+            de: 'Lagerstand verwalten'
 
     coreshop.product.quantity_restrictions:
         languages:
