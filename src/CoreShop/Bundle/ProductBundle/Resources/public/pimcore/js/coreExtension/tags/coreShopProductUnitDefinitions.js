@@ -118,6 +118,13 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
 
         this.component.expand();
 
+        // Add empty record to store to prevent always filling in product unit
+        this.unitStore.insert(0, [{
+            'fullLabel': '',
+            'id': null,
+            'name': '',
+        }]);
+
         this.unitBuilder = new coreshop.product.unit.builder(this.unitStore, this.fieldConfig, this.data, this.object.id);
         this.component.add([this.unitBuilder.getForm()]);
 

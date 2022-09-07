@@ -401,6 +401,7 @@ coreshop.product.unit.builder = Class.create({
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
+                allowBlank: true,
                 queryMode: 'local',
                 displayField: 'fullLabel',
                 valueField: 'id',

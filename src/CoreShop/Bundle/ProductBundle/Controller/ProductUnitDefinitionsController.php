@@ -37,7 +37,9 @@ class ProductUnitDefinitionsController extends ResourceController
         /** @var ProductInterface $product */
         $product = $repository->find($this->getParameterFromRequest($request, 'productId'));
 
-        $definitions = $this->getUnitDefinitionsForProduct($product, 'all');
+        if ($product instanceof ProductInterface) {
+            $definitions = $this->getUnitDefinitionsForProduct($product, 'all');
+        }
 
         return $this->viewHandler->handle($definitions);
     }
