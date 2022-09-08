@@ -60,7 +60,7 @@ class StorageListController extends AbstractController
         $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)));
         $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_ADD_ITEM', strtoupper($this->identifier)));
 
-        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl($this->indexRoute));
+        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl($this->summaryRoute));
         $product = $this->productRepository->find($this->getParameterFromRequest($request, 'product'));
         $storageList = $this->context->getStorageList();
 
