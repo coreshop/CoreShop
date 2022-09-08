@@ -49,13 +49,17 @@ final class AttributeListener implements EventSubscriberInterface
             return;
         }
 
-        $parent = $object->getParent();
+        $parent = $object;
 
-        if ($parent instanceof AttributeGroupInterface) {
-            $object->setAttributeGroup($parent);
-        } else {
-            $object->setAttributeGroup(null);
-        }
+        do {
+            $parent = $parent->getParent();
+
+            if ($parent instanceof AttributeGroupInterface) {
+                $object->setAttributeGroup($parent);
+                break;
+            }
+
+        } while($parent != null);
 
         $this->validate($object);
     }

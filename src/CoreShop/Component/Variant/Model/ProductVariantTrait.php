@@ -24,11 +24,26 @@ trait ProductVariantTrait
      */
     abstract public function getAttributes(): ?array;
 
+    public function getVariants(): array
+    {
+        if ($this instanceof Concrete) {
+            $list = $this::getList();
+            $list->setCondition('o_path LIKE \'' . $this->getFullPath() . '/%\'');
+            $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
+
+            $variants = $list->getObjects();
+        }
+        else {
+            $variants = $this->getChildren([AbstractObject::OBJECT_TYPE_VARIANT]);
+        }
+
+        return $variants;
+    }
+
     public function findAttributeForGroup(AttributeGroupInterface $attributeGroup): ?AttributeInterface
     {
         foreach ($this->getAttributes() as $attribute) {
-            if ($attribute->getAttributeGroup() && $attribute->getAttributeGroup()->getId() === $attributeGroup->getId(
-                )) {
+            if ($attribute->getAttributeGroup() && $attribute->getAttributeGroup()->getId() === $attributeGroup->getId()) {
                 return $attribute;
             }
         }
@@ -54,7 +69,7 @@ trait ProductVariantTrait
         /**
          * @var ProductVariantAwareInterface[] $variants
          */
-        $variants = $this->getChildren([AbstractObject::OBJECT_TYPE_VARIANT]);
+        $variants = $this->getVariants();
 
         if (!$variants) {
             return null;

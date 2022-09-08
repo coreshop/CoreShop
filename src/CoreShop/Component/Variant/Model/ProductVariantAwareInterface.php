@@ -46,4 +46,6 @@ interface ProductVariantAwareInterface extends PimcoreModelInterface
     public function setMainVariant(?Concrete $purchasable);
 
     public function getVariantParent();
+
+    public function getVariants(): array;
 }
