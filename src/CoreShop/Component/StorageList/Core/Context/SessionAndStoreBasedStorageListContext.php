@@ -18,6 +18,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\Repository\StorageListRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
@@ -31,7 +32,7 @@ final class SessionAndStoreBasedStorageListContext implements StorageListContext
     public function __construct(
         private RequestStack $requestStack,
         private string $sessionKeyName,
-        private RepositoryInterface $repository,
+        private StorageListRepositoryInterface $repository,
         private StoreContextInterface $storeContext
     ) {
     }
@@ -69,7 +70,7 @@ final class SessionAndStoreBasedStorageListContext implements StorageListContext
         /**
          * @var StorageListInterface|null $storageList
          */
-        $storageList = $this->repository->find($storageListId);
+        $storageList = $this->repository->findByStorageListId($storageListId);
 
         if (!$storageList instanceof StoreAwareInterface) {
             throw new StorageListNotFoundException();

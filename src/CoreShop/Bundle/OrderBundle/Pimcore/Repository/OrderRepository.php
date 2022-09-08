@@ -48,6 +48,11 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         return $carts;
     }
 
+    public function findByStorageListId(int $id): ?StorageListInterface
+    {
+        return $this->findByCartId($id);
+    }
+
     public function findByCartId(int $id): ?OrderInterface
     {
         $list = $this->getList();
