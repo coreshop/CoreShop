@@ -23,9 +23,10 @@ use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\Repository\PimcoreStorageListRepository;
 use CoreShop\Component\Store\Model\StoreInterface;
 
-class OrderRepository extends PimcoreRepository implements OrderRepositoryInterface
+class OrderRepository extends PimcoreStorageListRepository implements OrderRepositoryInterface
 {
     public function findLatestByStoreAndCustomer(
         StoreInterface $store,
@@ -46,6 +47,11 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         $carts = $list->getObjects();
 
         return $carts;
+    }
+
+    public function findByStorageListId(int $id): ?StorageListInterface
+    {
+        return $this->findByCartId($id);
     }
 
     public function findByCartId(int $id): ?OrderInterface
