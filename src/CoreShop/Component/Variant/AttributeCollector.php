@@ -33,7 +33,7 @@ class AttributeCollector implements AttributeCollectorInterface
         if (AbstractObject::OBJECT_TYPE_VARIANT === $product->getType()) {
             $variants = [$product];
         } else {
-            $variants = $product->getChildren([AbstractObject::OBJECT_TYPE_VARIANT]);
+            $variants = $product->getVariants();
         }
 
         return $this->getAttributes($variants, $showInList);
@@ -99,9 +99,8 @@ class AttributeCollector implements AttributeCollectorInterface
         if (AbstractObject::OBJECT_TYPE_VARIANT === $product->getType()) {
             $product = $product->getVariantParent();
         }
-        $variants = $product->getChildren([AbstractObject::OBJECT_TYPE_VARIANT]);
 
-        return $this->getAttributes($variants, $showInList);
+        return $this->getAttributes($product->getVariants(), $showInList);
     }
 
     public function getIndex(ProductVariantAwareInterface $product)
@@ -111,7 +110,7 @@ class AttributeCollector implements AttributeCollectorInterface
             $product = $product->getVariantParent();
         }
 
-        $variants = $product->getChildren([AbstractObject::OBJECT_TYPE_VARIANT]);
+        $variants = $product->getVariants();
 
         foreach ($variants as $variant) {
             if (!$variant instanceof ProductVariantAwareInterface) {

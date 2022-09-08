@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\VariantBundle\Validator\Constraints;
 
 use CoreShop\Component\Variant\Model\AttributeGroupInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
-use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -48,7 +48,14 @@ class ValidAttributesTypeValidator extends ConstraintValidator
             return;
         }
 
-        foreach ($parent->getChildren() as $child) {
+        $concreteListing = new DataObject\Listing();
+        $concreteListing->setCondition('o_path LIKE \''.$parent->getFullPath().'/%\'');
+
+        foreach ($concreteListing as $child) {
+            if (!$child instanceof AttributeInterface) {
+                continue;
+            }
+            
             if (!$value instanceof $child) {
                 $this->context->buildViolation($constraint->message)
                     ->addViolation();
