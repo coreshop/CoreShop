@@ -23,10 +23,9 @@ use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
-use CoreShop\Component\StorageList\Repository\PimcoreStorageListRepository;
 use CoreShop\Component\Store\Model\StoreInterface;
 
-class OrderRepository extends PimcoreStorageListRepository implements OrderRepositoryInterface
+class OrderRepository extends PimcoreRepository implements OrderRepositoryInterface
 {
     public function findLatestByStoreAndCustomer(
         StoreInterface $store,

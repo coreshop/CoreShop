@@ -12,10 +12,11 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\StorageList\Repository;
+namespace CoreShop\Bundle\StorageListBundle\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\Repository\PimcoreStorageListRepositoryInterface;
 
 class PimcoreStorageListRepository extends PimcoreRepository implements PimcoreStorageListRepositoryInterface
 {

@@ -14,12 +14,18 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\WishlistBundle\Pimcore\Repository;
 
-use CoreShop\Component\StorageList\Repository\PimcoreStorageListRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
 use CoreShop\Component\Wishlist\Repository\WishlistRepositoryInterface;
 
-class WishlistRepository extends PimcoreStorageListRepository implements WishlistRepositoryInterface
+class WishlistRepository extends PimcoreRepository implements WishlistRepositoryInterface
 {
+    public function findByStorageListId(int $id): ?StorageListInterface
+    {
+        return $this->find($id);
+    }
+
     public function findByToken(string $token): ?WishlistInterface
     {
         $list = $this->getList();
