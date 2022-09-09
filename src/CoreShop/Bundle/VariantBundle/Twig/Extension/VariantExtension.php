@@ -76,7 +76,7 @@ final class VariantExtension extends AbstractExtension
         return $this->serializer->normalize($attributeGroups, 'json', [
             'groups' => $groups,
             AbstractNormalizer::CALLBACKS => [
-                'valueColor' => static function (string $innerObject) {
+                'valueColor' => static function (?string $innerObject) {
                     return $innerObject;
                 },
             ],
