@@ -1,5 +1,20 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -94,8 +109,8 @@ trait ProposalPriceRuleTrait
                     continue;
                 }
 
-                if ($item->getCartPriceRule()->getId() === $priceRule->getCartPriceRule()->getId()
-                    && $item->getVoucherCode() === $priceRule->getVoucherCode()) {
+                if ($item->getCartPriceRule()->getId() === $priceRule->getCartPriceRule()->getId() &&
+                    $item->getVoucherCode() === $priceRule->getVoucherCode()) {
                     $items->remove($i);
 
                     break;
@@ -124,8 +139,8 @@ trait ProposalPriceRuleTrait
                     continue;
                 }
 
-                if ($item->getCartPriceRule()->getId() === $priceRule->getCartPriceRule()->getId()
-                    && $item->getVoucherCode() === $priceRule->getVoucherCode()) {
+                if ($item->getCartPriceRule()->getId() === $priceRule->getCartPriceRule()->getId() &&
+                    $item->getVoucherCode() === $priceRule->getVoucherCode()) {
                     return true;
                 }
             }
@@ -136,14 +151,14 @@ trait ProposalPriceRuleTrait
 
     public function hasCartPriceRule(
         CartPriceRuleInterface $cartPriceRule,
-        CartPriceRuleVoucherCodeInterface $voucherCode = null
+        CartPriceRuleVoucherCodeInterface $voucherCode = null,
     ): bool {
         return null !== $this->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
     }
 
     public function getPriceRuleByCartPriceRule(
         CartPriceRuleInterface $cartPriceRule,
-        CartPriceRuleVoucherCodeInterface $voucherCode = null
+        CartPriceRuleVoucherCodeInterface $voucherCode = null,
     ): ?PriceRuleItemInterface {
         $items = $this->getPriceRuleItems();
 

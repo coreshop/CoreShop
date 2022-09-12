@@ -32,7 +32,7 @@ class Kernel extends PimcoreKernel
     {
         return array_merge(
             ['test_precision'],
-            parent::getEnvironmentsForDevBundles()
+            parent::getEnvironmentsForDevBundles(),
         );
     }
 
