@@ -1,12 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class FilterConditionSearchType extends AbstractType
 {
@@ -28,7 +43,8 @@ class FilterConditionSearchType extends AbstractType
             ])
             ->add('searchTerm', TextType::class)
             ->add('concatenator', TextType::class)
-            ->add('pattern', TextType::class);
+            ->add('pattern', TextType::class)
+        ;
     }
 
     public function getBlockPrefix(): string
@@ -36,4 +52,3 @@ class FilterConditionSearchType extends AbstractType
         return 'coreshop_filter_condition_type_search';
     }
 }
-

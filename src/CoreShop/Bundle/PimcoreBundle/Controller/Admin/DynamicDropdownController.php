@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
+
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
@@ -27,12 +31,12 @@ final class DynamicDropdownController extends AdminController
 
     public function optionsAction(Request $request): JsonResponse
     {
-        $folderName = (string)$request->query->get('folderName');
+        $folderName = (string) $request->query->get('folderName');
         $parts = array_map(static function (string $part) {
             return Service::getValidKey($part, 'object');
         }, preg_split('/\//', $folderName, 0, \PREG_SPLIT_NO_EMPTY));
         $parentFolderPath = sprintf('/%s', implode('/', $parts));
-        $sort = (string)$request->query->get('sortBy', '');
+        $sort = (string) $request->query->get('sortBy', '');
         $options = [];
 
         if ($parentFolderPath) {
@@ -54,7 +58,7 @@ final class DynamicDropdownController extends AdminController
                     'success' => false,
                     'message' => $message,
                     'options' => $options,
-                ]
+                ],
             );
         }
 
@@ -72,14 +76,14 @@ final class DynamicDropdownController extends AdminController
                 }
 
                 return $a[$field] < $b[$field] ? 0 : 1;
-            }
+            },
         );
 
         return $this->json(
             [
                 'success' => true,
                 'options' => $options,
-            ]
+            ],
         );
     }
 
@@ -87,7 +91,7 @@ final class DynamicDropdownController extends AdminController
     {
         $availableMethods = [];
 
-        $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', (string)$request->query->get('className'));
+        $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', (string) $request->query->get('className'));
 
         if (!empty($className)) {
             /**
@@ -119,8 +123,8 @@ final class DynamicDropdownController extends AdminController
     private function walkPath(Request $request, DataObject\AbstractObject $folder, array $options = [], string $path = ''): array
     {
         $currentLang = $request->query->get('current_language');
-        $source = (string)$request->query->get('methodName');
-        $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', (string)$request->query->get('className'));
+        $source = (string) $request->query->get('methodName');
+        $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', (string) $request->query->get('className'));
 
         if (empty($className)) {
             throw new \InvalidArgumentException();

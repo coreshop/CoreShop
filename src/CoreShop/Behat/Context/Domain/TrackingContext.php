@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
+
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -36,7 +40,7 @@ final class TrackingContext implements Context
 {
     public function __construct(
         private TrackingExtractorInterface $trackingExtractor,
-        private ServiceRegistry $trackerRegistry
+        private ServiceRegistry $trackerRegistry,
     ) {
         /**
          * @var AnalyticsEnhancedEcommerce $googleAnalyticsEnhancedTracker
@@ -65,7 +69,7 @@ final class TrackingContext implements Context
 
         $tracker->trackProductImpression($this->trackingExtractor->updateMetadata($product));
 
-        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
+        $result = str_replace('##id##', (string) $product->getId(), $code->getRaw());
 
         Assert::eq(preg_replace("/\r|\n/", '', $this->getRenderedPartForTracker($tracker)), preg_replace("/\r|\n/", '', $result));
     }
@@ -79,7 +83,7 @@ final class TrackingContext implements Context
 
         $tracker->trackProduct($this->trackingExtractor->updateMetadata($product));
 
-        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
+        $result = str_replace('##id##', (string) $product->getId(), $code->getRaw());
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
@@ -93,10 +97,10 @@ final class TrackingContext implements Context
 
         $tracker->trackCartAdd($this->trackingExtractor->updateMetadata($cart), $this->trackingExtractor->updateMetadata($product), 1);
 
-        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
+        $result = str_replace('##id##', (string) $product->getId(), $code->getRaw());
 
         if (count($cart->getItems()) > 0) {
-            $result = str_replace('##item_id##', (string)$cart->getItems()[0]->getId(), $result);
+            $result = str_replace('##item_id##', (string) $cart->getItems()[0]->getId(), $result);
         }
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
@@ -111,7 +115,7 @@ final class TrackingContext implements Context
 
         $tracker->trackCartRemove($this->trackingExtractor->updateMetadata($cart), $this->trackingExtractor->updateMetadata($product), 1);
 
-        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
+        $result = str_replace('##id##', (string) $product->getId(), $code->getRaw());
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
@@ -125,8 +129,8 @@ final class TrackingContext implements Context
 
         $tracker->trackCheckoutStep($this->trackingExtractor->updateMetadata($cart));
 
-        $result = str_replace('##id##', (string)$cart->getId(), $code->getRaw());
-        $result = str_replace('##item_id##', (string)$cart->getItems()[0]->getId(), $result);
+        $result = str_replace('##id##', (string) $cart->getId(), $code->getRaw());
+        $result = str_replace('##item_id##', (string) $cart->getItems()[0]->getId(), $result);
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
@@ -140,8 +144,8 @@ final class TrackingContext implements Context
 
         $tracker->trackCheckoutComplete($this->trackingExtractor->updateMetadata($order));
 
-        $result = str_replace('##id##', (string)$order->getId(), $code->getRaw());
-        $result = str_replace('##item_id##', (string)$order->getItems()[0]->getId(), $result);
+        $result = str_replace('##id##', (string) $order->getId(), $code->getRaw());
+        $result = str_replace('##item_id##', (string) $order->getItems()[0]->getId(), $result);
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $code);
     }
@@ -178,12 +182,12 @@ final class TrackingContext implements Context
             if ($tracker instanceof UniversalEcommerce) {
                 $code = implode(
                     \PHP_EOL,
-                    $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_AFTER_TRACK]['append']
+                    $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_AFTER_TRACK]['append'],
                 );
             } else {
                 $code = implode(
                     \PHP_EOL,
-                    $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_BEFORE_TRACK]['append']
+                    $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_BEFORE_TRACK]['append'],
                 );
             }
 

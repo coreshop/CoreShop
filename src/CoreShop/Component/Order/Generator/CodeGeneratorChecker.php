@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
+
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Generator;
 
@@ -20,8 +24,11 @@ use Webmozart\Assert\Assert;
 
 class CodeGeneratorChecker implements CodeGeneratorCheckerInterface
 {
-    public function __construct(private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository, private CodeGeneratorLetterResolver $letterResolver, private float $ratio = 0.5)
-    {
+    public function __construct(
+        private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+        private CodeGeneratorLetterResolver $letterResolver,
+        private float $ratio = 0.5,
+    ) {
     }
 
     public function isGenerationPossible(CartPriceRuleVoucherGeneratorInterface $generator): bool
@@ -44,13 +51,13 @@ class CodeGeneratorChecker implements CodeGeneratorCheckerInterface
 
         Assert::allNotNull(
             [$amountToBeCreated, $length],
-            'Code length or amount cannot be null.'
+            'Code length or amount cannot be null.',
         );
 
         $generatedAmount = $this->voucherCodeRepository->countCodes(
             $length,
             $generator->getPrefix(),
-            $generator->getSuffix()
+            $generator->getSuffix(),
         );
 
         $letters = $this->letterResolver->findLetters($generator);
@@ -60,6 +67,6 @@ class CodeGeneratorChecker implements CodeGeneratorCheckerInterface
             return \PHP_INT_MAX - $generatedAmount;
         }
 
-        return (int)$codeCombination - $generatedAmount;
+        return (int) $codeCombination - $generatedAmount;
     }
 }

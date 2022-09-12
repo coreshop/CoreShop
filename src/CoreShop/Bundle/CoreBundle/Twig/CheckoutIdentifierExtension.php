@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
+
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
@@ -30,9 +34,8 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         private RequestStack $requestStack,
         private RouterInterface $router,
         private CheckoutManagerFactoryInterface $checkoutManagerFactory,
-        private CartContextInterface $cartContext
-    )
-    {
+        private CartContextInterface $cartContext,
+    ) {
     }
 
     public function getFunctions(): array
@@ -54,6 +57,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
 
         /**
          * @var string|null $stepIdentifier
+         *
          * @psalm-var string|null $stepIdentifier
          */
         $stepIdentifier = $request->attributes->get('stepIdentifier');
@@ -106,8 +110,8 @@ final class CheckoutIdentifierExtension extends AbstractExtension
                 sprintf(
                     'invalid identifier guess "%s", available guesses are: %s',
                     $type,
-                    implode(', ', $validGuesser)
-                )
+                    implode(', ', $validGuesser),
+                ),
             );
         }
 
@@ -121,6 +125,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
 
         /**
          * @var string|null $stepIdentifier
+         *
          * @psalm-var string|null $stepIdentifier
          */
         $stepIdentifier = $request->attributes->get('stepIdentifier');
@@ -131,11 +136,12 @@ final class CheckoutIdentifierExtension extends AbstractExtension
     protected function getPreviousStepIdentifier(
         OrderInterface $cart,
         ?string $stepIdentifier,
-        CheckoutManagerInterface $checkoutManager
+        CheckoutManagerInterface $checkoutManager,
     ): ?string {
         $request = $this->requestStack->getMainRequest();
         /**
          * @var string|null $previousIdentifier
+         *
          * @psalm-var string|null $previousIdentifier
          */
         $previousIdentifier = $request->attributes->get('stepIdentifier');
@@ -154,7 +160,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
     protected function getCurrentStepIdentifier(
         OrderInterface $cart,
         ?string $stepIdentifier,
-        CheckoutManagerInterface $checkoutManager
+        CheckoutManagerInterface $checkoutManager,
     ): ?string {
         return $stepIdentifier;
     }
@@ -162,7 +168,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
     protected function getFirstStepIdentifier(
         OrderInterface $cart,
         ?string $stepIdentifier,
-        CheckoutManagerInterface $checkoutManager
+        CheckoutManagerInterface $checkoutManager,
     ): string {
         $steps = $checkoutManager->getSteps();
 
@@ -172,7 +178,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
     protected function getLastStepIdentifier(
         OrderInterface $cart,
         ?string $stepIdentifier,
-        CheckoutManagerInterface $checkoutManager
+        CheckoutManagerInterface $checkoutManager,
     ): string {
         $steps = $checkoutManager->getSteps();
 
@@ -182,7 +188,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
     protected function getNextStepIdentifier(
         OrderInterface $cart,
         ?string $stepIdentifier,
-        CheckoutManagerInterface $checkoutManager
+        CheckoutManagerInterface $checkoutManager,
     ): ?string {
         $identifier = null;
 

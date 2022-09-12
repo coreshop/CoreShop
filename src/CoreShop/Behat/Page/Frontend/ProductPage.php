@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
+
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
@@ -78,8 +82,8 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
         return $this->processQuantityPriceRuleElement(
             sprintf(
                 '[data-test-product-quantity-price-rule-unit-%s]',
-                $unit->getId()
-            )
+                $unit->getId(),
+            ),
         );
     }
 
@@ -119,14 +123,14 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
 
     public function isAttributeDisabled(AttributeInterface $attribute): bool
     {
-        return $this->getElement('attribute', ['%id%' => $attribute->getId()])->getAttribute('disabled') === "true";
+        return $this->getElement('attribute', ['%id%' => $attribute->getId()])->getAttribute('disabled') === 'true';
     }
 
     public function isAttributeEnabled(AttributeInterface $attribute): bool
     {
         $attr = $this->getElement('attribute', ['%id%' => $attribute->getId()])->getAttribute('disabled');
 
-        return "false" === $attr || null === $attr;
+        return 'false' === $attr || null === $attr;
     }
 
     protected function processQuantityPriceRuleElement(string $selector): array
@@ -146,7 +150,7 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
                     'priceExcl' => $priceExcElement->getText(),
                 ];
             },
-            $element->findAll('css', $selector)
+            $element->findAll('css', $selector),
         );
     }
 

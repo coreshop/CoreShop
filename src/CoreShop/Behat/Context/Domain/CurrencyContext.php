@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
+
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -24,8 +28,11 @@ use Webmozart\Assert\Assert;
 
 final class CurrencyContext implements Context
 {
-    public function __construct(private CurrencyRepositoryInterface $currencyRepository, private CurrencyContextInterface $currencyContext, private MoneyFormatterInterface $moneyFormatter)
-    {
+    public function __construct(
+        private CurrencyRepositoryInterface $currencyRepository,
+        private CurrencyContextInterface $currencyContext,
+        private MoneyFormatterInterface $moneyFormatter,
+    ) {
     }
 
     /**
@@ -39,8 +46,8 @@ final class CurrencyContext implements Context
             sprintf(
                 'Given currency (%s) is different from actual currency(%s)',
                 $currency->getIsoCode(),
-                $this->currencyContext->getCurrency()->getIsoCode()
-            )
+                $this->currencyContext->getCurrency()->getIsoCode(),
+            ),
         );
     }
 
@@ -53,12 +60,12 @@ final class CurrencyContext implements Context
 
         Assert::same(
             count($validCurrencies),
-            (int)$countOfCurrencies,
+            (int) $countOfCurrencies,
             sprintf(
                 'Found "%s" valid currencies instead of of "%s"',
                 count($validCurrencies),
-                (int)$countOfCurrencies
-            )
+                (int) $countOfCurrencies,
+            ),
         );
     }
 
@@ -67,7 +74,7 @@ final class CurrencyContext implements Context
      */
     public function currencyShouldBeFormatted($amount, CurrencyInterface $currency, $locale, $shouldBeFormat): void
     {
-        $format = $this->moneyFormatter->format((int)$amount, $currency->getIsoCode(), $locale);
+        $format = $this->moneyFormatter->format((int) $amount, $currency->getIsoCode(), $locale);
 
         Assert::eq(
             $format,
@@ -75,8 +82,8 @@ final class CurrencyContext implements Context
             sprintf(
                 'Given format "%s" is different from actual format "%s"',
                 $shouldBeFormat,
-                $format
-            )
+                $format,
+            ),
         );
     }
 }

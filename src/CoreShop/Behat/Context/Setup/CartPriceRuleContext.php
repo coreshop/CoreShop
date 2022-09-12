@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
+
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -54,14 +58,12 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use Doctrine\Persistence\ObjectManager;
-use JMS\Serializer\Serializer;
 use Symfony\Component\Form\FormFactoryInterface;
 use Webmozart\Assert\Assert;
 
 final class CartPriceRuleContext implements Context
 {
     use ConditionFormTrait;
-
     use ActionFormTrait;
 
     public function __construct(
@@ -379,7 +381,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => (int)$discount,
+            'percent' => (int) $discount,
         ]));
     }
 
@@ -394,7 +396,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
-            'amount' => (int)$amount,
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
             'applyOn' => $appliedOn,
         ]));
@@ -433,7 +435,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(SurchargePercentConfigurationType::class, 'surchargePercent');
 
         $this->addAction($rule, $this->createActionWithForm('surchargePercent', [
-            'percent' => (int)$surcharge,
+            'percent' => (int) $surcharge,
         ]));
     }
 
@@ -446,7 +448,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(SurchargeAmountConfigurationType::class, 'surchargeAmount');
 
         $this->addAction($rule, $this->createActionWithForm('surchargeAmount', [
-            'amount' => (int)$amount,
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -557,7 +559,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->actionAddAction($action, $this->createActionWithForm('discountPercent', [
-            'percent' => (int)$discount,
+            'percent' => (int) $discount,
         ]));
     }
 
@@ -570,7 +572,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->actionAddAction($action, $this->createActionWithForm('discountAmount', [
-            'amount' => (int)$amount,
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
             'applyOn' => $appliedOn,
         ]));
@@ -593,7 +595,6 @@ final class CartPriceRuleContext implements Context
 
         return $condition;
     }
-
 
     private function actionAddAction(ActionInterface $action, ActionInterface $newAction): ActionInterface
     {
