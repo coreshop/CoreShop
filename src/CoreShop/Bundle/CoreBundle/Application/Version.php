@@ -30,12 +30,12 @@ final class Version
 
     public static function getVersion(): string
     {
-        return sprintf(
-            '%s.%s.%s-%s',
-            self::MAJOR_VERSION,
-            self::MINOR_VERSION,
-            self::RELEASE_VERSION,
-            self::EXTRA_VERSION,
-        );
+        $version = sprintf('%s.%s.%s', self::MAJOR_VERSION, self::MINOR_VERSION, self::RELEASE_VERSION);
+
+        if (self::EXTRA_VERSION !== '') {
+            $version = sprintf('%s-%s', $version, self::EXTRA_VERSION);
+        }
+
+        return $version;
     }
 }
