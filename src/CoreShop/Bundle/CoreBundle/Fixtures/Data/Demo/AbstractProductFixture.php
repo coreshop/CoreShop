@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
@@ -579,7 +582,7 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         $folder = \Pimcore\Model\Asset\Service::createFolderByPath(sprintf(
             '/demo/%s/%s',
             $parentPath,
-            Service::getValidKey($usedCategory->getName(), 'asset')
+            Service::getValidKey($usedCategory->getName(), 'asset'),
         ));
 
         $images = [];
@@ -588,8 +591,8 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
             $imagePath = $kernel->locateResource(
                 sprintf(
                     '@CoreShopCoreBundle/Resources/fixtures/image%s.jpeg',
-                    random_int(1, 3)
-                )
+                    random_int(1, 3),
+                ),
             );
 
             $fileName = sprintf('image_%s.jpg', uniqid());
@@ -629,7 +632,7 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
 //        $product->setWholesalePrice((int)($faker->randomFloat(2, 100, 200) * $decimalFactor));
 
         foreach ($stores as $store) {
-            $product->setStoreValuesOfType('price', (int)($faker->randomFloat(2, 200, 400) * $decimalFactor), $store);
+            $product->setStoreValuesOfType('price', (int) ($faker->randomFloat(2, 200, 400) * $decimalFactor), $store);
         }
 
         $product->setTaxRule($this->getReference('taxRule'));
@@ -642,7 +645,7 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         $product->setParent($this->container->get(ObjectServiceInterface::class)->createFolderByPath(sprintf(
             '/demo/%s/%s',
             $parentPath,
-            Service::getValidKey($usedCategory->getName(), 'object')
+            Service::getValidKey($usedCategory->getName(), 'object'),
         )));
         $product->setPublished(true);
         $product->setKey($product->getName());

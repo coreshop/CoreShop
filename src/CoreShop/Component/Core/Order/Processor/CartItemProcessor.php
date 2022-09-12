@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Order\Processor;
 
@@ -29,8 +32,12 @@ use Webmozart\Assert\Assert;
 
 final class CartItemProcessor implements CartItemProcessorInterface
 {
-    public function __construct(private ProductTaxCalculatorFactoryInterface $taxCalculator, private AddressProviderInterface $defaultAddressProvider, private RepositoryInterface $taxRateRepository, private FactoryInterface $taxItemFactory)
-    {
+    public function __construct(
+        private ProductTaxCalculatorFactoryInterface $taxCalculator,
+        private AddressProviderInterface $defaultAddressProvider,
+        private RepositoryInterface $taxRateRepository,
+        private FactoryInterface $taxItemFactory,
+    ) {
     }
 
     public function processCartItem(
@@ -39,7 +46,7 @@ final class CartItemProcessor implements CartItemProcessorInterface
         int $itemRetailPrice,
         int $itemDiscountPrice,
         int $itemDiscount,
-        array $context
+        array $context,
     ): void {
         /**
          * @var \CoreShop\Component\Core\Model\OrderItemInterface $cartItem
@@ -53,15 +60,15 @@ final class CartItemProcessor implements CartItemProcessorInterface
         $taxCalculator = $this->taxCalculator->getTaxCalculator(
             $product,
             $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart),
-            $context
+            $context,
         );
 
         $quantity = $cartItem->getQuantity();
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             if ($store->getUseGrossPrice()) {
-                $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross((int)round($itemPrice * $quantity));
-                $totalTaxAmountArray = $taxCalculator->getTaxesAmountFromGrossAsArray((int)round($itemPrice * $quantity));
+                $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross((int) round($itemPrice * $quantity));
+                $totalTaxAmountArray = $taxCalculator->getTaxesAmountFromGrossAsArray((int) round($itemPrice * $quantity));
                 $itemPriceTax = $taxCalculator->getTaxesAmountFromGross($itemPrice);
                 $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemRetailPrice);
                 $itemDiscountTax = $taxCalculator->getTaxesAmountFromGross($itemDiscount);
@@ -70,7 +77,7 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
                 $cartItem->setTaxes(new Fieldcollection($taxes));
 
-                $cartItem->setSubtotal((int)round($itemPrice * $quantity), true);
+                $cartItem->setSubtotal((int) round($itemPrice * $quantity), true);
                 $cartItem->setSubtotal($cartItem->getSubtotal(true) - $totalTaxAmount, false);
 
                 $cartItem->setTotal($cartItem->getSubtotal(true), true);
@@ -88,8 +95,8 @@ final class CartItemProcessor implements CartItemProcessorInterface
                 $cartItem->setItemDiscount($itemDiscount, true);
                 $cartItem->setItemDiscount($itemDiscount - $itemDiscountTax, false);
             } else {
-                $totalTaxAmount = $taxCalculator->getTaxesAmount((int)round($itemPrice * $quantity));
-                $totalTaxAmountArray = $taxCalculator->getTaxesAmountAsArray((int)round($itemPrice * $quantity));
+                $totalTaxAmount = $taxCalculator->getTaxesAmount((int) round($itemPrice * $quantity));
+                $totalTaxAmountArray = $taxCalculator->getTaxesAmountAsArray((int) round($itemPrice * $quantity));
                 $itemPriceTax = $taxCalculator->getTaxesAmount($itemPrice);
                 $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmount($itemRetailPrice);
                 $itemDiscountTax = $taxCalculator->getTaxesAmount($itemDiscount);
@@ -98,8 +105,8 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
                 $cartItem->setTaxes(new Fieldcollection($taxes));
 
-                $cartItem->setSubtotal((int)round($itemPrice * $quantity), false);
-                $cartItem->setSubtotal((int)round($itemPrice * $quantity) + $totalTaxAmount, true);
+                $cartItem->setSubtotal((int) round($itemPrice * $quantity), false);
+                $cartItem->setSubtotal((int) round($itemPrice * $quantity) + $totalTaxAmount, true);
 
                 $cartItem->setTotal($cartItem->getSubtotal(true), true);
                 $cartItem->setTotal($cartItem->getSubtotal(false), false);
@@ -117,8 +124,8 @@ final class CartItemProcessor implements CartItemProcessorInterface
                 $cartItem->setItemDiscount($itemDiscount + $itemDiscountTax, true);
             }
         } else {
-            $cartItem->setSubtotal((int)round($itemPrice * $quantity), false);
-            $cartItem->setSubtotal((int)round($itemPrice * $quantity), true);
+            $cartItem->setSubtotal((int) round($itemPrice * $quantity), false);
+            $cartItem->setSubtotal((int) round($itemPrice * $quantity), true);
 
             $cartItem->setTotal($cartItem->getSubtotal(true), true);
             $cartItem->setTotal($cartItem->getSubtotal(false), false);

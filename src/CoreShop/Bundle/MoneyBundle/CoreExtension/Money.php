@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
@@ -126,7 +129,7 @@ class Money extends DataObject\ClassDefinition\Data implements
      */
     public function setDefaultValue($defaultValue)
     {
-        if (strlen((string)$defaultValue) > 0) {
+        if (strlen((string) $defaultValue) > 0) {
             $this->defaultValue = $defaultValue;
         }
 
@@ -165,17 +168,11 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $this->minValue;
     }
 
-    /**
-     * @return bool
-     */
     public function getNullable(): bool
     {
         return $this->nullable;
     }
 
-    /**
-     * @param bool $nullable
-     */
     public function setNullable(bool $nullable): void
     {
         $this->nullable = $nullable;
@@ -218,7 +215,7 @@ class Money extends DataObject\ClassDefinition\Data implements
     public function getDataForResource($data, $object = null, $params = [])
     {
         if (is_numeric($data) && !is_int($data)) {
-            $data = (int)$data;
+            $data = (int) $data;
         }
 
         if (is_int($data)) {
@@ -255,7 +252,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
         $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function get' . ucfirst($key) . " (): ".($this->nullable ? '?' : '')."int {\n";
+        $code .= 'public function get' . ucfirst($key) . ' (): ' . ($this->nullable ? '?' : '') . "int {\n";
 
         $code .= $this->getPreGetValueHookCode($key);
 
@@ -313,7 +310,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
         $code .= '* @return ' . $returnType . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' ('.($this->nullable ? '?' : '').'int ' . '$' . $key . ") {\n";
+        $code .= 'public function set' . ucfirst($key) . ' (' . ($this->nullable ? '?' : '') . 'int ' . '$' . $key . ") {\n";
         $code .= "\t" . '$fd = $this->getClass()->getFieldDefinition("' . $key . '");' . "\n";
 
         if ($this instanceof DataObject\ClassDefinition\Data\EncryptedField) {
@@ -354,7 +351,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
         $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function get' . ucfirst($key) . " (): ".($this->nullable ? '?' : '')." {\n";
+        $code .= 'public function get' . ucfirst($key) . ' (): ' . ($this->nullable ? '?' : '') . " {\n";
 
         if (method_exists($this, 'preGetData')) {
             $code .= "\t" . '$data = $this->getDefinition()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n";
@@ -392,7 +389,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
         $code .= '* @return \\Pimcore\\Model\\DataObject\\Objectbrick\\Data\\' . ucfirst($brickClass->getKey()) . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' ('.($this->nullable ? '?' : '').'int ' . '$' . $key . ") {\n";
+        $code .= 'public function set' . ucfirst($key) . ' (' . ($this->nullable ? '?' : '') . 'int ' . '$' . $key . ") {\n";
         $code .= "\t" . '$fd = $this->getDefinition()->getFieldDefinition("' . $key . '");' . "\n";
 
         if ($this instanceof DataObject\ClassDefinition\Data\EncryptedField) {
@@ -434,7 +431,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
         $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function get' . ucfirst($key) . " (): ".($this->nullable ? '?' : '')."int {\n";
+        $code .= 'public function get' . ucfirst($key) . ' (): ' . ($this->nullable ? '?' : '') . "int {\n";
 
         if (method_exists($this, 'preGetData')) {
             $code .= "\t" . '$container = $this;' . "\n";
@@ -464,7 +461,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
         $code .= '* @return \\Pimcore\\Model\\DataObject\\Fieldcollection\\Data\\' . ucfirst($fieldcollectionDefinition->getKey()) . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' ('.($this->nullable ? '?' : '').'int ' . '$' . $key . ") {\n";
+        $code .= 'public function set' . ucfirst($key) . ' (' . ($this->nullable ? '?' : '') . 'int ' . '$' . $key . ") {\n";
         $code .= "\t" . '$fd = $this->getDefinition()->getFieldDefinition("' . $key . '");' . "\n";
 
         if ($this instanceof DataObject\ClassDefinition\Data\EncryptedField) {
@@ -504,7 +501,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
         $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function get' . ucfirst($key) . ' ($language = null): '.($this->nullable ? '?' : '').'int {' . "\n";
+        $code .= 'public function get' . ucfirst($key) . ' ($language = null): ' . ($this->nullable ? '?' : '') . 'int {' . "\n";
 
         $code .= "\t" . '$data = $this->getLocalizedfields()->getLocalizedValue("' . $key . '", $language);' . "\n";
 
@@ -544,7 +541,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
         $code .= '* @return \\Pimcore\\Model\\DataObject\\' . ucfirst($classname) . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' ('.($this->nullable ? '?' : '').'int ' . '$' . $key . ', $language = null) {' . "\n";
+        $code .= 'public function set' . ucfirst($key) . ' (' . ($this->nullable ? '?' : '') . 'int ' . '$' . $key . ', $language = null) {' . "\n";
         if ($this->supportsDirtyDetection()) {
             $code .= "\t" . '$fd = $this->' . $containerGetter . '()->getFieldDefinition("localizedfields")->getFieldDefinition("' . $key . '");' . "\n";
         }
@@ -604,7 +601,7 @@ class Money extends DataObject\ClassDefinition\Data implements
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (is_numeric($data)) {
-            return (int)round((round((float)$data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
+            return (int) round((round((float) $data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
         }
 
         return $data;
@@ -646,7 +643,7 @@ class Money extends DataObject\ClassDefinition\Data implements
     {
         $data = $this->getDataFromObjectParam($object, $params);
 
-        return (string)$data;
+        return (string) $data;
     }
 
     public function getFromCsvImport($importValue, $object = null, $params = [])
@@ -695,10 +692,10 @@ class Money extends DataObject\ClassDefinition\Data implements
      */
     protected function toNumeric($value): float|int
     {
-        if (!str_contains((string)$value, '.')) {
-            return (int)$value;
+        if (!str_contains((string) $value, '.')) {
+            return (int) $value;
         }
 
-        return (float)$value;
+        return (float) $value;
     }
 }

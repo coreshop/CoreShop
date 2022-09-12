@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
@@ -124,7 +127,7 @@ class ProductUnitDefinitions extends Data implements
      */
     public function setDefaultValue($defaultValue)
     {
-        if (strlen((string)$defaultValue) > 0) {
+        if (strlen((string) $defaultValue) > 0) {
             $this->defaultValue = $defaultValue;
         }
 
@@ -453,7 +456,7 @@ class ProductUnitDefinitions extends Data implements
         return sprintf(
             'Default Unit: %s, additional units: %d',
             $defaultUnit,
-            $data->getAdditionalUnitDefinitions()->count()
+            $data->getAdditionalUnitDefinitions()->count(),
         );
     }
 
@@ -480,7 +483,7 @@ class ProductUnitDefinitions extends Data implements
             throw new \InvalidArgumentException(sprintf(
                 'Error decoding Product Unit Definitions JSON `%s`: %s',
                 $importValue,
-                json_last_error_msg()
+                json_last_error_msg(),
             ));
         }
 
@@ -502,11 +505,11 @@ class ProductUnitDefinitions extends Data implements
      */
     protected function toNumeric($value): float|int
     {
-        if (!str_contains((string)$value, '.')) {
-            return (int)$value;
+        if (!str_contains((string) $value, '.')) {
+            return (int) $value;
         }
 
-        return (float)$value;
+        return (float) $value;
     }
 
     /**
@@ -518,7 +521,7 @@ class ProductUnitDefinitions extends Data implements
 
         while (count($array)) {
             $value = reset($array);
-            $key = (string)key($array);
+            $key = (string) key($array);
             unset($array[$key]);
 
             if (str_contains($key, '.')) {

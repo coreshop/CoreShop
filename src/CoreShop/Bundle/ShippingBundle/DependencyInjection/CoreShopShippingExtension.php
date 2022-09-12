@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 
@@ -60,22 +63,27 @@ final class CoreShopShippingExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(ShippableCarrierValidatorInterface::class)
-            ->addTag(CompositeShippableValidatorPass::SHIPABLE_VALIDATOR_TAG);
+            ->addTag(CompositeShippableValidatorPass::SHIPABLE_VALIDATOR_TAG)
+        ;
 
         $container
             ->registerForAutoconfiguration(CarrierPriceCalculatorInterface::class)
-            ->addTag(ShippingPriceCalculatorsPass::SHIPPING_PRICE_CALCULATOR_TAG);
+            ->addTag(ShippingPriceCalculatorsPass::SHIPPING_PRICE_CALCULATOR_TAG)
+        ;
 
         $container
             ->registerForAutoconfiguration(ShippingRuleActionProcessorInterface::class)
-            ->addTag(ShippingRuleActionPass::SHIPPING_RULE_ACTION_TAG);
+            ->addTag(ShippingRuleActionPass::SHIPPING_RULE_ACTION_TAG)
+        ;
 
         $container
             ->registerForAutoconfiguration(ShippingConditionCheckerInterface::class)
-            ->addTag(ShippingRuleConditionPass::SHIPPING_RULE_CONDITION_TAG);
+            ->addTag(ShippingRuleConditionPass::SHIPPING_RULE_CONDITION_TAG)
+        ;
 
         $container
             ->registerForAutoconfiguration(TaxCalculationStrategyInterface::class)
-            ->addTag(ShippingTaxCalculationStrategyPass::SHIPPING_TAX_STRATEGY_TAG);
+            ->addTag(ShippingTaxCalculationStrategyPass::SHIPPING_TAX_STRATEGY_TAG)
+        ;
     }
 }

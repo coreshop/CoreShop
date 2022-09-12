@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -30,8 +33,13 @@ class VouchersReport implements ReportInterface, ExportReportInterface
 {
     private int $totalRecords = 0;
 
-    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeContext, private PimcoreRepositoryInterface $orderRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $storeRepository,
+        private Connection $db,
+        private MoneyFormatterInterface $moneyFormatter,
+        private LocaleContextInterface $localeContext,
+        private PimcoreRepositoryInterface $orderRepository,
+    ) {
     }
 
     public function getReportData(ParameterBag $parameterBag): array
@@ -75,7 +83,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
               LIMIT $offset,$limit";
 
         $results = $this->db->fetchAllAssociative($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
-        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($results as $result) {
             $date = Carbon::createFromTimestamp($result['orderDate']);
@@ -83,7 +91,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
                 'usedDate' => $date->getTimestamp(),
                 'code' => $result['code'],
                 'rule' => !empty($result['rule']) ? $result['rule'] : '--',
-                'discount' => $this->moneyFormatter->format((int)$result['discount'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode()),
+                'discount' => $this->moneyFormatter->format((int) $result['discount'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode()),
             ];
         }
 

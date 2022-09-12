@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
@@ -73,7 +76,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $loader->load('services.yml');
 
-        $env = (string)$container->getParameter('kernel.environment');
+        $env = (string) $container->getParameter('kernel.environment');
         if (str_contains($env, 'test')) {
             $loader->load('services_test.yml');
         }
@@ -94,10 +97,12 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $container
             ->registerForAutoconfiguration(PortletInterface::class)
-            ->addTag(RegisterPortletsPass::PORTLET_TAG);
+            ->addTag(RegisterPortletsPass::PORTLET_TAG)
+        ;
         $container
             ->registerForAutoconfiguration(ReportInterface::class)
-            ->addTag(RegisterReportsPass::REPORT_TAG);
+            ->addTag(RegisterReportsPass::REPORT_TAG)
+        ;
     }
 
     public function prepend(ContainerBuilder $container): void

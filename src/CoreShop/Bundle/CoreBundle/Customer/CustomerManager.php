@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Customer;
 
@@ -27,8 +30,11 @@ use Webmozart\Assert\Assert;
 
 class CustomerManager implements CustomerManagerInterface
 {
-    public function __construct(private EventDispatcherInterface $eventDispatcher, private FolderCreationServiceInterface $folderCreationService, private string $loginIdentifier)
-    {
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+        private FolderCreationServiceInterface $folderCreationService,
+        private string $loginIdentifier,
+    ) {
     }
 
     public function persistCustomer(CustomerInterface $customer): void
@@ -58,7 +64,7 @@ class CustomerManager implements CustomerManagerInterface
             $this->folderCreationService->createFolderForResource($customer, [
                 'path' => ($userBackup ? 'customer' : 'guest'),
                 'suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1)),
-            ])
+            ]),
         );
         /** @psalm-suppress InternalMethod */
         $customer->setKey(File::getValidFilename($customer->getEmail()));
@@ -72,7 +78,7 @@ class CustomerManager implements CustomerManagerInterface
             $address->setParent(
                 $this->folderCreationService->createFolderForResource($address, [
                     'prefix' => $customer->getFullPath(),
-                ])
+                ]),
             );
             $address->save();
         }
@@ -87,7 +93,7 @@ class CustomerManager implements CustomerManagerInterface
             $userBackup->setParent(
                 $this->folderCreationService->createFolderForResource($userBackup, [
                     'prefix' => $customer->getFullPath(),
-                ])
+                ]),
             );
             /** @psalm-suppress InternalMethod */
             $userBackup->setKey(File::getValidFilename($customer->getEmail()));

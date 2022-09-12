@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
@@ -24,14 +27,17 @@ use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 
 class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    public function __construct(protected CurrencyConverterInterface $moneyConverter, protected CartRuleApplierInterface $cartRuleApplier, protected CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
-    {
+    public function __construct(
+        protected CurrencyConverterInterface $moneyConverter,
+        protected CartRuleApplierInterface $cartRuleApplier,
+        protected CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+    ) {
     }
 
     public function applyRule(
         OrderInterface $cart,
         array $configuration,
-        PriceRuleItemInterface $cartPriceRuleItem
+        PriceRuleItemInterface $cartPriceRuleItem,
     ): bool {
         if (!$cartPriceRuleItem->getVoucherCode()) {
             return false;
@@ -51,7 +57,7 @@ class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterf
         $discount = $this->moneyConverter->convert(
             $discount,
             $voucherCode->getCreditCurrency()->getIsoCode(),
-            $cart->getCurrency()->getIsoCode()
+            $cart->getCurrency()->getIsoCode(),
         );
 
         if ($discount <= 0) {
@@ -66,7 +72,7 @@ class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterf
     public function unApplyRule(
         OrderInterface $cart,
         array $configuration,
-        PriceRuleItemInterface $cartPriceRuleItem
+        PriceRuleItemInterface $cartPriceRuleItem,
     ): bool {
         return true;
     }

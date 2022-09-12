@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -19,7 +22,6 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
-use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -29,8 +31,15 @@ class CategoriesReport implements ReportInterface
 {
     private int $totalRecords = 0;
 
-    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeService, private PimcoreRepositoryInterface $orderRepository, private PimcoreRepositoryInterface $categoryRepository, private PimcoreRepositoryInterface $orderItemRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $storeRepository,
+        private Connection $db,
+        private MoneyFormatterInterface $moneyFormatter,
+        private LocaleContextInterface $localeService,
+        private PimcoreRepositoryInterface $orderRepository,
+        private PimcoreRepositoryInterface $categoryRepository,
+        private PimcoreRepositoryInterface $orderItemRepository,
+    ) {
     }
 
     public function getReportData(ParameterBag $parameterBag): array
@@ -84,21 +93,21 @@ class CategoriesReport implements ReportInterface
             INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = catProductDependencies.sourceId
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
             INNER JOIN object_query_$orderClassId AS `orders` ON `orders`.oo_id = orderRelations.src_id
-            WHERE orders.store = $storeId".(($orderStateFilter !== null) ? " AND `orders`.orderState IN (".rtrim(str_repeat('?,', count($orderStateFilter)), ',').")" : "")." AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            WHERE orders.store = $storeId" . (($orderStateFilter !== null) ? ' AND `orders`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
             GROUP BY categories.oo_id
             ORDER BY quantityCount DESC
             LIMIT $offset,$limit";
 
         $queryParameters = [];
 
-        if($orderStateFilter !== null) {
+        if ($orderStateFilter !== null) {
             array_push($queryParameters, ...$orderStateFilter);
         }
         $queryParameters[] = $from->getTimestamp();
         $queryParameters[] = $to->getTimestamp();
         $results = $this->db->fetchAllAssociative($query, $queryParameters);
 
-        if(count($results) === 0) {
+        if (count($results) === 0) {
             // when products get assigned to category
             $query = "
             SELECT SQL_CALC_FOUND_ROWS
@@ -111,19 +120,19 @@ class CategoriesReport implements ReportInterface
               SUM(orderItems.quantity) AS `quantityCount`,
               COUNT(orderItems.product__id) AS `orderCount`
             FROM object_$categoryClassId AS categories
-            INNER JOIN object_localized_query_".$categoryClassId.'_'.$locale." AS localizedCategories ON localizedCategories.ooo_id = categories.oo_id 
+            INNER JOIN object_localized_query_" . $categoryClassId . '_' . $locale . " AS localizedCategories ON localizedCategories.ooo_id = categories.oo_id 
             INNER JOIN dependencies AS catProductDependencies ON catProductDependencies.sourceId = categories.oo_id AND catProductDependencies.sourcetype = \"object\" 
             INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = catProductDependencies.targetId
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
             INNER JOIN object_query_$orderClassId AS `orders` ON `orders`.oo_id = orderRelations.src_id
-            WHERE orders.store = $storeId".(($orderStateFilter !== null) ? ' AND `orders`.orderState IN ('.rtrim(str_repeat('?,', count($orderStateFilter)), ',').')' : '')." AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            WHERE orders.store = $storeId" . (($orderStateFilter !== null) ? ' AND `orders`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
             GROUP BY categories.oo_id
             ORDER BY quantityCount DESC
             LIMIT $offset,$limit";
             $results = $this->db->fetchAllAssociative($query, $queryParameters);
         }
 
-        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         $data = [];
         foreach ($results as $result) {
@@ -135,8 +144,8 @@ class CategoriesReport implements ReportInterface
                 'profit' => $result['profit'],
                 'quantityCount' => $result['quantityCount'],
                 'orderCount' => $result['orderCount'],
-                'salesFormatted' => $this->moneyFormatter->format((int)$result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
-                'profitFormatted' => $this->moneyFormatter->format((int)$result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
+                'salesFormatted' => $this->moneyFormatter->format((int) $result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
+                'profitFormatted' => $this->moneyFormatter->format((int) $result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
             ];
         }
 

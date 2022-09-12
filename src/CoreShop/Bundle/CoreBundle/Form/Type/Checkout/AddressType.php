@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Checkout;
 
@@ -35,7 +38,7 @@ final class AddressType extends AbstractResourceType
         string $dataClass,
         array $validationGroups,
         private AddressFormatterInterface $addressFormatHelper,
-        private TranslatorInterface $translator
+        private TranslatorInterface $translator,
     ) {
         parent::__construct($dataClass, $validationGroups);
     }
@@ -132,7 +135,7 @@ final class AddressType extends AbstractResourceType
 
                         if (is_array($choiceList) && count($choiceList) > 0) {
                             $valid = count(array_filter($choiceList, static function (AddressInterface $address) use ($invoiceAddressId) {
-                                return $address->getId() === (int)$invoiceAddressId;
+                                return $address->getId() === (int) $invoiceAddressId;
                             })) > 0;
                         }
                     }
@@ -145,7 +148,8 @@ final class AddressType extends AbstractResourceType
                         $event->getForm()->addError(new FormError($message));
                     }
                 }
-            });
+            })
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

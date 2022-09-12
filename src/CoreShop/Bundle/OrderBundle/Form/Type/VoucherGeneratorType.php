@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
@@ -38,7 +41,8 @@ final class VoucherGeneratorType extends AbstractResourceType
             ->add('prefix', TextType::class)
             ->add('suffix', TextType::class)
             ->add('hyphensOn', IntegerType::class)
-            ->add('cartPriceRule', CartPriceRuleChoiceType::class);
+            ->add('cartPriceRule', CartPriceRuleChoiceType::class)
+        ;
     }
 
     public function getBlockPrefix(): string

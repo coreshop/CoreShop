@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
@@ -34,7 +37,7 @@ class CustomerCreationController extends PimcoreController
     public function createCustomerAction(
         Request $request,
         FolderCreationServiceInterface $folderCreationService,
-        ErrorSerializer $errorSerializer
+        ErrorSerializer $errorSerializer,
     ): Response {
         $form = $this->get('form.factory')->createNamed('', AdminCustomerCreationType::class);
 
@@ -60,8 +63,8 @@ class CustomerCreationController extends PimcoreController
                         [
                             'path' => 'guest',
                             'suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1)),
-                        ]
-                    )
+                        ],
+                    ),
                 );
 
                 $customer->setPublished(true);
@@ -76,8 +79,8 @@ class CustomerCreationController extends PimcoreController
                 $address->setParent(
                     $folderCreationService->createFolderForResource(
                         $address,
-                        ['prefix' => $customer->getFullPath()]
-                    )
+                        ['prefix' => $customer->getFullPath()],
+                    ),
                 );
                 $address->save();
 
@@ -103,7 +106,7 @@ class CustomerCreationController extends PimcoreController
                 [
                     'success' => false,
                     'message' => $errorSerializer->serializeErrorFromHandledForm($form),
-                ]
+                ],
             );
         }
 

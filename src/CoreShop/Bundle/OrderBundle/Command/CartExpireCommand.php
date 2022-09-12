@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Command;
 
@@ -22,8 +25,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class CartExpireCommand extends Command
 {
-    public function __construct(protected OrderExpirationInterface $cartExpiration, protected int $days = 0, protected array $params = [])
-    {
+    public function __construct(
+        protected OrderExpirationInterface $cartExpiration,
+        protected int $days = 0,
+        protected array $params = [],
+    ) {
         parent::__construct();
     }
 
@@ -36,20 +42,21 @@ final class CartExpireCommand extends Command
                 'days',
                 'days',
                 InputOption::VALUE_OPTIONAL,
-                'Older than'
+                'Older than',
             )
             ->addOption(
                 'anonymous',
                 'a',
                 InputOption::VALUE_NONE,
-                'Delete only anonymous carts'
+                'Delete only anonymous carts',
             )
             ->addOption(
                 'user',
                 'u',
                 InputOption::VALUE_NONE,
-                'Delete only user carts'
-            );
+                'Delete only user carts',
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -58,7 +65,7 @@ final class CartExpireCommand extends Command
         $params = $this->params;
 
         if ($input->getOption('days')) {
-            $days = (int)$input->getOption('days');
+            $days = (int) $input->getOption('days');
         }
 
         if ($input->getOption('anonymous')) {

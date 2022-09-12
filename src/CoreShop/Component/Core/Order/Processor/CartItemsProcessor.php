@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Order\Processor;
 
@@ -28,8 +31,12 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 
 final class CartItemsProcessor implements CartProcessorInterface
 {
-    public function __construct(private PurchasableCalculatorInterface $productPriceCalculator, private QuantityReferenceDetectorInterface $quantityReferenceDetector, private CartItemProcessorInterface $cartItemProcessor, private CartContextResolverInterface $cartContextResolver)
-    {
+    public function __construct(
+        private PurchasableCalculatorInterface $productPriceCalculator,
+        private QuantityReferenceDetectorInterface $quantityReferenceDetector,
+        private CartItemProcessorInterface $cartItemProcessor,
+        private CartContextResolverInterface $cartContextResolver,
+    ) {
     }
 
     public function process(OrderInterface $cart): void
@@ -50,7 +57,7 @@ final class CartItemsProcessor implements CartProcessorInterface
                     0,
                     0,
                     0,
-                    $context
+                    $context,
                 );
 
                 continue;
@@ -70,7 +77,7 @@ final class CartItemsProcessor implements CartProcessorInterface
 
             // respect item quantity factor
             if ($product instanceof ProductInterface && is_numeric($product->getItemQuantityFactor()) && $product->getItemQuantityFactor() > 1) {
-                $itemPrice = (int)round($itemPrice / $product->getItemQuantityFactor());
+                $itemPrice = (int) round($itemPrice / $product->getItemQuantityFactor());
             }
 
             if ($product instanceof QuantityRangePriceAwareInterface) {
@@ -79,7 +86,7 @@ final class CartItemsProcessor implements CartProcessorInterface
                         $product,
                         $item->getQuantity(),
                         $itemPrice,
-                        $context
+                        $context,
                     );
                 } catch (NoRuleFoundException) {
                 } catch (NoPriceFoundException) {
@@ -102,7 +109,7 @@ final class CartItemsProcessor implements CartProcessorInterface
             }
 
             if ($item->getCustomItemDiscount() > 0) {
-                $itemPrice = (int)round((100 - $item->getCustomItemDiscount()) / 100 * $itemPrice);
+                $itemPrice = (int) round((100 - $item->getCustomItemDiscount()) / 100 * $itemPrice);
             }
 
             $this->cartItemProcessor->processCartItem(
@@ -111,7 +118,7 @@ final class CartItemsProcessor implements CartProcessorInterface
                 $itemRetailPrice,
                 $itemDiscountPrice,
                 $itemDiscount,
-                $context
+                $context,
             );
 
             $subtotalGross += $item->getTotal(true);

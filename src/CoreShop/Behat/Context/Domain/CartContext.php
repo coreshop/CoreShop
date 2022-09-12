@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -42,8 +45,8 @@ final class CartContext implements Context
             1,
             sprintf(
                 'There should be only one product in the cart, but found %d',
-                count($this->cartContext->getCart()->getItems())
-            )
+                count($this->cartContext->getCart()->getItems()),
+            ),
         );
     }
 
@@ -57,8 +60,8 @@ final class CartContext implements Context
             2,
             sprintf(
                 'There should be only two products in the cart, but found %d',
-                count($this->cartContext->getCart()->getItems())
-            )
+                count($this->cartContext->getCart()->getItems()),
+            ),
         );
     }
 
@@ -82,8 +85,8 @@ final class CartContext implements Context
             $foundItem,
             sprintf(
                 'Product %s found in cart',
-                $product->getName()
-            )
+                $product->getName(),
+            ),
         );
     }
 
@@ -113,8 +116,8 @@ final class CartContext implements Context
             $cartItem,
             sprintf(
                 'Product %s not found in cart',
-                $product->getName()
-            )
+                $product->getName(),
+            ),
         );
     }
 
@@ -144,8 +147,8 @@ final class CartContext implements Context
             $cartItem ? $cartItem->getIsGiftItem() : false,
             sprintf(
                 'Product %s is not in the Cart or is not a gift',
-                $product->getName()
-            )
+                $product->getName(),
+            ),
         );
     }
 
@@ -160,8 +163,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart total is expected to be %s, but it is %s',
                 $total,
-                $this->cartContext->getCart()->getTotal(true)
-            )
+                $this->cartContext->getCart()->getTotal(true),
+            ),
         );
     }
 
@@ -176,8 +179,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart total is expected to be %s, but it is %s',
                 $total,
-                $this->cartContext->getCart()->getTotal(false)
-            )
+                $this->cartContext->getCart()->getTotal(false),
+            ),
         );
     }
 
@@ -192,8 +195,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart subtotal is expected to be %s, but it is %s',
                 $total,
-                $this->cartContext->getCart()->getSubtotal(true)
-            )
+                $this->cartContext->getCart()->getSubtotal(true),
+            ),
         );
     }
 
@@ -208,8 +211,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart subtotal is expected to be %s, but it is %s',
                 $total,
-                $this->cartContext->getCart()->getSubtotal(false)
-            )
+                $this->cartContext->getCart()->getSubtotal(false),
+            ),
         );
     }
 
@@ -224,8 +227,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart total is expected to be %s, but it is %s',
                 $totalTax,
-                $this->cartContext->getCart()->getTotalTax()
-            )
+                $this->cartContext->getCart()->getTotalTax(),
+            ),
         );
     }
 
@@ -257,8 +260,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart item taxes is expected to be %s, but it is %s',
                 $totalTax,
-                $itemTaxesTotal
-            )
+                $itemTaxesTotal,
+            ),
         );
     }
 
@@ -280,8 +283,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart is expected to weigh %skg, but it weighs %skg',
                 $kg,
-                $cart->getWeight()
-            )
+                $cart->getWeight(),
+            ),
         );
     }
 
@@ -300,8 +303,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart shipping is expected to be %s, but it is %s',
                 $shipping,
-                $cart->getShipping(false)
-            )
+                $cart->getShipping(false),
+            ),
         );
     }
 
@@ -320,8 +323,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart shipping is expected to be %s, but it is %s',
                 $shipping,
-                $cart->getShipping(true)
-            )
+                $cart->getShipping(true),
+            ),
         );
     }
 
@@ -337,8 +340,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart shipping is expected to be %s, but it is %s',
                 $shippingTaxRate,
-                $cart->getShippingTaxRate()
-            )
+                $cart->getShippingTaxRate(),
+            ),
         );
     }
 
@@ -357,8 +360,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart is expected to use carrier %s, but found %s',
                 $carrier->getTitle('en'),
-                $cart->getCarrier()->getTitle('en')
-            )
+                $cart->getCarrier()->getTitle('en'),
+            ),
         );
     }
 
@@ -373,7 +376,7 @@ final class CartContext implements Context
 
         Assert::null(
             $cart->getCarrier(),
-            'Cart is expected to not have a carrier but found one'
+            'Cart is expected to not have a carrier but found one',
         );
     }
 
@@ -388,8 +391,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart discount is expected to be %s, but it is %s',
                 $total,
-                $this->cartContext->getCart()->getDiscount(true)
-            )
+                $this->cartContext->getCart()->getDiscount(true),
+            ),
         );
     }
 
@@ -404,8 +407,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart discount is expected to be %s, but it is %s',
                 $total,
-                $this->cartContext->getCart()->getDiscount(false)
-            )
+                $this->cartContext->getCart()->getDiscount(false),
+            ),
         );
     }
 
@@ -419,8 +422,8 @@ final class CartContext implements Context
             0,
             sprintf(
                 'There should be no product in the cart, but found %d',
-                count($cart->getItems())
-            )
+                count($cart->getItems()),
+            ),
         );
     }
 
@@ -432,7 +435,7 @@ final class CartContext implements Context
         Assert::minCount(
             $cart->getItems(),
             1,
-            'Expected to be at least 1 item in the cart, but found none'
+            'Expected to be at least 1 item in the cart, but found none',
         );
 
         /**
@@ -442,7 +445,7 @@ final class CartContext implements Context
 
         Assert::notNull(
             $item->getUnitDefinition(),
-            'Expected first cart item to have a unit-definition, but it did not'
+            'Expected first cart item to have a unit-definition, but it did not',
         );
 
         Assert::eq(
@@ -451,8 +454,8 @@ final class CartContext implements Context
             sprintf(
                 'Expected cart item to have unit %s, but found %s',
                 $item->getUnitDefinition()->getUnitName(),
-                $unit->getName()
-            )
+                $unit->getName(),
+            ),
         );
     }
 
@@ -464,7 +467,7 @@ final class CartContext implements Context
         Assert::minCount(
             $cart->getItems(),
             2,
-            sprintf('Expected to be at least 2 items in the cart, but found %s', count($cart->getItems()))
+            sprintf('Expected to be at least 2 items in the cart, but found %s', count($cart->getItems())),
         );
 
         /**
@@ -474,7 +477,7 @@ final class CartContext implements Context
 
         Assert::notNull(
             $item->getUnitDefinition(),
-            'Expected first cart item to have a unit-definition, but it did not'
+            'Expected first cart item to have a unit-definition, but it did not',
         );
 
         Assert::eq(
@@ -483,8 +486,8 @@ final class CartContext implements Context
             sprintf(
                 'Expected cart item to have unit %s, but found %s',
                 $item->getUnitDefinition()->getUnitName(),
-                $unit->getName()
-            )
+                $unit->getName(),
+            ),
         );
     }
 
@@ -498,7 +501,7 @@ final class CartContext implements Context
         foreach ($addToCartForm->getErrors(true, true) as $error) {
             Assert::eq(
                 $error->getMessage(),
-                $message
+                $message,
             );
         }
     }
@@ -518,7 +521,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getItemDiscountPrice(true),
-            $price
+            $price,
         );
     }
 
@@ -537,7 +540,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getItemDiscountPrice(false),
-            $price
+            $price,
         );
     }
 
@@ -556,7 +559,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getItemDiscount(true),
-            $price
+            $price,
         );
     }
 
@@ -575,7 +578,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getItemDiscount(false),
-            $price
+            $price,
         );
     }
 
@@ -594,7 +597,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getTotal(true),
-            $price
+            $price,
         );
     }
 
@@ -613,7 +616,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getTotal(false),
-            $price
+            $price,
         );
     }
 
@@ -632,7 +635,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getItemRetailPrice(true),
-            $price
+            $price,
         );
     }
 
@@ -651,7 +654,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getItemRetailPrice(false),
-            $price
+            $price,
         );
     }
 
@@ -670,7 +673,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getConvertedItemDiscountPrice(true),
-            $price
+            $price,
         );
     }
 
@@ -689,7 +692,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getConvertedItemDiscountPrice(false),
-            $price
+            $price,
         );
     }
 
@@ -708,7 +711,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getConvertedItemDiscount(true),
-            $price
+            $price,
         );
     }
 
@@ -727,7 +730,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getConvertedItemDiscount(false),
-            $price
+            $price,
         );
     }
 
@@ -746,7 +749,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getConvertedTotal(true),
-            $price
+            $price,
         );
     }
 
@@ -765,7 +768,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getConvertedTotal(false),
-            $price
+            $price,
         );
     }
 
@@ -784,7 +787,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getConvertedItemRetailPrice(true),
-            $price
+            $price,
         );
     }
 
@@ -803,7 +806,7 @@ final class CartContext implements Context
 
         Assert::eq(
             $cartItem->getConvertedItemRetailPrice(false),
-            $price
+            $price,
         );
     }
 
@@ -822,8 +825,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart shipping is expected to be %s, but it is %s',
                 $shipping,
-                $cart->getConvertedShipping(false)
-            )
+                $cart->getConvertedShipping(false),
+            ),
         );
     }
 
@@ -842,8 +845,8 @@ final class CartContext implements Context
             sprintf(
                 'Cart shipping is expected to be %s, but it is %s',
                 $shipping,
-                $cart->getConvertedShipping(true)
-            )
+                $cart->getConvertedShipping(true),
+            ),
         );
     }
 

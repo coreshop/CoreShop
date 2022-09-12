@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Wishlist\Wishlist;
 
@@ -29,7 +32,7 @@ class WishlistModifier implements StorageListModifierInterface
 {
     public function __construct(
         protected EventDispatcherInterface $eventDispatcher,
-        protected StorageListItemResolverInterface $wishlistItemResolver
+        protected StorageListItemResolverInterface $wishlistItemResolver,
     ) {
     }
 
@@ -49,7 +52,7 @@ class WishlistModifier implements StorageListModifierInterface
 
         $this->eventDispatcher->dispatch(
             new GenericEvent($storageList, ['item' => $item]),
-            WishlistEvents::PRE_REMOVE_ITEM
+            WishlistEvents::PRE_REMOVE_ITEM,
         );
 
         $storageList->removeItem($item);
@@ -57,7 +60,7 @@ class WishlistModifier implements StorageListModifierInterface
 
         $this->eventDispatcher->dispatch(
             new GenericEvent($storageList, ['item' => $item]),
-            WishlistEvents::POST_REMOVE_ITEM
+            WishlistEvents::POST_REMOVE_ITEM,
         );
     }
 
@@ -71,14 +74,14 @@ class WishlistModifier implements StorageListModifierInterface
 
         $this->eventDispatcher->dispatch(
             new GenericEvent($storageList, ['item' => $storageListItem]),
-            WishlistEvents::PRE_ADD_ITEM
+            WishlistEvents::PRE_ADD_ITEM,
         );
 
         $storageList->addItem($storageListItem);
 
         $this->eventDispatcher->dispatch(
             new GenericEvent($storageList, ['item' => $storageListItem]),
-            WishlistEvents::POST_ADD_ITEM
+            WishlistEvents::POST_ADD_ITEM,
         );
     }
 }

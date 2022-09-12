@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -49,7 +52,7 @@ class CategoryController extends FrontendController
     public function __construct(
         array $validSortProperties,
         string $defaultSortName,
-        string $defaultSortDirection
+        string $defaultSortDirection,
     ) {
         $this->validSortProperties = $validSortProperties;
         $this->defaultSortName = $defaultSortName;
@@ -94,7 +97,7 @@ class CategoryController extends FrontendController
 
         $category = $this->getRepository()->findOneBy([
             $this->repositoryIdentifier => $id,
-            'pimcore_unpublished' => true
+            'pimcore_unpublished' => true,
         ]);
 
         if (!$category instanceof CategoryInterface) {
@@ -102,8 +105,8 @@ class CategoryController extends FrontendController
                 sprintf(
                     'category with identifier "%s" (%s) not found',
                     $this->repositoryIdentifier,
-                    $this->getParameterFromRequest($request, $this->requestIdentifier)
-                )
+                    $this->getParameterFromRequest($request, $this->requestIdentifier),
+                ),
             );
         }
 
@@ -122,13 +125,13 @@ class CategoryController extends FrontendController
         $displaySubCategories = $this->getConfigurationService()->getForStore('system.category.list.include_subcategories');
         $variantMode = $this->getConfigurationService()->getForStore('system.category.variant_mode');
 
-        $page = (int)$this->getParameterFromRequest($request, 'page', 1) ?: 1;
+        $page = (int) $this->getParameterFromRequest($request, 'page', 1) ?: 1;
         $type = $this->getParameterFromRequest($request, 'type', $listModeDefault);
 
         $defaultPerPage = $type === 'list' ? $listPerPageDefault : $gridPerPageDefault;
         $allowedPerPage = $type === 'list' ? $listPerPageAllowed : $gridPerPageAllowed;
 
-        $perPage = (int)$this->getParameterFromRequest($request, 'perPage', $defaultPerPage) ?: 10;
+        $perPage = (int) $this->getParameterFromRequest($request, 'perPage', $defaultPerPage) ?: 10;
 
         $this->validateCategory($request, $category);
 
@@ -139,7 +142,7 @@ class CategoryController extends FrontendController
             $filteredList->setLocale($request->getLocale());
             $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
             $filteredList->addCondition(new LikeCondition('stores', 'both', sprintf('%1$s%2$s%1$s', ',', $this->getContext()->getStore()->getId())), 'stores');
-            $filteredList->addCondition(new LikeCondition('parentCategoryIds', 'both', (string)$category->getId()), 'parentCategoryIds');
+            $filteredList->addCondition(new LikeCondition('parentCategoryIds', 'both', (string) $category->getId()), 'parentCategoryIds');
 
             $orderDirection = $category->getFilter()->getOrderDirection();
             $orderKey = $category->getFilter()->getOrderKey();
@@ -157,7 +160,7 @@ class CategoryController extends FrontendController
             $paginator = $this->getPaginator()->paginate(
                 $filteredList,
                 $page,
-                $perPage
+                $perPage,
             );
 
             $viewParameters['list'] = $filteredList;
@@ -194,7 +197,7 @@ class CategoryController extends FrontendController
             $paginator = $this->getPaginator()->paginate(
                 $list,
                 $page,
-                $perPage
+                $perPage,
             );
 
             $viewParameters['paginator'] = $paginator;

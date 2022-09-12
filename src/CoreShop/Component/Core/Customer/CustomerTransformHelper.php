@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Customer;
 
@@ -33,15 +36,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CustomerTransformHelper implements CustomerTransformHelperInterface
 {
-    public function __construct(protected FactoryInterface $companyFactory, protected FolderCreationServiceInterface $folderCreationService)
-    {
+    public function __construct(
+        protected FactoryInterface $companyFactory,
+        protected FolderCreationServiceInterface $folderCreationService,
+    ) {
     }
 
     public function getEntityAddressFolderPath(AddressInterface $address, string $rootPath): DataObject\Folder
     {
         return $this->folderCreationService->createFolderForResource(
             $address,
-            ['prefix' => $rootPath]
+            ['prefix' => $rootPath],
         );
     }
 
@@ -82,8 +87,8 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         $company->setParent(
             $this->folderCreationService->createFolderForResource(
                 $company,
-                ['suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))]
-            )
+                ['suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))],
+            ),
         );
 
         /** @psalm-suppress InternalMethod */
@@ -174,7 +179,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
 
         $dependenciesObjects = [];
         /** @psalm-suppress InternalClass,InternalMethod */
-        $dependenciesResult = Dependency::getBySourceId((int)$address->getId(), 'object');
+        $dependenciesResult = Dependency::getBySourceId((int) $address->getId(), 'object');
 
         /** @psalm-suppress InternalMethod */
         foreach ($dependenciesResult->getRequiredBy() as $r) {
@@ -245,6 +250,6 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
 
     private function isNewEntity(ElementInterface $element): bool
     {
-        return is_null($element->getId()) || $element->getId() === 0;
+        return null === $element->getId() || $element->getId() === 0;
     }
 }

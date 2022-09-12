@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -26,8 +29,13 @@ use Webmozart\Assert\Assert;
 
 final class TaxRuleGroupContext implements Context
 {
-    public function __construct(private FactoryInterface $addressFactory, private RepositoryInterface $taxRuleGroupRepository, private TaxRuleRepositoryInterface $taxRuleRepository, private TaxCalculatorFactoryInterface $taxCalculatorFactory, private CountryContextInterface $countryContext)
-    {
+    public function __construct(
+        private FactoryInterface $addressFactory,
+        private RepositoryInterface $taxRuleGroupRepository,
+        private TaxRuleRepositoryInterface $taxRuleRepository,
+        private TaxCalculatorFactoryInterface $taxCalculatorFactory,
+        private CountryContextInterface $countryContext,
+    ) {
     }
 
     /**
@@ -40,7 +48,7 @@ final class TaxRuleGroupContext implements Context
         Assert::eq(
             count($groups),
             1,
-            sprintf('%d tax rule groups has been found with name "%s".', count($groups), $name)
+            sprintf('%d tax rule groups has been found with name "%s".', count($groups), $name),
         );
 
         /**
@@ -53,7 +61,7 @@ final class TaxRuleGroupContext implements Context
         Assert::eq(
             count($rules),
             $countOfRules,
-            sprintf('Found %d rules instead of expected %d', count($group->getTaxRules()), $countOfRules)
+            sprintf('Found %d rules instead of expected %d', count($group->getTaxRules()), $countOfRules),
         );
     }
 
@@ -74,7 +82,7 @@ final class TaxRuleGroupContext implements Context
         Assert::eq(
             $taxAmount,
             $tax,
-            sprintf('The tax %s is different to given tax of %s', $taxAmount, $tax)
+            sprintf('The tax %s is different to given tax of %s', $taxAmount, $tax),
         );
     }
 

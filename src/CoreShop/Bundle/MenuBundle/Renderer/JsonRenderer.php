@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\MenuBundle\Renderer;
 
@@ -27,7 +30,7 @@ class JsonRenderer implements RendererInterface
         private Environment $environment,
         string $template,
         private PimcoreGuard $guard,
-        array $defaultOptions = []
+        array $defaultOptions = [],
     ) {
         $this->defaultOptions = array_merge([
             'depth' => null,
@@ -52,7 +55,7 @@ class JsonRenderer implements RendererInterface
                 'item' => $this->renderItem($item),
                 'items' => $items,
                 'options' => $options,
-            ]
+            ],
         );
     }
 
@@ -130,7 +133,7 @@ class JsonRenderer implements RendererInterface
                 $menuOrderArray = array_merge(
                     array_slice($menuOrderArray, 0, $position),
                     [$value],
-                    array_slice($menuOrderArray, $position)
+                    array_slice($menuOrderArray, $position),
                 );
             }
         }

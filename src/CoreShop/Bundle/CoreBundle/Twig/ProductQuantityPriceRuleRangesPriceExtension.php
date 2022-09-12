@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
@@ -29,8 +32,13 @@ use Twig\TwigFunction;
 
 final class ProductQuantityPriceRuleRangesPriceExtension extends AbstractExtension
 {
-    public function __construct(private QuantityReferenceDetectorInterface $quantityReferenceDetector, private PurchasableCalculatorInterface $purchasableCalculator, private DefaultTaxAddressProviderInterface $defaultTaxAddressProvider, private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory, private TaxApplicatorInterface $taxApplicator)
-    {
+    public function __construct(
+        private QuantityReferenceDetectorInterface $quantityReferenceDetector,
+        private PurchasableCalculatorInterface $purchasableCalculator,
+        private DefaultTaxAddressProviderInterface $defaultTaxAddressProvider,
+        private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
+        private TaxApplicatorInterface $taxApplicator,
+    ) {
     }
 
     public function getFunctions(): array
@@ -44,7 +52,7 @@ final class ProductQuantityPriceRuleRangesPriceExtension extends AbstractExtensi
         QuantityRangeInterface $range,
         ProductInterface $product,
         array $context,
-        bool $withTax = true
+        bool $withTax = true,
     ): int {
         $realItemPrice = $this->purchasableCalculator->getPrice($product, $context);
         $price = $this->quantityReferenceDetector->detectRangePrice($product, $range, $realItemPrice, $context);

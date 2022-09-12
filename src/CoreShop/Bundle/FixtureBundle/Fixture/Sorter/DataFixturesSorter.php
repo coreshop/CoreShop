@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\FixtureBundle\Fixture\Sorter;
 
@@ -85,7 +88,7 @@ final class DataFixturesSorter
                 }
 
                 return 0;
-            }
+            },
         );
     }
 
@@ -111,7 +114,7 @@ final class DataFixturesSorter
                 $this->orderedFixtures,
                 function ($fixture) {
                     return $fixture instanceof OrderedFixtureInterface;
-                }
+                },
             );
         }
 
@@ -141,8 +144,8 @@ final class DataFixturesSorter
         $count = 0;
         $unsequencedClasses = [];
 
-        while (($count = count($unsequencedClasses = $this->getUnsequencedClasses($sequenceForClasses))) > 0
-            && $count !== $lastCount) {
+        while (($count = count($unsequencedClasses = $this->getUnsequencedClasses($sequenceForClasses))) > 0 &&
+            $count !== $lastCount) {
             foreach ($unsequencedClasses as $class) {
                 $fixture = $this->fixtures[$class];
                 $dependencies = $fixture->getDependencies();
@@ -191,14 +194,14 @@ final class DataFixturesSorter
                     'Method "%s" in class "%s" must return an array of classes which are'
                     . ' dependencies for the fixture, and it must be NOT empty.',
                     'getDependencies',
-                    $fixtureClass
-                )
+                    $fixtureClass,
+                ),
             );
         }
 
         if (in_array($fixtureClass, $dependenciesClasses)) {
             throw new \InvalidArgumentException(
-                sprintf('Class "%s" can\'t have itself as a dependency', $fixtureClass)
+                sprintf('Class "%s" can\'t have itself as a dependency', $fixtureClass),
             );
         }
 
@@ -208,8 +211,8 @@ final class DataFixturesSorter
                 throw new \RuntimeException(
                     sprintf(
                         'Fixture "%s" was declared as a dependency, but it should be added in fixture loader first.',
-                        $class
-                    )
+                        $class,
+                    ),
                 );
             }
         }

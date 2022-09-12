@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator;
 
@@ -21,8 +24,11 @@ class OrderState extends AbstractOperator
 {
     private bool $highlightLabel = false;
 
-    public function __construct(private WorkflowStateInfoManagerInterface $workflowManager, \stdClass $config, $context = null)
-    {
+    public function __construct(
+        private WorkflowStateInfoManagerInterface $workflowManager,
+        \stdClass $config,
+        $context = null,
+    ) {
         parent::__construct($config, $context);
         $this->highlightLabel = $config->highlightLabel;
     }
@@ -114,9 +120,9 @@ class OrderState extends AbstractOperator
             0.0722 * ((0 / 255) ** 2.2);
 
         if ($l1 > $l2) {
-            $contrastRatio = (int)(($l1 + 0.05) / ($l2 + 0.05));
+            $contrastRatio = (int) (($l1 + 0.05) / ($l2 + 0.05));
         } else {
-            $contrastRatio = (int)(($l2 + 0.05) / ($l1 + 0.05));
+            $contrastRatio = (int) (($l2 + 0.05) / ($l1 + 0.05));
         }
 
         if ($contrastRatio > 7) {

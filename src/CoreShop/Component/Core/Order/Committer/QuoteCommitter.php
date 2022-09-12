@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Order\Committer;
 
@@ -22,7 +25,6 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\OrderSaleStates;
-use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\QuoteTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
@@ -39,9 +41,8 @@ class QuoteCommitter implements QuoteCommitterInterface
         protected FolderCreationServiceInterface $folderCreationService,
         protected NumberGeneratorInterface $numberGenerator,
         protected ObjectClonerInterface $objectCloner,
-        protected StateMachineApplierInterface $stateMachineApplier
-    )
-    {
+        protected StateMachineApplierInterface $stateMachineApplier,
+    ) {
     }
 
     public function commitOrder(OrderInterface $order): void
@@ -69,23 +70,25 @@ class QuoteCommitter implements QuoteCommitterInterface
 
         /**
          * @var AddressInterface $shippingAddress
+         *
          * @psalm-suppress InvalidArgument
          */
         $shippingAddress = $this->objectCloner->cloneObject(
             $originalShippingAddress,
             $this->folderCreationService->createFolderForResource($originalShippingAddress, ['prefix' => $order->getFullPath()]),
             'shipping',
-            false
+            false,
         );
         /**
          * @var AddressInterface $invoiceAddress
+         *
          * @psalm-suppress InvalidArgument
          */
         $invoiceAddress = $this->objectCloner->cloneObject(
             $order->getInvoiceAddress(),
             $this->folderCreationService->createFolderForResource($order->getInvoiceAddress(), ['prefix' => $order->getFullPath()]),
             'invoice',
-            false
+            false,
         );
 
         VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress) {

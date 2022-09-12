@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Ui\Frontend;
 
@@ -27,8 +30,12 @@ use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
-    public function __construct(private SharedStorageInterface $sharedStorage, private NotificationCheckerInterface $notificationChecker, private CartPageInterface $cartPage, private ProductPageInterface $productPage)
-    {
+    public function __construct(
+        private SharedStorageInterface $sharedStorage,
+        private NotificationCheckerInterface $notificationChecker,
+        private CartPageInterface $cartPage,
+        private ProductPageInterface $productPage,
+    ) {
     }
 
     /**
@@ -125,6 +132,7 @@ final class CartContext implements Context
 
     /**
      * @Given I removed product :productName from the cart
+     *
      * @When I remove product :productName from the cart
      */
     public function iRemoveProductFromTheCart(string $productName): void
@@ -172,7 +180,7 @@ final class CartContext implements Context
     {
         $this->notificationChecker->checkNotification(
             sprintf('YOU NEED TO ORDER AT LEAST %s UNITS OF %s.', $quantity, $productName),
-            NotificationType::error()
+            NotificationType::error(),
         );
     }
 
@@ -183,7 +191,7 @@ final class CartContext implements Context
     {
         $this->notificationChecker->checkNotification(
             sprintf('YOU CAN ORDER A MAXIMUM OF %s UNITS OF %s.', $quantity, $productName),
-            NotificationType::error()
+            NotificationType::error(),
         );
     }
 
@@ -194,7 +202,7 @@ final class CartContext implements Context
     {
         $this->notificationChecker->checkNotification(
             sprintf('%s DOES NOT HAVE SUFFICIENT STOCK.', $productName),
-            NotificationType::error()
+            NotificationType::error(),
         );
     }
 
@@ -274,7 +282,7 @@ final class CartContext implements Context
      */
     public function iShouldSeeWithQuantityInMyCart($productName, $quantity): void
     {
-        Assert::same($this->cartPage->getQuantity($productName), (int)$quantity);
+        Assert::same($this->cartPage->getQuantity($productName), (int) $quantity);
     }
 
     /**

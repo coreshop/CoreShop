@@ -1,24 +1,27 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Cart\Rule\Action;
 
-use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\CartItem\Rule\Action\CartItemPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -34,8 +37,7 @@ class CartItemActionProcessor implements CartPriceRuleActionProcessorInterface
         protected CartPriceRuleVoucherRepositoryInterface $voucherRepository,
         protected FactoryInterface $cartPriceRuleItemFactory,
         protected AdjustmentFactoryInterface $adjustmentFactory,
-    )
-    {
+    ) {
     }
 
     public function applyRule(OrderInterface $cart, array $configuration, PriceRuleItemInterface $cartPriceRuleItem): bool
@@ -43,14 +45,14 @@ class CartItemActionProcessor implements CartPriceRuleActionProcessorInterface
         $overallResult = false;
         $totalDiscountGross = 0;
         $totalDiscountNet = 0;
-        
+
         foreach ($cart->getItems() as $item) {
             $voucher = $cartPriceRuleItem->getVoucherCode() ? $this->voucherRepository->findByCode($cartPriceRuleItem->getVoucherCode()) : null;
             $priceRuleItem = $item->getPriceRuleByCartPriceRule($cartPriceRuleItem->getCartPriceRule(), $voucher);
 
             $params = [
                 'voucher' => $voucher,
-                'cartPriceRule' => $cartPriceRuleItem->getCartPriceRule()
+                'cartPriceRule' => $cartPriceRuleItem->getCartPriceRule(),
             ];
 
             $existingPriceRule = null !== $priceRuleItem;
@@ -70,6 +72,7 @@ class CartItemActionProcessor implements CartPriceRuleActionProcessorInterface
 
             if (!$this->isValid($item, $cartPriceRuleItem, $configuration['conditions'], $params)) {
                 $item->removePriceRule($priceRuleItem);
+
                 continue;
             }
 
@@ -112,8 +115,8 @@ class CartItemActionProcessor implements CartPriceRuleActionProcessorInterface
                 AdjustmentInterface::CART_PRICE_RULE,
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
                 $cartPriceRuleItem->getDiscount(true),
-                $cartPriceRuleItem->getDiscount(false)
-            )
+                $cartPriceRuleItem->getDiscount(false),
+            ),
         );
 
         return $overallResult;
@@ -145,7 +148,7 @@ class CartItemActionProcessor implements CartPriceRuleActionProcessorInterface
 
             $item->removePriceRule($priceRuleItem);
         }
-        
+
         return true;
     }
 

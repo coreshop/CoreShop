@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Command;
 
@@ -22,8 +25,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class OrderExpireCommand extends Command
 {
-    public function __construct(protected OrderExpirationInterface $orderExpiration, protected int $days = 0)
-    {
+    public function __construct(
+        protected OrderExpirationInterface $orderExpiration,
+        protected int $days = 0,
+    ) {
         parent::__construct();
     }
 
@@ -36,8 +41,9 @@ final class OrderExpireCommand extends Command
                 'days',
                 'days',
                 InputOption::VALUE_OPTIONAL,
-                'Older than'
-            );
+                'Older than',
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -45,7 +51,7 @@ final class OrderExpireCommand extends Command
         $days = $this->days;
 
         if ($input->getOption('days')) {
-            $days = (int)$input->getOption('days');
+            $days = (int) $input->getOption('days');
         }
 
         $output->writeln('Running order expire job, this could take some time.');

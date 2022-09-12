@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Installer\Executor;
 
@@ -23,8 +26,11 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 final class CommandExecutor
 {
-    public function __construct(private InputInterface $input, private OutputInterface $output, private Application $application)
-    {
+    public function __construct(
+        private InputInterface $input,
+        private OutputInterface $output,
+        private Application $application,
+    ) {
     }
 
     public function runCommand($command, $parameters = [], OutputInterface $output = null): self
@@ -32,7 +38,7 @@ final class CommandExecutor
         $parameters = array_merge(
             ['command' => $command],
             $this->getDefaultParameters(),
-            $parameters
+            $parameters,
         );
 
         $this->application->setAutoExit(false);

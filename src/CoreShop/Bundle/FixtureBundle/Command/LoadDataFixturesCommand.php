@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\FixtureBundle\Command;
 
@@ -35,8 +38,10 @@ class LoadDataFixturesCommand extends Command
 
     public const DEMO_FIXTURES_PATH = 'Fixtures/Data/Demo';
 
-    public function __construct(protected DataFixturesLoader $fixtureLoader, protected DataFixturesExecutorInterface $fixtureExecutor)
-    {
+    public function __construct(
+        protected DataFixturesLoader $fixtureLoader,
+        protected DataFixturesExecutorInterface $fixtureExecutor,
+    ) {
         parent::__construct();
     }
 
@@ -52,23 +57,24 @@ class LoadDataFixturesCommand extends Command
                     'Select fixtures type to be loaded (%s or %s). By default - %s',
                     self::MAIN_FIXTURES_TYPE,
                     self::DEMO_FIXTURES_TYPE,
-                    self::MAIN_FIXTURES_TYPE
+                    self::MAIN_FIXTURES_TYPE,
                 ),
-                self::MAIN_FIXTURES_TYPE
+                self::MAIN_FIXTURES_TYPE,
             )
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Outputs list of fixtures without apply them')
             ->addOption(
                 'bundles',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
-                'A list of bundle names to load data from'
+                'A list of bundle names to load data from',
             )
             ->addOption(
                 'exclude',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
-                'A list of bundle names which fixtures should be skipped'
-            );
+                'A list of bundle names which fixtures should be skipped',
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -138,8 +144,8 @@ class LoadDataFixturesCommand extends Command
         $output->writeln(
             sprintf(
                 'List of "%s" data fixtures ...',
-                $this->getTypeOfFixtures($input)
-            )
+                $this->getTypeOfFixtures($input),
+            ),
         );
         foreach ($fixtures as $fixture) {
             $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $fixture::class));
@@ -156,21 +162,21 @@ class LoadDataFixturesCommand extends Command
         $output->writeln(
             sprintf(
                 'Loading "%s" data fixtures ...',
-                $this->getTypeOfFixtures($input)
-            )
+                $this->getTypeOfFixtures($input),
+            ),
         );
 
         $this->fixtureExecutor->setLogger(
             function (string $message) use ($output) {
                 $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
-            }
+            },
         );
         $this->fixtureExecutor->execute($fixtures, $this->getTypeOfFixtures($input));
     }
 
     protected function getTypeOfFixtures(InputInterface $input): string
     {
-        return (string)$input->getOption('fixtures-type');
+        return (string) $input->getOption('fixtures-type');
     }
 
     /**

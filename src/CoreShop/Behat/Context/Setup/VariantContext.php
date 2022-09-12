@@ -1,22 +1,24 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Variant\Model\AttributeColorInterface;
 use CoreShop\Component\Variant\Model\AttributeGroupInterface;
@@ -110,7 +112,7 @@ final class VariantContext implements Context
      */
     public function theProductIsAllowedAttributeGroup(
         ProductVariantAwareInterface $product,
-        AttributeGroupInterface $group
+        AttributeGroupInterface $group,
     ): void {
         $groups = $product->getAllowedAttributeGroups() ?? [];
 
@@ -126,7 +128,7 @@ final class VariantContext implements Context
      */
     public function theVariantUsesAttributeColor(
         ProductVariantAwareInterface $product,
-        AttributeColorInterface $attributeColor
+        AttributeColorInterface $attributeColor,
     ): void {
         $attributes = $product->getAttributes() ?? [];
 
@@ -142,7 +144,7 @@ final class VariantContext implements Context
      */
     public function theVariantUsesAttributeValue(
         ProductVariantAwareInterface $product,
-        AttributeValueInterface $attributeValue
+        AttributeValueInterface $attributeValue,
     ): void {
         $attributes = $product->getAttributes() ?? [];
 
@@ -151,7 +153,6 @@ final class VariantContext implements Context
         $product->setAttributes($attributes);
         $product->save();
     }
-
 
     /**
      * @Given /^the (variant "[^"]+") uses (attribute color "[^"]+") and (attribute value "[^"]+")$/
@@ -180,9 +181,9 @@ final class VariantContext implements Context
 
         // Check if color has 6 or 3 characters and get values
         if (strlen($color) === 6) {
-            $hex = array($color[0].$color[1], $color[2].$color[3], $color[4].$color[5]);
+            $hex = [$color[0] . $color[1], $color[2] . $color[3], $color[4] . $color[5]];
         } elseif (strlen($color) === 3) {
-            $hex = array($color[0].$color[0], $color[1].$color[1], $color[2].$color[2]);
+            $hex = [$color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2]];
         } else {
             return new RgbaColor(0, 0, 0, 0);
         }

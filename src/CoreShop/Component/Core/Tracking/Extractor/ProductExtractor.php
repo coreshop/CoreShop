@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Tracking\Extractor;
 
@@ -23,8 +26,11 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class ProductExtractor implements TrackingExtractorInterface
 {
-    public function __construct(private TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator, private ShopperContextInterface $shopperContext, private int $decimalFactor)
-    {
+    public function __construct(
+        private TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator,
+        private ShopperContextInterface $shopperContext,
+        private int $decimalFactor,
+    ) {
     }
 
     public function supports($object): bool
@@ -50,7 +56,7 @@ class ProductExtractor implements TrackingExtractorInterface
             'sku' => $object instanceof ProductInterface ? $object->getSku() : '',
             'price' => $this->taxedPurchasablePriceCalculator->getPrice(
                 $object,
-                $this->shopperContext->getContext()
+                $this->shopperContext->getContext(),
             ) / $this->decimalFactor,
             'currency' => $this->shopperContext->getCurrency()->getIsoCode(),
             'categories' => array_map(static function (CategoryInterface $category) {

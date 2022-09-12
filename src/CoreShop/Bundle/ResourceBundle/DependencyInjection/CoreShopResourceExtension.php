@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
@@ -18,7 +21,6 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreE
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\DriverProvider;
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
@@ -66,7 +68,6 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
         $this->loadResources($configs['resources'], $container);
         $this->loadPimcoreModels($configs['pimcore'], $container);
 
-
         $bodyListener = new Definition(BodyListener::class);
         $bodyListener->addTag('kernel.event_listener', [
             'event' => 'kernel.request',
@@ -78,7 +79,8 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
 
         $container
             ->registerForAutoconfiguration(ResourceInstallerInterface::class)
-            ->addTag(RegisterInstallersPass::INSTALLER_TAG);
+            ->addTag(RegisterInstallersPass::INSTALLER_TAG)
+        ;
     }
 
     private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader): void
@@ -88,7 +90,7 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
                 throw new InvalidArgumentException(sprintf(
                     'Resource "%s" uses driver "%s", but this driver has not been enabled.',
                     $alias,
-                    $resource['driver']
+                    $resource['driver'],
                 ));
             }
         }
@@ -135,17 +137,17 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
                 CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION => str_replace(
                     'Pimcore\Model\DataObject\Fieldcollection\Data\\',
                     '',
-                    $resourceConfig['classes']['model']
+                    $resourceConfig['classes']['model'],
                 ),
                 CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK => str_replace(
                     'Pimcore\Model\DataObject\Objectbrick\Data\\',
                     '',
-                    $resourceConfig['classes']['model']
+                    $resourceConfig['classes']['model'],
                 ),
                 default => str_replace(
                     'Pimcore\Model\DataObject\\',
                     '',
-                    $resourceConfig['classes']['model']
+                    $resourceConfig['classes']['model'],
                 ),
             };
 

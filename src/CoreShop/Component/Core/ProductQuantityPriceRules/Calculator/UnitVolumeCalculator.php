@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Core\ProductQuantityPriceRules\Calculator;
 
@@ -28,8 +31,10 @@ use Doctrine\Common\Collections\Collection;
 
 class UnitVolumeCalculator implements CalculatorInterface
 {
-    public function __construct(protected VolumeCalculator $inner, protected ServiceRegistryInterface $actionRegistry)
-    {
+    public function __construct(
+        protected VolumeCalculator $inner,
+        protected ServiceRegistryInterface $actionRegistry,
+    ) {
     }
 
     public function calculateForQuantity(
@@ -37,7 +42,7 @@ class UnitVolumeCalculator implements CalculatorInterface
         QuantityRangePriceAwareInterface $subject,
         float $quantity,
         int $originalPrice,
-        array $context
+        array $context,
     ): int {
         if (!isset($context['unitDefinition']) || !$context['unitDefinition'] instanceof ProductUnitDefinitionInterface) {
             return $this->inner->calculateForQuantity(
@@ -45,7 +50,7 @@ class UnitVolumeCalculator implements CalculatorInterface
                 $subject,
                 $quantity,
                 $originalPrice,
-                $context
+                $context,
             );
         }
 
@@ -62,7 +67,7 @@ class UnitVolumeCalculator implements CalculatorInterface
         }
 
         if ($subject instanceof ProductInterface && is_numeric($subject->getItemQuantityFactor()) && $subject->getItemQuantityFactor() > 1) {
-            $price = (int)($price / $subject->getItemQuantityFactor());
+            $price = (int) ($price / $subject->getItemQuantityFactor());
         }
 
         return $price;
@@ -72,7 +77,7 @@ class UnitVolumeCalculator implements CalculatorInterface
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,
         int $originalPrice,
-        array $context
+        array $context,
     ): int {
         return $this->inner->calculateForRange($range, $subject, $originalPrice, $context);
     }
@@ -80,7 +85,7 @@ class UnitVolumeCalculator implements CalculatorInterface
     protected function locate(
         Collection $ranges,
         float $quantity,
-        ProductUnitDefinitionInterface $unitDefinition
+        ProductUnitDefinitionInterface $unitDefinition,
     ): ?QuantityRangeInterface {
         if ($ranges->isEmpty()) {
             return null;
@@ -98,7 +103,7 @@ class UnitVolumeCalculator implements CalculatorInterface
                 }
 
                 return true;
-            }
+            },
         );
 
         // reset array index

@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
@@ -35,7 +38,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
     {
         $parameter = $applicationName ? sprintf(
             '%s.pimcore.admin.install.documents',
-            $applicationName
+            $applicationName,
         ) : 'coreshop.all.pimcore.admin.install.documents';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
@@ -61,7 +64,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                     $documents = Yaml::parse(file_get_contents($file));
                     $documents = $processor->processConfiguration(
                         $configurationDefinition,
-                        ['documents' => $documents]
+                        ['documents' => $documents],
                     );
                     $documents = $documents['documents'];
 
@@ -94,7 +97,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 
             foreach ($docsToInstall as $docData) {
                 $progress->setMessage(
-                    sprintf('Install Document %s/%s', $docData['path'], $docData['key'])
+                    sprintf('Install Document %s/%s', $docData['path'], $docData['key']),
                 );
 
                 foreach ($validLanguages as $language) {
@@ -115,7 +118,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                         foreach ($languagesDone as $doneLanguage) {
                             $translatedDocument = Document::getByPath(
                                 $rootDocument->getRealFullPath(
-                                ) . '/' . $doneLanguage . '/' . $docData['path'] . '/' . $docData['key']
+                                ) . '/' . $doneLanguage . '/' . $docData['path'] . '/' . $docData['key'],
                             );
 
                             if ($translatedDocument) {
@@ -149,11 +152,12 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
             if (\Pimcore\Tool::classExists($class)) {
                 /**
                  * @var Document $document
+                 *
                  * @psalm-var class-string $class
                  */
                 $document = new $class();
                 $document->setParent(
-                    Document::getByPath($rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'])
+                    Document::getByPath($rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path']),
                 );
 
                 $document->setKey(Service::getValidKey($properties['key'], 'document'));

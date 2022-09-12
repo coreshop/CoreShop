@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle;
 
@@ -38,7 +41,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
                 if (class_exists($compilerPassClassName)) {
                     if (!method_exists($compilerPassClassName, $compilerPassMethod)) {
                         throw new InvalidConfigurationException(
-                            "The 'mappingFormat' value is invalid, must be 'xml', 'yml' or 'annotation'."
+                            "The 'mappingFormat' value is invalid, must be 'xml', 'yml' or 'annotation'.",
                         );
                     }
 
@@ -48,7 +51,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
                             $container->addCompilerPass($compilerPassClassName::$compilerPassMethod(
                                 [$this->getConfigFilesPath() => $this->getModelNamespace()],
                                 [$this->getObjectManagerParameter()],
-                                sprintf('%s.driver.%s', $this->getBundlePrefix(), $driver)
+                                sprintf('%s.driver.%s', $this->getBundlePrefix(), $driver),
                             ));
 
                             break;
@@ -57,7 +60,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
                                 [$this->getModelNamespace()],
                                 [$this->getConfigFilesPath()],
                                 [sprintf('%s.object_manager', $this->getBundlePrefix())],
-                                sprintf('%s.driver.%s', $this->getBundlePrefix(), $driver)
+                                sprintf('%s.driver.%s', $this->getBundlePrefix(), $driver),
                             ));
 
                             break;
@@ -136,7 +139,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         return sprintf(
             '%s/Resources/config/doctrine/%s',
             $this->getPath(),
-            strtolower($this->getDoctrineMappingDirectory())
+            strtolower($this->getDoctrineMappingDirectory()),
         );
     }
 

@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
@@ -27,8 +30,10 @@ use Webmozart\Assert\Assert;
 
 final class AddToCartAvailabilityValidator extends ConstraintValidator
 {
-    public function __construct(private AvailabilityCheckerInterface $availabilityChecker, private StorageListItemResolverInterface $cartItemResolver)
-    {
+    public function __construct(
+        private AvailabilityCheckerInterface $availabilityChecker,
+        private StorageListItemResolverInterface $cartItemResolver,
+    ) {
     }
 
     public function validate($value, Constraint $constraint): void
@@ -57,13 +62,13 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $purchasable,
-            $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
+            $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem),
         );
 
         if (!$isStockSufficient) {
             $this->context->addViolation(
                 $constraint->message,
-                ['%stockable%' => $purchasable->getInventoryName()]
+                ['%stockable%' => $purchasable->getInventoryName()],
             );
         }
     }

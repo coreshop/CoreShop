@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
@@ -43,7 +46,7 @@ class OrderEditController extends PimcoreController
         OrderRepositoryInterface $orderRepository,
         FormFactoryInterface $formFactory,
         ErrorSerializer $errorSerializer,
-        CartManagerInterface $cartManager
+        CartManagerInterface $cartManager,
     ): JsonResponse {
         $this->isGrantedOr403();
 
@@ -52,7 +55,7 @@ class OrderEditController extends PimcoreController
 
         if (!$cart instanceof OrderInterface) {
             return $this->viewHandler->handle(
-                ['success' => false, 'message' => "Order with ID '$cartId' not found"]
+                ['success' => false, 'message' => "Order with ID '$cartId' not found"],
             );
         }
 
@@ -88,7 +91,7 @@ class OrderEditController extends PimcoreController
         FormFactoryInterface $formFactory,
         ErrorSerializer $errorSerializer,
         CartManagerInterface $cartManager,
-        CartModifier $cartModifier
+        CartModifier $cartModifier,
     ): JsonResponse {
         $this->isGrantedOr403();
 
@@ -97,13 +100,13 @@ class OrderEditController extends PimcoreController
 
         if (!$cart instanceof OrderInterface) {
             return $this->viewHandler->handle(
-                ['success' => false, 'message' => "Order with ID '$cartId' not found"]
+                ['success' => false, 'message' => "Order with ID '$cartId' not found"],
             );
         }
 
         $commands = [];
 
-        foreach ($this->getParameterFromRequest($request,'items', []) as $product) {
+        foreach ($this->getParameterFromRequest($request, 'items', []) as $product) {
             $productId = $product['cartItem']['purchasable'];
 
             $product = $purchasableStackRepository->find($productId);
@@ -133,7 +136,7 @@ class OrderEditController extends PimcoreController
                 foreach ($addsToCart->getItems() as $addToCart) {
                     $cartModifier->addToList(
                         $addToCart->getCart(),
-                        $addToCart->getCartItem()
+                        $addToCart->getCartItem(),
                     );
                 }
 
@@ -156,7 +159,7 @@ class OrderEditController extends PimcoreController
         OrderRepositoryInterface $orderRepository,
         OrderItemRepositoryInterface $orderItemRepository,
         CartManagerInterface $cartManager,
-        CartModifier $cartModifier
+        CartModifier $cartModifier,
     ): JsonResponse {
         $this->isGrantedOr403();
 
@@ -165,22 +168,22 @@ class OrderEditController extends PimcoreController
 
         if (!$cart instanceof OrderInterface) {
             return $this->viewHandler->handle(
-                ['success' => false, 'message' => "Order with ID '$cartId' not found"]
+                ['success' => false, 'message' => "Order with ID '$cartId' not found"],
             );
         }
 
-        $cartItemId = $this->getParameterFromRequest($request,'cartItem');
+        $cartItemId = $this->getParameterFromRequest($request, 'cartItem');
         $cartItem = $orderItemRepository->find($cartItemId);
 
         if (!$cartItem instanceof OrderItemInterface) {
             return $this->viewHandler->handle(
-                ['success' => false, 'message' => "Order Item with ID '$cartItemId' not found"]
+                ['success' => false, 'message' => "Order Item with ID '$cartItemId' not found"],
             );
         }
 
         if ($cartItem->getOrder()->getId() !== $cart->getId()) {
             return $this->viewHandler->handle(
-                ['success' => false, 'message' => 'Not allowed']
+                ['success' => false, 'message' => 'Not allowed'],
             );
         }
 
@@ -192,7 +195,7 @@ class OrderEditController extends PimcoreController
 
     protected function createMultipleAddToCart(
         AddMultipleToCartFactoryInterface $addMultipleToCartFactory,
-        array $addToCarts
+        array $addToCarts,
     ): AddMultipleToCartInterface {
         return $addMultipleToCartFactory->createWithMultipleAddToCarts($addToCarts);
     }
@@ -200,7 +203,7 @@ class OrderEditController extends PimcoreController
     protected function createAddToCart(
         AddToCartFactoryInterface $addToCartFactory,
         OrderInterface $cart,
-        OrderItemInterface $item
+        OrderItemInterface $item,
     ): AddToCartInterface {
         return $addToCartFactory->createWithCartAndCartItem($cart, $item);
     }

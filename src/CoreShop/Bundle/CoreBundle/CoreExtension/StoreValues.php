@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 
@@ -159,7 +162,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(
             ['/**', '*/', '//'],
             '',
-            $this->getTitle()
+            $this->getTitle(),
         ) . "\n";
         $code .= '*' . "\n";
         $code .= '* @param \CoreShop\Component\Store\Model\StoreInterface $store' . "\n";
@@ -191,7 +194,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '* Get All ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(
             ['/**', '*/', '//'],
             '',
-            $this->getTitle()
+            $this->getTitle(),
         ) . "\n";
         $code .= '* @return \CoreShop\Component\Core\Model\ProductStoreValuesInterface[]' . "\n";
         $code .= '*/' . "\n";
@@ -206,7 +209,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(
             ['/**', '*/', '//'],
             '',
-            $this->getTitle()
+            $this->getTitle(),
         ) . "\n";
         $code .= '*' . "\n";
         $code .= '* @param string $type' . "\n";
@@ -236,7 +239,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '* Set ' . str_replace(['/**', '*/', '//'], '', $key) . ' - ' . str_replace(
             ['/**', '*/', '//'],
             '',
-            $this->getTitle()
+            $this->getTitle(),
         ) . "\n";
         $code .= '*' . "\n";
         $code .= '* @param \CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValues' . "\n";
@@ -254,7 +257,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '* Set All ' . str_replace(['/**', '*/', '//'], '', $key) . ' - ' . str_replace(
             ['/**', '*/', '//'],
             '',
-            $this->getTitle()
+            $this->getTitle(),
         ) . "\n";
         $code .= '*' . "\n";
         $code .= '* @param \CoreShop\Component\Core\Model\ProductStoreValuesInterface[] $storeValues' . "\n";
@@ -271,7 +274,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '* Set ' . str_replace(['/**', '*/', '//'], '', $key) . ' - ' . str_replace(
             ['/**', '*/', '//'],
             '',
-            $this->getTitle()
+            $this->getTitle(),
         ) . "\n";
         $code .= '*' . "\n";
         $code .= '* @param string $type' . "\n";
@@ -439,7 +442,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 if ($productStoreValue->getId()) {
                     $this->getEntityManager()->getUnitOfWork()->computeChangeSet(
                         $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName()),
-                        $productStoreValue
+                        $productStoreValue,
                     );
                     $changeSet = $this->getEntityManager()->getUnitOfWork()->getEntityChangeSet($productStoreValue);
 
@@ -697,7 +700,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
         $preview = [];
         foreach ($data as $element) {
-            $preview[] = (string)$element;
+            $preview[] = (string) $element;
         }
 
         return implode(', ', $preview);
@@ -726,7 +729,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             throw new \InvalidArgumentException(sprintf(
                 'Error decoding Store Price JSON `%s`: %s',
                 $importValue,
-                json_last_error_msg()
+                json_last_error_msg(),
             ));
         }
 
@@ -795,7 +798,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     protected function clearRemovedUnitDefinitions(
         ProductStoreValuesInterface $storeValuesEntity,
         Model\DataObject\Concrete $object,
-        array $serialized
+        array $serialized,
     ) {
         $unitDefinitions = $object->getObjectVar('unitDefinitions');
 
@@ -857,11 +860,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
      */
     protected function toNumeric($value): float|int
     {
-        if (!str_contains((string)$value, '.')) {
-            return (int)$value;
+        if (!str_contains((string) $value, '.')) {
+            return (int) $value;
         }
 
-        return (float)$value;
+        return (float) $value;
     }
 
     /**
@@ -873,7 +876,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
         while (count($array)) {
             $value = reset($array);
-            $key = (string)key($array);
+            $key = (string) key($array);
             unset($array[$key]);
 
             if (str_contains($key, '.')) {

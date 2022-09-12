@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -27,8 +30,13 @@ class CustomersReport implements ReportInterface
 {
     private int $totalRecords = 0;
 
-    public function __construct(private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeContext, private PimcoreRepositoryInterface $orderRepository, private PimcoreRepositoryInterface $customerRepository)
-    {
+    public function __construct(
+        private Connection $db,
+        private MoneyFormatterInterface $moneyFormatter,
+        private LocaleContextInterface $localeContext,
+        private PimcoreRepositoryInterface $orderRepository,
+        private PimcoreRepositoryInterface $customerRepository,
+    ) {
     }
 
     public function getReportData(ParameterBag $parameterBag): array
@@ -60,13 +68,13 @@ class CustomersReport implements ReportInterface
             LIMIT $offset,$limit";
 
         $results = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
-        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($results as &$result) {
             $result['salesFormatted'] = $this->moneyFormatter->format(
-                (int)$result['sales'],
+                (int) $result['sales'],
                 'EUR',
-                $this->localeContext->getLocaleCode()
+                $this->localeContext->getLocaleCode(),
             );
         }
 

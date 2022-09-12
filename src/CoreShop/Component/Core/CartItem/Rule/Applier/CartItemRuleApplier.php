@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Core\CartItem\Rule\Applier;
 
@@ -32,7 +35,7 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
         private TaxCollectorInterface $taxCollector,
         private AddressProviderInterface $defaultAddressProvider,
         private AdjustmentFactoryInterface $adjustmentFactory,
-        private CartContextResolverInterface $cartContextResolver
+        private CartContextResolverInterface $cartContextResolver,
     ) {
     }
 
@@ -40,7 +43,7 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
         OrderItemInterface $orderItem,
         PriceRuleItemInterface $cartPriceRuleItem,
         int $discount,
-        bool $withTax = false
+        bool $withTax = false,
     ): void {
         $this->apply($orderItem, $cartPriceRuleItem, $discount, $withTax, false);
     }
@@ -49,7 +52,7 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
         OrderItemInterface $orderItem,
         PriceRuleItemInterface $cartPriceRuleItem,
         int $discount,
-        bool $withTax = false
+        bool $withTax = false,
     ): void {
         $this->apply($orderItem, $cartPriceRuleItem, $discount, $withTax, true);
     }
@@ -59,7 +62,7 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
         PriceRuleItemInterface $cartPriceRuleItem,
         int $discount,
         $withTax = false,
-        $positive = false
+        $positive = false,
     ): void {
         $order = $orderItem->getOrder();
         $context = $this->cartContextResolver->resolveCartContext($order);
@@ -90,7 +93,7 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
         $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
             $orderItem->getProduct(),
             $order->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($order),
-            $context
+            $context,
         );
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
@@ -111,9 +114,9 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
             }
         }
 
-        $itemDiscountNet = (int)round($itemDiscountNet);
-        $itemDiscountGross = (int)round($itemDiscountGross);
-        $discountFloat = (int)round($discountFloat);
+        $itemDiscountNet = (int) round($itemDiscountNet);
+        $itemDiscountGross = (int) round($itemDiscountGross);
+        $discountFloat = (int) round($discountFloat);
 
         //Add missing cents caused by rounding issues
         if ($discountFloat > ($withTax ? $itemDiscountNet : $itemDiscountGross)) {
@@ -136,8 +139,8 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
                     $this->taxCollector->collectTaxesFromGross(
                         $taxCalculator,
                         ($positive ? $amountGross : -1 * $amountGross),
-                        $taxItems->getItems()
-                    )
+                        $taxItems->getItems(),
+                    ),
                 );
             } else {
                 /** @psalm-suppress InvalidArgument */
@@ -145,8 +148,8 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
                     $this->taxCollector->collectTaxes(
                         $taxCalculator,
                         ($positive ? $amountNet : -1 * $amountNet),
-                        $taxItems->getItems()
-                    )
+                        $taxItems->getItems(),
+                    ),
                 );
             }
         }
@@ -156,8 +159,8 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
                 AdjustmentInterface::CART_PRICE_RULE,
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
                 $positive ? $amountGross : (-1 * $amountGross),
-                $positive ? $amountNet : (-1 * $amountNet)
-            )
+                $positive ? $amountNet : (-1 * $amountNet),
+            ),
         );
 
         $cartPriceRuleItem->setDiscount($positive ? $itemDiscountNet : (-1 * $itemDiscountNet), false);

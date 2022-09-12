@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\PayumBundle\Action\Paypal\ExpressCheckout;
 
@@ -22,8 +25,10 @@ use Payum\Core\Request\Convert;
 
 final class ConvertPaymentAction implements ActionInterface
 {
-    public function __construct(private int $decimalFactor, private int $decimalPrecision)
-    {
+    public function __construct(
+        private int $decimalFactor,
+        private int $decimalPrecision,
+    ) {
     }
 
     /**
@@ -99,7 +104,7 @@ final class ConvertPaymentAction implements ActionInterface
         if ($customer = $order->getCustomer()) {
             $details['EMAIL'] = $customer->getEmail();
         }
-        
+
         $invoiceAddress = $order->getInvoiceAddress();
 
         if ($invoiceAddress) {
@@ -112,7 +117,6 @@ final class ConvertPaymentAction implements ActionInterface
             $details['PAYMENTREQUEST_0_SHIPTOSTREET'] = $invoiceAddress->getStreet();
             $details['PAYMENTREQUEST_0_SHIPTOCITY'] = $invoiceAddress->getCity();
             $details['PAYMENTREQUEST_0_SHIPTOZIP'] = $invoiceAddress->getPostcode();
-
 
             if ($invoiceAddress->getPhoneNumber() !== null) {
                 $details['PAYMENTREQUEST_0_SHIPTOPHONENUM'] = $invoiceAddress->getPhoneNumber();

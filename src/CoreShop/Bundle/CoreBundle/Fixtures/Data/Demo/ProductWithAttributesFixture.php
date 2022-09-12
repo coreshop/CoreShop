@@ -1,38 +1,34 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
-use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Barcode;
 use Faker\Provider\Lorem;
-use Pimcore\File;
-use Pimcore\Model\DataObject\Folder;
-use Pimcore\Tool;
 
 class ProductWithAttributesFixture extends AbstractProductFixture
 {
     public function getDependencies(): array
     {
         return array_merge(parent::getDependencies(), [
-            AttributeGroupsFixture::class
+            AttributeGroupsFixture::class,
         ]);
     }
 
@@ -47,72 +43,72 @@ class ProductWithAttributesFixture extends AbstractProductFixture
         $possibleVariants = [
             [
                 [
-                    'size' => 's'
+                    'size' => 's',
                 ],
                 [
-                    'size' => 'm'
+                    'size' => 'm',
                 ],
                 [
-                    'size' => 'l'
+                    'size' => 'l',
                 ],
                 [
-                    'size' => 'xl'
-                ],
-            ],
-            [
-                [
-                    'color' => 'red',
-                    'size' => 's'
-                ],
-                [
-                    'color' => 'red',
-                    'size' => 'm'
-                ],
-                [
-                    'color' => 'red',
-                    'size' => 'l'
-                ],
-                [
-                    'color' => 'red',
-                    'size' => 'xl'
-                ],
-                [
-                    'color' => 'black',
-                    'size' => 's'
-                ],
-                [
-                    'color' => 'black',
-                    'size' => 'm'
-                ],
-                [
-                    'color' => 'black',
-                    'size' => 'l'
-                ],
-                [
-                    'color' => 'black',
-                    'size' => 'xl'
-                ],
-                [
-                    'color' => 'blue',
-                    'size' => 's'
-                ],
-                [
-                    'color' => 'blue',
-                    'size' => 'm'
-                ],
-                [
-                    'color' => 'blue',
-                    'size' => 'l'
-                ],
-                [
-                    'color' => 'blue',
-                    'size' => 'xl'
+                    'size' => 'xl',
                 ],
             ],
             [
                 [
                     'color' => 'red',
                     'size' => 's',
+                ],
+                [
+                    'color' => 'red',
+                    'size' => 'm',
+                ],
+                [
+                    'color' => 'red',
+                    'size' => 'l',
+                ],
+                [
+                    'color' => 'red',
+                    'size' => 'xl',
+                ],
+                [
+                    'color' => 'black',
+                    'size' => 's',
+                ],
+                [
+                    'color' => 'black',
+                    'size' => 'm',
+                ],
+                [
+                    'color' => 'black',
+                    'size' => 'l',
+                ],
+                [
+                    'color' => 'black',
+                    'size' => 'xl',
+                ],
+                [
+                    'color' => 'blue',
+                    'size' => 's',
+                ],
+                [
+                    'color' => 'blue',
+                    'size' => 'm',
+                ],
+                [
+                    'color' => 'blue',
+                    'size' => 'l',
+                ],
+                [
+                    'color' => 'blue',
+                    'size' => 'xl',
+                ],
+            ],
+            [
+                [
+                    'color' => 'red',
+                    'size' => 's',
                     'season' => 'winter',
                 ],
                 [
@@ -230,7 +226,7 @@ class ProductWithAttributesFixture extends AbstractProductFixture
                     'size' => 'xl',
                     'season' => 'summer',
                 ],
-            ]
+            ],
         ];
 
         for ($i = 0; $i < $productsCount; ++$i) {
@@ -248,17 +244,17 @@ class ProductWithAttributesFixture extends AbstractProductFixture
             $product->setAllowedAttributeGroups($allowedAttributeGroups);
             $product->save();
 
-            for ($x = 0; $x < $variants; $x++) {
+            for ($x = 0; $x < $variants; ++$x) {
                 if (count($variantType) === 0) {
                     break;
                 }
-                
+
                 $variantAttributesKey = array_rand($variantType);
                 $variantAttributes = $variantType[$variantAttributesKey];
 
                 unset($variantType[$variantAttributesKey]);
 
-                $attributes = array_map(function($key, $value) {
+                $attributes = array_map(function ($key, $value) {
                     if ($key === 'color') {
                         return $this->container->get('coreshop.repository.attribute_color')->findOneBy(['name' => $value]);
                     }

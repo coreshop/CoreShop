@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Component\Variant\Model\Resolved;
 
@@ -20,8 +23,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ResolvedAttributeGroup
 {
     private AttributeGroupInterface $group;
+
     private ArrayCollection $attributes;
+
     private string $type;
+
     private int $selected = 0;
 
     public function __construct()
@@ -42,7 +48,7 @@ class ResolvedAttributeGroup
     public function getAttributes(): array
     {
         $attributes = $this->attributes->toArray();
-        usort($attributes, static fn(ResolvedAttribute $a, ResolvedAttribute $b) => $a->getAttribute()->getSorting() <=> $b->getAttribute()->getSorting());
+        usort($attributes, static fn (ResolvedAttribute $a, ResolvedAttribute $b) => $a->getAttribute()->getSorting() <=> $b->getAttribute()->getSorting());
 
         return $attributes;
     }

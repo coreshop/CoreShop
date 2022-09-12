@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -133,8 +136,7 @@ class CustomerController extends FrontendController
 
         if ($address instanceof AddressInterface) {
             $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_EDIT');
-        }
-        else {
+        } else {
             $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_ADD');
         }
 
@@ -180,7 +182,7 @@ class CustomerController extends FrontendController
                 $this->addFlash('success', $this->get('translator')->trans(sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated')));
 
                 return $this->redirect(
-                    $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_customer_addresses'))
+                    $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_customer_addresses')),
                 );
             }
         }
@@ -204,7 +206,7 @@ class CustomerController extends FrontendController
         }
 
         $address = $this->get('coreshop.repository.address')->find(
-            $this->getParameterFromRequest($request, 'address')
+            $this->getParameterFromRequest($request, 'address'),
         );
 
         if (!$address instanceof AddressInterface) {

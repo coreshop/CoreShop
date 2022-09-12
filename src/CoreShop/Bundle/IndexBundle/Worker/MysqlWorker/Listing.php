@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 
@@ -19,7 +22,6 @@ use CoreShop\Bundle\IndexBundle\Worker\AbstractListing;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing\Dao;
 use CoreShop\Component\Index\Condition\ConditionInterface;
-use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Condition\MatchCondition;
 use CoreShop\Component\Index\Listing\ExtendedListingInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
@@ -28,7 +30,6 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Order\OrderInterface;
 use CoreShop\Component\Index\Order\SimpleOrder;
 use CoreShop\Component\Index\Worker\WorkerInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pimcore\Model\DataObject\AbstractObject;
@@ -87,8 +88,11 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     protected WorkerInterface $worker;
 
-    public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection)
-    {
+    public function __construct(
+        IndexInterface $index,
+        WorkerInterface $worker,
+        Connection $connection,
+    ) {
         parent::__construct($index, $worker);
 
         if (!$this->worker instanceof MysqlWorker) {
@@ -316,7 +320,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         $fieldName,
         $type,
         $countValues = false,
-        $fieldNameShouldBeExcluded = true
+        $fieldNameShouldBeExcluded = true,
     ) {
         $excludedFieldName = $fieldName;
         if (!$fieldNameShouldBeExcluded) {

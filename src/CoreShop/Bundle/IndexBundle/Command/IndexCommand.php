@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Command;
 
@@ -34,7 +37,7 @@ final class IndexCommand extends Command
     public function __construct(
         private RepositoryInterface $indexRepository,
         private IndexUpdaterServiceInterface $indexUpdater,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
     ) {
         parent::__construct();
     }
@@ -48,8 +51,9 @@ final class IndexCommand extends Command
                 'indices',
                 InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
                 'IDs or names of Indices which are re-indexed',
-                null
-            );
+                null,
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -81,11 +85,11 @@ final class IndexCommand extends Command
                 $this->dispatchInfo('status', 'No Indices available, you have to first create an Index.');
             } else {
                 $output->writeln(
-                    sprintf('<info>No Indices found for %s</info>', implode(', ', $indexIds))
+                    sprintf('<info>No Indices found for %s</info>', implode(', ', $indexIds)),
                 );
                 $this->dispatchInfo(
                     'status',
-                    sprintf('No Indices found for %s', implode(', ', $indexIds))
+                    sprintf('No Indices found for %s', implode(', ', $indexIds)),
                 );
             }
 
@@ -115,6 +119,7 @@ final class IndexCommand extends Command
             $list = '\Pimcore\Model\DataObject\\' . $class . '\Listing';
             /**
              * @var Listing $list
+             *
              * @psalm-suppress UndefinedClass
              */
             $list = new $list();
@@ -149,7 +154,7 @@ final class IndexCommand extends Command
             $output->writeln(sprintf('<info>Processing %s Objects of class "%s"</info>', $total, $class));
             $progress = new ProgressBar($output, $total);
             $progress->setFormat(
-                '%current%/%max% [%bar%] %percent:3s%% (%elapsed:6s%/%estimated:-6s%) %memory:6s%: %message%'
+                '%current%/%max% [%bar%] %percent:3s%% (%elapsed:6s%/%estimated:-6s%) %memory:6s%: %message%',
             );
             $progress->start();
 

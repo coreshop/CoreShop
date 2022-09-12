@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
@@ -25,8 +28,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DropDatabaseTablesCommand extends Command
 {
-    public function __construct(private array $coreShopResources, private EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private array $coreShopResources,
+        private EntityManagerInterface $entityManager,
+    ) {
         parent::__construct();
     }
 
@@ -42,20 +47,21 @@ EOT
             )
             ->addArgument(
                 'application-name',
-                InputArgument::REQUIRED
+                InputArgument::REQUIRED,
             )
             ->addOption(
                 'dump-sql',
                 null,
                 InputOption::VALUE_NONE,
-                'Dumps the generated SQL statements to the screen (does not execute them).'
+                'Dumps the generated SQL statements to the screen (does not execute them).',
             )
             ->addOption(
                 'force',
                 'f',
                 InputOption::VALUE_NONE,
-                'Causes the generated SQL statements to be physically executed against your database.'
-            );
+                'Causes the generated SQL statements to be physically executed against your database.',
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

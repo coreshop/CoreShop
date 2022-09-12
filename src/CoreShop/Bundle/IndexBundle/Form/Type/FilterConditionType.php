@@ -1,23 +1,25 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -27,8 +29,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FilterConditionType extends AbstractResourceType
 {
-    public function __construct(string $dataClass, array $validationGroups, private FormTypeRegistryInterface $formTypeRegistry)
-    {
+    public function __construct(
+        string $dataClass,
+        array $validationGroups,
+        private FormTypeRegistryInterface $formTypeRegistry,
+    ) {
         parent::__construct($dataClass, $validationGroups);
     }
 
@@ -41,7 +46,8 @@ class FilterConditionType extends AbstractResourceType
             ->add('type', FilterConditionChoiceType::class)
             ->add('label', TextType::class)
             ->add('sort', IntegerType::class)
-            ->add('quantityUnit', TextType::class);
+            ->add('quantityUnit', TextType::class)
+        ;
 
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -76,7 +82,8 @@ class FilterConditionType extends AbstractResourceType
                 }
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['type'], 'default'));
-            });
+            })
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -85,7 +92,8 @@ class FilterConditionType extends AbstractResourceType
 
         $resolver
             ->setDefault('configuration_type', null)
-            ->setAllowedTypes('configuration_type', ['string', 'null']);
+            ->setAllowedTypes('configuration_type', ['string', 'null'])
+        ;
     }
 
     protected function addConfigurationFields(FormInterface $form, string $configurationType): void

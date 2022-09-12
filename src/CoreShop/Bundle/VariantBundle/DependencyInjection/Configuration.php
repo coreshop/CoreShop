@@ -1,25 +1,28 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\VariantBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use CoreShop\Component\Variant\Model\AttributeColorInterface;
 use CoreShop\Component\Variant\Model\AttributeGroupInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
 use CoreShop\Component\Variant\Model\AttributeValueInterface;
-use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -40,7 +43,8 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('redirect_to_main_variant')->defaultTrue()
-            ->end();
+            ->end()
+        ;
 
         return $treeBuilder;
     }
@@ -55,7 +59,8 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('attribute')->defaultValue(AttributeInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
-        ->end();
+        ->end()
+        ;
     }
 
     private function addModelsSection(ArrayNodeDefinition $node): void
@@ -118,7 +123,8 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
@@ -145,6 +151,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
-        ->end();
+        ->end()
+        ;
     }
 }

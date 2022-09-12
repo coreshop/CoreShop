@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Expiration;
 
@@ -22,8 +25,11 @@ use Pimcore\Model\DataObject\Concrete;
 
 final class OrderExpiration implements OrderExpirationInterface
 {
-    public function __construct(private OrderRepositoryInterface $orderRepository, private StateMachineApplier $stateMachineApplier, private HistoryLoggerInterface $historyLogger)
-    {
+    public function __construct(
+        private OrderRepositoryInterface $orderRepository,
+        private StateMachineApplier $stateMachineApplier,
+        private HistoryLoggerInterface $historyLogger,
+    ) {
     }
 
     public function expire(int $days, array $params = []): void
@@ -38,13 +44,13 @@ final class OrderExpiration implements OrderExpirationInterface
             $this->stateMachineApplier->apply(
                 $order,
                 OrderTransitions::IDENTIFIER,
-                OrderTransitions::TRANSITION_CANCEL
+                OrderTransitions::TRANSITION_CANCEL,
             );
 
             if ($order instanceof Concrete) {
                 $this->historyLogger->log(
                     $order,
-                    'Automatic Expiration Order Cancellation'
+                    'Automatic Expiration Order Cancellation',
                 );
             }
         }

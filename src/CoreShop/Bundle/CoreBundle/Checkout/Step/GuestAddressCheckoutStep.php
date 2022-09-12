@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
@@ -29,8 +32,10 @@ use Webmozart\Assert\Assert;
 
 class GuestAddressCheckoutStep implements CheckoutStepInterface
 {
-    public function __construct(private FormFactoryInterface $formFactory, private CartManagerInterface $cartManager)
-    {
+    public function __construct(
+        private FormFactoryInterface $formFactory,
+        private CartManagerInterface $cartManager,
+    ) {
     }
 
     public function getIdentifier(): string
@@ -67,7 +72,7 @@ class GuestAddressCheckoutStep implements CheckoutStepInterface
             $cart = $form->getData();
 
             if ($form->get('useInvoiceAsShipping')->getData()) {
-                $cart->getInvoiceAddress()->setParent(Service::createFolderByPath($cart.'/addresses'));
+                $cart->getInvoiceAddress()->setParent(Service::createFolderByPath($cart . '/addresses'));
                 $cart->getInvoiceAddress()->setKey(uniqid());
                 $cart->getInvoiceAddress()->setPublished(true);
                 $cart->getInvoiceAddress()->save();
@@ -75,7 +80,7 @@ class GuestAddressCheckoutStep implements CheckoutStepInterface
                 $cart->setShippingAddress($cart->getInvoiceAddress());
             } else {
                 foreach ([$cart->getInvoiceAddress(), $cart->getShippingAddress()] as $address) {
-                    $address->setParent(Service::createFolderByPath($cart.'/addresses'));
+                    $address->setParent(Service::createFolderByPath($cart . '/addresses'));
                     $address->setKey(uniqid());
                     $address->setPublished(true);
                     $address->save();

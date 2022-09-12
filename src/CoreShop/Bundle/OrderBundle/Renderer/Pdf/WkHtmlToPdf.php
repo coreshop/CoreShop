@@ -1,16 +1,19 @@
 <?php
-/**
- * CoreShop.
+declare(strict_types=1);
+
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
  * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
-
-declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Renderer\Pdf;
 
@@ -19,8 +22,10 @@ use Symfony\Component\Process\Process;
 
 final class WkHtmlToPdf implements PdfRendererInterface
 {
-    public function __construct(private string $kernelCacheDir, private string $kernelRootDir)
-    {
+    public function __construct(
+        private string $kernelCacheDir,
+        private string $kernelRootDir,
+    ) {
     }
 
     public function fromString(string $string, string $header = '', string $footer = '', array $config = []): string
@@ -193,11 +198,11 @@ final class WkHtmlToPdf implements PdfRendererInterface
 
     private function getWkHtmlToPdfBinary(): string
     {
-        return (string)Console::getExecutable('wkhtmltopdf', true);
+        return (string) Console::getExecutable('wkhtmltopdf', true);
     }
 
     private function getXvfbBinary(): string
     {
-        return (string)Console::getExecutable('xvfb-run', false);
+        return (string) Console::getExecutable('xvfb-run', false);
     }
 }
