@@ -20,14 +20,13 @@ namespace CoreShop\Bundle\MenuBundle;
 
 use Composer\InstalledVersions;
 use CoreShop\Bundle\MenuBundle\DependencyInjection\CompilerPass\MenuBuilderPass;
-use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopMenuBundle extends AbstractPimcoreBundle implements DependentBundleInterface, ComposerPackageBundleInterface
+final class CoreShopMenuBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
     public static function registerDependentBundles(BundleCollection $collection): void
     {
