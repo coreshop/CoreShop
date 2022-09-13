@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle;
 
 use Composer\InstalledVersions;
-use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
 use CoreShop\Bundle\FrontendBundle\DependencyInjection\CompilerPass\RegisterFrontendControllerPass;
 use EmailizrBundle\EmailizrBundle;
@@ -55,20 +54,25 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
 
     public function getVersion(): string
     {
+        if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
+        }
+
+        return $this->getComposerVersion();
+    }
+
+    public function getComposerVersion(): string
+    {
         $bundleName = 'coreshop/frontend-bundle';
 
         if (class_exists(InstalledVersions::class)) {
             if (InstalledVersions::isInstalled('coreshop/core-shop')) {
-                return InstalledVersions::getVersion('coreshop/core-shop');
+                return InstalledVersions::getPrettyVersion('coreshop/core-shop');
             }
 
             if (InstalledVersions::isInstalled($bundleName)) {
-                return InstalledVersions::getVersion($bundleName);
+                return InstalledVersions::getPrettyVersion($bundleName);
             }
-        }
-
-        if (class_exists(Version::class)) {
-            return Version::getVersion();
         }
 
         return '';

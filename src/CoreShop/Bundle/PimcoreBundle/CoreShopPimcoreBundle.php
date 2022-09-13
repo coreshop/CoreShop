@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\PimcoreBundle;
 
 use Composer\InstalledVersions;
-use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\ExpressionLanguageServicePass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridActionPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridFilterPass;
@@ -43,20 +42,25 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
 
     public function getVersion(): string
     {
+        if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
+        }
+
+        return $this->getComposerVersion();
+    }
+
+    public function getComposerVersion(): string
+    {
         $bundleName = 'coreshop/pimcore-bundle';
 
         if (class_exists(InstalledVersions::class)) {
             if (InstalledVersions::isInstalled('coreshop/core-shop')) {
-                return InstalledVersions::getVersion('coreshop/core-shop');
+                return InstalledVersions::getPrettyVersion('coreshop/core-shop');
             }
 
             if (InstalledVersions::isInstalled($bundleName)) {
-                return InstalledVersions::getVersion($bundleName);
+                return InstalledVersions::getPrettyVersion($bundleName);
             }
-        }
-
-        if (class_exists(Version::class)) {
-            return Version::getVersion();
         }
 
         return '';
