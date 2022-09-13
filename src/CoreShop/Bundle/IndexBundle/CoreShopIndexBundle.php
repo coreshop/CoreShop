@@ -32,12 +32,13 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreter
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRendererTypesPass;
 use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopIndexBundle extends AbstractResourceBundle implements PimcoreBundleInterface
+final class CoreShopIndexBundle extends AbstractResourceBundle implements ComposerPackageBundleInterface
 {
     public static function registerDependentBundles(BundleCollection $collection): void
     {
@@ -74,35 +75,9 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         return 'CoreShop\Component\Index\Model';
     }
 
-    public function getNiceName(): string
+    public function getPackageName(): string
     {
-        return 'CoreShop - Index';
-    }
-
-    public function getDescription(): string
-    {
-        return 'CoreShop - Index Bundle';
-    }
-
-    public function getVersion(): string
-    {
-        $bundleName = 'coreshop/pimcore-bundle';
-
-        if (class_exists(InstalledVersions::class)) {
-            if (InstalledVersions::isInstalled('coreshop/core-shop')) {
-                return InstalledVersions::getVersion('coreshop/core-shop');
-            }
-
-            if (InstalledVersions::isInstalled($bundleName)) {
-                return InstalledVersions::getVersion($bundleName);
-            }
-        }
-
-        if (class_exists(Version::class)) {
-            return Version::getVersion();
-        }
-
-        return '';
+        return 'coreshop/index-bundle';
     }
 
     public function getInstaller(): ?Installer
@@ -117,30 +92,5 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         }
 
         return null;
-    }
-
-    public function getAdminIframePath(): ?string
-    {
-        return null;
-    }
-
-    public function getJsPaths(): array
-    {
-        return [];
-    }
-
-    public function getCssPaths(): array
-    {
-        return [];
-    }
-
-    public function getEditmodeJsPaths(): array
-    {
-        return [];
-    }
-
-    public function getEditmodeCssPaths(): array
-    {
-        return [];
     }
 }

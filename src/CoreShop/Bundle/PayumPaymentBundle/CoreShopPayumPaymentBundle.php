@@ -22,13 +22,14 @@ use CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle;
 use CoreShop\Bundle\PayumPaymentBundle\DependencyInjection\Compiler\RegisterGatewayConfigTypePass;
 use CoreShop\Bundle\PayumPaymentBundle\DependencyInjection\Compiler\RegisterPaymentSettingsFormsPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Extension\Bundle\Installer\InstallerInterface;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class CoreShopPayumPaymentBundle extends AbstractResourceBundle implements PimcoreBundleInterface
+class CoreShopPayumPaymentBundle extends AbstractResourceBundle implements PimcoreBundleInterface, ComposerPackageBundleInterface
 {
     public function getSupportedDrivers(): array
     {
@@ -55,6 +56,11 @@ class CoreShopPayumPaymentBundle extends AbstractResourceBundle implements Pimco
     protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\PayumPayment\Model';
+    }
+
+    public function getPackageName(): string
+    {
+        return 'coreshop/payum-payment-bundle';
     }
 
     public function getNiceName(): string

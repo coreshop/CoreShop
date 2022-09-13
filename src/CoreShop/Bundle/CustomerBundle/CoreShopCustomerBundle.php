@@ -22,6 +22,8 @@ use CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler\CompositeCustome
 use CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use Pimcore\Extension\Bundle\Installer\InstallerInterface;
+use Pimcore\Routing\RouteReferenceInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopCustomerBundle extends AbstractResourceBundle

@@ -19,15 +19,15 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MenuBundle;
 
 use Composer\InstalledVersions;
-use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\MenuBundle\DependencyInjection\CompilerPass\MenuBuilderPass;
+use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopMenuBundle extends AbstractPimcoreBundle implements DependentBundleInterface
+final class CoreShopMenuBundle extends AbstractPimcoreBundle implements DependentBundleInterface, ComposerPackageBundleInterface
 {
     public static function registerDependentBundles(BundleCollection $collection): void
     {
@@ -41,6 +41,32 @@ final class CoreShopMenuBundle extends AbstractPimcoreBundle implements Dependen
         $container->addCompilerPass(new MenuBuilderPass());
     }
 
+    public function getVersion(): string
+    {
+        if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion().' ('.$this->getComposerVersion().')';
+        }
+
+        return $this->getComposerVersion();
+    }
+
+    public function getComposerVersion(): string
+    {
+        $bundleName = 'coreshop/menu-bundle';
+
+        if (class_exists(InstalledVersions::class)) {
+            if (InstalledVersions::isInstalled('coreshop/core-shop')) {
+                return InstalledVersions::getPrettyVersion('coreshop/core-shop');
+            }
+
+            if (InstalledVersions::isInstalled($bundleName)) {
+                return InstalledVersions::getPrettyVersion($bundleName);
+            }
+        }
+
+        return '';
+    }
+
     public function getNiceName(): string
     {
         return 'CoreShop - Menu';
@@ -51,24 +77,8 @@ final class CoreShopMenuBundle extends AbstractPimcoreBundle implements Dependen
         return 'CoreShop - Menu Bundle';
     }
 
-    public function getVersion(): string
+    public function getPackageName(): string
     {
-        $bundleName = 'coreshop/pimcore-bundle';
-
-        if (class_exists(InstalledVersions::class)) {
-            if (InstalledVersions::isInstalled('coreshop/core-shop')) {
-                return InstalledVersions::getVersion('coreshop/core-shop');
-            }
-
-            if (InstalledVersions::isInstalled($bundleName)) {
-                return InstalledVersions::getVersion($bundleName);
-            }
-        }
-
-        if (class_exists(Version::class)) {
-            return Version::getVersion();
-        }
-
-        return '';
+        return 'coreshop/pimcore-bundle';
     }
 }

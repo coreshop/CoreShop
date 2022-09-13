@@ -39,6 +39,7 @@ use CoreShop\Bundle\PayumBundle\CoreShopPayumBundle;
 use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreShopProductQuantityPriceRulesBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\SEOBundle\CoreShopSEOBundle;
 use CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle;
@@ -54,7 +55,7 @@ use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopCoreBundle extends AbstractResourceBundle implements PimcoreBundleInterface
+final class CoreShopCoreBundle extends AbstractResourceBundle implements ComposerPackageBundleInterface
 {
     public function getSupportedDrivers(): array
     {
@@ -102,6 +103,12 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $collection->addBundle(new CoreShopWishlistBundle(), 1500);
     }
 
+    public function getPackageName(): string
+    {
+        return 'coreshop/core-bundle';
+    }
+
+
     protected function getModelNamespace(): string
     {
         return 'CoreShop\Component\Core\Model';
@@ -115,30 +122,6 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     public function getDescription(): string
     {
         return 'CoreShop - Pimcore eCommerce';
-    }
-
-    public function getVersion(): string
-    {
-        return Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
-    }
-
-    public function getComposerVersion(): string
-    {
-        if (class_exists(InstalledVersions::class)) {
-            return InstalledVersions::getVersion('coreshop/core-shop');
-        }
-
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        if (class_exists(Versions::class)) {
-            /**
-             * @psalm-suppress DeprecatedClass
-             */
-            return Versions::getVersion('coreshop/core-shop');
-        }
-
-        return '';
     }
 
     public function getInstaller(): Installer
