@@ -125,6 +125,7 @@
     "vimeo/psalm": "^4.10"
   },
   "conflict": {
+    "jms/serializer-bundle": "4.1.0"
   },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."
