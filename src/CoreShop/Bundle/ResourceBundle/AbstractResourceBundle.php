@@ -171,10 +171,15 @@ abstract class AbstractResourceBundle extends Bundle implements PimcoreBundleInt
     private function getResourceBundleName(): array
     {
         $reflect = new \ReflectionClass($this);
+        $split = preg_split('/(?=[A-Z])/', $reflect->getShortName()):
+
+        if (false === $split) {
+            return [];
+        }
 
         return array_values(array_filter(
-            preg_split('/(?=[A-Z])/', $reflect->getShortName()),
-            static fn($value) => !is_null($value) && $value !== ''
+            $split,
+            static fn(string $value) => $value !== ''
         ));
     }
 
