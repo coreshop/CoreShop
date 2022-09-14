@@ -11,9 +11,7 @@ services:
     coreshop.form_registry.payum_gateway_config:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    coreshop.payum.http_client:
-        class: Payum\Core\HttpClientInterface
-        factory: [Payum\Core\Bridge\Guzzle\HttpClientFactory, create]
+    coreshop.payum.http_client: '@psr18.http_client'
 
     CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction:
         tags:
