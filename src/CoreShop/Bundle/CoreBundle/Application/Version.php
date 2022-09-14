@@ -26,16 +26,16 @@ final class Version
 
     public const RELEASE_VERSION = '0';
 
-    public const EXTRA_VERSION = 'beta.5';
+    public const EXTRA_VERSION = '';
 
     public static function getVersion(): string
     {
-        return sprintf(
-            '%s.%s.%s-%s',
-            self::MAJOR_VERSION,
-            self::MINOR_VERSION,
-            self::RELEASE_VERSION,
-            self::EXTRA_VERSION,
-        );
+        $version = sprintf('%s.%s.%s', self::MAJOR_VERSION, self::MINOR_VERSION, self::RELEASE_VERSION);
+
+        if (self::EXTRA_VERSION !== '') {
+            $version = sprintf('%s-%s', $version, self::EXTRA_VERSION);
+        }
+
+        return $version;
     }
 }

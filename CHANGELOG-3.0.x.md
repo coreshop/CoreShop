@@ -1,3 +1,23 @@
+# 3.0.0
+
+CoreShop is now Licenced under CCL and GPLv3! (https://github.com/coreshop/CoreShop/pull/2061)
+
+## Feature
+ - [IndexBundle] clone index, change default name of cloned item (https://github.com/coreshop/CoreShop/pull/2056)
+ - [CartPriceRules] introduce feature to allow cart-price rules based on cart-items (https://github.com/coreshop/CoreShop/pull/2057, https://github.com/coreshop/CoreShop/pull/2060)
+ - [Wishlist] Introduce a persisted wishlist - StorageListBundle now works as a base for Order and Wishlist (https://github.com/coreshop/CoreShop/pull/2030, https://github.com/coreshop/CoreShop/pull/2066)
+ - [Reports] Support filtering for order type (https://github.com/coreshop/CoreShop/pull/2055)
+ - [Symfony] fix Injecting @session is deprecated with Symfony (https://github.com/coreshop/CoreShop/pull/2035)
+ - [AccessManagement] prepare CoreShop for advanced access-management (https://github.com/coreshop/CoreShop/pull/2063)
+ - [Pimcore] 10.5 as min requirement (https://github.com/coreshop/CoreShop/pull/2067)
+
+## Bugs
+ - [VariantBundle] Serializer: Allow $innerObject to be null (https://github.com/coreshop/CoreShop/pull/2058, https://github.com/coreshop/CoreShop/pull/2069)
+ - [DataHub] Fix non unique typename (https://github.com/coreshop/CoreShop/pull/2004)
+ - [Translations] Update admin-translations.yml (https://github.com/coreshop/CoreShop/pull/2064)
+ - [Pimcore UI] Make default Product Unit unselectable (https://github.com/coreshop/CoreShop/pull/2065)
+ - [Variant] allow recursive attributes and variants (https://github.com/coreshop/CoreShop/pull/2068)
+
 # 3.0.0-beta.5
  > This will be the last BETA for the final release.
 
