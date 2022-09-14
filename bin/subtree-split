@@ -35,7 +35,7 @@ function split_new_repo()
         git push origin master;
     );
 
-    SHA1=`./bin/splitsh-lite --prefix=$1`
+    SHA1=`./bin/splitsh-lite-arm --prefix=$1`
     git fetch $2
     git push $2 "$SHA1:$CURRENT_BRANCH" -f
 }
@@ -107,6 +107,7 @@ remote payum-payment-bundle git@github.com:CoreShop/PayumPaymentBundle.git
 remote user-bundle git@github.com:CoreShop/UserBundle.git
 remote optimistic-entity-lock-bundle git@github.com:CoreShop/OptimisticEntityLockBundle.git
 remote variant-bundle git@github.com:CoreShop/VariantBundle.git
+remote storage-list-bundle git@github.com:CoreShop/StorageListBundle.git
 
 split 'src/CoreShop/Component/Resource' resource
 split 'src/CoreShop/Component/Registry' registry
@@ -169,3 +170,4 @@ split 'src/CoreShop/Bundle/UserBundle' user-bundle
 split 'src/CoreShop/Bundle/PayumPaymentBundle' payum-payment-bundle
 split 'src/CoreShop/Bundle/OptimisticEntityLockBundle' optimistic-entity-lock-bundle
 split 'src/CoreShop/Bundle/VariantBundle' variant-bundle
+split 'src/CoreShop/Bundle/StorageListBundle' storage-list-bundle
