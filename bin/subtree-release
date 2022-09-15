@@ -74,3 +74,4 @@ split 'src/CoreShop/Bundle/UserBundle' user-bundle
 split 'src/CoreShop/Bundle/OptimisticEntityLockBundle' optimistic-entity-lock-bundle
 split 'src/CoreShop/Bundle/VariantBundle' variant-bundle
 split 'src/CoreShop/Bundle/StorageListBundle' storage-list-bundle
+split 'src/CoreShop/Bundle/TestBundle' test-bundle

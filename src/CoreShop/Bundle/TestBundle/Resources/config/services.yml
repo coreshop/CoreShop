@@ -1,3 +1,9 @@
 imports:
+  - { resource: services/contexts.yaml }
 
 services:
+  CoreShop\Bundle\TestBundle\Service\ClassStorageInterface: '@CoreShop\Bundle\TestBundle\Service\ClassStorage'
+  CoreShop\Bundle\TestBundle\Service\ClassStorage: ~
+
+  CoreShop\Bundle\TestBundle\Service\SharedStorageInterface: '@CoreShop\Bundle\TestBundle\Service\SharedStorage'
+  CoreShop\Bundle\TestBundle\Service\SharedStorage: ~
