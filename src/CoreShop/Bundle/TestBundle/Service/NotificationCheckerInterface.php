@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\TestBundle\Service;
 
-use CoreShop\Behat\Service\Exception\NotificationExpectationMismatchException;
+use CoreShop\Bundle\TestBundle\Service\Exception\NotificationExpectationMismatchException;
 
 interface NotificationCheckerInterface
 {
