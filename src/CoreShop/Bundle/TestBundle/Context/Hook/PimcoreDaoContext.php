@@ -153,6 +153,9 @@ class PimcoreDaoContext implements Context
         $list->load();
 
         foreach ($list->load() as $brick) {
+            /**
+             * @psalm-suppress DocblockTypeContradiction
+             */
             if (!$brick instanceof Objectbrick\Definition) {
                 continue;
             }
@@ -199,6 +202,9 @@ class PimcoreDaoContext implements Context
         $list->load();
 
         foreach ($list->getClasses() as $class) {
+            /**
+             * @psalm-suppress DocblockTypeContradiction
+             */
             if (!$class instanceof ClassDefinition) {
                 continue;
             }
@@ -252,6 +258,9 @@ class PimcoreDaoContext implements Context
         $list->load();
 
         foreach ($list->load() as $collection) {
+            /**
+             * @psalm-suppress DocblockTypeContradiction
+             */
             if (!$collection instanceof Fieldcollection\Definition) {
                 continue;
             }
