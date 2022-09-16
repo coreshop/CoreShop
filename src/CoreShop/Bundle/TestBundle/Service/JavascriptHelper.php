@@ -16,13 +16,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Behat\Page\Frontend;
+namespace CoreShop\Bundle\TestBundle\Service;
 
-use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
+use Behat\Mink\Session;
 
-interface FrontendPageInterface extends SymfonyPageInterface
+class JavascriptHelper
 {
-    public function isOpenWithUri(string $uri): bool;
-
-    public function tryToOpenWithUri(string $uri): void;
+    public static function waitForVariantsToBeReady(Session $session): void
+    {
+        $session->wait(1000, 'typeof jQuery !== "undefined" && true === jQuery.variantReady');
+    }
 }

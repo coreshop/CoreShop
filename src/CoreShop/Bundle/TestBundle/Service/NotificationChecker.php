@@ -16,9 +16,9 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Behat\Service;
+namespace CoreShop\Bundle\TestBundle\Service;
 
-use CoreShop\Behat\Service\Exception\NotificationExpectationMismatchException;
+use CoreShop\Bundle\TestBundle\Service\Exception\NotificationExpectationMismatchException;
 use Webmozart\Assert\Assert;
 
 final class NotificationChecker implements NotificationCheckerInterface

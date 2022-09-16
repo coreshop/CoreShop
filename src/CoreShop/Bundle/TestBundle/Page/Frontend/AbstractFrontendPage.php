@@ -16,7 +16,7 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Behat\Page\Frontend;
+namespace CoreShop\Bundle\TestBundle\Page\Frontend;
 
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 

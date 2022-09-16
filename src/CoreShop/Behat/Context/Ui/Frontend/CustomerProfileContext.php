@@ -22,9 +22,9 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Frontend\Account\ChangePasswordPageInterface;
 use CoreShop\Behat\Page\Frontend\Account\ChangeProfilePageInterface;
 use CoreShop\Behat\Page\Frontend\Account\ProfilePageInterface;
-use CoreShop\Behat\Service\NotificationCheckerInterface;
-use CoreShop\Behat\Service\NotificationType;
-use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\TestBundle\Service\NotificationCheckerInterface;
+use CoreShop\Bundle\TestBundle\Service\NotificationType;
+use CoreShop\Bundle\TestBundle\Service\SharedStorageInterface;
 use Webmozart\Assert\Assert;
 
 class CustomerProfileContext implements Context

@@ -16,7 +16,7 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Behat\Service\Resolver;
+namespace CoreShop\Bundle\TestBundle\Service\Resolver;
 
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
 

@@ -16,7 +16,7 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Behat\Service;
+namespace CoreShop\Bundle\TestBundle\Service;
 
 use CoreShop\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\RequestStack;

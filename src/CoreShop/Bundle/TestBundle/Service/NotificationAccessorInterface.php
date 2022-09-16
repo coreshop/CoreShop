@@ -16,14 +16,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Behat\Service;
+namespace CoreShop\Bundle\TestBundle\Service;
 
-use CoreShop\Behat\Service\Exception\NotificationExpectationMismatchException;
+use Behat\Mink\Element\NodeElement;
 
-interface NotificationCheckerInterface
+interface NotificationAccessorInterface
 {
     /**
-     * @throws NotificationExpectationMismatchException
+     * @return array|NodeElement[]
      */
-    public function checkNotification(string $message, NotificationType $type): void;
+    public function getMessageElements(): array;
 }

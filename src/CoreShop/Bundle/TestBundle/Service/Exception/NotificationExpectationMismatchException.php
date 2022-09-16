@@ -16,9 +16,9 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Behat\Service\Exception;
+namespace CoreShop\Bundle\TestBundle\Service\Exception;
 
-use CoreShop\Behat\Service\NotificationType;
+use CoreShop\Bundle\TestBundle\Service\NotificationType;
 
 final class NotificationExpectationMismatchException extends \RuntimeException
 {

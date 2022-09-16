@@ -16,14 +16,16 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Behat\Service;
+namespace CoreShop\Bundle\TestBundle\Service;
 
-use Behat\Mink\Element\NodeElement;
+use Pimcore\Model\User;
 
-interface NotificationAccessorInterface
+interface PimcoreSecurityServiceInterface
 {
     /**
-     * @return array|NodeElement[]
+     * @throws \InvalidArgumentException
      */
-    public function getMessageElements(): array;
+    public function logIn(User $user): void;
+
+    public function logOut(): void;
 }

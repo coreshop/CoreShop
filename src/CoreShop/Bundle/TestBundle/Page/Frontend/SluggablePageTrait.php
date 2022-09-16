@@ -16,13 +16,17 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Behat\Service;
+namespace CoreShop\Bundle\TestBundle\Page\Frontend;
 
-interface ClassStorageInterface
+trait SluggablePageTrait
 {
-    public function get(string $className): string;
+    public function getRouteName(): string
+    {
+        throw new \InvalidArgumentException('Not supported here');
+    }
 
-    public function has(string $className): bool;
-
-    public function set(string $className): string;
+    protected function getUrl(array $urlParameters = []): string
+    {
+        throw new \InvalidArgumentException('Not supported here');
+    }
 }

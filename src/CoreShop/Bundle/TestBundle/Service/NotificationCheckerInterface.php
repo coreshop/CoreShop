@@ -16,16 +16,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Behat\Service;
+namespace CoreShop\Bundle\TestBundle\Service;
 
-use Pimcore\Model\User;
+use CoreShop\Behat\Service\Exception\NotificationExpectationMismatchException;
 
-interface PimcoreSecurityServiceInterface
+interface NotificationCheckerInterface
 {
     /**
-     * @throws \InvalidArgumentException
+     * @throws NotificationExpectationMismatchException
      */
-    public function logIn(User $user): void;
-
-    public function logOut(): void;
+    public function checkNotification(string $message, NotificationType $type): void;
 }
