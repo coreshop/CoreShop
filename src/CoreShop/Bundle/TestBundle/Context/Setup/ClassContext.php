@@ -172,7 +172,7 @@ class ClassContext implements Context
 
         $brickDefinition = new Objectbrick\Definition();
         $brickDefinition->setKey($name);
-        $brickDefinition->setLayoutDefinitions([]);
+        $brickDefinition->setLayoutDefinitions(null);
         $brickDefinition->save();
 
         $json = '{
@@ -695,6 +695,7 @@ class ClassContext implements Context
         $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
         /**
          * @var Concrete $instance
+         * @psalm-suppress InvalidStringClass
          */
         $instance = new $className();
         $instance->setKey($key);
@@ -783,6 +784,9 @@ class ClassContext implements Context
                     $type = $this->classStorage->get($config['type']);
                     $className = sprintf('Pimcore\\Model\\DataObject\\Objectbrick\\Data\\%s', $type);
 
+                    /**
+                     * @psalm-suppress InvalidStringClass
+                     */
                     $brickInstance = new $className($object);
 
                     foreach ($config['values'] as $key => $value) {
@@ -800,12 +804,19 @@ class ClassContext implements Context
                     $items = new Fieldcollection();
 
                     foreach ($config['values'] as $itemValues) {
+                        /**
+                         * @psalm-suppress InvalidStringClass
+                         * @var Fieldcollection $collectionInstance
+                         */
                         $collectionInstance = new $className();
 
                         foreach ($itemValues as $key => $value) {
                             $collectionInstance->setValue($key, $value);
                         }
 
+                        /**
+                         * @psalm-suppress InvalidArgument
+                         */
                         $items->add($collectionInstance);
                     }
 
@@ -831,6 +842,9 @@ class ClassContext implements Context
     {
         $definitionUpdater = null;
 
+        /**
+         * @psalm-suppress RedundantCondition
+         */
         if ($definition instanceof ClassDefinition) {
             $definitionUpdater = new ClassUpdate($definition->getName());
         } elseif ($definition instanceof Objectbrick\Definition) {
@@ -838,10 +852,10 @@ class ClassContext implements Context
         } elseif ($definition instanceof Fieldcollection\Definition) {
             $definitionUpdater = new FieldCollectionDefinitionUpdate($definition->getKey());
         }
-
-        if (!$definitionUpdater instanceof ClassUpdateInterface) {
-            throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', null !== $definition ? $definition::class : 'null'));
+        else {
+            throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', $definition::class));
         }
+
 
         return $definitionUpdater;
     }

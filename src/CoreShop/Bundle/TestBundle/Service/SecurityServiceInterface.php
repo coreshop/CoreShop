@@ -18,9 +18,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\TestBundle\Service;
 
-use CoreShop\Component\User\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 interface SecurityServiceInterface
 {

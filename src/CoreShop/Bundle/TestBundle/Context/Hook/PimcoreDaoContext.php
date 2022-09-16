@@ -47,14 +47,31 @@ class PimcoreDaoContext implements Context
         \Pimcore::setKernel($this->kernel);
     }
 
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearCache(): void
+    {
+        Cache::clearAll();
+        /**
+         * @psalm-suppress DeprecatedClass
+         * @psalm-suppress DeprecatedMethod
+         */
+        Cache\Runtime::clear();
+
+        /**
+         * @psalm-suppress DeprecatedClass
+         * @psalm-suppress DeprecatedMethod
+         */
+        \Pimcore\Cache\Runtime::clear();
+    }
+
     /**
      * @BeforeScenario
      */
     public function purgeObjects(): void
     {
-        Cache::clearAll();
-        Cache\Runtime::clear();
-
         /**
          * @var Listing $list
          */
@@ -76,9 +93,6 @@ class PimcoreDaoContext implements Context
      */
     public function purgeDocuments(): void
     {
-        Cache::clearAll();
-        Cache\Runtime::clear();
-
         /**
          * @var Document\Listing $list
          */
@@ -109,9 +123,6 @@ class PimcoreDaoContext implements Context
      */
     public function purgeAssets(): void
     {
-        Cache::clearAll();
-        Cache\Runtime::clear();
-
         /**
          * @var Asset\Listing $list
          */
@@ -129,9 +140,6 @@ class PimcoreDaoContext implements Context
      */
     public function purgeTables(): void
     {
-        Cache::clearAll();
-        Cache\Runtime::clear();
-
         $this->connection->executeQuery('DELETE FROM sites');
         $this->connection->executeQuery('DELETE FROM object_url_slugs');
     }
@@ -156,21 +164,15 @@ class PimcoreDaoContext implements Context
     }
 
     /**
-     * @BeforeScenario
-     */
-    public function clearRuntimeCacheScenario(): void
-    {
-        //Clearing it here is totally fine, since each scenario has its own separated context of objects
-        \Pimcore\Cache\Runtime::clear();
-    }
-
-    /**
      * @BeforeStep
      */
     public function clearRuntimeCacheStep(): void
     {
         //We should not clear Pimcore Objects here, otherwise we lose the reference to it
         //and end up having the same object twice
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
         $copy = \Pimcore\Cache\Runtime::getInstance()->getArrayCopy();
         $keepItems = [];
 
@@ -180,6 +182,10 @@ class PimcoreDaoContext implements Context
             }
         }
 
+        /**
+         * @psalm-suppress DeprecatedClass
+         * @psalm-suppress DeprecatedMethod
+         */
         \Pimcore\Cache\Runtime::clear($keepItems);
     }
 

@@ -40,12 +40,22 @@ final class ClassContext implements Context
      */
     public function class($name): ClassDefinition
     {
+        /**
+         * @psalm-suppress DeprecatedClass
+         * @psalm-suppress DeprecatedMethod
+         */
         Runtime::clear();
 
+        /**
+         * @psalm-suppress UndefinedConstant
+         */
         $fqcp = sprintf('%s/DataObject/%s.php', PIMCORE_CLASS_DIRECTORY, $name);
         $fqcn = sprintf('\\Pimcore\\Model\\DataObject\\%s', $name);
 
         if (file_exists($fqcp) && !class_exists($fqcn)) {
+            /**
+             * @psalm-suppress UnresolvableInclude
+             */
             require_once $fqcp;
         }
 
@@ -108,6 +118,10 @@ final class ClassContext implements Context
      */
     public function definition(): ClassDefinition|Definition
     {
+        /**
+         * @psalm-suppress DeprecatedClass
+         * @psalm-suppress DeprecatedMethod
+         */
         Runtime::clear();
 
         $name = $this->sharedStorage->get('pimcore_definition_name');

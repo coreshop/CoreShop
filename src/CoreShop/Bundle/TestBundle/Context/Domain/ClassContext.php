@@ -82,7 +82,9 @@ final class ClassContext implements Context
         } elseif ($definition instanceof ClassDefinition) {
             $field = $definition->getFieldDefinition($name);
         } else {
-            throw new \InvalidArgumentException(sprintf('Definition with type %s is not supported', null !== $definition ? $definition::class : 'null'));
+            throw new \InvalidArgumentException(
+                sprintf('Definition with type %s is not supported', null !== $definition ? $definition::class : 'null')
+            );
         }
 
         Assert::isInstanceOf(
@@ -99,6 +101,11 @@ final class ClassContext implements Context
     {
         if ($definition instanceof ClassDefinition) {
             $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
+            
+            /**
+             * @psalm-var class-string $class
+             * @psalm-suppress InvalidStringClass
+             */
             $instance = new $className();
 
             Assert::isInstanceOf($instance, $class);

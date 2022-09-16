@@ -18,12 +18,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\TestBundle\Service;
 
-use CoreShop\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionFactory;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 final class SecurityService implements SecurityServiceInterface
 {

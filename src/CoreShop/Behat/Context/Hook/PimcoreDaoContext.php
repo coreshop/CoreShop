@@ -40,9 +40,6 @@ final class PimcoreDaoContext extends BasePimcoreDaContext
      */
     public function purgeObjects(): void
     {
-        Cache::clearAll();
-        Cache\Runtime::clear();
-
         /**
          * Delete Orders first, otherwise the CustomerDeletionListener would trigger.
          *
