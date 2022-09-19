@@ -18,10 +18,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle;
 
-use Composer\InstalledVersions;
 use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
 use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
-use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterIndexProductExtensionPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
@@ -50,8 +48,6 @@ use CoreShop\Bundle\TrackingBundle\CoreShopTrackingBundle;
 use CoreShop\Bundle\UserBundle\CoreShopUserBundle;
 use CoreShop\Bundle\VariantBundle\CoreShopVariantBundle;
 use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
-use PackageVersions\Versions;
-use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -107,7 +103,6 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Compose
     {
         return 'coreshop/core-bundle';
     }
-
 
     protected function getModelNamespace(): string
     {

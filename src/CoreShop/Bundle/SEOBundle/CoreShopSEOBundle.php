@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\SEOBundle;
 
 use Composer\InstalledVersions;
-use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler\ExtractorRegistryServicePass;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -46,7 +45,7 @@ final class CoreShopSEOBundle extends AbstractPimcoreBundle
     public function getVersion(): string
     {
         if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
-            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion().' ('.$this->getComposerVersion().')';
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
         }
 
         return $this->getComposerVersion();
