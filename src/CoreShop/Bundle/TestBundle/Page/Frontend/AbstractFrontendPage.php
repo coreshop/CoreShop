@@ -41,6 +41,23 @@ abstract class AbstractFrontendPage extends SymfonyPage implements FrontendPageI
         return [];
     }
 
+    public function scrollIntoView(string $elementId)
+    {
+        $function = <<<JS
+(function(){
+  var elem = document.getElementById("$elementId");
+  elem.scrollIntoView(false);
+})()
+JS;
+        try {
+            $this->getSession()->executeScript($function);
+        } catch (\Exception) {
+            throw new \Exception("ScrollIntoView failed");
+        }
+
+        usleep(400);
+    }
+
     public function tryToOpenWithUri(string $uri): void
     {
         $absoluteUrl = $this->makePathAbsolute($uri);

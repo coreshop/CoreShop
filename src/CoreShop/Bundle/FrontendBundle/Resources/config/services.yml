@@ -1,5 +1,6 @@
 imports:
     - { resource: services_alias.yml }
+    - { resource: ../../../TestBundle/Resources/config/twig.yml }
 
 services:
     coreshop.frontend.controller.abstract:
@@ -21,18 +22,6 @@ services:
             - '@Pimcore\Model\Document\Service'
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'
             - '@Symfony\Component\HttpFoundation\RequestStack'
-        tags:
-            - { name: twig.extension }
-
-    CoreShop\Bundle\FrontendBundle\Twig\TestHtmlAttributeExtension:
-        arguments:
-            - '%kernel.environment%'
-        tags:
-            - { name: twig.extension }
-
-    CoreShop\Bundle\FrontendBundle\Twig\TestFormAttributeExtension:
-        arguments:
-            - '%kernel.environment%'
         tags:
             - { name: twig.extension }
 
