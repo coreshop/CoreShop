@@ -16,7 +16,7 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\StorageListBundle\Repository;
+namespace CoreShop\Bundle\StorageListBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
