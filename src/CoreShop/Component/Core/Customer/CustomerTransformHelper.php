@@ -88,7 +88,7 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         $company->setParent(
             $this->folderCreationService->createFolderForResource(
                 $company,
-                ['suffix' => mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))],
+                ['suffix' => mb_strtoupper(mb_substr($options['companyData']['name'] ?? '--', 0, 1))],
             ),
         );
 
