@@ -92,6 +92,11 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
         $this->getElement('add_to_cart')->click();
     }
 
+    public function addToWishlist(): void
+    {
+        $this->getElement('add_to_wishlist')->click();
+    }
+
     public function addToCartWithQuantity(string $quantity): void
     {
         $this->getElement('quantity')->setValue($quantity);
@@ -158,6 +163,7 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
     {
         return array_merge(parent::getDefinedElements(), [
             'add_to_cart' => '[data-test-add-to-cart]',
+            'add_to_wishlist' => '[data-test-add-to-wishlist]',
             'quantity' => '[data-test-quantity]',
             'unit' => '[data-test-unit]',
             'product_name' => '[data-test-product-name]',
