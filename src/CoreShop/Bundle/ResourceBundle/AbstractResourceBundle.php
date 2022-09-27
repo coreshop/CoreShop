@@ -179,7 +179,7 @@ abstract class AbstractResourceBundle extends Bundle implements PimcoreBundleInt
 
         return array_values(array_filter(
             $split,
-            static fn(string $value) => $value !== ''
+            static fn (string $value) => $value !== '',
         ));
     }
 

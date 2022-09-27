@@ -56,6 +56,11 @@ interface ProductPageInterface extends FrontendPageInterface
     /**
      * @throws ElementNotFoundException
      */
+    public function addToWishlist(): void;
+
+    /**
+     * @throws ElementNotFoundException
+     */
     public function addToCartWithQuantity(string $quantity): void;
 
     /**

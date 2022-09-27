@@ -43,7 +43,7 @@ final class CoreShopMenuBundle extends AbstractPimcoreBundle implements Dependen
     public function getVersion(): string
     {
         if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
-            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion().' ('.$this->getComposerVersion().')';
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
         }
 
         return $this->getComposerVersion();
