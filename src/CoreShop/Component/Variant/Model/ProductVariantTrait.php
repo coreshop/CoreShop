@@ -32,7 +32,7 @@ trait ProductVariantTrait
     {
         if ($this instanceof Concrete) {
             $list = $this::getList();
-            $list->setCondition('o_path LIKE \'' . $this->getFullPath() . '/%\'');
+            $list->setCondition('o_path LIKE ?', [$this->getFullPath() . '/%']);
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
 
             $variants = $list->getObjects();
