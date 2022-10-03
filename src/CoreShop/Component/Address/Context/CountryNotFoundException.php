@@ -20,8 +20,9 @@ namespace CoreShop\Component\Address\Context;
 
 class CountryNotFoundException extends \RuntimeException
 {
-    public function __construct(\Exception $previousException = null)
-    {
+    public function __construct(
+        \Exception $previousException = null,
+    ) {
         parent::__construct('Country could not be found!', 0, $previousException);
     }
 }

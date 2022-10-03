@@ -29,8 +29,9 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 final class StorageListBlamerListener
 {
-    public function __construct(private StorageListContextInterface $context)
-    {
+    public function __construct(
+        private StorageListContextInterface $context,
+    ) {
     }
 
     public function onInteractiveLogin(InteractiveLoginEvent $interactiveLoginEvent): void

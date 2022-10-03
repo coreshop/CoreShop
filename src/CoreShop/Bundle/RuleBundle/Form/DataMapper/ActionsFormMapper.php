@@ -28,8 +28,9 @@ use Symfony\Component\Form\DataMapperInterface;
  */
 class ActionsFormMapper implements DataMapperInterface
 {
-    public function __construct(private DataMapperInterface $propertyMapper)
-    {
+    public function __construct(
+        private DataMapperInterface $propertyMapper,
+    ) {
     }
 
     public function mapDataToForms($viewData, $forms): void

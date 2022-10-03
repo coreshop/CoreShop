@@ -25,8 +25,9 @@ use Webmozart\Assert\Assert;
 
 final class MenuContext implements Context
 {
-    public function __construct(private MenuProviderInterface $menuProvider)
-    {
+    public function __construct(
+        private MenuProviderInterface $menuProvider,
+    ) {
     }
 
     /**

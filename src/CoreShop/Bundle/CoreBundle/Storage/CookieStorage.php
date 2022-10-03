@@ -32,8 +32,8 @@ final class CookieStorage implements StorageInterface, EventSubscriberInterface
 
     private ParameterBag $responseCookies;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->requestCookies = new ParameterBag();
         $this->responseCookies = new ParameterBag();
     }

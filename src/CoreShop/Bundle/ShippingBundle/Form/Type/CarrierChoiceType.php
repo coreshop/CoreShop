@@ -29,8 +29,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CarrierChoiceType extends AbstractType
 {
-    public function __construct(private RepositoryInterface $carrierRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $carrierRepository,
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void

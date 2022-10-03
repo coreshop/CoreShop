@@ -38,8 +38,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckoutController extends FrontendController
 {
-    public function __construct(protected CheckoutManagerFactoryInterface $checkoutManagerFactory)
-    {
+    public function __construct(
+        protected CheckoutManagerFactoryInterface $checkoutManagerFactory,
+    ) {
     }
 
     public function processAction(Request $request): Response

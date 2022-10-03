@@ -25,8 +25,9 @@ use Pimcore\Event\Model\DataObjectEvent;
 
 final class CustomerOrderDeletionListener
 {
-    public function __construct(private OrderRepositoryInterface $orderRepository)
-    {
+    public function __construct(
+        private OrderRepositoryInterface $orderRepository,
+    ) {
     }
 
     public function checkCustomerDeletionAllowed(DataObjectDeleteInfoEvent $event): void

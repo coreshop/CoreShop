@@ -22,8 +22,8 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 class RegisterColumnTypePass extends RegisterRegistryTypePass
 {
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.index.column_types',
             'coreshop.form_registry.index_column_types',

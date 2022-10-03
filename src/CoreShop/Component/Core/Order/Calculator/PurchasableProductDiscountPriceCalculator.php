@@ -27,8 +27,9 @@ use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
 
 final class PurchasableProductDiscountPriceCalculator implements PurchasableDiscountPriceCalculatorInterface
 {
-    public function __construct(private ProductPriceCalculatorInterface $productPriceCalculator)
-    {
+    public function __construct(
+        private ProductPriceCalculatorInterface $productPriceCalculator,
+    ) {
     }
 
     public function getDiscountPrice(PurchasableInterface $purchasable, array $context): int

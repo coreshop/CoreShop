@@ -24,8 +24,8 @@ class RegisterGetterPass extends RegisterRegistryTypePass
 {
     public const INDEX_GETTER_TAG = 'coreshop.index.getter';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.index.getter',
             'coreshop.form_registry.index.getter',

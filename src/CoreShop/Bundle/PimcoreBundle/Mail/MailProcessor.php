@@ -26,8 +26,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class MailProcessor implements Mail\MailProcessorInterface
 {
-    public function __construct(private EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+    ) {
     }
 
     public function sendMail(Email $emailDocument, $subject = null, $recipients = null, array $attachments = [], array $params = []): bool

@@ -27,8 +27,9 @@ use CoreShop\Component\Index\Model\IndexInterface;
 
 final class ProductClassExtension implements IndexColumnsExtensionInterface
 {
-    public function __construct(private string $productClassName)
-    {
+    public function __construct(
+        private string $productClassName,
+    ) {
     }
 
     public function supports(IndexInterface $index): bool

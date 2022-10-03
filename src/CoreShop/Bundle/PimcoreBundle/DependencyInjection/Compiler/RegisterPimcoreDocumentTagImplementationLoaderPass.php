@@ -22,8 +22,8 @@ use Pimcore\Model\Document\Editable\Loader\EditableLoader;
 
 final class RegisterPimcoreDocumentTagImplementationLoaderPass extends RegisterImplementationLoaderPass
 {
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             /** @psalm-suppress InternalClass */
             EditableLoader::class,

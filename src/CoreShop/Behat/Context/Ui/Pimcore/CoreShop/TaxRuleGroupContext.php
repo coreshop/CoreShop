@@ -24,8 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class TaxRuleGroupContext implements Context
 {
-    public function __construct(private TaxRuleGroupPageInterface $taxRuleGroupPage)
-    {
+    public function __construct(
+        private TaxRuleGroupPageInterface $taxRuleGroupPage,
+    ) {
     }
 
     /**

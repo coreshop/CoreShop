@@ -28,8 +28,9 @@ use Doctrine\Common\Collections\Collection;
 
 class VolumeCalculator implements CalculatorInterface
 {
-    public function __construct(protected ServiceRegistryInterface $actionRegistry)
-    {
+    public function __construct(
+        protected ServiceRegistryInterface $actionRegistry,
+    ) {
     }
 
     public function calculateForQuantity(

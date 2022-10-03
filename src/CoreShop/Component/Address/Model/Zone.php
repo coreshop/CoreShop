@@ -47,8 +47,8 @@ class Zone extends AbstractResource implements ZoneInterface, \Stringable
      */
     protected $countries;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->countries = new ArrayCollection();
     }
 

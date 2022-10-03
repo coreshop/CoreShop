@@ -26,8 +26,9 @@ final class CommandDirectoryChecker
 {
     private string $name;
 
-    public function __construct(private Filesystem $filesystem)
-    {
+    public function __construct(
+        private Filesystem $filesystem,
+    ) {
     }
 
     public function ensureDirectoryExists(string $directory, OutputInterface $output): void

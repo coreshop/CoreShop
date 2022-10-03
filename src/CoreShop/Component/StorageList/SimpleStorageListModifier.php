@@ -27,8 +27,8 @@ class SimpleStorageListModifier implements StorageListModifierInterface
 
     protected StorageListItemModelEqualsResolver $storageListItemFinder;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->storageListItemQuantityModifier = new StorageListItemQuantityModifier();
         $this->storageListItemFinder = new StorageListItemModelEqualsResolver();
     }

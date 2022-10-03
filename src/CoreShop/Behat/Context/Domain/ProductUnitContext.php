@@ -24,8 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class ProductUnitContext implements Context
 {
-    public function __construct(private ProductUnitRepositoryInterface $unitRepository)
-    {
+    public function __construct(
+        private ProductUnitRepositoryInterface $unitRepository,
+    ) {
     }
 
     /**

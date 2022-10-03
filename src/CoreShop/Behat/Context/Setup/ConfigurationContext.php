@@ -24,8 +24,9 @@ use CoreShop\Component\Core\Model\StoreInterface;
 
 final class ConfigurationContext implements Context
 {
-    public function __construct(private ConfigurationService $configurationService)
-    {
+    public function __construct(
+        private ConfigurationService $configurationService,
+    ) {
     }
 
     /**

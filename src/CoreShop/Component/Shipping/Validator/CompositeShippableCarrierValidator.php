@@ -27,8 +27,8 @@ class CompositeShippableCarrierValidator implements ShippableCarrierValidatorInt
 {
     private PriorityQueue $shippableCarrierValidator;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->shippableCarrierValidator = new PriorityQueue();
     }
 

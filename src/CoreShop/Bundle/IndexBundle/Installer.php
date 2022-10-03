@@ -27,8 +27,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class Installer extends SettingsStoreAwareInstaller
 {
-    public function __construct(protected KernelInterface $kernel)
-    {
+    public function __construct(
+        protected KernelInterface $kernel,
+    ) {
         parent::__construct($this->kernel->getBundle('CoreShopIndexBundle'));
     }
 

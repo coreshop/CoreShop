@@ -25,8 +25,9 @@ use Webmozart\Assert\Assert;
 
 final class StoreContext implements Context
 {
-    public function __construct(private StoreRepositoryInterface $storeRepository)
-    {
+    public function __construct(
+        private StoreRepositoryInterface $storeRepository,
+    ) {
     }
 
     /**

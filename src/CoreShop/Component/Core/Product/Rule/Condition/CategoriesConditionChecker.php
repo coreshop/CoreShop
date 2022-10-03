@@ -33,8 +33,9 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
         CategoriesConditionCheckerTrait::__construct as private __traitConstruct;
     }
 
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
-    {
+    public function __construct(
+        CategoryRepositoryInterface $categoryRepository,
+    ) {
         $this->__traitConstruct($categoryRepository);
     }
 

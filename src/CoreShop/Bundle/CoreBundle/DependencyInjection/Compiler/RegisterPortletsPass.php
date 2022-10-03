@@ -24,8 +24,8 @@ class RegisterPortletsPass extends RegisterSimpleRegistryTypePass
 {
     public const PORTLET_TAG = 'coreshop.portlet';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.portlets',
             'coreshop.portlets',

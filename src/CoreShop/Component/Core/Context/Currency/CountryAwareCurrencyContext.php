@@ -27,8 +27,9 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 
 final class CountryAwareCurrencyContext implements CurrencyContextInterface
 {
-    public function __construct(private CountryContextInterface $countryContext)
-    {
+    public function __construct(
+        private CountryContextInterface $countryContext,
+    ) {
     }
 
     public function getCurrency(): CurrencyInterface

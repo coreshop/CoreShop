@@ -23,8 +23,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class SluggableSlugger implements SluggableSluggerInterface
 {
-    public function __construct(protected SluggerInterface $slugger)
-    {
+    public function __construct(
+        protected SluggerInterface $slugger,
+    ) {
     }
 
     public function slug(SluggableInterface $sluggable, string $locale, string $suffix = null): string

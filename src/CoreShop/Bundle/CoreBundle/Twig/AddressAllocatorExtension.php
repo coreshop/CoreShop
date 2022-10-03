@@ -25,8 +25,9 @@ use Twig\TwigTest;
 
 final class AddressAllocatorExtension extends AbstractExtension
 {
-    public function __construct(private CustomerAddressAllocatorInterface $customerAddressAllocator)
-    {
+    public function __construct(
+        private CustomerAddressAllocatorInterface $customerAddressAllocator,
+    ) {
     }
 
     public function getTests(): array

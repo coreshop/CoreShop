@@ -57,8 +57,8 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
      */
     protected $logo;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->initializeTranslationsCollection();
     }
 

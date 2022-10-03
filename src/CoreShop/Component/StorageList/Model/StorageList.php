@@ -24,8 +24,8 @@ abstract class StorageList implements StorageListInterface
 {
     protected array $items;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->items = [];
     }
 

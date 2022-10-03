@@ -26,8 +26,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 
 final class EventDispatcher implements EventDispatcherInterface
 {
-    public function __construct(private SymfonyEventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private SymfonyEventDispatcherInterface $eventDispatcher,
+    ) {
     }
 
     public function dispatch($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void

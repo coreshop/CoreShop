@@ -24,8 +24,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleConditionChoiceType extends AbstractType
 {
-    public function __construct(private array $conditions)
-    {
+    public function __construct(
+        private array $conditions,
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void

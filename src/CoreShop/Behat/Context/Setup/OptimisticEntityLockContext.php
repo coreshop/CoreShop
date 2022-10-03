@@ -26,8 +26,9 @@ use Webmozart\Assert\Assert;
 
 final class OptimisticEntityLockContext implements Context
 {
-    public function __construct(private EntityLockManagerInterface $entityLockManager)
-    {
+    public function __construct(
+        private EntityLockManagerInterface $entityLockManager,
+    ) {
     }
 
     /**

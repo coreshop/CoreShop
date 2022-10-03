@@ -26,8 +26,9 @@ trait CategoriesConditionCheckerTrait
 {
     private CategoryRepositoryInterface $categoryRepository;
 
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
-    {
+    public function __construct(
+        CategoryRepositoryInterface $categoryRepository,
+    ) {
         $this->categoryRepository = $categoryRepository;
     }
 

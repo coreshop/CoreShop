@@ -26,8 +26,8 @@ final class CompositeStoreContextPass extends PrioritizedCompositeServicePass
 {
     public const STORE_CONTEXT_TAG = 'coreshop.context.store';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             StoreContextInterface::class,
             CompositeStoreContext::class,

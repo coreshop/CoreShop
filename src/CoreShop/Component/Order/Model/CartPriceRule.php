@@ -62,8 +62,8 @@ class CartPriceRule implements CartPriceRuleInterface
      */
     protected $voucherCodes;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->initializeRules();
         $this->initializeTranslationsCollection();
 

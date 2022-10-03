@@ -27,8 +27,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TaxRuleGroupChoiceType extends AbstractType
 {
-    public function __construct(private RepositoryInterface $taxRuleGroupRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $taxRuleGroupRepository,
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void

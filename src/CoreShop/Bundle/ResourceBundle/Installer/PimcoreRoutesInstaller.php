@@ -28,8 +28,9 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreRoutesInstaller implements ResourceInstallerInterface
 {
-    public function __construct(private KernelInterface $kernel)
-    {
+    public function __construct(
+        private KernelInterface $kernel,
+    ) {
     }
 
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void

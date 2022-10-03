@@ -26,8 +26,9 @@ use Webmozart\Assert\Assert;
 
 final class CreateIndexListener
 {
-    public function __construct(private ServiceRegistryInterface $workerServiceRegistry)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $workerServiceRegistry,
+    ) {
     }
 
     public function onIndexSavePost(ResourceControllerEvent $event): void

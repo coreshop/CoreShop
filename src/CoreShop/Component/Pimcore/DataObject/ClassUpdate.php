@@ -25,8 +25,9 @@ class ClassUpdate extends AbstractDefinitionUpdate
 {
     private DataObject\ClassDefinition $classDefinition;
 
-    public function __construct(string $className)
-    {
+    public function __construct(
+        string $className,
+    ) {
         parent::__construct();
 
         $this->classDefinition = DataObject\ClassDefinition::getByName($className);

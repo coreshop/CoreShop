@@ -23,8 +23,9 @@ use Behat\Mink\Session;
 
 final class NotificationAccessor implements NotificationAccessorInterface
 {
-    public function __construct(private Session $session)
-    {
+    public function __construct(
+        private Session $session,
+    ) {
     }
 
     public function getMessageElements(): array

@@ -25,8 +25,9 @@ use Webmozart\Assert\Assert;
 
 final class IteratorInterpreter implements InterpreterInterface
 {
-    public function __construct(private ServiceRegistryInterface $interpreterRegistry)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $interpreterRegistry,
+    ) {
     }
 
     public function interpret(

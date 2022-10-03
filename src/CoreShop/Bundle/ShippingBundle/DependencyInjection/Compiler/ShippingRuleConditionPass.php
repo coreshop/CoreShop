@@ -24,8 +24,8 @@ final class ShippingRuleConditionPass extends RegisterRegistryTypePass
 {
     public const SHIPPING_RULE_CONDITION_TAG = 'coreshop.shipping_rule.condition';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.shipping_rule.conditions',
             'coreshop.form_registry.shipping_rule.conditions',

@@ -75,8 +75,8 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
      */
     protected $priority = 0;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->conditions = new ArrayCollection();
         $this->ranges = new ArrayCollection();
     }

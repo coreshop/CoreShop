@@ -24,8 +24,8 @@ final class TrackingExtractorPass extends RegisterSimpleRegistryTypePass
 {
     public const TRACKING_EXTRACTOR_TAG = 'coreshop.tracking.extractor';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.tracking.extractor',
             'coreshop.tracking.extractors',
