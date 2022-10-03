@@ -24,8 +24,9 @@ use Pimcore\Model\DataObject\ClassDefinition\DynamicOptionsProvider\SelectOption
 
 class StoreOptionProvider implements SelectOptionsProviderInterface
 {
-    public function __construct(private StoreRepository $repository)
-    {
+    public function __construct(
+        private StoreRepository $repository,
+    ) {
     }
 
     /**

@@ -29,8 +29,9 @@ use Webmozart\Assert\Assert;
 
 final class OrderContext implements Context
 {
-    public function __construct(private StateMachineManager $stateMachineManager)
-    {
+    public function __construct(
+        private StateMachineManager $stateMachineManager,
+    ) {
     }
 
     /**

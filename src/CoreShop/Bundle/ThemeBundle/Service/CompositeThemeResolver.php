@@ -25,8 +25,8 @@ final class CompositeThemeResolver implements ThemeResolverInterface, DocumentTh
 {
     private PriorityQueue $themeResolvers;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->themeResolvers = new PriorityQueue();
     }
 

@@ -28,8 +28,9 @@ use Webmozart\Assert\Assert;
 
 final class RecycleBinContext implements Context
 {
-    public function __construct(private SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        private SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**

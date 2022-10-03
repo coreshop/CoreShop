@@ -29,8 +29,9 @@ use Webmozart\Assert\Assert;
 
 class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
 {
-    public function __construct(private ServiceRegistryInterface $actionServiceRegistry)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $actionServiceRegistry,
+    ) {
     }
 
     public function unProcess(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool

@@ -24,8 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class CartPriceRuleVoucherCodeContext implements Context
 {
-    public function __construct(private SharedStorageInterface $sharedStorage)
-    {
+    public function __construct(
+        private SharedStorageInterface $sharedStorage,
+    ) {
     }
 
     /**

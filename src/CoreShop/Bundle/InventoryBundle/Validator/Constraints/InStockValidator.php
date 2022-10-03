@@ -30,8 +30,9 @@ final class InStockValidator extends ConstraintValidator
 {
     private PropertyAccessor $accessor;
 
-    public function __construct(private AvailabilityCheckerInterface $availabilityChecker)
-    {
+    public function __construct(
+        private AvailabilityCheckerInterface $availabilityChecker,
+    ) {
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 

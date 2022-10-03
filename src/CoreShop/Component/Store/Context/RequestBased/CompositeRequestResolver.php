@@ -27,8 +27,8 @@ final class CompositeRequestResolver implements RequestResolverInterface
 {
     private PriorityQueue $requestResolvers;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->requestResolvers = new PriorityQueue();
     }
 

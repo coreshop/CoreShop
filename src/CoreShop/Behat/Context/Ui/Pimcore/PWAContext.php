@@ -24,8 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class PWAContext implements Context
 {
-    public function __construct(private PWAPageInterface $pwaPage)
-    {
+    public function __construct(
+        private PWAPageInterface $pwaPage,
+    ) {
     }
 
     /**

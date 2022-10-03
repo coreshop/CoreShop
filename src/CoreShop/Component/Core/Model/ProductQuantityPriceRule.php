@@ -32,8 +32,8 @@ class ProductQuantityPriceRule extends BaseProductQuantityPriceRule implements P
      */
     protected $ranges;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct();
 
         $this->ranges = new ArrayCollection();

@@ -26,8 +26,9 @@ use Webmozart\Assert\Assert;
 
 final class VoucherAmountValidator extends ConstraintValidator
 {
-    public function __construct(private CodeGeneratorCheckerInterface $checker)
-    {
+    public function __construct(
+        private CodeGeneratorCheckerInterface $checker,
+    ) {
     }
 
     public function validate($value, Constraint $constraint): void

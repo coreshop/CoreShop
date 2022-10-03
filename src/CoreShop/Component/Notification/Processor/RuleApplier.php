@@ -24,8 +24,9 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 class RuleApplier implements RuleApplierInterface
 {
-    public function __construct(private ServiceRegistryInterface $actionServiceRegistry)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $actionServiceRegistry,
+    ) {
     }
 
     public function applyRule(NotificationRuleInterface $rule, $subject, array $params): void

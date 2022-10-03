@@ -23,8 +23,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class SessionStorage implements StorageInterface
 {
-    public function __construct(private RequestStack $requestStack)
-    {
+    public function __construct(
+        private RequestStack $requestStack,
+    ) {
     }
 
     public function has(string $name): bool

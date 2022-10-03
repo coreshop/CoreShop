@@ -26,8 +26,8 @@ class ResolvedIndex
 
     private string $url;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->attributes = new ArrayCollection();
     }
 

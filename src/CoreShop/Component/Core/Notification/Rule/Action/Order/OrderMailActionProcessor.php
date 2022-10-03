@@ -26,8 +26,9 @@ use Pimcore\Model\Document;
 
 class OrderMailActionProcessor implements NotificationRuleProcessorInterface
 {
-    public function __construct(private OrderMailProcessorInterface $orderMailProcessor)
-    {
+    public function __construct(
+        private OrderMailProcessorInterface $orderMailProcessor,
+    ) {
     }
 
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, array $params = []): void

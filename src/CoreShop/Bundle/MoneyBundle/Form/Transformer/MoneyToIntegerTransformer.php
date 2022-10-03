@@ -22,8 +22,9 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class MoneyToIntegerTransformer implements DataTransformerInterface
 {
-    public function __construct(private int $decimalFactor)
-    {
+    public function __construct(
+        private int $decimalFactor,
+    ) {
     }
 
     public function transform($value): ?float

@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
-
 interface WishlistPageInterface extends FrontendPageInterface
 {
     public function isEmpty(): bool;

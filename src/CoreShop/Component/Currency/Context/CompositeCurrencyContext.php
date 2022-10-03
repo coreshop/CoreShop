@@ -30,8 +30,8 @@ final class CompositeCurrencyContext implements CurrencyContextInterface
      */
     private PriorityQueue $currencyContexts;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->currencyContexts = new PriorityQueue();
     }
 

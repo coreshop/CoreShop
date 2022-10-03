@@ -45,8 +45,8 @@ trait RuleTrait
      */
     protected $actions;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->initializeRuleCollections();
     }
 

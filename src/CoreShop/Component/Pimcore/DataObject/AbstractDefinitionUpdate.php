@@ -30,8 +30,8 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 
     protected string $childrenPath = 'childs';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         if (class_exists(Version20211117173000::class)) {
             $this->childrenPath = 'children';
         }

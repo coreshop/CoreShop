@@ -24,8 +24,9 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class RuleCollector extends DataCollector
 {
-    public function __construct(private array $validationProcessors)
-    {
+    public function __construct(
+        private array $validationProcessors,
+    ) {
     }
 
     public function getProcessedConditions(): array

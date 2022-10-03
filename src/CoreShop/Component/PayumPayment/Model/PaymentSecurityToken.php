@@ -55,8 +55,8 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
      */
     protected $gatewayName;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->hash = Random::generateToken();
     }
 

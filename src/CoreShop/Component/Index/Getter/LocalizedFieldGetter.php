@@ -25,8 +25,9 @@ use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderIn
 
 class LocalizedFieldGetter implements GetterInterface
 {
-    public function __construct(protected TranslationLocaleProviderInterface $localeProvider)
-    {
+    public function __construct(
+        protected TranslationLocaleProviderInterface $localeProvider,
+    ) {
     }
 
     public function get(IndexableInterface $object, IndexColumnInterface $config): array

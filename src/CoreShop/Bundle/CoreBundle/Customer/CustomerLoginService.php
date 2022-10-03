@@ -24,8 +24,9 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class CustomerLoginService implements CustomerLoginServiceInterface
 {
-    public function __construct(private TokenStorageInterface $securityTokenStorage)
-    {
+    public function __construct(
+        private TokenStorageInterface $securityTokenStorage,
+    ) {
     }
 
     public function loginCustomer(UserInterface $user): void

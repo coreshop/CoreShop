@@ -24,8 +24,9 @@ use Twig\TwigFunction;
 
 final class DisplayFractionExtension extends AbstractExtension
 {
-    public function __construct(private DisplayFractionProviderInterface $displayFractionProvider)
-    {
+    public function __construct(
+        private DisplayFractionProviderInterface $displayFractionProvider,
+    ) {
     }
 
     public function getFunctions(): array

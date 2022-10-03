@@ -51,8 +51,8 @@ class State extends AbstractResource implements StateInterface, \Stringable
      */
     protected $country;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->initializeTranslationsCollection();
     }
 

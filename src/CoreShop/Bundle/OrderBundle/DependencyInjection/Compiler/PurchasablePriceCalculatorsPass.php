@@ -24,8 +24,8 @@ final class PurchasablePriceCalculatorsPass extends RegisterSimpleRegistryTypePa
 {
     public const PURCHASABLE_PRICE_CALCULATOR_TAG = 'coreshop.order.purchasable.price_calculator';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.order.purchasable.price_calculators',
             'coreshop.order.purchasable.price_calculators',

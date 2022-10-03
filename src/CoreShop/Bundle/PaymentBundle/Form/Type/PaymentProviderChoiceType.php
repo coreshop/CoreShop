@@ -29,8 +29,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class PaymentProviderChoiceType extends AbstractType
 {
-    public function __construct(private PaymentProviderResolverInterface $paymentProviderResolver)
-    {
+    public function __construct(
+        private PaymentProviderResolverInterface $paymentProviderResolver,
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void

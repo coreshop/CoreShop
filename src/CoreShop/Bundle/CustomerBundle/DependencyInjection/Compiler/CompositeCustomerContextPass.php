@@ -26,8 +26,8 @@ final class CompositeCustomerContextPass extends PrioritizedCompositeServicePass
 {
     public const CUSTOMER_CONTEXT_SERVICE_TAG = 'coreshop.context.customer';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             CustomerContextInterface::class,
             CompositeCustomerContext::class,

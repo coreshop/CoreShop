@@ -32,8 +32,9 @@ class EntityMerger
 {
     private IdentifierFlattener $identifierFlattener;
 
-    public function __construct(private EntityManagerInterface $em)
-    {
+    public function __construct(
+        private EntityManagerInterface $em,
+    ) {
         /**
          * @psalm-suppress InvalidArgument
          */

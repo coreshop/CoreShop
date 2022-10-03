@@ -33,8 +33,9 @@ class ProductsConditionChecker implements ConditionCheckerInterface
         ProductVariantsCheckerTrait::__construct as private __traitConstruct;
     }
 
-    public function __construct(ProductVariantRepositoryInterface $productRepository)
-    {
+    public function __construct(
+        ProductVariantRepositoryInterface $productRepository,
+    ) {
         $this->__traitConstruct($productRepository);
     }
 

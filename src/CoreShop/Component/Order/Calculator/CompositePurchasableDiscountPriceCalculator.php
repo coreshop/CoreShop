@@ -24,8 +24,9 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositePurchasableDiscountPriceCalculator implements PurchasableDiscountPriceCalculatorInterface
 {
-    public function __construct(protected PrioritizedServiceRegistryInterface $discountPriceCalculators)
-    {
+    public function __construct(
+        protected PrioritizedServiceRegistryInterface $discountPriceCalculators,
+    ) {
     }
 
     public function getDiscountPrice(PurchasableInterface $purchasable, array $context): int

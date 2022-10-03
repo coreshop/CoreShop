@@ -25,8 +25,9 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class ShippingRuleCarrierValidator implements ShippableCarrierValidatorInterface
 {
-    public function __construct(private CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker)
-    {
+    public function __construct(
+        private CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker,
+    ) {
     }
 
     public function isCarrierValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): bool

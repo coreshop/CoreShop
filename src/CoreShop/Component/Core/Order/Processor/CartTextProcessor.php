@@ -25,8 +25,9 @@ use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderIn
 
 final class CartTextProcessor implements CartProcessorInterface
 {
-    public function __construct(protected TranslationLocaleProviderInterface $localeProvider)
-    {
+    public function __construct(
+        protected TranslationLocaleProviderInterface $localeProvider,
+    ) {
     }
 
     public function process(OrderInterface $cart): void

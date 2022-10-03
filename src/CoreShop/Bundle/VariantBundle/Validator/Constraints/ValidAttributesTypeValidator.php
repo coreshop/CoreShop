@@ -27,8 +27,8 @@ use Webmozart\Assert\Assert;
 
 class ValidAttributesTypeValidator extends ConstraintValidator
 {
-    public function __construct()
-    {
+    public function __construct(
+        ) {
     }
 
     public function validate($value, Constraint $constraint): void

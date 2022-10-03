@@ -28,8 +28,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CurrencyChoiceType extends AbstractType
 {
-    public function __construct(private RepositoryInterface $currencyRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $currencyRepository,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

@@ -26,8 +26,9 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
 {
-    public function __construct(protected ViewHandlerInterface $viewHandler)
-    {
+    public function __construct(
+        protected ViewHandlerInterface $viewHandler,
+    ) {
     }
 
     /**

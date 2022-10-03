@@ -22,8 +22,9 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class OrderFactory implements FactoryInterface
 {
-    public function __construct(private FactoryInterface $cartFactory)
-    {
+    public function __construct(
+        private FactoryInterface $cartFactory,
+    ) {
     }
 
     public function createNew()

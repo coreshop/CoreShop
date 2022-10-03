@@ -24,8 +24,8 @@ class RegisterIndexWorkerPass extends RegisterRegistryTypePass
 {
     public const INDEX_WORKER_TAG = 'coreshop.index.worker';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.index.worker',
             'coreshop.form_registry.index.worker',

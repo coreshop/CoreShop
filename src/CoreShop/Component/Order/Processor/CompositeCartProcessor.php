@@ -25,8 +25,8 @@ final class CompositeCartProcessor implements CartProcessorInterface
 {
     private PriorityQueue $cartProcessors;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->cartProcessors = new PriorityQueue();
     }
 

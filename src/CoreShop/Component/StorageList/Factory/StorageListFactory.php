@@ -23,8 +23,9 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class StorageListFactory implements FactoryInterface
 {
-    public function __construct(private FactoryInterface $storageListFactory)
-    {
+    public function __construct(
+        private FactoryInterface $storageListFactory,
+    ) {
     }
 
     public function createNew()

@@ -36,8 +36,9 @@ final class InstallerContext implements Context
 
     private ?Command $command = null;
 
-    public function __construct(private KernelInterface $kernel)
-    {
+    public function __construct(
+        private KernelInterface $kernel,
+    ) {
     }
 
     /**

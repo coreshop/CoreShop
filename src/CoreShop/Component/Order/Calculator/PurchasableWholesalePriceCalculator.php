@@ -26,8 +26,9 @@ use Webmozart\Assert\Assert;
 
 class PurchasableWholesalePriceCalculator implements PurchasableWholesalePriceCalculatorInterface
 {
-    public function __construct(private CurrencyConverterInterface $currencyConverter)
-    {
+    public function __construct(
+        private CurrencyConverterInterface $currencyConverter,
+    ) {
     }
 
     public function getPurchasableWholesalePrice(PurchasableInterface $purchasable, array $context): int

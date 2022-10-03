@@ -22,8 +22,9 @@ class AddMultipleToCart implements AddMultipleToCartInterface
 {
     private array $items;
 
-    public function __construct(array $items)
-    {
+    public function __construct(
+        array $items,
+    ) {
         $this->items = $items;
     }
 

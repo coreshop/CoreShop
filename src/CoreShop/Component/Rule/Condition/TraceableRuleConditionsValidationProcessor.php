@@ -26,8 +26,9 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
 {
     private array $processed = [];
 
-    public function __construct(private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
-    {
+    public function __construct(
+        private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor,
+    ) {
     }
 
     public function getType(): string

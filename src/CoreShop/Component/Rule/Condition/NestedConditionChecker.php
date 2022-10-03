@@ -23,8 +23,9 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class NestedConditionChecker implements ConditionCheckerInterface
 {
-    public function __construct(protected RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
-    {
+    public function __construct(
+        protected RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor,
+    ) {
     }
 
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool

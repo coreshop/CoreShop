@@ -26,8 +26,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FilteredListingFactory implements FilteredListingFactoryInterface
 {
-    public function __construct(private ListingFactoryInterface $listingFactory)
-    {
+    public function __construct(
+        private ListingFactoryInterface $listingFactory,
+    ) {
     }
 
     public function createList(FilterInterface $filter, ParameterBag $parameterBag): ListingInterface
