@@ -27,8 +27,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PimcoreResourceSelectionType extends AbstractType
 {
-    public function __construct(protected RepositoryInterface $repository)
-    {
+    public function __construct(
+        protected RepositoryInterface $repository,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

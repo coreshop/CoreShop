@@ -23,8 +23,9 @@ use Pimcore\Model\Element\Note;
 
 class HistoryRepository implements HistoryRepositoryInterface
 {
-    public function __construct(private string $noteIdentifier)
-    {
+    public function __construct(
+        private string $noteIdentifier,
+    ) {
     }
 
     public function getHistory(DataObject\Concrete $object): array

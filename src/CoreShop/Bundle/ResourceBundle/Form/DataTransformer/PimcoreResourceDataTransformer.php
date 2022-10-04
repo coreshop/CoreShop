@@ -24,8 +24,9 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class PimcoreResourceDataTransformer implements DataTransformerInterface
 {
-    public function __construct(private RepositoryInterface $repository)
-    {
+    public function __construct(
+        private RepositoryInterface $repository,
+    ) {
     }
 
     public function transform($value)

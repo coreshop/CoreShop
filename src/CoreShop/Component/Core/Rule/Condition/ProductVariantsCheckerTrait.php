@@ -26,8 +26,9 @@ trait ProductVariantsCheckerTrait
 {
     private ProductVariantRepositoryInterface $productRepository;
 
-    public function __construct(ProductVariantRepositoryInterface $productRepository)
-    {
+    public function __construct(
+        ProductVariantRepositoryInterface $productRepository,
+    ) {
         $this->productRepository = $productRepository;
     }
 

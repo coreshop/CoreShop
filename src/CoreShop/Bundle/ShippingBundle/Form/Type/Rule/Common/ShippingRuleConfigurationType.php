@@ -30,8 +30,9 @@ final class ShippingRuleConfigurationType extends AbstractType
     /**
      * @param string[] $validationGroups
      */
-    public function __construct(protected array $validationGroups)
-    {
+    public function __construct(
+        protected array $validationGroups,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

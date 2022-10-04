@@ -24,8 +24,9 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 final class StoreContext implements Context
 {
-    public function __construct(private StoreContextSetterInterface $storeContextSetter)
-    {
+    public function __construct(
+        private StoreContextSetterInterface $storeContextSetter,
+    ) {
     }
 
     /**

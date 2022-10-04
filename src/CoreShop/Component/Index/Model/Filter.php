@@ -70,8 +70,8 @@ class Filter extends AbstractResource implements FilterInterface
      */
     protected $conditions;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->preConditions = new ArrayCollection();
         $this->conditions = new ArrayCollection();
     }

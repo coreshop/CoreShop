@@ -24,8 +24,8 @@ final class ProductQuantityPriceRulesConditionPass extends RegisterRegistryTypeP
 {
     public const PRODUCT_QUANTITY_PRICE_RULE_CONDITION_TAG = 'coreshop.product_quantity_price_rules.condition';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.product_quantity_price_rules.conditions',
             'coreshop.form_registry.product_quantity_price_rules.conditions',

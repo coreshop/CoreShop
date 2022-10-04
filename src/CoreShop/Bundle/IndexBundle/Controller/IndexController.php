@@ -223,7 +223,12 @@ class IndexController extends ResourceController
         return $result;
     }
 
-    protected function getObjectbrickFields(array $allowedBricks, &$result): array
+    /**
+     * @param ((array|string)[]|mixed)[] $result
+     *
+     * @psalm-param array<array{nodeLabel: 'fields', nodeType: 'object', childs: array}|mixed> $result
+     */
+    protected function getObjectbrickFields(array $allowedBricks, array &$result): array
     {
         foreach ($allowedBricks as $brickKey) {
             $brickDefinition = DataObject\Objectbrick\Definition::getByKey($brickKey);

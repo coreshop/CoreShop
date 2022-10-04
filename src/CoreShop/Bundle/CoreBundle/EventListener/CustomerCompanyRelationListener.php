@@ -26,8 +26,9 @@ use Pimcore\Event\Model\DataObjectEvent;
 
 final class CustomerCompanyRelationListener
 {
-    public function __construct(protected CustomerRepositoryInterface $customerRepository)
-    {
+    public function __construct(
+        protected CustomerRepositoryInterface $customerRepository,
+    ) {
     }
 
     public function onCompanyDelete(DataObjectEvent $event): void

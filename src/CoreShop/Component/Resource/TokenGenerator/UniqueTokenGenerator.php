@@ -28,8 +28,9 @@ final class UniqueTokenGenerator
 
     private int $keyLength;
 
-    public function __construct(bool $onlyNumbers = false)
-    {
+    public function __construct(
+        bool $onlyNumbers = false,
+    ) {
         $this->alphabet =
             implode(range('a', 'z'))
             . implode(range('A', 'Z'));

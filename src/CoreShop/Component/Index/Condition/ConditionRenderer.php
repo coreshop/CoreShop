@@ -23,8 +23,9 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 final class ConditionRenderer implements ConditionRendererInterface
 {
-    public function __construct(private ServiceRegistryInterface $registry)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $registry,
+    ) {
     }
 
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null): mixed

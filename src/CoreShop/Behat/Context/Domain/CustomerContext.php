@@ -25,8 +25,9 @@ use Webmozart\Assert\Assert;
 
 final class CustomerContext implements Context
 {
-    public function __construct(private CustomerContextInterface $customerContext)
-    {
+    public function __construct(
+        private CustomerContextInterface $customerContext,
+    ) {
     }
 
     /**

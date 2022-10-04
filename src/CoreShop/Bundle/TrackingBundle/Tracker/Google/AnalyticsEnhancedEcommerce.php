@@ -158,7 +158,10 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    protected function trackCartAction($product, $action, float $quantity = 1): void
+    /**
+     * @psalm-param 'add'|'remove' $action
+     */
+    protected function trackCartAction($product, string $action, float $quantity = 1): void
     {
         if ($this->isGlobalSiteTagMode() === true) {
             return;

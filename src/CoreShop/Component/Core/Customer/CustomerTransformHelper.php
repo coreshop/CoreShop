@@ -236,7 +236,10 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $resolver;
     }
 
-    private function forceSave(mixed $element, bool $useVersioning = true): void
+    /**
+     * @param AddressInterface|AddressesAwareInterface|ElementInterface&AddressesAwareInterface $element
+     */
+    private function forceSave(ElementInterface&AddressesAwareInterface|AddressInterface|AddressesAwareInterfaced $element, bool $useVersioning = true): void
     {
         if ($element instanceof Concrete) {
             $element->setOmitMandatoryCheck(true);

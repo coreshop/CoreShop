@@ -30,8 +30,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class SluggableListener implements EventSubscriberInterface
 {
-    public function __construct(protected SluggableSluggerInterface $slugger)
-    {
+    public function __construct(
+        protected SluggableSluggerInterface $slugger,
+    ) {
     }
 
     public static function getSubscribedEvents(): array

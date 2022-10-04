@@ -26,8 +26,8 @@ class CustomerDataMapper implements DataMapperInterface
 {
     private DataMapper $propertyPathDataMapper;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->propertyPathDataMapper = new DataMapper();
     }
 

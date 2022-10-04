@@ -30,8 +30,8 @@ final class CompositeCustomerContext implements CustomerContextInterface
      */
     private PriorityQueue $customerContexts;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->customerContexts = new PriorityQueue();
     }
 

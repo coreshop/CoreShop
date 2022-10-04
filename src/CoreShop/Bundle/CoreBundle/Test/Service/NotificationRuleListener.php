@@ -24,8 +24,9 @@ use Symfony\Component\Finder\Finder;
 
 final class NotificationRuleListener implements NotificationRuleListenerInterface
 {
-    public function __construct(private string $cacheDir)
-    {
+    public function __construct(
+        private string $cacheDir,
+    ) {
     }
 
     public function hasBeenFired(string $type): bool

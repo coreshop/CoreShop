@@ -24,8 +24,9 @@ use Twig\TwigFunction;
 
 final class TaxationDisplayProviderExtension extends AbstractExtension
 {
-    public function __construct(private TaxationDisplayProviderInterface $taxationDisplayProvider)
-    {
+    public function __construct(
+        private TaxationDisplayProviderInterface $taxationDisplayProvider,
+    ) {
     }
 
     public function getFunctions(): array

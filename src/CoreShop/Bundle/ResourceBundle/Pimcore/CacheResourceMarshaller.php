@@ -26,8 +26,9 @@ class CacheResourceMarshaller implements MarshallerInterface
 {
     protected MarshallerInterface $defaultMarshaller;
 
-    public function __construct(MarshallerInterface $defaultMarshaller = null)
-    {
+    public function __construct(
+        MarshallerInterface $defaultMarshaller = null,
+    ) {
         $this->defaultMarshaller = $defaultMarshaller ?? new DefaultMarshaller();
     }
 

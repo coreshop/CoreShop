@@ -26,8 +26,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 final class ValidAddressIdentifierValidator extends ConstraintValidator
 {
-    public function __construct(private RepositoryInterface $addressIdentifierRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $addressIdentifierRepository,
+    ) {
     }
 
     public function validate($value, Constraint $constraint): void

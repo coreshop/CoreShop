@@ -26,8 +26,9 @@ class RelationalNestedInterpreter implements RelationInterpreterInterface
 {
     use NestedTrait;
 
-    public function __construct(ServiceRegistryInterface $interpreterRegistry)
-    {
+    public function __construct(
+        ServiceRegistryInterface $interpreterRegistry,
+    ) {
         $this->interpreterRegistry = $interpreterRegistry;
     }
 

@@ -25,8 +25,9 @@ use Symfony\Component\Form\FormInterface;
 
 final class ResourceFormFactory implements ResourceFormFactoryInterface
 {
-    public function __construct(private FormFactoryInterface $formFactory)
-    {
+    public function __construct(
+        private FormFactoryInterface $formFactory,
+    ) {
     }
 
     public function create(MetadataInterface $metadata, ResourceInterface $resource): FormInterface

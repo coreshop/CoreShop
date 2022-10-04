@@ -23,8 +23,9 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 final class CompositeValidRuleFetcher implements ValidRulesFetcherInterface
 {
-    public function __construct(private ServiceRegistryInterface $validRuleFetchers)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $validRuleFetchers,
+    ) {
     }
 
     public function getValidRules(ProductInterface $product, array $context): array

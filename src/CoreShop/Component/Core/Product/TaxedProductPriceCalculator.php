@@ -91,7 +91,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         return $this->taxCalculatorFactory->getTaxCalculator($product, $this->getDefaultAddress($context), $context);
     }
 
-    protected function getDefaultAddress($context): ?AddressInterface
+    protected function getDefaultAddress(array $context): ?AddressInterface
     {
         return $this->defaultTaxAddressProvider->getAddress($context);
     }

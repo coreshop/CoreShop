@@ -30,8 +30,8 @@ final class CompositeStoreContext implements StoreContextInterface
      */
     private PriorityQueue $storeContexts;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->storeContexts = new PriorityQueue();
     }
 

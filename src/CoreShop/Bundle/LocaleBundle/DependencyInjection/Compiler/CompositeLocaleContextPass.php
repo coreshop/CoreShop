@@ -26,8 +26,8 @@ final class CompositeLocaleContextPass extends PrioritizedCompositeServicePass
 {
     public const LOCALE_CONTEXT_SERVICE_TAG = 'coreshop.context.locale';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             LocaleContextInterface::class,
             CompositeLocaleContext::class,

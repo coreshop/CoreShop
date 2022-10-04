@@ -26,8 +26,8 @@ final class CompositeCountryContextPass extends PrioritizedCompositeServicePass
 {
     public const COUNTRY_CONTEXT_SERVICE_TAG = 'coreshop.context.country';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             CountryContextInterface::class,
             CompositeCountryContext::class,

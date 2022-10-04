@@ -26,8 +26,9 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterface
 {
-    public function __construct(private TaxCalculatorFactoryInterface $taxCalculatorFactory)
-    {
+    public function __construct(
+        private TaxCalculatorFactoryInterface $taxCalculatorFactory,
+    ) {
     }
 
     public function getTaxCalculator(

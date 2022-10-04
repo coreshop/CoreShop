@@ -50,8 +50,8 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
      */
     protected $productUnitDefinitionPrices;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->productUnitDefinitionPrices = new ArrayCollection();
     }
 

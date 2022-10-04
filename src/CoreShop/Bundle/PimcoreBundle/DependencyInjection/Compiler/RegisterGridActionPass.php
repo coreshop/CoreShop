@@ -24,8 +24,8 @@ class RegisterGridActionPass extends RegisterSimpleRegistryTypePass
 {
     public const GRID_ACTION_TAG = 'coreshop.grid.action';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.grid.action',
             'coreshop.grid.actions',

@@ -75,7 +75,12 @@ abstract class AbstractWorker implements WorkerInterface
         return $this->conditionRenderer->render($this, $condition, $prefix);
     }
 
-    public function renderOrder(OrderInterface $condition, $prefix = null)
+    /**
+     * @param null|string $prefix
+     *
+     * @psalm-param 'q'|null $prefix
+     */
+    public function renderOrder(OrderInterface $condition, string|null $prefix = null)
     {
         return $this->orderRenderer->render($this, $condition, $prefix);
     }
@@ -190,7 +195,12 @@ abstract class AbstractWorker implements WorkerInterface
 
     abstract protected function handleArrayValues(IndexInterface $index, array $value);
 
-    protected function processRelationalData(IndexColumnInterface $column, IndexableInterface $object, mixed $value, int $virtualObjectId): array
+    /**
+     * @param RelationalValueInterface[] $value
+     *
+     * @psalm-param array<RelationalValueInterface> $value
+     */
+    protected function processRelationalData(IndexColumnInterface $column, IndexableInterface $object, arrayd $value, int $virtualObjectId): array
     {
         if (null === $value) {
             return [];

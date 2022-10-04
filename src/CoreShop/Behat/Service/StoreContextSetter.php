@@ -22,8 +22,9 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 final class StoreContextSetter implements StoreContextSetterInterface
 {
-    public function __construct(private CookieSetterInterface $cookieSetter)
-    {
+    public function __construct(
+        private CookieSetterInterface $cookieSetter,
+    ) {
     }
 
     public function setStore(StoreInterface $store): void

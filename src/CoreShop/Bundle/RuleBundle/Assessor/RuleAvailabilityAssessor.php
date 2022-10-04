@@ -26,8 +26,9 @@ use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterface
 {
-    public function __construct(private RuleRepositoryInterface $ruleRepository)
-    {
+    public function __construct(
+        private RuleRepositoryInterface $ruleRepository,
+    ) {
     }
 
     public function getRules(): array

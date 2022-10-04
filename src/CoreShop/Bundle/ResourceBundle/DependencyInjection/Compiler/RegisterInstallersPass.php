@@ -24,8 +24,8 @@ final class RegisterInstallersPass extends RegisterSimpleRegistryTypePass
 {
     public const INSTALLER_TAG = 'coreshop.resource.installer';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.resource.installers',
             'coreshop.resource.installers',

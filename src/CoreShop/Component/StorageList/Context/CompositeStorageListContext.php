@@ -30,8 +30,8 @@ class CompositeStorageListContext implements StorageListContextInterface
      */
     protected PriorityQueue $contexts;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->contexts = new PriorityQueue();
     }
 

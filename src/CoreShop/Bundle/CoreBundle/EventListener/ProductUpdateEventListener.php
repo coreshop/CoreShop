@@ -24,8 +24,9 @@ use Pimcore\Event\Model\DataObjectEvent;
 
 final class ProductUpdateEventListener
 {
-    public function __construct(private ConfigurationServiceInterface $configurationService)
-    {
+    public function __construct(
+        private ConfigurationServiceInterface $configurationService,
+    ) {
     }
 
     public function storeConfigurationThatProductChanged(DataObjectEvent $event): void

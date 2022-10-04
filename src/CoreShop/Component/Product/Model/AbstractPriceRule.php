@@ -52,8 +52,8 @@ abstract class AbstractPriceRule implements PriceRuleInterface
      */
     protected $stopPropagation = false;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->initializeRules();
         $this->initializeTranslationsCollection();
     }

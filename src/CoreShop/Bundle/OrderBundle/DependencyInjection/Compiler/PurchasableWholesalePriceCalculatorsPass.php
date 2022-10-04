@@ -24,8 +24,8 @@ final class PurchasableWholesalePriceCalculatorsPass extends RegisterSimpleRegis
 {
     public const PURCHASABLE_WHOLESALE_PRICE_CALCULATOR_TAG = 'coreshop.order.purchasable.wholesale_price_calculator';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.order.purchasable.wholesale_price_calculators',
             'coreshop.order.purchasable.wholesale_price_calculators',

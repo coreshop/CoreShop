@@ -26,8 +26,9 @@ use JMS\Serializer\JsonSerializationVisitor;
 
 class RelationsHandler
 {
-    public function __construct(private EntityManagerInterface $manager)
-    {
+    public function __construct(
+        private EntityManagerInterface $manager,
+    ) {
     }
 
     public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
@@ -51,7 +52,12 @@ class RelationsHandler
         return $this->getSingleEntityRelation($relation, $manager);
     }
 
-    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
+    /**
+     * @return (T|null)[]|T|null
+     *
+     * @psalm-return T|list<T|null>|null
+     */
+    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context): array|T|null
     {
         $className = $type['params'][0]['name'] ?? null;
 
@@ -104,7 +110,7 @@ class RelationsHandler
      *
      * @psalm-return T|null
      */
-    protected function findById($id, ClassMetadata $metadata, EntityManagerInterface $manager)
+    protected function findById(array $id, ClassMetadata $metadata, EntityManagerInterface $manager)
     {
         return $manager->find($metadata->getName(), $id);
     }

@@ -20,8 +20,8 @@ namespace CoreShop\Component\Shipping\Exception;
 
 final class UnresolvedDefaultCarrierException extends \Exception
 {
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct('Default carrier could not be resolved!');
     }
 }

@@ -26,8 +26,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class SiteBasedRequestResolver implements RequestResolverInterface
 {
-    public function __construct(private StoreRepositoryInterface $storeRepository)
-    {
+    public function __construct(
+        private StoreRepositoryInterface $storeRepository,
+    ) {
     }
 
     public function findStore(Request $request): ?StoreInterface

@@ -24,8 +24,9 @@ use Twig\TwigFilter;
 
 final class FormatAddressExtension extends AbstractExtension
 {
-    public function __construct(private AddressFormatterInterface $addressFormatter)
-    {
+    public function __construct(
+        private AddressFormatterInterface $addressFormatter,
+    ) {
     }
 
     public function getFilters(): array

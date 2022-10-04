@@ -219,10 +219,12 @@ class StorageListController extends AbstractController
 
     /**
      * @return mixed
-     *
+
      * based on Symfony\Component\HttpFoundation\Request::get
+     *
+     * @param null|string $default
      */
-    protected function getParameterFromRequest(Request $request, string $key, $default = null)
+    protected function getParameterFromRequest(Request $request, string $key, string|null $default = null)
     {
         if ($request !== $result = $request->attributes->get($key, $request)) {
             return $result;

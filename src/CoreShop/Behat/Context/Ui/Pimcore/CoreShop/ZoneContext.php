@@ -24,8 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class ZoneContext implements Context
 {
-    public function __construct(private ZonePageInterface $zonePage)
-    {
+    public function __construct(
+        private ZonePageInterface $zonePage,
+    ) {
     }
 
     /**

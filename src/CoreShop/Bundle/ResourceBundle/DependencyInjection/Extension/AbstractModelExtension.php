@@ -129,7 +129,10 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
         }
     }
 
-    protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container): void
+    /**
+     * @psalm-param 'coreshop' $applicationName
+     */
+    protected function registerPimcoreResources(string $applicationName, $bundleResources, ContainerBuilder $container): void
     {
         parent::registerPimcoreResources($applicationName, $bundleResources, $container);
 

@@ -47,8 +47,8 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
      */
     protected $unitDefinitions;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->unitDefinitions = new ArrayCollection();
     }
 

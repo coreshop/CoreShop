@@ -26,8 +26,8 @@ final class CompositeRequestResolverPass extends PrioritizedCompositeServicePass
 {
     public const STORE_REQUEST_RESOLVER_TAG = 'coreshop.context.store.request_based.resolver';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             RequestResolverInterface::class,
             CompositeRequestResolver::class,

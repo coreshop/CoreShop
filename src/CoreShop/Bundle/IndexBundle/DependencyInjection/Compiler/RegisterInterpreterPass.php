@@ -24,8 +24,8 @@ class RegisterInterpreterPass extends RegisterRegistryTypePass
 {
     public const INDEX_INTERPRETER_TAG = 'coreshop.index.interpreter';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.index.interpreter',
             'coreshop.form_registry.index.interpreter',

@@ -24,8 +24,8 @@ abstract class StorageList implements StorageListInterface
 {
     protected array $items;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->items = [];
     }
 
@@ -34,7 +34,12 @@ abstract class StorageList implements StorageListInterface
         return $this->items;
     }
 
-    public function setItems($items): void
+    /**
+     * @param (StorageListItemInterface|mixed)[] $items
+     *
+     * @psalm-param array<StorageListItemInterface|mixed> $items
+     */
+    public function setItems(array $items): void
     {
         $this->items = $items;
     }

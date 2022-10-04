@@ -26,8 +26,9 @@ use Webmozart\Assert\Assert;
 
 final class DeleteIndexListener
 {
-    public function __construct(private ServiceRegistryInterface $workerServiceRegistry)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $workerServiceRegistry,
+    ) {
     }
 
     public function onIndexDeletePre(ResourceControllerEvent $event): void

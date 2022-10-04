@@ -24,8 +24,8 @@ final class CartPriceRuleConditionPass extends RegisterRegistryTypePass
 {
     public const CART_PRICE_RULE_CONDITION_TAG = 'coreshop.cart_price_rule.condition';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.cart_price_rule.conditions',
             'coreshop.form_registry.cart_price_rule.conditions',

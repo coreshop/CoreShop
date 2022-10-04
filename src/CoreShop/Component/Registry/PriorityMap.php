@@ -33,7 +33,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Get scalar key from mixed.
      */
-    private function getScalarKey($key)
+    private function getScalarKey(string $key)
     {
         if (is_object($key)) {
             return spl_object_hash($key);

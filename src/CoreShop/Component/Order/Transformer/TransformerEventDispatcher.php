@@ -24,8 +24,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class TransformerEventDispatcher implements TransformerEventDispatcherInterface
 {
-    public function __construct(private EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+    ) {
     }
 
     public function dispatchPreEvent(string $modelName, ResourceInterface $model, array $params = []): void

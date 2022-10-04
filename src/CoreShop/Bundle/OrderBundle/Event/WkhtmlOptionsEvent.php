@@ -25,8 +25,9 @@ final class WkhtmlOptionsEvent extends Event
 {
     protected string $options;
 
-    public function __construct(protected OrderDocumentInterface $orderDocument)
-    {
+    public function __construct(
+        protected OrderDocumentInterface $orderDocument,
+    ) {
     }
 
     public function getOrderDocument(): OrderDocumentInterface

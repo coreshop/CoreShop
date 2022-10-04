@@ -23,8 +23,9 @@ use CoreShop\Component\Locale\Context\FixedLocaleContext;
 
 final class LocaleContext implements Context
 {
-    public function __construct(private FixedLocaleContext $fixedLocaleContext)
-    {
+    public function __construct(
+        private FixedLocaleContext $fixedLocaleContext,
+    ) {
     }
 
     /**

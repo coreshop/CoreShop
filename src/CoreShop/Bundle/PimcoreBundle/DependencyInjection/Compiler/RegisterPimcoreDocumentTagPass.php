@@ -22,8 +22,8 @@ use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class RegisterPimcoreDocumentTagPass extends RegisterSimpleRegistryTypePass
 {
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.pimcore.document.editable',
             'coreshop.registry.pimcore.document.editables',

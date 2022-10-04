@@ -23,8 +23,9 @@ use Symfony\Component\Workflow\Event\Event;
 
 class CascadeTransition
 {
-    public function __construct(protected StateMachineManagerInterface $stateMachineManager)
-    {
+    public function __construct(
+        protected StateMachineManagerInterface $stateMachineManager,
+    ) {
     }
 
     public function apply($objects, Event $event, $transition = null, $workflowName = null, $soft = true): void

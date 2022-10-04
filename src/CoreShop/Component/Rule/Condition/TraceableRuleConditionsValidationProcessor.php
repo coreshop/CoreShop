@@ -26,8 +26,9 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
 {
     private array $processed = [];
 
-    public function __construct(private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
-    {
+    public function __construct(
+        private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor,
+    ) {
     }
 
     public function getType(): string
@@ -73,9 +74,9 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
     protected function addProcessedRule(
         ResourceInterface $subject,
         RuleInterface $rule,
-        $ruleResult = false,
+        bool $ruleResult = false,
         ConditionInterface $condition = null,
-        $conditionResult = false,
+        bool $conditionResult = false,
     ): void {
         if (!isset($this->processed[$subject->getId()])) {
             $this->processed[$subject->getId()] = [

@@ -25,8 +25,9 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class CompositePriceCalculator implements CarrierPriceCalculatorInterface
 {
-    public function __construct(protected array $calculators)
-    {
+    public function __construct(
+        protected array $calculators,
+    ) {
     }
 
     public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int

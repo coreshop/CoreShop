@@ -24,8 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class ThemeContext implements Context
 {
-    public function __construct(private ThemeResolverInterface $themeResolver)
-    {
+    public function __construct(
+        private ThemeResolverInterface $themeResolver,
+    ) {
     }
 
     /**

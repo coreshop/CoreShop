@@ -27,8 +27,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TaxRateChoiceType extends AbstractType
 {
-    public function __construct(private RepositoryInterface $countryRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $countryRepository,
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -26,8 +26,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class IndexChoiceType extends AbstractType
 {
-    public function __construct(private RepositoryInterface $indexRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $indexRepository,
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void

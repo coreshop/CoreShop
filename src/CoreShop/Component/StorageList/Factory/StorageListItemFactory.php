@@ -25,8 +25,9 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 class StorageListItemFactory implements StorageListItemFactoryInterface
 {
-    public function __construct(private FactoryInterface $storageListItemFactory)
-    {
+    public function __construct(
+        private FactoryInterface $storageListItemFactory,
+    ) {
     }
 
     public function createNew()

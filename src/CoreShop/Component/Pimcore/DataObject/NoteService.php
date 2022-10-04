@@ -27,8 +27,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class NoteService implements NoteServiceInterface
 {
-    public function __construct(protected EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        protected EventDispatcherInterface $eventDispatcher,
+    ) {
     }
 
     public function getNoteById(int $id): ?Note

@@ -23,8 +23,9 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class AdjustmentFactory implements AdjustmentFactoryInterface
 {
-    public function __construct(private FactoryInterface $adjustmentFactory)
-    {
+    public function __construct(
+        private FactoryInterface $adjustmentFactory,
+    ) {
     }
 
     public function createNew()

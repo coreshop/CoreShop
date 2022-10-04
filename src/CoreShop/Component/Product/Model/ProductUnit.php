@@ -41,8 +41,8 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface, \Str
 
     protected ?string $name = null;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->initializeTranslationsCollection();
     }
 

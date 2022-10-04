@@ -22,7 +22,7 @@ class CodeTracker
 {
     protected array $blocks = [];
 
-    public function addCodePart($block): void
+    public function addCodePart(string $block): void
     {
         $this->blocks[] = $block;
     }

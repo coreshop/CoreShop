@@ -117,7 +117,7 @@ abstract class AbstractInstallCommand extends Command
         }
     }
 
-    protected function ensureDirectoryExistsAndIsWritable($directory, OutputInterface $output): void
+    protected function ensureDirectoryExistsAndIsWritable(string $directory, OutputInterface $output): void
     {
         $this->directoryChecker->setCommandName($this->getName());
 

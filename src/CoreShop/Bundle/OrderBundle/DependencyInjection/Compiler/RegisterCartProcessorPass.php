@@ -26,8 +26,8 @@ final class RegisterCartProcessorPass extends PrioritizedCompositeServicePass
 {
     public const CART_PROCESSOR_TAG = 'coreshop.cart_processor';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             CartProcessorInterface::class,
             CompositeCartProcessor::class,

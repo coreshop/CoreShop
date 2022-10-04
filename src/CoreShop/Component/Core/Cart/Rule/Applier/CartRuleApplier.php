@@ -52,7 +52,7 @@ class CartRuleApplier implements CartRuleApplierInterface
         $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, true);
     }
 
-    protected function apply(OrderInterface $cart, PriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
+    protected function apply(OrderInterface $cart, PriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false, bool $positive = false): void
     {
         $context = $this->cartContextResolver->resolveCartContext($cart);
 

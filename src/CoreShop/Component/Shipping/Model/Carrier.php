@@ -72,8 +72,8 @@ class Carrier extends AbstractResource implements CarrierInterface
      */
     protected $shippingRules;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->initializeTranslationsCollection();
 
         $this->shippingRules = new ArrayCollection();

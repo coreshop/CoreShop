@@ -27,8 +27,9 @@ use Pimcore\Model\DataObject\Concrete;
 
 class ProductQuantityPriceRulesCloner implements ProductClonerInterface
 {
-    public function __construct(protected UnitMatcherInterface $unitMatcher)
-    {
+    public function __construct(
+        protected UnitMatcherInterface $unitMatcher,
+    ) {
     }
 
     public function clone(

@@ -24,8 +24,9 @@ use Pimcore\DataObject\GridColumnConfig\Operator\Factory\OperatorFactoryInterfac
 
 class OrderStateFactory implements OperatorFactoryInterface
 {
-    public function __construct(private WorkflowStateInfoManagerInterface $workflowManager)
-    {
+    public function __construct(
+        private WorkflowStateInfoManagerInterface $workflowManager,
+    ) {
     }
 
     public function build(\stdClass $configElement, array $context = []): OrderState

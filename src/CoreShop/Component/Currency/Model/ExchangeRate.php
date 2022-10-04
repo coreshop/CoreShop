@@ -49,8 +49,8 @@ class ExchangeRate implements ExchangeRateInterface
      */
     protected $toCurrency;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->creationDate = new \DateTime();
     }
 

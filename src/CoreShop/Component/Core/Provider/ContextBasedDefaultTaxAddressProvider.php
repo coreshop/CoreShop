@@ -24,8 +24,9 @@ use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 
 class ContextBasedDefaultTaxAddressProvider implements DefaultTaxAddressProviderInterface
 {
-    public function __construct(private PimcoreFactoryInterface $addressFactory)
-    {
+    public function __construct(
+        private PimcoreFactoryInterface $addressFactory,
+    ) {
     }
 
     public function getAddress(array $context = []): ?AddressInterface

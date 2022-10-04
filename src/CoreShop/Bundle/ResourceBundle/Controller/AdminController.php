@@ -26,16 +26,21 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
 {
-    public function __construct(protected ViewHandlerInterface $viewHandler)
-    {
+    public function __construct(
+        protected ViewHandlerInterface $viewHandler,
+    ) {
     }
 
     /**
      * @return mixed
-     *
+
      * based on Symfony\Component\HttpFoundation\Request::get
+     *
+     * @param array|int|null|string $default
+     *
+     * @psalm-param 'cart'|'order'|array|int|null $default
      */
-    protected function getParameterFromRequest(Request $request, string $key, $default = null)
+    protected function getParameterFromRequest(Request $request, string $key, array|string|int|null $default = null)
     {
         if ($request !== $result = $request->attributes->get($key, $request)) {
             return $result;

@@ -407,7 +407,14 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return $this->dao->quote($value);
     }
 
-    protected function addQueryFromConditions(QueryBuilder $queryBuilder, $excludeConditions = false, $excludedFieldName = null, $variantMode = null): void
+    /**
+     * @param false $excludeConditions
+     * @param null|string $excludedFieldName
+     * @param null|string $variantMode
+     *
+     * @psalm-param 'include'|null $variantMode
+     */
+    protected function addQueryFromConditions(QueryBuilder $queryBuilder, bool $excludeConditions = false, string|null $excludedFieldName = null, string|null $variantMode = null): void
     {
         if ($variantMode == null) {
             $variantMode = $this->getVariantMode();

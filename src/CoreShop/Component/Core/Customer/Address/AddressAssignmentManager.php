@@ -26,8 +26,9 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 
 final class AddressAssignmentManager implements AddressAssignmentManagerInterface
 {
-    public function __construct(protected CustomerTransformHelperInterface $customerTransformHelper)
-    {
+    public function __construct(
+        protected CustomerTransformHelperInterface $customerTransformHelper,
+    ) {
     }
 
     public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true): ?array

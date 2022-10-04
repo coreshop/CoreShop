@@ -192,7 +192,10 @@ final class WkHtmlToPdf implements PdfRendererInterface
         return $pdfContent;
     }
 
-    private function unlinkFile($file): void
+    /**
+     * @param null|string $file
+     */
+    private function unlinkFile(string|null $file): void
     {
         @unlink($file);
     }

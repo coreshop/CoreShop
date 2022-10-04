@@ -28,8 +28,9 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 final class CartContext implements CartContextInterface
 {
-    public function __construct(private FactoryInterface $cartFactory)
-    {
+    public function __construct(
+        private FactoryInterface $cartFactory,
+    ) {
     }
 
     public function getStorageList(): OrderInterface

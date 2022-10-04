@@ -24,8 +24,8 @@ final class ProductPriceRuleActionPass extends RegisterRegistryTypePass
 {
     public const PRODUCT_PRICE_RULE_ACTION_TAG = 'coreshop.product_price_rule.action';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.product_price_rule.actions',
             'coreshop.form_registry.product_price_rule.actions',

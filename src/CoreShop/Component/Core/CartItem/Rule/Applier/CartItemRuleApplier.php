@@ -62,8 +62,8 @@ class CartItemRuleApplier implements CartItemRuleApplierInterface
         OrderItemInterface $orderItem,
         PriceRuleItemInterface $cartPriceRuleItem,
         int $discount,
-        $withTax = false,
-        $positive = false,
+        bool $withTax = false,
+        bool $positive = false,
     ): void {
         $order = $orderItem->getOrder();
         $context = $this->cartContextResolver->resolveCartContext($order);

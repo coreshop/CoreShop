@@ -24,8 +24,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 final class DebugStorePersister
 {
-    public function __construct(private DebugStoreProviderInterface $debugStoreProvider)
-    {
+    public function __construct(
+        private DebugStoreProviderInterface $debugStoreProvider,
+    ) {
     }
 
     public function onKernelResponse(ResponseEvent $filterResponseEvent): void

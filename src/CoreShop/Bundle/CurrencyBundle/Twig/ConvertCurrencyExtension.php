@@ -24,8 +24,9 @@ use Twig\TwigFilter;
 
 final class ConvertCurrencyExtension extends AbstractExtension
 {
-    public function __construct(private CurrencyConverterInterface $currencyConverter)
-    {
+    public function __construct(
+        private CurrencyConverterInterface $currencyConverter,
+    ) {
     }
 
     public function getFilters(): array

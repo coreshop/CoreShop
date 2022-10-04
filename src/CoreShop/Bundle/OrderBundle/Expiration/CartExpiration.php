@@ -22,8 +22,9 @@ use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 
 final class CartExpiration implements OrderExpirationInterface
 {
-    public function __construct(private OrderRepositoryInterface $cartRepository)
-    {
+    public function __construct(
+        private OrderRepositoryInterface $cartRepository,
+    ) {
     }
 
     public function expire(int $days, array $params = []): void

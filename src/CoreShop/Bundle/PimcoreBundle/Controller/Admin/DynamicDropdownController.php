@@ -175,7 +175,7 @@ final class DynamicDropdownController extends AdminController
     /**
      * @return mixed
      */
-    private function parseTree(mixed $tree, mixed $definition)
+    private function parseTree(DataObject\ClassDefinition\Layout|nulld $tree, arrayd $definition)
     {
         if ($tree instanceof DataObject\ClassDefinition\Layout || $tree instanceof DataObject\ClassDefinition\Data\Localizedfields) { // Did I forget something?
             $children = $tree->getChildren();

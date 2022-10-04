@@ -27,8 +27,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ZoneChoiceType extends AbstractType
 {
-    public function __construct(private RepositoryInterface $zoneRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $zoneRepository,
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -35,8 +35,8 @@ class Country extends BaseCountry implements CountryInterface
      */
     protected $currency;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct();
 
         $this->storesAwareConstructor();

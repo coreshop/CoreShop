@@ -685,7 +685,7 @@ class OrderController extends PimcoreController
         ];
     }
 
-    protected function getDataForObject($data): array
+    protected function getDataForObject(AddressInterface|null $data): array
     {
         if ($data instanceof DataObject\Concrete) {
             $dataLoader = new DataLoader();

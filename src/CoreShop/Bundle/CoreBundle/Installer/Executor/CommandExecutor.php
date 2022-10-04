@@ -34,7 +34,12 @@ final class CommandExecutor
     ) {
     }
 
-    public function runCommand($command, $parameters = [], OutputInterface $output = null): self
+    /**
+     * @param string[] $parameters
+     *
+     * @psalm-param array{'--prefix'?: 'CoreShop\Bundle\CoreBundle\Migrations', '--namespace'?: 'CoreShop\Bundle\CoreBundle\Migrations'} $parameters
+     */
+    public function runCommand(string $command, array $parameters = [], OutputInterface $output = null): self
     {
         $parameters = array_merge(
             ['command' => $command],

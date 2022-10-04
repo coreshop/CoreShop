@@ -30,8 +30,9 @@ use Payum\Core\Request\Notify;
 
 final class UpdatePaymentStateExtension implements ExtensionInterface
 {
-    public function __construct(private StateMachineManager $stateMachineManager)
-    {
+    public function __construct(
+        private StateMachineManager $stateMachineManager,
+    ) {
     }
 
     public function onPreExecute(Context $context): void

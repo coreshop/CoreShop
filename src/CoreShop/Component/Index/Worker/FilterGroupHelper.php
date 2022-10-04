@@ -27,8 +27,9 @@ use Pimcore\Model\DataObject\Concrete;
 
 class FilterGroupHelper implements FilterGroupHelperInterface
 {
-    public function __construct(private ServiceRegistryInterface $interpreterServiceRegistry)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $interpreterServiceRegistry,
+    ) {
     }
 
     public function getGroupByValuesForFilterGroup(IndexColumnInterface $column, ListingInterface $list, string $field): array

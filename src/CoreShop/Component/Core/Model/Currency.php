@@ -32,8 +32,8 @@ class Currency extends BaseCurrency implements CurrencyInterface
      */
     protected $countries;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->countries = new ArrayCollection();
     }
 

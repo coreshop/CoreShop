@@ -24,8 +24,8 @@ class RegisterFilterUserConditionTypesPass extends RegisterRegistryTypePass
 {
     public const INDEX_FILTER_USER_CONDITION_TAG = 'coreshop.filter.user_condition_type';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             'coreshop.registry.filter.user_condition_types',
             'coreshop.form_registry.filter.user_condition_types',

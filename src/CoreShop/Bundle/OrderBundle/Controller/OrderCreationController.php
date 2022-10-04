@@ -283,7 +283,10 @@ class OrderCreationController extends PimcoreController
         ];
     }
 
-    protected function getDataForObject($data): array
+    /**
+     * @param AddressInterface|CustomerInterface|OrderInterface|null $data
+     */
+    protected function getDataForObject(CustomerInterface|OrderInterface|AddressInterface|null $data): array
     {
         if ($data instanceof Concrete) {
             $dataLoader = new DataLoader();

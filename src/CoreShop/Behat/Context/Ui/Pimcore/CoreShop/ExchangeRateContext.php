@@ -24,8 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class ExchangeRateContext implements Context
 {
-    public function __construct(private ExchangeRatePageInterface $exchangeRatePage)
-    {
+    public function __construct(
+        private ExchangeRatePageInterface $exchangeRatePage,
+    ) {
     }
 
     /**

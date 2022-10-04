@@ -27,8 +27,9 @@ use Webmozart\Assert\Assert;
 
 final class PimcoreClassContext implements Context
 {
-    public function __construct(private ClassStorageInterface $classStorage)
-    {
+    public function __construct(
+        private ClassStorageInterface $classStorage,
+    ) {
     }
 
     /**

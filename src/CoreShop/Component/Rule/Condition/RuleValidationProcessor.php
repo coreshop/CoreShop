@@ -23,8 +23,9 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class RuleValidationProcessor implements RuleValidationProcessorInterface
 {
-    public function __construct(private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
-    {
+    public function __construct(
+        private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor,
+    ) {
     }
 
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $params = []): bool

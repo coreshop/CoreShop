@@ -154,7 +154,10 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         $this->codeTracker->addCodePart($result);
     }
 
-    protected function trackCartAction($product, $action, $quantity = 1): void
+    /**
+     * @psalm-param 'add'|'remove' $action
+     */
+    protected function trackCartAction($product, string $action, $quantity = 1): void
     {
         $this->ensureDataLayer();
 

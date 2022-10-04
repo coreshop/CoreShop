@@ -42,7 +42,7 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         $this->myConfigurationRepository = $configurationRepository;
     }
 
-    public function getForStore(string $key, StoreInterface $store = null, $returnObject = false): mixed
+    public function getForStore(string $key, StoreInterface $store = null, bool $returnObject = false): mixed
     {
         if (null === $store) {
             $store = $this->getStore();

@@ -36,8 +36,8 @@ class Carrier extends BaseCarrier implements CarrierInterface, \Stringable
      */
     private $taxRule;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct();
         $this->storesAwareConstructor();
     }

@@ -26,8 +26,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class NestedFilterConditionProcessor implements FilterConditionProcessorInterface
 {
-    public function __construct(private ServiceRegistryInterface $conditionProcessors)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $conditionProcessors,
+    ) {
     }
 
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array

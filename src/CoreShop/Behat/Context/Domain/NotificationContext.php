@@ -24,8 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class NotificationContext implements Context
 {
-    public function __construct(private NotificationRuleListenerInterface $notificationRuleListener)
-    {
+    public function __construct(
+        private NotificationRuleListenerInterface $notificationRuleListener,
+    ) {
     }
 
     /**

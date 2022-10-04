@@ -23,8 +23,9 @@ use Webmozart\Assert\Assert;
 
 final class NotificationChecker implements NotificationCheckerInterface
 {
-    public function __construct(private NotificationAccessorInterface $notificationAccessor)
-    {
+    public function __construct(
+        private NotificationAccessorInterface $notificationAccessor,
+    ) {
     }
 
     public function checkNotification(string $message, NotificationType $type): void

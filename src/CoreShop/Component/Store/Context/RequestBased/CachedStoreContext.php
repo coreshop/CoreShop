@@ -25,8 +25,9 @@ final class CachedStoreContext implements StoreContextInterface
 {
     private ?StoreInterface $cachedStore = null;
 
-    public function __construct(private StoreContextInterface $requestBasedStoreContext)
-    {
+    public function __construct(
+        private StoreContextInterface $requestBasedStoreContext,
+    ) {
     }
 
     public function getStore(): StoreInterface
