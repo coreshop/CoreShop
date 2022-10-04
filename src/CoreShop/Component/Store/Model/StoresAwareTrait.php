@@ -38,11 +38,14 @@ trait StoresAwareTrait
         return $this->stores;
     }
 
-    public function hasStores()
+    public function hasStores(): bool
     {
         return !$this->stores->isEmpty();
     }
 
+    /**
+     * @return void
+     */
     public function addStore(StoreInterface $store)
     {
         if (!$this->hasStore($store)) {
@@ -50,6 +53,9 @@ trait StoresAwareTrait
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeStore(StoreInterface $store)
     {
         if ($this->hasStore($store)) {

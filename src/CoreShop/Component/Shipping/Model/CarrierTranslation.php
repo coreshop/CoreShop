@@ -58,6 +58,9 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
         return $this->title;
     }
 
+    /**
+     * @return void
+     */
     public function setTitle($title)
     {
         $this->title = $title;
@@ -68,6 +71,9 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
         return $this->description;
     }
 
+    /**
+     * @return void
+     */
     public function setDescription($description)
     {
         $this->description = $description;

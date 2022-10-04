@@ -66,7 +66,7 @@ final class DataFixturesSorter
     /**
      * Order fixtures by priority.
      */
-    private function orderFixturesByNumber()
+    private function orderFixturesByNumber(): void
     {
         $this->orderedFixtures = $this->fixtures;
         usort(
@@ -98,9 +98,9 @@ final class DataFixturesSorter
      *
      * @throws CircularReferenceException
      *
-     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings (PHPMD.NPathComplexity)
      */
-    private function orderFixturesByDependencies($usedPrioritySorting)
+    private function orderFixturesByDependencies($usedPrioritySorting): void
     {
         $sequenceForClasses = $orderedFixtures = [];
 

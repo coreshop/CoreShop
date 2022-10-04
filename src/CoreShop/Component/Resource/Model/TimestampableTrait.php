@@ -38,6 +38,9 @@ trait TimestampableTrait
         return $this->creationDate;
     }
 
+    /**
+     * @return void
+     */
     public function setCreationDate(\DateTime $creationDate)
     {
         $this->creationDate = $creationDate;
@@ -51,6 +54,9 @@ trait TimestampableTrait
         return $this->modificationDate;
     }
 
+    /**
+     * @return void
+     */
     public function setModificationDate(\DateTime $modificationDate)
     {
         $this->modificationDate = $modificationDate;

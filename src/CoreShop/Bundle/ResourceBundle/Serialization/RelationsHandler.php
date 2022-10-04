@@ -99,6 +99,11 @@ class RelationsHandler
         return $ids;
     }
 
+    /**
+     * @return null|object
+     *
+     * @psalm-return T|null
+     */
     protected function findById($id, ClassMetadata $metadata, EntityManagerInterface $manager)
     {
         return $manager->find($metadata->getName(), $id);

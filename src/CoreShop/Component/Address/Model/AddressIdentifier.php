@@ -55,6 +55,9 @@ class AddressIdentifier extends AbstractResource implements AddressIdentifierInt
         return $this->name;
     }
 
+    /**
+     * @return static
+     */
     public function setName($name)
     {
         $this->name = $name;

@@ -35,7 +35,12 @@ class PimcoreObjectHandler
         return null;
     }
 
-    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
+    /**
+     * @return (DataObject|null)[]|DataObject|null
+     *
+     * @psalm-return DataObject|list<DataObject|null>|null
+     */
+    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context): array|DataObject|null
     {
         $className = $type['params'][0]['name'] ?? null;
 

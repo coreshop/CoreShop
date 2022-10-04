@@ -74,6 +74,9 @@ class State extends AbstractResource implements StateInterface, \Stringable
         return $this->isoCode;
     }
 
+    /**
+     * @return static
+     */
     public function setIsoCode($isoCode)
     {
         $this->isoCode = $isoCode;
@@ -98,6 +101,9 @@ class State extends AbstractResource implements StateInterface, \Stringable
         return $this->country;
     }
 
+    /**
+     * @return static
+     */
     public function setCountry(CountryInterface $country)
     {
         $this->country = $country;

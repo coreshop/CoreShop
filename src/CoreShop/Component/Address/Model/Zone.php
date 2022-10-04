@@ -67,6 +67,9 @@ class Zone extends AbstractResource implements ZoneInterface, \Stringable
         return $this->name;
     }
 
+    /**
+     * @return static
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -84,6 +87,9 @@ class Zone extends AbstractResource implements ZoneInterface, \Stringable
         return !$this->countries->isEmpty();
     }
 
+    /**
+     * @return void
+     */
     public function addCountry(CountryInterface $country)
     {
         if (!$this->hasCountry($country)) {
@@ -92,6 +98,9 @@ class Zone extends AbstractResource implements ZoneInterface, \Stringable
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeCountry(CountryInterface $country)
     {
         if ($this->hasCountry($country)) {

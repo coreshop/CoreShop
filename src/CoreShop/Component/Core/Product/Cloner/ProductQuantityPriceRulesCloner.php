@@ -68,7 +68,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
         ProductInterface $product,
         array $newQuantityPriceRules,
         array $oldQuantityPriceRules,
-    ) {
+    ): void {
         if (count($oldQuantityPriceRules) !== count($newQuantityPriceRules)) {
             throw new \Exception('Count of old an new rules does not match');
         }

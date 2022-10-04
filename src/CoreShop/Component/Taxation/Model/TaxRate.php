@@ -69,6 +69,9 @@ class TaxRate extends AbstractResource implements TaxRateInterface, \Stringable
         return $this->getTranslation($language)->getName();
     }
 
+    /**
+     * @return void
+     */
     public function setName(string $name, ?string $language = null)
     {
         $this->getTranslation($language, false)->setName($name);
@@ -79,6 +82,9 @@ class TaxRate extends AbstractResource implements TaxRateInterface, \Stringable
         return $this->rate;
     }
 
+    /**
+     * @return void
+     */
     public function setRate($rate)
     {
         $this->rate = $rate;

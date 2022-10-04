@@ -33,6 +33,9 @@ class ProductUnitDefinitionPrice extends \CoreShop\Component\Product\Model\Produ
         return $this->productStoreValues;
     }
 
+    /**
+     * @return void
+     */
     public function setProductStoreValues(ProductStoreValuesInterface $productStoreValues)
     {
         $this->productStoreValues = $productStoreValues;

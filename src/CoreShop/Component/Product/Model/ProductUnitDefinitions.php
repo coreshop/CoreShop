@@ -43,7 +43,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
     protected $defaultUnitDefinition;
 
     /**
-     * @var Collection|ProductUnitDefinitionInterface[]
+     * @var Collection<int, ProductUnitDefinitionInterface>|ProductUnitDefinitionInterface[]
      */
     protected $unitDefinitions;
 
@@ -57,7 +57,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         return $this->id;
     }
 
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -67,6 +67,9 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         return $this->product;
     }
 
+    /**
+     * @return void
+     */
     public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
@@ -77,6 +80,9 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         return $this->defaultUnitDefinition;
     }
 
+    /**
+     * @return void
+     */
     public function setDefaultUnitDefinition(ProductUnitDefinitionInterface $defaultUnitDefinition)
     {
         $defaultUnitDefinition->setConversionRate(1.0);
@@ -84,6 +90,9 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         $this->defaultUnitDefinition = $this->getUnitDefinition($defaultUnitDefinition->getUnitName());
     }
 
+    /**
+     * @return void
+     */
     public function addUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition)
     {
         $productUnit = $productUnitDefinition->getUnit();
@@ -105,6 +114,9 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         return $this->unitDefinitions->contains($unitDefinition);
     }
 
+    /**
+     * @return void
+     */
     public function removeUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition)
     {
         if ($this->unitDefinitions->contains($productUnitDefinition)) {
@@ -134,6 +146,9 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         return $result;
     }
 
+    /**
+     * @return void
+     */
     public function addAdditionalUnitDefinition(ProductUnitDefinitionInterface $unitDefinition)
     {
         $productUnit = $unitDefinition->getUnit();
@@ -147,6 +162,9 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         $this->addUnitDefinition($unitDefinition);
     }
 
+    /**
+     * @return void
+     */
     public function removeAdditionalUnitDefinition(ProductUnitDefinitionInterface $unitDefinition)
     {
         $productUnit = $unitDefinition->getUnit();

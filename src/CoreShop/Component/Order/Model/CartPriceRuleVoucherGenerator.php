@@ -68,6 +68,8 @@ class CartPriceRuleVoucherGenerator implements CartPriceRuleVoucherGeneratorInte
 
     /**
      * @param int $amount
+     *
+     * @return void
      */
     public function setAmount($amount)
     {
@@ -84,6 +86,8 @@ class CartPriceRuleVoucherGenerator implements CartPriceRuleVoucherGeneratorInte
 
     /**
      * @param int $length
+     *
+     * @return void
      */
     public function setLength($length)
     {
@@ -100,6 +104,8 @@ class CartPriceRuleVoucherGenerator implements CartPriceRuleVoucherGeneratorInte
 
     /**
      * @param string $format
+     *
+     * @return void
      */
     public function setFormat($format)
     {
@@ -116,6 +122,8 @@ class CartPriceRuleVoucherGenerator implements CartPriceRuleVoucherGeneratorInte
 
     /**
      * @param string $prefix
+     *
+     * @return void
      */
     public function setPrefix($prefix)
     {
@@ -132,6 +140,8 @@ class CartPriceRuleVoucherGenerator implements CartPriceRuleVoucherGeneratorInte
 
     /**
      * @param string $suffix
+     *
+     * @return void
      */
     public function setSuffix($suffix)
     {
@@ -148,6 +158,8 @@ class CartPriceRuleVoucherGenerator implements CartPriceRuleVoucherGeneratorInte
 
     /**
      * @param int $hyphensOn
+     *
+     * @return void
      */
     public function setHyphensOn($hyphensOn)
     {
@@ -164,6 +176,8 @@ class CartPriceRuleVoucherGenerator implements CartPriceRuleVoucherGeneratorInte
 
     /**
      * @param CartPriceRuleInterface $cartPriceRule
+     *
+     * @return void
      */
     public function setCartPriceRule($cartPriceRule)
     {

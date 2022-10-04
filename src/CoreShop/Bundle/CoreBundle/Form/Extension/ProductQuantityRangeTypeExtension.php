@@ -47,6 +47,9 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
         }
     }
 
+    /**
+     * @return void
+     */
     public function roundQuantity(FormEvent $event)
     {
         $form = $event->getForm();

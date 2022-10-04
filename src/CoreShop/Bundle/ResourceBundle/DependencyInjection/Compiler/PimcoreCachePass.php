@@ -25,6 +25,9 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class PimcoreCachePass implements CompilerPassInterface
 {
+    /**
+     * @return void
+     */
     public function process(ContainerBuilder $container)
     {
         $container->getDefinition('pimcore.cache.adapter.pdo')->setArgument(4, []);

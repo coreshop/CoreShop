@@ -25,6 +25,9 @@ trait AddressesAwareTrait
      */
     protected $addresses;
 
+    /**
+     * @return bool
+     */
     public function hasAddress(AddressInterface $address)
     {
         $addresses = $this->getAddresses();
@@ -42,6 +45,9 @@ trait AddressesAwareTrait
         return false;
     }
 
+    /**
+     * @return void
+     */
     public function addAddress(AddressInterface $address)
     {
         $addresses = $this->getAddresses();
@@ -56,6 +62,9 @@ trait AddressesAwareTrait
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeAddress(AddressInterface $address)
     {
         if (!$this->hasAddress($address)) {
@@ -72,6 +81,9 @@ trait AddressesAwareTrait
         return $this->addresses;
     }
 
+    /**
+     * @return void
+     */
     public function setAddresses(?array $addresses)
     {
         $this->addresses = $addresses;

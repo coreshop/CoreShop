@@ -77,6 +77,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         return $this->getProperty('rendered_asset');
     }
 
+    /**
+     * @return void
+     */
     public function setRenderedAsset($renderedAsset)
     {
         $this->setProperty('rendered_asset', 'asset', $renderedAsset);
@@ -112,6 +115,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         return $withTax ? $this->getSubtotalGross() : $this->getSubtotalNet();
     }
 
+    /**
+     * @return void
+     */
     public function setSubtotal(int $subtotal, bool $withTax = true)
     {
         $withTax ? $this->setSubtotalGross($subtotal) : $this->setSubtotalNet($subtotal);
@@ -122,6 +128,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         return $withTax ? $this->getTotalGross() : $this->getTotalNet();
     }
 
+    /**
+     * @return void
+     */
     public function setTotal(int $total, bool $withTax = true)
     {
         $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
@@ -142,6 +151,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         return $withTax ? $this->getConvertedSubtotalGross() : $this->getConvertedSubtotalNet();
     }
 
+    /**
+     * @return void
+     */
     public function setConvertedSubtotal(int $convertedSubtotal, bool $withTax = true)
     {
         $withTax ? $this->setConvertedSubtotalGross($convertedSubtotal) : $this->setConvertedSubtotalNet($convertedSubtotal);
@@ -152,6 +164,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         return $withTax ? $this->getConvertedTotalGross() : $this->getConvertedTotalNet();
     }
 
+    /**
+     * @return void
+     */
     public function setConvertedTotal(int $convertedTotal, bool $withTax = true)
     {
         $withTax ? $this->setConvertedTotalGross($convertedTotal) : $this->setConvertedTotalNet($convertedTotal);
@@ -167,6 +182,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setTotalNet(int $total)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -177,6 +195,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setTotalGross(int $total)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -187,6 +208,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setSubtotalNet(int $subTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -197,6 +221,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setSubtotalGross(int $subTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -212,6 +239,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setConvertedTotalNet(int $total)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -222,6 +252,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setConvertedTotalGross(int $convertedTotal)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -232,6 +265,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setConvertedSubtotalNet(int $convertedSubTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -242,6 +278,9 @@ abstract class OrderInvoice extends AbstractPimcoreModel implements OrderInvoice
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setConvertedSubtotalGross(int $convertedSubTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

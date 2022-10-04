@@ -66,7 +66,7 @@ class Currency extends AbstractResource implements CurrencyInterface, \Stringabl
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -78,6 +78,9 @@ class Currency extends AbstractResource implements CurrencyInterface, \Stringabl
         return $this->name;
     }
 
+    /**
+     * @return void
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -88,6 +91,9 @@ class Currency extends AbstractResource implements CurrencyInterface, \Stringabl
         return $this->isoCode;
     }
 
+    /**
+     * @return void
+     */
     public function setIsoCode($isoCode)
     {
         $this->isoCode = $isoCode;
@@ -101,6 +107,9 @@ class Currency extends AbstractResource implements CurrencyInterface, \Stringabl
         return $this->numericIsoCode;
     }
 
+    /**
+     * @return void
+     */
     public function setNumericIsoCode($numericIsoCode)
     {
         $this->numericIsoCode = $numericIsoCode;
@@ -111,6 +120,9 @@ class Currency extends AbstractResource implements CurrencyInterface, \Stringabl
         return $this->symbol;
     }
 
+    /**
+     * @return static
+     */
     public function setSymbol($symbol)
     {
         $this->symbol = $symbol;

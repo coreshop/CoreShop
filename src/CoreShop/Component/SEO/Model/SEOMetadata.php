@@ -71,7 +71,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
@@ -155,7 +155,7 @@ class SEOMetadata implements SEOMetadataInterface
         $this->extraProperties[$key] = $value;
     }
 
-    public function removeExtraProperty(string $key)
+    public function removeExtraProperty(string $key): void
     {
         if (array_key_exists($key, $this->extraProperties)) {
             unset($this->extraProperties[$key]);

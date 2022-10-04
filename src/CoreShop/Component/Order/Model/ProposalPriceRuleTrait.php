@@ -31,6 +31,9 @@ trait ProposalPriceRuleTrait
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setPriceRuleItems(?Fieldcollection $priceRuleItems)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

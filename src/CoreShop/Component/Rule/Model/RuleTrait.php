@@ -50,7 +50,7 @@ trait RuleTrait
         $this->initializeRuleCollections();
     }
 
-    protected function initializeRuleCollections()
+    protected function initializeRuleCollections(): void
     {
         $this->conditions = new ArrayCollection();
         $this->actions = new ArrayCollection();
@@ -77,6 +77,9 @@ trait RuleTrait
         return $this->name;
     }
 
+    /**
+     * @return void
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -124,6 +127,9 @@ trait RuleTrait
         return $this->actions->contains($action);
     }
 
+    /**
+     * @return void
+     */
     public function addAction(ActionInterface $action)
     {
         if (!$this->hasAction($action)) {
@@ -131,6 +137,9 @@ trait RuleTrait
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeAction(ActionInterface $action)
     {
         $this->actions->removeElement($action);

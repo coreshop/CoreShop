@@ -90,7 +90,7 @@ final class ProductListener implements EventSubscriberInterface
         }
     }
 
-    private function validate(ProductVariantAwareInterface $object)
+    private function validate(ProductVariantAwareInterface $object): void
     {
         $result = $this->validator->validate($object, null, $this->validationGroups);
         $validationExceptions = [];

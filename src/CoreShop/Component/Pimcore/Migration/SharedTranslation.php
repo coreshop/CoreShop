@@ -22,7 +22,7 @@ use Pimcore\Model\Translation;
 
 class SharedTranslation
 {
-    public static function add(string $key, string $language, string $value)
+    public static function add(string $key, string $language, string $value): void
     {
         $translationKey = Translation::getByKey($key, Translation::DOMAIN_DEFAULT, true);
 

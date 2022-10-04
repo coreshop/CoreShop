@@ -22,7 +22,7 @@ use Pimcore\Model\Document\Email;
 
 class Mail extends \Pimcore\Mail
 {
-    public function addRecipients(array|string $recipients = null)
+    public function addRecipients(array|string $recipients = null): void
     {
         $toRecipients = [];
 

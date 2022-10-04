@@ -48,6 +48,9 @@ class TaxRateTranslation extends AbstractTranslation implements TaxRateTranslati
         return $this->name;
     }
 
+    /**
+     * @return void
+     */
     public function setName($name)
     {
         $this->name = $name;

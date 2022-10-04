@@ -47,6 +47,9 @@ class Currency extends BaseCurrency implements CurrencyInterface
         return !$this->countries->isEmpty();
     }
 
+    /**
+     * @return void
+     */
     public function addCountry(CountryInterface $country)
     {
         if (!$this->hasCountry($country)) {
@@ -55,6 +58,9 @@ class Currency extends BaseCurrency implements CurrencyInterface
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeCountry(CountryInterface $country)
     {
         if ($this->hasCountry($country)) {

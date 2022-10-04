@@ -86,6 +86,9 @@ class Payment implements PaymentInterface
         return $this->paymentProvider;
     }
 
+    /**
+     * @return void
+     */
     public function setPaymentProvider(PaymentProviderInterface $paymentProvider)
     {
         $this->paymentProvider = $paymentProvider;
@@ -96,6 +99,9 @@ class Payment implements PaymentInterface
         return $this->totalAmount;
     }
 
+    /**
+     * @return void
+     */
     public function setTotalAmount($amount)
     {
         $this->totalAmount = $amount;
@@ -106,6 +112,9 @@ class Payment implements PaymentInterface
         return $this->currencyCode;
     }
 
+    /**
+     * @return void
+     */
     public function setCurrencyCode($currencyCode)
     {
         $this->currencyCode = $currencyCode;
@@ -116,6 +125,9 @@ class Payment implements PaymentInterface
         return $this->datePayment;
     }
 
+    /**
+     * @return void
+     */
     public function setDatePayment($datePayment)
     {
         $this->datePayment = $datePayment;
@@ -126,6 +138,9 @@ class Payment implements PaymentInterface
         return $this->state;
     }
 
+    /**
+     * @return void
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -136,6 +151,9 @@ class Payment implements PaymentInterface
         return $this->details;
     }
 
+    /**
+     * @return void
+     */
     public function setDetails(array $details)
     {
         $this->details = $details;
@@ -146,6 +164,9 @@ class Payment implements PaymentInterface
         return $this->number;
     }
 
+    /**
+     * @return void
+     */
     public function setNumber($number)
     {
         $this->number = $number;
@@ -156,6 +177,9 @@ class Payment implements PaymentInterface
         return $this->description;
     }
 
+    /**
+     * @return void
+     */
     public function setDescription(string $description)
     {
         $this->description = $description;

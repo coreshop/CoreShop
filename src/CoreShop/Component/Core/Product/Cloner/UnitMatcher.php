@@ -23,6 +23,9 @@ use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 
 class UnitMatcher implements UnitMatcherInterface
 {
+    /**
+     * @return ProductUnitDefinitionInterface|null
+     */
     public function findMatchingUnitDefinitionByUnitName(ProductInterface $product, string $unitName)
     {
         if ($product->hasUnitDefinitions() === false) {

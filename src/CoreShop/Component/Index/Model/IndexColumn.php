@@ -108,6 +108,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->objectKey;
     }
 
+    /**
+     * @return static
+     */
     public function setObjectKey($key)
     {
         $this->objectKey = $key;
@@ -120,6 +123,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->type;
     }
 
+    /**
+     * @return void
+     */
     public function setType($type)
     {
         $this->type = $type;
@@ -130,6 +136,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->name;
     }
 
+    /**
+     * @return static
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -142,6 +151,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->objectType;
     }
 
+    /**
+     * @return static
+     */
     public function setObjectType($objectType)
     {
         $this->objectType = $objectType;
@@ -159,6 +171,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->getter;
     }
 
+    /**
+     * @return static
+     */
     public function setGetter($getter)
     {
         $this->getter = $getter;
@@ -171,6 +186,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->getterConfig;
     }
 
+    /**
+     * @return static
+     */
     public function setGetterConfig($getterConfig)
     {
         $this->getterConfig = $getterConfig;
@@ -183,6 +201,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->dataType;
     }
 
+    /**
+     * @return static
+     */
     public function setDataType($dataType)
     {
         $this->dataType = $dataType;
@@ -200,6 +221,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->interpreter;
     }
 
+    /**
+     * @return static
+     */
     public function setInterpreter($interpreter)
     {
         $this->interpreter = $interpreter;
@@ -212,6 +236,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->interpreterConfig;
     }
 
+    /**
+     * @return static
+     */
     public function setInterpreterConfig($interpreterConfig)
     {
         $this->interpreterConfig = $interpreterConfig;
@@ -224,6 +251,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->columnType;
     }
 
+    /**
+     * @return static
+     */
     public function setColumnType($columnType)
     {
         $this->columnType = $columnType;
@@ -236,6 +266,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->configuration;
     }
 
+    /**
+     * @return static
+     */
     public function setConfiguration($configuration)
     {
         $this->configuration = $configuration;
@@ -248,6 +281,9 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return $this->index;
     }
 
+    /**
+     * @return void
+     */
     public function setIndex(IndexInterface $index = null)
     {
         $this->index = $index;

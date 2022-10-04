@@ -34,6 +34,9 @@ class AbstractTranslation implements TranslationInterface
         return $this->translatable;
     }
 
+    /**
+     * @return void
+     */
     public function setTranslatable(TranslatableInterface $translatable = null)
     {
         if ($translatable === $this->translatable) {
@@ -57,6 +60,9 @@ class AbstractTranslation implements TranslationInterface
         return $this->locale;
     }
 
+    /**
+     * @return void
+     */
     public function setLocale($locale)
     {
         $this->locale = $locale;

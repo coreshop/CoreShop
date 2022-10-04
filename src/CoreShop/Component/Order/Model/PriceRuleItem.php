@@ -33,6 +33,9 @@ abstract class PriceRuleItem extends AbstractPimcoreFieldcollection implements P
         return $withTax ? $this->getDiscountGross() : $this->getDiscountNet();
     }
 
+    /**
+     * @return void
+     */
     public function setDiscount(int $discount, bool $withTax = true)
     {
         $withTax ? $this->setDiscountGross($discount) : $this->setDiscountNet($discount);
@@ -43,6 +46,9 @@ abstract class PriceRuleItem extends AbstractPimcoreFieldcollection implements P
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setDiscountNet(int $discountNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -53,6 +59,9 @@ abstract class PriceRuleItem extends AbstractPimcoreFieldcollection implements P
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setDiscountGross(int $discountGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

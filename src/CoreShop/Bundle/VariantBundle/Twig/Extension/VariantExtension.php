@@ -60,7 +60,7 @@ final class VariantExtension extends AbstractExtension
         ];
     }
 
-    public function setSelected(array $attributeGroups, ProductVariantAwareInterface $product)
+    public function setSelected(array $attributeGroups, ProductVariantAwareInterface $product): array
     {
         foreach ($attributeGroups as $attributeGroup) {
             foreach ($product->getAttributes() as $attribute) {
@@ -75,6 +75,9 @@ final class VariantExtension extends AbstractExtension
         return $attributeGroups;
     }
 
+    /**
+     * @return \ArrayObject|array|null|scalar
+     */
     public function serializeGroups(array $attributeGroups, array $groups = ['coreshop'])
     {
         return $this->serializer->normalize($attributeGroups, 'json', [
@@ -87,6 +90,9 @@ final class VariantExtension extends AbstractExtension
         ]);
     }
 
+    /**
+     * @return \ArrayObject|array|null|scalar
+     */
     public function serializeIndex(array $index, array $groups = ['coreshop'])
     {
         return $this->serializer->normalize($index, 'json', $groups);

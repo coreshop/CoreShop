@@ -69,6 +69,8 @@ class ExchangeRate implements ExchangeRateInterface
 
     /**
      * @param float $exchangeRate
+     *
+     * @return void
      */
     public function setExchangeRate($exchangeRate)
     {
@@ -83,6 +85,9 @@ class ExchangeRate implements ExchangeRateInterface
         return $this->fromCurrency;
     }
 
+    /**
+     * @return void
+     */
     public function setFromCurrency(CurrencyInterface $currency)
     {
         $this->fromCurrency = $currency;
@@ -96,6 +101,9 @@ class ExchangeRate implements ExchangeRateInterface
         return $this->toCurrency;
     }
 
+    /**
+     * @return void
+     */
     public function setToCurrency(CurrencyInterface $currency)
     {
         $this->toCurrency = $currency;

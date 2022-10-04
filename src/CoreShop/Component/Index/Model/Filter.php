@@ -86,6 +86,9 @@ class Filter extends AbstractResource implements FilterInterface
         return $this->name;
     }
 
+    /**
+     * @return static
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -98,6 +101,9 @@ class Filter extends AbstractResource implements FilterInterface
         return $this->resultsPerPage;
     }
 
+    /**
+     * @return static
+     */
     public function setResultsPerPage($resultsPerPage)
     {
         $this->resultsPerPage = $resultsPerPage;
@@ -110,6 +116,9 @@ class Filter extends AbstractResource implements FilterInterface
         return $this->orderDirection;
     }
 
+    /**
+     * @return static
+     */
     public function setOrderDirection($orderDirection)
     {
         $this->orderDirection = $orderDirection;
@@ -122,6 +131,9 @@ class Filter extends AbstractResource implements FilterInterface
         return $this->orderKey;
     }
 
+    /**
+     * @return static
+     */
     public function setOrderKey($orderKey)
     {
         $this->orderKey = $orderKey;
@@ -134,6 +146,9 @@ class Filter extends AbstractResource implements FilterInterface
         return $this->index;
     }
 
+    /**
+     * @return static
+     */
     public function setIndex(IndexInterface $index)
     {
         $this->index = $index;
@@ -151,6 +166,9 @@ class Filter extends AbstractResource implements FilterInterface
         return !$this->preConditions->isEmpty();
     }
 
+    /**
+     * @return void
+     */
     public function addPreCondition(FilterConditionInterface $preCondition)
     {
         if (!$this->hasPreCondition($preCondition)) {
@@ -158,6 +176,9 @@ class Filter extends AbstractResource implements FilterInterface
         }
     }
 
+    /**
+     * @return void
+     */
     public function removePreCondition(FilterConditionInterface $preCondition)
     {
         if ($this->hasPreCondition($preCondition)) {
@@ -180,6 +201,9 @@ class Filter extends AbstractResource implements FilterInterface
         return !$this->conditions->isEmpty();
     }
 
+    /**
+     * @return void
+     */
     public function addCondition(FilterConditionInterface $condition)
     {
         if (!$this->hasCondition($condition)) {
@@ -187,6 +211,9 @@ class Filter extends AbstractResource implements FilterInterface
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeCondition(FilterConditionInterface $condition)
     {
         if ($this->hasCondition($condition)) {

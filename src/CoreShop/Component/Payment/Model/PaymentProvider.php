@@ -77,6 +77,9 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return $this->identifier;
     }
 
+    /**
+     * @return void
+     */
     public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
@@ -87,6 +90,9 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return $this->getTranslation($language)->getTitle();
     }
 
+    /**
+     * @return void
+     */
     public function setTitle($title, $language = null)
     {
         $this->getTranslation($language)->setTitle($title);
@@ -97,6 +103,9 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return $this->getTranslation($language)->getDescription();
     }
 
+    /**
+     * @return void
+     */
     public function setDescription($description, $language = null)
     {
         $this->getTranslation($language)->setDescription($description);
@@ -107,6 +116,9 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return $this->getTranslation($language)->getInstructions();
     }
 
+    /**
+     * @return void
+     */
     public function setInstructions($instructions, $language = null)
     {
         $this->getTranslation($language)->setInstructions($instructions);
@@ -117,6 +129,9 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return $this->position;
     }
 
+    /**
+     * @return void
+     */
     public function setPosition($position)
     {
         $this->position = $position;
@@ -127,6 +142,9 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return $this->logo;
     }
 
+    /**
+     * @return void
+     */
     public function setLogo($logo)
     {
         $this->logo = $logo;

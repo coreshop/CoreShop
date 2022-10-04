@@ -64,6 +64,9 @@ class ShippingRuleGroup implements ShippingRuleGroupInterface
         return $this->carrier;
     }
 
+    /**
+     * @return void
+     */
     public function setCarrier(CarrierInterface $carrier = null)
     {
         $this->carrier = $carrier;
@@ -74,6 +77,9 @@ class ShippingRuleGroup implements ShippingRuleGroupInterface
         return $this->priority;
     }
 
+    /**
+     * @return void
+     */
     public function setPriority($priority)
     {
         $this->priority = $priority;
@@ -84,6 +90,9 @@ class ShippingRuleGroup implements ShippingRuleGroupInterface
         return $this->stopPropagation;
     }
 
+    /**
+     * @return void
+     */
     public function setStopPropagation($stopPropagation)
     {
         $this->stopPropagation = $stopPropagation;
@@ -94,6 +103,9 @@ class ShippingRuleGroup implements ShippingRuleGroupInterface
         return $this->shippingRule;
     }
 
+    /**
+     * @return void
+     */
     public function setShippingRule(ShippingRuleInterface $shippingRule)
     {
         $this->shippingRule = $shippingRule;

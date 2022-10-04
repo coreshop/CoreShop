@@ -43,6 +43,9 @@ class ProductSpecificPriceRule extends AbstractPriceRule implements ProductSpeci
         return $this->product;
     }
 
+    /**
+     * @return static
+     */
     public function setProduct($product)
     {
         $this->product = $product;
@@ -55,6 +58,9 @@ class ProductSpecificPriceRule extends AbstractPriceRule implements ProductSpeci
         return $this->inherit;
     }
 
+    /**
+     * @return static
+     */
     public function setInherit($inherit)
     {
         $this->inherit = $inherit;

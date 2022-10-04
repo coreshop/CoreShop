@@ -152,7 +152,12 @@ final class CartItemProcessor implements CartItemProcessorInterface
         }
     }
 
-    private function collectTaxes(int $i, array $taxes)
+    /**
+     * @return TaxItemInterface[]
+     *
+     * @psalm-return array<int|string, TaxItemInterface>
+     */
+    private function collectTaxes(int $i, array $taxes): array
     {
         $usedTaxes = [];
 
@@ -189,7 +194,12 @@ final class CartItemProcessor implements CartItemProcessorInterface
         return $usedTaxes;
     }
 
-    private function collectItemTaxes(array $taxes)
+    /**
+     * @return TaxItemInterface[]
+     *
+     * @psalm-return array<int|string, TaxItemInterface>
+     */
+    private function collectItemTaxes(array $taxes): array
     {
         $usedTaxes = [];
 

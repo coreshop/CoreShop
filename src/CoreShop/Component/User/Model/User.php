@@ -29,7 +29,7 @@ abstract class User extends AbstractPimcoreModel implements UserInterface
 
     protected ?string $plainPassword = null;
 
-    public function setPlainPassword(string $password)
+    public function setPlainPassword(string $password): static
     {
         $this->plainPassword = $password;
 
@@ -41,7 +41,7 @@ abstract class User extends AbstractPimcoreModel implements UserInterface
         return $this->plainPassword;
     }
 
-    public function setSalt(string $salt)
+    public function setSalt(string $salt): static
     {
         $this->salt = $salt;
 
@@ -60,6 +60,8 @@ abstract class User extends AbstractPimcoreModel implements UserInterface
      * is necessary to make sure no plain text passwords are serialized.
      *
      * {@inheritdoc}
+     *
+     * @return void
      */
     public function eraseCredentials()
     {

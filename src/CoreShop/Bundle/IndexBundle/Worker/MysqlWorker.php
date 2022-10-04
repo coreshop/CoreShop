@@ -93,7 +93,7 @@ class MysqlWorker extends AbstractWorker
         }
     }
 
-    protected function createTableSchema(IndexInterface $index, Schema $tableSchema)
+    protected function createTableSchema(IndexInterface $index, Schema $tableSchema): Schema
     {
         $table = $tableSchema->createTable($this->getTablename($index->getName()));
         $table->addOption('row_format', 'DYNAMIC');
@@ -142,7 +142,7 @@ class MysqlWorker extends AbstractWorker
         return $tableSchema;
     }
 
-    protected function createLocalizedTableSchema(IndexInterface $index, Schema $tableSchema)
+    protected function createLocalizedTableSchema(IndexInterface $index, Schema $tableSchema): Schema
     {
         $table = $tableSchema->createTable($this->getLocalizedTablename($index->getName()));
         $table->addOption('row_format', 'DYNAMIC');
@@ -192,7 +192,7 @@ class MysqlWorker extends AbstractWorker
         return $tableSchema;
     }
 
-    protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema)
+    protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema): Schema
     {
         $table = $tableSchema->createTable($this->getRelationTablename($index->getName()));
         $table->addOption('row_format', 'DYNAMIC');
@@ -221,7 +221,12 @@ class MysqlWorker extends AbstractWorker
         return $tableSchema;
     }
 
-    protected function createLocalizedViews(IndexInterface $index)
+    /**
+     * @return string[]
+     *
+     * @psalm-return list<string>
+     */
+    protected function createLocalizedViews(IndexInterface $index): array
     {
         $queries = [];
         $languages = Tool::getValidLanguages(); //TODO: Use Locale Service
@@ -259,7 +264,7 @@ QUERY;
         return $type->convertToDatabaseValue($value, $this->database->getDatabasePlatform());
     }
 
-    protected function typeCastValueSQLDecleration(IndexColumnInterface $column)
+    protected function typeCastValueSQLDecleration(IndexColumnInterface $column): string
     {
         $doctrineType = $this->renderFieldType($column->getColumnType());
 
@@ -268,11 +273,17 @@ QUERY;
         return $type->convertToDatabaseValueSQL('?', $this->database->getDatabasePlatform());
     }
 
+    /**
+     * @return string
+     */
     protected function handleArrayValues(IndexInterface $index, array $value)
     {
         return ',' . implode(',', $value) . ',';
     }
 
+    /**
+     * @return void
+     */
     public function deleteIndexStructures(IndexInterface $index)
     {
         try {
@@ -487,7 +498,12 @@ QUERY;
         throw new \Exception($type . ' is not supported by MySQL Index');
     }
 
-    public function getFieldTypeConfig(IndexColumnInterface $column)
+    /**
+     * @return (false|mixed)[]
+     *
+     * @psalm-return array{notnull: false|mixed}
+     */
+    public function getFieldTypeConfig(IndexColumnInterface $column): array
     {
         $config = ['notnull' => false];
 
@@ -500,7 +516,12 @@ QUERY;
         return $config;
     }
 
-    public function getSystemFieldTypeConfig(IndexInterface $index, string $name, string $type)
+    /**
+     * @return (false|mixed)[]
+     *
+     * @psalm-return array{notnull: false|mixed}
+     */
+    public function getSystemFieldTypeConfig(IndexInterface $index, string $name, string $type): array
     {
         $config = ['notnull' => false];
 

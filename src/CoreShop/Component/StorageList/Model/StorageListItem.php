@@ -43,7 +43,7 @@ abstract class StorageListItem implements StorageListItemInterface
         return $this->product;
     }
 
-    public function setProduct(ResourceInterface $product)
+    public function setProduct(ResourceInterface $product): void
     {
         $this->product = $product;
     }
@@ -53,6 +53,9 @@ abstract class StorageListItem implements StorageListItemInterface
         return $this->quantity;
     }
 
+    /**
+     * @return void
+     */
     public function setQuantity(?float $quantity)
     {
         $this->quantity = $quantity;

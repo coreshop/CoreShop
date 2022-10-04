@@ -57,11 +57,17 @@ class Sequence implements SequenceInterface
         return $this->type;
     }
 
+    /**
+     * @return void
+     */
     public function setType($type)
     {
         $this->type = $type;
     }
 
+    /**
+     * @return void
+     */
     public function incrementIndex()
     {
         ++$this->index;

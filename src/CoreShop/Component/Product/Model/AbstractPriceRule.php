@@ -68,7 +68,7 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         return $this->description;
     }
 
-    public function setDescription($description)
+    public function setDescription($description): static
     {
         $this->description = $description;
 
@@ -80,6 +80,9 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         return $this->priority;
     }
 
+    /**
+     * @return static
+     */
     public function setPriority($priority)
     {
         $this->priority = $priority;
@@ -92,6 +95,9 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         return $this->getTranslation($language)->getLabel();
     }
 
+    /**
+     * @return void
+     */
     public function setLabel(string $label, ?string $language = null)
     {
         $this->getTranslation($language)->setLabel($label);
@@ -102,6 +108,9 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         return $this->stopPropagation;
     }
 
+    /**
+     * @return void
+     */
     public function setStopPropagation($stopPropagation)
     {
         $this->stopPropagation = $stopPropagation;

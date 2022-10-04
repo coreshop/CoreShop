@@ -39,7 +39,7 @@ final class TableIndex
         return $this->columns;
     }
 
-    public function setColumns(array $columns)
+    public function setColumns(array $columns): void
     {
         $this->columns = $columns;
     }
@@ -52,7 +52,7 @@ final class TableIndex
         return $this->type;
     }
 
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }

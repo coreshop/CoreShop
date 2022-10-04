@@ -80,6 +80,9 @@ class Index extends AbstractResource implements IndexInterface
         return $this->worker;
     }
 
+    /**
+     * @return void
+     */
     public function setWorker($worker)
     {
         $this->worker = $worker;
@@ -90,6 +93,9 @@ class Index extends AbstractResource implements IndexInterface
         return $this->class;
     }
 
+    /**
+     * @return void
+     */
     public function setClass($class)
     {
         $this->class = $class;
@@ -100,6 +106,9 @@ class Index extends AbstractResource implements IndexInterface
         return $this->name;
     }
 
+    /**
+     * @return void
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -110,6 +119,9 @@ class Index extends AbstractResource implements IndexInterface
         return $this->configuration;
     }
 
+    /**
+     * @return void
+     */
     public function setConfiguration($configuration)
     {
         $this->configuration = $configuration;
@@ -125,6 +137,9 @@ class Index extends AbstractResource implements IndexInterface
         return !$this->columns->isEmpty();
     }
 
+    /**
+     * @return void
+     */
     public function addColumn(IndexColumnInterface $column)
     {
         if (!$this->hasColumn($column)) {
@@ -133,6 +148,9 @@ class Index extends AbstractResource implements IndexInterface
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeColumn(IndexColumnInterface $column)
     {
         if ($this->hasColumn($column)) {
@@ -151,6 +169,9 @@ class Index extends AbstractResource implements IndexInterface
         return $this->indexLastVersion;
     }
 
+    /**
+     * @return void
+     */
     public function setIndexLastVersion($indexLastVersion)
     {
         $this->indexLastVersion = $indexLastVersion;

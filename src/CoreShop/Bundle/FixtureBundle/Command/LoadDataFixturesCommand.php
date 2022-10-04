@@ -140,7 +140,7 @@ class LoadDataFixturesCommand extends Command
      *
      * @param array           $fixtures
      */
-    protected function outputFixtures(InputInterface $input, OutputInterface $output, $fixtures)
+    protected function outputFixtures(InputInterface $input, OutputInterface $output, $fixtures): void
     {
         $output->writeln(
             sprintf(
@@ -158,7 +158,7 @@ class LoadDataFixturesCommand extends Command
      *
      * @param array           $fixtures
      */
-    protected function processFixtures(InputInterface $input, OutputInterface $output, $fixtures)
+    protected function processFixtures(InputInterface $input, OutputInterface $output, $fixtures): void
     {
         $output->writeln(
             sprintf(

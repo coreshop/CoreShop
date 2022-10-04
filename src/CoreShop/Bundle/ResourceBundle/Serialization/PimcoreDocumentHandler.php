@@ -34,7 +34,12 @@ class PimcoreDocumentHandler
         return null;
     }
 
-    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
+    /**
+     * @return (Document|null)[]|Document|null
+     *
+     * @psalm-return Document|list<Document|null>|null
+     */
+    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context): array|Document|null
     {
         $className = $type['params'][0]['name'] ?? null;
 

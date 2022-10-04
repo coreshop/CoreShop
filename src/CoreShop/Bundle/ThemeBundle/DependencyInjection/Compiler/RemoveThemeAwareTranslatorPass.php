@@ -24,6 +24,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class RemoveThemeAwareTranslatorPass implements CompilerPassInterface
 {
+    /**
+     * @return void
+     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition(ThemeAwareTranslator::class)) {

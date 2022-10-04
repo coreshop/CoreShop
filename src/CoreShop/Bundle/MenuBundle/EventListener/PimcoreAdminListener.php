@@ -31,7 +31,7 @@ class PimcoreAdminListener implements EventSubscriberInterface
         ];
     }
 
-    public function addJSFiles(PathsEvent $event)
+    public function addJSFiles(PathsEvent $event): void
     {
         $event->setPaths(
             array_merge(

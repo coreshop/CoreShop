@@ -40,6 +40,9 @@ class DataFixtureRepository extends EntityRepository implements DataFixtureRepos
         return $entityId ? true : false;
     }
 
+    /**
+     * @return void
+     */
     public function updateDataFixtureHistory(array $updateFields, $where, array $parameters = [])
     {
         $qb = $this->_em

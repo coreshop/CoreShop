@@ -33,6 +33,9 @@ abstract class OrderShipment extends AbstractPimcoreModel implements OrderShipme
         return $this->getProperty('rendered_asset');
     }
 
+    /**
+     * @return void
+     */
     public function setRenderedAsset($renderedAsset)
     {
         $this->setProperty('rendered_asset', 'asset', $renderedAsset);

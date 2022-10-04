@@ -85,6 +85,9 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
         return $this->code;
     }
 
+    /**
+     * @return void
+     */
     public function setCode($code)
     {
         $this->code = $code;
@@ -95,6 +98,9 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
         return $this->used;
     }
 
+    /**
+     * @return void
+     */
     public function setUsed($used)
     {
         $this->used = $used;
@@ -105,6 +111,9 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
         return $this->uses;
     }
 
+    /**
+     * @return void
+     */
     public function setUses($uses)
     {
         $this->uses = $uses;
@@ -115,6 +124,9 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
         return $this->isCreditCode;
     }
 
+    /**
+     * @return void
+     */
     public function setIsCreditCode($isCreditCode)
     {
         $this->isCreditCode = $isCreditCode;
@@ -125,6 +137,9 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
         return $this->creditAvailable;
     }
 
+    /**
+     * @return void
+     */
     public function setCreditAvailable($creditAvailable)
     {
         $this->creditAvailable = $creditAvailable;
@@ -135,6 +150,9 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
         return $this->creditCurrency;
     }
 
+    /**
+     * @return void
+     */
     public function setCreditCurrency(?CurrencyInterface $creditCurrency)
     {
         $this->creditCurrency = $creditCurrency;
@@ -145,6 +163,9 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
         return $this->creditUsed;
     }
 
+    /**
+     * @return void
+     */
     public function setCreditUsed($creditUsed)
     {
         $this->creditUsed = $creditUsed;
@@ -155,6 +176,9 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
         return $this->cartPriceRule;
     }
 
+    /**
+     * @return void
+     */
     public function setCartPriceRule($cartPriceRule = null)
     {
         $this->cartPriceRule = $cartPriceRule;

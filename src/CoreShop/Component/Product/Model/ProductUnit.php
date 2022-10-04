@@ -46,7 +46,7 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface, \Str
         $this->initializeTranslationsCollection();
     }
 
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }

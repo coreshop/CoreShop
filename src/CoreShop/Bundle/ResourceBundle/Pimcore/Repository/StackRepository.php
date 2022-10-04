@@ -68,6 +68,9 @@ class StackRepository extends PimcoreRepository
         return $list;
     }
 
+    /**
+     * @return DataObject|null
+     */
     public function forceFind($id, bool $force = true)
     {
         $instance = DataObject::getById($id, $force);

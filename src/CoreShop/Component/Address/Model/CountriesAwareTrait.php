@@ -43,6 +43,9 @@ trait CountriesAwareTrait
         return !$this->countries->isEmpty();
     }
 
+    /**
+     * @return void
+     */
     public function addCountry(CountryInterface $country)
     {
         if (!$this->hasCountry($country)) {
@@ -50,6 +53,9 @@ trait CountriesAwareTrait
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeCountry(CountryInterface $country)
     {
         if ($this->hasCountry($country)) {

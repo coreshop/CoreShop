@@ -52,6 +52,9 @@ class NotificationRule implements NotificationRuleInterface
         return $this->type;
     }
 
+    /**
+     * @return void
+     */
     public function setType($type)
     {
         $this->type = $type;
@@ -62,6 +65,9 @@ class NotificationRule implements NotificationRuleInterface
         return $this->sort;
     }
 
+    /**
+     * @return void
+     */
     public function setSort($sort)
     {
         $this->sort = $sort;

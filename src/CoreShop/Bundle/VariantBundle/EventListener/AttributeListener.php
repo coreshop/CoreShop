@@ -70,7 +70,7 @@ final class AttributeListener implements EventSubscriberInterface
         $this->validate($object);
     }
 
-    private function validate(AttributeInterface $object)
+    private function validate(AttributeInterface $object): void
     {
         $result = $this->validator->validate($object, null, $this->validationGroups);
         $validationExceptions = [];

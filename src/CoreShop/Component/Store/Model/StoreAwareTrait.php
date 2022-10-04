@@ -30,7 +30,7 @@ trait StoreAwareTrait
         return $this->store;
     }
 
-    public function setStore(?StoreInterface $store)
+    public function setStore(?StoreInterface $store): void
     {
         $this->store = $store;
     }

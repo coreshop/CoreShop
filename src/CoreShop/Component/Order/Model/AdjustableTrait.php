@@ -23,6 +23,9 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 trait AdjustableTrait
 {
+    /**
+     * @return never
+     */
     public function setPimcoreAdjustmentTotalNet(int $adjustmentTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -33,6 +36,9 @@ trait AdjustableTrait
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setPimcoreAdjustmentTotalGross(int $adjustmentTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -51,12 +57,15 @@ trait AdjustableTrait
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setAdjustmentItems(?Fieldcollection $adjustmentItems)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    public function hasAdjustments()
+    public function hasAdjustments(): bool
     {
         return $this->getAdjustmentItems() instanceof Fieldcollection && $this->getAdjustmentItems()->getCount() > 0;
     }
@@ -88,7 +97,7 @@ trait AdjustableTrait
         );
     }
 
-    public function hasAdjustment(AdjustmentInterface $adjustment)
+    public function hasAdjustment(AdjustmentInterface $adjustment): bool
     {
         $items = $this->getAdjustmentItems();
 
@@ -105,6 +114,9 @@ trait AdjustableTrait
         return false;
     }
 
+    /**
+     * @return void
+     */
     public function addAdjustment(AdjustmentInterface $adjustment)
     {
         if (!$this->hasAdjustment($adjustment)) {
@@ -127,6 +139,9 @@ trait AdjustableTrait
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeAdjustment(AdjustmentInterface $adjustment)
     {
         $items = $this->getAdjustmentItems();
@@ -149,6 +164,9 @@ trait AdjustableTrait
         $this->addToAdjustmentsTotal($adjustment);
     }
 
+    /**
+     * @return void
+     */
     public function removeAdjustments(string $type = null)
     {
         foreach ($this->getAdjustments($type) as $adjustment) {
@@ -156,6 +174,9 @@ trait AdjustableTrait
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeAdjustmentsRecursively(string $type = null)
     {
         $this->removeAdjustments($type);
@@ -189,6 +210,9 @@ trait AdjustableTrait
         return $total;
     }
 
+    /**
+     * @return void
+     */
     public function recalculateAdjustmentsTotal()
     {
         $adjustmentsTotalGross = 0;
@@ -207,7 +231,7 @@ trait AdjustableTrait
         $this->recalculateAfterAdjustmentChange();
     }
 
-    protected function addToAdjustmentsTotal(AdjustmentInterface $adjustment)
+    protected function addToAdjustmentsTotal(AdjustmentInterface $adjustment): void
     {
         if (!$adjustment->getNeutral()) {
             $this->recalculateAdjustmentsTotal();
@@ -215,7 +239,7 @@ trait AdjustableTrait
         }
     }
 
-    protected function subtractFromAdjustmentsTotal(AdjustmentInterface $adjustment)
+    protected function subtractFromAdjustmentsTotal(AdjustmentInterface $adjustment): void
     {
         if (!$adjustment->getNeutral()) {
             $this->recalculateAdjustmentsTotal();

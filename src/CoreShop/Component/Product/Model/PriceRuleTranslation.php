@@ -48,6 +48,9 @@ class PriceRuleTranslation extends AbstractTranslation implements PriceRuleTrans
         return $this->label;
     }
 
+    /**
+     * @return void
+     */
     public function setLabel($label)
     {
         $this->label = $label;

@@ -59,6 +59,9 @@ class Store extends BaseStore implements StoreInterface
         return !$this->configurations->isEmpty();
     }
 
+    /**
+     * @return void
+     */
     public function addConfiguration(ConfigurationInterface $configuration)
     {
         if (!$this->hasConfiguration($configuration)) {
@@ -67,6 +70,9 @@ class Store extends BaseStore implements StoreInterface
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeConfiguration(ConfigurationInterface $configuration)
     {
         if ($this->hasConfiguration($configuration)) {
@@ -85,6 +91,9 @@ class Store extends BaseStore implements StoreInterface
         return $this->baseCountry;
     }
 
+    /**
+     * @return void
+     */
     public function setBaseCountry(CountryInterface $baseCountry)
     {
         $this->baseCountry = $baseCountry;
@@ -100,6 +109,8 @@ class Store extends BaseStore implements StoreInterface
 
     /**
      * @param bool $useGrossPrice
+     *
+     * @return void
      */
     public function setUseGrossPrice($useGrossPrice)
     {

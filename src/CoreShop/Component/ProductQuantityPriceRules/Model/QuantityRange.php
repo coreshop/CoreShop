@@ -60,7 +60,7 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
@@ -70,6 +70,9 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
         return $this->rangeStartingFrom;
     }
 
+    /**
+     * @return void
+     */
     public function setRangeStartingFrom(float $rangeStartingFrom)
     {
         $this->rangeStartingFrom = $rangeStartingFrom;
@@ -80,6 +83,9 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
         return $this->pricingBehaviour;
     }
 
+    /**
+     * @return void
+     */
     public function setPricingBehaviour(string $pricingBehaviour)
     {
         $this->pricingBehaviour = $pricingBehaviour;
@@ -90,6 +96,9 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
         return $this->percentage;
     }
 
+    /**
+     * @return void
+     */
     public function setPercentage(float $percentage)
     {
         $this->percentage = $percentage;
@@ -105,6 +114,9 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
         return $this->highlighted === true;
     }
 
+    /**
+     * @return void
+     */
     public function setHighlighted(bool $highlighted)
     {
         $this->highlighted = $highlighted;
@@ -115,6 +127,9 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
         return $this->rule;
     }
 
+    /**
+     * @return void
+     */
     public function setRule($rule)
     {
         $this->rule = $rule;

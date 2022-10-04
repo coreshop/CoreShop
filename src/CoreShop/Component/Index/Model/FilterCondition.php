@@ -73,6 +73,9 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
         return $this->type;
     }
 
+    /**
+     * @return void
+     */
     public function setType($type)
     {
         $this->type = $type;
@@ -83,6 +86,9 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
         return $this->sort;
     }
 
+    /**
+     * @return void
+     */
     public function setSort($sort)
     {
         $this->sort = $sort;
@@ -93,6 +99,9 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
         return $this->label;
     }
 
+    /**
+     * @return static
+     */
     public function setLabel($label)
     {
         $this->label = $label;
@@ -105,6 +114,9 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
         return $this->quantityUnit;
     }
 
+    /**
+     * @return static
+     */
     public function setQuantityUnit($quantityUnit)
     {
         $this->quantityUnit = $quantityUnit;
@@ -117,6 +129,9 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
         return $this->configuration;
     }
 
+    /**
+     * @return static
+     */
     public function setConfiguration($configuration)
     {
         $this->configuration = $configuration;

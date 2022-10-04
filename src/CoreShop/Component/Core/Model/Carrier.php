@@ -47,6 +47,9 @@ class Carrier extends BaseCarrier implements CarrierInterface, \Stringable
         return $this->taxRule;
     }
 
+    /**
+     * @return void
+     */
     public function setTaxRule(TaxRuleGroupInterface $taxRule)
     {
         $this->taxRule = $taxRule;

@@ -94,6 +94,9 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
         return $this->name;
     }
 
+    /**
+     * @return void
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -141,11 +144,17 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
         throw new \Exception('actions are not supported in quantity range price rules. use hasRange() instead.');
     }
 
+    /**
+     * @return never
+     */
     public function addAction(ActionInterface $action)
     {
         throw new \Exception('actions are not supported in quantity range price rules. use addRange() instead.');
     }
 
+    /**
+     * @return never
+     */
     public function removeAction(ActionInterface $action)
     {
         throw new \Exception('actions are not supported in quantity range price rules. use addRange() instead.');
@@ -166,6 +175,9 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
         return $this->ranges->contains($priceRange);
     }
 
+    /**
+     * @return void
+     */
     public function addRange(QuantityRangeInterface $priceRange)
     {
         if (!$this->hasRange($priceRange)) {
@@ -174,6 +186,9 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeRange(QuantityRangeInterface $priceRange)
     {
         $priceRange->setRule(null);
@@ -185,6 +200,9 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
         return $this->product;
     }
 
+    /**
+     * @return static
+     */
     public function setProduct($product)
     {
         $this->product = $product;
@@ -197,6 +215,9 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
         return $this->calculationBehaviour;
     }
 
+    /**
+     * @return void
+     */
     public function setCalculationBehaviour($calculationBehaviour)
     {
         $this->calculationBehaviour = $calculationBehaviour;
@@ -207,6 +228,9 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
         return $this->priority;
     }
 
+    /**
+     * @return static
+     */
     public function setPriority($priority)
     {
         $this->priority = $priority;

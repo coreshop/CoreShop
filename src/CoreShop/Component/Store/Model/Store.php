@@ -68,7 +68,7 @@ class Store extends AbstractResource implements StoreInterface, \Stringable
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId($id): static
     {
         $this->id = $id;
 
@@ -85,6 +85,8 @@ class Store extends AbstractResource implements StoreInterface, \Stringable
 
     /**
      * @param string $name
+     *
+     * @return void
      */
     public function setName($name)
     {
@@ -101,6 +103,8 @@ class Store extends AbstractResource implements StoreInterface, \Stringable
 
     /**
      * @param string $template
+     *
+     * @return void
      */
     public function setTemplate($template)
     {
@@ -117,6 +121,8 @@ class Store extends AbstractResource implements StoreInterface, \Stringable
 
     /**
      * @param bool $isDefault
+     *
+     * @return void
      */
     public function setIsDefault($isDefault)
     {
@@ -133,6 +139,8 @@ class Store extends AbstractResource implements StoreInterface, \Stringable
 
     /**
      * @param int $siteId
+     *
+     * @return void
      */
     public function setSiteId($siteId)
     {

@@ -47,6 +47,9 @@ class Country extends BaseCountry implements CountryInterface
         return $this->currency;
     }
 
+    /**
+     * @return static
+     */
     public function setCurrency(CurrencyInterface $currency = null)
     {
         $this->currency = $currency;

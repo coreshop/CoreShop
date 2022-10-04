@@ -63,6 +63,9 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
         return $this->title;
     }
 
+    /**
+     * @return void
+     */
     public function setTitle($title)
     {
         $this->title = $title;
@@ -73,6 +76,9 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
         return $this->description;
     }
 
+    /**
+     * @return void
+     */
     public function setDescription($description)
     {
         $this->description = $description;
@@ -83,6 +89,9 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
         return $this->instructions;
     }
 
+    /**
+     * @return void
+     */
     public function setInstructions($instructions)
     {
         $this->instructions = $instructions;

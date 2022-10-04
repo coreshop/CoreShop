@@ -57,6 +57,9 @@ class Action implements ActionInterface
         return $this->type;
     }
 
+    /**
+     * @return static
+     */
     public function setType($type)
     {
         $this->type = $type;
@@ -69,6 +72,9 @@ class Action implements ActionInterface
         return $this->sort;
     }
 
+    /**
+     * @return void
+     */
     public function setSort($sort)
     {
         $this->sort = $sort;
@@ -79,6 +85,9 @@ class Action implements ActionInterface
         return $this->configuration;
     }
 
+    /**
+     * @return static
+     */
     public function setConfiguration(array $configuration)
     {
         $this->configuration = $configuration;

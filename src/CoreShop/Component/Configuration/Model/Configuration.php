@@ -62,6 +62,8 @@ class Configuration implements ConfigurationInterface
 
     /**
      * @param string $key
+     *
+     * @return void
      */
     public function setKey($key)
     {
@@ -78,6 +80,8 @@ class Configuration implements ConfigurationInterface
 
     /**
      * @param mixed $data
+     *
+     * @return void
      */
     public function setData($data)
     {

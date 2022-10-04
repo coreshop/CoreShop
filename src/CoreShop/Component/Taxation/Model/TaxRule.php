@@ -68,6 +68,9 @@ class TaxRule extends AbstractResource implements TaxRuleInterface, \Stringable
         return $this->behavior;
     }
 
+    /**
+     * @return static
+     */
     public function setBehavior($behavior)
     {
         $this->behavior = $behavior;
@@ -80,6 +83,9 @@ class TaxRule extends AbstractResource implements TaxRuleInterface, \Stringable
         return $this->taxRuleGroup;
     }
 
+    /**
+     * @return static
+     */
     public function setTaxRuleGroup(TaxRuleGroupInterface $taxRuleGroup = null)
     {
         $this->taxRuleGroup = $taxRuleGroup;
@@ -92,6 +98,9 @@ class TaxRule extends AbstractResource implements TaxRuleInterface, \Stringable
         return $this->taxRate;
     }
 
+    /**
+     * @return static
+     */
     public function setTaxRate(TaxRateInterface $taxRate)
     {
         $this->taxRate = $taxRate;

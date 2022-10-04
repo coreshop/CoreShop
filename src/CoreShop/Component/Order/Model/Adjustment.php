@@ -44,6 +44,9 @@ abstract class Adjustment extends AbstractPimcoreFieldcollection implements Adju
         return $withTax ? $this->getPimcoreAmountGross() : $this->getPimcoreAmountNet();
     }
 
+    /**
+     * @return void
+     */
     public function setAmount(int $grossAmount, int $netAmount)
     {
         $this->setPimcoreAmountGross($grossAmount);
@@ -59,6 +62,9 @@ abstract class Adjustment extends AbstractPimcoreFieldcollection implements Adju
         return (bool) $this->getPimcoreNeutral();
     }
 
+    /**
+     * @return void
+     */
     public function setNeutral(bool $neutral)
     {
         if ($this->getPimcoreNeutral() !== $neutral) {
@@ -83,6 +89,9 @@ abstract class Adjustment extends AbstractPimcoreFieldcollection implements Adju
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setTypeIdentifier(?string $typeIdentifier)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -93,11 +102,17 @@ abstract class Adjustment extends AbstractPimcoreFieldcollection implements Adju
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setLabel(?string $label)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setPimcoreAmountNet(int $pimcoreAmountNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -108,6 +123,9 @@ abstract class Adjustment extends AbstractPimcoreFieldcollection implements Adju
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setPimcoreAmountGross(int $pimcoreAmountGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -118,6 +136,9 @@ abstract class Adjustment extends AbstractPimcoreFieldcollection implements Adju
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setPimcoreNeutral(?bool $pimcoreNeutral)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

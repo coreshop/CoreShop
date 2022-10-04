@@ -42,6 +42,9 @@ class DocumentRenderListener implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @return void
+     */
     public function preRender(DocumentEvent $event)
     {
         $doc = $event->getDocument();

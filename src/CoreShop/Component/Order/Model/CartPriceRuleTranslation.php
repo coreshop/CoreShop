@@ -48,6 +48,9 @@ class CartPriceRuleTranslation extends AbstractTranslation implements CartPriceR
         return $this->label;
     }
 
+    /**
+     * @return void
+     */
     public function setLabel($label)
     {
         $this->label = $label;

@@ -48,7 +48,7 @@ final class TransformerEventDispatcher implements TransformerEventDispatcherInte
         );
     }
 
-    private function getEvent(ResourceInterface $model, array $params)
+    private function getEvent(ResourceInterface $model, array $params): GenericEvent
     {
         return new GenericEvent($model, $params);
     }

@@ -50,7 +50,7 @@ trait TranslatableTrait
         $this->initializeTranslationCollection();
     }
 
-    protected function initializeTranslationCollection()
+    protected function initializeTranslationCollection(): void
     {
         $this->translations = new ArrayCollection();
     }

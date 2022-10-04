@@ -30,16 +30,25 @@ trait ToggleableTrait
         return $this->active;
     }
 
+    /**
+     * @return void
+     */
     public function setActive(?bool $active)
     {
         $this->active = $active;
     }
 
+    /**
+     * @return void
+     */
     public function activate()
     {
         $this->active = true;
     }
 
+    /**
+     * @return void
+     */
     public function disable()
     {
         $this->active = false;

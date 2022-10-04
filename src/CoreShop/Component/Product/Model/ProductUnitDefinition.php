@@ -50,7 +50,7 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
      */
     protected $productUnitDefinitions;
 
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -65,6 +65,9 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
         return $this->unit;
     }
 
+    /**
+     * @return void
+     */
     public function setUnit(ProductUnitInterface $unit)
     {
         $this->unit = $unit;
@@ -75,6 +78,9 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
         return $this->conversionRate;
     }
 
+    /**
+     * @return void
+     */
     public function setConversionRate(float $conversionRate = null)
     {
         $this->conversionRate = $conversionRate;
@@ -85,6 +91,9 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
         return $this->precision;
     }
 
+    /**
+     * @return void
+     */
     public function setPrecision(int $precision)
     {
         $this->precision = $precision;
@@ -95,6 +104,9 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
         return $this->productUnitDefinitions;
     }
 
+    /**
+     * @return void
+     */
     public function setProductUnitDefinitions(ProductUnitDefinitionsInterface $productUnitDefinitions = null)
     {
         $this->productUnitDefinitions = $productUnitDefinitions;

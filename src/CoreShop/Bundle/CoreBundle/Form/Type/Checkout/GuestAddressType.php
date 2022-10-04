@@ -28,6 +28,9 @@ use Symfony\Component\Form\FormEvents;
 
 final class GuestAddressType extends AbstractType
 {
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

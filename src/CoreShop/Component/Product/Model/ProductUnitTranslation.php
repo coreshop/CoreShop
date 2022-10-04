@@ -63,6 +63,9 @@ class ProductUnitTranslation extends AbstractTranslation implements ProductUnitT
         return $this->fullLabel;
     }
 
+    /**
+     * @return void
+     */
     public function setFullLabel($fullLabel)
     {
         $this->fullLabel = $fullLabel;
@@ -73,6 +76,9 @@ class ProductUnitTranslation extends AbstractTranslation implements ProductUnitT
         return $this->fullPluralLabel;
     }
 
+    /**
+     * @return void
+     */
     public function setFullPluralLabel($fullPluralLabel)
     {
         $this->fullPluralLabel = $fullPluralLabel;
@@ -83,6 +89,9 @@ class ProductUnitTranslation extends AbstractTranslation implements ProductUnitT
         return $this->shortLabel;
     }
 
+    /**
+     * @return void
+     */
     public function setShortLabel($shortLabel)
     {
         $this->shortLabel = $shortLabel;
@@ -93,6 +102,9 @@ class ProductUnitTranslation extends AbstractTranslation implements ProductUnitT
         return $this->shortPluralLabel;
     }
 
+    /**
+     * @return void
+     */
     public function setShortPluralLabel($shortPluralLabel)
     {
         $this->shortPluralLabel = $shortPluralLabel;

@@ -20,7 +20,7 @@ namespace CoreShop\Component\Resource\Model;
 
 trait SetValuesTrait
 {
-    public function setValues($data = [])
+    public function setValues($data = []): AbstractTranslation
     {
         if (is_array($data) && count($data) > 0) {
             foreach ($data as $key => $value) {
@@ -31,7 +31,7 @@ trait SetValuesTrait
         return $this;
     }
 
-    public function setValue($key, $value)
+    public function setValue($key, $value): AbstractTranslation
     {
         $method = 'set' . $key;
         if (method_exists($this, $method)) {

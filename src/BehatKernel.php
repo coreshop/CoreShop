@@ -20,6 +20,9 @@ use Pimcore\Kernel as PimcoreKernel;
 
 class BehatKernel extends PimcoreKernel
 {
+    /**
+     * @return void
+     */
     public function registerBundlesToCollection(\Pimcore\HttpKernel\BundleCollection\BundleCollection $collection)
     {
         $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle());
@@ -27,6 +30,9 @@ class BehatKernel extends PimcoreKernel
         $collection->addBundle(new \CoreShop\Bundle\TestBundle\CoreShopTestBundle(), 0);
     }
 
+    /**
+     * @return void
+     */
     public function boot()
     {
         parent::boot();
@@ -34,6 +40,9 @@ class BehatKernel extends PimcoreKernel
         \Pimcore::setKernel($this);
     }
 
+    /**
+     * @return void
+     */
     protected function build(\Symfony\Component\DependencyInjection\ContainerBuilder $container)
     {
         parent::build($container);

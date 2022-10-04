@@ -23,6 +23,9 @@ use Pimcore\Kernel as PimcoreKernel;
 
 class Kernel extends PimcoreKernel
 {
+    /**
+     * @return void
+     */
     public function registerBundlesToCollection(BundleCollection $collection)
     {
         $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle());
@@ -38,6 +41,9 @@ class Kernel extends PimcoreKernel
         );
     }
 
+    /**
+     * @return void
+     */
     public function boot()
     {
         \Pimcore::setKernel($this);

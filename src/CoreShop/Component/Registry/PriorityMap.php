@@ -95,7 +95,7 @@ class PriorityMap implements \Iterator, \Countable
      *
      * @param string $key
      */
-    public function remove($key)
+    public function remove($key): void
     {
         $key = $this->getScalarKey($key);
 

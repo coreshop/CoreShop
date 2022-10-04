@@ -34,7 +34,12 @@ class PimcoreSiteHandler
         return null;
     }
 
-    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
+    /**
+     * @return Site|Site[]|null
+     *
+     * @psalm-return Site|list<Site>|null
+     */
+    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context): array|Site|null
     {
         if (is_array($relation)) {
             $result = [];

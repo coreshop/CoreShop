@@ -89,6 +89,9 @@ class Carrier extends AbstractResource implements CarrierInterface
         return $this->identifier;
     }
 
+    /**
+     * @return void
+     */
     public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
@@ -99,6 +102,9 @@ class Carrier extends AbstractResource implements CarrierInterface
         return $this->getTranslation($language)->getDescription();
     }
 
+    /**
+     * @return void
+     */
     public function setDescription(string $description, ?string $language = null)
     {
         $this->getTranslation($language)->setDescription($description);
@@ -109,6 +115,9 @@ class Carrier extends AbstractResource implements CarrierInterface
         return $this->getTranslation($language)->getTitle();
     }
 
+    /**
+     * @return void
+     */
     public function setTitle(string $title, ?string $language = null)
     {
         $this->getTranslation($language)->setTitle($title);
@@ -119,6 +128,9 @@ class Carrier extends AbstractResource implements CarrierInterface
         return $this->trackingUrl;
     }
 
+    /**
+     * @return void
+     */
     public function setTrackingUrl($trackingUrl)
     {
         $this->trackingUrl = $trackingUrl;
@@ -129,6 +141,9 @@ class Carrier extends AbstractResource implements CarrierInterface
         return $this->hideFromCheckout;
     }
 
+    /**
+     * @return void
+     */
     public function setHideFromCheckout($hideFromCheckout)
     {
         $this->hideFromCheckout = $hideFromCheckout;
@@ -139,6 +154,9 @@ class Carrier extends AbstractResource implements CarrierInterface
         return $this->logo;
     }
 
+    /**
+     * @return void
+     */
     public function setLogo($logo)
     {
         $this->logo = $logo;
@@ -149,6 +167,9 @@ class Carrier extends AbstractResource implements CarrierInterface
         return $this->taxCalculationStrategy;
     }
 
+    /**
+     * @return void
+     */
     public function setTaxCalculationStrategy($taxCalculationStrategy)
     {
         $this->taxCalculationStrategy = $taxCalculationStrategy;
@@ -164,6 +185,9 @@ class Carrier extends AbstractResource implements CarrierInterface
         return !$this->shippingRules->isEmpty();
     }
 
+    /**
+     * @return void
+     */
     public function addShippingRule(ShippingRuleGroupInterface $shippingRuleGroup)
     {
         if (!$this->hasShippingRule($shippingRuleGroup)) {
@@ -173,6 +197,9 @@ class Carrier extends AbstractResource implements CarrierInterface
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeShippingRule(ShippingRuleGroupInterface $shippingRuleGroup)
     {
         if ($this->hasShippingRule($shippingRuleGroup)) {

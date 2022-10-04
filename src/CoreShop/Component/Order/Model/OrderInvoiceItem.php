@@ -53,6 +53,9 @@ abstract class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInv
         return $withTax ? $this->getTotalGross() : $this->getTotalNet();
     }
 
+    /**
+     * @return void
+     */
     public function setTotal(int $total, bool $withTax = true)
     {
         $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
@@ -63,6 +66,9 @@ abstract class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInv
         return $withTax ? $this->getConvertedTotalGross() : $this->getConvertedTotalNet();
     }
 
+    /**
+     * @return void
+     */
     public function setConvertedTotal(int $convertedTotal, bool $withTax = true)
     {
         $withTax ? $this->setConvertedTotalGross($convertedTotal) : $this->setConvertedTotalNet($convertedTotal);
@@ -73,6 +79,9 @@ abstract class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInv
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setTotalNet(int $totalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -83,6 +92,9 @@ abstract class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInv
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setTotalGross(int $totalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -93,6 +105,9 @@ abstract class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInv
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setConvertedTotalNet(int $convertedTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -103,6 +118,9 @@ abstract class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInv
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * @return never
+     */
     public function setConvertedTotalGross(int $convertedTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

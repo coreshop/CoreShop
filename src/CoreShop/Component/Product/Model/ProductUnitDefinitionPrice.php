@@ -45,7 +45,7 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
         return $this->id;
     }
 
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -55,6 +55,9 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
         return $this->price;
     }
 
+    /**
+     * @return void
+     */
     public function setPrice(int $price)
     {
         $this->price = $price;
@@ -65,6 +68,9 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
         return $this->unitDefinition;
     }
 
+    /**
+     * @return void
+     */
     public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition)
     {
         $this->unitDefinition = $unitDefinition;

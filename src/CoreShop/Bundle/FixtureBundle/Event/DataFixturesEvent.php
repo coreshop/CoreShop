@@ -56,7 +56,7 @@ class DataFixturesEvent extends Event
      *
      * @param string $message
      */
-    public function log($message)
+    public function log($message): void
     {
         if (null !== $this->logger) {
             $logger = $this->logger;

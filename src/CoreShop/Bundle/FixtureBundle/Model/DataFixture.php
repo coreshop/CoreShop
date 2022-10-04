@@ -58,6 +58,9 @@ class DataFixture extends AbstractResource implements DataFixtureInterface
         return $this->className;
     }
 
+    /**
+     * @return void
+     */
     public function setClassName($className)
     {
         $this->className = $className;
@@ -68,11 +71,17 @@ class DataFixture extends AbstractResource implements DataFixtureInterface
         return $this->loadedAt;
     }
 
+    /**
+     * @return void
+     */
     public function setLoadedAt($loadedAt)
     {
         $this->loadedAt = $loadedAt;
     }
 
+    /**
+     * @return void
+     */
     public function setVersion($version)
     {
         $this->version = $version;

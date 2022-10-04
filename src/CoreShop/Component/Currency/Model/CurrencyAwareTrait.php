@@ -30,6 +30,9 @@ trait CurrencyAwareTrait
         return $this->currency;
     }
 
+    /**
+     * @return void
+     */
     public function setCurrency(?CurrencyInterface $currency)
     {
         $this->currency = $currency;

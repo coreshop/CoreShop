@@ -80,6 +80,9 @@ class CartPriceRule implements CartPriceRuleInterface
         return $this->description;
     }
 
+    /**
+     * @return static
+     */
     public function setDescription($description)
     {
         $this->description = $description;
@@ -92,6 +95,9 @@ class CartPriceRule implements CartPriceRuleInterface
         return $this->isVoucherRule;
     }
 
+    /**
+     * @return static
+     */
     public function setIsVoucherRule($isVoucherRule)
     {
         $this->isVoucherRule = $isVoucherRule;
@@ -109,6 +115,9 @@ class CartPriceRule implements CartPriceRuleInterface
         return !$this->voucherCodes->isEmpty();
     }
 
+    /**
+     * @return void
+     */
     public function addVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode)
     {
         if (!$this->hasVoucherCode($cartPriceRuleVoucherCode)) {
@@ -117,6 +126,9 @@ class CartPriceRule implements CartPriceRuleInterface
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeVoucherCode(CartPriceRuleVoucherCodeInterface $cartPriceRuleVoucherCode)
     {
         if ($this->hasVoucherCode($cartPriceRuleVoucherCode)) {
@@ -135,6 +147,9 @@ class CartPriceRule implements CartPriceRuleInterface
         return $this->getTranslation($language)->getLabel();
     }
 
+    /**
+     * @return void
+     */
     public function setLabel(string $label, ?string $language = null)
     {
         $this->getTranslation($language)->setLabel($label);

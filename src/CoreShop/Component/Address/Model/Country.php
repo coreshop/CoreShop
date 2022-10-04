@@ -87,6 +87,9 @@ class Country extends AbstractResource implements CountryInterface, \Stringable
         return $this->isoCode;
     }
 
+    /**
+     * @return static
+     */
     public function setIsoCode($isoCode)
     {
         $this->isoCode = $isoCode;
@@ -111,6 +114,9 @@ class Country extends AbstractResource implements CountryInterface, \Stringable
         return $this->addressFormat;
     }
 
+    /**
+     * @return static
+     */
     public function setAddressFormat($addressFormat)
     {
         $this->addressFormat = $addressFormat;
@@ -123,6 +129,9 @@ class Country extends AbstractResource implements CountryInterface, \Stringable
         return $this->salutations;
     }
 
+    /**
+     * @return static
+     */
     public function setSalutations($salutations)
     {
         $this->salutations = $salutations;
@@ -135,6 +144,9 @@ class Country extends AbstractResource implements CountryInterface, \Stringable
         return $this->zone;
     }
 
+    /**
+     * @return static
+     */
     public function setZone(ZoneInterface $zone = null)
     {
         $this->zone = $zone;

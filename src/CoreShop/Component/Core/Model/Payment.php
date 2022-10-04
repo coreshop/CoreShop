@@ -36,6 +36,9 @@ class Payment extends BasePayment implements PaymentInterface
         return $this->order;
     }
 
+    /**
+     * @return void
+     */
     public function setOrder(\CoreShop\Component\Order\Model\OrderInterface $order)
     {
         /**
@@ -52,6 +55,9 @@ class Payment extends BasePayment implements PaymentInterface
         return $this->currency;
     }
 
+    /**
+     * @return void
+     */
     public function setCurrency($currency)
     {
         $this->currencyCode = $currency->getIsoCode();

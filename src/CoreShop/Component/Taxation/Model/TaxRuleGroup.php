@@ -70,6 +70,9 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface, \S
         return $this->name;
     }
 
+    /**
+     * @return void
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -85,6 +88,9 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface, \S
         return !$this->taxRules->isEmpty();
     }
 
+    /**
+     * @return void
+     */
     public function addTaxRule(TaxRuleInterface $taxRule)
     {
         if (!$this->hasTaxRule($taxRule)) {
@@ -94,6 +100,9 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface, \S
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeTaxRule(TaxRuleInterface $taxRule)
     {
         if ($this->hasTaxRule($taxRule)) {

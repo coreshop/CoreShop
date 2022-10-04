@@ -107,6 +107,11 @@ class AttributeCollector implements AttributeCollectorInterface
         return $this->getAttributes($product->getVariants(), $showInList);
     }
 
+    /**
+     * @return ResolvedIndex[]
+     *
+     * @psalm-return array<''|int, ResolvedIndex>
+     */
     public function getIndex(ProductVariantAwareInterface $product)
     {
         $index = [];

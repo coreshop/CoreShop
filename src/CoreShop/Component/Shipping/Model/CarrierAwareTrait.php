@@ -30,6 +30,9 @@ trait CarrierAwareTrait
         return $this->carrier;
     }
 
+    /**
+     * @return void
+     */
     public function setCarrier(?CarrierInterface $carrier)
     {
         $this->carrier = $carrier;

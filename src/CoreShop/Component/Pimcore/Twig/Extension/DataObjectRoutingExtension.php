@@ -31,7 +31,7 @@ class DataObjectRoutingExtension extends AbstractExtension
         ];
     }
 
-    public function objectPath(Concrete $object, array $params = [])
+    public function objectPath(Concrete $object, array $params = []): string
     {
         $linkGenerator = $object->getClass()->getLinkGenerator();
 

@@ -68,6 +68,9 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
         return $this->hash;
     }
 
+    /**
+     * @return void
+     */
     public function setDetails($details)
     {
         $this->details = $details;
@@ -83,6 +86,9 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
         return $this->hash;
     }
 
+    /**
+     * @return void
+     */
     public function setHash($hash)
     {
         $this->hash = $hash;
@@ -93,6 +99,9 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
         return $this->targetUrl;
     }
 
+    /**
+     * @return void
+     */
     public function setTargetUrl($targetUrl)
     {
         $this->targetUrl = $targetUrl;
@@ -103,6 +112,9 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
         return $this->afterUrl;
     }
 
+    /**
+     * @return void
+     */
     public function setAfterUrl($afterUrl)
     {
         $this->afterUrl = $afterUrl;
@@ -113,6 +125,9 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
         return $this->gatewayName;
     }
 
+    /**
+     * @return void
+     */
     public function setGatewayName($gatewayName)
     {
         $this->gatewayName = $gatewayName;
