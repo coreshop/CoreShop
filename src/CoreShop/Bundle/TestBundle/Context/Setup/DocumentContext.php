@@ -97,6 +97,19 @@ final class DocumentContext implements Context
         $this->saveDocument($document);
     }
 
+    /**
+     * @Given /^the (document) has a editable with name "([^"]+)"), type "([^"]+)") and data "([^"]+)")$/
+     * @Given /^the (document "([^"]+)") has a editable with name "([^"]+)"), type "([^"]+)") and data "([^"]+)")$/
+     */
+    public function theDocumentHasEditable(Document\PageSnippet $document, string $name, string $type, string $data)
+    {
+        $document->setRawEditable($name, $type, json_decode($data, true, 512, JSON_THROW_ON_ERROR));
+
+        $this->saveDocument($document);
+
+        $this->sharedStorage->set('document-editable', $document->getEditable($name));
+    }
+
     protected function saveDocument(Document $document)
     {
         $document->save();
