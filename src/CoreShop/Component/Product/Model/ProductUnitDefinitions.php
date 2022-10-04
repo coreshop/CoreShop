@@ -43,7 +43,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
     protected $defaultUnitDefinition;
 
     /**
-     * @var Collection|ProductUnitDefinitionInterface[]
+     * @var Collection<int, ProductUnitDefinitionInterface>|ProductUnitDefinitionInterface[]
      */
     protected $unitDefinitions;
 

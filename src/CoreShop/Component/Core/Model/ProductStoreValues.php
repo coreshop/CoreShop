@@ -46,7 +46,7 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
     protected $product;
 
     /**
-     * @var Collection|ProductUnitDefinitionPriceInterface[]
+     * @var Collection<int, ProductUnitDefinitionPriceInterface>|ProductUnitDefinitionPriceInterface[]
      */
     protected $productUnitDefinitionPrices;
 
