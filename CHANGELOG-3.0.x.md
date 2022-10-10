@@ -1,15 +1,14 @@
 # 3.0.1
 
-## Bugs 
-
-# 3.0.1
-
+## Bugs
  - [Translations] fix order object translations (https://github.com/coreshop/CoreShop/pull/2091)
  - [Psalm] fixes (https://github.com/coreshop/CoreShop/pull/2089)
  - [CustomerTransformHelper] Use company's name initial as parent folder for companies (https://github.com/coreshop/CoreShop/pull/2082)
  - [StorageListBundle] PimcoreStorageListRepository: Comply to PSR-4 autoloading standards (https://github.com/coreshop/CoreShop/pull/2081)
  - [ProductVariantTrait] Prevent MySQL syntax error (https://github.com/coreshop/CoreShop/pull/2086)
  - [Wishlist] add tests and fix routing (https://github.com/coreshop/CoreShop/pull/2084) 
+
+# 3.0.0
 
 CoreShop is now Licenced under CCL and GPLv3! (https://github.com/coreshop/CoreShop/pull/2061)
 
