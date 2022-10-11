@@ -75,4 +75,4 @@ split 'src/CoreShop/Bundle/UserBundle' user-bundle
 split 'src/CoreShop/Bundle/OptimisticEntityLockBundle' optimistic-entity-lock-bundle
 split 'src/CoreShop/Bundle/VariantBundle' variant-bundle
 split 'src/CoreShop/Bundle/StorageListBundle' storage-list-bundle
-split 'src/CoreShop/Bundle/WishlistBundle' storage-list-bundle
+split 'src/CoreShop/Bundle/WishlistBundle' wishlist-bundle
