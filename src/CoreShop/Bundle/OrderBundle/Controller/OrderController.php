@@ -624,7 +624,7 @@ class OrderController extends PimcoreController
         foreach ($payments as $payment) {
             $details = [];
             foreach ($payment->getDetails() as $detailName => $detailValue) {
-                if (empty($detailValue) && $detailValue != 0) {
+                if (empty($detailValue) && $detailValue !== 0) {
                     continue;
                 }
                 if (is_array($detailValue)) {
