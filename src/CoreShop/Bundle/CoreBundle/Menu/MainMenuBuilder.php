@@ -289,7 +289,7 @@ class MainMenuBuilder implements MenuBuilderInterface
         $productsMenu
             ->addChild('coreshop_product_units')
             ->setLabel('coreshop_product_units')
-            ->setAttribute('permission', 'coreshop_product_unit')
+            ->setAttribute('permission', 'coreshop_permission_product_unit')
             ->setAttribute('iconCls', 'coreshop_nav_icon_product_units')
             ->setAttribute('resource', 'coreshop.product')
             ->setAttribute('function', 'product_unit')
