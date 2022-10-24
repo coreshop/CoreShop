@@ -307,7 +307,7 @@ abstract class AbstractWorker implements WorkerInterface
             'o_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
             'oo_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
             'o_key' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'o_classId' => IndexColumnInterface::FIELD_TYPE_INTEGER,
+            'o_classId' => IndexColumnInterface::FIELD_TYPE_STRING,
             'o_className' => IndexColumnInterface::FIELD_TYPE_STRING,
             'o_virtualObjectId' => IndexColumnInterface::FIELD_TYPE_INTEGER,
             'o_virtualObjectActive' => IndexColumnInterface::FIELD_TYPE_BOOLEAN,

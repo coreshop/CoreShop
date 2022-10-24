@@ -102,7 +102,7 @@ class MysqlWorker extends AbstractWorker
         $table->addColumn('o_key', 'string');
         $table->addColumn('o_virtualObjectId', 'integer');
         $table->addColumn('o_virtualObjectActive', 'boolean');
-        $table->addColumn('o_classId', 'integer');
+        $table->addColumn('o_classId', 'string')->setLength(50);
         $table->addColumn('o_className', 'string');
         $table->addColumn('o_type', 'string');
         $table->addColumn('active', 'boolean');
