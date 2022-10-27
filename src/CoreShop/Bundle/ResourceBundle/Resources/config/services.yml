@@ -14,6 +14,9 @@ services:
     CoreShop\Component\Resource\Metadata\RegistryInterface: '@CoreShop\Component\Resource\Metadata\Registry'
     CoreShop\Component\Resource\Metadata\Registry: ~
 
+    CoreShop\Bundle\ResourceBundle\Pimcore\ClassIdResolverInterface: '@CoreShop\Bundle\ResourceBundle\Pimcore\ClassIdResolver'
+    CoreShop\Bundle\ResourceBundle\Pimcore\ClassIdResolver: ~
+
     CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager: ~
 
     CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler:
