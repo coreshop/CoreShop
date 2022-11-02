@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\ResourceBundle\Pimcore\ClassIdResolverInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -29,11 +28,6 @@ final class StackClassesPass implements CompilerPassInterface
         if (!$container->hasParameter('coreshop.all.pimcore_classes') || !$container->hasParameter('coreshop.all.stack')) {
             return;
         }
-
-        /**
-         * @var ClassIdResolverInterface $classResolver
-         */
-        $classResolver = $container->get(ClassIdResolverInterface::class);
 
         /**
          * @var array $classes
@@ -62,10 +56,13 @@ final class StackClassesPass implements CompilerPassInterface
                 if ($interface === $definition['classes']['interface'] || in_array($interface, class_implements($definition['classes']['interface']), true)) {
                     $classStack[$alias][] = $definition['classes']['model'];
 
-                    $fullClassName = $definition['classes']['model'];
-                    $class = str_replace(['Pimcore\\Model\\DataObject\\', '\\'], '', $fullClassName);
-
-                    $class = $classResolver->resolveClassId($class);
+                    if (isset($definition['classes']['pimcore_class_name'])) {
+                        $class = $definition['classes']['pimcore_class_name'];
+                    }
+                    else {
+                        $fullClassName = $definition['classes']['model'];
+                        $class = str_replace(['Pimcore\\Model\\DataObject\\', '\\'], '', $fullClassName);
+                    }
 
                     $classStackPimcoreClassName[$alias][] = $class;
                 }

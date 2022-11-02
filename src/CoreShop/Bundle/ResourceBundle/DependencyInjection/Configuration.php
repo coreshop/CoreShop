@@ -97,6 +97,7 @@ final class Configuration implements ConfigurationInterface
                                 ->arrayNode('classes')
                                     ->children()
                                         ->scalarNode('model')->isRequired()->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_class_name')->end()
                                         ->scalarNode('interface')->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->defaultValue(PimcoreRepository::class)->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->end()

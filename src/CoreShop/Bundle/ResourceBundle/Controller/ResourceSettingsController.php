@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
-use CoreShop\Bundle\ResourceBundle\Pimcore\ClassIdResolverInterface;
 use Pimcore\Model\Element\AbstractElement;
 use Pimcore\Model\Element\Service;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,11 +50,6 @@ class ResourceSettingsController extends AdminController
 
         if ($this->container->hasParameter('coreshop.all.pimcore_classes')) {
             /**
-             * @var ClassIdResolverInterface $classResolver
-             */
-            $classResolver = $this->container->get(ClassIdResolverInterface::class);
-
-            /**
              * @var array $classes
              */
             $classes = $this->container->getParameter('coreshop.all.pimcore_classes');
@@ -65,9 +59,15 @@ class ResourceSettingsController extends AdminController
                 $application = $alias[0];
                 $alias = $alias[1];
 
-                $class = str_replace(['Pimcore\\Model\\DataObject\\', '\\'], '', $definition['classes']['model']);
+                if (isset($definition['classes']['model'])) {
+                    $class = $definition['classes']['pimcore_class_name'];
+                }
+                else {
+                    $fullClassName = $definition['classes']['pimcore_class_name'];
+                    $class = str_replace(['Pimcore\\Model\\DataObject\\', '\\'], '', $fullClassName);
+                }
 
-                $config['classMap'][$application][$alias] = $classResolver->resolveClassId($class);
+                $config['classMap'][$application][$alias] = $class;
             }
 
             /**
