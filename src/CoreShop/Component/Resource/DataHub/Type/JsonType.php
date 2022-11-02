@@ -42,9 +42,6 @@ class JsonType extends ScalarType
     /**
      * Recursively parse through the parameter and return a flat list of path's to values.
      *
-     * @param $result
-     * @param $currentPath
-     * @param $valueNode
      *
      * @return mixed
      */
