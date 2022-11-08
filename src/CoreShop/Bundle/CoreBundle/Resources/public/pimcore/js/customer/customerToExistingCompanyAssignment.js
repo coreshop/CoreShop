@@ -175,7 +175,7 @@ coreshop.core.customer.customerToCompanyAssigner = Class.create(coreshop.core.cu
         };
 
         this.submitForm(
-            Routing.generate('coreshop_admin_customer_company_modifier_dispatch_existing_assignment', {customerId: this.customerId, companyId: this.comapnyId}),
+            Routing.generate('coreshop_admin_customer_company_modifier_dispatch_existing_assignment', {customerId: this.customerId, companyId: this.companyId}),
             submitValues,
             windowPanel
         );
