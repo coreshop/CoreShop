@@ -214,7 +214,7 @@ services:
         arguments:
             - '@coreshop.cart_price_rule.cart_item_rule_applier'
         tags:
-            - { name: coreshop.cart_item_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
+            - { name: coreshop.cart_item_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
 
     coreshop.cart_item_price_rule.condition.products:
         class: CoreShop\Component\Core\CartItem\Rule\Condition\ProductsConditionChecker
