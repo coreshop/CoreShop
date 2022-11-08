@@ -26,6 +26,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
 {
+    public const OPTION_UPDATE_CLASSES = 'update-classes';
+
     private array $installedClasses = [];
 
     private array $installedCollections = [];
@@ -103,7 +105,11 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
             foreach ($classes as $identifier => $class) {
                 $progress->setMessage(sprintf('Install Class %s (%s)', $class['model'], $class['file']));
 
-                $this->installedClasses[$identifier] = $this->classInstaller->createClass($class['file'], $class['model']);
+                $this->installedClasses[$identifier] = $this->classInstaller->createClass(
+                    $class['file'],
+                    $class['model'],
+                    $options[self::OPTION_UPDATE_CLASSES] ?? false,
+                );
 
                 $progress->advance();
             }

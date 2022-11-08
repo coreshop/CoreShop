@@ -32,7 +32,7 @@ class CompositeResourceInstaller implements ResourceInstallerInterface
     {
         foreach ($this->serviceRegistry->all() as $installer) {
             if ($installer instanceof ResourceInstallerInterface) {
-                $installer->installResources($output, $applicationName);
+                $installer->installResources($output, $applicationName, $options);
             }
         }
     }
