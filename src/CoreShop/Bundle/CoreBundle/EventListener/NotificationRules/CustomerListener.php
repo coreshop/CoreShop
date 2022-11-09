@@ -148,9 +148,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
             'firstname' => $user->getCustomer()->getFirstname(),
             'lastname' => $user->getCustomer()->getLastname(),
             'email' => $user->getCustomer()->getEmail(),
-            'object' => $user->getCustomer(),
             'user' => $user,
-            'store' => $this->shopperContext->hasStore() ? $this->shopperContext->getStore() : null,
         ];
     }
 }

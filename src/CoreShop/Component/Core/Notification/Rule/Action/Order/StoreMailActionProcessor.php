@@ -24,12 +24,14 @@ use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Notification\Rule\Action\MailActionProcessor;
 use CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 
 class StoreMailActionProcessor implements NotificationRuleProcessorInterface
 {
     public function __construct(
         protected MailActionProcessor $mailActionProcessor,
         protected ThemeHelperInterface $themeHelper,
+        protected StoreRepositoryInterface $storeRepository,
     ) {
     }
 
@@ -38,12 +40,10 @@ class StoreMailActionProcessor implements NotificationRuleProcessorInterface
         $store = null;
         $mails = $configuration['mails'];
 
-        if (array_key_exists('store', $params)) {
-            $store = $params['store'];
-        }
-
         if ($subject instanceof StoreAwareInterface) {
             $store = $subject->getStore();
+        } elseif (isset($params['store_id'])) {
+            $store = $this->storeRepository->find($params['store']);
         }
 
         if (!$store instanceof StoreInterface) {

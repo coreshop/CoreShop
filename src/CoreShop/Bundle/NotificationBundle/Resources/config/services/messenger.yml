@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        autoconfigure: false
+
+    CoreShop\Component\Notification\Messenger\Handler\NotificationMessageHandler:
+        arguments:
+            - '@coreshop.repository.notification_rule'
+            - '@coreshop.notification_rule.validation.processor'
+            - '@CoreShop\Component\Notification\Processor\RuleApplierInterface'
+            - '@Doctrine\Persistence\ConnectionRegistry'
+        tags:
+            - { name: messenger.message_handler }

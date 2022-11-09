@@ -1,0 +1,11 @@
+framework:
+    messenger:
+        transports:
+            coreshop_notification:
+                dsn: "doctrine://default?queue_name=coreshop_notification"
+                retry_strategy:
+                    max_retries: 5
+                    delay: 300000
+                    multiplier: 2
+        routing:
+            'CoreShop\Component\Notification\Messenger\NotificationMessage': coreshop_notification

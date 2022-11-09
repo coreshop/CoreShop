@@ -26,10 +26,15 @@ final class PaymentWorkflowListener extends AbstractNotificationRuleListener
 {
     public function applyPaymentWorkflowTransitionCompleted(Event $event): void
     {
-        Assert::isInstanceOf($event->getSubject(), PaymentInterface::class);
+        $subject = $event->getSubject();
 
-        $this->rulesProcessor->applyRules('payment', $event->getSubject(), [
-            'order' => $event->getSubject()->getOrder(),
+        /**
+         * @var PaymentInterface $subject
+         */
+        Assert::isInstanceOf($subject, PaymentInterface::class);
+
+        $this->rulesProcessor->applyRules('payment', $subject, [
+            'order_id' => $event->getSubject()->getOrder()->getId(),
             'paymentState' => $event->getSubject()->getState(),
         ]);
     }

@@ -20,7 +20,7 @@ namespace CoreShop\Component\Notification\Processor;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
-interface RulesProcessorInterface
+interface RulesAsyncProcessorInterface
 {
-    public function applyRules(string $type, ResourceInterface $subject, array $params = []): void;
+    public function applyRulesAsync(string $type, ResourceInterface $subject, array $params = []): void;
 }
