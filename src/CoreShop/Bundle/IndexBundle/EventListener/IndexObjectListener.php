@@ -18,75 +18,49 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\EventListener;
 
+use CoreShop\Bundle\IndexBundle\Messenger\IndexMessage;
+use CoreShop\Bundle\IndexBundle\Messenger\UnIndexMessage;
 use CoreShop\Component\Index\Model\IndexableInterface;
-use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
-use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Event\Model\ElementEventInterface;
-use Pimcore\Model\DataObject\AbstractObject;
-use Pimcore\Model\DataObject\ClassDefinition;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class IndexObjectListener
 {
-    private array $validObjectTypes = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
-
     public function __construct(
-        private IndexUpdaterServiceInterface $indexUpdaterService,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
     public function onPostUpdate(ElementEventInterface $event): void
     {
-        if ($event instanceof DataObjectEvent) {
-            $object = $event->getObject();
-
-            if (!$object instanceof IndexableInterface) {
-                return;
-            }
-
-            $isVersionEvent = $event->hasArgument('saveVersionOnly') && true === $event->getArgument('saveVersionOnly');
-
-            InheritanceHelper::useInheritedValues(function () use ($object, $isVersionEvent) {
-                $this->indexUpdaterService->updateIndices($object, $isVersionEvent);
-            });
-
-            $classDefinition = ClassDefinition::getById($object->getClassId());
-            if ($classDefinition && ($classDefinition->getAllowInherit() || $classDefinition->getAllowVariants())) {
-                $this->updateInheritableChildren($object, $isVersionEvent);
-            }
-        }
-    }
-
-    private function updateInheritableChildren(AbstractObject $object, bool $isVersionChange): void
-    {
-        if (!$object->hasChildren($this->validObjectTypes)) {
+        if (!$event instanceof DataObjectEvent) {
             return;
         }
 
-        $children = $object->getChildren($this->validObjectTypes);
-        /** @var AbstractObject $child */
-        foreach ($children as $child) {
-            if ($child instanceof IndexableInterface && $child::class === $object::class) {
-                InheritanceHelper::useInheritedValues(function () use ($child, $isVersionChange) {
-                    $this->indexUpdaterService->updateIndices($child, $isVersionChange);
-                });
-                $this->updateInheritableChildren($child, $isVersionChange);
-            }
+        $object = $event->getObject();
+
+        if (!$object instanceof IndexableInterface) {
+            return;
         }
+
+        $isVersionEvent = $event->hasArgument('saveVersionOnly') && true === $event->getArgument('saveVersionOnly');
+
+        $this->messageBus->dispatch(new IndexMessage($object->getId(), $isVersionEvent));
     }
 
     public function onPostDelete(ElementEventInterface $event): void
     {
-        if ($event instanceof DataObjectEvent) {
-            $object = $event->getObject();
-
-            if (!$object instanceof IndexableInterface) {
-                return;
-            }
-
-            InheritanceHelper::useInheritedValues(function () use ($object) {
-                $this->indexUpdaterService->removeIndices($object);
-            });
+        if (!$event instanceof DataObjectEvent) {
+            return;
         }
+
+        $object = $event->getObject();
+
+        if (!$object instanceof IndexableInterface) {
+            return;
+        }
+
+        $this->messageBus->dispatch(new IndexMessage($object->getId(), false, true));
     }
 }

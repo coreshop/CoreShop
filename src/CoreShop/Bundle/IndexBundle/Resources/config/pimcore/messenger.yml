@@ -1,0 +1,7 @@
+framework:
+    messenger:
+        transports:
+            coreshop_index:
+                dsn: "doctrine://default?queue_name=coreshop_index"
+        routing:
+            'CoreShop\Bundle\IndexBundle\Messenger\IndexMessage': coreshop_index

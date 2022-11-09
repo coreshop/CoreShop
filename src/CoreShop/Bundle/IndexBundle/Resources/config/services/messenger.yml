@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autoconfigure: false
+
+    CoreShop\Bundle\IndexBundle\Messenger\Handler\IndexMessageHandler:
+        arguments:
+            - '@CoreShop\Component\Index\Service\IndexUpdaterServiceInterface'
+            - '@messenger.default_bus'
+        tags:
+            - { name: messenger.message_handler }

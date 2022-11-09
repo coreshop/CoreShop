@@ -6,6 +6,7 @@ imports:
     - { resource: services/pimcore.yml }
     - { resource: services/condition_renderer.yml }
     - { resource: services/order_renderer.yml }
+    - { resource: services/messenger.yml }
 
 services:
     _defaults:
