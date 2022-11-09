@@ -49,7 +49,9 @@ class NotificationMessageHandler implements MessageHandlerInterface
         }
         else {
             $objectManager = $this->managerRegistry->getManagerForClass($message->getResourceType());
-            $resource = $objectManager?->find($message->getResourceType(), $message->getResourceId());
+            /** @psalm-var class-string $className */
+            $className = $message->getResourceType();
+            $resource = $objectManager?->find($className, $message->getResourceId());
         }
 
         if (!$resource instanceof ResourceInterface) {
