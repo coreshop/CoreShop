@@ -24,7 +24,6 @@ use CoreShop\Component\Notification\Processor\RuleApplierInterface;
 use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
