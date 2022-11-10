@@ -22,6 +22,8 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdateInterface;
@@ -38,6 +40,7 @@ final class PimcoreClassContext implements Context
     public function __construct(
         private SharedStorageInterface $sharedStorage,
         private ClassStorageInterface $classStorage,
+        private IndexUpdaterServiceInterface $indexUpdaterService
     ) {
     }
 
@@ -741,6 +744,11 @@ final class PimcoreClassContext implements Context
     {
         $this->setObjectValuesFromTable($object, $table);
         $object->save();
+
+        if ($object instanceof IndexableInterface)
+        {
+            $this->indexUpdaterService->updateIndices($object);
+        }
     }
 
     /**
@@ -750,6 +758,11 @@ final class PimcoreClassContext implements Context
     {
         $this->setObjectValuesFromTable($object, $table);
         $object->saveVersion();
+
+        if ($object instanceof IndexableInterface)
+        {
+            $this->indexUpdaterService->updateIndices($object, true);
+        }
     }
 
     private function setObjectValuesFromTable(Concrete $object, TableNode $table): void
