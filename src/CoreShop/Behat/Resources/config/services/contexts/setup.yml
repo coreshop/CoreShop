@@ -202,7 +202,6 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.behat.class_storage'
-            - '@CoreShop\Component\Index\Service\IndexUpdaterServiceInterface'
         tags:
             - { name: fob.context_service }
 

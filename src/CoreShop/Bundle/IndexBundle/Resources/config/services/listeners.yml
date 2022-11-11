@@ -20,7 +20,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.postAdd, method: onPostUpdate }
             - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: onPostUpdate }
-            - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: onPostDelete }
+            - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: onPreDelete }
 
     CoreShop\Bundle\IndexBundle\EventListener\UpdateIndexListener:
         arguments:

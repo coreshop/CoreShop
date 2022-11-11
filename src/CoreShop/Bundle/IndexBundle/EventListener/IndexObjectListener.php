@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\IndexBundle\EventListener;
 
 use CoreShop\Bundle\IndexBundle\Messenger\IndexMessage;
-use CoreShop\Bundle\IndexBundle\Messenger\UnIndexMessage;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Event\Model\ElementEventInterface;
@@ -49,7 +48,7 @@ final class IndexObjectListener
         $this->messageBus->dispatch(new IndexMessage($object->getId(), $isVersionEvent));
     }
 
-    public function onPostDelete(ElementEventInterface $event): void
+    public function onPreDelete(ElementEventInterface $event): void
     {
         if (!$event instanceof DataObjectEvent) {
             return;
