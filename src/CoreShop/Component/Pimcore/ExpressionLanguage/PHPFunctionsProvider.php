@@ -53,6 +53,8 @@ class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
             ExpressionFunction::fromPHP('count'),
             ExpressionFunction::fromPHP('dirname'),
             ExpressionFunction::fromPHP('basename'),
+            ExpressionFunction::fromPHP('array_unique'),
+            ExpressionFunction::fromPHP('array_filter'),
         ];
     }
 }
