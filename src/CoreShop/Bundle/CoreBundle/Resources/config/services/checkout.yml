@@ -49,6 +49,7 @@ services:
         arguments:
             - '@form.factory'
             - '@CoreShop\Component\Order\Manager\CartManagerInterface'
+            - '@CoreShop\Component\Payment\Validator\PaymentProviderValidatorInterface'
 
     CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep:
         arguments:

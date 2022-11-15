@@ -26,6 +26,7 @@ use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use CoreShop\Component\Payment\Validator\PaymentProviderValidatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,6 +36,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     public function __construct(
         private FormFactoryInterface $formFactory,
         private CartManagerInterface $cartManager,
+        private PaymentProviderValidatorInterface $paymentProviderValidator
     ) {
     }
 
@@ -55,7 +57,9 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
 
     public function validate(OrderInterface $cart): bool
     {
-        return $cart->hasItems() && $cart->getPaymentProvider() instanceof PaymentProviderInterface;
+        $paymentProvider = $cart->getPaymentProvider();
+
+        return $cart->hasItems() && $paymentProvider instanceof PaymentProviderInterface && $this->paymentProviderValidator->isPaymentProviderValid($paymentProvider);
     }
 
     public function commitStep(OrderInterface $cart, Request $request): bool

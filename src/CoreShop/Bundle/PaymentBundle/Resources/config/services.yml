@@ -2,5 +2,18 @@ imports:
     - { resource: services_alias.yml }
     - { resource: services/form.yml }
     - { resource: services/workflow.yml }
-    - { resource: services/resolver.yml }
     - { resource: services/pimcore.yml }
+
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface: '@CoreShop\Component\Payment\Resolver\PaymentProviderResolver'
+    CoreShop\Component\Payment\Resolver\PaymentProviderResolver:
+        arguments:
+            - '@coreshop.repository.payment_provider'
+
+    CoreShop\Component\Payment\Validator\PaymentProviderValidatorInterface: '@CoreShop\Component\Payment\Validator\PaymentProviderValidator'
+    CoreShop\Component\Payment\Validator\PaymentProviderValidator:
+        arguments:
+            - '@CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface'
