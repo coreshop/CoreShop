@@ -66,7 +66,7 @@ class FailureListener implements EventSubscriberInterface
             $pimcoreObjectStamp = $envelope->last(PimcoreObjectStamp::class);
 
             /**
-             * @var TransportMessageIdStamp $messageIdStamp
+             * @var TransportMessageIdStamp|null $messageIdStamp
              */
             $messageIdStamp = $envelope->last(TransportMessageIdStamp::class);
             $messageId = $messageIdStamp?->getId();
