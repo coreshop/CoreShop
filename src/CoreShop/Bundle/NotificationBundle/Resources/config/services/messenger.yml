@@ -9,4 +9,8 @@ services:
             - '@CoreShop\Component\Notification\Processor\RuleApplierInterface'
             - '@Doctrine\Persistence\ConnectionRegistry'
         tags:
-            - { name: messenger.message_handler }
+            - { name: messenger.message_handler, bus: coreshop.bus }
+
+    CoreShop\Bundle\NotificationBundle\EventListener\MessengerListener:
+        tags:
+            - { name: kernel.event_subscriber }

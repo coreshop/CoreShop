@@ -35,7 +35,7 @@ use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopIndexBundle extends AbstractResourceBundle implements ComposerPackageBundleInterface
+final class CoreShopIndexBundle extends AbstractResourceBundle
 {
     public static function registerDependentBundles(BundleCollection $collection): void
     {

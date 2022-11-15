@@ -1,0 +1,65 @@
+services:
+  _defaults:
+    public: false
+    autoconfigure: false
+    autowire: false
+
+  coreshop.messenger.pimcore.messenger_logger:
+    public: true
+    class: Pimcore\Log\ApplicationLogger
+    calls:
+      - [ addWriter, [ '@Pimcore\Log\Handler\ApplicationLoggerDb' ] ]
+      - [ setComponent, [ 'coreshop_messenger' ] ]
+
+  CoreShop\Bundle\MessengerBundle\EventListener\FailureListener:
+    arguments:
+      - '@coreshop.messenger.pimcore.messenger_logger'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  CoreShop\Bundle\MessengerBundle\Messenger\FailureReceiversRepositoryInterface: '@CoreShop\Bundle\MessengerBundle\Messenger\FailureReceiversRepository'
+  CoreShop\Bundle\MessengerBundle\Messenger\FailureReceiversRepository:
+    arguments:
+      - ''
+      - ''
+
+  CoreShop\Bundle\MessengerBundle\Messenger\ReceiversRepositoryInterface: '@CoreShop\Bundle\MessengerBundle\Messenger\ReceiversRepository'
+  CoreShop\Bundle\MessengerBundle\Messenger\ReceiversRepository:
+    arguments:
+      - '@messenger.receiver_locator'
+      - [ ]
+
+  CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRepositoryInterface: '@CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRepository'
+  CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRepository:
+    arguments:
+      - '@CoreShop\Bundle\MessengerBundle\Messenger\FailureReceiversRepository'
+
+  CoreShop\Bundle\MessengerBundle\Messenger\MessageRepositoryInterface: '@CoreShop\Bundle\MessengerBundle\Messenger\MessageRepository'
+  CoreShop\Bundle\MessengerBundle\Messenger\MessageRepository:
+    arguments:
+      - '@CoreShop\Bundle\MessengerBundle\Messenger\ReceiversRepository'
+
+  CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRetryerInterface: '@CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRetryer'
+  CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRetryer:
+    arguments:
+      - '@CoreShop\Bundle\MessengerBundle\Messenger\FailureReceiversRepository'
+      - '@messenger.routable_message_bus'
+    tags:
+      - { name: monolog.logger, channel: 'coreshop_messenger' }
+
+  CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRejecterInterface: '@CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRejecter'
+  CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRejecter:
+    arguments:
+      - '@CoreShop\Bundle\MessengerBundle\Messenger\FailureReceiversRepository'
+
+  CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController:
+    tags:
+      - { name: controller.service_arguments }
+    calls:
+      - [setContainer, ['@service_container']]
+
+  CoreShop\Bundle\MessengerBundle\Controller\MessageController:
+    tags:
+      - { name: controller.service_arguments }
+    calls:
+      - [setContainer, ['@service_container']]

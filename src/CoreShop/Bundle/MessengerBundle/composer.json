@@ -1,7 +1,7 @@
 {
-  "name": "coreshop/notification-bundle",
+  "name": "coreshop/messenger-bundle",
   "type": "pimcore-bundle",
-  "description": "CoreShop - Notification Bundle",
+  "description": "CoreShop - Messenger Bundle",
   "keywords": [
     "coreshop",
     "pimcore",
@@ -24,11 +24,9 @@
     }
   ],
   "require": {
-    "coreshop/notification": "^3.0",
-    "coreshop/registry": "^3.0",
-    "coreshop/rule-bundle": "^3.0",
-    "coreshop/messenger-bundle": "^3.0",
-    "pimcore/pimcore": "^10.5"
+    "pimcore/pimcore": "^10.5",
+    "coreshop/pimcore-bundle": "^3.0",
+    "coreshop/menu-bundle": "^3.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.5.4",
@@ -37,14 +35,14 @@
   },
   "autoload": {
     "psr-4": {
-      "CoreShop\\Bundle\\NotificationBundle\\": ""
+      "CoreShop\\Bundle\\MessengerBundle\\": ""
     }
   },
   "repositories": [
-      {
-          "type": "path",
-          "url": "../../*/*"
-      }
+    {
+      "type": "path",
+      "url": "../../*/*"
+    }
   ],
   "minimum-stability": "dev",
   "prefer-stable": true,

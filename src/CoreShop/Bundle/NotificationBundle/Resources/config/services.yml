@@ -31,7 +31,7 @@ services:
     CoreShop\Component\Notification\Processor\RulesProcessor:
         shared: false
         arguments:
-            - '@messenger.default_bus'
+            - '@coreshop.bus'
 
     coreshop.registry.notification_rule.conditions:
         class: CoreShop\Component\Registry\ServiceRegistry
