@@ -24,6 +24,7 @@ use CoreShop\Bundle\MessengerBundle\Messenger\MessageRepositoryInterface;
 use CoreShop\Bundle\MessengerBundle\Messenger\ReceiversRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 
 class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
@@ -57,7 +58,13 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
         Request $request,
         FailedMessageRepositoryInterface $failedMessageRepository
     ): Response {
-        $result = $failedMessageRepository->listFailedMessages($request->request->get('receiverName'), 100);
+        $receiverName = $request->request->get('receiverName');
+
+        if (!$receiverName) {
+            throw new NotFoundHttpException();
+        }
+
+        $result = $failedMessageRepository->listFailedMessages($receiverName, 100);
 
         return $this->json(['data' => $result, 'success' => true]);
     }
@@ -66,7 +73,13 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
         Request $request,
         MessageRepositoryInterface $messageRepository
     ): Response {
-        $result = $messageRepository->listMessages($request->request->get('receiverName'), 100);
+        $receiverName = $request->request->get('receiverName');
+
+        if (!$receiverName) {
+            throw new NotFoundHttpException();
+        }
+
+        $result = $messageRepository->listMessages($receiverName, 100);
 
         return $this->json(['data' => $result, 'success' => true]);
     }
