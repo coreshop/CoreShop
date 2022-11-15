@@ -57,7 +57,7 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
         Request $request,
         FailedMessageRepositoryInterface $failedMessageRepository
     ): Response {
-        $result = $failedMessageRepository->listFailedMessages($request->get('receiverName'), 100);
+        $result = $failedMessageRepository->listFailedMessages($request->request->get('receiverName'), 100);
 
         return $this->json(['data' => $result, 'success' => true]);
     }
@@ -66,7 +66,7 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
         Request $request,
         MessageRepositoryInterface $messageRepository
     ): Response {
-        $result = $messageRepository->listMessages($request->get('receiverName'), 100);
+        $result = $messageRepository->listMessages($request->request->get('receiverName'), 100);
 
         return $this->json(['data' => $result, 'success' => true]);
     }
