@@ -1,1 +1,1 @@
-coreshop.order_payment.total: 'Il pagamento contiene %items% voce/i per un totale di %total%.'
+coreshop.order_payment.total: '%items% voce/i per %total%.'
