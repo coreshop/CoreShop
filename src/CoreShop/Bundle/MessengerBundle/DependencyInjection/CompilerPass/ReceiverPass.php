@@ -26,13 +26,22 @@ final class ReceiverPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if ($container->hasDefinition(ReceiversRepository::class)
-            && $container->hasDefinition('console.command.messenger_consume_messages')) {
-            $receiverLocatorDefinition = $container->getDefinition(ReceiversRepository::class);
+        if (!$container->hasDefinition(ReceiversRepository::class)) {
+            return;
+        }
 
+        $receiverLocatorDefinition = $container->getDefinition(ReceiversRepository::class);
+
+        if ($container->hasDefinition('console.command.messenger_consume_messages')) {
             $consumeCommandDefinition = $container->getDefinition('console.command.messenger_consume_messages');
             $names = $consumeCommandDefinition->getArgument(4);
             $receiverLocatorDefinition->replaceArgument(1, $names);
+        }
+        else {
+            $emptyContainer = new Definition(Container::class);
+
+            $receiverLocatorDefinition->replaceArgument(0, $emptyContainer);
+            $receiverLocatorDefinition->replaceArgument(1, []);
         }
     }
 }

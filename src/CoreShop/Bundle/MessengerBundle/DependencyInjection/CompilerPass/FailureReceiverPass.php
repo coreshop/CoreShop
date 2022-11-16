@@ -20,7 +20,9 @@ namespace CoreShop\Bundle\MessengerBundle\DependencyInjection\CompilerPass;
 
 use CoreShop\Bundle\MessengerBundle\Messenger\FailureReceiversRepository;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 final class FailureReceiverPass implements CompilerPassInterface
 {
@@ -36,7 +38,10 @@ final class FailureReceiverPass implements CompilerPassInterface
         $failureReceivers = $container->getDefinition(FailureReceiversRepository::class);
 
         if (!$container->hasDefinition('messenger.failure.send_failed_message_to_failure_transport_listener')) {
-            $failureReceivers->replaceArgument(0, null);
+            $emptyContainer = new Definition(Container::class);
+
+            $failureReceivers->replaceArgument(0, $emptyContainer);
+            $failureReceivers->replaceArgument(1, []);
 
             return;
         }
