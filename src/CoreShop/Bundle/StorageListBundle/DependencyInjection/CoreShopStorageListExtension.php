@@ -89,7 +89,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
 
             $factoryContextDefinition = new Definition(StorageListFactoryContext::class);
             $factoryContextDefinition->setArgument('$storageListFactory', new Reference($list['resource']['factory']));
-            $factoryContextDefinition->addTag($list['context']['tag'], ['priority' => 0]);
+            $factoryContextDefinition->addTag($list['context']['tag'], ['priority' => -999]);
 
             $container->setDefinition('coreshop.storage_list.context.factory.' . $name, $factoryContextDefinition);
 
@@ -148,7 +148,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                     $customerAndStoreBasedContextDefinition->setArgument('$customerContext', new Reference('coreshop.context.customer'));
                     $customerAndStoreBasedContextDefinition->setArgument('$storeContext', new Reference('coreshop.context.store'));
                     $customerAndStoreBasedContextDefinition->setArgument('$repository', new Reference($list['resource']['repository']));
-                    $customerAndStoreBasedContextDefinition->addTag($list['context']['tag'], ['priority' => 777]);
+                    $customerAndStoreBasedContextDefinition->addTag($list['context']['tag'], ['priority' => -777]);
 
                     $container->setDefinition('coreshop.storage_list.context.customer_and_store_based.' . $name, $customerAndStoreBasedContextDefinition);
 
@@ -178,7 +178,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                         $sessionAndStoreBasedContextDefinition->setArgument('$sessionKeyName', $list['session']['key']);
                         $sessionAndStoreBasedContextDefinition->setArgument('$repository', new Reference($list['resource']['repository']));
                         $sessionAndStoreBasedContextDefinition->setArgument('$storeContext', new Reference('coreshop.context.store'));
-                        $sessionAndStoreBasedContextDefinition->addTag($list['context']['tag'], ['priority' => 555]);
+                        $sessionAndStoreBasedContextDefinition->addTag($list['context']['tag'], ['priority' => -555]);
 
                         $container->setDefinition('coreshop.storage_list.context.session_and_store_based.' . $name, $sessionAndStoreBasedContextDefinition);
 
