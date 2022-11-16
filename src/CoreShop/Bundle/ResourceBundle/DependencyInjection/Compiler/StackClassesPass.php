@@ -41,26 +41,28 @@ final class StackClassesPass implements CompilerPassInterface
 
         $classStack = [];
         $classStackPimcoreClassName = [];
-        $classStackPimcoreClassId = [];
 
         foreach ($stack as $alias => $interface) {
             [$applicationName, $name] = explode('.', $alias);
 
             $classStack[$alias] = [];
             $classStackPimcoreClassName[$alias] = [];
-            $classStackPimcoreClassId[$alias] = [];
 
             foreach ($classes as $definition) {
                 if (!@interface_exists($definition['classes']['interface'])) {
                     continue;
                 }
 
-                if (in_array($interface, class_implements($definition['classes']['interface'])) || $interface === $definition['classes']['interface']) {
+                if ($interface === $definition['classes']['interface'] || in_array($interface, class_implements($definition['classes']['interface']), true)) {
                     $classStack[$alias][] = $definition['classes']['model'];
 
-                    $fullClassName = $definition['classes']['model'];
-                    $class = str_replace('Pimcore\\Model\\DataObject\\', '', $fullClassName);
-                    $class = str_replace('\\', '', $class);
+                    if (isset($definition['classes']['pimcore_class_name'])) {
+                        $class = $definition['classes']['pimcore_class_name'];
+                    }
+                    else {
+                        $fullClassName = $definition['classes']['model'];
+                        $class = str_replace(['Pimcore\\Model\\DataObject\\', '\\'], '', $fullClassName);
+                    }
 
                     $classStackPimcoreClassName[$alias][] = $class;
                 }

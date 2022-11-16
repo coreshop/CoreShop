@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Model\Element\AbstractElement;
 use Pimcore\Model\Element\Service;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,12 +56,25 @@ class ResourceSettingsController extends AdminController
             $classes = $this->container->getParameter('coreshop.all.pimcore_classes');
 
             foreach ($classes as $key => $definition) {
+                if (!isset($definition['classes']['type'])) {
+                    continue;
+                }
+
+                if ($definition['classes']['type'] !== CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT) {
+                    continue;
+                }
+
                 $alias = explode('.', $key);
                 $application = $alias[0];
                 $alias = $alias[1];
 
-                $class = str_replace('Pimcore\\Model\\DataObject\\', '', $definition['classes']['model']);
-                $class = str_replace('\\', '', $class);
+                if (isset($definition['classes']['pimcore_class_name'])) {
+                    $class = $definition['classes']['pimcore_class_name'];
+                }
+                else {
+                    $fullClassName = $definition['classes']['model'];
+                    $class = str_replace(['Pimcore\\Model\\DataObject\\', '\\'], '', $fullClassName);
+                }
 
                 $config['classMap'][$application][$alias] = $class;
             }
