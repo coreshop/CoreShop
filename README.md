@@ -45,7 +45,6 @@
  - [Website](https://www.coreshop.org)
  - [Documentation](https://docs.coreshop.org/latest)
  - [Pimcore Forum](https://talk.pimcore.org)
- - [Help translate CoreShop](https://crowdin.com/project/coreshop)
 
 # Demo
 You can see a running demo here [CoreShop 3.x Demo](https://demox.coreshop.org)
