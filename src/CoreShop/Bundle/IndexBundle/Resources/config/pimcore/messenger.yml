@@ -3,5 +3,14 @@ framework:
         transports:
             coreshop_index:
                 dsn: "doctrine://default?queue_name=coreshop_index"
+                failure_transport: coreshop_index_failed
+                retry_strategy:
+                    max_retries: 3
+                    delay: 60000
+                    multiplier: 2
+            coreshop_index_failed:
+                dsn: "doctrine://default?queue_name=coreshop_index_failed"
+                retry_strategy:
+                    max_retries: 0
         routing:
             'CoreShop\Bundle\IndexBundle\Messenger\IndexMessage': coreshop_index

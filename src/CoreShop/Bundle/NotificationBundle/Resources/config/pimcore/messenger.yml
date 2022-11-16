@@ -5,8 +5,8 @@ framework:
                 dsn: "doctrine://default?queue_name=coreshop_notification"
                 failure_transport: coreshop_notification_failed
                 retry_strategy:
-                    max_retries: 1
-                    delay: 100
+                    max_retries: 5
+                    delay: 300000
                     multiplier: 2
             # we store failed messages here for admins to manually review them later
             coreshop_notification_failed:

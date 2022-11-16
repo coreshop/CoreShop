@@ -27,7 +27,7 @@ class MessageController extends \Pimcore\Bundle\AdminBundle\Controller\AdminCont
     public function deleteStoredMessageAction(Request $request, FailedMessageRejecter $failedMessageRejecter)
     {
         $id = (int)$request->request->get('id');
-        $receiver = (string)$request->request->get('receiverName');
+        $receiver = (string)$request->attributes->get('receiverName');
 
         try {
             $failedMessageRejecter->rejectStoredMessage($receiver, $id);
@@ -41,7 +41,7 @@ class MessageController extends \Pimcore\Bundle\AdminBundle\Controller\AdminCont
     public function retryFailedMessageAction(Request $request, FailedMessageRetryer $failedMessageRetryer)
     {
         $id = (int)$request->request->get('id');
-        $receiver = (string)$request->request->get('receiverName');
+        $receiver = (string)$request->attributes->get('receiverName');
 
         try {
             $failedMessageRetryer->retryFailedMessage($receiver, $id);

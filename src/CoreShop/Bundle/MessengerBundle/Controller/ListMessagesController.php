@@ -58,7 +58,7 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
         Request $request,
         FailedMessageRepositoryInterface $failedMessageRepository
     ): Response {
-        $receiverName = $request->request->get('receiverName');
+        $receiverName = $request->attributes->get('receiverName');
 
         if (!is_string($receiverName)) {
             throw new NotFoundHttpException();
@@ -73,7 +73,7 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
         Request $request,
         MessageRepositoryInterface $messageRepository
     ): Response {
-        $receiverName = $request->request->get('receiverName');
+        $receiverName = $request->attributes->get('receiverName');
 
         if (!is_string($receiverName)) {
             throw new NotFoundHttpException();
