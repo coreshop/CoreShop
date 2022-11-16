@@ -110,6 +110,7 @@ remote optimistic-entity-lock-bundle git@github.com:CoreShop/OptimisticEntityLoc
 remote variant-bundle git@github.com:CoreShop/VariantBundle.git
 remote storage-list-bundle git@github.com:CoreShop/StorageListBundle.git
 remote wishlist-bundle git@github.com:CoreShop/WishlistBundle.git
+remote messenger-bundle git@github.com:CoreShop/MessengerBundle.git
 
 split 'src/CoreShop/Component/Resource' resource
 split 'src/CoreShop/Component/Registry' registry
@@ -175,3 +176,4 @@ split 'src/CoreShop/Bundle/OptimisticEntityLockBundle' optimistic-entity-lock-bu
 split 'src/CoreShop/Bundle/VariantBundle' variant-bundle
 split 'src/CoreShop/Bundle/StorageListBundle' storage-list-bundle
 split 'src/CoreShop/Bundle/WishlistBundle' wishlist-bundle
+split 'src/CoreShop/Bundle/MessengerBundle' messenger-bundle

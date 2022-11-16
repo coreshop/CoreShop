@@ -18,30 +18,39 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Notification\Processor;
 
-use CoreShop\Component\Notification\Model\NotificationRuleInterface;
-use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterface;
-use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\Notification\Messenger\NotificationMessage;
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class RulesProcessor implements RulesProcessorInterface
 {
-    public function __construct(
-        private NotificationRuleRepositoryInterface $ruleRepository,
-        private RuleValidationProcessorInterface $ruleValidationProcessor,
-        private RuleApplierInterface $ruleApplier,
-    ) {
+    public function __construct(private MessageBusInterface $messageBus)
+    {
     }
 
-    public function applyRules(string $type, $subject, array $params = []): void
+    public function applyRules(string $type, ResourceInterface $subject, array $params = []): void
     {
-        $rules = $this->ruleRepository->findForType($type);
+        //BC
+        if (isset($params['order']) && $params['order'] instanceof ResourceInterface) {
+            $params['order_id'] = $params['order']->getId();
 
-        /**
-         * @var NotificationRuleInterface $rule
-         */
-        foreach ($rules as $rule) {
-            if ($this->ruleValidationProcessor->isValid($subject, $rule, ['params' => $params])) {
-                $this->ruleApplier->applyRule($rule, $subject, $params);
-            }
+            unset($params['order']);
         }
+
+        //BC
+        if (isset($params['store']) && $params['store'] instanceof ResourceInterface) {
+            $params['store_id'] = $params['store']->getId();
+
+            unset($params['store']);
+        }
+
+        $this->messageBus->dispatch(
+            new NotificationMessage(
+                $type,
+                get_class($subject),
+                $subject->getId(),
+                $params
+            )
+        );
     }
 }

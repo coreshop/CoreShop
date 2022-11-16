@@ -381,6 +381,16 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setExtra('order', 100)
         ;
 
+        $menuItem
+            ->addChild('coreshop_messenger')
+            ->setLabel('coreshop_messenger')
+            ->setAttribute('permission', 'coreshop_permission_messenger')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_messenger')
+            ->setAttribute('resource', 'coreshop.messenger')
+            ->setAttribute('function', 'list')
+            ->setExtra('order', 110)
+        ;
+
         $menuItem->addChild('coreshop_about')
             ->setLabel('coreshop_about')
             ->setAttribute('iconCls', 'coreshop_nav_icon_logo')

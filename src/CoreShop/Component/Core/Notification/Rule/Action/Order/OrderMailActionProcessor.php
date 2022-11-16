@@ -22,12 +22,14 @@ use CoreShop\Component\Core\Order\OrderMailProcessorInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Pimcore\Model\Document;
 
 class OrderMailActionProcessor implements NotificationRuleProcessorInterface
 {
     public function __construct(
         private OrderMailProcessorInterface $orderMailProcessor,
+        private OrderRepositoryInterface $orderRepository,
     ) {
     }
 
@@ -42,8 +44,8 @@ class OrderMailActionProcessor implements NotificationRuleProcessorInterface
 
         if ($subject instanceof OrderInterface) {
             $order = $subject;
-        } elseif (array_key_exists('order', $params) && $params['order'] instanceof OrderInterface) {
-            $order = $params['order'];
+        } elseif (isset($params['order_id'])) {
+            $order = $this->orderRepository->find($params['order_id']);
         }
 
         if ($order instanceof OrderInterface) {

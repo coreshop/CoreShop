@@ -1,0 +1,8 @@
+imports:
+  - { resource: admin.yml }
+
+framework:
+  messenger:
+    buses:
+      coreshop.bus:
+        default_middleware: true
