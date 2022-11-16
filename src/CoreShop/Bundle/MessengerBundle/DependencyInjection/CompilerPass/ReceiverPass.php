@@ -20,7 +20,9 @@ namespace CoreShop\Bundle\MessengerBundle\DependencyInjection\CompilerPass;
 
 use CoreShop\Bundle\MessengerBundle\Messenger\ReceiversRepository;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 final class ReceiverPass implements CompilerPassInterface
 {
