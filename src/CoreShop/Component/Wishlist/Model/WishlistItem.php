@@ -18,9 +18,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Wishlist\Model;
 
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use Webmozart\Assert\Assert;
 
 abstract class WishlistItem extends AbstractPimcoreModel implements WishlistItemInterface
 {
@@ -29,19 +31,24 @@ abstract class WishlistItem extends AbstractPimcoreModel implements WishlistItem
         return $this->getWishlist();
     }
 
-    public function getWishlist(): WishlistInterface
+    public function setStorageList(StorageListInterface $storageList)
     {
-        $parent = $this->getParent();
+        /**
+         * @var WishlistInterface $storageList
+         */
+        Assert::isInstanceOf($storageList, WishlistInterface::class);
 
-        do {
-            if ($parent instanceof WishlistInterface) {
-                return $parent;
-            }
+        $this->setWishlist($storageList);
+    }
 
-            $parent = $parent->getParent();
-        } while ($parent !== null);
+    public function getWishlist(): ?WishlistInterface
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 
-        throw new \Exception('Wishlist Item does not have a valid Wishlist');
+    public function setWishlist(WishlistInterface $wishlist)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     public function equals(StorageListItemInterface $storageListItem): bool

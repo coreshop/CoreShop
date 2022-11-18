@@ -40,7 +40,12 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
 
     public function addItem($item): void
     {
+        /**
+         * @var OrderItemInterface $item
+         */
         Assert::isInstanceOf($item, OrderItemInterface::class);
+
+        $item->setOrder($this);
 
         $items = $this->getItems();
         $items[] = $item;

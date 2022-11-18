@@ -23,8 +23,8 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 abstract class StorageListItem implements StorageListItemInterface
 {
     protected float $quantity = 0;
-
     protected mixed $product;
+    protected StorageListInterface $storageList;
 
     public function equals(StorageListItemInterface $storageListItem): bool
     {
@@ -46,6 +46,16 @@ abstract class StorageListItem implements StorageListItemInterface
     public function setProduct(ResourceInterface $product)
     {
         $this->product = $product;
+    }
+
+    public function getStorageList(): StorageListInterface
+    {
+        return $this->storageList;
+    }
+
+    public function setStorageList(StorageListInterface $storageList)
+    {
+        $this->storageList = $storageList;
     }
 
     public function getQuantity(): ?float

@@ -24,6 +24,7 @@ use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
+use Webmozart\Assert\Assert;
 
 abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterface
 {
@@ -202,24 +203,29 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         return $totalTax;
     }
 
-    public function getStorageList(): StorageListInterface
+    public function getStorageList(): ?StorageListInterface
     {
         return $this->getOrder();
     }
 
-    public function getOrder(): OrderInterface
+    public function setStorageList(StorageListInterface $storageList)
     {
-        $parent = $this->getParent();
+        /**
+         * @var OrderInterface $storageList
+         */
+        Assert::isInstanceOf($storageList, OrderInterface::class);
 
-        do {
-            if ($parent instanceof OrderInterface) {
-                return $parent;
-            }
+        $this->setOrder($storageList);
+    }
 
-            $parent = $parent->getParent();
-        } while ($parent !== null);
+    public function getOrder(): ?OrderInterface
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 
-        throw new \Exception('Order Item does not have a valid Order');
+    public function setOrder(OrderInterface $order)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     public function getDiscount(bool $withTax = true): int
