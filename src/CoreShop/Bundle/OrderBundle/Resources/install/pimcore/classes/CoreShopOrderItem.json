@@ -341,6 +341,38 @@
                                         "invisible": false,
                                         "visibleGridView": false,
                                         "visibleSearch": false
+                                    },
+                                    {
+                                        "name": "order",
+                                        "title": "coreshop.order_item.order",
+                                        "tooltip": "",
+                                        "mandatory": false,
+                                        "noteditable": false,
+                                        "index": false,
+                                        "locked": false,
+                                        "style": "",
+                                        "permissions": null,
+                                        "datatype": "data",
+                                        "fieldtype": "coreShopRelation",
+                                        "relationType": true,
+                                        "invisible": false,
+                                        "visibleGridView": false,
+                                        "visibleSearch": false,
+                                        "classes": [
+                                            {
+                                                "classes": "CoreShopOrder"
+                                            }
+                                        ],
+                                        "pathFormatterClass": "",
+                                        "width": null,
+                                        "assetUploadPath": null,
+                                        "objectsAllowed": true,
+                                        "assetsAllowed": false,
+                                        "assetTypes": [],
+                                        "documentsAllowed": false,
+                                        "documentTypes": [],
+                                        "stack": "coreshop.order",
+                                        "returnConcrete": false
                                     }
                                 ],
                                 "locked": false
