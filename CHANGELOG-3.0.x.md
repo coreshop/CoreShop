@@ -1,5 +1,8 @@
 # 3.0.2
 
+> Please make sure you also start the messenger worker for the CoreShop Tasks
+> ```bin/console messenger:consume coreshop_notification coreshop_index --time-limit=300```
+
 ## Features
  - [Messenger] introduce Messenger Bundle (https://github.com/coreshop/CoreShop/pull/2105, https://github.com/coreshop/CoreShop/pull/2114, https://github.com/coreshop/CoreShop/pull/2112, https://github.com/coreshop/CoreShop/pull/2106)
 
