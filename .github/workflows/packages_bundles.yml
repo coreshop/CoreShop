@@ -6,7 +6,7 @@ on:
       - "src/CoreShop/Bundle/**"
       - "src/CoreShop/Component/**"
   pull_request:
-    branches: [ master, '2.2' ]
+    branches: [ '2.2', '3.0', 'master' ]
     paths:
       - "src/CoreShop/Bundle/**"
       - "src/CoreShop/Component/**"

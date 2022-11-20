@@ -1,9 +1,9 @@
 name: Static Tests (Lint, Stan)
 on:
   push:
-    branches: [ master, '2.2' ]
+    branches: [ '2.2', '3.0', master ]
   pull_request:
-    branches: [ master, '2.2' ]
+    branches: [ '2.2', '3.0', master ]
 
 jobs:
   lint:
