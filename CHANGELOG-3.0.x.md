@@ -1,3 +1,19 @@
+# 3.0.2
+
+## Features
+ - [Messenger] introduce Messenger Bundle (https://github.com/coreshop/CoreShop/pull/2105, https://github.com/coreshop/CoreShop/pull/2114, https://github.com/coreshop/CoreShop/pull/2112, https://github.com/coreshop/CoreShop/pull/2106)
+
+## Bugs
+ - [CartPiceRules] fix OrderItem not finding Order with CartItemPriceRules (https://github.com/coreshop/CoreShop/pull/2116)
+ - [StorageList] fix storage-list priority (https://github.com/coreshop/CoreShop/pull/2113)
+ - [ResourceBundle] class names with lower-case names (https://github.com/coreshop/CoreShop/pull/2097)
+ - [Checkout] introduce Payment Provider Validator to check if the selected one is still valid (https://github.com/coreshop/CoreShop/pull/2111)
+ - [Unit] fix issues with unit selection in ui (https://github.com/coreshop/CoreShop/pull/2104)
+ - [CustomerAssignment] Fix typo when passing the company ID to the router (https://github.com/coreshop/CoreShop/pull/2102)
+ - [CoreBundle] fix cart-item-rule discount action form (https://github.com/coreshop/CoreShop/pull/2101)
+ - [IndexBundle] fix: index table o_classId type fix (https://github.com/coreshop/CoreShop/pull/2095)
+ - [Menu] Use correct permission definition for product unit menu item (https://github.com/coreshop/CoreShop/pull/2094)
+
 # 3.0.1
 
 ## Bugs
