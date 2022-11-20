@@ -33,8 +33,6 @@ abstract class Wishlist extends AbstractPimcoreModel implements WishlistInterfac
 
     public function addItem($item): void
     {
-        Assert::isInstanceOf($item, WishlistItemInterface::class);
-
         /**
          * @var WishlistItemInterface $item
          */
