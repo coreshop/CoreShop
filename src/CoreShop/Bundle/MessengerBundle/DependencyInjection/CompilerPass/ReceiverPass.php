@@ -38,8 +38,7 @@ final class ReceiverPass implements CompilerPassInterface
             $consumeCommandDefinition = $container->getDefinition('console.command.messenger_consume_messages');
             $names = $consumeCommandDefinition->getArgument(4);
             $receiverLocatorDefinition->replaceArgument(1, $names);
-        }
-        else {
+        } else {
             $emptyContainer = new Definition(Container::class);
 
             $receiverLocatorDefinition->replaceArgument(0, $emptyContainer);

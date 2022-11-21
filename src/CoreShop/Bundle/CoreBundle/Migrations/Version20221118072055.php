@@ -2,6 +2,20 @@
 
 declare(strict_types=1);
 
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
@@ -28,36 +42,36 @@ final class Version20221118072055 extends AbstractMigration implements Container
         }
 
         $orderField = [
-            "name" => "order",
-            "title" => "coreshop.order_item.order",
-            "tooltip" => "",
-            "mandatory" => false,
-            "noteditable" => false,
-            "index" => false,
-            "locked" => false,
-            "style" => "",
-            "permissions" => null,
-            "datatype" => "data",
-            "fieldtype" => "coreShopRelation",
-            "relationType" => true,
-            "invisible" => false,
-            "visibleGridView" => false,
-            "visibleSearch" => false,
-            "classes" => [
+            'name' => 'order',
+            'title' => 'coreshop.order_item.order',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => false,
+            'index' => false,
+            'locked' => false,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'fieldtype' => 'coreShopRelation',
+            'relationType' => true,
+            'invisible' => false,
+            'visibleGridView' => false,
+            'visibleSearch' => false,
+            'classes' => [
                 [
-                    "classes" => "CoreShopOrder",
+                    'classes' => 'CoreShopOrder',
                 ],
             ],
-            "pathFormatterClass" => "",
-            "width" => null,
-            "assetUploadPath" => null,
-            "objectsAllowed" => true,
-            "assetsAllowed" => false,
-            "assetTypes" => [],
-            "documentsAllowed" => false,
-            "documentTypes" => [],
-            "stack" => "coreshop.order",
-            "returnConcrete" => false,
+            'pathFormatterClass' => '',
+            'width' => null,
+            'assetUploadPath' => null,
+            'objectsAllowed' => true,
+            'assetsAllowed' => false,
+            'assetTypes' => [],
+            'documentsAllowed' => false,
+            'documentTypes' => [],
+            'stack' => 'coreshop.order',
+            'returnConcrete' => false,
         ];
 
         $classUpdater->insertFieldAfter('mainObjectId', $orderField);
@@ -66,6 +80,5 @@ final class Version20221118072055 extends AbstractMigration implements Container
 
     public function down(Schema $schema): void
     {
-
     }
 }
