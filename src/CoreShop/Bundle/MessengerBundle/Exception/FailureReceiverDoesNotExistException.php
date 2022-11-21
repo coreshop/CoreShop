@@ -22,8 +22,8 @@ use Symfony\Component\Messenger\Exception\RuntimeException;
 
 final class FailureReceiverDoesNotExistException extends RuntimeException
 {
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct('There is no failure receiver.');
     }
 }

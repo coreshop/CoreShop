@@ -24,13 +24,14 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 class PaymentProviderValidator implements PaymentProviderValidatorInterface
 {
-    public function __construct(protected PaymentProviderResolverInterface $paymentProviderResolver)
-    {
+    public function __construct(
+        protected PaymentProviderResolverInterface $paymentProviderResolver,
+    ) {
     }
 
     public function isPaymentProviderValid(
         PaymentProviderInterface $paymentProvider,
-        ResourceInterface $subject = null
+        ResourceInterface $subject = null,
     ): bool {
         $validProviders = $this->paymentProviderResolver->resolvePaymentProviders($subject);
 
@@ -39,7 +40,7 @@ class PaymentProviderValidator implements PaymentProviderValidatorInterface
             array_map(static function (PaymentProviderInterface $paymentProvider) {
                 return $paymentProvider->getId();
             }, $validProviders),
-            true
+            true,
         );
     }
 }

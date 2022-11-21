@@ -22,8 +22,9 @@ use Symfony\Component\Messenger\Stamp\StampInterface;
 
 class PimcoreObjectStamp implements StampInterface
 {
-    public function __construct(private int $objectId)
-    {
+    public function __construct(
+        private int $objectId,
+    ) {
     }
 
     public function getObjectId(): int

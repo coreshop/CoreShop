@@ -25,8 +25,9 @@ use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
 final class MessageRepository implements MessageRepositoryInterface
 {
-    public function __construct(private ReceiversRepositoryInterface $receivers)
-    {
+    public function __construct(
+        private ReceiversRepositoryInterface $receivers,
+    ) {
     }
 
     public function listMessages(string $receiverName, int $limit = 10): array
@@ -44,11 +45,10 @@ final class MessageRepository implements MessageRepositoryInterface
          * @var Envelope $envelope
          */
         foreach ($envelopes as $envelope) {
-
             $rows[] = new MessageDetails(
                 $this->getMessageId($envelope),
                 $envelope->getMessage()::class,
-                print_r($envelope->getMessage(), true)
+                print_r($envelope->getMessage(), true),
             );
         }
 

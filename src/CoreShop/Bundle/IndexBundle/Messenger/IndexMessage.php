@@ -24,8 +24,7 @@ class IndexMessage
         protected int $indexableId,
         protected bool $saveVersionOnly = false,
         protected bool $isDelete = false,
-    )
-    {
+    ) {
     }
 
     public function getIndexableId(): int

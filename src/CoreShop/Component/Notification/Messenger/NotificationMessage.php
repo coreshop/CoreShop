@@ -24,10 +24,8 @@ class NotificationMessage
         protected string $type,
         protected string $resourceType,
         protected int $resourceId,
-        protected array $params
-    )
-    {
-
+        protected array $params,
+    ) {
     }
 
     public function getType(): string
