@@ -77,7 +77,7 @@ EOT
         $this->resourceInstaller->installResources(
             $output,
             $input->getOption('application-name'),
-            [PimcoreClassInstaller::OPTION_UPDATE_CLASSES => $input->getOption('update-classes')]
+            [PimcoreClassInstaller::OPTION_UPDATE_CLASSES => $input->getOption('update-classes')],
         );
 
         return 0;

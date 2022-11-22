@@ -24,8 +24,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class RulesProcessor implements RulesProcessorInterface
 {
-    public function __construct(private MessageBusInterface $messageBus)
-    {
+    public function __construct(
+        private MessageBusInterface $messageBus,
+    ) {
     }
 
     public function applyRules(string $type, ResourceInterface $subject, array $params = []): void
@@ -49,8 +50,8 @@ class RulesProcessor implements RulesProcessorInterface
                 $type,
                 get_class($subject),
                 $subject->getId(),
-                $params
-            )
+                $params,
+            ),
         );
     }
 }

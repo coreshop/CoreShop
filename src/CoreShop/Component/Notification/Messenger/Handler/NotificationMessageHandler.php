@@ -34,7 +34,7 @@ class NotificationMessageHandler implements MessageHandlerInterface
         protected NotificationRuleRepositoryInterface $ruleRepository,
         protected RuleValidationProcessorInterface $ruleValidationProcessor,
         protected RuleApplierInterface $ruleApplier,
-        protected ManagerRegistry $managerRegistry
+        protected ManagerRegistry $managerRegistry,
     ) {
     }
 
@@ -45,8 +45,7 @@ class NotificationMessageHandler implements MessageHandlerInterface
 
         if (is_subclass_of($message->getResourceType(), Concrete::class)) {
             $resource = Concrete::getById($message->getResourceId());
-        }
-        else {
+        } else {
             $objectManager = $this->managerRegistry->getManagerForClass($message->getResourceType());
             /** @psalm-var class-string $className */
             $className = $message->getResourceType();

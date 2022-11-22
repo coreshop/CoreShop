@@ -23,7 +23,9 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 abstract class StorageListItem implements StorageListItemInterface
 {
     protected float $quantity = 0;
+
     protected mixed $product;
+
     protected StorageListInterface $storageList;
 
     public function equals(StorageListItemInterface $storageListItem): bool

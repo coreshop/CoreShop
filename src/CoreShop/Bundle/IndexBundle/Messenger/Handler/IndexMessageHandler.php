@@ -50,6 +50,7 @@ class IndexMessageHandler implements MessageHandlerInterface
         InheritanceHelper::useInheritedValues(function () use ($indexable, $indexMessage) {
             if ($indexMessage->isDelete()) {
                 $this->indexUpdaterService->removeIndices($indexable);
+
                 return;
             }
 

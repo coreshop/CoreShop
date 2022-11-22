@@ -22,5 +22,4 @@ use Symfony\Component\Messenger\Stamp\StampInterface;
 
 class RetriedByUserStamp implements StampInterface
 {
-
 }

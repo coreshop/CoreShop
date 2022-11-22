@@ -45,6 +45,7 @@ class IndexMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_messenger')
             ->setAttribute('iconCls', 'coreshop_nav_icon_messenger')
             ->setAttribute('resource', 'coreshop.messenger')
-            ->setAttribute('function', 'list');
+            ->setAttribute('function', 'list')
+        ;
     }
 }

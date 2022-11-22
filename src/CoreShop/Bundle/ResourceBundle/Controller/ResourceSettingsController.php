@@ -70,8 +70,7 @@ class ResourceSettingsController extends AdminController
 
                 if (isset($definition['classes']['pimcore_class_name'])) {
                     $class = $definition['classes']['pimcore_class_name'];
-                }
-                else {
+                } else {
                     $fullClassName = $definition['classes']['model'];
                     $class = str_replace(['Pimcore\\Model\\DataObject\\', '\\'], '', $fullClassName);
                 }

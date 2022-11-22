@@ -23,8 +23,9 @@ use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
 final class FailedMessageRejecter implements FailedMessageRejecterInterface
 {
-    public function __construct(private FailureReceiversRepositoryInterface $failureReceivers)
-    {
+    public function __construct(
+        private FailureReceiversRepositoryInterface $failureReceivers,
+    ) {
     }
 
     public function rejectStoredMessage(string $receiverName, int $id): void

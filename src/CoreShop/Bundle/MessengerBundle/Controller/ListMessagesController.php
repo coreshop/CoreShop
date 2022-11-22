@@ -56,7 +56,7 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
 
     public function listFailedMessagesAction(
         Request $request,
-        FailedMessageRepositoryInterface $failedMessageRepository
+        FailedMessageRepositoryInterface $failedMessageRepository,
     ): Response {
         $receiverName = $request->attributes->get('receiverName');
 
@@ -71,7 +71,7 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
 
     public function listMessagesAction(
         Request $request,
-        MessageRepositoryInterface $messageRepository
+        MessageRepositoryInterface $messageRepository,
     ): Response {
         $receiverName = $request->attributes->get('receiverName');
 

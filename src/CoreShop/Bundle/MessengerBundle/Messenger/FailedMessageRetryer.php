@@ -29,7 +29,7 @@ final class FailedMessageRetryer implements FailedMessageRetryerInterface
 {
     public function __construct(
         private FailureReceiversRepositoryInterface $failureReceivers,
-        private MessageBusInterface $messageBus
+        private MessageBusInterface $messageBus,
     ) {
     }
 
