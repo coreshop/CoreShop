@@ -171,6 +171,8 @@ class StorageListController extends AbstractController
         $this->modifier->removeFromList($storageList, $storageListItem);
         $this->manager->persist($storageList);
 
+        $request->attributes->set('product', $storageListItem->getProduct());
+
         return $this->redirectToRoute($this->summaryRoute);
     }
 
