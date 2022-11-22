@@ -45,11 +45,11 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('connection')->defaultNull()->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
 
         return $treeBuilder;
     }
-
 
     private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
@@ -79,6 +79,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
-        ->end();
+        ->end()
+        ;
     }
 }

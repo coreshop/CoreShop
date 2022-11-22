@@ -29,8 +29,9 @@ use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 
 class FailureListener implements EventSubscriberInterface
 {
-    public function __construct(protected LoggerInterface $logger)
-    {
+    public function __construct(
+        protected LoggerInterface $logger,
+    ) {
     }
 
     public static function getSubscribedEvents()
@@ -72,7 +73,7 @@ class FailureListener implements EventSubscriberInterface
             $messageId = $messageIdStamp?->getId();
             $messageClass = \get_class($envelope->getMessage());
             $lastRedelivery = null === $lastRedeliveryStamp ? '' : $lastRedeliveryStamp->getRedeliveredAt()->format(
-                'Y-m-d H:i:s'
+                'Y-m-d H:i:s',
             );
             $errorMessage = $errorStamp->getExceptionMessage();
             $relatedObject = null === $pimcoreObjectStamp ? '' : $pimcoreObjectStamp->getObjectId();

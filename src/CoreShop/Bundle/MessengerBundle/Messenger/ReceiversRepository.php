@@ -24,8 +24,10 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 
 class ReceiversRepository implements ReceiversRepositoryInterface
 {
-    public function __construct(private ServiceProviderInterface $receiverLocator, private array $receiverNames)
-    {
+    public function __construct(
+        private ServiceProviderInterface $receiverLocator,
+        private array $receiverNames,
+    ) {
     }
 
     /**

@@ -27,8 +27,9 @@ use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
 final class FailedMessageRepository implements FailedMessageRepositoryInterface
 {
-    public function __construct(private FailureReceiversRepositoryInterface $failureReceivers)
-    {
+    public function __construct(
+        private FailureReceiversRepositoryInterface $failureReceivers,
+    ) {
     }
 
     public function listFailedMessages(string $receiverName, int $limit = 10): array
@@ -53,13 +54,12 @@ final class FailedMessageRepository implements FailedMessageRepositoryInterface
                 $envelope->getMessage()::class,
                 null !== $lastRedeliveryStamp ? $lastRedeliveryStamp->getRedeliveredAt()->format('Y-m-d H:i:s') : '',
                 null !== $lastErrorDetailsStamp ? $lastErrorDetailsStamp->getExceptionMessage() : '',
-                print_r($envelope->getMessage(), true)
+                print_r($envelope->getMessage(), true),
             );
         }
 
         return $rows;
     }
-
 
     private function getMessageId(Envelope $envelope): mixed
     {

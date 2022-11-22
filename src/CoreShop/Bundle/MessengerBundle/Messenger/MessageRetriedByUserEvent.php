@@ -22,5 +22,4 @@ use Symfony\Component\Messenger\Event\AbstractWorkerMessageEvent;
 
 final class MessageRetriedByUserEvent extends AbstractWorkerMessageEvent
 {
-
 }

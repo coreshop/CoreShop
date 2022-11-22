@@ -42,7 +42,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
         $event->setPaths(
             array_merge($event->getPaths(), [
                 $this->router->generate('coreshop_menu', ['type' => 'coreshop.messenger']),
-            ])
+            ]),
         );
     }
 }
