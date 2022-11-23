@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
-use CoreShop\Bundle\MessengerBundle\Exception\FailureReceiverNotListableException;
+use CoreShop\Bundle\MessengerBundle\Exception\ReceiverNotListableException;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
 final class FailedMessageRejecter implements FailedMessageRejecterInterface
@@ -33,7 +33,7 @@ final class FailedMessageRejecter implements FailedMessageRejecterInterface
         $failureReceiver = $this->failureReceivers->getFailureReceiver($receiverName);
 
         if (!$failureReceiver instanceof ListableReceiverInterface) {
-            throw new FailureReceiverNotListableException();
+            throw new ReceiverNotListableException();
         }
 
         $envelope = $failureReceiver->find($id);
