@@ -21,11 +21,11 @@ jobs:
     name: "Create a list of packages"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: "List Packages"
       id: create-list
-      run: echo "::set-output name=packages::$(find src/CoreShop/Component -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)"
+      run: echo "packages=$(find src/CoreShop/Bundle -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)" >> $GITHUB_OUTPUT
 
     outputs:
        packages: "${{ steps.create-list.outputs.packages }}"
@@ -46,7 +46,7 @@ jobs:
             dependencies: lowest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install PHP
       uses: shivammathur/setup-php@v2
@@ -56,7 +56,7 @@ jobs:
 
     - name: Get Composer cache directory
       id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: Cache Composer
       uses: actions/cache@v2
