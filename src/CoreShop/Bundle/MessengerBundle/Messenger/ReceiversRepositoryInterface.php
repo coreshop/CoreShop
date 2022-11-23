@@ -27,5 +27,10 @@ interface ReceiversRepositoryInterface
      */
     public function getReceiversMapping(): array;
 
+    /**
+     * @return ReceiverInterface[]
+     */
+    public function getListableReceiversMapping(): array;
+
     public function getReceiver(string $receiverName): ReceiverInterface;
 }

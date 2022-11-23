@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
-use CoreShop\Bundle\MessengerBundle\Exception\FailureReceiverNotListableException;
+use CoreShop\Bundle\MessengerBundle\Exception\ReceiverNotListableException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
@@ -35,7 +35,7 @@ final class MessageRepository implements MessageRepositoryInterface
         $receiver = $this->receivers->getReceiver($receiverName);
 
         if (!$receiver instanceof ListableReceiverInterface) {
-            throw new FailureReceiverNotListableException();
+            throw new ReceiverNotListableException();
         }
 
         $envelopes = $receiver->all($limit);

@@ -304,7 +304,7 @@ coreshop.messenger.list = Class.create({
             store: {
                 proxy: {
                     type: 'ajax',
-                    url: Routing.generate('coreshop_admin_messenger_count'),
+                    url: Routing.generate('coreshop_admin_messenger_list_receivers'),
                     reader: {
                         type: 'json',
                         rootProperty: 'data'

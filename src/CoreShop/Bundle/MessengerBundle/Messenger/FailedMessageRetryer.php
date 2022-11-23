@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
-use CoreShop\Bundle\MessengerBundle\Exception\FailureReceiverNotListableException;
+use CoreShop\Bundle\MessengerBundle\Exception\ReceiverNotListableException;
 use CoreShop\Bundle\MessengerBundle\Stamp\RetriedByUserStamp;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -38,7 +38,7 @@ final class FailedMessageRetryer implements FailedMessageRetryerInterface
         $failureReceiver = $this->failureReceivers->getFailureReceiver($receiver);
 
         if (!$failureReceiver instanceof ListableReceiverInterface) {
-            throw new FailureReceiverNotListableException();
+            throw new ReceiverNotListableException();
         }
 
         $envelope = $failureReceiver->find($id);
