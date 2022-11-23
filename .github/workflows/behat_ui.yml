@@ -1,9 +1,13 @@
 name: Behat UI
 on:
   push:
-    branches: [ '3.0', 'master' ]
+    branches: [ '2.2', '3.0', 'master' ]
   pull_request:
-    branches: [ '3.0', 'master' ]
+    branches: [ '2.2', '3.0', 'master' ]
+  release:
+    types: [ created ]
+  schedule:
+    - cron: "0 1 * * 1"
 
 jobs:
   behat_ui:

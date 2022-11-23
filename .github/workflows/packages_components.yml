@@ -1,15 +1,9 @@
 name: Packages Components
-
 on:
   push:
-    paths:
-      - "src/CoreShop/Bundle/**"
-      - "src/CoreShop/Component/**"
+    branches: [ '2.2', '3.0', 'master' ]
   pull_request:
     branches: [ '2.2', '3.0', 'master' ]
-    paths:
-      - "src/CoreShop/Bundle/**"
-      - "src/CoreShop/Component/**"
   release:
     types: [ created ]
   schedule:
