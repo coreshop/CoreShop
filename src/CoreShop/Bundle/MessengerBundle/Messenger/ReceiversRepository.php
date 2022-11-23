@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
 use CoreShop\Bundle\MessengerBundle\Exception\ReceiverDoesNotExistException;
+use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 use Symfony\Component\Messenger\Transport\Receiver\ReceiverInterface;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
@@ -38,6 +39,26 @@ class ReceiversRepository implements ReceiversRepositoryInterface
         $receivers = [];
         foreach ($this->receiverNames as $receiverName) {
             $receivers[$receiverName] = $this->getReceiver($receiverName);
+        }
+
+        return $receivers;
+    }
+
+
+    /**
+     * @return ReceiverInterface[]
+     */
+    public function getListableReceiversMapping(): array
+    {
+        $receivers = [];
+        foreach ($this->receiverNames as $receiverName) {
+            $receiver = $this->getReceiver($receiverName);
+
+            if (!$receiver instanceof ListableReceiverInterface) {
+                continue;
+            }
+
+            $receivers[$receiverName] = $receiver;
         }
 
         return $receivers;

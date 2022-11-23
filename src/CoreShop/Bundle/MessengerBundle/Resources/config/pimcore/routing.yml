@@ -4,6 +4,12 @@ coreshop_admin_messenger_count:
   options:
     expose: true
 
+coreshop_admin_messenger_list_receivers:
+  path: /admin/messenger/list-receivers
+  defaults: { _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listListableReceiversAction }
+  options:
+    expose: true
+
 coreshop_admin_messenger_list_failed:
   path: /admin/messenger/list-failed/{receiverName}
   defaults: { _controller: CoreShop\Bundle\MessengerBundle\Controller\ListMessagesController::listFailedMessagesAction }

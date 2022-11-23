@@ -42,6 +42,19 @@ class ListMessagesController extends \Pimcore\Bundle\AdminBundle\Controller\Admi
         return $this->json(['data' => $receivers, 'success' => true]);
     }
 
+    public function listListableReceiversAction(ReceiversRepositoryInterface $receiverLocator): Response
+    {
+        $receivers = [];
+        foreach ($receiverLocator->getListableReceiversMapping() as $name => $receiver) {
+            $receivers[] = [
+                'receiver' => $name,
+                'count' => $receiver instanceof MessageCountAwareInterface ? $receiver->getMessageCount() : null,
+            ];
+        }
+
+        return $this->json(['data' => $receivers, 'success' => true]);
+    }
+
     public function listFailureReceiversAction(FailureReceiversRepositoryInterface $failureReceivers): Response
     {
         $receivers = [];
