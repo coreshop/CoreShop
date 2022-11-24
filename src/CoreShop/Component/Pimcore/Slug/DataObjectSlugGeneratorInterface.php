@@ -18,29 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\Slug;
 
-use Pimcore\Model\DataObject\Data\UrlSlug;
-
-interface SluggableInterface
+interface DataObjectSlugGeneratorInterface
 {
-    /**
-     * @return int|string|null
-     */
-    public function getId();
-
-    /**
-     * @return string
-     */
-    public function getKey();
-
-    /**
-     * @return UrlSlug[]
-     */
-    public function getSlug($language = null): ?array;
-
-    /**
-     * @param UrlSlug[] $slug
-     */
-    public function setSlug(?array $slug, $language = null);
-
-    public function getNameForSlug(string $language = null): ?string;
+    public function generateSlugs(SluggableInterface $sluggable): void;
 }
