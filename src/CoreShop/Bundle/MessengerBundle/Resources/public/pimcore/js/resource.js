@@ -12,19 +12,24 @@
  */
 
 pimcore.registerNS('coreshop.messenger.resource');
-coreshop.messenger.resource = Class.create(coreshop.resource, {
+coreshop.messenger.resource = Class.create(pimcore.plugin.admin, {
     initialize: function () {
-        coreshop.broker.fireEvent('resource.register', 'coreshop.messenger', this);
+        var me = this;
 
-        if (coreshop.menu.coreshop.messenger) {
-            new coreshop.menu.coreshop.messenger();
-        }
-    },
+        document.addEventListener(pimcore.events.pimcoreReady, (e) => {
+            if (coreshop.menu.coreshop.messenger) {
+                new coreshop.menu.coreshop.messenger();
+            }
+        });
 
-    openResource: function(item) {
-        if (item === 'list') {
-            this.openList();
-        }
+        document.addEventListener(coreshop.events.menu.open, (e) => {
+            var item = e.detail.item;
+            var type = e.detail.type;
+
+            if (type === 'coreshop.messenger' && item.attributes.function === 'list') {
+                me.openList();
+            }
+        });
     },
 
     openList: function() {
@@ -36,7 +41,4 @@ coreshop.messenger.resource = Class.create(coreshop.resource, {
         }
     },
 });
-
-coreshop.broker.addListener('pimcore.ready', function() {
-    new coreshop.messenger.resource();
-});
+new coreshop.messenger.resource();
