@@ -18,10 +18,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Product\Model;
 
+use CoreShop\Component\Pimcore\Slug\KeyableSluggableInterface;
 use CoreShop\Component\Pimcore\Slug\SluggableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-interface CategoryInterface extends PimcoreModelInterface, SluggableInterface
+interface CategoryInterface extends PimcoreModelInterface, SluggableInterface, KeyableSluggableInterface
 {
     public function getName(?string $language = null): ?string;
 

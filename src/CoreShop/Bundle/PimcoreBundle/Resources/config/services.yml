@@ -65,9 +65,20 @@ services:
         arguments:
             - '@Symfony\Component\String\Slugger\SluggerInterface'
 
-    CoreShop\Bundle\PimcoreBundle\EventListener\SluggableListener:
+    CoreShop\Component\Pimcore\Slug\DataObjectSiteSlugGeneratorInterface: '@CoreShop\Component\Pimcore\Slug\DataObjectSiteSlugGenerator'
+    CoreShop\Component\Pimcore\Slug\DataObjectSiteSlugGenerator:
         arguments:
             - '@CoreShop\Component\Pimcore\Slug\SluggableSluggerInterface'
+            - '@event_dispatcher'
+
+    CoreShop\Component\Pimcore\Slug\DataObjectSlugGeneratorInterface: '@CoreShop\Component\Pimcore\Slug\DataObjectSlugGenerator'
+    CoreShop\Component\Pimcore\Slug\DataObjectSlugGenerator:
+        arguments:
+            - '@CoreShop\Component\Pimcore\Slug\DataObjectSiteSlugGeneratorInterface'
+
+    CoreShop\Bundle\PimcoreBundle\EventListener\SluggableListener:
+        arguments:
+            - '@CoreShop\Component\Pimcore\Slug\DataObjectSlugGeneratorInterface'
         tags:
             - { name: kernel.event_subscriber }
 
