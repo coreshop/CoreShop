@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
@@ -42,7 +46,7 @@ class MysqlWorker extends AbstractWorker
         FilterGroupHelperInterface $filterGroupHelper,
         ConditionRendererInterface $conditionRenderer,
         OrderRendererInterface $orderRenderer,
-        protected Connection $database
+        protected Connection $database,
     ) {
         parent::__construct(
             $extensionsRegistry,
@@ -50,7 +54,7 @@ class MysqlWorker extends AbstractWorker
             $interpreterServiceRegistry,
             $filterGroupHelper,
             $conditionRenderer,
-            $orderRenderer
+            $orderRenderer,
         );
     }
 
@@ -98,7 +102,7 @@ class MysqlWorker extends AbstractWorker
         $table->addColumn('o_key', 'string');
         $table->addColumn('o_virtualObjectId', 'integer');
         $table->addColumn('o_virtualObjectActive', 'boolean');
-        $table->addColumn('o_classId', 'integer');
+        $table->addColumn('o_classId', 'string')->setLength(50);
         $table->addColumn('o_className', 'string');
         $table->addColumn('o_type', 'string');
         $table->addColumn('active', 'boolean');
@@ -282,7 +286,7 @@ QUERY;
             $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index->getName()) . '`');
             $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index->getName()) . '`');
         } catch (\Exception $e) {
-            $this->logger->error((string)$e);
+            $this->logger->error((string) $e);
         }
     }
 
@@ -307,13 +311,13 @@ QUERY;
                         sprintf(
                             'RENAME TABLE `%s` TO `%s`',
                             $oldTable,
-                            $newTable
-                        )
+                            $newTable,
+                        ),
                     );
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->error((string)$e);
+            $this->logger->error((string) $e);
         }
     }
 

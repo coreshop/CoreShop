@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -41,8 +45,15 @@ use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    public function __construct(private SharedStorageInterface $sharedStorage, private FactoryInterface $productFactory, private FactoryInterface $productUnitDefinitions, private FactoryInterface $productUnitDefinition, private FactoryInterface $productUnitDefinitionPriceFactory, private ProductUnitDefinitionsCloner $unitDefinitionsCloner, private ProductQuantityPriceRulesCloner $quantityPriceRulesCloner)
-    {
+    public function __construct(
+        private SharedStorageInterface $sharedStorage,
+        private FactoryInterface $productFactory,
+        private FactoryInterface $productUnitDefinitions,
+        private FactoryInterface $productUnitDefinition,
+        private FactoryInterface $productUnitDefinitionPriceFactory,
+        private ProductUnitDefinitionsCloner $unitDefinitionsCloner,
+        private ProductQuantityPriceRulesCloner $quantityPriceRulesCloner,
+    ) {
     }
 
     /**
@@ -123,7 +134,7 @@ final class ProductContext implements Context
         ProductInterface $product,
         string $productName,
         int $price = 100,
-        StoreInterface $store = null
+        StoreInterface $store = null,
     ): void {
         $variant = $this->createVariant($product, $productName, $price, $store);
 
@@ -136,7 +147,7 @@ final class ProductContext implements Context
      */
     public function theProductHasAVariant(
         ProductInterface $product,
-        string $productName
+        string $productName,
     ): void {
         $variant = $this->createSimpleVariant($product, $productName);
 
@@ -152,8 +163,7 @@ final class ProductContext implements Context
         ProductInterface $product,
         AttributeGroupInterface $group1,
         AttributeGroupInterface $group2,
-    ): void
-    {
+    ): void {
         $product->setAllowedAttributeGroups([$group1, $group2]);
         $product->save();
 
@@ -171,18 +181,18 @@ final class ProductContext implements Context
                         '%s %s %s',
                         $product->getName(),
                         $attribute1->getName(),
-                        $attribute2->getName()
-                    )
+                        $attribute2->getName(),
+                    ),
                 );
                 $variant->setKey(File::getValidFilename(sprintf(
                     '%s %s %s',
                     $product->getName(),
                     $attribute1->getName(),
-                    $attribute2->getName()
+                    $attribute2->getName(),
                 )));
                 $variant->setAttributes([
                     $attribute1,
-                    $attribute2
+                    $attribute2,
                 ]);
                 $variant->setPublished(true);
                 $this->saveProduct($variant);
@@ -198,8 +208,7 @@ final class ProductContext implements Context
         AttributeGroupInterface $group1,
         AttributeGroupInterface $group2,
         AttributeGroupInterface $group3,
-    ): void
-    {
+    ): void {
         $product->setAllowedAttributeGroups([$group1, $group2, $group3]);
         $product->save();
 
@@ -223,7 +232,7 @@ final class ProductContext implements Context
                             $attribute1->getName(),
                             $attribute2->getName(),
                             $attribute3->getName(),
-                        )
+                        ),
                     );
                     $variant->setAttributes([
                         $attribute1,
@@ -512,7 +521,7 @@ final class ProductContext implements Context
         ProductUnitInterface $unit,
         $conversionRate,
         int $price = null,
-        int $precison = 0
+        int $precison = 0,
     ): void {
         $definitions = $this->getOrCreateUnitDefinitions($product->getUnitDefinitions());
 
@@ -521,7 +530,7 @@ final class ProductContext implements Context
          */
         $defaultUnitDefinition = $this->productUnitDefinition->createNew();
         $defaultUnitDefinition->setUnit($unit);
-        $defaultUnitDefinition->setConversionRate((float)$conversionRate);
+        $defaultUnitDefinition->setConversionRate((float) $conversionRate);
         $defaultUnitDefinition->setPrecision($precison);
 
         $definitions->addAdditionalUnitDefinition($defaultUnitDefinition);
@@ -557,7 +566,7 @@ final class ProductContext implements Context
     {
         $objectService = new Service();
         $newObject = $objectService->copyAsChild($product->getParent(), $product);
-        
+
         $newObject->setKey($product->getKey() . '-copy');
         $newObject->save();
 
@@ -628,7 +637,7 @@ final class ProductContext implements Context
 
     private function createSimpleVariant(
         ProductInterface $product,
-        string $productName
+        string $productName,
     ): ProductInterface {
         $variant = $this->createSimpleProduct($productName);
         $variant->setParent($product);
@@ -644,7 +653,7 @@ final class ProductContext implements Context
         ProductInterface $product,
         string $productName,
         int $price = 100,
-        StoreInterface $store = null
+        StoreInterface $store = null,
     ): ProductInterface {
         $variant = $this->createSimpleVariant($product, $productName);
 

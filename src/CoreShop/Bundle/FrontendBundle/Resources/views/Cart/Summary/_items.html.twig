@@ -46,6 +46,6 @@
 
 </div>
 
-{% if cart.shipping(false) is null %}
+{% if cart.shipping(false) is null and is_granted('CORESHOP_CART_CALCULATE_SHIPMENT') %}
     {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CartController:shipmentCalculationAction')) }}
 {% endif %}

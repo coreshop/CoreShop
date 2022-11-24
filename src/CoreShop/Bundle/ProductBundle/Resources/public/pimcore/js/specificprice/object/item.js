@@ -6,7 +6,7 @@
  * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
  *
  */
 
@@ -15,6 +15,7 @@ pimcore.registerNS('coreshop.product.specificprice.object.item');
 coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_price_rule',
+    settingsForm: null,
 
     postSaveObject: function (object, refreshedRuleData, task, fieldName) {
         // remove dirty flag!

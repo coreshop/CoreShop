@@ -39,6 +39,7 @@ split 'src/CoreShop/Component/User' user
 split 'src/CoreShop/Component/PayumPayment' payum-payment
 split 'src/CoreShop/Component/ProductQuantityPriceRules' product-quantity-price-rules
 split 'src/CoreShop/Component/Variant' variant
+split 'src/CoreShop/Component/Wishlist' wishlist
 
 split 'src/CoreShop/Bundle/AddressBundle' address-bundle
 split 'src/CoreShop/Bundle/ConfigurationBundle' configuration-bundle
@@ -73,3 +74,6 @@ split 'src/CoreShop/Bundle/PayumPaymentBundle' payum-payment-bundle
 split 'src/CoreShop/Bundle/UserBundle' user-bundle
 split 'src/CoreShop/Bundle/OptimisticEntityLockBundle' optimistic-entity-lock-bundle
 split 'src/CoreShop/Bundle/VariantBundle' variant-bundle
+split 'src/CoreShop/Bundle/StorageListBundle' storage-list-bundle
+split 'src/CoreShop/Bundle/WishlistBundle' wishlist-bundle
+split 'src/CoreShop/Bundle/MessengerBundle' messenger-bundle

@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
@@ -21,11 +25,13 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 {
     protected array $jsonDefinition;
+
     protected array $fieldDefinitions;
+
     protected string $childrenPath = 'childs';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         if (class_exists(Version20211117173000::class)) {
             $this->childrenPath = 'children';
         }
@@ -33,7 +39,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 
     abstract public function save(): bool;
 
-    public function getProperty(string $property): array
+    public function getProperty(string $property): mixed
     {
         return $this->jsonDefinition[$property];
     }
@@ -64,7 +70,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
             false,
             function (array &$foundField, int $index, array &$parent) {
                 unset($parent[$this->childrenPath][$index]);
-            }
+            },
         );
     }
 
@@ -88,7 +94,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                 array_splice($childs, $index, 0, [$jsonFieldDefinition]);
 
                 $parent[$this->childrenPath] = $childs;
-            }
+            },
         );
     }
 
@@ -103,7 +109,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                 array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
 
                 $parent[$this->childrenPath] = $childs;
-            }
+            },
         );
     }
 
@@ -116,7 +122,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                 foreach ($keyValues as $key => $value) {
                     $foundField[$key] = $value;
                 }
-            }
+            },
         );
     }
 
@@ -127,7 +133,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
             false,
             function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
                 $foundField = $jsonFieldDefinition;
-            }
+            },
         );
     }
 
@@ -146,7 +152,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                 array_splice($childs, $index, 0, [$jsonFieldDefinition]);
 
                 $parent[$this->childrenPath] = $childs;
-            }
+            },
         );
     }
 
@@ -161,7 +167,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                 array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
 
                 $parent[$this->childrenPath] = $childs;
-            }
+            },
         );
     }
 
@@ -172,7 +178,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
             true,
             function (array &$foundField, int $index, array &$parent) use ($jsonFieldDefinition) {
                 $foundField = $jsonFieldDefinition;
-            }
+            },
         );
     }
 
@@ -185,7 +191,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                 foreach ($keyValues as $key => $value) {
                     $foundField[$key] = $value;
                 }
-            }
+            },
         );
     }
 
@@ -196,7 +202,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
             true,
             function (array &$foundField, int $index, array &$parent) {
                 unset($parent[$this->childrenPath][$index]);
-            }
+            },
         );
     }
 

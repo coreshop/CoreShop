@@ -1,3 +1,76 @@
+# 3.0.2
+
+> Please make sure you also start the messenger worker for the CoreShop Tasks
+> ```bin/console messenger:consume coreshop_notification coreshop_index --time-limit=300```
+
+## Features
+ - [Messenger] introduce Messenger Bundle (https://github.com/coreshop/CoreShop/pull/2105, https://github.com/coreshop/CoreShop/pull/2114, https://github.com/coreshop/CoreShop/pull/2112, https://github.com/coreshop/CoreShop/pull/2106)
+
+## Bugs
+ - [CartPiceRules] fix OrderItem not finding Order with CartItemPriceRules (https://github.com/coreshop/CoreShop/pull/2116)
+ - [StorageList] fix storage-list priority (https://github.com/coreshop/CoreShop/pull/2113)
+ - [ResourceBundle] class names with lower-case names (https://github.com/coreshop/CoreShop/pull/2097)
+ - [Checkout] introduce Payment Provider Validator to check if the selected one is still valid (https://github.com/coreshop/CoreShop/pull/2111)
+ - [Unit] fix issues with unit selection in ui (https://github.com/coreshop/CoreShop/pull/2104)
+ - [CustomerAssignment] Fix typo when passing the company ID to the router (https://github.com/coreshop/CoreShop/pull/2102)
+ - [CoreBundle] fix cart-item-rule discount action form (https://github.com/coreshop/CoreShop/pull/2101)
+ - [IndexBundle] fix: index table o_classId type fix (https://github.com/coreshop/CoreShop/pull/2095)
+ - [Menu] Use correct permission definition for product unit menu item (https://github.com/coreshop/CoreShop/pull/2094)
+
+# 3.0.1
+
+## Bugs
+ - [Translations] fix order object translations (https://github.com/coreshop/CoreShop/pull/2091)
+ - [Psalm] fixes (https://github.com/coreshop/CoreShop/pull/2089)
+ - [CustomerTransformHelper] Use company's name initial as parent folder for companies (https://github.com/coreshop/CoreShop/pull/2082)
+ - [StorageListBundle] PimcoreStorageListRepository: Comply to PSR-4 autoloading standards (https://github.com/coreshop/CoreShop/pull/2081)
+ - [ProductVariantTrait] Prevent MySQL syntax error (https://github.com/coreshop/CoreShop/pull/2086)
+ - [Wishlist] add tests and fix routing (https://github.com/coreshop/CoreShop/pull/2084) 
+
+# 3.0.0
+
+CoreShop is now Licenced under CCL and GPLv3! (https://github.com/coreshop/CoreShop/pull/2061)
+
+## Feature
+ - [IndexBundle] clone index, change default name of cloned item (https://github.com/coreshop/CoreShop/pull/2056)
+ - [CartPriceRules] introduce feature to allow cart-price rules based on cart-items (https://github.com/coreshop/CoreShop/pull/2057, https://github.com/coreshop/CoreShop/pull/2060)
+ - [Wishlist] Introduce a persisted wishlist - StorageListBundle now works as a base for Order and Wishlist (https://github.com/coreshop/CoreShop/pull/2030, https://github.com/coreshop/CoreShop/pull/2066)
+ - [Reports] Support filtering for order type (https://github.com/coreshop/CoreShop/pull/2055)
+ - [Symfony] fix Injecting @session is deprecated with Symfony (https://github.com/coreshop/CoreShop/pull/2035)
+ - [AccessManagement] prepare CoreShop for advanced access-management (https://github.com/coreshop/CoreShop/pull/2063)
+ - [Pimcore] 10.5 as min requirement (https://github.com/coreshop/CoreShop/pull/2067)
+
+## Bugs
+ - [VariantBundle] Serializer: Allow $innerObject to be null (https://github.com/coreshop/CoreShop/pull/2058, https://github.com/coreshop/CoreShop/pull/2069)
+ - [DataHub] Fix non unique typename (https://github.com/coreshop/CoreShop/pull/2004)
+ - [Translations] Update admin-translations.yml (https://github.com/coreshop/CoreShop/pull/2064)
+ - [Pimcore UI] Make default Product Unit unselectable (https://github.com/coreshop/CoreShop/pull/2065)
+ - [Variant] allow recursive attributes and variants (https://github.com/coreshop/CoreShop/pull/2068)
+
+# 3.0.0-beta.5
+ > This will be the last BETA for the final release.
+
+## Bugs
+ - [Frontend] fix controller overwriting (https://github.com/coreshop/CoreShop/pull/2017)
+ - Replaced old Registration Service with Customer Manager (https://github.com/coreshop/CoreShop/pull/2020)
+ - Update install guide while it is in beta (https://github.com/coreshop/CoreShop/pull/2019)
+ - [Frontend] fix getQuantityModifier return type (https://github.com/coreshop/CoreShop/pull/2024)
+ - Fix TagManagerEnhancedEcommerce (https://github.com/coreshop/CoreShop/pull/2027)
+ - [ProductBundle] fix saving of Price Rule Conditions and Actions when creating (https://github.com/coreshop/CoreShop/pull/2029)
+ - [FrontendBundle] Consider UrlSlugs in the locale switcher (https://github.com/coreshop/CoreShop/pull/2032)
+ - [DB] Remove Migrate and ClassUpdate rename and fix psalm issues (https://github.com/coreshop/CoreShop/pull/2034)
+ - fix: property must not be accessed before initialization (https://github.com/coreshop/CoreShop/pull/2036)
+ - [MoneyBundle] bugfix unmarshalVersion for coreShopMoney (https://github.com/coreshop/CoreShop/pull/2037)
+ - [ThemeBundle] add document pre_renderer listener to resolve theme (https://github.com/coreshop/CoreShop/pull/2041)
+ - [OrderBundle] fix "coreshop_admin_order_find" route (https://github.com/coreshop/CoreShop/pull/2045)
+ - [Pimcore] add tests for ^10.5 (https://github.com/coreshop/CoreShop/pull/2043)
+ - [Events] fix pimcore events BC break (https://github.com/coreshop/CoreShop/pull/2046)
+ - [Tests] test against pimcore ^11.0 (https://github.com/coreshop/CoreShop/pull/2047)
+ - [CoreBundle] add typecasts for MoneyFormatter in Reports, bugfix SQL (https://github.com/coreshop/CoreShop/pull/2048)
+ - [MoneyBundle] bugfix marshalVersion for coreShopMoney (https://github.com/coreshop/CoreShop/pull/2051)
+ - [MoneyBundle] bugfix setter code for FieldCollection (https://github.com/coreshop/CoreShop/pull/2052)
+ - [CoreBundle] check for null value in CartStockAvailabilityValidator (https://github.com/coreshop/CoreShop/pull/2053)
+
 # 3.0.0-beta.4
 ## Feature
  - [Variants] introduce Variant Bundle (https://github.com/coreshop/CoreShop/pull/1990) @breakone

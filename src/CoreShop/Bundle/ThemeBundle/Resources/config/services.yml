@@ -14,6 +14,7 @@ services:
             - { name: coreshop.registry, type_hint: themeResolvers }
 
     CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface: '@CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver'
+    CoreShop\Bundle\ThemeBundle\Service\DocumentThemeResolverInterface: '@CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver'
     CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver:
         tags:
             - '@coreshop.theme.resolver.registry'
@@ -48,3 +49,10 @@ services:
             - '@Symfony\Component\HttpFoundation\RequestStack'
             - '@Sylius\Bundle\ThemeBundle\Context\SettableThemeContext'
 
+    CoreShop\Bundle\ThemeBundle\EventListener\DocumentRenderListener:
+        arguments:
+            - '@Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface'
+            - '@Sylius\Bundle\ThemeBundle\Context\SettableThemeContext'
+            - '@CoreShop\Bundle\ThemeBundle\Service\DocumentThemeResolverInterface'
+        tags:
+            - { name: kernel.event_subscriber }

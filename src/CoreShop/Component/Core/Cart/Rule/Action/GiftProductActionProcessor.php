@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
@@ -20,18 +24,21 @@ use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 
 final class GiftProductActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    public function __construct(private ProductRepositoryInterface $productRepository, private OrderItemFactoryInterface $cartItemFactory, private AdjustmentFactoryInterface $adjustmentFactory)
-    {
+    public function __construct(
+        private ProductRepositoryInterface $productRepository,
+        private OrderItemFactoryInterface $cartItemFactory,
+        private AdjustmentFactoryInterface $adjustmentFactory,
+    ) {
     }
 
-    public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
+    public function applyRule(OrderInterface $cart, array $configuration, PriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $product = $this->productRepository->find($configuration['product']);
 
@@ -67,7 +74,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
             $cartPriceRuleItem->getCartPriceRule()->getName(),
             0,
             0,
-            true
+            true,
         );
 
         $item->addAdjustment($adjustment);
@@ -75,7 +82,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
         return true;
     }
 
-    public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
+    public function unApplyRule(OrderInterface $cart, array $configuration, PriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $product = $this->productRepository->find($configuration['product']);
 

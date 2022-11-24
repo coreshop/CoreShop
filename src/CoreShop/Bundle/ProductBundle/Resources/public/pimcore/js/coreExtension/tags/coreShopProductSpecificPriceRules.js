@@ -6,7 +6,7 @@
  * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
  *
  */
 
@@ -34,7 +34,17 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
         this.panels = [];
         this.conditions = data.conditions;
         this.actions = data.actions;
-        this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        if (pimcore.eventDispatcher !== undefined) {
+            this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        }
+        else {
+            document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+        }
+    },
+
+    postSaveObjectNew: function (e)
+    {
+        this.postSaveObject(e.detail.object, e.detail.task);
     },
 
     postSaveObject: function (object, task) {

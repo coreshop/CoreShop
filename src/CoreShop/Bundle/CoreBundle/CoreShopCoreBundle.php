@@ -1,23 +1,25 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
 
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Bundle\CoreBundle;
 
-use Composer\InstalledVersions;
 use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
 use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
-use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterIndexProductExtensionPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
@@ -35,6 +37,7 @@ use CoreShop\Bundle\PayumBundle\CoreShopPayumBundle;
 use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreShopProductQuantityPriceRulesBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\SEOBundle\CoreShopSEOBundle;
 use CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle;
@@ -44,12 +47,11 @@ use CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle;
 use CoreShop\Bundle\TrackingBundle\CoreShopTrackingBundle;
 use CoreShop\Bundle\UserBundle\CoreShopUserBundle;
 use CoreShop\Bundle\VariantBundle\CoreShopVariantBundle;
-use PackageVersions\Versions;
-use Pimcore\Extension\Bundle\PimcoreBundleInterface;
+use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopCoreBundle extends AbstractResourceBundle implements PimcoreBundleInterface
+final class CoreShopCoreBundle extends AbstractResourceBundle implements ComposerPackageBundleInterface
 {
     public function getSupportedDrivers(): array
     {
@@ -94,6 +96,12 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $collection->addBundle(new CoreShopFrontendBundle(), 1800);
         $collection->addBundle(new CoreShopPayumBundle(), 1700);
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
+        $collection->addBundle(new CoreShopWishlistBundle(), 1500);
+    }
+
+    public function getPackageName(): string
+    {
+        return 'coreshop/core-bundle';
     }
 
     protected function getModelNamespace(): string
@@ -109,30 +117,6 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     public function getDescription(): string
     {
         return 'CoreShop - Pimcore eCommerce';
-    }
-
-    public function getVersion(): string
-    {
-        return Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
-    }
-
-    public function getComposerVersion(): string
-    {
-        if (class_exists(InstalledVersions::class)) {
-            return InstalledVersions::getVersion('coreshop/core-shop');
-        }
-
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        if (class_exists(Versions::class)) {
-            /**
-             * @psalm-suppress DeprecatedClass
-             */
-            return Versions::getVersion('coreshop/core-shop');
-        }
-
-        return '';
     }
 
     public function getInstaller(): Installer

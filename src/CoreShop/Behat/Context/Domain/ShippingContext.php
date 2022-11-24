@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -28,8 +32,14 @@ use Webmozart\Assert\Assert;
 
 final class ShippingContext implements Context
 {
-    public function __construct(private CarrierRepositoryInterface $carrierRepository, private RuleValidationProcessorInterface $ruleValidationProcessor, private FactoryInterface $addressFactory, private CarrierPriceCalculatorInterface $carrierPriceCalculator, private ShippableCarrierValidatorInterface $shippingRuleValidator, private CartContextResolverInterface $cartContextResolver)
-    {
+    public function __construct(
+        private CarrierRepositoryInterface $carrierRepository,
+        private RuleValidationProcessorInterface $ruleValidationProcessor,
+        private FactoryInterface $addressFactory,
+        private CarrierPriceCalculatorInterface $carrierPriceCalculator,
+        private ShippableCarrierValidatorInterface $shippingRuleValidator,
+        private CartContextResolverInterface $cartContextResolver,
+    ) {
     }
 
     /**
@@ -42,7 +52,7 @@ final class ShippingContext implements Context
         Assert::eq(
             count($carriers),
             1,
-            sprintf('%d carriers has been found with name "%s".', count($carriers), $name)
+            sprintf('%d carriers has been found with name "%s".', count($carriers), $name),
         );
     }
 
@@ -95,7 +105,7 @@ final class ShippingContext implements Context
 
         Assert::true(
             $ruleResult,
-            sprintf('Asserted that the Carrier %s is valid for my cart, but it is not', $carrier->getTitle('en'))
+            sprintf('Asserted that the Carrier %s is valid for my cart, but it is not', $carrier->getTitle('en')),
         );
     }
 }

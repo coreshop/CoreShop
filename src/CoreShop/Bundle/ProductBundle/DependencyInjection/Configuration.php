@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection;
 
@@ -84,7 +88,8 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('manufacturer')->defaultValue(ManufacturerInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
-        ->end();
+        ->end()
+        ;
     }
 
     private function addModelsSection(ArrayNodeDefinition $node): void
@@ -254,6 +259,7 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopProduct')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_class_name')->end()
                                         ->scalarNode('interface')->defaultValue(ProductInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
@@ -273,6 +279,7 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopCategory')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_class_name')->end()
                                         ->scalarNode('interface')->defaultValue(CategoryInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(CategoryRepository::class)->end()
@@ -291,6 +298,7 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopManufacturer')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_class_name')->end()
                                         ->scalarNode('interface')->defaultValue(ManufacturerInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
@@ -302,7 +310,8 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
@@ -333,6 +342,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
-        ->end();
+        ->end()
+        ;
     }
 }

@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
@@ -28,7 +32,7 @@ use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Notes;
 use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\OrderPaymentStates;
@@ -113,13 +117,13 @@ class OrderController extends PimcoreController
                 $transitions[$identifier][$transition->getName()]['froms'] =
                     array_merge(
                         $transitions[$identifier][$transition->getName()]['froms'],
-                        $transition->getFroms()
+                        $transition->getFroms(),
                     );
 
                 $transitions[$identifier][$transition->getName()]['tos'] =
                     array_merge(
                         $transitions[$identifier][$transition->getName()]['tos'],
-                        $transition->getFroms()
+                        $transition->getFroms(),
                     );
             }
 
@@ -132,10 +136,10 @@ class OrderController extends PimcoreController
     public function updateOrderStateAction(
         Request $request,
         OrderRepositoryInterface $orderRepository,
-        StateMachineManagerInterface $stateMachineManager
+        StateMachineManagerInterface $stateMachineManager,
     ): Response {
         $orderId = $this->getParameterFromRequest($request, 'o_id');
-        $transition = $this->getParameterFromRequest($request,'transition');
+        $transition = $this->getParameterFromRequest($request, 'transition');
         $order = $orderRepository->find($orderId);
 
         if (!$order instanceof OrderInterface) {
@@ -153,7 +157,7 @@ class OrderController extends PimcoreController
         if ($order instanceof DataObject\Concrete && $transition === OrderTransitions::TRANSITION_CANCEL) {
             $this->get(HistoryLogger::class)->log(
                 $order,
-                'Admin Order Cancellation'
+                'Admin Order Cancellation',
             );
         }
 
@@ -167,10 +171,10 @@ class OrderController extends PimcoreController
         $name = null;
         $folderId = null;
 
-        $type = $this->getParameterFromRequest($request,'saleType', 'order');
+        $type = $this->getParameterFromRequest($request, 'saleType', 'order');
 
-        $orderClassId = (string)$this->container->getParameter('coreshop.model.order.pimcore_class_name');
-        $folderPath = (string)$this->container->getParameter('coreshop.folder.' . $type);
+        $orderClassId = (string) $this->container->getParameter('coreshop.model.order.pimcore_class_name');
+        $folderPath = (string) $this->container->getParameter('coreshop.folder.' . $type);
         $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
         $folder = DataObject::getByPath('/' . $folderPath);
@@ -201,8 +205,8 @@ class OrderController extends PimcoreController
             $conditionFilters = [];
             /** @psalm-suppress InternalMethod */
             $conditionFilters[] = $gridHelper->getFilterCondition(
-                $this->getParameterFromRequest($request,'filter'),
-                DataObject\ClassDefinition::getByName((string)$this->container->getParameter('coreshop.model.order.pimcore_class_name'))
+                $this->getParameterFromRequest($request, 'filter'),
+                DataObject\ClassDefinition::getByName((string) $this->container->getParameter('coreshop.model.order.pimcore_class_name')),
             );
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
@@ -247,7 +251,7 @@ class OrderController extends PimcoreController
     {
         $this->isGrantedOr403();
 
-        $orderId = $this->getParameterFromRequest($request,'id');
+        $orderId = $this->getParameterFromRequest($request, 'id');
         $order = $orderRepository->find($orderId);
 
         if (!$order instanceof OrderInterface) {
@@ -263,7 +267,7 @@ class OrderController extends PimcoreController
     {
         $this->isGrantedOr403();
 
-        $number = $this->getParameterFromRequest($request,'number');
+        $number = $this->getParameterFromRequest($request, 'number');
 
         if ($number) {
             $list = $orderRepository->getList();
@@ -310,7 +314,7 @@ class OrderController extends PimcoreController
         return array_merge(
             $element,
             $this->prepareAddress($order->getShippingAddress(), 'shipping'),
-            $this->prepareAddress($order->getInvoiceAddress(), 'invoice')
+            $this->prepareAddress($order->getInvoiceAddress(), 'invoice'),
         );
     }
 
@@ -319,7 +323,7 @@ class OrderController extends PimcoreController
         $prefix = 'address' . ucfirst($type);
         $values = [];
         $fullAddress = [];
-        $classDefinition = DataObject\ClassDefinition::getByName((string)$this->container->getParameter('coreshop.model.address.pimcore_class_name'));
+        $classDefinition = DataObject\ClassDefinition::getByName((string) $this->container->getParameter('coreshop.model.address.pimcore_class_name'));
 
         foreach ($classDefinition->getFieldDefinitions() as $fieldDefinition) {
             $value = '';
@@ -390,7 +394,7 @@ class OrderController extends PimcoreController
             $rules = [];
 
             foreach ($order->getPriceRuleItems()->getItems() as $ruleItem) {
-                if ($ruleItem instanceof ProposalCartPriceRuleItemInterface) {
+                if ($ruleItem instanceof PriceRuleItemInterface) {
                     $rule = $ruleItem->getCartPriceRule();
 
                     $ruleData = [
@@ -620,7 +624,7 @@ class OrderController extends PimcoreController
         foreach ($payments as $payment) {
             $details = [];
             foreach ($payment->getDetails() as $detailName => $detailValue) {
-                if (empty($detailValue) && $detailValue != 0) {
+                if (empty($detailValue) && $detailValue !== 0) {
                     continue;
                 }
                 if (is_array($detailValue)) {
@@ -636,7 +640,7 @@ class OrderController extends PimcoreController
                 }
 
                 if (false === is_string($detailValue)) {
-                    $detailValue = (string)$detailValue;
+                    $detailValue = (string) $detailValue;
                 }
 
                 $details[] = [$detailName, $detailValue ? htmlentities($detailValue) : ''];

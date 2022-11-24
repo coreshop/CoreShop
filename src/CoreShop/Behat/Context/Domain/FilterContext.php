@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -31,8 +35,11 @@ use Webmozart\Assert\Assert;
 
 final class FilterContext implements Context
 {
-    public function __construct(private RepositoryInterface $filterRepository, private FilteredListingFactoryInterface $filterListFactory, private FilterProcessorInterface $filterProcessor)
-    {
+    public function __construct(
+        private RepositoryInterface $filterRepository,
+        private FilteredListingFactoryInterface $filterListFactory,
+        private FilterProcessorInterface $filterProcessor,
+    ) {
     }
 
     /**
@@ -45,7 +52,7 @@ final class FilterContext implements Context
         Assert::eq(
             count($filters),
             1,
-            sprintf('%d Filters have been found with name "%s".', count($filters), $name)
+            sprintf('%d Filters have been found with name "%s".', count($filters), $name),
         );
     }
 
@@ -57,7 +64,7 @@ final class FilterContext implements Context
         Assert::eq(
             count($filter->getConditions()),
             $count,
-            sprintf('%d Filters have been found with name "%s".', count($filter->getConditions()), $filter->getName())
+            sprintf('%d Filters have been found with name "%s".', count($filter->getConditions()), $filter->getName()),
         );
     }
 
@@ -69,7 +76,7 @@ final class FilterContext implements Context
         FilterInterface $filter,
         $conditionType,
         $field,
-        TableNode $values
+        TableNode $values,
     ): void {
         $conditions = $this->prepareFilter($filter);
         $shouldHaveConditions = [];
@@ -82,7 +89,7 @@ final class FilterContext implements Context
             $filter->getConditions()->toArray(),
             static function (FilterConditionInterface $condition) use ($field) {
                 return $condition->getConfiguration()['field'] === $field;
-            }
+            },
         );
 
         $field = reset($filtered);
@@ -96,7 +103,7 @@ final class FilterContext implements Context
             function ($value) {
                 return $value['value'];
             },
-            $conditions[$field->getId()]['values']
+            $conditions[$field->getId()]['values'],
         );
 
         $diff = array_diff($shouldHaveConditions, $values);
@@ -113,7 +120,7 @@ final class FilterContext implements Context
         $countOfValues,
         $countPerValue,
         $conditionType,
-        $field
+        $field,
     ): void {
         $conditions = $this->prepareFilter($filter);
 
@@ -121,7 +128,7 @@ final class FilterContext implements Context
             $filter->getConditions()->toArray(),
             static function (FilterConditionInterface $condition) use ($field) {
                 return $condition->getConfiguration()['field'] === $field;
-            }
+            },
         );
 
         $field = reset($filtered);
@@ -135,7 +142,7 @@ final class FilterContext implements Context
             function ($value) {
                 return $value['count'];
             },
-            $conditions[$field->getId()]['values']
+            $conditions[$field->getId()]['values'],
         );
 
         Assert::eq($values[0], $countPerValue);

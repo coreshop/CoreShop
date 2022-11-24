@@ -29,9 +29,11 @@
     "coreshop/payum-payment-bundle": "^3.0",
     "coreshop/core": "^3.0",
     "payum/payum-bundle": "dev-master",
+    "symfony/notifier": "^5.4.0",
+    "symfony/serializer": "^5.4.0",
     "payum/payum": "dev-master",
     "php-http/guzzle7-adapter": "^0.1",
-    "pimcore/pimcore": "^10.4"
+    "pimcore/pimcore": "^10.5"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.5.4",
@@ -55,5 +57,8 @@
     "branch-alias": {
       "dev-master": "3.0-dev"
     }
+  },
+  "config": {
+    "sort-packages": true
   }
 }

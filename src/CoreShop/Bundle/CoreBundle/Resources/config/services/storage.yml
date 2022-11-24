@@ -3,7 +3,8 @@ services:
         public: true
 
     CoreShop\Bundle\CoreBundle\Storage\SessionStorage:
-        arguments: ['@session']
+        arguments:
+            - '@request_stack'
 
     CoreShop\Bundle\CoreBundle\Storage\CookieStorage:
         tags:

@@ -1,0 +1,24 @@
+parameters:
+  coreshop.storage_list.add_to_list_class: 'CoreShop\Component\StorageList\DTO\AddToStorageList'
+
+services:
+  _defaults:
+    public: true
+
+  CoreShop\Component\StorageList\StorageListsManager: ~
+
+  CoreShop\Component\StorageList\Manager\StorageListPimcoreModelManager:
+    arguments:
+      - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
+      - '@doctrine.dbal.default_connection'
+
+  CoreShop\Component\StorageList\StorageListItemResolverInterface: '@CoreShop\Component\StorageList\StorageListItemResolver'
+  CoreShop\Component\StorageList\StorageListItemResolver: ~
+
+  CoreShop\Component\StorageList\StorageListModifierInterface: '@CoreShop\Component\StorageList\SimpleStorageListModifier'
+  CoreShop\Component\StorageList\SimpleStorageListModifier: ~
+
+  CoreShop\Component\StorageList\Factory\AddToStorageListFactoryInterface: '@CoreShop\Component\StorageList\Factory\AddToStorageListFactory'
+  CoreShop\Component\StorageList\Factory\AddToStorageListFactory:
+    arguments:
+      - '%coreshop.storage_list.add_to_list_class%'

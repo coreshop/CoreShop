@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
@@ -46,6 +50,7 @@ use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Resource\Factory\Factory;
@@ -65,7 +70,8 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->booleanNode('legacy_serialization')->defaultTrue()->end()
-            ->end();
+            ->end()
+        ;
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
         $this->addCartCleanupSection($rootNode);
@@ -96,7 +102,8 @@ final class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
-                ->end();
+                ->end()
+        ;
     }
 
     private function addStack(ArrayNodeDefinition $node): void
@@ -114,7 +121,8 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('order_shipment_item')->defaultValue(OrderShipmentItemInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
-        ->end();
+        ->end()
+        ;
     }
 
     private function addModelsSection(ArrayNodeDefinition $node): void
@@ -195,6 +203,7 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopOrder')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_class_name')->end()
                                         ->scalarNode('interface')->defaultValue(OrderInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(OrderRepository::class)->end()
@@ -225,6 +234,7 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopOrderItem')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_class_name')->end()
                                         ->scalarNode('interface')->defaultValue(OrderItemInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(OrderItemRepository::class)->cannotBeEmpty()->end()
@@ -243,6 +253,7 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopOrderInvoice')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_class_name')->end()
                                         ->scalarNode('interface')->defaultValue(OrderInvoiceInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(OrderInvoiceRepository::class)->end()
@@ -262,6 +273,7 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopOrderInvoiceItem')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_class_name')->end()
                                         ->scalarNode('interface')->defaultValue(OrderInvoiceItemInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
@@ -280,6 +292,7 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopOrderShipment')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_class_name')->end()
                                         ->scalarNode('interface')->defaultValue(OrderShipmentInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(OrderShipmentRepository::class)->end()
@@ -299,6 +312,7 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopOrderShipmentItem')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_class_name')->end()
                                         ->scalarNode('interface')->defaultValue(OrderShipmentItemInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
@@ -325,6 +339,23 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
+                        ->arrayNode('price_rule_item')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\Fieldcollection\Data\CoreShopPriceRuleItem')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(PriceRuleItemInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/fieldcollections/CoreShopPriceRuleItem.json')->end()
+                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION)->cannotBeOverwritten(true)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
                         ->arrayNode('adjustment')
                             ->addDefaultsIfNotSet()
                             ->children()
@@ -344,7 +375,8 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
@@ -396,6 +428,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
-        ->end();
+        ->end()
+        ;
     }
 }

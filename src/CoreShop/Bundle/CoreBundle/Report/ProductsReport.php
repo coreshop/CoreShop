@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -21,7 +25,6 @@ use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
-use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -31,8 +34,15 @@ class ProductsReport implements ReportInterface, ExportReportInterface
 {
     private int $totalRecords = 0;
 
-    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private MoneyFormatterInterface $moneyFormatter, private LocaleContextInterface $localeContext, private PimcoreRepositoryInterface $orderRepository, private PimcoreRepositoryInterface $orderItemRepository, private StackRepository $productStackRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $storeRepository,
+        private Connection $db,
+        private MoneyFormatterInterface $moneyFormatter,
+        private LocaleContextInterface $localeContext,
+        private PimcoreRepositoryInterface $orderRepository,
+        private PimcoreRepositoryInterface $orderItemRepository,
+        private StackRepository $productStackRepository,
+    ) {
     }
 
     public function getReportData(ParameterBag $parameterBag): array
@@ -40,6 +50,15 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $objectTypeFilter = $parameterBag->get('objectType', 'all');
+        $orderStateFilter = $parameterBag->get('orderState');
+        if ($orderStateFilter) {
+            $orderStateFilter = \json_decode($orderStateFilter, true);
+        }
+
+        if (!is_array($orderStateFilter) || !$orderStateFilter) {
+            $orderStateFilter = null;
+        }
+
         $storeId = $parameterBag->get('store');
 
         if (null === $storeId) {
@@ -55,7 +74,6 @@ class ProductsReport implements ReportInterface, ExportReportInterface
 
         $orderClassId = $this->orderRepository->getClassId();
         $orderItemClassId = $this->orderItemRepository->getClassId();
-        $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         $locale = $this->localeContext->getLocaleCode();
 
@@ -64,6 +82,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
             return [];
         }
 
+        $queryParameters = [];
         if ($objectTypeFilter === 'container') {
             $unionData = [];
             foreach ($this->productStackRepository->getClassIds() as $id) {
@@ -85,7 +104,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON products.o_id = orderItems.mainObjectId
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderClassId AS `order` ON `order`.oo_id = orderRelations.src_id
-                WHERE products.o_type = 'object' AND `order`.store = $storeId AND `order`.orderState = '$orderCompleteState' AND `order`.orderDate > ? AND `order`.orderDate < ?
+                WHERE products.o_type = 'object' AND `order`.store = $storeId" . (($orderStateFilter !== null) ? ' AND `order`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND `order`.orderDate > ? AND `order`.orderDate < ?
                 GROUP BY products.o_id
             LIMIT $offset,$limit";
         } else {
@@ -111,20 +130,25 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
                 INNER JOIN object_localized_query_" . $orderItemClassId . '_' . $locale . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
-                WHERE `orders`.store = $storeId AND $productTypeCondition AND `orders`.orderState = '$orderCompleteState' AND `orders`.orderDate > ? AND `orders`.orderDate < ?
+                WHERE `orders`.store = $storeId AND $productTypeCondition" . (($orderStateFilter !== null) ? ' AND `orders`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND `orders`.orderDate > ? AND `orders`.orderDate < ?
                 GROUP BY orderItems.objectId
                 ORDER BY orderCount DESC
                 LIMIT $offset,$limit";
         }
+        if ($orderStateFilter !== null) {
+            array_push($queryParameters, ...$orderStateFilter);
+        }
+        $queryParameters[] = $from->getTimestamp();
+        $queryParameters[] = $to->getTimestamp();
 
-        $productSales = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $productSales = $this->db->fetchAllAssociative($query, $queryParameters);
 
-        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($productSales as &$sale) {
-            $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
-            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode(), $locale);
-            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode(), $locale);
+            $sale['salesPriceFormatted'] = $this->moneyFormatter->format((int) $sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
+            $sale['salesFormatted'] = $this->moneyFormatter->format((int) $sale['sales'], $store->getCurrency()->getIsoCode(), $locale);
+            $sale['profitFormatted'] = $this->moneyFormatter->format((int) $sale['profit'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
         }
 

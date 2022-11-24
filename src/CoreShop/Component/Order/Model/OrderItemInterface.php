@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -84,8 +88,10 @@ interface OrderItemInterface extends
 
     public function getTotalTax(): int;
 
+    public function getDiscount(bool $withTax = true): int;
+
     /**
-     * @return Fieldcollection
+     * @return Fieldcollection|null
      */
     public function getTaxes();
 
@@ -137,4 +143,34 @@ interface OrderItemInterface extends
     public function getConvertedItemDiscount(bool $withTax = true): int;
 
     public function setConvertedItemDiscount(int $convertedItemDiscount, bool $withTax = true);
+
+    /**
+     * @return Fieldcollection|null
+     */
+    public function getPriceRuleItems();
+
+    public function setPriceRuleItems(Fieldcollection $priceRuleItems);
+
+    /**
+     * @return PriceRuleItemInterface[]
+     */
+    public function getPriceRules(): array;
+
+    public function hasPriceRules(): bool;
+
+    public function addPriceRule(PriceRuleItemInterface $priceRule): void;
+
+    public function removePriceRule(PriceRuleItemInterface $priceRule): void;
+
+    public function hasPriceRule(PriceRuleItemInterface $priceRule): bool;
+
+    public function hasCartPriceRule(
+        CartPriceRuleInterface $cartPriceRule,
+        CartPriceRuleVoucherCodeInterface $voucherCode = null,
+    ): bool;
+
+    public function getPriceRuleByCartPriceRule(
+        CartPriceRuleInterface $cartPriceRule,
+        CartPriceRuleVoucherCodeInterface $voucherCode = null,
+    ): ?PriceRuleItemInterface;
 }

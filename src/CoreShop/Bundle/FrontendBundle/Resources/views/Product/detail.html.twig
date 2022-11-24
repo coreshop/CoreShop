@@ -102,19 +102,21 @@
                 <hr/>
             {% endif %}
 
-            {% if coreshop_add_to_cart_available(product) %}
+            {% set cart_allowed = is_granted('CORESHOP_CART_ADD_ITEM') %}
+            {% set wishlist_allowed = is_granted('CORESHOP_WISHLIST_ADD_ITEM') %}
+
+            {% if coreshop_add_to_cart_available(product) and (cart_allowed or wishlist_allowed) %}
                 <div class="options">
                     <div class="cart-button btn-group">
-                        <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" class="btn btn-wishlist">
-                            <i class="fa fa-heart"></i>
-                        </a>
+                        {% if wishlist_allowed %}
+                            {{ render(url('coreshop_partial_wishlist_add', {'product': product.id})) }}
+                        {% endif %}
 
-                        {% if coreshop_inventory_is_available(product) %}
+                        {% if cart_allowed %}
                             {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
                         {% endif %}
                     </div>
                 </div>
-
                 <hr/>
             {% endif %}
 

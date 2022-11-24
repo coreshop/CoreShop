@@ -64,7 +64,7 @@ services:
       - traefik.docker.network=cors_dev
 
   php:
-    image: pimcore/pimcore:PHP8.1-fpm
+    image: pimcore/pimcore:php8.1-latest
     container_name: coreshop-php
     networks:
       - coreshop_3
@@ -76,7 +76,7 @@ services:
       - .:/var/www/html:cached
 
   php-debug:
-    image: pimcore/pimcore:PHP8.1-fpm-debug
+    image: pimcore/pimcore:php8.1-debug-latest
     container_name: coreshop-php-debug
     networks:
       - coreshop_3
@@ -86,6 +86,7 @@ services:
       - .:/var/www/html:cached
     environment:
       PHP_IDE_CONFIG: serverName=localhost
+      XDEBUG_TRIGGER: PHPSTORM
       COMPOSER_HOME: /var/www/html
 
   php8:

@@ -18,22 +18,33 @@
     {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
 
     <div class="list-group">
-        <a href="{{ path('coreshop_customer_orders') }}" title="{{ 'coreshop.ui.orders'|trans }}" class="list-group-item">
-            <i class="fa fa-list-ol"></i>
-            <span>{{ 'coreshop.ui.order_history_and_details'|trans }}</span>
-        </a>
-        <a href="{{ path('coreshop_customer_addresses') }}" title="{{ 'coreshop.ui.addresses'|trans }}" class="list-group-item">
-            <i class="fa fa-building"></i>
-            <span>{{ 'coreshop.ui.addresses'|trans }}</span>
-        </a>
-        <a href="{{ path('coreshop_customer_settings') }}" title="{{ 'coreshop.ui.personal_information'|trans }}" class="list-group-item">
-            <i class="fa fa-user"></i>
-            <span>{{ 'coreshop.ui.personal_information'|trans }}</span>
-        </a>
-        <a href="{{ path('coreshop_customer_change_password') }}" title="{{ 'coreshop.ui.change_password'|trans }}" class="list-group-item">
-            <i class="fa fa-lock"></i>
-            <span>{{ 'coreshop.ui.change_password'|trans }}</span>
-        </a>
+        {% if is_granted('CORESHOP_CUSTOMER_PROFILE_ORDERS') %}
+            <a href="{{ path('coreshop_customer_orders') }}" title="{{ 'coreshop.ui.orders'|trans }}" class="list-group-item">
+                <i class="fa fa-list-ol"></i>
+                <span>{{ 'coreshop.ui.order_history_and_details'|trans }}</span>
+            </a>
+        {% endif %}
+
+        {% if is_granted('CORESHOP_CUSTOMER_PROFILE_ADDRESSES') %}
+            <a href="{{ path('coreshop_customer_addresses') }}" title="{{ 'coreshop.ui.addresses'|trans }}" class="list-group-item">
+                <i class="fa fa-building"></i>
+                <span>{{ 'coreshop.ui.addresses'|trans }}</span>
+            </a>
+        {% endif %}
+
+        {% if is_granted('CORESHOP_CUSTOMER_PROFILE_SETTINGS') %}
+            <a href="{{ path('coreshop_customer_settings') }}" title="{{ 'coreshop.ui.personal_information'|trans }}" class="list-group-item">
+                <i class="fa fa-user"></i>
+                <span>{{ 'coreshop.ui.personal_information'|trans }}</span>
+            </a>
+        {% endif %}
+
+        {% if is_granted('CORESHOP_CUSTOMER_PROFILE_CHANGE_PASSWORD') %}
+            <a href="{{ path('coreshop_customer_change_password') }}" title="{{ 'coreshop.ui.change_password'|trans }}" class="list-group-item">
+                <i class="fa fa-lock"></i>
+                <span>{{ 'coreshop.ui.change_password'|trans }}</span>
+            </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -1,30 +1,34 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\VariantBundle\Validator\Constraints;
 
 use CoreShop\Component\Variant\Model\AttributeGroupInterface;
 use CoreShop\Component\Variant\Model\AttributeInterface;
-use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
 class ValidAttributesTypeValidator extends ConstraintValidator
 {
-    public function __construct()
-    {
+    public function __construct(
+        ) {
     }
 
     public function validate($value, Constraint $constraint): void
@@ -40,7 +44,7 @@ class ValidAttributesTypeValidator extends ConstraintValidator
         Assert::isInstanceOf($constraint, ValidAttributesType::class);
 
         /**
-         * @var null|AttributeGroupInterface $parent
+         * @var AttributeGroupInterface|null $parent
          */
         $parent = $value->getAttributeGroup();
 
@@ -48,10 +52,19 @@ class ValidAttributesTypeValidator extends ConstraintValidator
             return;
         }
 
-        foreach ($parent->getChildren() as $child) {
+        $concreteListing = new DataObject\Listing();
+        $concreteListing->setCondition('o_path LIKE \'' . $parent->getFullPath() . '/%\'');
+
+        foreach ($concreteListing as $child) {
+            if (!$child instanceof AttributeInterface) {
+                continue;
+            }
+
             if (!$value instanceof $child) {
                 $this->context->buildViolation($constraint->message)
-                    ->addViolation();
+                    ->addViolation()
+                ;
+
                 break;
             }
         }

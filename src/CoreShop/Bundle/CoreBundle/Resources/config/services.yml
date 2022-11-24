@@ -67,4 +67,7 @@ services:
     CoreShop\Component\Core\Provider\ContextBasedDefaultTaxAddressProvider:
         arguments:
             - '@coreshop.factory.address'
-    
+
+    CoreShop\Bundle\CoreBundle\Security\AccessVoter:
+        tags:
+            - { name: security.voter }

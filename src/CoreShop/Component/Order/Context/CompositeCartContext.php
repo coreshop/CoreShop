@@ -1,50 +1,41 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Component\Order\Context;
 
 use CoreShop\Component\Order\Model\OrderInterface;
-use Laminas\Stdlib\PriorityQueue;
+use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
 
-final class CompositeCartContext implements CartContextInterface
+final class CompositeCartContext extends CompositeStorageListContext implements CartContextInterface
 {
-    /**
-     * @var PriorityQueue|CartContextInterface[]
-     * @psalm-var PriorityQueue<CartContextInterface>
-     */
-    private PriorityQueue $cartContexts;
-
-    public function __construct()
-    {
-        $this->cartContexts = new PriorityQueue();
-    }
-
-    public function addContext(CartContextInterface $cartContext, int $priority = 0): void
-    {
-        $this->cartContexts->insert($cartContext, $priority);
-    }
-
     public function getCart(): OrderInterface
     {
-        foreach ($this->cartContexts as $cartContext) {
-            try {
-                return $cartContext->getCart();
-            } catch (CartNotFoundException) {
-                continue;
-            }
+        return $this->getStorageList();
+    }
+
+    public function getStorageList(): OrderInterface
+    {
+        $order = parent::getStorageList();
+
+        if (!$order instanceof OrderInterface) {
+            throw new CartNotFoundException();
         }
 
-        throw new CartNotFoundException();
+        return $order;
     }
 }

@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Behat\Context\Domain;
 
@@ -25,8 +29,9 @@ use Webmozart\Assert\Assert;
 
 final class OrderContext implements Context
 {
-    public function __construct(private StateMachineManager $stateMachineManager)
-    {
+    public function __construct(
+        private StateMachineManager $stateMachineManager,
+    ) {
     }
 
     /**
@@ -39,8 +44,8 @@ final class OrderContext implements Context
             1,
             sprintf(
                 'There should be only one product in the order, but found %d',
-                count($order->getItems())
-            )
+                count($order->getItems()),
+            ),
         );
     }
 
@@ -55,8 +60,8 @@ final class OrderContext implements Context
             sprintf(
                 'Order total is expected to be %s, but it is %s',
                 $total,
-                $order->getTotal(true)
-            )
+                $order->getTotal(true),
+            ),
         );
     }
 
@@ -71,8 +76,8 @@ final class OrderContext implements Context
             sprintf(
                 'Order total is expected to be %s, but it is %s',
                 $total,
-                $order->getTotal(false)
-            )
+                $order->getTotal(false),
+            ),
         );
     }
 
@@ -87,8 +92,8 @@ final class OrderContext implements Context
             sprintf(
                 'Order subtotal is expected to be %s, but it is %s',
                 $total,
-                $order->getSubtotal(true)
-            )
+                $order->getSubtotal(true),
+            ),
         );
     }
 
@@ -103,8 +108,8 @@ final class OrderContext implements Context
             sprintf(
                 'Order subtotal is expected to be %s, but it is %s',
                 $total,
-                $order->getSubtotal(false)
-            )
+                $order->getSubtotal(false),
+            ),
         );
     }
 
@@ -119,8 +124,8 @@ final class OrderContext implements Context
             sprintf(
                 'Order is expected to weigh %skg, but it weighs %skg',
                 $kg,
-                $order->getWeight()
-            )
+                $order->getWeight(),
+            ),
         );
     }
 
@@ -135,8 +140,8 @@ final class OrderContext implements Context
             sprintf(
                 'Order shipping is expected to be %s, but it is %s',
                 $shipping,
-                $order->getShipping(true)
-            )
+                $order->getShipping(true),
+            ),
         );
     }
 
@@ -151,8 +156,8 @@ final class OrderContext implements Context
             sprintf(
                 'Order shipping is expected to be %s, but it is %s',
                 $shipping,
-                $order->getShipping(false)
-            )
+                $order->getShipping(false),
+            ),
         );
     }
 
@@ -167,8 +172,8 @@ final class OrderContext implements Context
             sprintf(
                 'Order shipping tax rate is expected to be %s, but it is %s',
                 $shippingTaxRate,
-                $order->getShippingTaxRate()
-            )
+                $order->getShippingTaxRate(),
+            ),
         );
     }
 
@@ -183,8 +188,8 @@ final class OrderContext implements Context
             sprintf(
                 'Expected order state to be "%s", but order is in state "%s"',
                 $state,
-                $order->getOrderState()
-            )
+                $order->getOrderState(),
+            ),
         );
     }
 
@@ -199,8 +204,8 @@ final class OrderContext implements Context
             sprintf(
                 'Expected payment state to be "%s", but order is in state "%s"',
                 $state,
-                $order->getPaymentState()
-            )
+                $order->getPaymentState(),
+            ),
         );
     }
 
@@ -215,8 +220,8 @@ final class OrderContext implements Context
             sprintf(
                 'Expected shipping state to be "%s", but order is in state "%s"',
                 $state,
-                $order->getShippingState()
-            )
+                $order->getShippingState(),
+            ),
         );
     }
 
@@ -231,8 +236,8 @@ final class OrderContext implements Context
             sprintf(
                 'Expected invoice state to be "%s", but order is in state "%s"',
                 $state,
-                $order->getInvoiceState()
-            )
+                $order->getInvoiceState(),
+            ),
         );
     }
 

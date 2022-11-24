@@ -1,23 +1,26 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Component\Core\Context;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\CountryInterface;
-use CoreShop\Component\Core\Model\Store;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
@@ -34,8 +37,14 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class ShopperContext implements ShopperContextInterface
 {
-    public function __construct(protected StoreContextInterface $storeContext, protected CurrencyContextInterface $currencyContext, protected LocaleContextInterface $localeContext, protected CountryContextInterface $countryContext, protected CustomerContextInterface $customerContext, protected CartContextInterface $cartContext)
-    {
+    public function __construct(
+        protected StoreContextInterface $storeContext,
+        protected CurrencyContextInterface $currencyContext,
+        protected LocaleContextInterface $localeContext,
+        protected CountryContextInterface $countryContext,
+        protected CustomerContextInterface $customerContext,
+        protected CartContextInterface $cartContext,
+    ) {
     }
 
     public function getStore(): StoreInterface
@@ -121,6 +130,11 @@ class ShopperContext implements ShopperContextInterface
     public function getCart(): OrderInterface
     {
         return $this->cartContext->getCart();
+    }
+
+    public function getStorageList(): OrderInterface
+    {
+        return $this->getCart();
     }
 
     public function getContext(): array

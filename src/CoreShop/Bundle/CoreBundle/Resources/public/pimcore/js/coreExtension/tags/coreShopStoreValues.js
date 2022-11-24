@@ -1,12 +1,15 @@
-/**
- * CoreShop.
+/*
+ * CoreShop
  *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
  */
 
 pimcore.registerNS('pimcore.object.tags.coreShopStoreValues');
@@ -27,7 +30,12 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
 
         this.data = data;
         this.fieldConfig = fieldConfig;
-        this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        if (pimcore.eventDispatcher !== undefined) {
+            this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        }
+        else {
+            document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+        }
 
     },
 
@@ -69,6 +77,11 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
 
     getGridColumnFilter: function (field) {
         return false;
+    },
+
+    postSaveObjectNew: function (e)
+    {
+        this.postSaveObject(e.detail.object, e.detail.task);
     },
 
     postSaveObject: function (object, task) {
@@ -257,7 +270,13 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
         this.component = new Ext.Panel(wrapperConfig);
         this.component.add([this.tabPanel]);
         this.component.on('destroy', function () {
-            pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+            if (pimcore.eventDispatcher !== undefined) {
+                pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+            }
+            else {
+                document.removeEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
+            }
+
             coreshop.broker.removeListener('pimcore.object.tags.coreShopProductUnitDefinitions.change', this.onUnitDefinitionsChange);
         }.bind(this));
 

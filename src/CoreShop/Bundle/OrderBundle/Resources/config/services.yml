@@ -8,6 +8,7 @@ imports:
     - { resource: services/order_invoice.yml }
     - { resource: services/order_shipment.yml }
     - { resource: services/cart-price-rules.yml }
+    - { resource: services/cart-item-price-rules.yml }
     - { resource: services/workflow.yml }
     - { resource: services/pdf.yml }
     - { resource: services/purchasable.yml }
@@ -24,10 +25,6 @@ imports:
 services:
     _defaults:
         public: true
-
-    CoreShop\Bundle\OrderBundle\Session\SessionCartConfigurator:
-        tags:
-            - { name: pimcore.session.configurator }
 
     CoreShop\Component\Order\Manager\CartManagerInterface: '@CoreShop\Bundle\OrderBundle\Manager\CartManager'
     CoreShop\Bundle\OrderBundle\Manager\CartManager:

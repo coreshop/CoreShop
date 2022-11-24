@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Component\Variant;
 
@@ -33,7 +37,7 @@ class AttributeCollector implements AttributeCollectorInterface
         if (AbstractObject::OBJECT_TYPE_VARIANT === $product->getType()) {
             $variants = [$product];
         } else {
-            $variants = $product->getChildren([AbstractObject::OBJECT_TYPE_VARIANT]);
+            $variants = $product->getVariants();
         }
 
         return $this->getAttributes($variants, $showInList);
@@ -86,7 +90,7 @@ class AttributeCollector implements AttributeCollectorInterface
             }
         }
 
-        usort($resolvedGroups, static fn(ResolvedAttributeGroup $a, ResolvedAttributeGroup $b) => $a->getGroup()->getSorting() <=> $b->getGroup()->getSorting());
+        usort($resolvedGroups, static fn (ResolvedAttributeGroup $a, ResolvedAttributeGroup $b) => $a->getGroup()->getSorting() <=> $b->getGroup()->getSorting());
 
         return $resolvedGroups;
     }
@@ -99,9 +103,8 @@ class AttributeCollector implements AttributeCollectorInterface
         if (AbstractObject::OBJECT_TYPE_VARIANT === $product->getType()) {
             $product = $product->getVariantParent();
         }
-        $variants = $product->getChildren([AbstractObject::OBJECT_TYPE_VARIANT]);
 
-        return $this->getAttributes($variants, $showInList);
+        return $this->getAttributes($product->getVariants(), $showInList);
     }
 
     public function getIndex(ProductVariantAwareInterface $product)
@@ -111,7 +114,7 @@ class AttributeCollector implements AttributeCollectorInterface
             $product = $product->getVariantParent();
         }
 
-        $variants = $product->getChildren([AbstractObject::OBJECT_TYPE_VARIANT]);
+        $variants = $product->getVariants();
 
         foreach ($variants as $variant) {
             if (!$variant instanceof ProductVariantAwareInterface) {

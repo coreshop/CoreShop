@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
@@ -38,7 +42,7 @@ class ResourceController extends AdminController
         ViewHandler $viewHandler,
         protected EventDispatcherInterface $eventDispatcher,
         protected ResourceFormFactoryInterface $resourceFormFactory,
-        protected ErrorSerializer $formErrorSerializer
+        protected ErrorSerializer $formErrorSerializer,
     ) {
         parent::__construct($viewHandler);
     }
@@ -53,6 +57,7 @@ class ResourceController extends AdminController
 
             /**
              * @var User $user
+             *
              * @psalm-var User $user
              */
             $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
@@ -76,7 +81,7 @@ class ResourceController extends AdminController
     {
         $this->isGrantedOr403();
 
-        $resources = $this->findOr404((int)$this->getParameterFromRequest($request, 'id'));
+        $resources = $this->findOr404((int) $this->getParameterFromRequest($request, 'id'));
 
         return $this->viewHandler->handle(['data' => $resources, 'success' => true], ['group' => 'Detailed']);
     }
@@ -135,7 +140,7 @@ class ResourceController extends AdminController
             $this->eventDispatcher->dispatchPreEvent('clone', $this->metadata, $resource, $request);
 
             if (method_exists($resource, 'getName')) {
-                $resource->setValue('name', sprintf('%s - %s', $resource->getName(), time()));
+                $resource->setValue('name', sprintf('%s%s', $resource->getName(), time()));
             }
 
             $this->manager->persist($resource);

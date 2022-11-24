@@ -15,8 +15,8 @@
 
 ![CoreShop Interface](docs/img/screenshot5.png)
 
-# Requirements
-* Pimcore `^10.3`
+# Requirements 
+ - Pimcore `^10.5`
 
 # Installation
  - Allow dev version to be installed:
@@ -40,12 +40,16 @@
    ```
    php bin/console coreshop:install:demo
    ```
+## Messenger
+CoreShop also uses Symfony Messenger for async tasks like sending E-Mails or Processing DataObjects for the Index. Please run these 2 transports to process the data
+```
+bin/console messenger:consume coreshop_notification coreshop_index --time-limit=300
+```
 
 # Further Information
  - [Website](https://www.coreshop.org)
  - [Documentation](https://docs.coreshop.org/latest)
  - [Pimcore Forum](https://talk.pimcore.org)
- - [Help translate CoreShop](https://crowdin.com/project/coreshop)
 
 # Demo
 You can see a running demo here [CoreShop 3.x Demo](https://demox.coreshop.org)

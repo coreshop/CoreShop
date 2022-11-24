@@ -6,7 +6,7 @@
  * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
  *
  */
 pimcore.registerNS('coreshop.core.customer.customerToCompanyAssigner');
@@ -175,7 +175,7 @@ coreshop.core.customer.customerToCompanyAssigner = Class.create(coreshop.core.cu
         };
 
         this.submitForm(
-            Routing.generate('coreshop_admin_customer_company_modifier_dispatch_existing_assignment', {customerId: this.customerId, companyId: this.comapnyId}),
+            Routing.generate('coreshop_admin_customer_company_modifier_dispatch_existing_assignment', {customerId: this.customerId, companyId: this.companyId}),
             submitValues,
             windowPanel
         );

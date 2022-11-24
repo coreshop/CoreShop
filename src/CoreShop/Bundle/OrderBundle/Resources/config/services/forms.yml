@@ -8,6 +8,8 @@ parameters:
     coreshop.form.type.cart_price_rule.action.surcharge_percent.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.condition.amount.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.condition.nested.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule.condition.order_item_action_conditions.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule.condition.order_item_action_actions.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.condition.timespan.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.condition.voucher.validation_groups: [coreshop]
 
@@ -74,6 +76,13 @@ services:
     CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NestedConfigurationType:
         arguments:
             - '%coreshop.form.type.cart_price_rule.condition.nested.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\CartItemActionConfigurationType:
+        arguments:
+            - '%coreshop.form.type.cart_price_rule.condition.order_item_action_conditions.validation_groups%'
+            - '%coreshop.form.type.cart_price_rule.condition.order_item_action_actions.validation_groups%'
         tags:
             - { name: form.type }
 

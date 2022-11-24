@@ -1,21 +1,24 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\ThemeBundle;
 
 use Composer\InstalledVersions;
-use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\CompositeThemeResolverPass;
 use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\RemoveThemeAwareTranslatorPass;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
@@ -51,20 +54,25 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
 
     public function getVersion(): string
     {
-        $bundleName = 'coreshop/pimcore-bundle';
+        if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
+        }
+
+        return $this->getComposerVersion();
+    }
+
+    public function getComposerVersion(): string
+    {
+        $bundleName = 'coreshop/theme-bundle';
 
         if (class_exists(InstalledVersions::class)) {
             if (InstalledVersions::isInstalled('coreshop/core-shop')) {
-                return InstalledVersions::getVersion('coreshop/core-shop');
+                return InstalledVersions::getPrettyVersion('coreshop/core-shop');
             }
 
             if (InstalledVersions::isInstalled($bundleName)) {
-                return InstalledVersions::getVersion($bundleName);
+                return InstalledVersions::getPrettyVersion($bundleName);
             }
-        }
-
-        if (class_exists(Version::class)) {
-            return Version::getVersion();
         }
 
         return '';

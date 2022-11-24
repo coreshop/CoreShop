@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
@@ -94,7 +98,7 @@ class ProductUnitDefinition extends Data implements
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
-            if ((int)$data) {
+            if ((int) $data) {
                 return $this->getDataFromResource($data, $object, $params);
             }
         }
@@ -137,7 +141,7 @@ class ProductUnitDefinition extends Data implements
 
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        if ((int)$data > 0) {
+        if ((int) $data > 0) {
             return $this->getRepository()->find($data);
         }
 

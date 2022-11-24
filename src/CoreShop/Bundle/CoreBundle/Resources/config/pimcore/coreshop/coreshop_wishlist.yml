@@ -1,0 +1,9 @@
+core_shop_wishlist:
+    pimcore:
+        wishlist:
+            path:
+                wishlist: coreshop/wishlists
+            classes:
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopWishlistBundle/CoreShopWishlist.json'
+                interface: CoreShop\Component\Core\Model\WishlistInterface
+                repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\WishlistRepository

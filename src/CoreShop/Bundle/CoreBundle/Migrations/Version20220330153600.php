@@ -2,6 +2,20 @@
 
 declare(strict_types=1);
 
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
@@ -25,29 +39,29 @@ final class Version20220330153600 extends AbstractMigration implements Container
         $classUpdater = new ClassUpdate($orderClassName);
 
         $fieldQuoteNumber = [
-            "fieldtype" => "input",
-            "width" => null,
-            "queryColumnType" => "varchar",
-            "columnType" => "varchar",
-            "columnLength" => 190,
-            "phpdocType" => "string",
-            "regex" => "",
-            "unique" => false,
-            "showCharCount" => null,
-            "name" => "quoteNumber",
-            "title" => "coreshop.order.quote_number",
-            "tooltip" => "",
-            "mandatory" => false,
-            "noteditable" => true,
-            "index" => false,
-            "locked" => false,
-            "style" => "",
-            "permissions" => null,
-            "datatype" => "data",
-            "relationType" => false,
-            "invisible" => false,
-            "visibleGridView" => false,
-            "visibleSearch" => false,
+            'fieldtype' => 'input',
+            'width' => null,
+            'queryColumnType' => 'varchar',
+            'columnType' => 'varchar',
+            'columnLength' => 190,
+            'phpdocType' => 'string',
+            'regex' => '',
+            'unique' => false,
+            'showCharCount' => null,
+            'name' => 'quoteNumber',
+            'title' => 'coreshop.order.quote_number',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => true,
+            'index' => false,
+            'locked' => false,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => false,
+            'visibleGridView' => false,
+            'visibleSearch' => false,
         ];
 
         if (!$classUpdater->hasField('quoteNumber')) {
@@ -60,6 +74,5 @@ final class Version20220330153600 extends AbstractMigration implements Container
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

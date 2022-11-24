@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
@@ -34,9 +38,25 @@ class CartPriceRuleController extends ResourceController
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
+        $itemActions = $this->getCartItemConfigActions();
+        $itemConditions = $this->getCartItemConfigConditions();
+
         return $this->viewHandler->handle([
             'actions' => array_keys($actions),
             'conditions' => array_keys($conditions),
+            'itemActions' => array_keys($itemActions),
+            'itemConditions' => array_keys($itemConditions),
+        ]);
+    }
+
+    public function getCartItemConfigAction(Request $request): JsonResponse
+    {
+        $itemActions = $this->getCartItemConfigActions();
+        $itemConditions = $this->getCartItemConfigConditions();
+
+        return $this->viewHandler->handle([
+            'actions' => array_keys($itemActions),
+            'conditions' => array_keys($itemConditions),
         ]);
     }
 
@@ -51,8 +71,8 @@ class CartPriceRuleController extends ResourceController
 
         $data = $this->getVoucherCodeRepository()->findAllPaginator(
             $cartPriceRule,
-            (int)$this->getParameterFromRequest($request, 'start', 0),
-            (int)$this->getParameterFromRequest($request, 'limit', 50)
+            (int) $this->getParameterFromRequest($request, 'start', 0),
+            (int) $this->getParameterFromRequest($request, 'limit', 50),
         );
 
         return $this->viewHandler->handle(
@@ -63,7 +83,7 @@ class CartPriceRuleController extends ResourceController
             ],
             [
                 'group' => 'Detailed',
-            ]
+            ],
         );
     }
 
@@ -142,8 +162,8 @@ class CartPriceRuleController extends ResourceController
 
             $codes = $this->getVoucherCodeRepository()->findAllPaginator(
                 $priceRule,
-                (int)$this->getParameterFromRequest($request, 'start', 0),
-                (int)$this->getParameterFromRequest($request, 'limit', 50)
+                (int) $this->getParameterFromRequest($request, 'start', 0),
+                (int) $this->getParameterFromRequest($request, 'limit', 50),
             );
 
             foreach ($codes as $code) {
@@ -217,5 +237,21 @@ class CartPriceRuleController extends ResourceController
     protected function getConfigConditions(): array
     {
         return $this->container->getParameter('coreshop.cart_price_rule.conditions');
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getCartItemConfigActions(): array
+    {
+        return $this->container->getParameter('coreshop.cart_item_price_rule.actions');
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getCartItemConfigConditions(): array
+    {
+        return $this->container->getParameter('coreshop.cart_item_price_rule.conditions');
     }
 }

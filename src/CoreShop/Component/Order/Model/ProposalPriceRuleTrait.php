@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -38,7 +42,7 @@ trait ProposalPriceRuleTrait
     }
 
     /**
-     * @return ProposalCartPriceRuleItemInterface[]
+     * @return PriceRuleItemInterface[]
      */
     public function getPriceRules(): array
     {
@@ -46,14 +50,14 @@ trait ProposalPriceRuleTrait
 
         if ($this->getPriceRuleItems() instanceof Fieldcollection) {
             foreach ($this->getPriceRuleItems() as $ruleItem) {
-                if ($ruleItem instanceof ProposalCartPriceRuleItemInterface) {
+                if ($ruleItem instanceof PriceRuleItemInterface) {
                     $rules[] = $ruleItem->getCartPriceRule();
                 }
             }
         }
 
         /**
-         * @var ProposalCartPriceRuleItemInterface[] $rules
+         * @var PriceRuleItemInterface[] $rules
          */
         return $rules;
     }
@@ -65,7 +69,7 @@ trait ProposalPriceRuleTrait
         }
     }
 
-    public function addPriceRule(ProposalCartPriceRuleItemInterface $priceRule): void
+    public function addPriceRule(PriceRuleItemInterface $priceRule): void
     {
         if (!$this->hasPriceRule($priceRule)) {
             $items = $this->getPriceRuleItems();
@@ -85,7 +89,7 @@ trait ProposalPriceRuleTrait
         }
     }
 
-    public function removePriceRule(ProposalCartPriceRuleItemInterface $priceRule): void
+    public function removePriceRule(PriceRuleItemInterface $priceRule): void
     {
         $items = $this->getPriceRuleItems();
 
@@ -93,7 +97,7 @@ trait ProposalPriceRuleTrait
             for ($i = 0, $c = $items->getCount(); $i < $c; ++$i) {
                 $item = $items->get($i);
 
-                if (!$item instanceof ProposalCartPriceRuleItem) {
+                if (!$item instanceof PriceRuleItemInterface) {
                     continue;
                 }
 
@@ -105,8 +109,8 @@ trait ProposalPriceRuleTrait
                     continue;
                 }
 
-                if ($item->getCartPriceRule()->getId() === $priceRule->getCartPriceRule()->getId()
-                    && $item->getVoucherCode() === $priceRule->getVoucherCode()) {
+                if ($item->getCartPriceRule()->getId() === $priceRule->getCartPriceRule()->getId() &&
+                    $item->getVoucherCode() === $priceRule->getVoucherCode()) {
                     $items->remove($i);
 
                     break;
@@ -117,13 +121,13 @@ trait ProposalPriceRuleTrait
         }
     }
 
-    public function hasPriceRule(ProposalCartPriceRuleItemInterface $priceRule): bool
+    public function hasPriceRule(PriceRuleItemInterface $priceRule): bool
     {
         $items = $this->getPriceRuleItems();
 
         if ($items instanceof Fieldcollection) {
             foreach ($items as $item) {
-                if (!$item instanceof ProposalCartPriceRuleItem) {
+                if (!$item instanceof PriceRuleItemInterface) {
                     continue;
                 }
 
@@ -135,8 +139,8 @@ trait ProposalPriceRuleTrait
                     continue;
                 }
 
-                if ($item->getCartPriceRule()->getId() === $priceRule->getCartPriceRule()->getId()
-                    && $item->getVoucherCode() === $priceRule->getVoucherCode()) {
+                if ($item->getCartPriceRule()->getId() === $priceRule->getCartPriceRule()->getId() &&
+                    $item->getVoucherCode() === $priceRule->getVoucherCode()) {
                     return true;
                 }
             }
@@ -147,20 +151,20 @@ trait ProposalPriceRuleTrait
 
     public function hasCartPriceRule(
         CartPriceRuleInterface $cartPriceRule,
-        CartPriceRuleVoucherCodeInterface $voucherCode = null
+        CartPriceRuleVoucherCodeInterface $voucherCode = null,
     ): bool {
         return null !== $this->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
     }
 
     public function getPriceRuleByCartPriceRule(
         CartPriceRuleInterface $cartPriceRule,
-        CartPriceRuleVoucherCodeInterface $voucherCode = null
-    ): ?ProposalCartPriceRuleItemInterface {
+        CartPriceRuleVoucherCodeInterface $voucherCode = null,
+    ): ?PriceRuleItemInterface {
         $items = $this->getPriceRuleItems();
 
         if ($items instanceof Fieldcollection) {
             foreach ($items as $item) {
-                if (!$item instanceof ProposalCartPriceRuleItem) {
+                if (!$item instanceof PriceRuleItemInterface) {
                     continue;
                 }
 

@@ -6,7 +6,7 @@
  * files that are distributed with this source code.
  *
  * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
  *
  */
 
@@ -87,5 +87,58 @@ coreshop.report.reports.categories = Class.create(coreshop.report.abstractStore,
                 ]
             }
         });
+    },
+
+    getOrderStateField: function () {
+        return this.panel.down('[name=orderState]');
+    },
+
+    getFilterParams: function ($super) {
+        var fields = $super();
+        fields.orderState = JSON.stringify(this.getOrderStateField().getValue());
+        return fields;
+    },
+
+    getDocketItemsForPanel: function ($super) {
+
+        var fields = $super();
+
+        fields.push(
+            {
+                xtype: 'toolbar',
+                dock: 'top',
+                layout: {
+                    type: 'vbox',
+                    align: 'stretch',
+                    pack: 'start',
+                },
+                items: this.getAdditionalFilterFields()
+            }
+        );
+
+        return fields;
+
+    },
+    getAdditionalFilterFields: function () {
+        var fields = [];
+        fields.push({
+            xtype: 'tagfield',
+            fieldLabel: t('coreshop_condition_orderState'),
+            name: 'orderState',
+            value: ['all'],
+            width: 350,
+            store: pimcore.globalmanager.get('coreshop_states_order'),
+            displayField: 'label',
+            valueField: 'state',
+            triggerAction: 'all',
+            filterPickList: true,
+            minChars: 1,
+            typeAhead: true,
+            editable: true,
+            forceSelection: true,
+            queryMode: 'local'
+        });
+
+        return fields;
     }
 });

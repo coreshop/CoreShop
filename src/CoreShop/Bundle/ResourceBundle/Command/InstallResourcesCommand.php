@@ -1,19 +1,24 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
 
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
+use CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller;
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -24,8 +29,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class InstallResourcesCommand extends Command
 {
-    public function __construct(protected ResourceInstallerInterface $resourceInstaller)
-    {
+    public function __construct(
+        protected ResourceInstallerInterface $resourceInstaller,
+    ) {
         parent::__construct();
     }
 
@@ -43,8 +49,15 @@ EOT
                 'application-name',
                 'a',
                 InputOption::VALUE_REQUIRED,
-                'Application Name'
-            );
+                'Application Name',
+            )
+            ->addOption(
+                'update-classes',
+                null,
+                InputOption::VALUE_NONE,
+                'Set this option to update class definitions if they already exist',
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -58,10 +71,14 @@ EOT
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln(sprintf(
             'Install Resources for Environment <info>%s</info>.',
-            $kernel->getEnvironment()
+            $kernel->getEnvironment(),
         ));
 
-        $this->resourceInstaller->installResources($output, $input->getOption('application-name'));
+        $this->resourceInstaller->installResources(
+            $output,
+            $input->getOption('application-name'),
+            [PimcoreClassInstaller::OPTION_UPDATE_CLASSES => $input->getOption('update-classes')],
+        );
 
         return 0;
     }

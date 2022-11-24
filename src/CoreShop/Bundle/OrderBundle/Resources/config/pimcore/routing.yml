@@ -8,6 +8,11 @@ coreshop_admin_cart_price_rule:
           action: getConfig
           methods:
             - GET
+        cartItemConfig:
+          path: get-cart-item-config
+          action: getCartItemConfig
+          methods:
+            - GET
         getVoucherCodes:
           path: get-voucher-codes
           action: getVoucherCodes
@@ -68,7 +73,7 @@ coreshop_admin_order_get_order:
 
 coreshop_admin_order_find:
     path: /%coreshop.admin.route.base%/order/find
-    defaults: { _controller: 'coreshop.pimcore_controller.order:findSaleAction'}
+    defaults: { _controller: 'coreshop.pimcore_controller.order:findOrderAction'}
     options:
         expose: true
 

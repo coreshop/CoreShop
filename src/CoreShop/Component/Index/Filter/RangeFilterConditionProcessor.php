@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Component\Index\Filter;
 
@@ -32,12 +36,12 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
         $maxValue = count($rawValues) > 0 ? $rawValues[count($rawValues) - 1]['value'] : 0;
 
         $currentValueMin = $minValue;
-        if (isset($currentFilter["$field-min"]) && ('' !== (string)$currentFilter["$field-min"])) {
+        if (isset($currentFilter["$field-min"]) && ('' !== (string) $currentFilter["$field-min"])) {
             $currentValueMin = $currentFilter["$field-min"];
         }
 
         $currentValueMax = $maxValue;
-        if (isset($currentFilter["$field-max"]) && ('' !== (string)$currentFilter["$field-max"])) {
+        if (isset($currentFilter["$field-max"]) && ('' !== (string) $currentFilter["$field-max"])) {
             $currentValueMax = $currentFilter["$field-max"];
         }
 
@@ -95,7 +99,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
                 $fieldName = 'PRECONDITION_' . $fieldName;
             }
 
-            $list->addCondition(new RangeCondition($field, (float)$valueMin, (float)$valueMax), $fieldName);
+            $list->addCondition(new RangeCondition($field, (float) $valueMin, (float) $valueMax), $fieldName);
         }
 
         return $currentFilter;

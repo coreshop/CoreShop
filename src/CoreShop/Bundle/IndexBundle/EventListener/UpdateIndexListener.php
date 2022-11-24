@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\IndexBundle\EventListener;
 
@@ -22,8 +26,9 @@ use Symfony\Component\Intl\Exception\InvalidArgumentException;
 
 final class UpdateIndexListener
 {
-    public function __construct(private ServiceRegistryInterface $workerServiceRegistry)
-    {
+    public function __construct(
+        private ServiceRegistryInterface $workerServiceRegistry,
+    ) {
     }
 
     public function onPreUpdate(IndexInterface $index, PreUpdateEventArgs $event): void
@@ -46,9 +51,6 @@ final class UpdateIndexListener
          */
         $worker = $this->workerServiceRegistry->get($workerType);
 
-        //BC Safe, remove in CoreShop 3.0 and add renamedIndexStructures to interface of Workers
-        if (method_exists($worker, 'renameIndexStructures')) {
-            $worker->renameIndexStructures($index, $oldName, $newName);
-        }
+        $worker->renameIndexStructures($index, $oldName, $newName);
     }
 }

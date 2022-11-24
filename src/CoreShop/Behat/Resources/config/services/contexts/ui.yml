@@ -59,6 +59,15 @@ services:
         tags:
             - { name: fob.context_service }
 
+    coreshop.behat.context.ui.wishlist:
+        class: CoreShop\Behat\Context\Ui\Frontend\WishlistContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Behat\Page\Frontend\WishlistPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\ProductPageInterface'
+        tags:
+            - { name: fob.context_service }
+
     coreshop.behat.context.ui.user:
         class: CoreShop\Behat\Context\Ui\Frontend\UserContext
         arguments:

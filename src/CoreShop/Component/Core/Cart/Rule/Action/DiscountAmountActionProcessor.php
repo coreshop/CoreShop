@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
@@ -21,19 +25,22 @@ use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use Webmozart\Assert\Assert;
 
 class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    public function __construct(protected CurrencyConverterInterface $moneyConverter, protected CurrencyRepositoryInterface $currencyRepository, protected CartRuleApplierInterface $cartRuleApplier)
-    {
+    public function __construct(
+        protected CurrencyConverterInterface $moneyConverter,
+        protected CurrencyRepositoryInterface $currencyRepository,
+        protected CartRuleApplierInterface $cartRuleApplier,
+    ) {
     }
 
     public function applyRule(
         OrderInterface $cart,
         array $configuration,
-        ProposalCartPriceRuleItemInterface $cartPriceRuleItem
+        PriceRuleItemInterface $cartPriceRuleItem,
     ): bool {
         $discount = $this->getDiscount($cart, $configuration);
 
@@ -49,7 +56,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     public function unApplyRule(
         OrderInterface $cart,
         array $configuration,
-        ProposalCartPriceRuleItemInterface $cartPriceRuleItem
+        PriceRuleItemInterface $cartPriceRuleItem,
     ): bool {
         return true;
     }
@@ -74,7 +81,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         return $this->moneyConverter->convert(
             $this->getApplicableAmount($cartAmount, $amount),
             $currency->getIsoCode(),
-            $cart->getCurrency()->getIsoCode()
+            $cart->getCurrency()->getIsoCode(),
         );
     }
 

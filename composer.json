@@ -80,49 +80,53 @@
     "coreshop/menu-bundle": "self.version",
     "coreshop/payum-payment": "self.version",
     "coreshop/payum-payment-bundle": "self.version",
-    "coreshop/optimistic-entity-lock-bundle": "self.version"
+    "coreshop/optimistic-entity-lock-bundle": "self.version",
+    "coreshop/messenger-bundle": "self.version"
   },
   "require": {
     "ext-json": "*",
     "dachcom-digital/emailizr": "^2.0.0",
-    "doctrine/doctrine-bundle": "^2.4",
     "doctrine/data-fixtures": "^1.5",
+    "doctrine/doctrine-bundle": "^2.4",
     "doctrine/orm": "^2.9",
     "fakerphp/faker": "^1.16",
-    "gedmo/doctrine-extensions": "~3.6.0",
+    "gedmo/doctrine-extensions": "^3.6",
     "jms/serializer-bundle": "^4.0",
     "knplabs/knp-menu-bundle": "^3.1",
     "laminas/laminas-stdlib": "^3.6",
-    "sylius/theme-bundle": "^2.2",
-    "php-http/guzzle7-adapter": "^0.1",
-    "pimcore/pimcore": "^10.4",
-    "rinvex/countries": "^7.3",
-    "stof/doctrine-extensions-bundle": "^1.6",
-    "webmozart/assert": "^1.10",
+    "laminas/laminas-zendframework-bridge": "^1.5",
     "payum/payum": "dev-master",
     "payum/payum-bundle": "dev-master",
-    "laminas/laminas-zendframework-bridge": "^1.5"
+    "php-http/guzzle7-adapter": "^0.1",
+    "pimcore/pimcore": "^10.5",
+    "rinvex/countries": "^7.3",
+    "stof/doctrine-extensions-bundle": "^1.6",
+    "sylius/theme-bundle": "^2.2",
+    "symfony/notifier": "^5.4.0",
+    "symfony/serializer": "^5.4.0",
+    "webmozart/assert": "^1.10"
   },
   "require-dev": {
     "behat/behat": "^3.8",
-    "friends-of-behat/symfony-extension": "^2.1",
+    "behat/mink": "^1.8",
+    "dbrekelmans/bdi": "^0.3.0",
+    "friends-of-behat/mink-debug-extension": "^2.0",
+    "friends-of-behat/mink-extension": "^2.4",
     "friends-of-behat/page-object-extension": "^0.3.2",
+    "friends-of-behat/symfony-extension": "^2.1",
+    "lakion/mink-debug-extension": "^2.0",
     "phpstan/phpstan": "^1.5.4",
     "phpstan/phpstan-doctrine": "^1.3.2",
     "phpstan/phpstan-symfony": "^1.1.8",
     "phpstan/phpstan-webmozart-assert": "^1.1.2",
-    "behat/mink": "^1.8",
-    "friends-of-behat/mink-extension": "^2.4",
-    "lakion/mink-debug-extension": "^2.0",
-    "friends-of-behat/mink-debug-extension": "^2.0",
     "phpunit/phpunit": "^9.5",
     "robertfausk/behat-panther-extension": "^1.0",
     "symfony/panther": "^1.0",
-    "dbrekelmans/bdi": "^0.3.0",
-    "vimeo/psalm": "^4.10",
-    "symplify/easy-coding-standard": "^9.4"
+    "symplify/easy-coding-standard": "^11.1",
+    "vimeo/psalm": "^4.10"
   },
   "conflict": {
+    "jms/serializer-bundle": "4.1.0"
   },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."
@@ -154,5 +158,8 @@
     "branch-alias": {
       "dev-master": "3.0-dev"
     }
+  },
+  "config": {
+    "sort-packages": true
   }
 }

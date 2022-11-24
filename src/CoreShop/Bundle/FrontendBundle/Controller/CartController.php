@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -56,6 +60,8 @@ class CartController extends FrontendController
 
     public function createQuoteAction(Request $request, StateMachineManagerInterface $machineManager)
     {
+        $this->denyAccessUnlessGranted('CORESHOP_QUOTE_CREATE');
+
         $order = $this->getCart();
         $workflow = $machineManager->get($order, OrderSaleTransitions::IDENTIFIER);
         $workflow->apply($order, OrderSaleTransitions::TRANSITION_QUOTE);
@@ -65,6 +71,9 @@ class CartController extends FrontendController
 
     public function summaryAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CART');
+        $this->denyAccessUnlessGranted('CORESHOP_CART_SUMMARY');
+
         $cart = $this->getCart();
         $form = $this->get('form.factory')->createNamed('coreshop', CartType::class, $cart);
         $form->handleRequest($request);
@@ -74,11 +83,11 @@ class CartController extends FrontendController
                 $cart = $form->getData();
                 $code = $form->get('cartRuleCoupon')->getData();
 
-                if(method_exists($form, 'getClickedButton')) {
+                if (method_exists($form, 'getClickedButton')) {
                     $submit = $form->getClickedButton();
                     $validateVoucherCode = $submit && 'submit_voucher' === $submit->getName();
                 } else {
-                    $validateVoucherCode = (bool)$code;
+                    $validateVoucherCode = (bool) $code;
                 }
 
                 if ($validateVoucherCode) {
@@ -87,7 +96,7 @@ class CartController extends FrontendController
                     if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                         $this->addFlash(
                             'error',
-                            $this->get('translator')->trans('coreshop.ui.error.voucher.not_found')
+                            $this->get('translator')->trans('coreshop.ui.error.voucher.not_found'),
                         );
 
                         return $this->redirectToRoute('coreshop_cart_summary');
@@ -99,7 +108,7 @@ class CartController extends FrontendController
                         $this->getCartManager()->persistCart($cart);
                         $this->addFlash(
                             'success',
-                            $this->get('translator')->trans('coreshop.ui.success.voucher.stored')
+                            $this->get('translator')->trans('coreshop.ui.success.voucher.stored'),
                         );
                     } else {
                         $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.voucher.invalid'));
@@ -133,6 +142,9 @@ class CartController extends FrontendController
 
     public function shipmentCalculationAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CART');
+        $this->denyAccessUnlessGranted('CORESHOP_CART_CALCULATE_SHIPMENT');
+
         $cart = $this->getCart();
         $form = $this->get('form.factory')->createNamed('coreshop', ShippingCalculatorType::class, null, [
             'action' => $this->generateUrl('coreshop_cart_check_shipment'),
@@ -178,6 +190,9 @@ class CartController extends FrontendController
 
     public function addItemAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CART');
+        $this->denyAccessUnlessGranted('CORESHOP_CART_ADD_ITEM');
+
         $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_index'));
 
         $product = $this->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
@@ -217,7 +232,7 @@ class CartController extends FrontendController
                 $this->get(TrackerInterface::class)->trackCartAdd(
                     $addToCart->getCart(),
                     $addToCart->getCartItem()->getProduct(),
-                    $addToCart->getCartItem()->getQuantity()
+                    $addToCart->getCartItem()->getQuantity(),
                 );
 
                 $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
@@ -258,12 +273,15 @@ class CartController extends FrontendController
             [
                 'form' => $form->createView(),
                 'product' => $product,
-            ]
+            ],
         );
     }
 
     public function removeItemAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CART');
+        $this->denyAccessUnlessGranted('CORESHOP_CART_REMOVE_ITEM');
+
         $cartItem = $this->get('coreshop.repository.order_item')->find($this->getParameterFromRequest($request, 'cartItem'));
 
         if (!$cartItem instanceof OrderItemInterface) {
@@ -286,6 +304,9 @@ class CartController extends FrontendController
 
     public function removePriceRuleAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CART');
+        $this->denyAccessUnlessGranted('CORESHOP_CART_REMOVE_PRICE_RULE');
+
         $code = $this->getParameterFromRequest($request, 'code');
         $cart = $this->getCart();
 
@@ -352,6 +373,7 @@ class CartController extends FrontendController
     {
         return $this
             ->get('validator')
-            ->validate($cartItem, null, $this->container->getParameter('coreshop.form.type.cart_item.validation_groups'));
+            ->validate($cartItem, null, $this->container->getParameter('coreshop.form.type.cart_item.validation_groups'))
+        ;
     }
 }

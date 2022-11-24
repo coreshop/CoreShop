@@ -31,10 +31,11 @@
     "coreshop/registry": "^3.0",
     "coreshop/rule-bundle": "^3.0",
     "coreshop/store-bundle": "^3.0",
+    "coreshop/storage-list-bundle": "^3.0",
     "coreshop/money-bundle": "^3.0",
     "coreshop/workflow-bundle": "^3.0",
     "coreshop/order": "^3.0",
-    "pimcore/pimcore": "^10.4"
+    "pimcore/pimcore": "^10.5"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.5.4",
@@ -58,5 +59,8 @@
     "branch-alias": {
       "dev-master": "3.0-dev"
     }
+  },
+  "config": {
+    "sort-packages": true
   }
 }

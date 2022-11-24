@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -29,8 +33,13 @@ final class AbandonedCartsReport implements ReportInterface, ExportReportInterfa
 {
     private int $totalRecords = 0;
 
-    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private PimcoreRepositoryInterface $cartRepository, private PimcoreRepositoryInterface $customerRepository, private LocaleContextInterface $localeContext)
-    {
+    public function __construct(
+        private RepositoryInterface $storeRepository,
+        private Connection $db,
+        private PimcoreRepositoryInterface $cartRepository,
+        private PimcoreRepositoryInterface $customerRepository,
+        private LocaleContextInterface $localeContext,
+    ) {
     }
 
     public function getReportData(ParameterBag $parameterBag): array
@@ -89,16 +98,15 @@ final class AbandonedCartsReport implements ReportInterface, ExportReportInterfa
                         LEFT JOIN coreshop_payment_provider AS `pg` ON `pg`.id = cart.paymentProvider
                         WHERE cart.items <> ''
                           AND cart.store = $storeId
-                          AND cart.order__id IS NULL
                           AND cart.o_creationDate > ?
                           AND cart.o_creationDate < ?
-                          AND cart.saleState === '" . OrderSaleStates::STATE_CART . "'
+                          AND cart.saleState = '" . OrderSaleStates::STATE_CART . "'
                      GROUP BY cart.oo_id
                      ORDER BY cart.o_creationDate DESC
                      LIMIT $offset,$limit";
 
         $data = $this->db->fetchAllAssociative($sqlQuery, [$fromTimestamp, $toTimestamp]);
-        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($data as &$entry) {
             $entry['itemsInCart'] = count(array_filter(explode(',', $entry['items'])));

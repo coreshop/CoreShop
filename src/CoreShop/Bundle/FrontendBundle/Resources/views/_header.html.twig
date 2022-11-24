@@ -16,12 +16,18 @@
                         {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CustomerController::headerAction')) }}
                     </ul>
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('coreshop_wishlist_summary') }}">
-                                {{ 'coreshop.ui.wishlist'|trans }}
-                            </a>
-                            {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CurrencyController::widgetAction')) }}
-                        </li>
+                        {% if is_granted('CORESHOP_WISHLIST') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('coreshop_wishlist_summary') }}">
+                                    {{ 'coreshop.ui.wishlist'|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('CORESHOP_CURRENCY_SWITCH') %}
+                            <li class="nav_item">
+                                {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CurrencyController::widgetAction')) }}
+                            </li>
+                        {% endif %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ 'coreshop.ui.language'|trans }}
@@ -52,12 +58,16 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 p-sm-2">
-                    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CartController::widgetAction')) }}
-                </div>
+                {% if is_granted('CORESHOP_CART') %}
+                    <div class="col-md-3 p-sm-2">
+                        {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CartController::widgetAction')) }}
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
 
-    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CategoryController::menuAction')) }}
+    {% if is_granted('CORESHOP_CATEGORY_SHOW') %}
+        {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CategoryController::menuAction')) }}
+    {% endif %}
 </header>

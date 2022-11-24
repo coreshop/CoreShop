@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
@@ -41,7 +45,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
             [
                 'type' => UserTypeChecker::TYPE_PASSWORD_RESET,
                 'resetLink' => $event->getResetLink(),
-            ]
+            ],
         );
 
         $this->rulesProcessor->applyRules('user', $user->getCustomer(), $params);
@@ -66,7 +70,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
             $params,
             [
                 'type' => UserTypeChecker::TYPE_REGISTER,
-            ]
+            ],
         );
 
         $this->rulesProcessor->applyRules('user', $customer, $params);
@@ -91,7 +95,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
             function () use ($customer) {
                 $customer->save();
             },
-            false
+            false,
         );
 
         $confirmLink = $event->getConfirmLink();
@@ -104,7 +108,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
                 'type' => UserTypeChecker::TYPE_NEWSLETTER_DOUBLE_OPT_IN,
                 'confirmLink' => $confirmLink,
                 'token' => $customer->getNewsletterToken(),
-            ]
+            ],
         );
 
         $this->rulesProcessor->applyRules('user', $customer, $params);
@@ -129,7 +133,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
             $params,
             [
                 'type' => UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED,
-            ]
+            ],
         );
 
         $this->rulesProcessor->applyRules('user', $customer, $params);
@@ -144,9 +148,6 @@ final class CustomerListener extends AbstractNotificationRuleListener
             'firstname' => $user->getCustomer()->getFirstname(),
             'lastname' => $user->getCustomer()->getLastname(),
             'email' => $user->getCustomer()->getEmail(),
-            'object' => $user->getCustomer(),
-            'user' => $user,
-            'store' => $this->shopperContext->hasStore() ? $this->shopperContext->getStore() : null,
         ];
     }
 }

@@ -2,10 +2,6 @@ services:
     _defaults:
         public: true
 
-    coreshop.order.configurator.session_cart:
-        alias: CoreShop\Bundle\OrderBundle\Session\SessionCartConfigurator
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Session\SessionCartConfigurator instead'
-
     coreshop.cart.manager:
         alias: CoreShop\Component\Order\Manager\CartManagerInterface
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Manager\CartManagerInterface instead'
@@ -101,10 +97,6 @@ services:
     coreshop.context.cart.fixed:
         alias: CoreShop\Component\Order\Context\FixedCartContext
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Context\FixedCartContext instead'
-
-    coreshop.context.cart.session_based:
-        alias: CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext instead'
 
     coreshop.context.cart.new:
         alias: CoreShop\Component\Order\Context\CartContext

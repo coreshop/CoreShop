@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Application;
 
@@ -20,18 +24,18 @@ final class Version
 
     public const MINOR_VERSION = '0';
 
-    public const RELEASE_VERSION = '0';
+    public const RELEASE_VERSION = '2';
 
-    public const EXTRA_VERSION = 'beta.4';
+    public const EXTRA_VERSION = '';
 
     public static function getVersion(): string
     {
-        return sprintf(
-            '%s.%s.%s-%s',
-            self::MAJOR_VERSION,
-            self::MINOR_VERSION,
-            self::RELEASE_VERSION,
-            self::EXTRA_VERSION
-        );
+        $version = sprintf('%s.%s.%s', self::MAJOR_VERSION, self::MINOR_VERSION, self::RELEASE_VERSION);
+
+        if (self::EXTRA_VERSION !== '') {
+            $version = sprintf('%s-%s', $version, self::EXTRA_VERSION);
+        }
+
+        return $version;
     }
 }

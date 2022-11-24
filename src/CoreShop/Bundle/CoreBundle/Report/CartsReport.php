@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -28,8 +32,11 @@ class CartsReport implements ReportInterface, PortletInterface
 {
     private int $totalRecords = 0;
 
-    public function __construct(private RepositoryInterface $storeRepository, private Connection $db, private PimcoreRepositoryInterface $orderRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $storeRepository,
+        private Connection $db,
+        private PimcoreRepositoryInterface $orderRepository,
+    ) {
     }
 
     public function getReportData(ParameterBag $parameterBag): array
@@ -78,7 +85,7 @@ class CartsReport implements ReportInterface, PortletInterface
                     COUNT(*) as orderCount,
                     DATE(FROM_UNIXTIME(orderDate)) as orderDateTimestamp
                   FROM object_query_$orderClassId AS orders
-                  WHERE store = $storeId AND orderDate > $fromTimestamp AND orderDate < $toTimestamp and orders.saleState === '" . OrderSaleStates::STATE_ORDER . "'
+                  WHERE store = $storeId AND orderDate > $fromTimestamp AND orderDate < $toTimestamp and orders.saleState = '" . OrderSaleStates::STATE_ORDER . "'
                   GROUP BY DATE(FROM_UNIXTIME(orderDate))
                 ) as ordersQuery
                 $join OUTER JOIN (
@@ -86,7 +93,7 @@ class CartsReport implements ReportInterface, PortletInterface
                     COUNT(*) as cartCount,
                     DATE(FROM_UNIXTIME(o_creationDate)) as cartDateTimestamp
                   FROM object_$orderClassId AS carts
-                  WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp and carts-saleState === '" . OrderSaleStates::STATE_CART . "'
+                  WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp and carts.saleState = '" . OrderSaleStates::STATE_CART . "'
                   GROUP BY DATE(FROM_UNIXTIME(o_creationDate))
                 ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp
             ";

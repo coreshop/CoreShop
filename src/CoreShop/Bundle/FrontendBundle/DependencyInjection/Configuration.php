@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\DependencyInjection;
 
@@ -27,7 +31,6 @@ use CoreShop\Bundle\FrontendBundle\Controller\QuoteController;
 use CoreShop\Bundle\FrontendBundle\Controller\RegisterController;
 use CoreShop\Bundle\FrontendBundle\Controller\SearchController;
 use CoreShop\Bundle\FrontendBundle\Controller\SecurityController;
-use CoreShop\Bundle\FrontendBundle\Controller\WishlistController;
 use CoreShop\Bundle\PayumBundle\Controller\PaymentController;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -45,7 +48,8 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('view_suffix')->defaultValue('twig')->end()
                 ->scalarNode('view_bundle')->defaultValue('CoreShopFrontend')->end()
-            ->end();
+            ->end()
+        ;
 
         $this->addCategorySection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
@@ -73,7 +77,8 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function addControllerSection(ArrayNodeDefinition $node): void
@@ -95,10 +100,10 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('quote')->defaultValue(QuoteController::class)->end()
                     ->scalarNode('security')->defaultValue(SecurityController::class)->end()
                     ->scalarNode('payment')->defaultValue(PaymentController::class)->end()
-                    ->scalarNode('wishlist')->defaultValue(WishlistController::class)->end()
                     ->scalarNode('mail')->defaultValue(MailController::class)->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
@@ -129,6 +134,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
-        ->end();
+        ->end()
+        ;
     }
 }

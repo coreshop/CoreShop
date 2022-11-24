@@ -1,15 +1,9 @@
 name: Packages Bundles
-
 on:
   push:
-    paths:
-      - "src/CoreShop/Bundle/**"
-      - "src/CoreShop/Component/**"
+    branches: [ '2.2', '3.0', 'master' ]
   pull_request:
-    branches: [ master, '2.2' ]
-    paths:
-      - "src/CoreShop/Bundle/**"
-      - "src/CoreShop/Component/**"
+    branches: [ '2.2', '3.0', 'master' ]
   release:
     types: [ created ]
   schedule:
@@ -21,11 +15,11 @@ jobs:
     name: "Create a list of packages"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: "List Packages"
       id: create-list
-      run: echo "::set-output name=packages::$(find src/CoreShop/Bundle -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)"
+      run: echo "packages=$(find src/CoreShop/Bundle -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)" >> $GITHUB_OUTPUT
 
     outputs:
        packages: "${{ steps.create-list.outputs.packages }}"
@@ -38,7 +32,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [ 8.0, 8.1 ]
-        pimcore: [ ^10.4, 10.x-dev ]
+        pimcore: [ ^10.5 ]
         dependencies: [ highest, lowest ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
         exclude:
@@ -46,7 +40,7 @@ jobs:
             dependencies: lowest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install PHP
       uses: shivammathur/setup-php@v2
@@ -56,10 +50,10 @@ jobs:
 
     - name: Get Composer cache directory
       id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: Cache Composer
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-php-${{ matrix.php }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}

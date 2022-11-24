@@ -26,6 +26,11 @@ framework:
         handler_id:  ~
         storage_id: session.storage.mock_file
         name: MOCKSESSID
+    messenger:
+        transports:
+            coreshop_index: 'sync://'
+        routing:
+            'CoreShop\Bundle\IndexBundle\Messenger\IndexMessage': coreshop_index
 
 monolog:
     handlers:

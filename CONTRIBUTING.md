@@ -33,17 +33,17 @@ entity that controls or is controlled by the legal entity, or is under common co
 existing work.
 
 * **Submitted** - conveyed to a Project via a pull request, commit, issue, or any form of electronic, written, or 
-verbal communication with Pimcore, contributors or maintainers.
+verbal communication with CoreShop, contributors or maintainers.
 
 #### 1. Grant of Copyright License.
 Subject to the terms and conditions of this agreement, You grant to the Projects’ maintainers, contributors, users and 
-to Pimcore a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, 
+to CoreShop a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, 
 prepare derivative works of, publicly display, publicly perform, sublicense, and distribute Your contributions and such 
 derivative works. Except for this license, You reserve all rights, title, and interest in your contributions.
 
 #### 2. Grant of Patent License.
 Subject to the terms and conditions of this agreement, You grant to the Projects’ maintainers, contributors, users and 
-to Pimcore a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) 
+to CoreShop a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) 
 patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer your contributions, where 
 such license applies only to those patent claims licensable by you that are necessarily infringed by your contribution 
 or by combination of your contribution with the project to which this contribution was submitted. 

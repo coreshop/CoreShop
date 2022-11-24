@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -31,16 +35,18 @@ use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Webmozart\Assert\Assert;
 
 class CheckoutController extends FrontendController
 {
-    public function __construct(protected CheckoutManagerFactoryInterface $checkoutManagerFactory)
-    {
+    public function __construct(
+        protected CheckoutManagerFactoryInterface $checkoutManagerFactory,
+    ) {
     }
 
     public function processAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_CHECKOUT');
+
         if (!$this->getCart()->hasItems()) {
             return $this->redirectToRoute('coreshop_cart_summary');
         }
@@ -149,6 +155,8 @@ class CheckoutController extends FrontendController
 
     public function doCheckoutAction(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('CORESHOP_ORDER_CREATE');
+
         $cart = $this->getCart();
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
 

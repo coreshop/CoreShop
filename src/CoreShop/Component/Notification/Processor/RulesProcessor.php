@@ -1,40 +1,57 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
 
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Component\Notification\Processor;
 
-use CoreShop\Component\Notification\Model\NotificationRuleInterface;
-use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterface;
-use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\Notification\Messenger\NotificationMessage;
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class RulesProcessor implements RulesProcessorInterface
 {
-    public function __construct(private NotificationRuleRepositoryInterface $ruleRepository, private RuleValidationProcessorInterface $ruleValidationProcessor, private RuleApplierInterface $ruleApplier)
-    {
+    public function __construct(
+        private MessageBusInterface $messageBus,
+    ) {
     }
 
-    public function applyRules(string $type, $subject, array $params = []): void
+    public function applyRules(string $type, ResourceInterface $subject, array $params = []): void
     {
-        $rules = $this->ruleRepository->findForType($type);
+        //BC
+        if (isset($params['order']) && $params['order'] instanceof ResourceInterface) {
+            $params['order_id'] = $params['order']->getId();
 
-        /**
-         * @var NotificationRuleInterface $rule
-         */
-        foreach ($rules as $rule) {
-            if ($this->ruleValidationProcessor->isValid($subject, $rule, ['params' => $params])) {
-                $this->ruleApplier->applyRule($rule, $subject, $params);
-            }
+            unset($params['order']);
         }
+
+        //BC
+        if (isset($params['store']) && $params['store'] instanceof ResourceInterface) {
+            $params['store_id'] = $params['store']->getId();
+
+            unset($params['store']);
+        }
+
+        $this->messageBus->dispatch(
+            new NotificationMessage(
+                $type,
+                get_class($subject),
+                $subject->getId(),
+                $params,
+            ),
+        );
     }
 }

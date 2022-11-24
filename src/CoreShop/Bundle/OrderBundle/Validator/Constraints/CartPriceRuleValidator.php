@@ -1,23 +1,27 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Validator\Constraints;
 
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Symfony\Component\Validator\Constraint;
@@ -26,8 +30,10 @@ use Webmozart\Assert\Assert;
 
 final class CartPriceRuleValidator extends ConstraintValidator
 {
-    public function __construct(private CartPriceRuleValidationProcessorInterface $ruleValidationProcessor, private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
-    {
+    public function __construct(
+        private CartPriceRuleValidationProcessorInterface $ruleValidationProcessor,
+        private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+    ) {
     }
 
     public function validate($value, Constraint $constraint): void
@@ -46,7 +52,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
         }
 
         foreach ($ruleItems as $ruleItem) {
-            if (!$ruleItem instanceof ProposalCartPriceRuleItemInterface) {
+            if (!$ruleItem instanceof PriceRuleItemInterface) {
                 return;
             }
 
@@ -66,7 +72,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
             if ($voucherCode && !$this->ruleValidationProcessor->isValidCartRule($value, $cartRule, $voucherCode)) {
                 $this->context->addViolation(
                     $constraint->message,
-                    ['%rule%' => $cartRule->getName()]
+                    ['%rule%' => $cartRule->getName()],
                 );
             }
         }

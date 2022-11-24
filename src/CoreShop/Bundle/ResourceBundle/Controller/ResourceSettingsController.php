@@ -1,19 +1,24 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
 
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Model\Element\AbstractElement;
 use Pimcore\Model\Element\Service;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,12 +56,24 @@ class ResourceSettingsController extends AdminController
             $classes = $this->container->getParameter('coreshop.all.pimcore_classes');
 
             foreach ($classes as $key => $definition) {
+                if (!isset($definition['classes']['type'])) {
+                    continue;
+                }
+
+                if ($definition['classes']['type'] !== CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT) {
+                    continue;
+                }
+
                 $alias = explode('.', $key);
                 $application = $alias[0];
                 $alias = $alias[1];
 
-                $class = str_replace('Pimcore\\Model\\DataObject\\', '', $definition['classes']['model']);
-                $class = str_replace('\\', '', $class);
+                if (isset($definition['classes']['pimcore_class_name'])) {
+                    $class = $definition['classes']['pimcore_class_name'];
+                } else {
+                    $fullClassName = $definition['classes']['model'];
+                    $class = str_replace(['Pimcore\\Model\\DataObject\\', '\\'], '', $fullClassName);
+                }
 
                 $config['classMap'][$application][$alias] = $class;
             }

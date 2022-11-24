@@ -1,16 +1,20 @@
 <?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
 
 declare(strict_types=1);
+
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
 
 namespace CoreShop\Behat\Context\Setup;
 
@@ -47,11 +51,16 @@ use Symfony\Component\Form\FormFactoryInterface;
 final class ProductSpecificPriceRuleContext implements Context
 {
     use ConditionFormTrait;
-
     use ActionFormTrait;
 
-    public function __construct(private SharedStorageInterface $sharedStorage, private ObjectManager $objectManager, private FormFactoryInterface $formFactory, private FormTypeRegistryInterface $conditionFormTypeRegistry, private FormTypeRegistryInterface $actionFormTypeRegistry, private FactoryInterface $productSpecificPriceRuleFactory)
-    {
+    public function __construct(
+        private SharedStorageInterface $sharedStorage,
+        private ObjectManager $objectManager,
+        private FormFactoryInterface $formFactory,
+        private FormTypeRegistryInterface $conditionFormTypeRegistry,
+        private FormTypeRegistryInterface $actionFormTypeRegistry,
+        private FactoryInterface $productSpecificPriceRuleFactory,
+    ) {
     }
 
     /**
@@ -213,7 +222,7 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => (int)$discount,
+            'percent' => (int) $discount,
         ]));
     }
 
@@ -226,7 +235,7 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
-            'amount' => (int)$amount,
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -240,7 +249,7 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->assertActionForm(PriceConfigurationType::class, 'discountPrice');
 
         $this->addAction($rule, $this->createActionWithForm('discountPrice', [
-            'price' => (int)$price,
+            'price' => (int) $price,
             'currency' => $currency->getId(),
         ]));
     }
@@ -254,7 +263,7 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->assertActionForm(PriceConfigurationType::class, 'price');
 
         $this->addAction($rule, $this->createActionWithForm('price', [
-            'price' => (int)$price,
+            'price' => (int) $price,
             'currency' => $currency->getId(),
         ]));
     }

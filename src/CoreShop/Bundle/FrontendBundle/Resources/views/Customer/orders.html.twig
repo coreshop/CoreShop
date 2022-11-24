@@ -41,9 +41,11 @@
                         <span class="badge badge-info">{{ order|coreshop_order_state.calculatedState }}</span>
                     </td>
                     <td>
-                        <a class="btn btn-secondary" href="{{ path('coreshop_customer_order_detail', {order: order.id}) }}">
-                            {{ 'coreshop.ui.show_detail'|trans }}
-                        </a>
+                        {% if is_granted('CORESHOP_CUSTOMER_PROFILE_ORDER_DETAIL') %}
+                            <a class="btn btn-secondary" href="{{ path('coreshop_customer_order_detail', {order: order.id}) }}">
+                                {{ 'coreshop.ui.show_detail'|trans }}
+                            </a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
