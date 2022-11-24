@@ -118,22 +118,6 @@ final class Configuration implements ConfigurationInterface
 #### Serialized Data
 This extension allows you to store SerializedData inside a Pimcore DataObject.
 
-#### Embedded Class
-This extension allows you to embed other Pimcore Classes into one Pimcore Class.
-
-The data tree looks like this then:
-
-- object
-    - embeddedObject1
-    - embeddedObject2
-        - subEmbeddedObject1
-
-You can inherit this as deep as you want, but be careful. The deeper it goes, the more time it takes to save, as it persists every subobject.
-
-![Embeded Class Data](img/embedded_class_data.png)
-
-![Embeded Class Data](img/embedded_class_tag.png)
-
 ### Slug
 
 Pimcore comes with quite useful objects slugs. But it doesn't come with a Slug Generator. CoreShop for the rescue. In Order to use it,
