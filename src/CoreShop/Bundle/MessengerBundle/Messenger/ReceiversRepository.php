@@ -44,7 +44,6 @@ class ReceiversRepository implements ReceiversRepositoryInterface
         return $receivers;
     }
 
-
     /**
      * @return ReceiverInterface[]
      */

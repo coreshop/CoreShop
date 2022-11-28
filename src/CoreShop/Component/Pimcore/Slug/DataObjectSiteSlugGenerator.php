@@ -27,7 +27,7 @@ class DataObjectSiteSlugGenerator implements DataObjectSiteSlugGeneratorInterfac
 {
     public function __construct(
         private SluggableSluggerInterface $slugger,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -46,8 +46,8 @@ class DataObjectSiteSlugGenerator implements DataObjectSiteSlugGeneratorInterfac
                 break;
             }
 
-            $slug = $this->slugger->slug($sluggable, $locale, (string)$i);
-            $slug = $this->dispatchSlugEvent($sluggable, $slug, (string)$i, $site);
+            $slug = $this->slugger->slug($sluggable, $locale, (string) $i);
+            $slug = $this->dispatchSlugEvent($sluggable, $slug, (string) $i, $site);
 
             ++$i;
         }

@@ -25,7 +25,7 @@ use Pimcore\Tool;
 class DataObjectSlugGenerator implements DataObjectSlugGeneratorInterface
 {
     public function __construct(
-        private DataObjectSiteSlugGeneratorInterface $generator
+        private DataObjectSiteSlugGeneratorInterface $generator,
     ) {
     }
 
@@ -38,7 +38,7 @@ class DataObjectSlugGenerator implements DataObjectSlugGeneratorInterface
             $fallbackSlug = $this->generator->generateSlugsForSite($sluggable, $language);
 
             $newSlugs = [
-                new UrlSlug($fallbackSlug, 0)
+                new UrlSlug($fallbackSlug, 0),
             ];
             $actualSlugs = [];
             $existingSlugs = $sluggable->getSlug($language);
