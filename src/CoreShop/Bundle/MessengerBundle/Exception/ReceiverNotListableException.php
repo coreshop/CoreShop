@@ -22,8 +22,8 @@ use Symfony\Component\Messenger\Exception\RuntimeException;
 
 final class ReceiverNotListableException extends RuntimeException
 {
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct('The receiver does not support listing or showing specific messages.');
     }
 }

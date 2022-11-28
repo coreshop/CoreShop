@@ -28,9 +28,8 @@ class SlugGenerationEvent extends Event
         protected SluggableInterface $sluggable,
         protected string $slug,
         protected ?string $suffix = null,
-        protected ?Site $site = null
-    )
-    {
+        protected ?Site $site = null,
+    ) {
     }
 
     public function getSluggable(): SluggableInterface
