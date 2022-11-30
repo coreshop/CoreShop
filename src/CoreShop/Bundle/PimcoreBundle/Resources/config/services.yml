@@ -3,6 +3,7 @@ imports:
     - { resource: services/grid.yml }
     - { resource: services/dynamic_dropdown.yml }
     - { resource: services/pimcore.yml }
+    - { resource: services/link_generator.yaml }
 
 parameters:
     coreshop.admin.route.base: /admin/coreshop
@@ -83,10 +84,12 @@ services:
             - { name: kernel.event_subscriber }
 
     CoreShop\Component\Pimcore\Slug\SluggableLinkGenerator:
-        public: true
         arguments:
             - '@Pimcore\Http\Request\Resolver\SiteResolver'
             - '@Symfony\Component\HttpFoundation\RequestStack'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+        tags:
+            - { name: coreshop.link_generator, type: sluggable, priority: 20 }
 
     CoreShop\Component\Pimcore\Twig\Extension\DataObjectRoutingExtension:
         tags:

@@ -7,7 +7,7 @@
     "allowVariants": true,
     "showVariants": true,
     "generateTypeDeclarations": true,
-    "linkGeneratorReference": "@CoreShop\\Component\\Pimcore\\Slug\\SluggableLinkGenerator",
+    "linkGeneratorReference": "@CoreShop\\Component\\Pimcore\\DataObject\\CompositeLinkGenerator",
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
@@ -1182,8 +1182,6 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
-    "generateTypeDeclarations": true,
-
     "propertyVisibility": {
         "grid": {
             "id": true,

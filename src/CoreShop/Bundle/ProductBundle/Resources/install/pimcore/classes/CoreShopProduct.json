@@ -7,7 +7,7 @@
     "allowVariants": false,
     "showVariants": false,
     "generateTypeDeclarations": true,
-    "linkGeneratorReference": "@CoreShop\\Component\\Pimcore\\Slug\\SluggableLinkGenerator",
+    "linkGeneratorReference": "@CoreShop\\Component\\Pimcore\\DataObject\\CompositeLinkGenerator",
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,

@@ -92,4 +92,3 @@ services:
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
 
     CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller: ~
-

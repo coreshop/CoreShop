@@ -47,6 +47,17 @@ final class Registry implements RegistryInterface
         throw new \InvalidArgumentException(sprintf('Model with class "%s" does not exist.', $className));
     }
 
+    public function hasClass($className): bool
+    {
+        foreach ($this->metadata as $metadata) {
+            if ($className === $metadata->getClass('model')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function add(MetadataInterface $metadata): void
     {
         $this->metadata[$metadata->getAlias()] = $metadata;
