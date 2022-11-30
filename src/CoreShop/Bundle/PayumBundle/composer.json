@@ -31,7 +31,7 @@
     "payum/payum-bundle": "dev-master",
     "symfony/notifier": "^5.4.0",
     "symfony/serializer": "^5.4.0",
-    "payum/payum": "dev-master",
+    "payum/payum": "^1.7",
     "php-http/guzzle7-adapter": "^0.1",
     "pimcore/pimcore": "^10.5"
   },
