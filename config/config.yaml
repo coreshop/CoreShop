@@ -3,4 +3,3 @@ imports:
     - { resource: migrations.yaml }
     - { resource: system.yml }
     - { resource: 'local/' }
- 
