@@ -37,11 +37,11 @@ final class Version20220817144952 extends AbstractMigration implements Container
     {
         $classUpdater = new ClassUpdate($this->container->getParameter('coreshop.model.order_item.pimcore_class_name'));
 
-        if ($classUpdater->hasField('price_rules')) {
+        if ($classUpdater->hasField('priceRuleItems')) {
             return;
         }
 
-        $attributesLayout = [
+        $priceRulesLayout = [
             'fieldtype' => 'panel',
             'labelWidth' => 100,
             'name' => 'price_rules',
@@ -88,7 +88,7 @@ final class Version20220817144952 extends AbstractMigration implements Container
             'locked' => false,
         ];
 
-        $classUpdater->insertLayoutAfter('numbers', $attributesLayout);
+        $classUpdater->insertLayoutAfter('numbers', $priceRulesLayout);
         $classUpdater->save();
     }
 
