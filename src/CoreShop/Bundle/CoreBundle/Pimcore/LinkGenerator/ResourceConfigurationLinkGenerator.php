@@ -29,7 +29,7 @@ class ResourceConfigurationLinkGenerator extends AbstractSluggableLinkGenerator
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-        private RegistryInterface $registry
+        private RegistryInterface $registry,
     ) {
     }
 
