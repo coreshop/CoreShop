@@ -55,7 +55,6 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
         foreach ($configs['list'] as $name => $list) {
             $isDefaultContextInterface = $list['context']['interface'] === StorageListContextInterface::class;
             $isDefaultContextComposite = $list['context']['composite'] === CompositeStorageListContext::class;
-            $isShareable = array_key_exists(ShareableStorageListInterface::class, class_implements($list['resource']['interface']));
 
             $contextCompositeServiceName = $isDefaultContextComposite ? 'coreshop.context.storage_list.' . $name : $list['context']['composite'];
 
@@ -105,24 +104,6 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $container->setDefinition('coreshop.storage_list.session_subscriber.' . $name, $sessionSubscriber);
             }
 
-            if ($isShareable && $list['share_controller']['enabled']) {
-                $class = $list['share_controller']['class'];
-
-                if ($container->has($class)) {
-                    $controllerDefinition = $container->getDefinition($class);
-                } else {
-                    $controllerDefinition = new Definition($class);
-                }
-
-                $controllerDefinition->setArgument('$identifier', $name);
-                $controllerDefinition->setArgument('$repository', new Reference($list['resource']['repository']));
-                $controllerDefinition->setArgument('$templateShareSummary', $list['templates']['share_summary']);
-                $controllerDefinition->addTag('controller.service_arguments');
-                $controllerDefinition->addMethodCall('setContainer', [new Reference('service_container')]);
-
-                $container->setDefinition('coreshop.storage_list_share.controller.' . $name, $controllerDefinition);
-            }
-
             if ($list['controller']['enabled']) {
                 $class = $list['controller']['class'];
 
@@ -148,7 +129,6 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $controllerDefinition->setArgument('$indexRoute', $list['routes']['index']);
                 $controllerDefinition->setArgument('$templateSummary', $list['templates']['summary']);
                 $controllerDefinition->setArgument('$templateAddToList', $list['templates']['add_to_cart']);
-                $controllerDefinition->setArgument('$shareSummaryRoute', $list['routes']['share_summary']);
                 $controllerDefinition->addTag('controller.service_arguments');
                 $controllerDefinition->addMethodCall('setContainer', [new Reference('service_container')]);
 

@@ -27,6 +27,7 @@ use CoreShop\Component\StorageList\Factory\StorageListItemFactoryInterface;
 use CoreShop\Component\StorageList\Model\ShareableStorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use CoreShop\Component\StorageList\Repository\ShareableStorageListRepositoryInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,6 +37,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class StorageListController extends AbstractController
@@ -57,7 +59,6 @@ class StorageListController extends AbstractController
         protected string $indexRoute,
         protected string $templateAddToList,
         protected string $templateSummary,
-        protected ?string $shareSummaryRoute = null,
     ) {
     }
 
@@ -175,45 +176,67 @@ class StorageListController extends AbstractController
 
     public function summaryAction(Request $request): Response
     {
-        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)));
-        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_SUMMARY', strtoupper($this->identifier)));
+        $repository = $this->repository;
+        $isSharedList = false;
 
-        $list = $this->context->getStorageList();
-        $form = $this->formFactory->createNamed('coreshop', $this->form, $list);
-        $form->handleRequest($request);
-
-        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isSubmitted()) {
-            if ($form->isValid()) {
-                $list = $form->getData();
-
-                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.cart_updated'));
-
-                $this->manager->persist($list);
-
-                return $this->redirectToRoute($this->summaryRoute);
+        if ($request->attributes->get('token')) {
+            if (!$repository instanceof ShareableStorageListRepositoryInterface) {
+                throw new NotFoundHttpException();
             }
 
-            $session = $request->getSession();
+            $list = $repository->findByToken($request->attributes->get('token'));
+            $isSharedList = true;
 
-            if ($session instanceof Session) {
-                /**
-                 * @var FormError $error
-                 */
-                foreach ($form->getErrors() as $error) {
-                    $session->getFlashBag()->add('error', $error->getMessage());
-                }
-
-                return $this->redirectToRoute($this->summaryRoute);
+            if (null === $list) {
+                throw new NotFoundHttpException();
             }
         }
+        else {
+            $list = $this->context->getStorageList();
+        }
+
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)), $list);
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_SUMMARY', strtoupper($this->identifier)), $list);
 
         $params = [
             'storage_list' => $list,
-            'form' => $form->createView(),
+            'is_shared_list' => $isSharedList
         ];
 
-        if (null !== $this->shareSummaryRoute && $list instanceof ShareableStorageListInterface && $list->listCanBeShared()) {
-            $params['share_link'] = $this->generateUrl($this->shareSummaryRoute, ['token' => $list->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+        if (!$isSharedList) {
+            $form = $this->formFactory->createNamed('coreshop', $this->form, $list);
+            $form->handleRequest($request);
+
+            if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isSubmitted()) {
+                if ($form->isValid()) {
+                    $list = $form->getData();
+
+                    $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.cart_updated'));
+
+                    $this->manager->persist($list);
+
+                    return $this->redirectToRoute($this->summaryRoute);
+                }
+
+                $session = $request->getSession();
+
+                if ($session instanceof Session) {
+                    /**
+                     * @var FormError $error
+                     */
+                    foreach ($form->getErrors() as $error) {
+                        $session->getFlashBag()->add('error', $error->getMessage());
+                    }
+
+                    return $this->redirectToRoute($this->summaryRoute);
+                }
+            }
+
+            $params['form'] = $form->createView();
+        }
+
+        if (!$isSharedList && $list instanceof ShareableStorageListInterface && $list->listCanBeShared()) {
+            $params['share_link'] = $this->generateUrl($this->summaryRoute, ['token' => $list->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         return $this->render($this->templateSummary, $params);
