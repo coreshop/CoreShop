@@ -32,8 +32,8 @@ class CompositeLinkGenerator implements LinkGeneratorInterface
      */
     private PriorityQueue $linkGenerator;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->linkGenerator = new PriorityQueue();
     }
 

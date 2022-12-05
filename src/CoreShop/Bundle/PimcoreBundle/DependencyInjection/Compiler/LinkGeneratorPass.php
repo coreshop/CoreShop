@@ -25,8 +25,8 @@ final class LinkGeneratorPass extends PrioritizedCompositeServicePass
 {
     public const LINK_GENERATOR_TAG = 'coreshop.link_generator';
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         parent::__construct(
             CompositeLinkGenerator::class,
             CompositeLinkGenerator::class,
