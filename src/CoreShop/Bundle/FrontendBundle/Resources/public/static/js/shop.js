@@ -15,6 +15,17 @@ $(document).ready(function () {
             'containerSelector': '.paymentSettings',
             'selectorAttr': 'data-factory'
         });
+
+        $('.copy-to-clipboard').click(function() {
+            var copyText = document.getElementById($(this).data('target'));
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+
+            $(copyText).tooltip({
+                title: $(this).data('copied-text')
+            });
+        });
     };
 
     shop.initCategorySelect = function () {

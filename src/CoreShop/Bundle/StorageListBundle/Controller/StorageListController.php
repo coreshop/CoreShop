@@ -24,6 +24,7 @@ use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\DTO\AddToStorageListInterface;
 use CoreShop\Component\StorageList\Factory\AddToStorageListFactoryInterface;
 use CoreShop\Component\StorageList\Factory\StorageListItemFactoryInterface;
+use CoreShop\Component\StorageList\Model\ShareableStorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
@@ -35,6 +36,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class StorageListController extends AbstractController
 {
@@ -55,6 +57,7 @@ class StorageListController extends AbstractController
         protected string $indexRoute,
         protected string $templateAddToList,
         protected string $templateSummary,
+        protected ?string $shareSummaryRoute = null,
     ) {
     }
 
@@ -204,10 +207,16 @@ class StorageListController extends AbstractController
             }
         }
 
-        return $this->render($this->templateSummary, [
+        $params = [
             'storage_list' => $list,
             'form' => $form->createView(),
-        ]);
+        ];
+
+        if (null !== $this->shareSummaryRoute && $list instanceof ShareableStorageListInterface && $list->listCanBeShared()) {
+            $params['share_link'] = $this->generateUrl($this->shareSummaryRoute, ['token' => $list->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+        }
+
+        return $this->render($this->templateSummary, $params);
     }
 
     protected function createAddToStorageList(

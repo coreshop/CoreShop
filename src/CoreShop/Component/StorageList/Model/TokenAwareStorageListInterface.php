@@ -16,13 +16,11 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Wishlist\Repository;
+namespace CoreShop\Component\StorageList\Model;
 
-use CoreShop\Component\StorageList\Repository\PimcoreStorageListRepositoryInterface;
-use CoreShop\Component\StorageList\Repository\ShareableStorageListRepositoryInterface;
-use CoreShop\Component\Wishlist\Model\WishlistInterface;
-
-interface WishlistRepositoryInterface extends PimcoreStorageListRepositoryInterface, ShareableStorageListRepositoryInterface
+interface TokenAwareStorageListInterface
 {
-    public function findByToken(string $token): ?WishlistInterface;
+    public function getToken(): ?string;
+
+    public function setToken(?string $token);
 }

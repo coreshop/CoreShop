@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\StorageListBundle\DependencyInjection;
 
 use CoreShop\Bundle\StorageListBundle\Controller\StorageListController;
+use CoreShop\Bundle\StorageListBundle\Controller\StorageListShareController;
 use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Factory\AddToStorageListFactory;
@@ -91,8 +92,9 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode('routes')
                                 ->addDefaultsIfNotSet()
                                 ->children()
-                                    ->scalarNode('summary')->cannotBeEmpty()->end()
                                     ->scalarNode('index')->cannotBeEmpty()->end()
+                                    ->scalarNode('summary')->cannotBeEmpty()->end()
+                                    ->scalarNode('share_summary')->cannotBeEmpty()->end()
                                 ->end()
                             ->end()
                             ->arrayNode('templates')
@@ -100,6 +102,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('add_to_cart')->cannotBeEmpty()->end()
                                     ->scalarNode('summary')->cannotBeEmpty()->end()
+                                    ->scalarNode('share_summary')->cannotBeEmpty()->end()
                                 ->end()
                             ->end()
                             ->arrayNode('session')
@@ -114,6 +117,13 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->booleanNode('enabled')->defaultFalse()->end()
                                     ->scalarNode('class')->defaultValue(StorageListController::class)->end()
+                                ->end()
+                            ->end()
+                            ->arrayNode('share_controller')
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->booleanNode('enabled')->defaultFalse()->end()
+                                    ->scalarNode('class')->defaultValue(StorageListShareController::class)->end()
                                 ->end()
                             ->end()
                         ->end()

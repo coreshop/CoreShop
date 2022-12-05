@@ -274,3 +274,11 @@ routes:
     variables: _locale,item
     priority: 3
 
+  coreshop_wishlist_share_summary:
+    pattern: '/(\w+)\/shop\/share\/wishlist\/(.*)$/'
+    reverse: '/%_locale/shop/share/wishlist/%token'
+    controller: 'coreshop.storage_list_share.controller.wishlist:shareSummaryAction'
+    variables: _locale,token
+    priority: 2
+
+
