@@ -18,12 +18,9 @@ coreshop.cart.pricerules.actions.giftProduct = Class.create(coreshop.rules.actio
         this.product = new coreshop.object.elementHref({
             id: this.data ? this.data.product : null,
             type: 'object',
-            subtype: coreshop.class_map.coreshop.product
         }, {
             objectsAllowed: true,
-            classes: [{
-                classes: coreshop.class_map.coreshop.product
-            }],
+            classes: this.getFormattedStackClasses(coreshop.stack.coreshop.purchasable),
             name: 'product',
             title: t('coreshop_action_giftProduct')
         });
