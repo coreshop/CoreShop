@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\StorageListBundle\DependencyInjection;
 
 use CoreShop\Bundle\StorageListBundle\Controller\StorageListController;
+use CoreShop\Bundle\StorageListBundle\Controller\StorageListShareController;
 use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Factory\AddToStorageListFactory;

@@ -102,6 +102,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
 
                 $container->setDefinition('coreshop.storage_list.session_subscriber.' . $name, $sessionSubscriber);
             }
+
             if ($list['controller']['enabled']) {
                 $class = $list['controller']['class'];
 

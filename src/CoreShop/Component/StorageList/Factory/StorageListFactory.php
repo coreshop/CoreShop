@@ -20,6 +20,9 @@ namespace CoreShop\Component\StorageList\Factory;
 
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\Model\TokenAwareStorageListInterface;
 
 class StorageListFactory implements FactoryInterface
 {
@@ -30,11 +33,19 @@ class StorageListFactory implements FactoryInterface
 
     public function createNew()
     {
+        /**
+         * @var StorageListInterface $storageList
+         */
         $storageList = $this->storageListFactory->createNew();
 
         if ($storageList instanceof AbstractPimcoreModel) {
             $storageList->setKey(uniqid('wishlist', true));
             $storageList->setPublished(true);
+        }
+
+        if ($storageList instanceof TokenAwareStorageListInterface) {
+            $tokenGenerator = new UniqueTokenGenerator();
+            $storageList->setToken($tokenGenerator->generate(10));
         }
 
         return $storageList;

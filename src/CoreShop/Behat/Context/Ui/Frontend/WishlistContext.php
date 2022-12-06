@@ -98,4 +98,21 @@ final class WishlistContext implements Context
     {
         Assert::true($this->wishlistPage->hasItemNamed($itemName));
     }
+    /**
+     * @Then I can see the share wishlist link
+     */
+    public function iCanSeeTheShareWishlistLink(): void
+    {
+        Assert::true($this->wishlistPage->hasShareWishlistLink());
+    }
+
+
+    /**
+     * @Given I visit the share wishlist link
+     */
+    public function iVisitTheShareWishlistLink(): void
+    {
+        $this->wishlistPage->open();
+        $this->wishlistPage->tryToOpenWithUri($this->wishlistPage->getShareWishlistLink());
+    }
 }
