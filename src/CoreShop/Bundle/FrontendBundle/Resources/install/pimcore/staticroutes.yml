@@ -22,6 +22,20 @@ routes:
     variables: _locale,product
     priority: 3
 
+  coreshop_category_list:
+    pattern: '/(\w+)\/shop\/(.*?)\~c([0-9]+)$/'
+    reverse: '/%_locale/shop/%name~c%category'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\CategoryController:indexAction'
+    variables: _locale,name,category
+    priority: 2
+
+  coreshop_product_detail:
+    pattern: '/(\w+)\/shop\/(.*?)\~p([0-9]+)$/'
+    reverse: '/%_locale/shop/%name~p%product'
+    controller: 'CoreShop\Bundle\FrontendBundle\Controller\ProductController:detailAction'
+    variables: _locale,name,product
+    priority: 2
+
   coreshop_partial_cart_add:
     pattern: '/(\w+)\/_partial\/cart\/add\/([0-9]+)$/'
     reverse: '/%_locale/_partial/cart/add/%product'
@@ -233,17 +247,17 @@ routes:
     priority: 2
 
   coreshop_wishlist_summary:
-    pattern: '/(\w+)\/shop\/wishlist$/'
-    reverse: '/%_locale/shop/wishlist'
+    pattern: '/(\w+)\/shop\/wishlist(?:\/((.*)))$/'
+    reverse: '/%_locale/shop/wishlist/{%identifier}'
     controller: 'coreshop.storage_list.controller.wishlist:summaryAction'
-    variables: _locale
+    variables: _locale,identifier
     priority: 2
 
   coreshop_wishlist_add:
     pattern: '/(\w+)\/shop\/wishlist\/add\/([0-9]+)$/'
     reverse: '/%_locale/shop/wishlist/add/%product'
     controller: 'coreshop.storage_list.controller.wishlist:addItemAction'
-    variables: _locale,product
+    variables: _locale,product,token
     priority: 3
 
   coreshop_partial_wishlist_add:
@@ -259,4 +273,5 @@ routes:
     controller: 'coreshop.storage_list.controller.wishlist:removeItemAction'
     variables: _locale,item
     priority: 3
+
 

@@ -16,17 +16,9 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Behat\Page\Frontend;
+namespace CoreShop\Component\StorageList\Model;
 
-interface WishlistPageInterface extends FrontendPageInterface
+interface ShareableStorageListInterface extends TokenAwareStorageListInterface
 {
-    public function isEmpty(): bool;
-
-    public function hasItemNamed(string $name): bool;
-
-    public function hasShareWishlistLink(): bool;
-
-    public function getShareWishlistLink(): string;
-
-    public function removeProduct(string $productName): void;
+    public function listCanBeShared(): bool;
 }

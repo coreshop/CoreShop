@@ -2,19 +2,6 @@
 {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
 
 {% block content %}
-
-    {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
-
-    {% if share_link is defined and share_link %}
-        <div class="input-group mb-3">
-            <input {{ coreshop_test_html_attribute('share-wishlist-link') }} type="text" class="form-control" readonly="readonly" id="link" value="{{ share_link }}" >
-            <div class="input-group-append">
-                <button class="btn btn-outline-success copy-to-clipboard" data-copied-text="{{ 'coreshop.ui.copied'|trans }}" data-target="link" type="button" id="button-addon2">{{ 'coreshop.ui.copy'|trans }}</button>
-            </div>
-        </div>
-
-    {% endif %}
-
     {% if storage_list.hasItems %}
     <div class="table-responsive shopping-wishlist-table">
         <table class="table table-bordered" {{ coreshop_test_html_attribute('wishlist-items') }}>
@@ -29,11 +16,6 @@
                 <td class="text-center">
                     {{ 'coreshop.ui.price'|trans }}
                 </td>
-                {% if not is_shared_list %}
-                <td class="text-center">
-
-                </td>
-                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -56,19 +38,6 @@
                     <td class="text-right wishlist-item-price">
                         {{ currency.getPrice(product) }}
                     </td>
-                    {% if not is_shared_list %}
-                    <td class="text-center">
-                        <a
-                                href="{{ path('coreshop_wishlist_remove', {item: item.id}) }}"
-                                title="{{ 'coreshop.ui.remove'|trans }}"
-                                class="btn btn-danger tool-tip"
-                                data-id="{{ item.id }}"
-                                {{ coreshop_test_html_attribute('wishlist-remove-button', product.name) }}
-                        >
-                            <i class="fa fa-times-circle"></i>
-                        </a>
-                    </td>
-                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

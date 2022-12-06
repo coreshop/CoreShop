@@ -44,7 +44,7 @@ services:
             - { name: validator.constraint_validator, alias: coreshop_variant_valid_attributes }
 
     CoreShop\Bundle\VariantBundle\Pimcore\VariantLinkGenerator:
-        decorates: 'CoreShop\Component\Pimcore\Slug\SluggableLinkGenerator'
+        decorates: 'CoreShop\Component\Pimcore\DataObject\CompositeLinkGenerator'
         arguments:
             - '@CoreShop\Bundle\VariantBundle\Pimcore\VariantLinkGenerator.inner'
             - '%coreshop.variant.redirect_to_main_variant%'

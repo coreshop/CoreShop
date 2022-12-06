@@ -35,6 +35,8 @@ interface RegistryInterface
      */
     public function getByClass($className): MetadataInterface;
 
+    public function hasClass($className): bool;
+
     public function add(MetadataInterface $metadata): void;
 
     /**

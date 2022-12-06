@@ -26,22 +26,22 @@ class BigIntIntegerType extends Type
 {
     public const BIGINT_INTEGER = 'bigintInteger';
 
-    public function getName()
+    public function getName(): string
     {
         return self::BIGINT_INTEGER;
     }
 
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getBigIntTypeDeclarationSQL($column);
     }
 
-    public function getBindingType()
+    public function getBindingType(): int
     {
         return ParameterType::STRING;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?int
     {
         return $value === null ? null : (int) $value;
     }
