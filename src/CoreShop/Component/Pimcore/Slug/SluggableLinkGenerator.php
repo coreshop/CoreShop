@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Component\Pimcore\Slug;
 
 use CoreShop\Component\Pimcore\Exception\LinkGenerationNotPossibleException;
-use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Pimcore\Http\Request\Resolver\SiteResolver;
 use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
 use Pimcore\Model\DataObject\Concrete;
@@ -30,7 +29,6 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
     public function __construct(
         private SiteResolver $siteResolver,
         private RequestStack $requestStack,
-        private RegistryInterface $metadataRegistry,
     ) {
     }
 
@@ -42,14 +40,6 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
                 $object->getFullPath(),
                 SluggableInterface::class,
             ));
-        }
-
-        if ($this->metadataRegistry->hasClass($object::class)) {
-            $metadata = $this->metadataRegistry->getByClass($object::class);
-
-            if ($metadata->hasParameter('slug') && !$metadata->getParameter('slug')) {
-                throw new LinkGenerationNotPossibleException();
-            }
         }
 
         $slugs = $object->getSlug($params['_locale'] ?? null);
