@@ -117,7 +117,7 @@ services:
     coreshop.rule.cart_price_rule.action.gift_product:
         class: CoreShop\Component\Core\Cart\Rule\Action\GiftProductActionProcessor
         arguments:
-            - '@coreshop.repository.product'
+            - '@coreshop.repository.stack.purchasable'
             - '@coreshop.factory.order_item'
             - '@coreshop.factory.adjustment'
         tags:
