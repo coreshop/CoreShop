@@ -236,7 +236,7 @@ class StorageListController extends AbstractController
         }
 
         if (!$isSharedList && $list instanceof ShareableStorageListInterface && $list->listCanBeShared()) {
-            $params['share_link'] = $this->generateUrl($this->summaryRoute, ['token' => $list->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+            $params['share_link'] = $this->generateUrl($this->summaryRoute, ['identifier' => $list->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         return $this->render($this->templateSummary, $params);
