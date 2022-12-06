@@ -24,7 +24,8 @@
     }
   ],
   "require": {
-    "pimcore/pimcore": "^10.5"
+    "pimcore/pimcore": "^10.5",
+    "laminas/laminas-stdlib": "^3.6"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.5.4",
