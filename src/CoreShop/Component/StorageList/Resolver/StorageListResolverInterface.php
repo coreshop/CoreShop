@@ -16,19 +16,16 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\StorageList\Core\Repository;
+namespace CoreShop\Component\StorageList\Resolver;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
-use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 
-interface CustomerAndStoreAwareRepositoryInterface extends PimcoreRepositoryInterface
+interface StorageListResolverInterface
 {
-    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer, string $name = null): ?StorageListInterface;
-
     /**
      * @return StorageListInterface[]
      */
-    public function findNamedStorageLists(StoreInterface $store, CustomerInterface $customer): array;
+    public function getStorageLists(): array;
+
+    public function findNamed(string $name): ?StorageListInterface;
 }

@@ -16,14 +16,11 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\StorageList\Context;
+namespace CoreShop\Component\StorageList\Model;
 
-use CoreShop\Component\StorageList\Model\StorageListInterface;
-
-interface StorageListContextInterface
+interface NameableStorageListInterface
 {
-    /**
-     * @throws StorageListNotFoundException
-     */
-    public function getStorageList(/*array $params = []*/): StorageListInterface;
+    public function getName(): ?string;
+
+    public function setName(?string $name);
 }

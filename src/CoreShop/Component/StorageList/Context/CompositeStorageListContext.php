@@ -40,11 +40,26 @@ class CompositeStorageListContext implements StorageListContextInterface
         $this->contexts->insert($context, $priority);
     }
 
-    public function getStorageList(): StorageListInterface
+    public function getStorageList(/*array $params = []*/): StorageListInterface
     {
+        if (func_num_args() >= 1) {
+            $params = func_get_arg(0);
+
+            if (!is_array($params)) {
+                //TODO: add deprecation
+                $params = [];
+            }
+        }
+        else {
+            //TODO: add deprecation
+
+            $params = [];
+        }
+
+
         foreach ($this->contexts as $context) {
             try {
-                return $context->getStorageList();
+                return $context->getStorageList($params);
             } catch (StorageListNotFoundException) {
                 continue;
             }

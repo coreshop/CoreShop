@@ -16,14 +16,10 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\StorageList\Context;
+namespace CoreShop\Component\Wishlist\Wishlist;
 
-use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\Core\Context\PimcoreListResolver;
 
-interface StorageListContextInterface
+class WishlistResolver extends PimcoreListResolver
 {
-    /**
-     * @throws StorageListNotFoundException
-     */
-    public function getStorageList(/*array $params = []*/): StorageListInterface;
 }

@@ -18,11 +18,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\StorageList\Factory;
 
-use CoreShop\Component\StorageList\DTO\AddToStorageListInterface;
-use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\DTO\AddToSelectableStorageList;
+use CoreShop\Component\StorageList\DTO\AddToSelectableStorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
-class AddToStorageListFactory implements AddToStorageListFactoryInterface
+class AddToSelectableStorageListFactory implements AddToSelectableStorageListFactoryInterface
 {
     /**
      * @psalm-param class-string $addToWishlistClass
@@ -32,16 +32,15 @@ class AddToStorageListFactory implements AddToStorageListFactoryInterface
     ) {
     }
 
-    public function createWithStorageListAndStorageListItem(
-        StorageListInterface $storageList,
+    public function createWithStorageListItem(
         StorageListItemInterface $storageListItem,
-    ): AddToStorageListInterface {
-        if (!in_array(AddToStorageListInterface::class, class_implements($this->addToWishlistClass), true)) {
+    ): AddToSelectableStorageList {
+        if (!in_array(AddToSelectableStorageListInterface::class, class_implements($this->addToWishlistClass), true)) {
             throw new \InvalidArgumentException(
-                sprintf('%s needs to implement "%s".', $this->addToWishlistClass, AddToStorageListInterface::class),
+                sprintf('%s needs to implement "%s".', $this->addToWishlistClass, AddToSelectableStorageListInterface::class),
             );
         }
 
-        return new $this->addToWishlistClass($storageList, $storageListItem);
+        return new $this->addToWishlistClass($storageListItem);
     }
 }

@@ -40,7 +40,7 @@ final class SessionAndStoreBasedStorageListContext implements StorageListContext
     ) {
     }
 
-    public function getStorageList(): StorageListInterface
+    public function getStorageList(array $params = []): StorageListInterface
     {
         if (null !== $this->storageList) {
             return $this->storageList;
@@ -64,7 +64,12 @@ final class SessionAndStoreBasedStorageListContext implements StorageListContext
             throw new StorageListNotFoundException('CoreShop was not able to find the List in session');
         }
 
-        $storageListId = $session->get(sprintf('%s.%s', $this->sessionKeyName, $store->getId()));
+        if (isset($params['name'])) {
+            $storageListId = $session->get(sprintf('%s.%s.%s', $this->sessionKeyName, $store->getId(), md5($params['name'])));
+        }
+        else {
+            $storageListId = $session->get(sprintf('%s.%s', $this->sessionKeyName, $store->getId()));
+        }
 
         if (!is_int($storageListId)) {
             throw new StorageListNotFoundException('CoreShop was not able to find the List in session');

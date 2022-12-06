@@ -6,6 +6,7 @@ core_shop_storage_list:
             services:
                 manager: CoreShop\Component\StorageList\Manager\StorageListPimcoreModelManager
                 modifier: CoreShop\Component\Wishlist\Wishlist\WishlistModifier
+                list_resolver: CoreShop\Component\Wishlist\Wishlist\WishlistResolver
                 enable_default_store_based_decorator: true
             session:
                 enabled: true
@@ -13,6 +14,7 @@ core_shop_storage_list:
             form:
                 type: CoreShop\Bundle\WishlistBundle\Form\Type\WishlistType
                 add_type: CoreShop\Bundle\WishlistBundle\Form\Type\AddToWishlistType
+                add_selectable_type: CoreShop\Bundle\WishlistBundle\Form\Type\AddToSelectableWishlistType
             resource:
                 interface: '%coreshop.interface.wishlist%'
                 product_repository: coreshop.repository.stack.wishlist_product
@@ -25,6 +27,7 @@ core_shop_storage_list:
                 index: coreshop_index
             templates:
                 add_to_cart: '@CoreShopFrontend/Product/_addToWishlist.html.twig'
+                add_to_selectable_list: '@CoreShopFrontend/Product/_addToSelectableWishlist.html.twig'
                 summary: '@CoreShopFrontend/Wishlist/summary.html.twig'
             controller:
                 enabled: true

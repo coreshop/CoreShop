@@ -128,6 +128,10 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $controllerDefinition->setArgument('$indexRoute', $list['routes']['index']);
                 $controllerDefinition->setArgument('$templateSummary', $list['templates']['summary']);
                 $controllerDefinition->setArgument('$templateAddToList', $list['templates']['add_to_cart']);
+                $controllerDefinition->setArgument('$listResolver', new Reference($list['services']['list_resolver']));
+                $controllerDefinition->setArgument('$addToSelectableStorageListForm', $list['form']['add_selectable_type']);
+                $controllerDefinition->setArgument('$addToSelectableStorageListFactory', new Reference($list['resource']['add_to_selectable_list_factory']));
+                $controllerDefinition->setArgument('$templateAddSelectableToList', $list['templates']['add_to_selectable_list']);
                 $controllerDefinition->addTag('controller.service_arguments');
                 $controllerDefinition->addMethodCall('setContainer', [new Reference('service_container')]);
 

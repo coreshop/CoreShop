@@ -20,6 +20,7 @@ namespace CoreShop\Component\StorageList\Context;
 
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use CoreShop\Component\StorageList\Model\NameableStorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 
 final class StorageListFactoryContext implements StorageListContextInterface
@@ -29,7 +30,7 @@ final class StorageListFactoryContext implements StorageListContextInterface
     ) {
     }
 
-    public function getStorageList(): StorageListInterface
+    public function getStorageList(array $params = []): StorageListInterface
     {
         /**
          * @var StorageListInterface $storageList
@@ -39,6 +40,10 @@ final class StorageListFactoryContext implements StorageListContextInterface
         if ($storageList instanceof AbstractPimcoreModel) {
             $storageList->setKey(uniqid());
             $storageList->setPublished(true);
+        }
+
+        if (isset($params['name']) && $storageList instanceof NameableStorageListInterface) {
+            $storageList->setName($params['name']);
         }
 
         return $storageList;

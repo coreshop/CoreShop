@@ -26,6 +26,7 @@ use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\Locale\Context\LocaleNotFoundException;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Context\StorageListNotFoundException;
+use CoreShop\Component\StorageList\Model\NameableStorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
@@ -40,7 +41,7 @@ final class StoreBasedStorageListContext implements StorageListContextInterface
     ) {
     }
 
-    public function getStorageList(): StorageListInterface
+    public function getStorageList(array $params = []): StorageListInterface
     {
         if (null !== $this->storageList) {
             return $this->storageList;
@@ -73,6 +74,10 @@ final class StoreBasedStorageListContext implements StorageListContextInterface
              */
             $customer = $this->shopperContext->getCustomer();
             $storageList->setCustomer($customer);
+        }
+
+        if (isset($params['name']) && $storageList instanceof NameableStorageListInterface) {
+            $storageList->setName($params['name']);
         }
 
         $this->storageList = $storageList;

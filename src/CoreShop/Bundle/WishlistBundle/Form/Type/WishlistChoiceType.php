@@ -16,14 +16,10 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\StorageList\Context;
+namespace CoreShop\Bundle\WishlistBundle\Form\Type;
 
-use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Bundle\StorageListBundle\Form\Type\StorageListChoiceType;
 
-interface StorageListContextInterface
+final class WishlistChoiceType extends StorageListChoiceType
 {
-    /**
-     * @throws StorageListNotFoundException
-     */
-    public function getStorageList(/*array $params = []*/): StorageListInterface;
 }
