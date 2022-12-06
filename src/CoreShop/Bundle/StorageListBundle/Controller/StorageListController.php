@@ -179,12 +179,12 @@ class StorageListController extends AbstractController
         $repository = $this->repository;
         $isSharedList = false;
 
-        if ($request->attributes->get('token')) {
+        if ($request->attributes->get('identifier')) {
             if (!$repository instanceof ShareableStorageListRepositoryInterface) {
                 throw new NotFoundHttpException();
             }
 
-            $list = $repository->findByToken($request->attributes->get('token'));
+            $list = $repository->findByToken($request->attributes->get('identifier'));
             $isSharedList = true;
 
             if (null === $list) {

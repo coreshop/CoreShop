@@ -30,7 +30,6 @@ use CoreShop\Component\StorageList\Context\StorageListFactoryContext;
 use CoreShop\Component\StorageList\Core\Context\CustomerAndStoreBasedStorageListContext;
 use CoreShop\Component\StorageList\Core\Context\SessionAndStoreBasedStorageListContext;
 use CoreShop\Component\StorageList\Core\Context\StoreBasedStorageListContext;
-use CoreShop\Component\StorageList\Model\ShareableStorageListInterface;
 use CoreShop\Component\StorageList\StorageListsManager;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;

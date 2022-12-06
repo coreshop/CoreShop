@@ -247,10 +247,10 @@ routes:
     priority: 2
 
   coreshop_wishlist_summary:
-    pattern: '/(\w+)\/shop\/wishlist(\/(.*))?$/'
-    reverse: '/%_locale/shop/wishlist/{%token}'
+    pattern: '/(\w+)\/shop\/wishlist(?:\/((.*)))$/'
+    reverse: '/%_locale/shop/wishlist/{%identifier}'
     controller: 'coreshop.storage_list.controller.wishlist:summaryAction'
-    variables: _locale,token
+    variables: _locale,identifier
     priority: 2
 
   coreshop_wishlist_add:
