@@ -19,7 +19,7 @@ jobs:
 
     - name: "List Packages"
       id: create-list
-      run: echo "packages=$(find src/CoreShop/Bundle -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)" >> $GITHUB_OUTPUT
+      run: echo "packages=$(find src/CoreShop/Component -mindepth 2 -maxdepth 2 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)" >> $GITHUB_OUTPUT
 
     outputs:
        packages: "${{ steps.create-list.outputs.packages }}"
