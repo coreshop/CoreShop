@@ -30,7 +30,7 @@ final class StorageListFactoryContext implements StorageListContextInterface
     ) {
     }
 
-    public function getStorageList(array $params = []): StorageListInterface
+    public function getStorageList(): StorageListInterface
     {
         /**
          * @var StorageListInterface $storageList
@@ -40,10 +40,6 @@ final class StorageListFactoryContext implements StorageListContextInterface
         if ($storageList instanceof AbstractPimcoreModel) {
             $storageList->setKey(uniqid());
             $storageList->setPublished(true);
-        }
-
-        if (isset($params['name']) && $storageList instanceof NameableStorageListInterface) {
-            $storageList->setName($params['name']);
         }
 
         return $storageList;

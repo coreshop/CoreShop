@@ -1,10 +1,12 @@
 parameters:
     coreshop.dto.add_to_wishlist.class: '%coreshop.storage_list.add_to_list_class%'
     coreshop.dto.add_to_selectable_wishlist.class: '%coreshop.storage_list.add_to_selectable_list_class%'
+    coreshop.dto.add_to_new_wishlist.class: '%coreshop.storage_list.add_to_new_list_class%'
     coreshop.form.type.wishlist.validation_groups: [coreshop]
     coreshop.form.type.wishlist_item.validation_groups: [coreshop]
     coreshop.form.type.add_to_wishlist.validation_groups: [coreshop]
     coreshop.form.type.add_to_selectable_wishlist.validation_groups: [coreshop]
+    coreshop.form.type.add_to_new_wishlist.validation_groups: [coreshop]
     coreshop.form.type.edit_wishlist.validation_groups: [coreshop]
 
 services:
@@ -71,6 +73,13 @@ services:
         arguments:
             - '%coreshop.dto.add_to_selectable_wishlist.class%'
             - '%coreshop.form.type.add_to_selectable_wishlist.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\WishlistBundle\Form\Type\AddToNewWishlistType:
+        arguments:
+            - '%coreshop.dto.add_to_new_wishlist.class%'
+            - '%coreshop.form.type.add_to_new_wishlist.validation_groups%'
         tags:
             - { name: form.type }
 

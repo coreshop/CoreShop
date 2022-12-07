@@ -15,6 +15,7 @@ core_shop_storage_list:
                 type: CoreShop\Bundle\WishlistBundle\Form\Type\WishlistType
                 add_type: CoreShop\Bundle\WishlistBundle\Form\Type\AddToWishlistType
                 add_selectable_type: CoreShop\Bundle\WishlistBundle\Form\Type\AddToSelectableWishlistType
+                add_new_type: CoreShop\Bundle\WishlistBundle\Form\Type\AddToNewWishlistType
             resource:
                 interface: '%coreshop.interface.wishlist%'
                 product_repository: coreshop.repository.stack.wishlist_product
@@ -28,6 +29,7 @@ core_shop_storage_list:
             templates:
                 add_to_cart: '@CoreShopFrontend/Product/_addToWishlist.html.twig'
                 add_to_selectable_list: '@CoreShopFrontend/Product/_addToSelectableWishlist.html.twig'
+                add_to_new_list: '@CoreShopFrontend/Product/_addToNewWishlist.html.twig'
                 summary: '@CoreShopFrontend/Wishlist/summary.html.twig'
             controller:
                 enabled: true

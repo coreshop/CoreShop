@@ -36,7 +36,7 @@ final class CustomerAndStoreBasedStorageListContext implements StorageListContex
     ) {
     }
 
-    public function getStorageList(array $params = []): StorageListInterface
+    public function getStorageList(): StorageListInterface
     {
         try {
             $store = $this->storeContext->getStore();
@@ -50,12 +50,7 @@ final class CustomerAndStoreBasedStorageListContext implements StorageListContex
             throw new StorageListNotFoundException('CoreShop was not able to find the requested list, as there is no logged in user.');
         }
 
-        if (isset($params['name'])) {
-            $storageList = $this->repository->findLatestByStoreAndCustomer($store, $customer, $params['name']);
-        }
-        else {
-            $storageList = $this->repository->findLatestByStoreAndCustomer($store, $customer);
-        }
+        $storageList = $this->repository->findLatestByStoreAndCustomer($store, $customer);
 
         if (null === $storageList) {
             throw new StorageListNotFoundException(

@@ -1,6 +1,7 @@
 parameters:
   coreshop.storage_list.add_to_list_class: 'CoreShop\Component\StorageList\DTO\AddToStorageList'
   coreshop.storage_list.add_to_selectable_list_class: 'CoreShop\Component\StorageList\DTO\AddToSelectableStorageList'
+  coreshop.storage_list.add_to_new_list_class: 'CoreShop\Component\StorageList\DTO\AddToNewStorageList'
 
 services:
   _defaults:
@@ -28,3 +29,11 @@ services:
   CoreShop\Component\StorageList\Factory\AddToSelectableStorageListFactory:
     arguments:
       - '%coreshop.storage_list.add_to_selectable_list_class%'
+
+  CoreShop\Component\StorageList\Factory\AddToNewStorageListFactoryInterface: '@CoreShop\Component\StorageList\Factory\AddToNewStorageListFactory'
+  CoreShop\Component\StorageList\Factory\AddToNewStorageListFactory:
+    arguments:
+      - '%coreshop.storage_list.add_to_new_list_class%'
+
+  CoreShop\Component\StorageList\Provider\ContextProviderInterface: '@CoreShop\Component\StorageList\Provider\ContextProvider'
+  CoreShop\Component\StorageList\Provider\ContextProvider: ~

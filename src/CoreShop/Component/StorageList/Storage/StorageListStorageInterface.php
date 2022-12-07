@@ -16,14 +16,17 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\StorageList\Context;
+namespace CoreShop\Component\StorageList\Storage;
 
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 
-interface StorageListContextInterface
+interface StorageListStorageInterface
 {
-    /**
-     * @throws StorageListNotFoundException
-     */
-    public function getStorageList(): StorageListInterface;
+    public function hasForContext(array $context): bool;
+
+    public function getForContext(array $context): ?StorageListInterface;
+
+    public function setForContext(array $context, StorageListInterface $storageList): void;
+
+    public function removeForContext(array $context): void;
 }

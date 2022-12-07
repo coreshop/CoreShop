@@ -18,18 +18,23 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StorageListBundle\Controller;
 
+use CoreShop\Bundle\StorageListBundle\Form\Type\AddToNewStorageListType;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Core\Repository\CustomerAndStoreAwareRepositoryInterface;
+use CoreShop\Component\StorageList\DTO\AddToNewStorageListInterface;
 use CoreShop\Component\StorageList\DTO\AddToSelectableStorageListInterface;
 use CoreShop\Component\StorageList\DTO\AddToStorageListInterface;
+use CoreShop\Component\StorageList\Factory\AddToNewStorageListFactoryInterface;
 use CoreShop\Component\StorageList\Factory\AddToSelectableStorageListFactoryInterface;
 use CoreShop\Component\StorageList\Factory\AddToStorageListFactoryInterface;
+use CoreShop\Component\StorageList\Factory\StorageListFactoryInterface;
 use CoreShop\Component\StorageList\Factory\StorageListItemFactoryInterface;
 use CoreShop\Component\StorageList\Model\ShareableStorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use CoreShop\Component\StorageList\Provider\ContextProviderInterface;
 use CoreShop\Component\StorageList\Repository\ShareableStorageListRepositoryInterface;
 use CoreShop\Component\StorageList\Resolver\StorageListResolverInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
@@ -53,6 +58,7 @@ class StorageListController extends AbstractController
         protected RepositoryInterface $productRepository,
         protected RepositoryInterface $itemRepository,
         protected StorageListContextInterface $context,
+        protected StorageListFactoryInterface $storageListFactory,
         protected StorageListItemFactoryInterface $storageListItemFactory,
         protected AddToStorageListFactoryInterface $addToStorageListFactory,
         protected StorageListModifierInterface $modifier,
@@ -67,7 +73,107 @@ class StorageListController extends AbstractController
         protected string $addToSelectableStorageListForm,
         protected AddToSelectableStorageListFactoryInterface $addToSelectableStorageListFactory,
         protected string $templateAddSelectableToList,
+        protected string $addToNewStorageListForm,
+        protected AddToNewStorageListFactoryInterface $addToNewStorageListFactory,
+        protected string $templateAddToNewList,
+        protected ContextProviderInterface $contextProvider,
     ) {
+    }
+
+    public function addToNewNamedListAction(Request $request): Response
+    {
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)));
+        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_ADD_ITEM', strtoupper($this->identifier)));
+
+        $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl($this->summaryRoute));
+        $product = $this->productRepository->find($this->getParameterFromRequest($request, 'product'));
+
+        if (!$product instanceof ResourceInterface) {
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse([
+                    'success' => false,
+                ]);
+            }
+
+            return $this->redirect($redirect);
+        }
+
+        $item = $this->storageListItemFactory->createWithStorageListProduct($product);
+
+        $addToNewStorageList = $this->createAddToNewStorageList($item);
+
+        $form = $this->formFactory->createNamed(
+            'coreshop-' . $product->getId(),
+            $this->addToNewStorageListForm,
+            $addToNewStorageList,
+        );
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                /**
+                 * @var AddToNewStorageListInterface $addToNewStorageList
+                 */
+                $addToNewStorageList = $form->getData();
+
+                /**
+                 * @var StorageListInterface $storageList
+                 */
+                $storageList = $this->storageListFactory->createNewNamed($addToNewStorageList->getName());
+
+                $this->contextProvider->provideContextForStorageList($storageList);
+
+                $this->modifier->addToList($storageList, $addToNewStorageList->getStorageListItem());
+                $this->manager->persist($storageList);
+
+                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.'.$this->identifier.'.created'));
+
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse([
+                        'success' => true,
+                    ]);
+                }
+
+                $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl($this->summaryRoute, ['identifier' => $storageList->getName()]));
+
+                return $this->redirect($redirect);
+            }
+
+            /**
+             * @var FormError $error
+             */
+            foreach ($form->getErrors(true, true) as $error) {
+                $this->addFlash('error', $error->getMessage());
+            }
+
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse([
+                    'success' => false,
+                    'errors' => array_map(static function (FormError $error) {
+                        return $error->getMessage();
+                    }, iterator_to_array($form->getErrors(true))),
+                ]);
+            }
+
+            return $this->redirect($redirect);
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'success' => false,
+            ]);
+        }
+
+        $template = $this->getParameterFromRequest($request, 'template', $this->templateAddToNewList);
+
+        return $this->render(
+            $template,
+            [
+                'form' => $form->createView(),
+                'product' => $product,
+            ],
+        );
     }
 
     public function addItemToNamedListAction(Request $request): Response
@@ -357,6 +463,12 @@ class StorageListController extends AbstractController
         StorageListItemInterface $storageListItem,
     ): AddToSelectableStorageListInterface {
         return $this->addToSelectableStorageListFactory->createWithStorageListItem($storageListItem);
+    }
+
+    protected function createAddToNewStorageList(
+        StorageListItemInterface $storageListItem,
+    ): AddToNewStorageListInterface {
+        return $this->addToNewStorageListFactory->createWithStorageListItem($storageListItem);
     }
 
     /**

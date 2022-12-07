@@ -16,14 +16,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\StorageList\Context;
+namespace CoreShop\Component\StorageList\Factory;
 
-use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\DTO\AddToNewStorageListInterface;
+use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
-interface StorageListContextInterface
+interface AddToNewStorageListFactoryInterface
 {
-    /**
-     * @throws StorageListNotFoundException
-     */
-    public function getStorageList(): StorageListInterface;
+    public function createWithStorageListItem(
+        StorageListItemInterface $storageListItem,
+    ): AddToNewStorageListInterface;
 }

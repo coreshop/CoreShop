@@ -116,6 +116,10 @@
                             {{ render(url('coreshop_partial_selectable_wishlist_add', {'product': product.id})) }}
                         {% endif %}
 
+                        {% if wishlist_allowed %}
+                            {{ render(url('coreshop_partial_new_wishlist_add', {'product': product.id})) }}
+                        {% endif %}
+
                         {% if cart_allowed %}
                             {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
                         {% endif %}

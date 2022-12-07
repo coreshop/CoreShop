@@ -40,7 +40,7 @@ abstract class StorageListChoiceType extends AbstractType
                 'choices' => function (Options $options) {
                     return $this->listResolver->getStorageLists();
                 },
-                'choice_value' => 'id',
+                'choice_value' => 'token',
                 'choice_label' => function (StorageListInterface $list) {
                     if ($list instanceof NameableStorageListInterface && $list->getName()) {
                         return $list->getName();
