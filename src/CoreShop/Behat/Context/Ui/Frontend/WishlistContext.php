@@ -98,6 +98,7 @@ final class WishlistContext implements Context
     {
         Assert::true($this->wishlistPage->hasItemNamed($itemName));
     }
+
     /**
      * @Then I can see the share wishlist link
      */
@@ -105,7 +106,6 @@ final class WishlistContext implements Context
     {
         Assert::true($this->wishlistPage->hasShareWishlistLink());
     }
-
 
     /**
      * @Given I visit the share wishlist link

@@ -40,7 +40,7 @@ class ResourceSlugLinkGenerator implements LinkGeneratorInterface
                     'Object with Path "%s" must implement %s',
                     $object->getFullPath(),
                     SluggableInterface::class,
-                )
+                ),
             );
         }
 
