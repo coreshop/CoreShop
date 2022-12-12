@@ -192,8 +192,7 @@ class StorageListController extends AbstractController
             if (null === $list) {
                 throw new NotFoundHttpException();
             }
-        }
-        else {
+        } else {
             $list = $this->context->getStorageList();
         }
 
@@ -202,7 +201,7 @@ class StorageListController extends AbstractController
 
         $params = [
             'storage_list' => $list,
-            'is_shared_list' => $isSharedList
+            'is_shared_list' => $isSharedList,
         ];
 
         if (!$isSharedList) {
