@@ -65,10 +65,6 @@ class QuoteCommitter implements QuoteCommitterInterface
         $order->setQuoteNumber($quoteNumber);
         $order->setKey(Service::getValidKey($quoteNumber, 'object'));
 
-        //We need to save the order first to move all it's children to the new folder
-        //otherwise some dependants will not find the Order from the OrderItem
-        $order->save();
-
         $this->cartManager->persistCart($order);
 
         $originalShippingAddress = $order->hasShippableItems() === false ? $order->getInvoiceAddress() : $order->getShippingAddress();

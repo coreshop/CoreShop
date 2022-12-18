@@ -37,5 +37,7 @@ interface StorageListItemInterface
 
     public function setQuantity(?float $quantity);
 
-    public function getStorageList(): StorageListInterface;
+    public function getStorageList(): ?StorageListInterface;
+
+    public function setStorageList(StorageListInterface $storageList);
 }

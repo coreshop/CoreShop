@@ -44,11 +44,11 @@ class SessionStorageManager implements StorageListManagerInterface
 
     public function hasStorageList(): bool
     {
-        return $this->$this->requestStack->getSession()->has($this->name);
+        return $this->requestStack->getSession()->has($this->name);
     }
 
     public function persist(StorageListInterface $storageList): void
     {
-        $this->$this->requestStack->getSession()->set($this->name, $storageList);
+        $this->requestStack->getSession()->set($this->name, $storageList);
     }
 }

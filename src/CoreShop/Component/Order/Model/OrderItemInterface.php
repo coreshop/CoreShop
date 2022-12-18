@@ -28,7 +28,9 @@ interface OrderItemInterface extends
     ConvertedAdjustableInterface,
     StorageListItemInterface
 {
-    public function getOrder(): OrderInterface;
+    public function getOrder(): ?OrderInterface;
+
+    public function setOrder(OrderInterface $order);
 
     public function getProduct(): ?PurchasableInterface;
 

@@ -43,6 +43,7 @@ class OrderItemFactory implements OrderItemFactoryInterface
         $item->setQuantity(0);
         $item->setProduct($purchasable);
         $item->setPublished(true);
+        $item->setOrder($cart);
 
         $cart->addItem($item);
 
