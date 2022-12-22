@@ -41,6 +41,11 @@ class CategoryMultiSelectConditionProcessor implements FilterConditionProcessorI
         $rawValues = $list->getGroupByValues($field, true, $concatenator == 'AND' ? false : true);
 
         foreach ($rawValues as $v) {
+
+            if ($v['value'] === null) {
+                continue;
+            }
+
             $explode = explode(',', $v['value']);
             foreach ($explode as $e) {
                 if (empty($e)) {

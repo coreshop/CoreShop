@@ -39,6 +39,11 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
         $rawValues = $list->getGroupByValues($field, true);
 
         foreach ($rawValues as $v) {
+
+            if ($v['value'] === null) {
+                continue;
+            }
+
             $explode = explode(',', $v['value']);
             foreach ($explode as $e) {
                 if (empty($e)) {
