@@ -21,22 +21,15 @@ namespace CoreShop\Component\Payment\Model;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
 
-interface PaymentInterface extends ResourceInterface, TimestampableInterface
+interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, ResourceInterface, TimestampableInterface
 {
     public const STATE_NEW = 'new';
-
     public const STATE_AUTHORIZED = 'authorized';
-
     public const STATE_PROCESSING = 'processing';
-
     public const STATE_COMPLETED = 'completed';
-
     public const STATE_FAILED = 'failed';
-
     public const STATE_CANCELLED = 'cancelled';
-
     public const STATE_REFUNDED = 'refunded';
-
     public const STATE_UNKNOWN = 'unknown';
 
     /**
@@ -67,19 +60,9 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
     public function setState($state);
 
     /**
-     * @return int
-     */
-    public function getTotalAmount();
-
-    /**
      * @param int $amount
      */
     public function setTotalAmount($amount);
-
-    /**
-     * @return string
-     */
-    public function getNumber();
 
     /**
      * @param string $number
@@ -87,20 +70,9 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
     public function setNumber($number);
 
     /**
-     * @return string
+     * @param string $description
      */
-    public function getDescription();
-
-    public function setDescription(string $description);
-
-    public function getDetails(): array;
-
-    public function setDetails(array $details);
-
-    /**
-     * @return string
-     */
-    public function getCurrencyCode();
+    public function setDescription($description);
 
     /**
      * @param string $currencyCode
