@@ -54,7 +54,10 @@ class Payment implements PaymentInterface
      */
     protected $state = PaymentInterface::STATE_NEW;
 
-    protected array $details = [];
+    /**
+     * @var array
+     */
+    protected $details = [];
 
     /**
      * @var \DateTime
