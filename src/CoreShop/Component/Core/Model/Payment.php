@@ -20,6 +20,7 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Payment\Model\Payment as BasePayment;
+use Payum\Core\Model\CreditCardInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -28,8 +29,10 @@ use Webmozart\Assert\Assert;
 class Payment extends BasePayment implements PaymentInterface
 {
     protected ?OrderInterface $order = null;
-
     protected ?CurrencyInterface $currency = null;
+    protected ?CreditCardInterface $creditCard = null;
+    protected ?string $clientEmail = null;
+    protected ?string $clientId = null;
 
     public function getOrder(): ?OrderInterface
     {
@@ -56,5 +59,41 @@ class Payment extends BasePayment implements PaymentInterface
     {
         $this->currencyCode = $currency->getIsoCode();
         $this->currency = $currency;
+    }
+
+    public function getCreditCard()
+    {
+        return $this->creditCard;
+    }
+
+    public function setCreditCard(CreditCardInterface $creditCard = null)
+    {
+        $this->creditCard = $creditCard;
+    }
+
+    public function getClientEmail()
+    {
+        return $this->clientEmail;
+    }
+
+    /**
+     * @param string $clientEmail
+     */
+    public function setClientEmail($clientEmail)
+    {
+        $this->clientEmail = $clientEmail;
+    }
+
+    public function getClientId()
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * @param string $clientId
+     */
+    public function setClientId($clientId)
+    {
+        $this->clientId = $clientId;
     }
 }

@@ -20,6 +20,6 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
 
-interface PaymentInterface extends OrderPaymentInterface
+interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, OrderPaymentInterface
 {
 }

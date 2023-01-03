@@ -24,7 +24,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
+class Payment implements PaymentInterface
 {
     use SetValuesTrait;
     use TimestampableTrait;
@@ -40,9 +40,21 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
     protected $paymentProvider;
 
     /**
+     * @var int
+     */
+    protected $totalAmount;
+
+    /**
+     * @var string
+     */
+    protected $currencyCode;
+
+    /**
      * @var string
      */
     protected $state = PaymentInterface::STATE_NEW;
+
+    protected array $details = [];
 
     /**
      * @var \DateTime
@@ -53,6 +65,16 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
      * @var int
      */
     protected $orderId;
+
+    /**
+     * @var string
+     */
+    protected $number;
+
+    /**
+     * @var string
+     */
+    protected $description;
 
     public function getId()
     {
@@ -67,6 +89,26 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
     public function setPaymentProvider(PaymentProviderInterface $paymentProvider)
     {
         $this->paymentProvider = $paymentProvider;
+    }
+
+    public function getTotalAmount()
+    {
+        return $this->totalAmount;
+    }
+
+    public function setTotalAmount($amount)
+    {
+        $this->totalAmount = $amount;
+    }
+
+    public function getCurrencyCode()
+    {
+        return $this->currencyCode;
+    }
+
+    public function setCurrencyCode($currencyCode)
+    {
+        $this->currencyCode = $currencyCode;
     }
 
     public function getDatePayment()
@@ -87,5 +129,39 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
     public function setState($state)
     {
         $this->state = $state;
+    }
+
+    public function getDetails()
+    {
+        return $this->details;
+    }
+
+    public function setDetails($details)
+    {
+        if ($details instanceof \Traversable) {
+            $details = iterator_to_array($details);
+        }
+
+        $this->details = $details;
+    }
+
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    public function setNumber($number)
+    {
+        $this->number = $number;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 }
