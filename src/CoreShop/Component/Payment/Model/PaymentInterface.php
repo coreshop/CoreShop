@@ -54,6 +54,10 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
      */
     public function getState();
 
+    /**
+     * @param string $state
+     */
+    public function setState($state);
 
     /**
      * @return int
