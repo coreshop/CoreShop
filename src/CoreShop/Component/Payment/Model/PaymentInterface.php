@@ -88,6 +88,9 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
 
     public function getDetails();
 
+    /**
+     * @param object|array $details
+     */
     public function setDetails($details);
 
     /**
