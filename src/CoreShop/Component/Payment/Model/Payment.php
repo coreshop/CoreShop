@@ -76,6 +76,16 @@ class Payment implements PaymentInterface
      */
     protected $description;
 
+    /**
+     * @var null|string
+     */
+    protected $clientEmail;
+
+    /**
+     * @var null|string
+     */
+    protected $clientId;
+
     public function getId()
     {
         return $this->id;
@@ -160,8 +170,34 @@ class Payment implements PaymentInterface
         return $this->description;
     }
 
-    public function setDescription($description)
+    public function setDescription(string $description)
     {
         $this->description = $description;
+    }
+
+    public function getClientEmail()
+    {
+        return $this->clientEmail;
+    }
+
+    /**
+     * @param string $clientEmail
+     */
+    public function setClientEmail($clientEmail)
+    {
+        $this->clientEmail = $clientEmail;
+    }
+
+    public function getClientId()
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * @param string $clientId
+     */
+    public function setClientId($clientId)
+    {
+        $this->clientId = $clientId;
     }
 }

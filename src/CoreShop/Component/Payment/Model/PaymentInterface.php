@@ -54,10 +54,11 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
      */
     public function getState();
 
+
     /**
-     * @param string $state
+     * @return int
      */
-    public function setState($state);
+    public function getTotalAmount();
 
     /**
      * @param int $amount
@@ -65,14 +66,30 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
     public function setTotalAmount($amount);
 
     /**
+     * @return string
+     */
+    public function getNumber();
+
+    /**
      * @param string $number
      */
     public function setNumber($number);
 
     /**
-     * @param string $description
+     * @return string
      */
-    public function setDescription($description);
+    public function getDescription();
+
+    public function setDescription(string $description);
+
+    public function getDetails();
+
+    public function setDetails($details);
+
+    /**
+     * @return string
+     */
+    public function getCurrencyCode();
 
     /**
      * @param string $currencyCode
