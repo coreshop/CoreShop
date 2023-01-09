@@ -73,7 +73,6 @@ class FilterGroupHelper implements FilterGroupHelperInterface
                 $values = [];
 
                 foreach ($rawValues as $v) {
-
                     if ($v['value'] === null) {
                         continue;
                     }

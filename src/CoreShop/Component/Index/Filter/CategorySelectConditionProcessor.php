@@ -39,7 +39,6 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
         $rawValues = $list->getGroupByValues($field, true);
 
         foreach ($rawValues as $v) {
-
             if ($v['value'] === null) {
                 continue;
             }
