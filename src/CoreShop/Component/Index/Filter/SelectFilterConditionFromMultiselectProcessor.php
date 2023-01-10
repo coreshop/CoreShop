@@ -35,7 +35,6 @@ class SelectFilterConditionFromMultiselectProcessor implements FilterConditionPr
         $values = [];
 
         foreach ($rawValues as $v) {
-
             if ($v['value'] === null) {
                 continue;
             }
