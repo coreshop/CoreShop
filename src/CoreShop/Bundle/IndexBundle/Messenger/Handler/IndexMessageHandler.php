@@ -27,7 +27,6 @@ use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class IndexMessageHandler implements MessageHandlerInterface
 {
@@ -35,7 +34,6 @@ class IndexMessageHandler implements MessageHandlerInterface
 
     public function __construct(
         private IndexUpdaterServiceInterface $indexUpdaterService,
-        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -47,24 +45,16 @@ class IndexMessageHandler implements MessageHandlerInterface
             throw new UnrecoverableMessageHandlingException('Indexable given does not implement IndexableInterface');
         }
 
-        InheritanceHelper::useInheritedValues(function () use ($indexable, $indexMessage) {
-            if ($indexMessage->isDelete()) {
-                $this->indexUpdaterService->removeIndices($indexable);
-
-                return;
-            }
-
-            $this->indexUpdaterService->updateIndices($indexable, $indexMessage->isSaveVersionOnly());
-        });
+        $this->processIndexable($indexable, $indexMessage);
 
         $classDefinition = ClassDefinition::getById($indexable->getClassId());
 
         if ($classDefinition && ($classDefinition->getAllowInherit() || $classDefinition->getAllowVariants())) {
-            $this->updateInheritableChildren($indexable, $indexMessage->isSaveVersionOnly());
+            $this->updateInheritableChildren($indexable, $indexMessage);
         }
     }
 
-    private function updateInheritableChildren(AbstractObject $object, bool $isVersionChange): void
+    private function updateInheritableChildren(AbstractObject $object, IndexMessage $indexMessage): void
     {
         if (!$object->hasChildren($this->validObjectTypes)) {
             return;
@@ -74,8 +64,21 @@ class IndexMessageHandler implements MessageHandlerInterface
 
         foreach ($children as $child) {
             if ($child instanceof IndexableInterface && $child::class === $object::class) {
-                $this->messageBus->dispatch(new IndexMessage($child->getId(), $isVersionChange));
+                $this->processIndexable($child, $indexMessage);
             }
         }
+    }
+
+    private function processIndexable(IndexableInterface $indexable, IndexMessage $indexMessage)
+    {
+        InheritanceHelper::useInheritedValues(function () use ($indexable, $indexMessage) {
+            if ($indexMessage->isDelete()) {
+                $this->indexUpdaterService->removeIndices($indexable);
+
+                return;
+            }
+
+            $this->indexUpdaterService->updateIndices($indexable, $indexMessage->isSaveVersionOnly());
+        });
     }
 }
