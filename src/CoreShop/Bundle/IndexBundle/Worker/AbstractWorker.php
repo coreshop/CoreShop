@@ -103,7 +103,7 @@ abstract class AbstractWorker implements WorkerInterface
             }
 
             $virtualObjectId = $parent->getId();
-            $virtualObjectActive = $parent->getIndexableEnabled($index);
+            $virtualObjectActive = $parent instanceof IndexableInterface ? $parent->getIndexableEnabled($index) : false;
         }
 
         $data = [
