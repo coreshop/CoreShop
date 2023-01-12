@@ -44,6 +44,10 @@ final class IndexDeleteObjectListener
             return;
         }
 
+        if (!$object instanceof DataObject\Concrete) {
+            return;
+        }
+
         $this->recurisveDeleteMessage($object);
     }
 
