@@ -39,7 +39,7 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     {
         $this->operationOnIndex($subject, 'update', $isVersionChange);
     }
-    
+
     public function removeIndices(IndexableInterface $subject): void
     {
         $this->operationOnIndex($subject, 'remove');
