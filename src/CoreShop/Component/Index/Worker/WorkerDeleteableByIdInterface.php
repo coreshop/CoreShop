@@ -16,23 +16,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\IndexBundle\Messenger;
+namespace CoreShop\Component\Index\Worker;
 
-class IndexMessage
+use CoreShop\Component\Index\Model\IndexInterface;
+
+interface WorkerDeleteableByIdInterface
 {
-    public function __construct(
-        protected int $indexableId,
-        protected bool $saveVersionOnly = false,
-    ) {
-    }
-
-    public function getIndexableId(): int
-    {
-        return $this->indexableId;
-    }
-
-    public function isSaveVersionOnly(): bool
-    {
-        return $this->saveVersionOnly;
-    }
+    /**
+     * deletes given element from index by id.
+     */
+    public function deleteFromIndexById(IndexInterface $index, int $id);
 }

@@ -20,6 +20,7 @@ namespace CoreShop\Component\Index\Service;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Worker\WorkerDeleteableByIdInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -38,10 +39,40 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     {
         $this->operationOnIndex($subject, 'update', $isVersionChange);
     }
-
+    
     public function removeIndices(IndexableInterface $subject): void
     {
         $this->operationOnIndex($subject, 'remove');
+    }
+
+    public function removeFromIndicesById(string $className, int $id): void
+    {
+        $indices = $this->indexRepository->findAll();
+
+        foreach ($indices as $index) {
+            if (!$index instanceof IndexInterface) {
+                continue;
+            }
+
+            if ($className !== $index->getClass()) {
+                continue;
+            }
+
+            $workerName = $index->getWorker();
+
+            if (!$this->workerServiceRegistry->has($workerName)) {
+                throw new InvalidArgumentException(sprintf('%s Worker not found', $workerName));
+            }
+
+            /**
+             * @var WorkerInterface $worker
+             */
+            $worker = $this->workerServiceRegistry->get($workerName);
+
+            if ($worker instanceof WorkerDeleteableByIdInterface) {
+                $worker->deleteFromIndexById($index, $id);
+            }
+        }
     }
 
     private function operationOnIndex(IndexableInterface $subject, string $operation = 'update', bool $isVersionChange = false): void
@@ -62,16 +93,16 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
                 continue;
             }
 
-            $worker = $index->getWorker();
+            $workerName = $index->getWorker();
 
-            if (!$this->workerServiceRegistry->has($worker)) {
-                throw new InvalidArgumentException(sprintf('%s Worker not found', $worker));
+            if (!$this->workerServiceRegistry->has($workerName)) {
+                throw new InvalidArgumentException(sprintf('%s Worker not found', $workerName));
             }
 
             /**
              * @var WorkerInterface $worker
              */
-            $worker = $this->workerServiceRegistry->get($worker);
+            $worker = $this->workerServiceRegistry->get($workerName);
 
             if ($operation === 'update') {
                 $worker->updateIndex($index, $subject);

@@ -18,20 +18,21 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\EventListener;
 
-use CoreShop\Bundle\IndexBundle\Messenger\IndexMessage;
+use CoreShop\Bundle\IndexBundle\Messenger\IndexDeleteMessage;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Event\Model\ElementEventInterface;
+use Pimcore\Model\DataObject;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class IndexObjectListener
+final class IndexDeleteObjectListener
 {
     public function __construct(
         private MessageBusInterface $messageBus,
     ) {
     }
 
-    public function onPostUpdate(ElementEventInterface $event): void
+    public function onPreDelete(ElementEventInterface $event): void
     {
         if (!$event instanceof DataObjectEvent) {
             return;
@@ -43,8 +44,24 @@ final class IndexObjectListener
             return;
         }
 
-        $isVersionEvent = $event->hasArgument('saveVersionOnly') && true === $event->getArgument('saveVersionOnly');
+        $this->recurisveDeleteMessage($object);
+    }
 
-        $this->messageBus->dispatch(new IndexMessage($object->getId(), $isVersionEvent));
+    private function recurisveDeleteMessage(DataObject\Concrete $object)
+    {
+        $this->messageBus->dispatch(new IndexDeleteMessage($object->getClassName(), $object->getId()));
+        $objectTypes = [DataObject\AbstractObject::OBJECT_TYPE_OBJECT, DataObject\AbstractObject::OBJECT_TYPE_VARIANT];
+
+        foreach ($object->getChildren($objectTypes, true) as $child) {
+            if (!$child instanceof DataObject\Concrete) {
+                continue;
+            }
+
+            if (!$object instanceof IndexableInterface) {
+                continue;
+            }
+
+            $this->recurisveDeleteMessage($child);
+        }
     }
 }
