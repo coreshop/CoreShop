@@ -624,10 +624,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 continue;
             }
 
+            $currency = $store->getCurrency();
+
             //Fill missing stores with empty values
             $storeData[$store->getId()] = [
                 'name' => $store->getName(),
-                'currencySymbol' => $store->getCurrency()->getSymbol(),
+                'currencySymbol' => $currency?->getSymbol() ?? '',
                 'values' => ['price' => 0],
                 'inheritable' => $inheritable,
             ];
