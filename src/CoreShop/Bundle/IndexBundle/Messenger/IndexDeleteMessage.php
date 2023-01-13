@@ -18,11 +18,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle\Messenger;
 
-class IndexMessage
+class IndexDeleteMessage
 {
     public function __construct(
+        protected string $className,
         protected int $indexableId,
-        protected bool $saveVersionOnly = false,
     ) {
     }
 
@@ -31,8 +31,8 @@ class IndexMessage
         return $this->indexableId;
     }
 
-    public function isSaveVersionOnly(): bool
+    public function getClassName(): string
     {
-        return $this->saveVersionOnly;
+        return $this->className;
     }
 }

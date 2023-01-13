@@ -40,7 +40,7 @@ interface WorkerInterface
      * deletes given element from index.
      */
     public function deleteFromIndex(IndexInterface $index, IndexableInterface $object);
-
+    
     /**
      * updates given element in index.
      */

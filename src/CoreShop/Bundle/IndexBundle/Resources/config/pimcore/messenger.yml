@@ -14,3 +14,4 @@ framework:
                     max_retries: 0
         routing:
             'CoreShop\Bundle\IndexBundle\Messenger\IndexMessage': coreshop_index
+            'CoreShop\Bundle\IndexBundle\Messenger\IndexDeleteMessage': coreshop_index

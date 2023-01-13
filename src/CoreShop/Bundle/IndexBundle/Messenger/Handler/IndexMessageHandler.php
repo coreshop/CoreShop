@@ -72,12 +72,6 @@ class IndexMessageHandler implements MessageHandlerInterface
     private function processIndexable(IndexableInterface $indexable, IndexMessage $indexMessage)
     {
         InheritanceHelper::useInheritedValues(function () use ($indexable, $indexMessage) {
-            if ($indexMessage->isDelete()) {
-                $this->indexUpdaterService->removeIndices($indexable);
-
-                return;
-            }
-
             $this->indexUpdaterService->updateIndices($indexable, $indexMessage->isSaveVersionOnly());
         });
     }
