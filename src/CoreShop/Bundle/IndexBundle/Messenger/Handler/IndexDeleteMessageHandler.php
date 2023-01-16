@@ -36,7 +36,7 @@ class IndexDeleteMessageHandler implements MessageHandlerInterface
     {
         $this->indexUpdaterService->removeFromIndicesById(
             $indexDeleteMessage->getClassName(),
-            $indexDeleteMessage->getIndexableId()
+            $indexDeleteMessage->getIndexableId(),
         );
     }
 }

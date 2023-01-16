@@ -53,7 +53,7 @@ final class IndexCommand extends Command
                 'unpublished',
                 'u',
                 InputOption::VALUE_NONE,
-                'Include unpublished objects'
+                'Include unpublished objects',
             )
             ->addArgument(
                 'indices',
