@@ -26,6 +26,7 @@ framework:
         handler_id:  ~
         storage_id: session.storage.mock_file
         name: MOCKSESSID
+        gc_probability: null
     messenger:
         transports:
             coreshop_index: 'sync://'

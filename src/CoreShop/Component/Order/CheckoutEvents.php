@@ -27,4 +27,6 @@ class CheckoutEvents
     public const CHECKOUT_DO_PRE = 'coreshop.checkout.do.pre';
 
     public const CHECKOUT_DO_POST = 'coreshop.checkout.do.post';
+
+    public const CHECKOUT_PAYMENT_PRE = 'coreshop.checkout.payment.pre';
 }
