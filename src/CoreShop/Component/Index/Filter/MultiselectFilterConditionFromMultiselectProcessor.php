@@ -35,6 +35,10 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
         $values = [];
 
         foreach ($rawValues as $v) {
+            if ($v['value'] === null) {
+                continue;
+            }
+
             $explode = explode(',', $v['value']);
 
             foreach ($explode as $e) {

@@ -33,6 +33,16 @@ coreshop.rules.abstract = Class.create({
         this.data = data && data.hasOwnProperty('configuration') ? data.configuration : {};
     },
 
+    getFormattedStackClasses: function (stackClasses) {
+        var classes = [];
+        if (Ext.isArray(stackClasses)) {
+            Ext.Array.each(stackClasses, function (cClass) {
+                classes.push({classes: cClass});
+            });
+        }
+        return classes;
+    },
+
     getLayout: function () {
         var myId = Ext.id();
 

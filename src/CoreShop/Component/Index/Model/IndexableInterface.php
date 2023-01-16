@@ -36,7 +36,7 @@ interface IndexableInterface
     public function getClassId();
 
     /**
-     * @return int
+     * @return string
      */
     public function getClassName();
 
