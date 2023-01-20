@@ -13,7 +13,7 @@ jobs:
         steps:
             -
                 name: Full checkout
-                run: git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY /home/runner/work/coreshop/coreshop && cd /home/runner/work/coreshop/coreshop && git checkout $GITHUB_SHA
+                run: git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY /home/runner/work/CoreShop/CoreShop && cd /home/runner/work/CoreShop/CoreShop && git checkout $GITHUB_SHA
             -
                 name: Split repositories
                 uses: docker://jderusse/gitsplit:latest
