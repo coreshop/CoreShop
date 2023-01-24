@@ -1,6 +1,9 @@
 origins:
     - ^master$
-    - ^\d+\.\d+$
+    - ^2\.0$
+    - ^2\.1$
+    - ^2\.2$
+    - ^3\.0$
     - ^\d+\.\d+\.\d+$
 splits:
     - { prefix: src/CoreShop/Component/Address, target: 'https://${GH_TOKEN}@github.com/coreshop/Address.git' }
