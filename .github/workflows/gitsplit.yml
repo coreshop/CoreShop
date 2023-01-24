@@ -2,7 +2,7 @@ name: Monorepo split
 on:
     push:
         branches:
-            - "infra/gitsplit2"
+            - "split"
             - "master"
             - "2.0"
             - "2.1"
