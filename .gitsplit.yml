@@ -1,6 +1,7 @@
 origins:
     - ^master$
-    - ^\d+\.\d+$
+    - ^\d+\.\d+$ #CoreShop Maintenance Branches
+    - ^\d+\.\d+\.\d+$ #Tags
 splits:
     - { prefix: src/CoreShop/Component/Address, target: 'https://${GH_TOKEN}@github.com/coreshop/Address.git' }
     - { prefix: src/CoreShop/Bundle/AddressBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/AddressBundle.git' }
