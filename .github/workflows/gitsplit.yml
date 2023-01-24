@@ -1,0 +1,26 @@
+name: Monorepo split
+on:
+    push:
+        branches:
+            - "master"
+            - "2.0"
+            - "2.1"
+            - "2.2"
+            - "3.0"
+    release:
+        types: [ published ]
+
+jobs:
+    gitsplit:
+        runs-on: ubuntu-latest
+        steps:
+            -
+                name: Full checkout
+                run: git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY /home/runner/work/CoreShop/CoreShop && cd /home/runner/work/CoreShop/CoreShop && git checkout $GITHUB_SHA
+            -
+                name: Split repositories
+                uses: docker://jderusse/gitsplit:latest
+                with:
+                    args: gitsplit
+                env:
+                    GH_TOKEN: ${{ secrets.GITSPLIT_TOKEN }}
