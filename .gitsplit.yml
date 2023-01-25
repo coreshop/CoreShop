@@ -1,3 +1,4 @@
+project_url: https://@github.com/coreshop/CoreShop.git
 origins:
     - ^master$
     - ^2\.0$
