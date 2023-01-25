@@ -19,7 +19,7 @@ jobs:
                 run: git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY /home/runner/work/CoreShop/CoreShop && cd /home/runner/work/CoreShop/CoreShop && git checkout $GITHUB_SHA
             -
                 name: Copy gitsplit config
-                run: mkdir /home/runner/work/CoreShop/CoreShopSplit && cd /home/runner/work/CoreShop/CoreShopSplit && cp /home/runner/work/CoreShop/CoreShop/.gitsplit /home/runner/work/CoreShop/CoreShopSplit/.gitsplit
+                run: mkdir /home/runner/work/CoreShop/CoreShopSplit && cd /home/runner/work/CoreShop/CoreShopSplit && cp /home/runner/work/CoreShop/CoreShop/.gitsplit.yml /home/runner/work/CoreShop/CoreShopSplit/.gitsplit.yml
             -
                 name: Split repositories
                 uses: docker://jderusse/gitsplit:latest
