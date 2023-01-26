@@ -21,6 +21,13 @@ jobs:
                 name: Copy gitsplit config
                 run: mkdir /home/runner/work/CoreShop/CoreShopSplit && cd /home/runner/work/CoreShop/CoreShopSplit && cp /home/runner/work/CoreShop/CoreShop/.gitsplit.yml /home/runner/work/CoreShop/CoreShopSplit/.gitsplit.yml
             -
+                name: Gitsplit Cache
+                id: gitsplit-cache
+                uses: actions/cache@v3
+                with:
+                    path: cache
+                    key: gitsplit-cache
+            -
                 name: Split repositories
                 uses: docker://jderusse/gitsplit:latest
                 with:

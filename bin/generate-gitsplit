@@ -27,6 +27,8 @@ $find = static function (string $path) use ($root): array
 };
 
 $config = [
+    'cache_url' => 'file://cache',
+    'project_url' => 'https://@github.com/coreshop/CoreShop.git',
     'origins' => [
         '^master$',
         '^\d+\.\d+$', #CoreShop Branches
