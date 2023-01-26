@@ -1,10 +1,8 @@
-project_url: https://@github.com/coreshop/CoreShop.git
+cache_url: 'file://cache'
+project_url: 'https://@github.com/coreshop/CoreShop.git'
 origins:
     - ^master$
-    - ^2\.0$
-    - ^2\.1$
-    - ^2\.2$
-    - ^3\.0$
+    - ^\d+\.\d+$
     - ^\d+\.\d+\.\d+$
 splits:
     - { prefix: src/CoreShop/Component/Address, target: 'https://${GH_TOKEN}@github.com/coreshop/Address.git' }
