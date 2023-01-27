@@ -1,3 +1,28 @@
+# 3.0.3
+
+## Feature
+ - [StorageList] allow for shareable StorageLists (eg. wishlist) (https://github.com/coreshop/CoreShop/pull/2150)
+
+## Bugs
+ - [StorageListItem] add definitive StorageList (Order/Wishlist) field to Item (https://github.com/coreshop/CoreShop/pull/2117)
+ - [FrontendBundle] keep a reference to the just-removed Product (https://github.com/coreshop/CoreShop/pull/2125)
+ - [MessengerBundle] only allow to list ListableReceiverInterface (https://github.com/coreshop/CoreShop/pull/2127)
+ - [MessengerBundle] standalone fixes (https://github.com/coreshop/CoreShop/pull/2130)
+ - [Slug] improve slug generation and don't store slugs for every site if the same (https://github.com/coreshop/CoreShop/pull/2131)
+ - [MoneyBundle] fix issue with not-nullable types and null values (https://github.com/coreshop/CoreShop/pull/2138)
+ - [Resource] add return types for BigIntIntegerType (https://github.com/coreshop/CoreShop/pull/2140)
+ - [LinkGeneration] introduce possibility to disable slugs and use fallback routes (https://github.com/coreshop/CoreShop/pull/2143)
+ - [Payum] use stable payum release (https://github.com/coreshop/CoreShop/pull/2141)
+ - [FrontendBundle] use asset() helper for logo image (https://github.com/coreshop/CoreShop/pull/2137)
+ - [CoreBundle] Fix migration for price_rules in OrderItem class (https://github.com/coreshop/CoreShop/pull/2145)
+ - [CoreBundle] Add layout price_rules only once to OrderItem (https://github.com/coreshop/CoreShop/pull/2148)
+ - [StorageList & Slug] fixes for shared wishlist & slugs (https://github.com/coreshop/CoreShop/pull/2151)
+ - [CoreBundle] Use valid key in user migration (https://github.com/coreshop/CoreShop/pull/2159)
+ - [CoreBundle] fix price_rule migration section (https://github.com/coreshop/CoreShop/pull/2160)
+ - [StorageList] Fix SessionStorageManager (https://github.com/coreshop/CoreShop/pull/2165)
+ - [IndexBundle] check if index value is null before exploding (https://github.com/coreshop/CoreShop/pull/2163)
+ - [IndexBundle] process children within same Handler (https://github.com/coreshop/CoreShop/pull/2171)
+
 # 3.0.2
 
 > Please make sure you also start the messenger worker for the CoreShop Tasks
