@@ -22,5 +22,5 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 interface StackRepositoryInterface extends PimcoreRepositoryInterface
 {
-
+    public function getClassIds(): array;
 }
