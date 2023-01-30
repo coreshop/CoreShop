@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
-use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
@@ -41,7 +41,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         private LocaleContextInterface $localeContext,
         private PimcoreRepositoryInterface $orderRepository,
         private PimcoreRepositoryInterface $orderItemRepository,
-        private StackRepository $productStackRepository,
+        private StackRepositoryInterface $productStackRepository,
     ) {
     }
 

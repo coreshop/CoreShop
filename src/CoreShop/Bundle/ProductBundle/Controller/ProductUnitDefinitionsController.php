@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ProductBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
@@ -35,7 +35,7 @@ class ProductUnitDefinitionsController extends ResourceController
     {
         $definitions = [];
 
-        /** @var StackRepository $repository */
+        /** @var StackRepositoryInterface $repository */
         $repository = $this->get('coreshop.repository.stack.product');
 
         /** @var ProductInterface $product */
@@ -52,7 +52,7 @@ class ProductUnitDefinitionsController extends ResourceController
     {
         $definitions = [];
 
-        /** @var StackRepository $repository */
+        /** @var StackRepositoryInterface $repository */
         $repository = $this->get('coreshop.repository.stack.product');
 
         /** @var ProductInterface $product */
