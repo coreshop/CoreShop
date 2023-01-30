@@ -23,7 +23,7 @@ Feature: Adding a new cart rule
     And I apply the voucher code "asdf" to my cart
     Then the cart discount should be "60000" including tax
     Then the cart discount should be "50000" excluding tax
-    Then the cart total tax should be "60000"
-    Then the cart item taxes should be "60000"
+    Then the cart total tax should be "12000"
+    Then the cart item taxes should be "12000"
     Then the cart total should be "60000" excluding tax
     Then the cart total should be "72000" including tax
