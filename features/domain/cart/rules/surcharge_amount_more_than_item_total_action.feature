@@ -2,6 +2,7 @@
 Feature: Adding a new cart rule
   In order to give the customer surcharge
   based on the cart, we add a new rule
+  the surcharge is allowed to be more than the items total
 
   Background:
     Given the site operates on a store in "Austria"
@@ -14,15 +15,15 @@ Feature: Adding a new cart rule
     And the product has the tax rule group "AT"
     And I add the product "Shoe" to my cart
 
-  Scenario: Add a new surcharge rule with 20 euro for all products
+  Scenario: Add a new surcharge rule with 500 euro for all products
     Given adding a cart price rule named "surcharge"
     And the cart rule is active
     And the cart rule is a voucher rule with code "asdf"
-    And the cart rule has a action surcharge with 20 in currency "EUR" off
+    And the cart rule has a action surcharge with 500 in currency "EUR" off
     And I apply the voucher code "asdf" to my cart
-    Then the cart discount should be "2400" including tax
-    Then the cart discount should be "2000" excluding tax
-    Then the cart total tax should be "2400"
-    Then the cart item taxes should be "2400"
-    Then the cart total should be "12000" excluding tax
-    Then the cart total should be "14400" including tax
+    Then the cart discount should be "60000" including tax
+    Then the cart discount should be "50000" excluding tax
+    Then the cart total tax should be "12000"
+    Then the cart item taxes should be "12000"
+    Then the cart total should be "60000" excluding tax
+    Then the cart total should be "72000" including tax

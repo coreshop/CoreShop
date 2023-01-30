@@ -51,14 +51,14 @@
             {% if discountPrice > 0 %}
                 <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
             {% endif %}
-            {% if discount > 0 %}
+            {% if discount < 0 %}
                 <span class="price-discount">(-{{ currency.convertAndFormat(discount) }})</span>
             {% endif %}
         {% endif %}
     </td>
     <td class="text-right cart-item-total-price" {{ coreshop_test_html_attribute('cart-item-total-price', item.name) }}>
-        {% if item.discount != 0 %}
-            <s>({{ currency.convertAndFormat(item.discount) }})</s>
+        {% if item.discount < 0 %}
+            <span>({{ currency.convertAndFormat(item.discount) }})</span>
         {% endif %}
         {{ currency.convertAndFormat(item.total) }}
     </td>

@@ -55,7 +55,6 @@ class CartRuleApplier implements CartRuleApplierInterface
     protected function apply(OrderInterface $cart, PriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
     {
         $context = $this->cartContextResolver->resolveCartContext($cart);
-
         $totalAmount = [];
         $totalDiscountPossible = 0;
 
@@ -64,7 +63,10 @@ class CartRuleApplier implements CartRuleApplierInterface
             $totalDiscountPossible += $item->getTotal($withTax);
         }
 
-        $discount = min($discount, $totalDiscountPossible);
+        //Don't apply less than the cart is worth
+        if (!$positive) {
+            $discount = min($discount, $totalDiscountPossible);
+        }
 
         if (0 === $discount) {
             return;
