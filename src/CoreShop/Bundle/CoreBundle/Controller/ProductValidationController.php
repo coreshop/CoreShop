@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
-use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
@@ -96,7 +96,7 @@ class ProductValidationController extends AdminController
         ]);
     }
 
-    protected function getProductRepository(): StackRepository
+    protected function getProductRepository(): StackRepositoryInterface
     {
         return $this->get('coreshop.repository.stack.product');
     }

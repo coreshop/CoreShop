@@ -23,7 +23,7 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject;
 
-class StackRepository extends PimcoreRepository
+class StackRepository extends PimcoreRepository implements StackRepositoryInterface
 {
     private array $classNames = [];
 
