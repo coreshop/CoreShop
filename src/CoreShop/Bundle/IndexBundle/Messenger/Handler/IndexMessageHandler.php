@@ -65,6 +65,7 @@ class IndexMessageHandler implements MessageHandlerInterface
         foreach ($children as $child) {
             if ($child instanceof IndexableInterface && $child::class === $object::class) {
                 $this->processIndexable($child, $indexMessage);
+                $this->updateInheritableChildren($child, $indexMessage);
             }
         }
     }
