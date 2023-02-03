@@ -78,7 +78,7 @@ class CustomerController extends FrontendController
 
         return $this->render($this->templateConfigurator->findTemplate('Customer/orders.html'), [
             'customer' => $customer,
-            'orders' => $this->get('coreshop.repository.order')->findByCustomer($this->getCustomer()),
+            'orders' => $this->get('coreshop.repository.order')->findOrdersByCustomer($this->getCustomer()),
         ]);
     }
 

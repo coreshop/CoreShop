@@ -104,6 +104,16 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         return null;
     }
 
+    public function findOrdersByCustomer(CustomerInterface $customer): array
+    {
+        $list = $this->getList();
+        $list->setCondition('customer__id = ? AND saleState = ?', [$customer->getId(), OrderSaleStates::STATE_ORDER]);
+        $list->setOrderKey('o_id');
+        $list->setOrder('DESC');
+        $list->load();
+
+        return $list->getObjects();
+    }
     public function findExpiredCarts(int $days, bool $anonymous, bool $customer): array
     {
         $list = $this->getList();
