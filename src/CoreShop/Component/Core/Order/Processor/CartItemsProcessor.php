@@ -44,9 +44,6 @@ final class CartItemsProcessor implements CartProcessorInterface
     {
         $context = $this->cartContextResolver->resolveCartContext($cart);
 
-        $subtotalGross = 0;
-        $subtotalNet = 0;
-
         /**
          * @var OrderItemInterface $item
          */
@@ -121,14 +118,6 @@ final class CartItemsProcessor implements CartProcessorInterface
                 $itemDiscount,
                 $context,
             );
-
-            $subtotalGross += $item->getTotal(true);
-            $subtotalNet += $item->getTotal(false);
         }
-
-        $cart->setSubtotal($subtotalGross, true);
-        $cart->setSubtotal($subtotalNet, false);
-
-        $cart->recalculateAdjustmentsTotal();
     }
 }
