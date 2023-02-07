@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-
 abstract class RegisterImplementationLoaderPass implements CompilerPassInterface
 {
     /**
@@ -43,11 +42,11 @@ abstract class RegisterImplementationLoaderPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition($this->implementationLoader)) {
+        if (!$container->hasDefinition($this->implementationLoader) && !$container->hasAlias($this->implementationLoader)) {
             return;
         }
 
-        $registry = $container->getDefinition($this->implementationLoader);
+        $registry = $container->findDefinition($this->implementationLoader);
 
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
             $registry->addMethodCall('addLoader', [new Reference($id)]);
