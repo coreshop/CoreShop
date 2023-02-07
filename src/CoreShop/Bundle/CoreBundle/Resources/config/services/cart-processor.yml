@@ -28,6 +28,10 @@ services:
         tags:
             - { name: coreshop.cart_processor, priority: 600 }
 
+    CoreShop\Component\Core\Order\Processor\CartSubtotalProcessor:
+        tags:
+            - { name: coreshop.cart_processor, priority: 580 }
+
     CoreShop\Component\Core\Order\Processor\CartItemsWholesaleProcessor:
         arguments:
             - '@CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface'
