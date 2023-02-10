@@ -624,26 +624,18 @@ class OrderController extends PimcoreController
         foreach ($payments as $payment) {
             $details = [];
             foreach ($payment->getDetails() as $detailName => $detailValue) {
-                if (empty($detailValue) && $detailValue !== 0) {
+
+                $parsedDetailLine = $this->parsePaymentDetailLine($detailValue);
+
+                if (null === $parsedDetailLine) {
                     continue;
                 }
-                if (is_array($detailValue)) {
-                    $detailValue = implode(', ', $detailValue);
-                }
 
-                if (true === is_bool($detailValue)) {
-                    if (true === $detailValue) {
-                        $detailValue = 'true';
-                    } else {
-                        $detailValue = 'false';
-                    }
-                }
-
-                if (false === is_string($detailValue)) {
-                    $detailValue = (string) $detailValue;
-                }
-
-                $details[] = [$detailName, $detailValue ? htmlentities($detailValue) : ''];
+                $details[] = [
+                    'name' => $detailName,
+                    'value' => $parsedDetailLine['value'],
+                    'detail' => $parsedDetailLine['detail']
+                ];
             }
 
             $availableTransitions = $this->workflowStateManager->parseTransitions($payment, 'coreshop_payment', [
@@ -694,6 +686,46 @@ class OrderController extends PimcoreController
         }
 
         return [];
+    }
+
+    protected function parsePaymentDetailLine(mixed $data): ?array
+    {
+        $detail = null;
+
+        if (empty($data) && $data !== 0) {
+            return null;
+        }
+
+        if (is_array($data)) {
+            if (count(
+                    array_filter($data, static function ($row) {
+                        return is_array($row);
+                    })
+                ) > 0) {
+                // we don't support sub arrays
+                $detail = htmlentities(json_encode($data, JSON_THROW_ON_ERROR));
+                $data = '';
+            } else {
+                $data = implode(', ', $data);
+            }
+        }
+
+        if (true === is_bool($data)) {
+            if (true === $data) {
+                $data = 'true';
+            } else {
+                $data = 'false';
+            }
+        }
+
+        if (false === is_string($data)) {
+            $data = (string) $data;
+        }
+
+        return [
+            'value' => htmlentities($data),
+            'detail' => $detail
+        ];
     }
 
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
