@@ -57,7 +57,7 @@ class StorePrice extends AbstractOperator
             return $result;
         }
 
-        $price = $element->getStoreValuesOfType('price', $store);
+        $price = $element->getStoreValuesOfType('price', $store) ?? 0;
 
         $result->value = $this->moneyFormatter->format($price, $store->getCurrency()->getIsoCode());
 
