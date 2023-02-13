@@ -624,7 +624,6 @@ class OrderController extends PimcoreController
         foreach ($payments as $payment) {
             $details = [];
             foreach ($payment->getDetails() as $detailName => $detailValue) {
-
                 $parsedDetailLine = $this->parsePaymentDetailLine($detailValue);
 
                 if (null === $parsedDetailLine) {
@@ -634,7 +633,7 @@ class OrderController extends PimcoreController
                 $details[] = [
                     'name' => $detailName,
                     'value' => $parsedDetailLine['value'],
-                    'detail' => $parsedDetailLine['detail']
+                    'detail' => $parsedDetailLine['detail'],
                 ];
             }
 
@@ -698,12 +697,12 @@ class OrderController extends PimcoreController
 
         if (is_array($data)) {
             if (count(
-                    array_filter($data, static function ($row) {
-                        return is_array($row);
-                    })
-                ) > 0) {
+                array_filter($data, static function ($row) {
+                    return is_array($row);
+                }),
+            ) > 0) {
                 // we don't support sub arrays
-                $detail = htmlentities(json_encode($data, JSON_THROW_ON_ERROR));
+                $detail = htmlentities(json_encode($data, \JSON_THROW_ON_ERROR));
                 $data = '';
             } else {
                 $data = implode(', ', $data);
@@ -724,7 +723,7 @@ class OrderController extends PimcoreController
 
         return [
             'value' => htmlentities($data),
-            'detail' => $detail
+            'detail' => $detail,
         ];
     }
 
