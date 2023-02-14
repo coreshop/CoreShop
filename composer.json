@@ -84,6 +84,7 @@
     "coreshop/messenger-bundle": "self.version"
   },
   "require": {
+    "php": "^8.0",
     "ext-json": "*",
     "dachcom-digital/emailizr": "^2.0.0",
     "doctrine/data-fixtures": "^1.5",
