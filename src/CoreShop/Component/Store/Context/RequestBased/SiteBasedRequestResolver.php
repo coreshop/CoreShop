@@ -36,10 +36,9 @@ final class SiteBasedRequestResolver implements RequestResolverInterface
         if (Site::isSiteRequest()) {
             $store = $this->storeRepository->findOneBySite(Site::getCurrentSite()->getId());
 
-            if ($store === null) {
-                throw new StoreNotFoundException();
+            if ($store !== null) {
+                return $store;
             }
-            return $store;
         }
 
         $defaultStore = $this->storeRepository->findStandard();
