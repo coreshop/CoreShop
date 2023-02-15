@@ -211,6 +211,22 @@ class CheckoutController extends FrontendController
 
         $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
 
+        $event = new CheckoutEvent($this->getCart(), ['order' => $order]);
+
+        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_PAYMENT_PRE);
+
+        if ($event->isStopped()) {
+            $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+        }
+
+        if ($event->hasResponse()) {
+            return $event->getResponse();
+        }
+
         $response = $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
 
         if (0 === $order->getTotal()) {

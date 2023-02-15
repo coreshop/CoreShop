@@ -118,18 +118,39 @@ final class Configuration implements ConfigurationInterface
 #### Serialized Data
 This extension allows you to store SerializedData inside a Pimcore DataObject.
 
-#### Embedded Class
-This extension allows you to embed other Pimcore Classes into one Pimcore Class.
+### Slug
 
-The data tree looks like this then:
+Pimcore comes with quite useful objects slugs. But it doesn't come with a Slug Generator. CoreShop for the rescue. In Order to use it,
+your class needs to implement `CoreShop\Component\Pimcore\Slug\SluggableInterface` and CoreShop automatically generates slugs for you.
 
-- object
-    - embeddedObject1
-    - embeddedObject2
-        - subEmbeddedObject1
+#### Extensions / Influence the slug generation
 
-You can inherit this as deep as you want, but be careful. The deeper it goes, the more time it takes to save, as it persists every subobject.
+If you want to change the generated slug or prefix it, you can use the `CoreShop\Component\Pimcore\Event\SlugGenerationEvent` Event.
 
-![Embeded Class Data](img/embedded_class_data.png)
+```
+<?php
 
-![Embeded Class Data](img/embedded_class_tag.png)
+declare(strict_types=1);
+
+namespace App\EventListener;
+
+use CoreShop\Component\Pimcore\Event\SlugGenerationEvent;
+use Pimcore\Model\DataObject\PressRelease;
+use Pimcore\Model\Document;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+final class SlugEventListener implements EventSubscriberInterface
+{
+    public static function getSubscribedEvents()
+    {
+        return [
+            SlugGenerationEvent::class => 'onGenerate',
+        ];
+    }
+
+    public function onGenerate(SlugGenerationEvent $event): void
+    {
+        $event->setSlug($event->getSlug() . '-bar');
+    }
+}
+```

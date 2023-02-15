@@ -18,15 +18,16 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
-use CoreShop\Bundle\MessengerBundle\Exception\FailureReceiverNotListableException;
+use CoreShop\Bundle\MessengerBundle\Exception\ReceiverNotListableException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
 final class MessageRepository implements MessageRepositoryInterface
 {
-    public function __construct(private ReceiversRepositoryInterface $receivers)
-    {
+    public function __construct(
+        private ReceiversRepositoryInterface $receivers,
+    ) {
     }
 
     public function listMessages(string $receiverName, int $limit = 10): array
@@ -34,7 +35,7 @@ final class MessageRepository implements MessageRepositoryInterface
         $receiver = $this->receivers->getReceiver($receiverName);
 
         if (!$receiver instanceof ListableReceiverInterface) {
-            throw new FailureReceiverNotListableException();
+            throw new ReceiverNotListableException();
         }
 
         $envelopes = $receiver->all($limit);
@@ -44,11 +45,10 @@ final class MessageRepository implements MessageRepositoryInterface
          * @var Envelope $envelope
          */
         foreach ($envelopes as $envelope) {
-
             $rows[] = new MessageDetails(
                 $this->getMessageId($envelope),
                 $envelope->getMessage()::class,
-                print_r($envelope->getMessage(), true)
+                print_r($envelope->getMessage(), true),
             );
         }
 

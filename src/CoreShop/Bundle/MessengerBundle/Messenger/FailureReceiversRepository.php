@@ -23,9 +23,10 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class FailureReceiversRepository implements FailureReceiversRepositoryInterface
 {
-    public function __construct(private ContainerInterface $failureSenders, private array $receiverNames)
-    {
-
+    public function __construct(
+        private ContainerInterface $failureSenders,
+        private array $receiverNames,
+    ) {
     }
 
     public function getReceiversWithFailureReceivers()

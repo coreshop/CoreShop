@@ -93,3 +93,14 @@ services:
 
     CoreShop\Bundle\ResourceBundle\Pimcore\CacheResourceMarshaller: ~
 
+    CoreShop\Bundle\ResourceBundle\Slug\ResourceConfigurationSlugGenerator:
+        decorates: 'CoreShop\Component\Pimcore\Slug\DataObjectSlugGeneratorInterface'
+        arguments:
+            - '@CoreShop\Bundle\ResourceBundle\Slug\ResourceConfigurationSlugGenerator.inner'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+
+    CoreShop\Component\Resource\Pimcore\ResourceSlugLinkGenerator:
+        decorates: 'CoreShop\Component\Pimcore\Slug\SluggableLinkGenerator'
+        arguments:
+            - '@CoreShop\Component\Resource\Pimcore\ResourceSlugLinkGenerator.inner'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'

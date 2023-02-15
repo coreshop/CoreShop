@@ -2,6 +2,20 @@
 
 declare(strict_types=1);
 
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -44,8 +58,7 @@ final class Version20221118072640 extends AbstractMigration implements Container
 
                 try {
                     $orderItem->save();
-                }
-                catch (ValidationException $exception) {
+                } catch (ValidationException $exception) {
                     $this->write(sprintf('Failed migrating OrderItem "%s" with error "%s"', $orderItem->getId(), $exception->getMessage()));
                 }
             }
@@ -68,6 +81,5 @@ final class Version20221118072640 extends AbstractMigration implements Container
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

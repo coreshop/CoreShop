@@ -24,5 +24,9 @@ interface WishlistPageInterface extends FrontendPageInterface
 
     public function hasItemNamed(string $name): bool;
 
+    public function hasShareWishlistLink(): bool;
+
+    public function getShareWishlistLink(): string;
+
     public function removeProduct(string $productName): void;
 }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\Slug;
 
+use CoreShop\Component\Pimcore\Exception\LinkGenerationNotPossibleException;
 use Pimcore\Http\Request\Resolver\SiteResolver;
 use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
 use Pimcore\Model\DataObject\Concrete;
@@ -34,7 +35,7 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
     public function generate(Concrete $object, array $params = []): string
     {
         if (!$object instanceof SluggableInterface) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new LinkGenerationNotPossibleException(sprintf(
                 'Object with Path "%s" must implement %s',
                 $object->getFullPath(),
                 SluggableInterface::class,
@@ -43,6 +44,7 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
 
         $slugs = $object->getSlug($params['_locale'] ?? null);
         $slug = null;
+        $fallbackSlug = null;
         $site = $params['site'] ?? (
             $this->requestStack->getMainRequest() ?
                 $this->siteResolver->getSite($this->requestStack->getMainRequest()) :
@@ -50,6 +52,9 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
         );
 
         foreach ($slugs as $possibleSlug) {
+            if ($possibleSlug->getSiteId() === 0) {
+                $fallbackSlug = $possibleSlug;
+            }
             if ($possibleSlug->getSiteId() === ($site ? $site->getId() : 0)) {
                 $slug = $possibleSlug;
 
@@ -57,10 +62,10 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
             }
         }
 
-        if (null === $slug) {
-            throw new \InvalidArgumentException(sprintf('No Valid Slug found for object "%s"', $object->getFullPath()));
+        if (null === $slug && null === $fallbackSlug) {
+            throw new LinkGenerationNotPossibleException(sprintf('No Valid Slug found for object "%s"', $object->getFullPath()));
         }
 
-        return $slug->getSlug();
+        return $slug ? $slug->getSlug() : $fallbackSlug->getSlug();
     }
 }

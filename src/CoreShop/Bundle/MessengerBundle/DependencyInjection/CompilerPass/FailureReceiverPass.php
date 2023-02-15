@@ -27,7 +27,7 @@ use Symfony\Component\DependencyInjection\Definition;
 final class FailureReceiverPass implements CompilerPassInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function process(ContainerBuilder $container): void
     {
@@ -47,7 +47,7 @@ final class FailureReceiverPass implements CompilerPassInterface
         }
 
         $failedMessageToFailureTransportListener = $container->getDefinition(
-            'messenger.failure.send_failed_message_to_failure_transport_listener'
+            'messenger.failure.send_failed_message_to_failure_transport_listener',
         );
         $failureReceivers->replaceArgument(0, $failedMessageToFailureTransportListener->getArgument(0));
 

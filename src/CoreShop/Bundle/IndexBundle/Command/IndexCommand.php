@@ -29,6 +29,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -48,6 +49,12 @@ final class IndexCommand extends Command
         $this
             ->setName('coreshop:index')
             ->setDescription('Reindex all Objects')
+            ->addOption(
+                'unpublished',
+                'u',
+                InputOption::VALUE_NONE,
+                'Include unpublished objects',
+            )
             ->addArgument(
                 'indices',
                 InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
@@ -61,6 +68,7 @@ final class IndexCommand extends Command
     {
         $indices = $classesToUpdate = [];
         $indexIds = $input->getArgument('indices');
+        $includeUnpublished = $input->getOption('unpublished') === true;
 
         if (empty($indexIds)) {
             $indices = $this->indexRepository->findAll();
@@ -126,6 +134,8 @@ final class IndexCommand extends Command
             $list = new $list();
 
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
+            $list->setUnpublished($includeUnpublished);
+
             $perLoop = 10;
 
             $batchList = new DataObjectBatchListing($list, $perLoop);

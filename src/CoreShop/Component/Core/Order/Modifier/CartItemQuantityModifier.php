@@ -34,6 +34,11 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
          */
         Assert::isInstanceOf($item, OrderItemInterface::class);
 
+        $currentQuantity = $item->getQuantity();
+        if (0 >= $targetQuantity || $currentQuantity === $targetQuantity) {
+            return;
+        }
+
         $cleanTargetQuantity = $this->roundQuantity($item, $targetQuantity);
 
         $item->setQuantity($cleanTargetQuantity);

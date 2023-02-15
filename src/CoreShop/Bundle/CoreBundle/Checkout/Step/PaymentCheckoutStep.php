@@ -36,7 +36,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     public function __construct(
         private FormFactoryInterface $formFactory,
         private CartManagerInterface $cartManager,
-        private PaymentProviderValidatorInterface $paymentProviderValidator
+        private PaymentProviderValidatorInterface $paymentProviderValidator,
     ) {
     }
 

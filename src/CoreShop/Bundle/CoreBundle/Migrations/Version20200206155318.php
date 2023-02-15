@@ -130,7 +130,7 @@ class Version20200206155318 extends AbstractMigration implements ContainerAwareI
                 $this->container->getParameter('coreshop.folder.user'),
             )));
             $user->setCustomer($customer);
-            $user->setKey($customer->getEmail());
+            $user->setKey(Service::getValidKey($customer->getEmail(), 'object'));
             $user->save();
 
             $doneUsers[] = $loginIdentifier;

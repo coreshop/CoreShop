@@ -8,6 +8,7 @@
         <directory name="src" />
         <ignoreFiles>
             <file name="src/Kernel.php" />
+            <file name="src/CoreShop/Bundle/ResourceBundle/Doctrine/ORM/EntityMerger.php" />
 
             <directory name="src/CoreShop/Component/Resource/DataHub" />
             <directory name="src/CoreShop/Bundle/*/DataHub" />

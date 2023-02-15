@@ -1,0 +1,11 @@
+services:
+  coreshop.registry.link_generators:
+    class: CoreShop\Component\Registry\PrioritizedServiceRegistry
+    arguments:
+      - Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface
+      - link-generators
+    tags:
+      - { name: coreshop.registry, type_hint: linkGenerators }
+
+  CoreShop\Component\Pimcore\DataObject\CompositeLinkGenerator:
+    public: true

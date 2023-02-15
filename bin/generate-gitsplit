@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Finder\Finder;
+
+$root = realpath(__DIR__.'/..');
+
+require_once $root.'/vendor/autoload.php';
+
+$find = static function (string $path) use ($root): array
+{
+    $dirs = new Finder();
+    $dirs
+        ->in($path)
+        ->depth(0)
+        ->directories();
+
+    $splits = [];
+    foreach ($dirs as $dir) {
+        $splits[] = [
+            'prefix' => str_replace($root .'/', '', $dir->getRealPath()),
+            'target' => sprintf('https://${GH_TOKEN}@github.com/coreshop/%1$s.git', $dir->getFileName()),
+        ];
+    }
+
+    return $splits;
+};
+
+$config = [
+    'cache_url' => 'file://cache',
+    'project_url' => 'https://@github.com/coreshop/CoreShop.git',
+    'origins' => [
+        '^master$',
+        '^\d+\.\d+$', #CoreShop Branches
+        '^\d+\.\d+\.\d+$', #Tags
+    ],
+    'splits' => [],
+];
+
+$config['splits'] = array_merge($config['splits'], $find($root.'/src/CoreShop/Bundle'));
+$config['splits'] = array_merge($config['splits'], $find($root.'/src/CoreShop/Component'));
+
+usort($config['splits'], static fn(array $a, array $b): int => basename($a['prefix']) <=> basename($b['prefix']));
+
+file_put_contents($root.'/.gitsplit.yml', Symfony\Component\Yaml\Yaml::dump($config));

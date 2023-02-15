@@ -579,6 +579,10 @@ class Money extends DataObject\ClassDefinition\Data implements
             return (int) round((round((float) $data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
         }
 
+        if (null === $data && !$this->nullable) {
+            $data = 0;
+        }
+
         return $data;
     }
 

@@ -3,6 +3,7 @@ imports:
     - { resource: services/grid.yml }
     - { resource: services/dynamic_dropdown.yml }
     - { resource: services/pimcore.yml }
+    - { resource: services/link_generator.yaml }
 
 parameters:
     coreshop.admin.route.base: /admin/coreshop
@@ -65,17 +66,30 @@ services:
         arguments:
             - '@Symfony\Component\String\Slugger\SluggerInterface'
 
-    CoreShop\Bundle\PimcoreBundle\EventListener\SluggableListener:
+    CoreShop\Component\Pimcore\Slug\DataObjectSiteSlugGeneratorInterface: '@CoreShop\Component\Pimcore\Slug\DataObjectSiteSlugGenerator'
+    CoreShop\Component\Pimcore\Slug\DataObjectSiteSlugGenerator:
         arguments:
             - '@CoreShop\Component\Pimcore\Slug\SluggableSluggerInterface'
+            - '@event_dispatcher'
+
+    CoreShop\Component\Pimcore\Slug\DataObjectSlugGeneratorInterface: '@CoreShop\Component\Pimcore\Slug\DataObjectSlugGenerator'
+    CoreShop\Component\Pimcore\Slug\DataObjectSlugGenerator:
+        arguments:
+            - '@CoreShop\Component\Pimcore\Slug\DataObjectSiteSlugGeneratorInterface'
+
+    CoreShop\Bundle\PimcoreBundle\EventListener\SluggableListener:
+        arguments:
+            - '@CoreShop\Component\Pimcore\Slug\DataObjectSlugGeneratorInterface'
         tags:
             - { name: kernel.event_subscriber }
 
     CoreShop\Component\Pimcore\Slug\SluggableLinkGenerator:
-        public: true
         arguments:
             - '@Pimcore\Http\Request\Resolver\SiteResolver'
             - '@Symfony\Component\HttpFoundation\RequestStack'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
+        tags:
+            - { name: coreshop.link_generator, type: sluggable, priority: 20 }
 
     CoreShop\Component\Pimcore\Twig\Extension\DataObjectRoutingExtension:
         tags:

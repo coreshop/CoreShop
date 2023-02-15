@@ -16,14 +16,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\MessengerBundle\Exception;
+namespace CoreShop\Component\Index\Worker;
 
-use Symfony\Component\Messenger\Exception\RuntimeException;
+use CoreShop\Component\Index\Model\IndexInterface;
 
-final class FailureReceiverNotListableException extends RuntimeException
+interface WorkerDeleteableByIdInterface
 {
-    public function __construct()
-    {
-        parent::__construct('The failure receiver does not support listing or showing specific messages.');
-    }
+    /**
+     * deletes given element from index by id.
+     */
+    public function deleteFromIndexById(IndexInterface $index, int $id);
 }

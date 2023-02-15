@@ -31,13 +31,14 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Order\OrderRendererInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
+use CoreShop\Component\Index\Worker\WorkerDeleteableByIdInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use Pimcore\Tool;
 
-class MysqlWorker extends AbstractWorker
+class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterface
 {
     public function __construct(
         ServiceRegistryInterface $extensionsRegistry,
@@ -326,6 +327,13 @@ QUERY;
         $this->database->delete($this->getTablename($index->getName()), ['o_id' => $object->getId()]);
         $this->database->delete($this->getLocalizedTablename($index->getName()), ['oo_id' => $object->getId()]);
         $this->database->delete($this->getRelationTablename($index->getName()), ['src' => $object->getId()]);
+    }
+
+    public function deleteFromIndexById(IndexInterface $index, int $id): void
+    {
+        $this->database->delete($this->getTablename($index->getName()), ['o_id' => $id]);
+        $this->database->delete($this->getLocalizedTablename($index->getName()), ['oo_id' => $id]);
+        $this->database->delete($this->getRelationTablename($index->getName()), ['src' => $id]);
     }
 
     public function updateIndex(IndexInterface $index, IndexableInterface $object): void

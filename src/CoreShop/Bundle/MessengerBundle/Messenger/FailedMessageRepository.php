@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MessengerBundle\Messenger;
 
-use CoreShop\Bundle\MessengerBundle\Exception\FailureReceiverNotListableException;
+use CoreShop\Bundle\MessengerBundle\Exception\ReceiverNotListableException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\ErrorDetailsStamp;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
@@ -27,8 +27,9 @@ use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
 final class FailedMessageRepository implements FailedMessageRepositoryInterface
 {
-    public function __construct(private FailureReceiversRepositoryInterface $failureReceivers)
-    {
+    public function __construct(
+        private FailureReceiversRepositoryInterface $failureReceivers,
+    ) {
     }
 
     public function listFailedMessages(string $receiverName, int $limit = 10): array
@@ -36,7 +37,7 @@ final class FailedMessageRepository implements FailedMessageRepositoryInterface
         $receiver = $this->failureReceivers->getFailureReceiver($receiverName);
 
         if (!$receiver instanceof ListableReceiverInterface) {
-            throw new FailureReceiverNotListableException();
+            throw new ReceiverNotListableException();
         }
 
         $envelopes = $receiver->all($limit);
@@ -53,13 +54,12 @@ final class FailedMessageRepository implements FailedMessageRepositoryInterface
                 $envelope->getMessage()::class,
                 null !== $lastRedeliveryStamp ? $lastRedeliveryStamp->getRedeliveredAt()->format('Y-m-d H:i:s') : '',
                 null !== $lastErrorDetailsStamp ? $lastErrorDetailsStamp->getExceptionMessage() : '',
-                print_r($envelope->getMessage(), true)
+                print_r($envelope->getMessage(), true),
             );
         }
 
         return $rows;
     }
-
 
     private function getMessageId(Envelope $envelope): mixed
     {
