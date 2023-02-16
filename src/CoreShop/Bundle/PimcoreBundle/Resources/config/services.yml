@@ -87,7 +87,6 @@ services:
         arguments:
             - '@Pimcore\Http\Request\Resolver\SiteResolver'
             - '@Symfony\Component\HttpFoundation\RequestStack'
-            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
         tags:
             - { name: coreshop.link_generator, type: sluggable, priority: 20 }
 
