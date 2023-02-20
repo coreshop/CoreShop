@@ -46,6 +46,7 @@ final class SiteBasedRequestResolver implements RequestResolverInterface
         if ($defaultStore) {
             return $defaultStore;
         }
+
         throw new StoreNotFoundException();
     }
 }
