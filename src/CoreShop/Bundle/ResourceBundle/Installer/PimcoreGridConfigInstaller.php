@@ -22,6 +22,7 @@ use CoreShop\Bundle\ResourceBundle\Installer\Configuration\GridConfigConfigurati
 use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
 use CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -96,6 +97,9 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
         $metadata = $this->metaDataRegistry->get($classIdentifier);
 
         try {
+            /**
+             * @var PimcoreRepositoryInterface $repository
+             */
             $repository = $this->objectManager->getRepository($metadata->getParameter('model'));
 
             return $repository->getClassId();
