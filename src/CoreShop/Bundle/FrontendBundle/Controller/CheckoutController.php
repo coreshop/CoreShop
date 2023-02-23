@@ -29,6 +29,7 @@ use CoreShop\Component\Order\CheckoutEvents;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Event\CheckoutEvent;
 use CoreShop\Component\Order\OrderPaymentTransitions;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
@@ -65,7 +66,7 @@ class CheckoutController extends FrontendController
         //Check all previous steps if they are valid, if not, redirect back
         foreach ($checkoutManager->getPreviousSteps($stepIdentifier) as $previousStep) {
             if ($previousStep instanceof ValidationCheckoutStepInterface && !$previousStep->validate($cart)) {
-                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $previousStep->getIdentifier()]);
+                return $this->redirectToRoute('coreshop_checkout', $this->stepParams($request, $previousStep->getIdentifier()));
             }
         }
 
@@ -73,7 +74,7 @@ class CheckoutController extends FrontendController
         if ($isValid && $step->doAutoForward($cart)) {
             $nextStep = $checkoutManager->getNextStep($stepIdentifier);
             if ($nextStep) {
-                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
+                return $this->redirectToRoute('coreshop_checkout', $this->stepParams($request, $nextStep->getIdentifier()));
             }
         }
 
@@ -102,7 +103,7 @@ class CheckoutController extends FrontendController
                         $nextStep = $checkoutManager->getNextStep($stepIdentifier);
 
                         if ($nextStep) {
-                            $response = $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
+                            $response = $this->redirectToRoute('coreshop_checkout', $this->stepParams($request, $nextStep->getIdentifier()));
                         }
                     }
 
@@ -184,7 +185,7 @@ class CheckoutController extends FrontendController
             $step = $checkoutManager->getStep($stepIdentifier);
 
             if ($step instanceof CheckoutStepInterface && $step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
-                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
+                return $this->redirectToRoute('coreshop_checkout', $this->stepParams($request, $step->getIdentifier()));
             }
         }
 
@@ -209,7 +210,9 @@ class CheckoutController extends FrontendController
 
         $workflow = $this->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
 
-        $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
+        if ($order->getSaleState() !== OrderSaleStates::STATE_ORDER) {
+            $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
+        }
 
         $event = new CheckoutEvent($this->getCart(), ['order' => $order]);
 
@@ -300,6 +303,14 @@ class CheckoutController extends FrontendController
         }
 
         $this->addFlash($type, $actualMessage);
+    }
+
+    protected function stepParams(Request $request, string $stepIdentifier)
+    {
+        $params = [];
+        $params['stepIdentifier'] = $stepIdentifier;
+
+        return $params;
     }
 
     private function prepareMessage(string $message, array $parameters): array
