@@ -143,7 +143,7 @@ class CategoryController extends FrontendController
             $filteredList->setLocale($request->getLocale());
             $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
             $filteredList->addCondition(new LikeCondition('stores', 'both', sprintf('%1$s%2$s%1$s', ',', $this->getContext()->getStore()->getId())), 'stores');
-            $filteredList->addCondition(new LikeCondition('parentCategoryIds', 'both', (string) $category->getId()), 'parentCategoryIds');
+            $filteredList->addCondition(new LikeCondition('parentCategoryIds', 'both', sprintf(',%s,', $category->getId())), 'parentCategoryIds');
 
             $orderDirection = $category->getFilter()->getOrderDirection();
             $orderKey = $category->getFilter()->getOrderKey();
