@@ -105,7 +105,7 @@ trait ProductVariantTrait
         });
 
         if (count($variants) > 0) {
-            return $variants[0];
+            return reset($variants);
         }
 
         return null;
