@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
-use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
@@ -32,7 +32,7 @@ use CoreShop\Component\Rule\Model\ActionInterface;
 final class GiftProductActionProcessor implements CartPriceRuleActionProcessorInterface
 {
     public function __construct(
-        private StackRepository $productRepository,
+        private StackRepositoryInterface $productRepository,
         private OrderItemFactoryInterface $cartItemFactory,
         private AdjustmentFactoryInterface $adjustmentFactory,
     ) {

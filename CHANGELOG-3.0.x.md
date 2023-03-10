@@ -1,3 +1,18 @@
+# 3.0.4
+
+## Bugs
+ - [PimcoreBundle] fix SluggableLinkGenerator DI Config (https://github.com/coreshop/CoreShop/pull/2218)
+ - [CoreBundle] Fix Grid Column Config (https://github.com/coreshop/CoreShop/pull/2215)
+ - [CoreBundle] Improve payment detail rendering (https://github.com/coreshop/CoreShop/pull/2207)
+ - [CoreBundle] Move Cart Subtotal Calculation To Dedicated Cart Processor (https://github.com/coreshop/CoreShop/pull/2205)
+ - [FrontendBundle] fix only showing customer orders and not cars too (https://github.com/coreshop/CoreShop/pull/2201)
+ - [IndexBundle] check recursively child elements (https://github.com/coreshop/CoreShop/pull/2200)
+ - [CoreBundle] set corret store value attributes (https://github.com/coreshop/CoreShop/pull/2197)
+ - [Core] allow decoration of StackRepository (https://github.com/coreshop/CoreShop/pull/2196)
+ - [CoreBundle] surcharge is possible to be more than item value (https://github.com/coreshop/CoreShop/pull/2192)
+ - [ShippingBundle] allow min.amount from to be 0 (https://github.com/coreshop/CoreShop/pull/2195)
+ - [Payum] don't use dev version (https://github.com/coreshop/CoreShop/pull/2193)
+
 # 3.0.3
 
 ## Feature
