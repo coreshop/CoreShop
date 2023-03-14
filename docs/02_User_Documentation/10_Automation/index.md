@@ -32,6 +32,23 @@ core_shop_order:
             customer: true
 ```
 
+## Expired Wishlists
+> Execution Time: Once per day via maintenance job
+
+> **Note**: By default, this feature is disabled.
+
+By default, this feature is disabled (`days = 0`) so no wishlists will be removed by default.
+If you want to remove older wishlists, just enable it via configuration:
+
+#### Change Wishlist Expiration Date
+```yml
+core_shop_wishlist:
+    expiration:
+        days: 20
+        anonymous: true
+        customer: true
+```
+
 ## Expired Rules
 > Execution Time: Once per day via maintenance job
 
