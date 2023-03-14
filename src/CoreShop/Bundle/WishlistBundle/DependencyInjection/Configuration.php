@@ -42,6 +42,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addModelsSection($rootNode);
+        $this->addWishlistCleanupSection($rootNode);
         $this->addStack($rootNode);
 
         return $treeBuilder;
@@ -114,6 +115,26 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
+        ;
+    }
+
+    private function addWishlistCleanupSection(ArrayNodeDefinition $node): void
+    {
+        $node
+            ->children()
+                ->arrayNode('expiration')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('wishlist')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->integerNode('days')->defaultValue(0)->end()
+                                ->booleanNode('anonymous')->defaultValue(true)->end()
+                                ->booleanNode('customer')->defaultValue(true)->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
         ;
     }
 }
