@@ -50,9 +50,9 @@ class WishlistRepository extends PimcoreRepository implements WishlistRepository
     {
         $daysTimestamp = Carbon::now();
         $daysTimestamp->subDays($days);
-
+        
         $conditions = ['o_modificationDate < ?'];
-        $params[] = $daysTimestamp->getTimestamp();
+        $params = [$daysTimestamp->getTimestamp()];
         $groupCondition = [];
 
         if (true === $anonymous) {
