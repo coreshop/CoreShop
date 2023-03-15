@@ -16,10 +16,9 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\WishlistBundle\Expiration;
+namespace CoreShop\Bundle\OrderBundle\Expiration;
 
 use CoreShop\Bundle\CoreBundle\Pimcore\Repository\WishlistRepository;
-use CoreShop\Bundle\OrderBundle\Expiration\OrderExpirationInterface;
 
 final class WishlistExpiration implements OrderExpirationInterface
 {

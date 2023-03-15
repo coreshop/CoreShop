@@ -71,6 +71,10 @@ final class CoreShopOrderExtension extends AbstractModelExtension
 
         $container->setParameter('coreshop.order.expiration.days', $configs['expiration']['order']['days']);
 
+        $container->setParameter('coreshop.wishlist.expiration.days', $configs['expiration']['wishlist']['days']);
+        $container->setParameter('coreshop.wishlist.expiration.anonymous', $configs['expiration']['wishlist']['anonymous']);
+        $container->setParameter('coreshop.wishlist.expiration.customer', $configs['expiration']['wishlist']['customer']);
+
         $loader->load('services.yml');
 
         $container
