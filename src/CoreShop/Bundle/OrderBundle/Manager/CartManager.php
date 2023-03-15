@@ -24,15 +24,25 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\StorageListManagerInterface;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
-final class CartManager implements CartManagerInterface
+final class CartManager implements CartManagerInterface, StorageListManagerInterface
 {
     public function __construct(
         private CartProcessorInterface $cartProcessor,
         private FolderCreationServiceInterface $folderCreationService,
         private Connection $connection,
     ) {
+    }
+
+    public function persist(StorageListInterface $storageList): void
+    {
+        Assert::isInstanceOf($storageList, OrderInterface::class);
+
+        $this->persistCart($storageList);
     }
 
     public function persistCart(OrderInterface $cart): void
