@@ -79,6 +79,9 @@ jobs:
     - name: Validate TWIG
       run: bin/console lint:twig src
 
+    - name: Validate Container
+      run: bin/console lint:container
+
     - name: Validate Doctrine Settings
       run: bin/console doctrine:schema:validate --skip-sync
 
