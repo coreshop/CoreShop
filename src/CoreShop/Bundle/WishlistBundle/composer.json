@@ -24,6 +24,7 @@
     }
   ],
   "require": {
+    "coreshop/configuration": "^3.0",
     "coreshop/resource-bundle": "^3.0",
     "coreshop/storage-list-bundle": "^3.0",
     "coreshop/wishlist": "^3.0"
