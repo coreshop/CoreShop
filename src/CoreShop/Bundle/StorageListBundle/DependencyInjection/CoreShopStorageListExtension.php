@@ -201,6 +201,10 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 }
             }
 
+            $container->setParameter('coreshop.storage_list.wishlist.expiration.days', $configs['expiration']['wishlist']['cart']['days']);
+            $container->setParameter('coreshop.storage_list.wishlist.expiration.anonymous', $configs['expiration']['wishlist']['cart']['anonymous']);
+            $container->setParameter('coreshop.storage_list.wishlist.expiration.customer', $configs['expiration']['wishlist']['cart']['customer']);
+
             (new RegisterStorageListPass(
                 $list['context']['interface'],
                 $contextCompositeServiceName,

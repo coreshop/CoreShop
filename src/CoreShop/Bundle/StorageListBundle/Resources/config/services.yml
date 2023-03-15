@@ -22,3 +22,19 @@ services:
   CoreShop\Component\StorageList\Factory\AddToStorageListFactory:
     arguments:
       - '%coreshop.storage_list.add_to_list_class%'
+
+  CoreShop\Bundle\StorageListBundle\Expiration\WishlistExpiration:
+    shared: false
+    arguments:
+      - '@coreshop.repository.wishlist'
+
+  coreshop.storage_list.maintenance.wishlist.expire_task:
+    class: CoreShop\Bundle\CoreBundle\Maintenance\OrderExpireTask
+    arguments:
+      - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
+      - '@CoreShop\Bundle\StorageListBundle\Expiration\WishlistExpiration'
+      - 'wishlist'
+      - '%coreshop.storage_list.wishlist.expiration.days%'
+      - { anonymous: '%coreshop.wishlist.expiration.anonymous%', customer: '%coreshop.wishlist.expiration.customer%'}
+    tags:
+      - { name: pimcore.maintenance.task, type: coreshop_expire_wishlists }

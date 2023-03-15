@@ -25,4 +25,6 @@ use CoreShop\Component\Wishlist\Model\WishlistInterface;
 interface WishlistRepositoryInterface extends PimcoreStorageListRepositoryInterface, ShareableStorageListRepositoryInterface
 {
     public function findByToken(string $token): ?WishlistInterface;
+
+    public function findExpiredItems(int $days, bool $anonymous, bool $customer);
 }

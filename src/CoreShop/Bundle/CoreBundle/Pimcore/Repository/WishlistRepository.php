@@ -45,7 +45,7 @@ class WishlistRepository extends \CoreShop\Bundle\WishlistBundle\Pimcore\Reposit
         return null;
     }
 
-    public function findExpiredWishlists(int $days, bool $anonymous, bool $customer): array
+    public function findExpiredItems(int $days, bool $anonymous, bool $customer): array
     {
         $daysTimestamp = Carbon::now();
         $daysTimestamp->subDays($days);

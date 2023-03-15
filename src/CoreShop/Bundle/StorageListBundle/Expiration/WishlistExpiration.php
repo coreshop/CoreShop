@@ -16,9 +16,10 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\OrderBundle\Expiration;
+namespace CoreShop\Bundle\StorageListBundle\Expiration;
 
 use CoreShop\Bundle\CoreBundle\Pimcore\Repository\WishlistRepository;
+use CoreShop\Bundle\OrderBundle\Expiration\OrderExpirationInterface;
 
 final class WishlistExpiration implements OrderExpirationInterface
 {
@@ -33,7 +34,7 @@ final class WishlistExpiration implements OrderExpirationInterface
             return;
         }
 
-        $wishlists = $this->wishlistRepository->findExpiredWishlists($days, $params['anonymous'], $params['customer']);
+        $wishlists = $this->wishlistRepository->findExpiredItems($days, $params['anonymous'], $params['customer']);
 
         foreach ($wishlists as $wishlist) {
             $wishlist->delete();
