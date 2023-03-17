@@ -30,6 +30,9 @@ use CoreShop\Component\StorageList\Context\StorageListFactoryContext;
 use CoreShop\Component\StorageList\Core\Context\CustomerAndStoreBasedStorageListContext;
 use CoreShop\Component\StorageList\Core\Context\SessionAndStoreBasedStorageListContext;
 use CoreShop\Component\StorageList\Core\Context\StoreBasedStorageListContext;
+use CoreShop\Component\StorageList\Expiration\StorageListExpiration;
+use CoreShop\Component\StorageList\Maintenance\ExpireTask;
+use CoreShop\Component\StorageList\Repository\ExpireAbleStorageListRepositoryInterface;
 use CoreShop\Component\StorageList\StorageListsManager;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
@@ -37,6 +40,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -199,11 +203,36 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
 
                     $container->setDefinition('coreshop.storage_list.blamer.' . $name, $blamer);
                 }
-            }
 
-            $container->setParameter('coreshop.storage_list.wishlist.expiration.days', $configs['expiration']['wishlist']['cart']['days']);
-            $container->setParameter('coreshop.storage_list.wishlist.expiration.anonymous', $configs['expiration']['wishlist']['cart']['anonymous']);
-            $container->setParameter('coreshop.storage_list.wishlist.expiration.customer', $configs['expiration']['wishlist']['cart']['customer']);
+                if ($list['expiration']['enabled']) {
+                    if ($list['expiration']['service']) {
+                        $container->setAlias('coreshop.storage_list.expiration.'.$name, $list['expiration']['service']);
+                    }
+                    else {
+                        $expireService = new Definition(StorageListExpiration::class);
+                        $expireService->setArgument('$repository', new Reference($list['resource']['repository']));
+
+                        $container->setDefinition('coreshop.storage_list.expiration.'.$name, $expireService);
+                    }
+
+                    $expireTask = new Definition(ExpireTask::class);
+                    $expireTask->setArgument(
+                        '$expirationService',
+                        new Reference('coreshop.storage_list.expiration.'.$name)
+                    );
+                    $expireTask->setArgument('$days', $list['expiration']['days']);
+                    $expireTask->setArgument('$params', $list['expiration']['params'] ?? []);
+                    $expireTask->setTags([
+                        'pimcore.maintenance.task' => [
+                            [
+                                'type' => sprintf('coreshop_%s_storage_list_expiration', $name),
+                            ],
+                        ],
+                    ]);
+
+                    $container->setDefinition('coreshop.storage_list.expiration.task.'.$name, $expireTask);
+                }
+            }
 
             (new RegisterStorageListPass(
                 $list['context']['interface'],

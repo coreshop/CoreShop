@@ -16,14 +16,22 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\OrderBundle\Expiration;
+namespace CoreShop\Component\StorageList\Maintenance;
 
 use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface;
+use Pimcore\Maintenance\TaskInterface;
 
-/**
- * @deprecated since 3.0.5 and will be removed with 3.1.0. Use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface instead.
- */
-interface OrderExpirationInterface extends StorageListExpirationInterface
+final class ExpireTask implements TaskInterface
 {
+    public function __construct(
+        private StorageListExpirationInterface $expirationService,
+        private int $days = 0,
+        private array $params = [],
+    ) {
+    }
 
+    public function execute(): void
+    {
+        $this->expirationService->expire($this->days, $this->params);
+    }
 }

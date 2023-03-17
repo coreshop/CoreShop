@@ -28,3 +28,13 @@ core_shop_storage_list:
                 summary: '@CoreShopFrontend/Wishlist/summary.html.twig'
             controller:
                 enabled: true
+            expiration:
+                enabled: true
+                service: CoreShop\Bundle\OrderBundle\Expiration\OrderAndCartExpiration
+                params:
+                    cart:
+                        days: 0
+                        anonymous: true
+                        customer: true
+                    order:
+                        days: 20

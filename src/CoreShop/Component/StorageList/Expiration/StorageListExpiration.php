@@ -16,15 +16,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\StorageListBundle\Expiration;
+namespace CoreShop\Component\StorageList\Expiration;
 
-use CoreShop\Bundle\CoreBundle\Pimcore\Repository\WishlistRepository;
-use CoreShop\Bundle\OrderBundle\Expiration\OrderExpirationInterface;
+use CoreShop\Component\StorageList\Repository\ExpireAbleStorageListRepositoryInterface;
 
-final class WishlistExpiration implements OrderExpirationInterface
+final class StorageListExpiration implements StorageListExpirationInterface
 {
     public function __construct(
-        private WishlistRepository $wishlistRepository,
+        private ExpireAbleStorageListRepositoryInterface $repository,
     ) {
     }
 
@@ -34,10 +33,10 @@ final class WishlistExpiration implements OrderExpirationInterface
             return;
         }
 
-        $wishlists = $this->wishlistRepository->findExpiredItems($days, $params['anonymous'], $params['customer']);
+        $lists = $this->repository->findExpiredStorageLists($days, $params);
 
-        foreach ($wishlists as $wishlist) {
-            $wishlist->delete();
+        foreach ($lists as $list) {
+            $list->delete();
         }
     }
 }
