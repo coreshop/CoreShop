@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\Slug;
 
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Data\UrlSlug;
 use Pimcore\Model\Site;
@@ -42,10 +43,9 @@ class DataObjectSlugGenerator implements DataObjectSlugGeneratorInterface
                 new UrlSlug($fallbackSlug, 0),
             ];
             $actualSlugs = [];
-            $inheritanceEnabled = AbstractObject::getGetInheritedValues();
-            AbstractObject::setGetInheritedValues(false);
-            $existingSlugs = $sluggable->getSlug($language);
-            AbstractObject::setGetInheritedValues($inheritanceEnabled);
+            $existingSlugs = InheritanceHelper::useInheritedValues(function() use ($sluggable, $language) {
+                return $sluggable->getSlug($language);
+            }, false);
 
             foreach ($sites as $site) {
                 $siteSlug = $this->generator->generateSlugsForSite($sluggable, $language, $site);
