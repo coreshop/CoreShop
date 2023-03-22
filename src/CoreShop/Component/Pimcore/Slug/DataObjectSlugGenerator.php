@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\Slug;
 
+use CoreShop\Component\Resource\Model\AbstractObject;
 use Pimcore\Model\DataObject\Data\UrlSlug;
 use Pimcore\Model\Site;
 use Pimcore\Tool;
@@ -41,7 +42,10 @@ class DataObjectSlugGenerator implements DataObjectSlugGeneratorInterface
                 new UrlSlug($fallbackSlug, 0),
             ];
             $actualSlugs = [];
+            $inheritanceEnabled = \Pimcore\Model\DataObject\AbstractObject::getGetInheritedValues();
+            \Pimcore\Model\DataObject\AbstractObject::setGetInheritedValues(false);
             $existingSlugs = $sluggable->getSlug($language);
+            \Pimcore\Model\DataObject\AbstractObject::setGetInheritedValues($inheritanceEnabled);
 
             foreach ($sites as $site) {
                 $siteSlug = $this->generator->generateSlugsForSite($sluggable, $language, $site);
@@ -61,11 +65,19 @@ class DataObjectSlugGenerator implements DataObjectSlugGeneratorInterface
                         if ($existingSlug->getSlug() === $newSlug->getSlug()) {
                             $actualSlugs[] = $existingSlug;
                         } else {
-                            /**
-                             * @psalm-suppress InternalMethod
-                             */
-                            $newSlug->setPreviousSlug($existingSlug->getSlug());
-                            $actualSlugs[] = $newSlug;
+                            // $existingSlug is the slug to be saved from backend
+                            $dbSlug = $sluggable->retrieveSlugData(['fieldname' => 'slug', 'ownertype' => 'object', 'position' => $language, 'siteId' => $site->getId()])[0]['slug'] ?? null;
+                            if ($dbSlug === null) {
+                                $dbSlug = $sluggable->retrieveSlugData(['fieldname' => 'slug', 'ownertype' => 'object', 'position' => $language])[0]['slug'] ?? null; // fallback slug
+                            }
+
+                            if ($dbSlug && $dbSlug !== $existingSlug->getSlug()) {
+                                $existingSlug->setPreviousSlug($dbSlug);
+                            } elseif (!$dbSlug && !$existingSlug->getSlug()) {
+                                $actualSlugs[] = $newSlug;
+                            } else {
+                                $actualSlugs[] = $existingSlug;
+                            }
                         }
                         $found = true;
 
