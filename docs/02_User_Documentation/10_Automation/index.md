@@ -43,11 +43,14 @@ If you want to remove older wishlists, just enable it via configuration:
 #### Change Wishlist Expiration Date
 ```yml
 core_shop_storage_list:
-    expiration:
+    list:
         wishlist:
-            days: 20
-            anonymous: true
-            customer: true
+            expiration:
+                enabled: true
+                days: 14
+                params:
+                    anonymous: true
+                    customer: false
 ```
 
 ## Expired Rules
