@@ -46,6 +46,7 @@ core_shop_storage_list:
     list:
         wishlist:
             expiration:
+                service: ~ # use default service
                 enabled: true
                 days: 14
                 params:
