@@ -53,7 +53,7 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
 
         $currentFilter[$field] = $values;
 
-        if ($values === static::EMPTY_STRING || [] === $values) {
+        if ($values === static::EMPTY_STRING) {
             $values = null;
         }
 
