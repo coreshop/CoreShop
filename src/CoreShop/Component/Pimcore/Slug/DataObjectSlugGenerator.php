@@ -20,6 +20,7 @@ namespace CoreShop\Component\Pimcore\Slug;
 
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Data\UrlSlug;
 use Pimcore\Model\Site;
 use Pimcore\Tool;
@@ -67,9 +68,12 @@ class DataObjectSlugGenerator implements DataObjectSlugGeneratorInterface
                             $actualSlugs[] = $existingSlug;
                         } else {
                             // $existingSlug is the slug to be saved from backend
-                            $dbSlug = $sluggable->retrieveSlugData(['fieldname' => 'slug', 'ownertype' => 'object', 'position' => $language, 'siteId' => $site->getId()])[0]['slug'] ?? null;
-                            if ($dbSlug === null) {
-                                $dbSlug = $sluggable->retrieveSlugData(['fieldname' => 'slug', 'ownertype' => 'object', 'position' => $language])[0]['slug'] ?? null; // fallback slug
+                            $dbSlug = null;
+                            if($sluggable instanceof Concrete) {
+                                $dbSlug = $sluggable->retrieveSlugData(['fieldname' => 'slug', 'ownertype' => 'object', 'position' => $language, 'siteId' => $site->getId()])[0]['slug'] ?? null;
+                                if ($dbSlug === null) {
+                                    $dbSlug = $sluggable->retrieveSlugData(['fieldname' => 'slug', 'ownertype' => 'object', 'position' => $language])[0]['slug'] ?? null; // fallback slug
+                                }
                             }
 
                             if ($dbSlug && $dbSlug !== $existingSlug->getSlug()) {
