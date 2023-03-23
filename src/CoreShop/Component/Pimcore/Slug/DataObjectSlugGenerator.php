@@ -43,9 +43,10 @@ class DataObjectSlugGenerator implements DataObjectSlugGeneratorInterface
                 new UrlSlug($fallbackSlug, 0),
             ];
             $actualSlugs = [];
-            $existingSlugs = InheritanceHelper::useInheritedValues(function() use ($sluggable, $language) {
-                return $sluggable->getSlug($language);
-            }, false);
+            $existingSlugs = InheritanceHelper::useInheritedValues(
+                fn () => $sluggable->getSlug($language),
+                false,
+            );
 
             foreach ($sites as $site) {
                 $siteSlug = $this->generator->generateSlugsForSite($sluggable, $language, $site);
