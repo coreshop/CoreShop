@@ -57,7 +57,6 @@ class SelectFilterConditionFromMultiselectProcessor implements FilterConditionPr
             }
         }
 
-        /** @var $currentValue int|string|array|null */
         $currentValue = $currentFilter[$field] ?? null;
 
         if (is_string($currentValue)) {
