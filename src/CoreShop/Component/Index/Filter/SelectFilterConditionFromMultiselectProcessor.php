@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Index\Filter;
 
+use CoreShop\Component\Index\Condition\InCondition;
 use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
@@ -56,10 +57,16 @@ class SelectFilterConditionFromMultiselectProcessor implements FilterConditionPr
             }
         }
 
+        $currentValue = $currentFilter[$field] ?? null;
+
+        if (is_string($currentValue)) {
+            $currentValue = trim($currentValue, ',');
+        }
+
         return [
             'type' => 'select',
             'label' => $condition->getLabel(),
-            'currentValue' => isset($currentFilter[$field]) ? trim($currentFilter[$field], ',') : null,
+            'currentValue' => $currentValue,
             'values' => array_values($values),
             'fieldName' => $field,
             'quantityUnit' => $condition->getQuantityUnit() ? Unit::getById($condition->getQuantityUnit()) : null,
@@ -80,17 +87,18 @@ class SelectFilterConditionFromMultiselectProcessor implements FilterConditionPr
         }
 
         if (!empty($value)) {
-            $value = ',' . $value . ',';
 
-            $currentFilter[$field] = $value;
+            $fieldName = $isPrecondition ? 'PRECONDITION_' . $field : $field;
 
-            $fieldName = $field;
+            if (is_array($value)) {
+                $list->addCondition(new InCondition($field, $value), $fieldName);
+            } else {
+                $value = ',' . $value . ',';
 
-            if ($isPrecondition) {
-                $fieldName = 'PRECONDITION_' . $fieldName;
+                $currentFilter[$field] = $value;
+
+                $list->addCondition(new LikeCondition($field, 'both', $value), $fieldName);
             }
-
-            $list->addCondition(new LikeCondition($field, 'both', $value), $fieldName);
         }
 
         return $currentFilter;
