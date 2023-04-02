@@ -4,8 +4,8 @@ services:
 
     coreshop.frontend.template_configurator:
         alias: CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator instead'
+        deprecated: { package: "coreshop/frontend-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator instead' }
 
     coreshop.frontend.twig.locale_switcher:
         alias: CoreShop\Bundle\FrontendBundle\Twig\LocaleSwitcherExtension
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\FrontendBundle\Twig\LocaleSwitcherExtension instead'
+        deprecated: { package: "coreshop/frontend-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\FrontendBundle\Twig\LocaleSwitcherExtension instead' }

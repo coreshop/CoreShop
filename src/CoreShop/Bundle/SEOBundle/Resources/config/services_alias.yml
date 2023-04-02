@@ -4,24 +4,24 @@ services:
 
     coreshop.seo.presentation:
         alias: CoreShop\Component\SEO\SEOPresentationInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\SEOPresentationInterface instead'
+        deprecated: { package: "coreshop/seo-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\SEOPresentationInterface instead' }
 
     coreshop.seo.extractor.description:
         alias: CoreShop\Component\SEO\Extractor\DescriptionExtractor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\Extractor\DescriptionExtractor instead'
+        deprecated: { package: "coreshop/seo-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\Extractor\DescriptionExtractor instead' }
 
     coreshop.seo.extractor.title:
         alias: CoreShop\Component\SEO\Extractor\TitleExtractor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\Extractor\TitleExtractor instead'
+        deprecated: { package: "coreshop/seo-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\Extractor\TitleExtractor instead' }
 
     coreshop.seo.extractor.og:
         alias: CoreShop\Component\SEO\Extractor\OGExtractor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\Extractor\OGExtractor instead'
+        deprecated: { package: "coreshop/seo-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\Extractor\OGExtractor instead' }
 
     coreshop.seo.extractor.image:
         alias: CoreShop\Component\SEO\Extractor\ImageExtractor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\Extractor\ImageExtractor instead'
+        deprecated: { package: "coreshop/seo-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\Extractor\ImageExtractor instead' }
 
     coreshop.seo.extractor.document:
         alias: CoreShop\Component\SEO\Extractor\DocumentExtractor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\Extractor\DocumentExtractor instead'
+        deprecated: { package: "coreshop/seo-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\SEO\Extractor\DocumentExtractor instead' }

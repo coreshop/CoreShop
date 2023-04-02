@@ -4,5 +4,5 @@ services:
 
     coreshop.inventory.availability_checker.default:
         alias: CoreShop\Component\Inventory\Checker\AvailabilityChecker
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Inventory\Checker\AvailabilityChecker instead'
+        deprecated: { package: "coreshop/inventory-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Inventory\Checker\AvailabilityChecker instead' }
 

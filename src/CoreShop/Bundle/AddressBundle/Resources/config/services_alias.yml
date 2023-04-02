@@ -1,39 +1,39 @@
 services:
-    _defaults:
-        public: true
+  _defaults:
+    public: true
 
-    coreshop.context.country:
-        alias: CoreShop\Component\Address\Context\CountryContextInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\CountryContextInterface instead.'
+  coreshop.context.country:
+    alias: CoreShop\Component\Address\Context\CountryContextInterface
+    deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\CountryContextInterface instead.' }
 
-    coreshop.context.country.composite:
-        alias: CoreShop\Component\Address\Context\CompositeCountryContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\CompositeCountryContext instead.'
+  coreshop.context.country.composite:
+    alias: CoreShop\Component\Address\Context\CompositeCountryContext
+    deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\CompositeCountryContext instead.' }
 
-    coreshop.context.country.request_based:
-        alias: CoreShop\Component\Address\Context\RequestBased\CountryContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\RequestBased\CountryContext instead.'
+  coreshop.context.country.request_based:
+    alias: CoreShop\Component\Address\Context\RequestBased\CountryContext
+    deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\RequestBased\CountryContext instead.' }
 
-    coreshop.context.country.fixed:
-        alias: CoreShop\Component\Address\Context\FixedCountryContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\FixedCountryContext instead.'
+  coreshop.context.country.fixed:
+    alias: CoreShop\Component\Address\Context\FixedCountryContext
+    deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\FixedCountryContext instead.' }
 
-    coreshop.context.country.request_based.resolver.composite:
-        alias: CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver instead'
+  coreshop.context.country.request_based.resolver.composite:
+    alias: CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver
+    deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver instead' }
 
-    CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface:
-        alias: CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface instead'
+  CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface:
+    alias: CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver
+    deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface instead' }
 
-    coreshop.context.country.request_based.resolver.geo_lite:
-        alias: CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1.'
+  coreshop.context.country.request_based.resolver.geo_lite:
+    alias: CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver
+    deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1.' }
 
-    coreshop.context.country.cached:
-        alias: CoreShop\Component\Address\Context\RequestBased\CachedCountryContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\RequestBased\CachedCountryContext instead'
+  coreshop.context.country.cached:
+    alias: CoreShop\Component\Address\Context\RequestBased\CachedCountryContext
+    deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Context\RequestBased\CachedCountryContext instead' }
 
-    coreshop.address.formatter:
-        alias: CoreShop\Component\Address\Formatter\AddressFormatter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Formatter\AddressFormatterInterface instead'
+  coreshop.address.formatter:
+    alias: CoreShop\Component\Address\Formatter\AddressFormatter
+    deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Address\Formatter\AddressFormatterInterface instead' }
