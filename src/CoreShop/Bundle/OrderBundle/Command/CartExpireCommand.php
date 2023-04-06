@@ -28,7 +28,6 @@ final class CartExpireCommand extends Command
 {
     public function __construct(
         protected StorageListExpirationInterface $cartExpiration,
-        protected int $days = 0,
         protected array $params = [],
     ) {
         parent::__construct();
@@ -62,8 +61,8 @@ final class CartExpireCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $days = $this->days;
-        $params = $this->params;
+        $days = $this->params['cart']['days'] ?? 0;
+        $params = $this->params['cart']['params'] ?? [];
 
         if ($input->getOption('days')) {
             $days = (int) $input->getOption('days');

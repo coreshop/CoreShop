@@ -25,6 +25,7 @@ use CoreShop\Component\StorageList\Repository\ExpireAbleStorageListRepositoryInt
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
 use CoreShop\Bundle\WishlistBundle\Pimcore\Repository\WishlistRepository as BaseWishlistRepository;
+
 class WishlistRepository extends BaseWishlistRepository implements WishlistRepositoryInterface, ExpireAbleStorageListRepositoryInterface
 {
     use CustomerExpiryRepositoryTrait;

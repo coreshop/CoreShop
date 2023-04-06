@@ -230,6 +230,9 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                         ],
                     ]);
 
+                    $container->setParameter('coreshop.storage_list.expiration.'.$name.'.days', $list['expiration']['days']);
+                    $container->setParameter('coreshop.storage_list.expiration.'.$name.'.params', $list['expiration']['params'] ?? []);
+
                     $container->setDefinition('coreshop.storage_list.expiration.task.'.$name, $expireTask);
                 }
             }

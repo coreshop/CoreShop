@@ -30,11 +30,7 @@ core_shop_storage_list:
                 enabled: true
             expiration:
                 enabled: true
-                service: CoreShop\Bundle\OrderBundle\Expiration\OrderAndCartExpiration
                 params:
-                    cart:
-                        days: 0
-                        anonymous: true
-                        customer: true
-                    order:
-                        days: 20
+                    days: 20
+                    anonymous: true
+                    customer: true

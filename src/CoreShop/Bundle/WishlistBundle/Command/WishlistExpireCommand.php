@@ -16,7 +16,7 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\OrderBundle\Command;
+namespace CoreShop\Bundle\WishlistBundle\Command;
 
 use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface;
 use Symfony\Component\Console\Command\Command;
@@ -24,40 +24,62 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class OrderExpireCommand extends Command
+final class WishlistExpireCommand extends Command
 {
     public function __construct(
-        protected StorageListExpirationInterface $orderExpiration,
+        protected StorageListExpirationInterface $wishlistExpiration,
+        protected int $days = 0,
         protected array $params = [],
     ) {
         parent::__construct();
     }
 
+
     protected function configure(): void
     {
         $this
-            ->setName('coreshop:order:expire')
-            ->setDescription('Expire abandoned orders')
+            ->setName('coreshop:wishlist:expire')
+            ->setDescription('Expire abandoned Wishlists')
             ->addOption(
                 'days',
                 'days',
                 InputOption::VALUE_OPTIONAL,
                 'Older than',
             )
+            ->addOption(
+                'anonymous',
+                'a',
+                InputOption::VALUE_NONE,
+                'Delete only anonymous wishlists',
+            )
+            ->addOption(
+                'user',
+                'u',
+                InputOption::VALUE_NONE,
+                'Delete only user wishlists',
+            )
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $days = $this->params['order']['days'] ?? 0;
+        $days = $this->days;
+        $params = $this->params;
 
         if ($input->getOption('days')) {
             $days = (int) $input->getOption('days');
         }
 
-        $output->writeln('Running order expire job, this could take some time.');
+        if ($input->getOption('anonymous')) {
+            $params['anonymous'] = true;
+        }
+        if ($input->getOption('user')) {
+            $params['user'] = true;
+        }
 
-        $this->orderExpiration->expire($days);
+        $output->writeln('Running cart expire job, this could take some time.');
+
+        $this->wishlistExpiration->expire($days, $params);
 
         return 0;
     }
