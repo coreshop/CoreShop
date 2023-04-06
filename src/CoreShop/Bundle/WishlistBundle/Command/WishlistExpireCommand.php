@@ -77,7 +77,7 @@ final class WishlistExpireCommand extends Command
             $params['user'] = true;
         }
 
-        $output->writeln('Running cart expire job, this could take some time.');
+        $output->writeln('Running wishlist expire job, this could take some time.');
 
         $this->wishlistExpiration->expire($days, $params);
 
