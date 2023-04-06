@@ -201,11 +201,11 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 }
             }
 
-            (new RegisterStorageListPass(
+            $container->addCompilerPass(new RegisterStorageListPass(
                 $list['context']['interface'],
                 $contextCompositeServiceName,
                 $list['context']['tag'],
-            ))->process($container);
+            ));
         }
     }
 }
