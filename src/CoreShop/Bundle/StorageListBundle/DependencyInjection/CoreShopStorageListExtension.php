@@ -51,6 +51,8 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
 
         $manager = $container->findDefinition(StorageListsManager::class);
 
+        $tags = [];
+
         foreach ($configs['list'] as $name => $list) {
             $isDefaultContextInterface = $list['context']['interface'] === StorageListContextInterface::class;
             $isDefaultContextComposite = $list['context']['composite'] === CompositeStorageListContext::class;
@@ -201,11 +203,13 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 }
             }
 
-            $container->addCompilerPass(new RegisterStorageListPass(
+            $tags[] = [
                 $list['context']['interface'],
                 $contextCompositeServiceName,
                 $list['context']['tag'],
-            ));
+            ];
         }
+
+        $container->setParameter('coreshop.storage_list.tags', $tags);
     }
 }
