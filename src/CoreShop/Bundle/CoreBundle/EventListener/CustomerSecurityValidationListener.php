@@ -57,7 +57,7 @@ final class CustomerSecurityValidationListener
          */
         $listing = $this->customerRepository->getList();
         $listing->setUnpublished(true);
-        $listing->addConditionParam('email', $identifierValue);
+        $listing->addConditionParam('email = ?', $identifierValue);
         $listing->addConditionParam('o_id != ?', $object->getId());
         $listing->addConditionParam('user__id IS NOT NULL');
 
