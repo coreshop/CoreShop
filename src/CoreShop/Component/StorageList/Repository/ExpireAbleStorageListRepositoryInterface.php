@@ -16,14 +16,12 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\OrderBundle\Expiration;
+namespace CoreShop\Component\StorageList\Repository;
 
-use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
 
-/**
- * @deprecated since 3.0.5 and will be removed with 3.1.0. Use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface instead.
- */
-interface OrderExpirationInterface extends StorageListExpirationInterface
+interface ExpireAbleStorageListRepositoryInterface extends RepositoryInterface
 {
-
+    public function findExpiredStorageLists(int $days, array $params = []): array;
 }

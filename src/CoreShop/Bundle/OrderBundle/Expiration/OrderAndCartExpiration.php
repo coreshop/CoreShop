@@ -20,10 +20,17 @@ namespace CoreShop\Bundle\OrderBundle\Expiration;
 
 use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface;
 
-/**
- * @deprecated since 3.0.5 and will be removed with 3.1.0. Use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface instead.
- */
-interface OrderExpirationInterface extends StorageListExpirationInterface
+final class OrderAndCartExpiration implements StorageListExpirationInterface
 {
+    public function __construct(
+        private OrderExpiration $orderExpiration,
+        private CartExpiration $cartExpiration,
+    ) {
+    }
 
+    public function expire(int $days, array $params = []): void
+    {
+        $this->orderExpiration->expire($params['order']['days'], $params['order']['params'] ?? []);
+        $this->cartExpiration->expire($params['cart']['days'], $params['cart']['params'] ?? []);
+    }
 }

@@ -66,6 +66,11 @@ services:
     CoreShop\Component\Order\Processor\CartProcessorInterface: '@CoreShop\Component\Order\Processor\CompositeCartProcessor'
     CoreShop\Component\Order\Processor\CompositeCartProcessor: ~
 
+    CoreShop\Bundle\OrderBundle\Expiration\OrderAndCartExpiration:
+        arguments:
+            - '@CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration'
+            - '@CoreShop\Bundle\OrderBundle\Expiration\CartExpiration'
+
     CoreShop\Bundle\OrderBundle\Expiration\CartExpiration:
         shared: false
         arguments:

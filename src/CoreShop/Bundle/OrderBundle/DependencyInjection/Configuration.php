@@ -74,36 +74,9 @@ final class Configuration implements ConfigurationInterface
         ;
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
-        $this->addCartCleanupSection($rootNode);
         $this->addStack($rootNode);
 
         return $treeBuilder;
-    }
-
-    private function addCartCleanupSection(ArrayNodeDefinition $node): void
-    {
-        $node
-            ->children()
-                ->arrayNode('expiration')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('cart')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->integerNode('days')->defaultValue(0)->end()
-                                ->booleanNode('anonymous')->defaultValue(true)->end()
-                                ->booleanNode('customer')->defaultValue(true)->end()
-                            ->end()
-                        ->end()
-                            ->arrayNode('order')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->integerNode('days')->defaultValue(20)->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-        ;
     }
 
     private function addStack(ArrayNodeDefinition $node): void

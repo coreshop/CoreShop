@@ -16,15 +16,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\OrderBundle\Expiration;
+namespace CoreShop\Component\StorageList\Expiration;
 
-use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface;
+use CoreShop\Component\StorageList\Repository\ExpireAbleStorageListRepositoryInterface;
 
-final class CartExpiration implements StorageListExpirationInterface
+final class StorageListExpiration implements StorageListExpirationInterface
 {
     public function __construct(
-        private OrderRepositoryInterface $cartRepository,
+        private ExpireAbleStorageListRepositoryInterface $repository,
     ) {
     }
 
@@ -34,10 +33,10 @@ final class CartExpiration implements StorageListExpirationInterface
             return;
         }
 
-        $carts = $this->cartRepository->findExpiredCarts($days, $params['anonymous'], $params['customer']);
+        $lists = $this->repository->findExpiredStorageLists($days, $params);
 
-        foreach ($carts as $cart) {
-            $cart->delete();
+        foreach ($lists as $list) {
+            $list->delete();
         }
     }
 }
