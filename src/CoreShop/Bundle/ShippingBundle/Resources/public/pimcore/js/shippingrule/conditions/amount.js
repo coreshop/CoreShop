@@ -18,6 +18,7 @@ coreshop.shippingrule.conditions.amount = Class.create(coreshop.rules.conditions
         var minAmountValue = 0;
         var maxAmountValue = 0;
         var grossValue = true;
+        var useTotalValue = false;
         var me = this;
 
         if (this.data && this.data.minAmount) {
@@ -30,6 +31,10 @@ coreshop.shippingrule.conditions.amount = Class.create(coreshop.rules.conditions
 
         if (this.data && this.data.hasOwnProperty('gross')) {
             grossValue = this.data.gross;
+        }
+
+        if (this.data && this.data.hasOwnProperty('useTotal')) {
+            useTotalValue = this.data.useTotal;
         }
 
         var minAmount = new Ext.form.NumberField({
@@ -54,9 +59,15 @@ coreshop.shippingrule.conditions.amount = Class.create(coreshop.rules.conditions
             value: grossValue
         });
 
+        var useTotal = new Ext.form.Checkbox({
+            fieldLabel: t('coreshop_condition_amount_use_total'),
+            name: 'useTotal',
+            value: useTotalValue
+        });
+
         this.form = Ext.create('Ext.form.Panel', {
             items: [
-                minAmount, maxAmount, gross
+                minAmount, maxAmount, gross, useTotal
             ]
         });
 

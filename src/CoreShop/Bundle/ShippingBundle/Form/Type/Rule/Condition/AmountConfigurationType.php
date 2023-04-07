@@ -52,7 +52,8 @@ final class AmountConfigurationType extends AbstractType
                     new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ])
-            ->add('gross', CheckboxType::class, [])
+            ->add('gross', CheckboxType::class)
+            ->add('useTotal', CheckboxType::class)
         ;
     }
 

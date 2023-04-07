@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
@@ -30,8 +29,18 @@ class AmountConditionChecker extends AbstractConditionChecker
         $minAmount = $configuration['minAmount'];
         $maxAmount = $configuration['maxAmount'];
         $gross = $configuration['gross'] ?? true;
+        $total = $configuration['useTotal'] ?? true;
 
-        $totalAmount = min(0, $shippable->getSubtotal($gross) - $shippable->getAdjustmentsTotal(AdjustmentInterface::SHIPPING));
+        if ($total) {
+            $totalAmount = $shippable->getTotal($gross) - $shippable->getShipping($gross);
+        }
+        else {
+            $totalAmount = $shippable->getSubtotal($gross);
+        }
+
+        if ($totalAmount < 0) {
+            $totalAmount = 0;
+        }
 
         if ($minAmount > 0) {
             if ($totalAmount < $minAmount) {

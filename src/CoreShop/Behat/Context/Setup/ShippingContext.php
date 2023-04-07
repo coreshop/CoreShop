@@ -242,6 +242,38 @@ final class ShippingContext implements Context
     }
 
     /**
+     * @Given /^the (shipping rule "[^"]+") has a condition amount from total "([^"]+)" to "([^"]+)"$/
+     * @Given /^the (shipping rule) has a condition amount from total "([^"]+)" to "([^"]+)"$/
+     */
+    public function theShippingRuleHasAAmountFromTotalCondition(ShippingRuleInterface $rule, $minAmount, $maxAmount): void
+    {
+        $this->assertConditionForm(AmountConfigurationType::class, 'amount');
+
+        $this->addCondition($rule, $this->createConditionWithForm('amount', [
+            'minAmount' => $minAmount,
+            'maxAmount' => $maxAmount,
+            'gross' => true,
+            'useTotal' => true,
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition amount from total "([^"]+)" to "([^"]+)" which is net$/
+     * @Given /^the (shipping rule) has a condition amount from total "([^"]+)" to "([^"]+)" which is net$/
+     */
+    public function theShippingRuleHasAAmountFromTotalConditionWhichIsNet(ShippingRuleInterface $rule, $minAmount, $maxAmount): void
+    {
+        $this->assertConditionForm(AmountConfigurationType::class, 'amount');
+
+        $this->addCondition($rule, $this->createConditionWithForm('amount', [
+            'minAmount' => $minAmount,
+            'maxAmount' => $maxAmount,
+            'gross' => false,
+            'useTotal' => true,
+        ]));
+    }
+
+    /**
      * @Given /^the (shipping rule "[^"]+") has a condition postcode with "([^"]+)"$/
      * @Given /^the (shipping rule) has a condition postcode with "([^"]+)"$/
      */
