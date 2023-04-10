@@ -4,41 +4,41 @@ services:
 
     coreshop.tracking.resolver.tracking_config:
         alias: CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface instead'
+        deprecated: { package: "coreshop/tracking-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface instead' }
 
     coreshop.tracking.tracker.ecommerce_tracker:
         alias: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker instead'
+        deprecated: { package: "coreshop/tracking-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker instead' }
 
     coreshop.tracking.event.gtm_code_tracker:
         alias: CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker instead'
+        deprecated: { package: "coreshop/tracking-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker instead' }
 
     coreshop.tracking.tracker.google.analytics.enhanced_ecommerce:
         alias: CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce instead'
+        deprecated: { package: "coreshop/tracking-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce instead' }
 
     coreshop.tracking.tracker.google.analytics.universal_ecommerce:
         alias: CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce instead'
+        deprecated: { package: "coreshop/tracking-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce instead' }
 
     coreshop.tracking.tracker.google.analytics.gtag_enhanced_ecommerce:
         alias: CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce instead'
+        deprecated: { package: "coreshop/tracking-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce instead' }
 
     coreshop.tracking.tracker.google.analytics.gtm_classic_ecommerce:
         alias: CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce instead'
+        deprecated: { package: "coreshop/tracking-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce instead' }
 
     coreshop.tracking.tracker.google.analytics.gtm_enhanced_ecommerce:
         alias: CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce instead'
+        deprecated: { package: "coreshop/tracking-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce instead' }
 
     coreshop.tracking.extractor:
         alias: CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface instead'
+        deprecated: { package: "coreshop/tracking-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface instead' }
 
     coreshop.tracking.manager:
         alias: CoreShop\Component\Tracking\Tracker\TrackerInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Tracking\Tracker\TrackerInterface instead'
+        deprecated: { package: "coreshop/tracking-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Tracking\Tracker\TrackerInterface instead' }
 

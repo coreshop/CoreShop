@@ -4,36 +4,36 @@ services:
 
     coreshop.store.theme_resolver:
         alias: CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface instead'
+        deprecated: { package: "coreshop/store-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface instead' }
 
     coreshop.store.theme_helper:
         alias: CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface instead'
+        deprecated: { package: "coreshop/store-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface instead' }
 
     coreshop.context.store:
         alias: CoreShop\Component\Store\Context\StoreContextInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\StoreContextInterface instead'
+        deprecated: { package: "coreshop/store-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\StoreContextInterface instead' }
 
     coreshop.context.store.composite:
         alias: CoreShop\Component\Store\Context\CompositeStoreContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\CompositeStoreContext instead'
+        deprecated: { package: "coreshop/store-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\CompositeStoreContext instead' }
 
     coreshop.context.store.request_based.cached:
         alias: CoreShop\Component\Store\Context\RequestBased\CachedStoreContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\RequestBased\CachedStoreContext instead'
+        deprecated: { package: "coreshop/store-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\RequestBased\CachedStoreContext instead' }
 
     coreshop.context.store.fixed:
         alias: CoreShop\Component\Store\Context\FixedStoreContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\FixedStoreContext instead'
+        deprecated: { package: "coreshop/store-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\FixedStoreContext instead' }
 
     coreshop.context.store.request_based.resolver.composite:
         alias: CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver instead'
+        deprecated: { package: "coreshop/store-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver instead' }
 
     coreshop.context.store.request_based.resolver.admin:
         alias: CoreShop\Component\Store\Context\RequestBased\PimcoreAdminSiteBasedRequestResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\RequestBased\PimcoreAdminSiteBasedRequestResolver instead'
+        deprecated: { package: "coreshop/store-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\RequestBased\PimcoreAdminSiteBasedRequestResolver instead' }
 
     coreshop.context.store.request_based.resolver.hostname_based:
         alias: CoreShop\Component\Store\Context\RequestBased\SiteBasedRequestResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\RequestBased\SiteBasedRequestResolver instead'
+        deprecated: { package: "coreshop/store-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Store\Context\RequestBased\SiteBasedRequestResolver instead' }

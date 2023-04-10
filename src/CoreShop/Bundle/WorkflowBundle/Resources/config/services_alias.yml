@@ -4,29 +4,29 @@ services:
 
     coreshop.state_machine_manager:
         alias: CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager instead'
+        deprecated: { package: "coreshop/workflow-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager instead' }
 
     coreshop.state_machine_applier:
         alias: CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier instead'
+        deprecated: { package: "coreshop/workflow-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier instead' }
 
     coreshop.state_machine_cascade_transition:
         alias: CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition instead'
+        deprecated: { package: "coreshop/workflow-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition instead' }
 
     coreshop.workflow.history_logger:
         alias: CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface instead'
+        deprecated: { package: "coreshop/workflow-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface instead' }
 
     coreshop.workflow.state_history_logger:
         alias: CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface instead'
+        deprecated: { package: "coreshop/workflow-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface instead' }
 
     coreshop.repository.workflow_history:
         alias: CoreShop\Bundle\WorkflowBundle\History\HistoryRepositoryInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\History\HistoryRepositoryInterface instead'
+        deprecated: { package: "coreshop/workflow-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\History\HistoryRepositoryInterface instead' }
 
     coreshop.workflow.state_info_manager:
         alias: CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface instead'
+        deprecated: { package: "coreshop/workflow-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface instead' }
 

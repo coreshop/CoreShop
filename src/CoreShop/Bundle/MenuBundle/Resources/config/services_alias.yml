@@ -4,5 +4,5 @@ services:
 
     coreshop.menu.renderer.json:
         alias: CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer instead'
+        deprecated: { package: "coreshop/menu-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer instead' }
 

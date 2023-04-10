@@ -4,16 +4,16 @@ services:
 
     coreshop.context.locale:
         alias: CoreShop\Component\Locale\Context\LocaleContextInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Locale\Context\LocaleContextInterface instead'
+        deprecated: { package: "coreshop/locale-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Locale\Context\LocaleContextInterface instead' }
 
     coreshop.context.locale.composite:
         alias: CoreShop\Component\Locale\Context\LocaleContextInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Locale\Context\LocaleContextInterface instead'
+        deprecated: { package: "coreshop/locale-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Locale\Context\LocaleContextInterface instead' }
 
     coreshop.context.locale.pimcore:
         alias: CoreShop\Component\Locale\Context\PimcoreLocaleContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Locale\Context\PimcoreLocaleContext instead'
+        deprecated: { package: "coreshop/locale-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Locale\Context\PimcoreLocaleContext instead' }
 
     coreshop.context.locale.fixed:
         alias: CoreShop\Component\Locale\Context\FixedLocaleContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Locale\Context\FixedLocaleContext instead'
+        deprecated: { package: "coreshop/locale-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Locale\Context\FixedLocaleContext instead' }

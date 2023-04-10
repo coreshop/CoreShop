@@ -4,12 +4,12 @@ services:
 
     coreshop.notification_rule.applier:
         alias: CoreShop\Component\Notification\Processor\RuleApplierInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Notification\Processor\RuleApplierInterface instead'
+        deprecated: { package: "coreshop/notification-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Notification\Processor\RuleApplierInterface instead' }
 
     coreshop.notification_rule.processor:
         alias: CoreShop\Component\Notification\Processor\RulesProcessorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Notification\Processor\RulesProcessorInterface instead'
+        deprecated: { package: "coreshop/notification-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Notification\Processor\RulesProcessorInterface instead' }
 
     coreshop.notification_rule.event_rule_processor:
         alias: CoreShop\Bundle\NotificationBundle\Processor\EventedRuleProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\NotificationBundle\Processor\EventedRuleProcessor instead'
+        deprecated: { package: "coreshop/notification-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\NotificationBundle\Processor\EventedRuleProcessor instead' }
