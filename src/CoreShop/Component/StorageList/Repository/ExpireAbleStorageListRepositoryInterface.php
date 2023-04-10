@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Component\StorageList\Repository;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use CoreShop\Component\StorageList\Model\StorageListInterface;
 
 interface ExpireAbleStorageListRepositoryInterface extends RepositoryInterface
 {

@@ -32,7 +32,6 @@ use CoreShop\Component\StorageList\Core\Context\SessionAndStoreBasedStorageListC
 use CoreShop\Component\StorageList\Core\Context\StoreBasedStorageListContext;
 use CoreShop\Component\StorageList\Expiration\StorageListExpiration;
 use CoreShop\Component\StorageList\Maintenance\ExpireTask;
-use CoreShop\Component\StorageList\Repository\ExpireAbleStorageListRepositoryInterface;
 use CoreShop\Component\StorageList\StorageListsManager;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
@@ -40,7 +39,6 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -206,19 +204,18 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
 
                 if ($list['expiration']['enabled']) {
                     if ($list['expiration']['service']) {
-                        $container->setAlias('coreshop.storage_list.expiration.'.$name, $list['expiration']['service']);
-                    }
-                    else {
+                        $container->setAlias('coreshop.storage_list.expiration.' . $name, $list['expiration']['service']);
+                    } else {
                         $expireService = new Definition(StorageListExpiration::class);
                         $expireService->setArgument('$repository', new Reference($list['resource']['repository']));
 
-                        $container->setDefinition('coreshop.storage_list.expiration.'.$name, $expireService);
+                        $container->setDefinition('coreshop.storage_list.expiration.' . $name, $expireService);
                     }
 
                     $expireTask = new Definition(ExpireTask::class);
                     $expireTask->setArgument(
                         '$expirationService',
-                        new Reference('coreshop.storage_list.expiration.'.$name)
+                        new Reference('coreshop.storage_list.expiration.' . $name),
                     );
                     $expireTask->setArgument('$days', $list['expiration']['days']);
                     $expireTask->setArgument('$params', $list['expiration']['params'] ?? []);
@@ -230,10 +227,10 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                         ],
                     ]);
 
-                    $container->setParameter('coreshop.storage_list.expiration.'.$name.'.days', $list['expiration']['days']);
-                    $container->setParameter('coreshop.storage_list.expiration.'.$name.'.params', $list['expiration']['params'] ?? []);
+                    $container->setParameter('coreshop.storage_list.expiration.' . $name . '.days', $list['expiration']['days']);
+                    $container->setParameter('coreshop.storage_list.expiration.' . $name . '.params', $list['expiration']['params'] ?? []);
 
-                    $container->setDefinition('coreshop.storage_list.expiration.task.'.$name, $expireTask);
+                    $container->setDefinition('coreshop.storage_list.expiration.task.' . $name, $expireTask);
                 }
             }
 
