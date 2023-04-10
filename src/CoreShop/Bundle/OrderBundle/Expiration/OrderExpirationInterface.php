@@ -25,5 +25,4 @@ use CoreShop\Component\StorageList\Expiration\StorageListExpirationInterface;
  */
 interface OrderExpirationInterface extends StorageListExpirationInterface
 {
-
 }

@@ -18,17 +18,18 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Pimcore\Repository;
 
+use CoreShop\Bundle\WishlistBundle\Pimcore\Repository\WishlistRepository as BaseWishlistRepository;
 use CoreShop\Component\Core\Wishlist\Repository\WishlistRepositoryInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\StorageList\Repository\CustomerExpiryRepositoryTrait;
 use CoreShop\Component\StorageList\Repository\ExpireAbleStorageListRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
-use CoreShop\Bundle\WishlistBundle\Pimcore\Repository\WishlistRepository as BaseWishlistRepository;
 
 class WishlistRepository extends BaseWishlistRepository implements WishlistRepositoryInterface, ExpireAbleStorageListRepositoryInterface
 {
     use CustomerExpiryRepositoryTrait;
+
     public function findLatestByStoreAndCustomer(
         StoreInterface $store,
         CustomerInterface $customer,
