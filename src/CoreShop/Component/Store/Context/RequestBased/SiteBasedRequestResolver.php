@@ -34,15 +34,19 @@ final class SiteBasedRequestResolver implements RequestResolverInterface
     public function findStore(Request $request): ?StoreInterface
     {
         if (Site::isSiteRequest()) {
-            return $this->storeRepository->findOneBySite(Site::getCurrentSite()->getId());
+            $store = $this->storeRepository->findOneBySite(Site::getCurrentSite()->getId());
+
+            if ($store !== null) {
+                return $store;
+            }
         }
 
         $defaultStore = $this->storeRepository->findStandard();
 
-        if (null === $defaultStore) {
-            throw new StoreNotFoundException();
+        if ($defaultStore) {
+            return $defaultStore;
         }
 
-        return $defaultStore;
+        throw new StoreNotFoundException();
     }
 }

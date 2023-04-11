@@ -36,6 +36,9 @@ final class TitleExtractor implements ExtractorInterface
          */
         Assert::isInstanceOf($object, SEOAwareInterface::class);
 
-        $seoMetadata->setTitle($object->getMetaTitle());
+        $title = $object->getMetaTitle();
+        if ($title !== null) {
+            $seoMetadata->setTitle($title);
+        }
     }
 }
