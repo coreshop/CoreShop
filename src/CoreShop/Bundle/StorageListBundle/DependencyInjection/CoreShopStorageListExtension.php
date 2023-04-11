@@ -22,6 +22,7 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelEx
 use CoreShop\Bundle\StorageListBundle\Core\EventListener\SessionStoreStorageListSubscriber;
 use CoreShop\Bundle\StorageListBundle\Core\EventListener\StorageListBlamerListener;
 use CoreShop\Bundle\StorageListBundle\DependencyInjection\Compiler\RegisterStorageListPass;
+use CoreShop\Bundle\StorageListBundle\EventListener\CacheListener;
 use CoreShop\Bundle\StorageListBundle\EventListener\SessionSubscriber;
 use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
@@ -99,9 +100,19 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                     new Reference($contextCompositeServiceName),
                     $list['session']['key'],
                 ]);
+                $sessionSubscriber->addTag('kernel.event_subscriber');
 
                 $container->setDefinition('coreshop.storage_list.session_subscriber.' . $name, $sessionSubscriber);
+
             }
+
+            $cacheSubscriber = new Definition(CacheListener::class, [
+                new Reference(PimcoreContextResolver::class),
+                new Reference($contextCompositeServiceName),
+            ]);
+            $cacheSubscriber->addTag('kernel.event_subscriber');
+
+            $container->setDefinition('coreshop.storage_list.cache_subscriber.' . $name, $cacheSubscriber);
 
             if ($list['controller']['enabled']) {
                 $class = $list['controller']['class'];
