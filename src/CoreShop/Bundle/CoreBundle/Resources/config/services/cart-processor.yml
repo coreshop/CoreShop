@@ -88,4 +88,4 @@ services:
         arguments:
             - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:
-            - { name: coreshop.cart_processor, priority: 100 }
+            - { name: coreshop.cart_processor, priority: 581 }
