@@ -70,7 +70,7 @@ class DataObjectSlugGenerator implements DataObjectSlugGeneratorInterface
                             // $existingSlug is the slug to be saved from backend
                             $dbSlug = null;
                             if($sluggable instanceof Concrete) {
-                                $dbSlug = $sluggable->retrieveSlugData(['fieldname' => 'slug', 'ownertype' => 'object', 'position' => $language, 'siteId' => $site->getId()])[0]['slug'] ?? null;
+                                $dbSlug = $sluggable->retrieveSlugData(['fieldname' => 'slug', 'ownertype' => 'object', 'position' => $language, 'siteId' => $existingSlug->getSiteId()])[0]['slug'] ?? null;
                                 if ($dbSlug === null) {
                                     $dbSlug = $sluggable->retrieveSlugData(['fieldname' => 'slug', 'ownertype' => 'object', 'position' => $language])[0]['slug'] ?? null; // fallback slug
                                 }
