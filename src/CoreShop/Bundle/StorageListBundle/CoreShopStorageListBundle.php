@@ -20,6 +20,8 @@ namespace CoreShop\Bundle\StorageListBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\StorageListBundle\DependencyInjection\Compiler\RegisterAllStorageListsPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopStorageListBundle extends AbstractResourceBundle
 {
@@ -28,6 +30,13 @@ final class CoreShopStorageListBundle extends AbstractResourceBundle
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
+    }
+
+    public function build(ContainerBuilder $container): void
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new RegisterAllStorageListsPass());
     }
 
     protected function getModelNamespace(): string

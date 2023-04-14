@@ -4,4 +4,4 @@ services:
 
     coreshop.money_formatter:
         alias: CoreShop\Component\Currency\Formatter\MoneyFormatterInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface instead'
+        deprecated: { package: "coreshop/money-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface instead' }

@@ -4,12 +4,12 @@ services:
 
     coreshop.fixture.data.executor:
         alias: CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutor instead'
+        deprecated: { package: "coreshop/fixture-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutor instead' }
 
     coreshop.fixture.update_data_fixtures:
         alias: CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture instead'
+        deprecated: { package: "coreshop/fixture-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture instead' }
 
     coreshop.fixture.data.loader:
         alias: CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader instead'
+        deprecated: { package: "coreshop/fixture-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader instead' }

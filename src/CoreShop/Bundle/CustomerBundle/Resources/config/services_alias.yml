@@ -4,21 +4,21 @@ services:
 
     coreshop.context.customer:
         alias: CoreShop\Component\Customer\Context\CustomerContextInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\CustomerContextInterface instead'
+        deprecated: { package: "coreshop/customer-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\CustomerContextInterface instead' }
 
     coreshop.context.customer.composite:
         alias: CoreShop\Component\Customer\Context\CompositeCustomerContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\CompositeCustomerContext instead'
+        deprecated: { package: "coreshop/customer-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\CompositeCustomerContext instead' }
 
     coreshop.context.customer.request_based:
         alias: CoreShop\Component\Customer\Context\RequestBased\CustomerContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\RequestBased\CustomerContext instead'
+        deprecated: { package: "coreshop/customer-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\RequestBased\CustomerContext instead' }
 
     coreshop.context.customer.fixed:
         alias: CoreShop\Component\Customer\Context\FixedCustomerContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\FixedCustomerContext instead'
+        deprecated: { package: "coreshop/customer-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\FixedCustomerContext instead' }
 
     coreshop.context.customer.request_based.resolver.composite:
         alias: CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface instead'
+        deprecated: { package: "coreshop/customer-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface instead' }
 
