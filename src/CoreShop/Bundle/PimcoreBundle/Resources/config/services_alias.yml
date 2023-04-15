@@ -4,28 +4,28 @@ services:
 
     coreshop.class_installer:
         alias: CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface instead'
+        deprecated: { package: "coreshop/pimcore-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface instead' }
 
     coreshop.grid_config_installer:
         alias: CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface instead'
+        deprecated: { package: "coreshop/pimcore-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface instead' }
 
     coreshop.resource_loader:
         alias: CoreShop\Component\Pimcore\ResourceLoader
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\ResourceLoader instead'
+        deprecated: { package: "coreshop/pimcore-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\ResourceLoader instead' }
 
     coreshop.object_service:
         alias: CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface instead'
+        deprecated: { package: "coreshop/pimcore-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface instead' }
 
     coreshop.object_note_service:
         alias: CoreShop\Component\Pimcore\DataObject\NoteServiceInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface instead'
+        deprecated: { package: "coreshop/pimcore-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface instead' }
 
     coreshop.object_cloner:
         alias: CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface instead'
+        deprecated: { package: "coreshop/pimcore-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface instead' }
 
     coreshop.pimcore_controller.grid:
         alias: CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController instead'
+        deprecated: { package: "coreshop/pimcore-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController instead' }

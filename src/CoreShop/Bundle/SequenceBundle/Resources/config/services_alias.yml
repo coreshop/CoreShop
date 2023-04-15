@@ -4,4 +4,4 @@ services:
 
     coreshop.sequence.generator:
         alias: CoreShop\Component\Sequence\Generator\SequenceGenerator
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Sequence\Generator\SequenceGenerator instead'
+        deprecated: { package: "coreshop/sequence-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Sequence\Generator\SequenceGenerator instead' }

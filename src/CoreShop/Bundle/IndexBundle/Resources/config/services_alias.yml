@@ -4,188 +4,188 @@ services:
 
     coreshop.factory.index.list:
         alias: CoreShop\Component\Index\Factory\ListingFactoryInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Factory\ListingFactoryInterface instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Factory\ListingFactoryInterface instead' }
 
     coreshop.filter.processor:
         alias: CoreShop\Component\Index\Filter\FilterProcessorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\FilterProcessorInterface instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\FilterProcessorInterface instead' }
 
     coreshop.factory.filter.list:
         alias: CoreShop\Component\Index\Factory\FilteredListingFactoryInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface instead' }
 
     coreshop.index.filter_group_helper:
         alias: CoreShop\Component\Index\Worker\FilterGroupHelperInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Worker\FilterGroupHelperInterface instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Worker\FilterGroupHelperInterface instead' }
 
     coreshop.index.worker.mysql:
         alias: CoreShop\Bundle\IndexBundle\Worker\MysqlWorker
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker instead' }
 
     coreshop.index.getter.brickfield:
         alias: CoreShop\Component\Index\Getter\BrickGetter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Getter\BrickGetter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Getter\BrickGetter instead' }
 
     coreshop.index.getter.classification_store:
         alias: CoreShop\Component\Index\Getter\ClassificationStoreGetter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use coreshop.index.getter.classification_store instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use coreshop.index.getter.classification_store instead' }
 
     coreshop.index.getter.field_collection:
         alias: CoreShop\Component\Index\Getter\FieldCollectionGetter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Getter\FieldCollectionGetter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Getter\FieldCollectionGetter instead' }
 
     coreshop.index.getter.localized_field:
         alias: CoreShop\Component\Index\Getter\LocalizedFieldGetter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Getter\LocalizedFieldGetter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Getter\LocalizedFieldGetter instead' }
 
     coreshop.index.interpreter.soundex:
         alias: CoreShop\Component\Index\Interpreter\SoundexInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\SoundexInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\SoundexInterpreter instead' }
 
     coreshop.index.interpreter.object_id:
         alias: CoreShop\Component\Index\Interpreter\ObjectIdInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\ObjectIdInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\ObjectIdInterpreter instead' }
 
     coreshop.index.interpreter.object_id_sum:
         alias: CoreShop\Component\Index\Interpreter\ObjectIdSumInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\ObjectIdSumInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\ObjectIdSumInterpreter instead' }
 
     coreshop.index.interpreter.object:
         alias: CoreShop\Component\Index\Interpreter\ObjectInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\ObjectInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\ObjectInterpreter instead' }
 
     coreshop.index.interpreter.object_property:
         alias: CoreShop\Component\Index\Interpreter\ObjectPropertyInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\ObjectPropertyInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\ObjectPropertyInterpreter instead' }
 
     coreshop.index.interpreter.quantity_value:
         alias: CoreShop\Component\Index\Interpreter\QuantityValueInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\QuantityValueInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\QuantityValueInterpreter instead' }
 
     coreshop.index.interpreter.locale_mapping:
         alias: CoreShop\Component\Index\Interpreter\LocaleMappingInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\LocaleMappingInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\LocaleMappingInterpreter instead' }
 
     coreshop.index.interpreter.timestamp:
         alias: CoreShop\Component\Index\Interpreter\TimestampInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\TimestampInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\TimestampInterpreter instead' }
 
     coreshop.index.interpreter.expression:
         alias: CoreShop\Component\Index\Interpreter\ExpressionInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\ExpressionInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\ExpressionInterpreter instead' }
 
     coreshop.index.interpreter.nested:
         alias: CoreShop\Component\Index\Interpreter\NestedInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\NestedInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\NestedInterpreter instead' }
 
     coreshop.index.interpreter.nested_localized:
         alias: CoreShop\Component\Index\Interpreter\LocalizedNestedInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\LocalizedNestedInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\LocalizedNestedInterpreter instead' }
 
     coreshop.index.interpreter.nested_relational:
         alias: CoreShop\Component\Index\Interpreter\RelationalNestedInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\RelationalNestedInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\RelationalNestedInterpreter instead' }
 
     coreshop.index.interpreter.iterator:
         alias: CoreShop\Component\Index\Interpreter\IteratorInterpreter
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\IteratorInterpreter instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Interpreter\IteratorInterpreter instead' }
 
     coreshop.index.column_type.classification_store:
         alias: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType instead' }
 
     coreshop.index.column_type.field_collection:
         alias: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType instead' }
 
     coreshop.index.column_type.localized_fields:
         alias: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeLocalizedFieldsType
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeLocalizedFieldsType instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeLocalizedFieldsType instead' }
 
     coreshop.index.column_type.object_brick:
         alias: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType instead' }
 
     coreshop.index.column_type.object:
         alias: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType instead' }
 
     coreshop.index.column_type.system:
         alias: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeSystemType
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeSystemType instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeSystemType instead' }
 
     coreshop.filter.condition_type.select:
         alias: CoreShop\Component\Index\Filter\SelectFilterConditionProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\SelectFilterConditionProcessor instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\SelectFilterConditionProcessor instead' }
 
     coreshop.filter.condition_type.range:
         alias: CoreShop\Component\Index\Filter\RangeFilterConditionProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\RangeFilterConditionProcessor instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\RangeFilterConditionProcessor instead' }
 
     coreshop.filter.condition_type.multiselect:
         alias: CoreShop\Component\Index\Filter\MultiselectFilterConditionProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\MultiselectFilterConditionProcessor instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\MultiselectFilterConditionProcessor instead' }
 
     coreshop.filter.condition_type.relational_multihref:
         alias: CoreShop\Component\Index\Filter\RelationalMultiselectConditionProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\RelationalMultiselectConditionProcessor instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\RelationalMultiselectConditionProcessor instead' }
 
     coreshop.filter.condition_type.relational_select:
         alias: CoreShop\Component\Index\Filter\RelationalSelectConditionProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\RelationalSelectConditionProcessor instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\RelationalSelectConditionProcessor instead' }
 
     coreshop.filter.condition_type.category_select:
         alias: CoreShop\Component\Index\Filter\CategorySelectConditionProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\CategorySelectConditionProcessor instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Filter\CategorySelectConditionProcessor instead' }
 
     coreshop.index.updater:
         alias: CoreShop\Component\Index\Service\IndexUpdaterServiceInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface instead' }
 
     coreshop.index.condition.renderer:
         alias: CoreShop\Component\Index\Condition\ConditionRendererInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Condition\ConditionRendererInterface instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Condition\ConditionRendererInterface instead' }
 
     coreshop.index.condition.renderer.mysql.abstract:
         alias: CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\AbstractMysqlDynamicRenderer instead' }
 
     coreshop.index.condition.renderer.mysql.compare:
         alias: CoreShop\Bundle\IndexBundle\Condition\Mysql\CompareRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\CompareRenderer instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\CompareRenderer instead' }
 
     coreshop.index.condition.renderer.mysql.concat:
         alias: CoreShop\Bundle\IndexBundle\Condition\Mysql\ConcatRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\ConcatRenderer instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\ConcatRenderer instead' }
 
     coreshop.index.condition.renderer.mysql.in:
         alias: CoreShop\Bundle\IndexBundle\Condition\Mysql\InRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\InRenderer instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\InRenderer instead' }
 
     coreshop.index.condition.renderer.mysql.is_null:
         alias: CoreShop\Bundle\IndexBundle\Condition\Mysql\IsNullRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\IsNullRenderer instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\IsNullRenderer instead' }
 
     coreshop.index.condition.renderer.mysql.is:
         alias: CoreShop\Bundle\IndexBundle\Condition\Mysql\IsRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\IsRenderer instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\IsRenderer instead' }
 
     coreshop.index.condition.renderer.mysql.like:
         alias: CoreShop\Bundle\IndexBundle\Condition\Mysql\LikeRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\LikeRenderer instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\LikeRenderer instead' }
 
     coreshop.index.condition.renderer.mysql.range:
         alias: CoreShop\Bundle\IndexBundle\Condition\Mysql\RangeRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\RangeRenderer instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Condition\Mysql\RangeRenderer instead' }
 
     coreshop.index.order.renderer:
         alias: CoreShop\Component\Index\Order\OrderRendererInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Order\OrderRendererInterface instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Index\Order\OrderRendererInterface instead' }
 
     coreshop.index.order.renderer.mysql.abstract:
         alias: CoreShop\Bundle\IndexBundle\Order\Mysql\AbstractMysqlDynamicRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Order\Mysql\AbstractMysqlDynamicRenderer instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Order\Mysql\AbstractMysqlDynamicRenderer instead' }
 
     coreshop.index.order.renderer.mysql.simple:
         alias: CoreShop\Bundle\IndexBundle\Order\Mysql\SimpleOrderRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Order\Mysql\SimpleOrderRenderer instead'
+        deprecated: { package: "coreshop/address-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\IndexBundle\Order\Mysql\SimpleOrderRenderer instead' }

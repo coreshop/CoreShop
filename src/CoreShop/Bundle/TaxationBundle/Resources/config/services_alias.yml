@@ -4,4 +4,4 @@ services:
 
     coreshop.collector.taxes:
         alias: CoreShop\Component\Taxation\Collector\TaxCollector
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Taxation\Collector\TaxCollector instead'
+        deprecated: { package: "coreshop/taxation-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Taxation\Collector\TaxCollector instead' }

@@ -4,173 +4,173 @@ services:
 
     coreshop.cart.manager:
         alias: CoreShop\Component\Order\Manager\CartManagerInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Manager\CartManagerInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Manager\CartManagerInterface instead' }
 
     coreshop.cart_item.quantity_modifier:
         alias: CoreShop\Component\StorageList\StorageListItemQuantityModifier
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\StorageList\StorageListItemQuantityModifier instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\StorageList\StorageListItemQuantityModifier instead' }
 
     coreshop.cart.item_finder:
         alias: CoreShop\Component\Order\Cart\CartItemResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\CartItemResolver instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\CartItemResolver instead' }
 
     coreshop.cart.modifier:
         alias: CoreShop\Component\Order\Cart\CartModifier
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\CartModifier instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\CartModifier instead' }
 
     coreshop.transformer.event_dispatcher:
         alias: CoreShop\Component\Order\Transformer\TransformerEventDispatcher
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Transformer\TransformerEventDispatcher instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Transformer\TransformerEventDispatcher instead' }
 
     coreshop.cart_processor.composite:
         alias: CoreShop\Component\Order\Processor\CartProcessorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Processor\CartProcessorInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Processor\CartProcessorInterface instead' }
 
     coreshop.cart.expire:
         alias: CoreShop\Bundle\OrderBundle\Expiration\CartExpiration
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Expiration\CartExpiration instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Expiration\CartExpiration instead' }
 
     coreshop.order.expire:
         alias: CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration instead' }
 
     coreshop.proportional_integer_distributor:
         alias: CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface instead' }
 
     coreshop.custom_factory.adjustment:
         alias: CoreShop\Component\Order\Factory\AdjustmentFactoryInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface instead' }
 
     coreshop.factory.add_to_cart:
         alias: CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface instead' }
 
     coreshop.factory.add_multiple_to_cart:
         alias: CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface instead' }
 
     coreshop.cart_price_rule.rule_validation.processor:
         alias: CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface instead' }
 
     coreshop.cart_price_rule.condition.timespan:
         alias: CoreShop\Component\Order\Cart\Rule\Condition\TimeSpanConditionChecker
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\Condition\TimeSpanConditionChecker instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\Condition\TimeSpanConditionChecker instead' }
 
     coreshop.cart_price_rule.condition.voucher:
         alias: CoreShop\Component\Order\Cart\Rule\Condition\VoucherConditionChecker
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\Condition\VoucherConditionChecker instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\Condition\VoucherConditionChecker instead' }
 
     coreshop.cart_price_rule.condition.amount:
         alias: CoreShop\Component\Order\Cart\Rule\Condition\AmountConditionChecker
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\Condition\AmountConditionChecker instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\Condition\AmountConditionChecker instead' }
 
     coreshop.generator.cart_price_rule_voucher_codes:
         alias: CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator instead' }
 
     coreshop.proposal.cart_price_rule.calculator:
         alias: CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculatorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculatorInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculatorInterface instead' }
 
     coreshop.cart_price_rule.processor:
         alias: CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface instead' }
 
     coreshop.cart_price_rule.un_processor:
         alias: CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface instead' }
 
     coreshop.validator.cart_price_rule:
         alias: CoreShop\Bundle\OrderBundle\Validator\Constraints\CartPriceRuleValidator
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Validator\Constraints\CartPriceRuleValidator instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Validator\Constraints\CartPriceRuleValidator instead' }
 
     coreshop.voucher.modifier:
         alias: CoreShop\Component\Order\Modifier\VoucherModifierInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Modifier\VoucherModifierInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Modifier\VoucherModifierInterface instead' }
 
     coreshop.form.data_mapper.cart_item_quantity:
         alias: CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper instead' }
 
     coreshop.context.cart.fixed:
         alias: CoreShop\Component\Order\Context\FixedCartContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Context\FixedCartContext instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Context\FixedCartContext instead' }
 
     coreshop.context.cart.new:
         alias: CoreShop\Component\Order\Context\CartContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Context\CartContext instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Context\CartContext instead' }
 
     coreshop.context.cart:
         alias: CoreShop\Component\Order\Context\CartContextInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Context\CartContextInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Context\CartContextInterface instead' }
 
     coreshop.context.cart.composite:
         alias: CoreShop\Component\Order\Context\CompositeCartContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Context\CompositeCartContext instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Context\CompositeCartContext instead' }
 
     coreshop.order_invoice.transformer.cart_item_to_order_item:
         alias: CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer instead' }
 
     coreshop.order.transformer.order_to_invoice:
         alias: CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer instead' }
 
     coreshop.order_shipment.transformer.order_item_to_shipment_item:
         alias: CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer instead' }
 
     coreshop.order.transformer.order_to_shipment:
         alias: CoreShop\Component\Order\Transformer\OrderToShipmentTransformer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer instead' }
 
     coreshop.order.payment_provider:
         alias: CoreShop\Component\Order\Payment\OrderPaymentProvider
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Payment\OrderPaymentProvider instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Payment\OrderPaymentProvider instead' }
 
     coreshop.order.renderer.pdf:
         alias: CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf instead' }
 
     coreshop.renderer.order.pdf.asset:
         alias: CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer instead' }
 
     coreshop.order.purchasable.price_calculator:
         alias: CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator instead' }
 
     coreshop.order.purchasable.calculator:
         alias: CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface instead' }
 
     coreshop.order.purchasable.wholesale_price_calculator:
         alias: CoreShop\Component\Order\Calculator\CompositePurchasableWholesalePriceCalculator
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Calculator\CompositePurchasableWholesalePriceCalculator instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Calculator\CompositePurchasableWholesalePriceCalculator instead' }
 
     coreshop.order.purchasable.wholesale_price_calculator.default:
         alias: CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculator
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculator instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculator instead' }
 
     coreshop.state_machine_resolver.order:
         alias: CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver instead' }
 
     coreshop.state_machine_resolver.order_payment:
         alias: CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver instead' }
 
     coreshop.state_machine_resolver.order_shipment:
         alias: CoreShop\Bundle\OrderBundle\StateResolver\OrderShippingStateResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\StateResolver\OrderShippingStateResolver instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\StateResolver\OrderShippingStateResolver instead' }
 
     coreshop.state_machine_resolver.order_invoice:
         alias: CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver instead' }
 
     coreshop.cart_processor:
         alias: CoreShop\Component\Order\Processor\CartProcessorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Processor\CartProcessorInterface instead'
+        deprecated: { package: "coreshop/order-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Processor\CartProcessorInterface instead' }
 

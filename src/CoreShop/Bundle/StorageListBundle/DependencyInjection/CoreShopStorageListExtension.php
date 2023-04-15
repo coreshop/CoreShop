@@ -21,7 +21,6 @@ namespace CoreShop\Bundle\StorageListBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\StorageListBundle\Core\EventListener\SessionStoreStorageListSubscriber;
 use CoreShop\Bundle\StorageListBundle\Core\EventListener\StorageListBlamerListener;
-use CoreShop\Bundle\StorageListBundle\DependencyInjection\Compiler\RegisterStorageListPass;
 use CoreShop\Bundle\StorageListBundle\EventListener\CacheListener;
 use CoreShop\Bundle\StorageListBundle\EventListener\SessionSubscriber;
 use CoreShop\Component\Customer\Model\CustomerAwareInterface;
@@ -51,6 +50,8 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
         $loader->load('services.yml');
 
         $manager = $container->findDefinition(StorageListsManager::class);
+
+        $tags = [];
 
         foreach ($configs['list'] as $name => $list) {
             $isDefaultContextInterface = $list['context']['interface'] === StorageListContextInterface::class;
@@ -212,11 +213,13 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 }
             }
 
-            (new RegisterStorageListPass(
+            $tags[] = [
                 $list['context']['interface'],
                 $contextCompositeServiceName,
                 $list['context']['tag'],
-            ))->process($container);
+            ];
         }
+
+        $container->setParameter('coreshop.storage_list.tags', $tags);
     }
 }
