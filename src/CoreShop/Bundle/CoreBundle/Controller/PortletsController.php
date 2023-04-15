@@ -30,7 +30,7 @@ class PortletsController extends AdminController
     public function getPortletDataAction(Request $request): Response
     {
         $portletName = $this->getParameterFromRequest($request, 'portlet');
-        $portletRegistry = $this->get('coreshop.registry.portlets');
+        $portletRegistry = $this->container->get('coreshop.registry.portlets');
 
         if (!$portletRegistry->has($portletName)) {
             throw new \InvalidArgumentException(sprintf('Portlet %s not found', $portletName));
@@ -48,7 +48,7 @@ class PortletsController extends AdminController
     public function exportPortletCsvAction(Request $request): Response
     {
         $portletName = $this->getParameterFromRequest($request, 'portlet');
-        $portletRegistry = $this->get('coreshop.registry.portlets');
+        $portletRegistry = $this->container->get('coreshop.registry.portlets');
 
         if (!$portletRegistry->has($portletName)) {
             throw new \InvalidArgumentException(sprintf('Portlet %s not found', $portletName));
@@ -63,7 +63,7 @@ class PortletsController extends AdminController
             $data = $portlet->getPortletData($request->query);
         }
 
-        $csvData = $this->get('serializer')->serialize($data, 'csv');
+        $csvData = $this->container->get('serializer')->serialize($data, 'csv');
 
         $response = new Response($csvData);
         $disposition = $response->headers->makeDisposition(

@@ -77,7 +77,7 @@ class Country extends AbstractResource implements CountryInterface, \Stringable
         return (string) $this->getName();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

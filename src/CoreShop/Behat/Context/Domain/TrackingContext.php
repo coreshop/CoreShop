@@ -31,9 +31,9 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
-use Pimcore\Analytics\AbstractTracker;
-use Pimcore\Analytics\Code\CodeCollector;
-use Pimcore\Analytics\Google\Tracker;
+use Pimcore\Bundle\GoogleMarketingBundle\Code\CodeCollector;
+use Pimcore\Bundle\GoogleMarketingBundle\Tracker\AbstractTracker;
+use Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker;
 use Webmozart\Assert\Assert;
 
 final class TrackingContext implements Context

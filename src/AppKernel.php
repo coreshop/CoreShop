@@ -23,7 +23,7 @@ use Pimcore\Kernel as PimcoreKernel;
 
 class Kernel extends PimcoreKernel
 {
-    public function registerBundlesToCollection(BundleCollection $collection)
+    public function registerBundlesToCollection(BundleCollection $collection): void
     {
         $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle());
         $collection->addBundle(new \FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle());
@@ -38,7 +38,7 @@ class Kernel extends PimcoreKernel
         );
     }
 
-    public function boot()
+    public function boot(): void
     {
         \Pimcore::setKernel($this);
 

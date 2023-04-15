@@ -152,7 +152,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
             $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
         }
 
-        return array_values($productSales);
+        return $productSales;
     }
 
     public function getExportReportData(ParameterBag $parameterBag): array

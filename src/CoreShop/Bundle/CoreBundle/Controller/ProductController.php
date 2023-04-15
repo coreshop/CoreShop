@@ -29,15 +29,15 @@ class ProductController extends ResourceController
     public function removeStoreValuesAction(Request $request): Response
     {
         $product = $this->findOr404($this->getParameterFromRequest($request, 'id'));
-        $storeValue = $this->get('coreshop.repository.product_store_values')->find($this->getParameterFromRequest($request, 'storeValuesId'));
+        $storeValue = $this->container->get('coreshop.repository.product_store_values')->find($this->getParameterFromRequest($request, 'storeValuesId'));
 
         if (!$storeValue instanceof ProductStoreValuesInterface) {
             throw new NotFoundHttpException();
         }
 
         if ($storeValue->getProduct() && $storeValue->getProduct()->getId() === $product->getId()) {
-            $this->get('coreshop.manager.product_store_values')->remove($storeValue);
-            $this->get('coreshop.manager.product_store_values')->flush();
+            $this->container->get('coreshop.manager.product_store_values')->remove($storeValue);
+            $this->container->get('coreshop.manager.product_store_values')->flush();
 
             return $this->json(['success' => true]);
         }

@@ -28,8 +28,8 @@ class GridController extends AdminController
 {
     public function getGridFiltersAction(string $listType): Response
     {
-        $gridFilterRepository = $this->get('coreshop.registry.grid.filter');
-        $trans = $this->get('translator');
+        $gridFilterRepository = $this->container->get('coreshop.registry.grid.filter');
+        $trans = $this->container->get('translator');
 
         $services = [];
         /** @var GridFilterInterface $service */
@@ -49,8 +49,8 @@ class GridController extends AdminController
 
     public function getGridActionsAction(string $listType): Response
     {
-        $gridActionRepository = $this->get('coreshop.registry.grid.action');
-        $trans = $this->get('translator');
+        $gridActionRepository = $this->container->get('coreshop.registry.grid.action');
+        $trans = $this->container->get('translator');
 
         $services = [];
         /** @var GridActionInterface $service */
@@ -77,7 +77,7 @@ class GridController extends AdminController
             $requestedIds = json_decode($requestedIds);
         }
 
-        $gridActionRepository = $this->get('coreshop.registry.grid.action');
+        $gridActionRepository = $this->container->get('coreshop.registry.grid.action');
 
         $success = true;
 

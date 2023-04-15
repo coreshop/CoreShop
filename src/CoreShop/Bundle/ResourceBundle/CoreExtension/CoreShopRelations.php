@@ -25,17 +25,9 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
  */
 class CoreShopRelations extends Data\ManyToManyRelation
 {
-    public $fieldtype = 'coreShopRelations';
+    public string $fieldtype = 'coreShopRelations';
 
-    public $stack;
-
-    public $relationType = true;
-
-    public $objectsAllowed = true;
-
-    public $assetsAllowed = false;
-
-    public $documentsAllowed = false;
+    public string|null $stack;
 
     public function getStack()
     {
@@ -89,7 +81,7 @@ class CoreShopRelations extends Data\ManyToManyRelation
         return '?\\' . $stack[$this->stack] . '[]';
     }
 
-    public function getClasses()
+    public function getClasses(): array
     {
         if (null === $this->stack) {
             return [];
@@ -110,7 +102,7 @@ class CoreShopRelations extends Data\ManyToManyRelation
     /**
      * @return bool
      */
-    public function getObjectsAllowed()
+    public function getObjectsAllowed(): bool
     {
         return true;
     }
@@ -118,7 +110,7 @@ class CoreShopRelations extends Data\ManyToManyRelation
     /**
      * @return bool
      */
-    public function getDocumentsAllowed()
+    public function getDocumentsAllowed(): bool
     {
         return false;
     }
@@ -126,7 +118,7 @@ class CoreShopRelations extends Data\ManyToManyRelation
     /**
      * @return array
      */
-    public function getDocumentTypes()
+    public function getDocumentTypes(): array
     {
         return [];
     }
@@ -134,7 +126,7 @@ class CoreShopRelations extends Data\ManyToManyRelation
     /**
      * @return bool
      */
-    public function getAssetsAllowed()
+    public function getAssetsAllowed(): bool
     {
         return false;
     }
@@ -142,7 +134,7 @@ class CoreShopRelations extends Data\ManyToManyRelation
     /**
      * @return array
      */
-    public function getAssetTypes()
+    public function getAssetTypes(): array
     {
         return [];
     }

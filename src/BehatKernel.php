@@ -20,14 +20,14 @@ use Pimcore\Kernel as PimcoreKernel;
 
 class BehatKernel extends PimcoreKernel
 {
-    public function registerBundlesToCollection(\Pimcore\HttpKernel\BundleCollection\BundleCollection $collection)
+    public function registerBundlesToCollection(\Pimcore\HttpKernel\BundleCollection\BundleCollection $collection): void
     {
         $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle());
         $collection->addBundle(new \FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle());
         $collection->addBundle(new \CoreShop\Bundle\TestBundle\CoreShopTestBundle(), 0);
     }
 
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
 

@@ -22,10 +22,7 @@ use Pimcore\Model\DataObject\Data\UrlSlug;
 
 interface SluggableInterface
 {
-    /**
-     * @return int|string|null
-     */
-    public function getId();
+    public function getId(): ?int;
 
     /**
      * @return string

@@ -80,7 +80,7 @@ class CheckoutController extends FrontendController
 
         $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier]);
 
-        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_STEP_PRE);
+        $this->container->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_STEP_PRE);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -120,7 +120,7 @@ class CheckoutController extends FrontendController
         }
 
         $isFirstStep = $checkoutManager->hasPreviousStep($stepIdentifier) === false;
-        $this->get(TrackerInterface::class)->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
+        $this->container->get(TrackerInterface::class)->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
 
         $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
 
@@ -132,7 +132,7 @@ class CheckoutController extends FrontendController
 
         $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier, 'step_params' => $dataForStep]);
 
-        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_STEP_POST);
+        $this->container->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_STEP_POST);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -191,7 +191,7 @@ class CheckoutController extends FrontendController
 
         $event = new CheckoutEvent($this->getCart());
 
-        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_DO_PRE);
+        $this->container->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_DO_PRE);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -208,7 +208,7 @@ class CheckoutController extends FrontendController
          */
         $order = $this->getCart();
 
-        $workflow = $this->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
+        $workflow = $this->container->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
 
         if ($order->getSaleState() !== OrderSaleStates::STATE_ORDER) {
             $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
@@ -216,7 +216,7 @@ class CheckoutController extends FrontendController
 
         $event = new CheckoutEvent($this->getCart(), ['order' => $order]);
 
-        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_PAYMENT_PRE);
+        $this->container->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_PAYMENT_PRE);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -233,8 +233,8 @@ class CheckoutController extends FrontendController
         $response = $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
 
         if (0 === $order->getTotal()) {
-            $orderStateMachine = $this->get(StateMachineManagerInterface::class)->get($order, 'coreshop_order');
-            $orderPaymentStateMachine = $this->get(StateMachineManagerInterface::class)->get($order, 'coreshop_order_payment');
+            $orderStateMachine = $this->container->get(StateMachineManagerInterface::class)->get($order, 'coreshop_order');
+            $orderPaymentStateMachine = $this->container->get(StateMachineManagerInterface::class)->get($order, 'coreshop_order_payment');
 
             if ($orderStateMachine->can($order, OrderTransitions::TRANSITION_CONFIRM)) {
                 $orderStateMachine->apply($order, OrderTransitions::TRANSITION_CONFIRM);
@@ -244,14 +244,14 @@ class CheckoutController extends FrontendController
                 $orderPaymentStateMachine->apply($order, OrderPaymentTransitions::TRANSITION_PAY);
             }
 
-            $this->get('event_dispatcher')->dispatch(new CheckoutEvent($this->getCart(), ['order' => $order]), CheckoutEvents::CHECKOUT_DO_POST);
+            $this->container->get('event_dispatcher')->dispatch(new CheckoutEvent($this->getCart(), ['order' => $order]), CheckoutEvents::CHECKOUT_DO_POST);
 
             $response = $this->redirectToRoute('coreshop_checkout_thank_you', ['token' => $order->getToken()]);
         }
 
         $event = new CheckoutEvent($this->getCart(), ['order' => $order]);
 
-        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_DO_POST);
+        $this->container->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_DO_POST);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -277,13 +277,13 @@ class CheckoutController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $order = $this->get('coreshop.repository.order')->findByToken($orderToken);
+        $order = $this->container->get('coreshop.repository.order')->findByToken($orderToken);
 
         if (null === $order) {
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $this->get(TrackerInterface::class)->trackCheckoutComplete($order);
+        $this->container->get(TrackerInterface::class)->trackCheckoutComplete($order);
 
         return $this->render($this->templateConfigurator->findTemplate('Checkout/thank-you.html'), [
             'order' => $order,
@@ -333,11 +333,11 @@ class CheckoutController extends FrontendController
 
     protected function getCartContext(): CartContextInterface
     {
-        return $this->get(CartContextInterface::class);
+        return $this->container->get(CartContextInterface::class);
     }
 
     protected function getPayum(): Payum
     {
-        return $this->get('payum');
+        return $this->container->get('payum');
     }
 }

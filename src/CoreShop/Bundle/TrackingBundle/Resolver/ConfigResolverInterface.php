@@ -18,12 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\TrackingBundle\Resolver;
 
-use Pimcore\Config\Config as ConfigObject;
-
 interface ConfigResolverInterface
 {
-    /**
-     * @psalm-suppress DeprecatedClass
-     */
-    public function getGoogleConfig(): ?ConfigObject;
+    public function getGoogleConfig(): array;
 }

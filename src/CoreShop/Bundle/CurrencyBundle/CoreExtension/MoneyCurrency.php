@@ -28,27 +28,15 @@ use Pimcore\Model\DataObject\Concrete;
  */
 class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface, Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopMoneyCurrency';
+    public string $fieldtype = 'coreShopMoneyCurrency';
+    public int $width = 0;
+    public float $minValue = 0;
+    public float $maxValue = 0;
 
-    /**
-     * @var int
-     */
-    public $width = 0;
-
-    /**
-     * @var float
-     */
-    public $minValue = 0;
-
-    /**
-     * @var float
-     */
-    public $maxValue = 0;
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     public function getParameterTypeDeclaration(): ?string
     {
@@ -70,7 +58,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return '?\\' . Money::class;
     }
 
-    public function getQueryColumnType()
+    public function getQueryColumnType(): array
     {
         return [
             'value' => 'bigint(20)',
@@ -78,7 +66,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         ];
     }
 
-    public function getColumnType()
+    public function getColumnType(): array
     {
         return [
             'value' => 'bigint(20)',
@@ -156,7 +144,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return $data;
     }
 
-    public function getDataForResource($data, $object = null, $params = [])
+    public function getDataForResource(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
             if ($data->getCurrency() instanceof CurrencyInterface) {
@@ -173,7 +161,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         ];
     }
 
-    public function getDataFromResource($data, $object = null, $params = [])
+    public function getDataFromResource(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         $currencyIndex = $this->getName() . '__currency';
 
@@ -188,12 +176,12 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return null;
     }
 
-    public function getDataForQueryResource($data, $object = null, $params = [])
+    public function getDataForQueryResource(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         return $this->getDataForResource($data, $object, $params);
     }
 
-    public function getDataForEditmode($data, $object = null, $params = [])
+    public function getDataForEditmode(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
             if ($data->getCurrency() instanceof CurrencyInterface) {
@@ -210,7 +198,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         ];
     }
 
-    public function getDataFromEditmode($data, $object = null, $params = [])
+    public function getDataFromEditmode(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if (is_array($data)) {
             $currency = $this->getCurrencyById($data['currency']);
@@ -223,12 +211,12 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return null;
     }
 
-    public function getVersionPreview($data, $object = null, $params = [])
+    public function getVersionPreview(mixed $data, Concrete $object = null, array $params = []): string
     {
         return $data;
     }
 
-    public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
+    public function checkValidity(mixed $data, bool $omitMandatoryCheck = false, array $params = []): void
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
             throw new Model\Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
@@ -259,29 +247,24 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         }
     }
 
-    public function getForCsvExport($object, $params = [])
+    public function getForCsvExport($object, $params = []): string
     {
         $data = $this->getDataFromObjectParam($object, $params);
 
         return json_encode($this->getDataForResource($data, $object, $params));
     }
 
-    public function getFromCsvImport($importValue, $object = null, $params = [])
-    {
-        //TODO
-    }
-
-    public function isDiffChangeAllowed($object, $params = [])
+    public function isDiffChangeAllowed($object, $params = []): bool
     {
         return false;
     }
 
-    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    public function getDiffDataForEditMode(mixed $data, Concrete $object = null, array $params = []): ?array
     {
         return [];
     }
 
-    public function isEmpty($data)
+    public function isEmpty(mixed $data): bool
     {
         if ($data instanceof Money) {
             return false;

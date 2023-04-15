@@ -89,7 +89,7 @@ class CartPriceRuleController extends ResourceController
 
     public function createVoucherCodeAction(Request $request): JsonResponse
     {
-        $form = $this->get('form.factory')->createNamed('', VoucherType::class);
+        $form = $this->container->get('form.factory')->createNamed('', VoucherType::class);
         $handledForm = $form->handleRequest($request);
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
             $resource = $form->getData();
@@ -101,7 +101,7 @@ class CartPriceRuleController extends ResourceController
             }
 
             /** @var FactoryInterface $voucherCodeFactory */
-            $voucherCodeFactory = $this->get('coreshop.factory.cart_price_rule_voucher_code');
+            $voucherCodeFactory = $this->container->get('coreshop.factory.cart_price_rule_voucher_code');
 
             /** @var CartPriceRuleVoucherCodeInterface $codeObject */
             $codeObject = $voucherCodeFactory->createNew();
@@ -122,7 +122,7 @@ class CartPriceRuleController extends ResourceController
 
     public function generateVoucherCodesAction(Request $request): JsonResponse
     {
-        $form = $this->get('form.factory')->createNamed('', VoucherGeneratorType::class);
+        $form = $this->container->get('form.factory')->createNamed('', VoucherGeneratorType::class);
 
         $handledForm = $form->handleRequest($request);
 
@@ -215,12 +215,12 @@ class CartPriceRuleController extends ResourceController
 
     protected function getVoucherCodeGenerator(): CartPriceRuleVoucherCodeGenerator
     {
-        return $this->get('coreshop.generator.cart_price_rule_voucher_codes');
+        return $this->container->get('coreshop.generator.cart_price_rule_voucher_codes');
     }
 
     protected function getVoucherCodeRepository(): CartPriceRuleVoucherRepositoryInterface
     {
-        return $this->get('coreshop.repository.cart_price_rule_voucher_code');
+        return $this->container->get('coreshop.repository.cart_price_rule_voucher_code');
     }
 
     /**

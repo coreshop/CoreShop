@@ -148,16 +148,16 @@ class ProductVariantUnitSolidifierController extends AdminController
 
     protected function getProductRepository(): ProductRepositoryInterface
     {
-        return $this->get('coreshop.repository.product');
+        return $this->container->get('coreshop.repository.product');
     }
 
     protected function getQuantityPriceRulesCloner(): ProductClonerInterface
     {
-        return $this->get(ProductQuantityPriceRulesCloner::class);
+        return $this->container->get(ProductQuantityPriceRulesCloner::class);
     }
 
     protected function getUnitDefinitionsCloner(): ProductClonerInterface
     {
-        return $this->get(ProductUnitDefinitionsCloner::class);
+        return $this->container->get(ProductUnitDefinitionsCloner::class);
     }
 }

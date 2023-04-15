@@ -20,67 +20,32 @@ namespace CoreShop\Component\Resource\Pimcore\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Pimcore\Model\DataObject\ClassDefinition;
+use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\Element\ElementInterface;
 
 interface PimcoreModelInterface extends ResourceInterface, ElementInterface
 {
-    /**
-     * @param string $key
-     */
-    public function setKey($key);
+    public function getId(): ?int;
+    public function setKey(string $key): static;
 
-    /**
-     * @return string
-     */
-    public function getKey();
+    public function getKey(): ?string;
 
-    /**
-     * @param bool $published
-     */
-    public function setPublished($published);
+    public function setPublished(bool $published): static;
+    public function getPublished(): bool;
 
-    /**
-     * @return bool
-     */
-    public function getPublished();
+    public function isPublished(): bool;
 
-    /**
-     * @return bool
-     */
-    public function isPublished();
+    public function setParent(?ElementInterface $parent): static;
 
-    /**
-     * @param ElementInterface $parent
-     */
-    public function setParent($parent);
+    public function getParent(): ?ElementInterface;
 
-    /**
-     * @return ElementInterface|null
-     */
-    public function getParent();
+    public function getObjectVar(?string $var): mixed;
 
-    /**
-     * @return mixed
-     */
-    public function getObjectVar($field);
+    public function save(array $parameters = []): static;
 
-    /**
-     * @return mixed
-     */
-    public function save();
+    public function delete(): void;
 
-    /**
-     * @return mixed
-     */
-    public function delete();
+    public function getChildren(array $type = [], bool $includingUnpublished = false): Listing;
 
-    /**
-     * @return array
-     */
-    public function getChildren(array $type = [], $includingUnpublished = false);
-
-    /**
-     * @return ClassDefinition
-     */
-    public function getClass();
+    public function getClass(): ClassDefinition;
 }

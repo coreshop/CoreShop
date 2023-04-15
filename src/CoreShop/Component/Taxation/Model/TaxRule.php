@@ -55,10 +55,7 @@ class TaxRule extends AbstractResource implements TaxRuleInterface, \Stringable
         return sprintf('%s (%s)', $tax, $this->getId());
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

@@ -22,7 +22,9 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
-use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
+use Pimcore\Bundle\AdminBundle\DataObject\GridColumnConfig\Operator\AbstractOperator;
+use Pimcore\Bundle\AdminBundle\DataObject\GridColumnConfig\ResultContainer;
+use Pimcore\Model\Element\ElementInterface;
 
 class StorePrice extends AbstractOperator
 {
@@ -38,12 +40,7 @@ class StorePrice extends AbstractOperator
         $this->storeId = $config->storeId;
     }
 
-    /**
-     * @param \Pimcore\Model\Element\ElementInterface $element
-     *
-     * @return \stdClass|string|null
-     */
-    public function getLabeledValue($element)
+    public function getLabeledValue(array|ElementInterface $element): ResultContainer|\stdClass|null
     {
         $result = new \stdClass();
         $result->label = $this->label;

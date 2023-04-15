@@ -64,7 +64,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
 
             $columns = array_map(function (Column $column) {
                 return $column->getName();
-            }, $this->connection->getSchemaManager()->listTableColumns('users_permission_definitions'));
+            }, $this->connection->createSchemaManager()->listTableColumns('users_permission_definitions'));
 
             foreach ($permissionGroups as $group => $permissions) {
                 foreach ($permissions as $permission) {

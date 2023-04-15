@@ -97,7 +97,7 @@ class OrderController extends PimcoreController
             /**
              * @var StateMachine $stateMachine
              */
-            $stateMachine = $this->get(sprintf('state_machine.%s', $identifier));
+            $stateMachine = $this->container->get(sprintf('state_machine.%s', $identifier));
             $places = $stateMachine->getDefinition()->getPlaces();
             $machineTransitions = $stateMachine->getDefinition()->getTransitions();
 
@@ -155,7 +155,7 @@ class OrderController extends PimcoreController
         $workflow->apply($order, $transition);
 
         if ($order instanceof DataObject\Concrete && $transition === OrderTransitions::TRANSITION_CANCEL) {
-            $this->get(HistoryLogger::class)->log(
+            $this->container->get(HistoryLogger::class)->log(
                 $order,
                 'Admin Order Cancellation',
             );

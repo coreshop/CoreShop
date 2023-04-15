@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use Pimcore\Event\BundleManager\PathsEvent;
-use Pimcore\Event\BundleManagerEvents;
+use Pimcore\Bundle\AdminBundle\Event\BundleManagerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
 

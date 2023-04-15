@@ -32,10 +32,10 @@ class ProductController extends FrontendController
 {
     public function latestAction(Request $request): Response
     {
-        $productRepository = $this->get('coreshop.repository.product');
+        $productRepository = $this->container->get('coreshop.repository.product');
 
         return $this->render($this->templateConfigurator->findTemplate('Product/_latest.html'), [
-            'products' => $productRepository->findLatestByStore($this->get(StoreContextInterface::class)->getStore()),
+            'products' => $productRepository->findLatestByStore($this->container->get(StoreContextInterface::class)->getStore()),
         ]);
     }
 
@@ -43,8 +43,8 @@ class ProductController extends FrontendController
     {
         $this->validateProduct($request, $object);
 
-        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($object);
-        $this->get(TrackerInterface::class)->trackProduct($object);
+        $this->container->get(SEOPresentationInterface::class)->updateSeoMetadata($object);
+        $this->container->get(TrackerInterface::class)->trackProduct($object);
 
         return $this->render($this->templateConfigurator->findTemplate('Product/detail.html'), [
             'product' => $object,
@@ -61,8 +61,8 @@ class ProductController extends FrontendController
 
         $this->validateProduct($request, $product);
 
-        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($product);
-        $this->get(TrackerInterface::class)->trackProduct($product);
+        $this->container->get(SEOPresentationInterface::class)->updateSeoMetadata($product);
+        $this->container->get(TrackerInterface::class)->trackProduct($product);
 
         return $this->render($this->templateConfigurator->findTemplate('Product/detail.html'), [
             'product' => $product,
@@ -73,7 +73,7 @@ class ProductController extends FrontendController
     {
         $isFrontendRequestByAdmin = false;
 
-        if ($this->get(RequestHelper::class)->isFrontendRequestByAdmin($request)) {
+        if ($this->container->get(RequestHelper::class)->isFrontendRequestByAdmin($request)) {
             $isFrontendRequestByAdmin = true;
         }
 
@@ -81,13 +81,13 @@ class ProductController extends FrontendController
             throw new NotFoundHttpException('product not found');
         }
 
-        if (!in_array($this->get(StoreContextInterface::class)->getStore()->getId(), $product->getStores())) {
+        if (!in_array($this->container->get(StoreContextInterface::class)->getStore()->getId(), $product->getStores())) {
             throw new NotFoundHttpException('product not found');
         }
     }
 
     protected function getProductByRequest(Request $request): ?PurchasableInterface
     {
-        return $this->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
+        return $this->container->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));
     }
 }

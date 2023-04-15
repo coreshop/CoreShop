@@ -76,7 +76,7 @@ class Filter extends AbstractResource implements FilterInterface
         $this->conditions = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

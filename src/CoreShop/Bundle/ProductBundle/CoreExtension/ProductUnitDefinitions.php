@@ -49,10 +49,7 @@ class ProductUnitDefinitions extends Data implements
 {
     use TempEntityManagerTrait;
 
-    /**
-     * @var string
-     */
-    public $fieldtype = 'coreShopProductUnitDefinitions';
+    public string $fieldtype = 'coreShopProductUnitDefinitions';
 
     /**
      * @var int
@@ -64,10 +61,12 @@ class ProductUnitDefinitions extends Data implements
      */
     public $defaultValue;
 
-    /**
-     * @var string
-     */
-    public $phpdocType = 'array';
+    public string $phpdocType = 'array';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     public function getParameterTypeDeclaration(): ?string
     {
@@ -193,7 +192,7 @@ class ProductUnitDefinitions extends Data implements
 //        return $code;
 //    }
 
-    public function createDataCopy(Concrete $object, $data)
+    public function createDataCopy(Concrete $object, mixed $data): mixed
     {
         if (!$data instanceof ProductUnitDefinitionsInterface) {
             return null;
@@ -242,7 +241,7 @@ class ProductUnitDefinitions extends Data implements
         return $newData;
     }
 
-    public function marshalVersion($object, $data)
+    public function marshalVersion(Concrete $object, mixed $data): mixed
     {
         if (!$data instanceof ProductUnitDefinitionsInterface) {
             return null;
@@ -255,7 +254,7 @@ class ProductUnitDefinitions extends Data implements
         return $this->getSerializer()->toArray($data, $context);
     }
 
-    public function unmarshalVersion($object, $data)
+    public function unmarshalVersion(Concrete $object, mixed $data): mixed
     {
         if (!is_array($data)) {
             return null;
@@ -279,12 +278,12 @@ class ProductUnitDefinitions extends Data implements
         return $entityData;
     }
 
-    public function marshalRecycleData($object, $data)
+    public function marshalRecycleData(Concrete $object, mixed $data): mixed
     {
         return $this->marshalVersion($object, $data);
     }
 
-    public function unmarshalRecycleData($object, $data)
+    public function unmarshalRecycleData(Concrete $object, mixed $data): mixed
     {
         return $this->unmarshalVersion($object, $data);
     }
@@ -299,7 +298,7 @@ class ProductUnitDefinitions extends Data implements
         return $this->unmarshalVersion($concrete, $data);
     }
 
-    public function getDataFromResource($data, $object = null, $params = [])
+    public function getDataFromResource(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         return [];
     }
@@ -336,7 +335,7 @@ class ProductUnitDefinitions extends Data implements
         return $data;
     }
 
-    public function load($object, $params = [])
+    public function load(Concrete|Model\DataObject\Objectbrick\Data\AbstractData|Model\DataObject\Fieldcollection\Data\AbstractData|Model\DataObject\Localizedfield $object, array $params = []): mixed
     {
         if (isset($params['force']) && $params['force']) {
             return $this->getProductUnitDefinitionsRepository()->findOneForProduct($object);
@@ -345,7 +344,7 @@ class ProductUnitDefinitions extends Data implements
         return null;
     }
 
-    public function save($object, $params = [])
+    public function save(Concrete|Model\DataObject\Objectbrick\Data\AbstractData|Model\DataObject\Fieldcollection\Data\AbstractData|Model\DataObject\Localizedfield $object, array $params = []): void
     {
         if (!$object instanceof ProductInterface) {
             return;
@@ -368,7 +367,7 @@ class ProductUnitDefinitions extends Data implements
         }
     }
 
-    public function delete($object, $params = [])
+    public function delete(Concrete|Model\DataObject\Objectbrick\Data\AbstractData|Model\DataObject\Fieldcollection\Data\AbstractData|Model\DataObject\Localizedfield $object, array $params = []): void
     {
         if (!$object instanceof ProductInterface) {
             return;
@@ -383,7 +382,7 @@ class ProductUnitDefinitions extends Data implements
         $this->getEntityManager()->flush();
     }
 
-    public function getDataForEditmode($data, $object = null, $params = [])
+    public function getDataForEditmode(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if (!$object instanceof ProductInterface) {
             return [];
@@ -400,7 +399,7 @@ class ProductUnitDefinitions extends Data implements
         return $this->getSerializer()->toArray($data, $context);
     }
 
-    public function getDataFromEditmode($data, $object = null, $params = [])
+    public function getDataFromEditmode(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if (!is_array($data)) {
             return null;
@@ -446,7 +445,7 @@ class ProductUnitDefinitions extends Data implements
         return $productUnitDefinitionsValues;
     }
 
-    public function getVersionPreview($data, $object = null, $params = [])
+    public function getVersionPreview(mixed $data, Concrete $object = null, array $params = []): string
     {
         if (!$data instanceof \CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface) {
             return '';
@@ -461,7 +460,7 @@ class ProductUnitDefinitions extends Data implements
         );
     }
 
-    public function getForCsvExport($object, $params = [])
+    public function getForCsvExport(Concrete|Model\DataObject\Objectbrick\Data\AbstractData|Model\DataObject\Fieldcollection\Data\AbstractData|Model\DataObject\Localizedfield $object, array $params = []): string
     {
         $data = $this->getDataFromObjectParam($object, $params);
 
@@ -472,31 +471,12 @@ class ProductUnitDefinitions extends Data implements
         return json_encode($data);
     }
 
-    public function getFromCsvImport($importValue, $object = null, $params = [])
-    {
-        if (!$object) {
-            throw new \Exception('This version of Pimcore is not supported for product unit definitions import.');
-        }
-
-        $data = $importValue == '' ? [] : json_decode($importValue, true);
-
-        if (json_last_error() !== \JSON_ERROR_NONE) {
-            throw new \InvalidArgumentException(sprintf(
-                'Error decoding Product Unit Definitions JSON `%s`: %s',
-                $importValue,
-                json_last_error_msg(),
-            ));
-        }
-
-        return $data;
-    }
-
-    public function isDiffChangeAllowed($object, $params = [])
+    public function isDiffChangeAllowed(Concrete $object, array $params = []): bool
     {
         return false;
     }
 
-    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    public function getDiffDataForEditMode(mixed $data, Concrete $object = null, array $params = []): ?array
     {
         return [];
     }

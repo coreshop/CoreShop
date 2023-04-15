@@ -79,7 +79,7 @@ class OrderInvoiceController extends PimcoreController
 
                 $event = new GenericEvent($orderItem, $itemToReturn);
 
-                $this->get('event_dispatcher')->dispatch($event, 'coreshop.order.invoice.prepare_invoice_able');
+                $this->container->get('event_dispatcher')->dispatch($event, 'coreshop.order.invoice.prepare_invoice_able');
 
                 $itemsToReturn[] = $event->getArguments();
             }
@@ -92,7 +92,7 @@ class OrderInvoiceController extends PimcoreController
     {
         $orderId = $this->getParameterFromRequest($request, 'id');
 
-        $form = $this->get('form.factory')->createNamed('', OrderInvoiceCreationType::class);
+        $form = $this->container->get('form.factory')->createNamed('', OrderInvoiceCreationType::class);
 
         $handledForm = $form->handleRequest($request);
 
@@ -101,7 +101,7 @@ class OrderInvoiceController extends PimcoreController
                 return $this->viewHandler->handle(
                     [
                         'success' => false,
-                        'message' => $this->get(ErrorSerializer::class)->serializeErrorFromHandledForm($form),
+                        'message' => $this->container->get(ErrorSerializer::class)->serializeErrorFromHandledForm($form),
                     ],
                 );
             }
@@ -193,36 +193,36 @@ class OrderInvoiceController extends PimcoreController
 
     private function getProcessableHelper(): ProcessableInterface
     {
-        return $this->get('coreshop.order.invoice.processable');
+        return $this->container->get('coreshop.order.invoice.processable');
     }
 
     private function getOrderRepository(): OrderRepositoryInterface
     {
-        return $this->get('coreshop.repository.order');
+        return $this->container->get('coreshop.repository.order');
     }
 
     private function getOrderDocumentRenderer(): OrderDocumentRendererInterface
     {
-        return $this->get('coreshop.renderer.order.pdf');
+        return $this->container->get('coreshop.renderer.order.pdf');
     }
 
     private function getOrderInvoiceRepository(): OrderInvoiceRepositoryInterface
     {
-        return $this->get('coreshop.repository.order_invoice');
+        return $this->container->get('coreshop.repository.order_invoice');
     }
 
     private function getInvoiceFactory(): PimcoreFactoryInterface
     {
-        return $this->get('coreshop.factory.order_invoice');
+        return $this->container->get('coreshop.factory.order_invoice');
     }
 
     private function getOrderToInvoiceTransformer(): OrderDocumentTransformerInterface
     {
-        return $this->get('coreshop.order.transformer.order_to_invoice');
+        return $this->container->get('coreshop.order.transformer.order_to_invoice');
     }
 
     protected function getStateMachineManager(): StateMachineManager
     {
-        return $this->get('coreshop.state_machine_manager');
+        return $this->container->get('coreshop.state_machine_manager');
     }
 }

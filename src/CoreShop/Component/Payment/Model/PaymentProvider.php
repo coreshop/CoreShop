@@ -67,7 +67,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return sprintf('%s', $this->getIdentifier());
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

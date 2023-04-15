@@ -20,8 +20,8 @@ namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
-use Pimcore\Analytics\Google\Tracker;
-use Pimcore\Analytics\TrackerInterface;
+use Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker;
+use Pimcore\Bundle\GoogleMarketingBundle\Tracker\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UniversalEcommerce extends AbstractEcommerceTracker
@@ -107,11 +107,8 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     protected function isGlobalSiteTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();
-        if ($config === null) {
-            return false;
-        }
 
-        return (bool) $config->get('gtagcode');
+        return $config['gtagcode'] ?? false;
     }
 
     protected function transformOrder(array $actionData): array

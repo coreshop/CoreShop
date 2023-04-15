@@ -32,15 +32,13 @@ class StoreController extends ResourceController
         $list->load();
 
         $sites = [];
-        if (is_array($list->getSites())) {
-            foreach ($list->getSites() as $site) {
-                if ($site instanceof Site) {
-                    $sites[] = [
-                        'id' => $site->getId(),
-                        'rootId' => $site->getRootId(),
-                        'name' => $site->getMainDomain(),
-                    ];
-                }
+        foreach ($list->getSites() as $site) {
+            if ($site instanceof Site) {
+                $sites[] = [
+                    'id' => $site->getId(),
+                    'rootId' => $site->getRootId(),
+                    'name' => $site->getMainDomain(),
+                ];
             }
         }
 

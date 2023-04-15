@@ -73,7 +73,7 @@ abstract class Select extends Data implements
         return ($this->getNullable() ? 'null|' : '') . $this->getInterface();
     }
 
-    public function marshalVersion($object, $data)
+    public function marshalVersion(Concrete $object, mixed $data): mixed
     {
         if ($data instanceof ResourceInterface) {
             return $data->getId();
@@ -82,7 +82,7 @@ abstract class Select extends Data implements
         return $data;
     }
 
-    public function unmarshalVersion($object, $data)
+    public function unmarshalVersion(Concrete $object, mixed $data): mixed
     {
         if (null === $data) {
             return null;
@@ -91,32 +91,32 @@ abstract class Select extends Data implements
         return $this->getRepository()->find($data);
     }
 
-    public function marshalRecycleData($object, $data)
+    public function marshalRecycleData(Concrete $object, mixed $data): mixed
     {
         return $this->marshalVersion($object, $data);
     }
 
-    public function unmarshalRecycleData($object, $data)
+    public function unmarshalRecycleData(Concrete $object, mixed $data): mixed
     {
         return $this->unmarshalVersion($object, $data);
     }
 
-    public function isDiffChangeAllowed($object, $params = [])
+    public function isDiffChangeAllowed(Concrete $object, array $params = []): bool
     {
         return false;
     }
 
-    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    public function getDiffDataForEditMode(mixed $data, Concrete $object = null, array $params = []): ?array
     {
         return [];
     }
 
-    public function getQueryColumnType()
+    public function getQueryColumnType(): array|string
     {
         return 'int(11)';
     }
 
-    public function getColumnType()
+    public function getColumnType(): array|string
     {
         return 'int(11)';
     }
@@ -164,7 +164,7 @@ abstract class Select extends Data implements
      *
      * @return int|string|null
      */
-    public function getDataForResource($data, $object = null, $params = [])
+    public function getDataForResource($data, $object = null, $params = []): mixed
     {
         if ($data !== null && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
@@ -180,7 +180,7 @@ abstract class Select extends Data implements
      *
      * @return ResourceInterface|object|null
      */
-    public function getDataFromResource($data, $object = null, $params = [])
+    public function getDataFromResource($data, $object = null, $params = []): mixed
     {
         if ((int) $data > 0) {
             return $this->getRepository()->find($data);
@@ -196,7 +196,7 @@ abstract class Select extends Data implements
      *
      * @return int|null
      */
-    public function getDataForQueryResource($data, $object = null, $params = [])
+    public function getDataForQueryResource($data, $object = null, $params = []): mixed
     {
         if ($data !== null && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
@@ -205,25 +205,25 @@ abstract class Select extends Data implements
         return null;
     }
 
-    public function getDataForEditmode($data, $object = null, $params = [])
+    public function getDataForEditmode($data, $object = null, $params = []): mixed
     {
         return $this->getDataForResource($data, $object, $params);
     }
 
-    public function getDataFromEditmode($data, $object = null, $params = [])
+    public function getDataFromEditmode($data, $object = null, $params = []): mixed
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
-    public function isEmpty($data)
+    public function isEmpty($data): bool
     {
         return !$data;
     }
 
-    public function getDataForSearchIndex($object, $params = [])
+    public function getDataForSearchIndex($object, $params = []): string
     {
         if ($object instanceof ResourceInterface) {
-            return $object->getId();
+            return (string)$object->getId();
         }
 
         return parent::getDataForSearchIndex($object, $params);

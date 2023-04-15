@@ -30,12 +30,13 @@ class BrickDefinitionUpdate extends AbstractDefinitionUpdate
     ) {
         parent::__construct();
 
-        $this->brickDefinition = DataObject\Objectbrick\Definition::getByKey($brickKey);
+        $brickDefinition = DataObject\Objectbrick\Definition::getByKey($brickKey);
 
-        if (null === $this->brickDefinition) {
+        if (null === $brickDefinition) {
             throw new ClassDefinitionNotFoundException(sprintf('Brick Definition %s not found', $brickKey));
         }
 
+        $this->brickDefinition = $brickDefinition;
         $this->fieldDefinitions = $this->brickDefinition->getFieldDefinitions();
         /** @psalm-suppress InvalidArgument */
         $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->brickDefinition), true);
@@ -43,6 +44,6 @@ class BrickDefinitionUpdate extends AbstractDefinitionUpdate
 
     public function save(): bool
     {
-        return null !== DataObject\ClassDefinition\Service::importObjectBrickFromJson($this->brickDefinition, json_encode($this->jsonDefinition), true);
+        return DataObject\ClassDefinition\Service::importObjectBrickFromJson($this->brickDefinition, json_encode($this->jsonDefinition), true);
     }
 }

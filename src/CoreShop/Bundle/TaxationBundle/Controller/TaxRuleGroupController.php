@@ -39,6 +39,6 @@ class TaxRuleGroupController extends ResourceController
 
     protected function getTaxRulesRepository(): TaxRuleRepositoryInterface
     {
-        return $this->get('coreshop.repository.tax_rule');
+        return $this->container->get('coreshop.repository.tax_rule');
     }
 }

@@ -27,8 +27,8 @@ final class PimcoreCachePass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $container->getDefinition('pimcore.cache.adapter.pdo')->setArgument(4, []);
-        $container->getDefinition('pimcore.cache.adapter.pdo')->setArgument(5, new Reference(CacheResourceMarshaller::class));
+        $container->getDefinition('pimcore.cache.adapter.doctrine_dbal')->setArgument(4, []);
+        $container->getDefinition('pimcore.cache.adapter.doctrine_dbal')->setArgument(5, new Reference(CacheResourceMarshaller::class));
 
         $container->getDefinition('pimcore.cache.adapter.redis_tag_aware')->setArgument(4, new Reference(CacheResourceMarshaller::class));
     }

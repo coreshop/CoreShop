@@ -53,7 +53,7 @@ class ProductUnitTranslation extends AbstractTranslation implements ProductUnitT
      */
     protected $shortPluralLabel;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

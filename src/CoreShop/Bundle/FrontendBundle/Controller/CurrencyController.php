@@ -32,7 +32,7 @@ class CurrencyController extends FrontendController
 {
     public function widgetAction(Request $request): Response
     {
-        $currencies = $this->get('coreshop.repository.currency')->findActiveForStore($this->get(ShopperContextInterface::class)->getStore());
+        $currencies = $this->container->get('coreshop.repository.currency')->findActiveForStore($this->container->get(ShopperContextInterface::class)->getStore());
 
         return $this->render($this->templateConfigurator->findTemplate('Currency/_widget.html'), [
             'currencies' => $currencies,
@@ -45,12 +45,12 @@ class CurrencyController extends FrontendController
 
         $currencyCode = $this->getParameterFromRequest($request, 'currencyCode');
         $currency = $this->getCurrencyRepository()->getByCode($currencyCode);
-        $cartManager = $this->get(CartManagerInterface::class);
-        $cartContext = $this->get(CartContextInterface::class);
+        $cartManager = $this->container->get(CartManagerInterface::class);
+        $cartContext = $this->container->get(CartContextInterface::class);
         $cart = $cartContext->getCart();
 
-        $store = $this->get(StoreContextInterface::class)->getStore();
-        $this->get(CurrencyStorageInterface::class)->set($store, $currency);
+        $store = $this->container->get(StoreContextInterface::class)->getStore();
+        $this->container->get(CurrencyStorageInterface::class)->set($store, $currency);
 
         $cart->setCurrency($currency);
 
@@ -63,6 +63,6 @@ class CurrencyController extends FrontendController
 
     protected function getCurrencyRepository(): CurrencyRepositoryInterface
     {
-        return $this->get('coreshop.repository.currency');
+        return $this->container->get('coreshop.repository.currency');
     }
 }

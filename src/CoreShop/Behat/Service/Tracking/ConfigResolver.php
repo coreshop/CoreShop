@@ -19,15 +19,11 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Service\Tracking;
 
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
-use Pimcore\Config\Config as ConfigObject;
 
 class ConfigResolver implements ConfigResolverInterface
 {
-    public function getGoogleConfig(): ConfigObject
+    public function getGoogleConfig(): array
     {
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        return new ConfigObject([]);
+        return [];
     }
 }

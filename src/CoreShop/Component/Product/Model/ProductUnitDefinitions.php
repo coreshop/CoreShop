@@ -52,7 +52,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         $this->unitDefinitions = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

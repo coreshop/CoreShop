@@ -79,7 +79,7 @@ class OrderCreationController extends BaseOrderCreationController
             return [];
         }
 
-        $carriers = $this->get(CarriersResolverInterface::class)->resolveCarriers($cart, $cart->getShippingAddress());
+        $carriers = $this->container->get(CarriersResolverInterface::class)->resolveCarriers($cart, $cart->getShippingAddress());
 
         $result = [];
 
@@ -87,12 +87,12 @@ class OrderCreationController extends BaseOrderCreationController
          * @var CarrierInterface $carrier
          */
         foreach ($carriers as $carrier) {
-            $price = $this->get(TaxedShippingCalculatorInterface::class)->getPrice(
+            $price = $this->container->get(TaxedShippingCalculatorInterface::class)->getPrice(
                 $carrier,
                 $cart,
                 $cart->getShippingAddress(),
                 true,
-                $this->get(CartContextResolverInterface::class)->resolveCartContext($cart),
+                $this->container->get(CartContextResolverInterface::class)->resolveCartContext($cart),
             );
 
             $result[] = [

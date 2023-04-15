@@ -18,39 +18,32 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\TrackingBundle\Resolver;
 
-use Pimcore\Analytics\Google\Config\ConfigProvider as GoogleConfigProvider;
-use Pimcore\Analytics\SiteId\SiteIdProvider;
-use Pimcore\Config\Config as ConfigObject;
+
+use Pimcore\Bundle\GoogleMarketingBundle\Config\ConfigProvider;
+use Pimcore\Bundle\GoogleMarketingBundle\SiteId\SiteIdProvider;
 
 class ConfigResolver implements ConfigResolverInterface
 {
-    /**
-     * @psalm-suppress DeprecatedClass
-     */
-    private ?ConfigObject $googleConfig;
+    private array $googleConfig;
 
     public function __construct(
         private SiteIdProvider $siteIdProvider,
-        private GoogleConfigProvider $goggleConfigProvider,
+        private ConfigProvider $goggleConfigProvider,
     ) {
     }
 
     /**
      * @psalm-suppress DeprecatedClass
      */
-    public function getGoogleConfig(): ?ConfigObject
+    public function getGoogleConfig(): array
     {
-        if (isset($this->googleConfig)) {
-            return $this->googleConfig;
-        }
-
         $config = $this->goggleConfigProvider->getConfig();
         $siteId = $this->siteIdProvider->getForRequest();
 
         $configKey = $siteId->getConfigKey();
 
         if (!$config->isSiteConfigured($configKey)) {
-            return null;
+            return [];
         }
 
         $siteConfig = $config->getConfigForSite($configKey);

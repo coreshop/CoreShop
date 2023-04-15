@@ -64,10 +64,7 @@ trait RuleTrait
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
-    /**
-     * @return int
-     */
-    abstract public function getId();
+    abstract public function getId(): ?int;
 
     /**
      * @return string

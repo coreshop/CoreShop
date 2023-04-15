@@ -139,31 +139,31 @@ class OrderPaymentController extends PimcoreController
 
     private function getPaymentRepository(): PaymentRepositoryInterface
     {
-        return $this->get('coreshop.repository.payment');
+        return $this->container->get('coreshop.repository.payment');
     }
 
     private function getEntityManager(): EntityManager
     {
-        return $this->get('doctrine.orm.entity_manager');
+        return $this->container->get('doctrine.orm.entity_manager');
     }
 
     private function getPaymentProviderRepository(): PaymentProviderRepositoryInterface
     {
-        return $this->get('coreshop.repository.payment_provider');
+        return $this->container->get('coreshop.repository.payment_provider');
     }
 
     private function getPaymentFactory(): FactoryInterface
     {
-        return $this->get('coreshop.factory.payment');
+        return $this->container->get('coreshop.factory.payment');
     }
 
     protected function getStateMachineManager(): StateMachineManager
     {
-        return $this->get('coreshop.state_machine_manager');
+        return $this->container->get('coreshop.state_machine_manager');
     }
 
     protected function getSaleRepository(): OrderRepositoryInterface
     {
-        return $this->get('coreshop.repository.order');
+        return $this->container->get('coreshop.repository.order');
     }
 }

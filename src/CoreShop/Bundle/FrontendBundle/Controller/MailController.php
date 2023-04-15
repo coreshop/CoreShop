@@ -35,7 +35,7 @@ class MailController extends FrontendController
         $order = $request->attributes->get('object');
         $viewParameters = [];
 
-        if (!$this->get(EditmodeResolver::class)->isEditmode($request) && $order instanceof OrderInterface) {
+        if (!$this->container->get(EditmodeResolver::class)->isEditmode($request) && $order instanceof OrderInterface) {
             $viewParameters['order'] = $order;
         }
 

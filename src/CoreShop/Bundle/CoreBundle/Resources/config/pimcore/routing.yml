@@ -68,13 +68,6 @@ coreshop_admin_settings_set:
     options:
         expose: true
 
-coreshop_admin_purchasable_store_preview:
-    path: /%coreshop.admin.route.base%/preview
-    methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ProductPreviewController::previewAction}
-    options:
-        expose: true
-
 coreshop_admin_purchasable_validate_unit_definitions:
     path: /%coreshop.admin.route.base%/product/validation/unit-definitions-deletion
     methods: [GET]

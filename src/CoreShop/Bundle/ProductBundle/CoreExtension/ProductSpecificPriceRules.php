@@ -49,17 +49,17 @@ class ProductSpecificPriceRules extends Data implements
     use TempEntityManagerTrait;
     use SimpleComparisonTrait;
 
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopProductSpecificPriceRules';
+    public string $fieldtype = 'coreShopProductSpecificPriceRules';
 
     /**
      * @var int
      */
     public $height;
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     public function getParameterTypeDeclaration(): ?string
     {
@@ -108,7 +108,7 @@ class ProductSpecificPriceRules extends Data implements
         return $data;
     }
 
-    public function createDataCopy(Concrete $object, $data)
+    public function createDataCopy(Concrete $object, mixed $data): mixed
     {
         if (!is_array($data)) {
             return [];
@@ -188,22 +188,22 @@ class ProductSpecificPriceRules extends Data implements
         return $data;
     }
 
-    public function isDiffChangeAllowed($object, $params = [])
+    public function isDiffChangeAllowed(Concrete $object, array $params = []): bool
     {
         return false;
     }
 
-    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    public function getDiffDataForEditMode(mixed $data, Concrete $object = null, array $params = []): ?array
     {
         return [];
     }
 
-    public function getDataFromResource($data, $object = null, $params = [])
+    public function getDataFromResource(mixed $data, Concrete $object = null, array $params = [])
     {
         return [];
     }
 
-    public function marshalVersion($object, $data)
+    public function marshalVersion(Concrete $object, mixed $data): mixed
     {
         if (!is_array($data)) {
             return null;
@@ -222,7 +222,7 @@ class ProductSpecificPriceRules extends Data implements
         return $serialized;
     }
 
-    public function unmarshalVersion($object, $data)
+    public function unmarshalVersion(Concrete $object, mixed $data): mixed
     {
         if (!is_array($data)) {
             return null;
@@ -248,12 +248,12 @@ class ProductSpecificPriceRules extends Data implements
         return $entities;
     }
 
-    public function marshalRecycleData($object, $data)
+    public function marshalRecycleData(Concrete $object, mixed $data): mixed
     {
         return $this->marshalVersion($object, $data);
     }
 
-    public function unmarshalRecycleData($object, $data)
+    public function unmarshalRecycleData(Concrete $object, mixed $data): mixed
     {
         return $this->unmarshalVersion($object, $data);
     }
@@ -268,14 +268,7 @@ class ProductSpecificPriceRules extends Data implements
         return $this->unmarshalVersion($concrete, $data);
     }
 
-    /**
-     * @param array $data
-     * @param null  $object
-     * @param array $params
-     *
-     * @return string
-     */
-    public function getVersionPreview($data, $object = null, $params = [])
+    public function getVersionPreview(mixed $data, Concrete $object = null, array $params = []): string
     {
         if (!is_array($data)) {
             return 'empty';
@@ -284,14 +277,7 @@ class ProductSpecificPriceRules extends Data implements
         return sprintf('Rules: %s', count($data));
     }
 
-    /**
-     * @param mixed $data
-     * @param null  $object
-     * @param array $params
-     *
-     * @return array
-     */
-    public function getDataForEditmode($data, $object = null, $params = [])
+    public function getDataForEditmode(mixed $data, Concrete $object = null, array $params = []): array
     {
         $result = [
             'actions' => array_keys($this->getConfigActions()),
@@ -314,14 +300,7 @@ class ProductSpecificPriceRules extends Data implements
         return $result;
     }
 
-    /**
-     * @param mixed $data
-     * @param null  $object
-     * @param array $params
-     *
-     * @return ProductSpecificPriceRuleInterface[]
-     */
-    public function getDataFromEditmode($data, $object = null, $params = [])
+    public function getDataFromEditmode(mixed $data, Concrete $object = null, array $params = []): array
     {
         $prices = [];
         $errors = [];
@@ -366,11 +345,7 @@ class ProductSpecificPriceRules extends Data implements
         return $prices;
     }
 
-    /**
-     * @param Concrete $object
-     * @param array    $params
-     */
-    public function save($object, $params = [])
+    public function save(Concrete|\Pimcore\Model\DataObject\Objectbrick\Data\AbstractData|\Pimcore\Model\DataObject\Fieldcollection\Data\AbstractData|\Pimcore\Model\DataObject\Localizedfield $object, array $params = []): void
     {
         if ($object instanceof ProductInterface) {
             $existingPriceRules = $object->getObjectVar($this->getName());
@@ -404,7 +379,7 @@ class ProductSpecificPriceRules extends Data implements
         }
     }
 
-    public function load($object, $params = [])
+    public function load(Concrete|\Pimcore\Model\DataObject\Objectbrick\Data\AbstractData|\Pimcore\Model\DataObject\Fieldcollection\Data\AbstractData|\Pimcore\Model\DataObject\Localizedfield $object, array $params = []): mixed
     {
         if (isset($params['force']) && $params['force']) {
             return $this->getProductSpecificPriceRuleRepository()->findForProduct($object);
@@ -413,7 +388,7 @@ class ProductSpecificPriceRules extends Data implements
         return null;
     }
 
-    public function delete($object, $params = [])
+    public function delete(Concrete|\Pimcore\Model\DataObject\Objectbrick\Data\AbstractData|\Pimcore\Model\DataObject\Fieldcollection\Data\AbstractData|\Pimcore\Model\DataObject\Localizedfield $object, array $params = []): void
     {
         if ($object instanceof ProductInterface) {
             $all = $this->load($object, ['force' => true]);
@@ -426,46 +401,7 @@ class ProductSpecificPriceRules extends Data implements
         }
     }
 
-    /**
-     * @param mixed $data
-     * @param null  $relatedObject
-     * @param mixed $params
-     * @param null  $idMapper
-     *
-     * @return ProductSpecificPriceRuleInterface[]
-     *
-     * @throws \Exception
-     */
-    public function getFromWebserviceImport($data, $relatedObject = null, $params = [], $idMapper = null)
-    {
-        return $this->getDataFromEditmode($this->arrayCastRecursive($data), $relatedObject, $params);
-    }
-
-    /**
-     * @param \stdClass[] $array
-     *
-     * @return array
-     */
-    protected function arrayCastRecursive($array)
-    {
-        if (is_array($array)) {
-            foreach ($array as $key => $value) {
-                if (is_array($value)) {
-                    $array[$key] = $this->arrayCastRecursive($value);
-                }
-                if ($value instanceof \stdClass) {
-                    $array[$key] = $this->arrayCastRecursive((array) $value);
-                }
-            }
-        }
-        if ($array instanceof \stdClass) {
-            return $this->arrayCastRecursive((array) $array);
-        }
-
-        return $array;
-    }
-
-    public function getForCsvExport($object, $params = [])
+    public function getForCsvExport(Concrete|\Pimcore\Model\DataObject\Objectbrick\Data\AbstractData|\Pimcore\Model\DataObject\Fieldcollection\Data\AbstractData|\Pimcore\Model\DataObject\Localizedfield $object, array $params = []): string
     {
         return '';
     }

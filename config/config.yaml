@@ -1,5 +1,4 @@
 imports:
     - { resource: services.yml }
     - { resource: migrations.yaml }
-    - { resource: system.yml }
     - { resource: 'local/' }

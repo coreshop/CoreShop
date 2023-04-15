@@ -63,7 +63,7 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
      */
     public $configuration;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

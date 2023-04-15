@@ -199,11 +199,11 @@ final class WkHtmlToPdf implements PdfRendererInterface
 
     private function getWkHtmlToPdfBinary(): string
     {
-        return (string) Console::getExecutable('wkhtmltopdf', true);
+        return Console::getExecutable('wkhtmltopdf', true);
     }
 
     private function getXvfbBinary(): string
     {
-        return (string) Console::getExecutable('xvfb-run', false);
+        return Console::getExecutable('xvfb-run');
     }
 }

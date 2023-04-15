@@ -27,10 +27,7 @@ use Pimcore\Model\Document\Editable;
  */
 class Select extends Editable
 {
-    /**
-     * @var ResourceInterface|null
-     */
-    public $resource;
+    public ResourceInterface|null $resource;
 
     public function __construct(
         protected string $repositoryName,
@@ -39,25 +36,22 @@ class Select extends Editable
     ) {
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function frontend()
+    public function frontend(): string
     {
         return '';
     }
 
-    public function getData()
+    public function getData(): ?ResourceInterface
     {
         return $this->resource;
     }
 
-    /**
-     * @return ResourceInterface|null
-     */
-    public function getResourceObject()
+    public function getResourceObject(): ?ResourceInterface
     {
         if ($this->resource) {
             $object = $this->getRepository()->find($this->resource);
@@ -70,12 +64,12 @@ class Select extends Editable
         return null;
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return !$this->getResourceObject() instanceof ResourceInterface;
     }
 
-    public function getConfig()
+    public function getConfig(): array
     {
         $data = $this->getRepository()->findAll();
         $result = [];
@@ -97,34 +91,21 @@ class Select extends Editable
         return $options;
     }
 
-    public function setDataFromEditmode($data)
+    public function setDataFromEditmode($data): static
     {
         $this->resource = $data;
 
         return $this;
     }
 
-    public function setDataFromResource($data)
+    public function setDataFromResource($data): static
     {
         $this->resource = $data;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getForWebserviceExport($document = null, $params = [])
-    {
-        return [
-            'id' => $this->resource->getId(),
-        ];
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function getResourceName(ResourceInterface $resource)
+    protected function getResourceName(ResourceInterface $resource): mixed
     {
         $getter = 'get' . ucfirst($this->nameProperty);
 
@@ -141,10 +122,7 @@ class Select extends Editable
         return $resource->$getter();
     }
 
-    /**
-     * @return RepositoryInterface
-     */
-    private function getRepository()
+    private function getRepository(): RepositoryInterface
     {
         $repo = \Pimcore::getContainer()->get($this->repositoryName);
 

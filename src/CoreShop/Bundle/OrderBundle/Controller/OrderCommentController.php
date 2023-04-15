@@ -35,7 +35,7 @@ class OrderCommentController extends PimcoreController
         $orderId = $this->getParameterFromRequest($request, 'id');
         $order = $this->getOrderRepository()->find($orderId);
 
-        $objectNoteService = $this->get(NoteServiceInterface::class);
+        $objectNoteService = $this->container->get(NoteServiceInterface::class);
         $notes = $objectNoteService->getObjectNotes($order, Notes::NOTE_ORDER_COMMENT);
 
         $parsedData = [];
@@ -68,7 +68,7 @@ class OrderCommentController extends PimcoreController
         }
 
         try {
-            $objectNoteService = $this->get(NoteServiceInterface::class);
+            $objectNoteService = $this->container->get(NoteServiceInterface::class);
             $commentEntity = $objectNoteService->createPimcoreNoteInstance($order, Notes::NOTE_ORDER_COMMENT);
             $commentEntity->setTitle('Order Comment');
             $commentEntity->setDescription(nl2br($comment));
@@ -84,7 +84,7 @@ class OrderCommentController extends PimcoreController
     public function deleteAction(Request $request): JsonResponse
     {
         $commentId = $this->getParameterFromRequest($request, 'id');
-        $objectNoteService = $this->get(NoteServiceInterface::class);
+        $objectNoteService = $this->container->get(NoteServiceInterface::class);
         $commentEntity = $objectNoteService->getNoteById($commentId);
 
         if ($commentEntity instanceof Note) {
@@ -97,6 +97,6 @@ class OrderCommentController extends PimcoreController
 
     private function getOrderRepository(): PimcoreRepositoryInterface
     {
-        return $this->get('coreshop.repository.order');
+        return $this->container->get('coreshop.repository.order');
     }
 }

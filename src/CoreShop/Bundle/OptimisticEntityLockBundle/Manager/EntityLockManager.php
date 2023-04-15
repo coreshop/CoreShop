@@ -37,7 +37,7 @@ final class EntityLockManager implements EntityLockManagerInterface
         }
 
         if (!isset($this->lockedVersions[$dataObject->getId()])) {
-            $actualObject = Concrete::getById($dataObject->getId(), true);
+            $actualObject = Concrete::getById($dataObject->getId(), ['force' => true]);
 
             if (!$actualObject instanceof OptimisticLockedInterface) {
                 throw OptimisticLockException::notVersioned($dataObject::class);

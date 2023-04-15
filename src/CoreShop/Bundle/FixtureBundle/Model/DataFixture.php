@@ -48,7 +48,7 @@ class DataFixture extends AbstractResource implements DataFixtureInterface
      */
     protected $loadedAt;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

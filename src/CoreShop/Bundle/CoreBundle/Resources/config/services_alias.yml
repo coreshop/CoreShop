@@ -298,10 +298,6 @@ services:
         alias: CoreShop\Bundle\CoreBundle\Controller\PortletsController
         deprecated: { package: "coreshop/core-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\CoreBundle\Controller\PortletsController instead' }
 
-    coreshop.admin_controller.product_preview:
-        alias: CoreShop\Bundle\CoreBundle\Controller\ProductPreviewController
-        deprecated: { package: "coreshop/core-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\CoreBundle\Controller\ProductPreviewController instead' }
-
     coreshop.admin_controller.product_validation:
         alias: CoreShop\Bundle\CoreBundle\Controller\ProductValidationController
         deprecated: { package: "coreshop/core-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\CoreBundle\Controller\ProductValidationController instead' }

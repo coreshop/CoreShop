@@ -35,7 +35,6 @@ final class CountryContext implements Context
         private CountryRepositoryInterface $countryRepository,
         private CountryContextInterface $countryContext,
         private AddressFormatterInterface $addressFormatter,
-        private GeoLiteBasedRequestResolver $geoLiteResolver,
     ) {
     }
 
@@ -106,27 +105,5 @@ final class CountryContext implements Context
                 $actualFormattedAddress,
             ),
         );
-    }
-
-    /**
-     * @Then /^when I check the geo-lite resolver with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
-     * @Then /^when I check the geo-lite resolver again with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
-     */
-    public function whenIcheckTheGeoLiteResolver($ipAddress, $countryIso): void
-    {
-        $request = Request::create(
-            'localhost',
-            'GET',
-            [],
-            [],
-            [],
-            [
-                'REMOTE_ADDR' => $ipAddress,
-            ],
-        );
-
-        $country = $this->geoLiteResolver->findCountry($request);
-
-        Assert::eq($country ? $country->getIsoCode() : null, $countryIso);
     }
 }

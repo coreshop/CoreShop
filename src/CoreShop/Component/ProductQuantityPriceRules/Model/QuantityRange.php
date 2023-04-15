@@ -55,7 +55,7 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
      */
     protected $rule;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

@@ -26,12 +26,12 @@ use CoreShop\Component\Taxation\Model\TaxRateInterface;
  */
 class TaxRate extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopTaxRate';
+    public string $fieldtype = 'coreShopTaxRate';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     protected function getRepository()
     {

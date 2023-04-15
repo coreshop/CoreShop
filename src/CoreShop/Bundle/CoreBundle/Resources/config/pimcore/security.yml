@@ -1,10 +1,10 @@
 parameters:
     coreshop.security.frontend_regex: "^/(?!admin)[^/]*"
 
-pimcore:
-    security:
-        encoder_factories:
-            '%coreshop.model.user.class%': coreshop.security.user.password_encoder_factory
+#pimcore:
+#    security:
+#        encoder_factories:
+#            '%coreshop.model.user.class%': coreshop.security.user.password_encoder_factory
 
 security:
     providers:

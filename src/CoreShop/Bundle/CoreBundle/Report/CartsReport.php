@@ -107,7 +107,7 @@ class CartsReport implements ReportInterface, PortletInterface
             $day['datetext'] = $date->toDateString();
         }
 
-        return array_values($data);
+        return $data;
     }
 
     public function getTotal(): int

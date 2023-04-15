@@ -75,7 +75,7 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
      */
     protected $creditUsed = 0;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

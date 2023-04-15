@@ -41,7 +41,7 @@ class FilterController extends ResourceController
 
     public function getFieldsForIndexAction(Request $request): Response
     {
-        $index = $this->get('coreshop.repository.index')->find($this->getParameterFromRequest($request, 'index'));
+        $index = $this->container->get('coreshop.repository.index')->find($this->getParameterFromRequest($request, 'index'));
 
         if ($index instanceof IndexInterface) {
             $columns = [
@@ -61,14 +61,14 @@ class FilterController extends ResourceController
 
     public function getValuesForFilterFieldAction(Request $request): Response
     {
-        $index = $this->get('coreshop.repository.index')->find($this->getParameterFromRequest($request, 'index'));
+        $index = $this->container->get('coreshop.repository.index')->find($this->getParameterFromRequest($request, 'index'));
 
         if ($index instanceof IndexInterface) {
             /**
              * @var WorkerInterface $worker
              */
-            $worker = $this->get('coreshop.registry.index.worker')->get($index->getWorker());
-            $list = $this->get(ListingFactoryInterface::class)->createList($index);
+            $worker = $this->container->get('coreshop.registry.index.worker')->get($index->getWorker());
+            $list = $this->container->get(ListingFactoryInterface::class)->createList($index);
             $list->setLocale($request->getLocale());
             $filterGroupHelper = $worker->getFilterGroupHelper();
             $field = $this->getParameterFromRequest($request, 'field');

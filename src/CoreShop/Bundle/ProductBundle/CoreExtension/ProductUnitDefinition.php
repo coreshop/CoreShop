@@ -36,24 +36,14 @@ class ProductUnitDefinition extends Data implements
     Data\CustomVersionMarshalInterface,
     CacheMarshallerInterface
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopProductUnitDefinition';
+    public string $fieldtype = 'coreShopProductUnitDefinition';
+    public string $phpdocType = '\\' . ProductUnitDefinitionInterface::class;
+    public bool $allowEmpty = false;
 
-    /**
-     * Type for the generated phpdoc.
-     *
-     * @var string
-     */
-    public $phpdocType = '\\' . ProductUnitDefinitionInterface::class;
-
-    /**
-     * @var bool
-     */
-    public $allowEmpty = false;
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     public function getParameterTypeDeclaration(): ?string
     {
@@ -85,12 +75,12 @@ class ProductUnitDefinition extends Data implements
         return 'int(11)';
     }
 
-    public function isDiffChangeAllowed($object, $params = [])
+    public function isDiffChangeAllowed(Concrete $object, array $params = []): bool
     {
         return false;
     }
 
-    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    public function getDiffDataForEditMode(mixed $data, Concrete $object = null, array $params = []): ?array
     {
         return [];
     }
@@ -130,7 +120,7 @@ class ProductUnitDefinition extends Data implements
         return $data;
     }
 
-    public function getDataForResource($data, $object = null, $params = [])
+    public function getDataForResource(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if ($data instanceof ProductUnitDefinitionInterface) {
             return $data->getId();
@@ -139,7 +129,7 @@ class ProductUnitDefinition extends Data implements
         return null;
     }
 
-    public function getDataFromResource($data, $object = null, $params = [])
+    public function getDataFromResource(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if ((int) $data > 0) {
             return $this->getRepository()->find($data);
@@ -148,7 +138,7 @@ class ProductUnitDefinition extends Data implements
         return null;
     }
 
-    public function getDataForQueryResource($data, $object = null, $params = [])
+    public function getDataForQueryResource(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if ($data instanceof ProductUnitDefinitionInterface) {
             return $data->getId();
@@ -157,7 +147,7 @@ class ProductUnitDefinition extends Data implements
         return null;
     }
 
-    public function createDataCopy(Concrete $object, $data)
+    public function createDataCopy(Concrete $object, mixed $data)
     {
         if (!$data instanceof ProductUnitDefinitionsInterface) {
             return null;
@@ -184,12 +174,12 @@ class ProductUnitDefinition extends Data implements
         return $data;
     }
 
-    public function marshalVersion($object, $data)
+    public function marshalVersion(Concrete $object, mixed $data): mixed
     {
         return $this->getDataForEditmode($data, $object);
     }
 
-    public function unmarshalVersion($object, $data)
+    public function unmarshalVersion(Concrete $object, mixed $data): mixed
     {
         if (is_array($data) && isset($data['id'])) {
             return $this->getRepository()->find($data['id']);
@@ -198,12 +188,12 @@ class ProductUnitDefinition extends Data implements
         return null;
     }
 
-    public function marshalRecycleData($object, $data)
+    public function marshalRecycleData(Concrete $object, mixed $data): mixed
     {
         return $this->marshalVersion($object, $data);
     }
 
-    public function unmarshalRecycleData($object, $data)
+    public function unmarshalRecycleData(Concrete $object, mixed $data): mixed
     {
         return $this->unmarshalVersion($object, $data);
     }
@@ -218,12 +208,12 @@ class ProductUnitDefinition extends Data implements
         return $this->unmarshalVersion($concrete, $data);
     }
 
-    public function getDataFromEditmode($data, $object = null, $params = [])
+    public function getDataFromEditmode(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
-    public function getDataForEditmode($data, $object = null, $params = [])
+    public function getDataForEditmode(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         $parsedData = [
             'id' => null,
@@ -248,17 +238,17 @@ class ProductUnitDefinition extends Data implements
         return $parsedData;
     }
 
-    public function isEmpty($data)
+    public function isEmpty(mixed $data): bool
     {
         return !$data instanceof ProductUnitDefinitionInterface;
     }
 
-    public function getVersionPreview($data, $object = null, $params = [])
+    public function getVersionPreview(mixed $data, Concrete $object = null, array $params = []): string
     {
         return $data;
     }
 
-    public function getForCsvExport($object, $params = [])
+    public function getForCsvExport(Concrete|\Pimcore\Model\DataObject\Objectbrick\Data\AbstractData|\Pimcore\Model\DataObject\Fieldcollection\Data\AbstractData|\Pimcore\Model\DataObject\Localizedfield $object, array $params = []): string
     {
         return '';
     }

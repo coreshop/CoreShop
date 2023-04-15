@@ -40,7 +40,7 @@ class RegisterController extends FrontendController
             return $this->redirectToRoute('coreshop_customer_profile');
         }
 
-        $form = $this->get('form.factory')->createNamed('customer', CustomerRegistrationType::class, $this->get('coreshop.factory.customer')->createNew());
+        $form = $this->container->get('form.factory')->createNamed('customer', CustomerRegistrationType::class, $this->container->get('coreshop.factory.customer')->createNew());
 
         $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl('coreshop_customer_profile'));
 
@@ -49,9 +49,9 @@ class RegisterController extends FrontendController
 
             if ($form->isValid()) {
                 $customer = $form->getData();
-                $customer->setLocaleCode($this->get('coreshop.context.locale')->getLocaleCode());
+                $customer->setLocaleCode($this->container->get('coreshop.context.locale')->getLocaleCode());
 
-                $this->get('coreshop.customer.manager')->persistCustomer($customer);
+                $this->container->get('coreshop.customer.manager')->persistCustomer($customer);
 
                 return $this->redirect($redirect);
             }
@@ -65,7 +65,7 @@ class RegisterController extends FrontendController
     public function passwordResetRequestAction(Request $request): Response
     {
         $resetIdentifier = $this->container->getParameter('coreshop.customer.security.login_identifier');
-        $form = $this->get('form.factory')->createNamed('coreshop', RequestResetPasswordType::class, null, ['reset_identifier' => $resetIdentifier]);
+        $form = $this->container->get('form.factory')->createNamed('coreshop', RequestResetPasswordType::class, null, ['reset_identifier' => $resetIdentifier]);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
@@ -87,7 +87,7 @@ class RegisterController extends FrontendController
                 $dispatcher = $this->container->get('event_dispatcher');
                 $dispatcher->dispatch(new RequestPasswordChangeEvent($user, $resetLink), 'coreshop.user.request_password_reset');
 
-                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.password_reset_request_success'));
+                $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.password_reset_request_success'));
 
                 return $this->redirectToRoute('coreshop_login');
             }
@@ -106,8 +106,8 @@ class RegisterController extends FrontendController
             /**
              * @var UserInterface $user
              */
-            $user = $this->get('coreshop.repository.user')->findByResetToken($resetToken);
-            $form = $this->get('form.factory')->createNamed('coreshop', ResetPasswordType::class);
+            $user = $this->container->get('coreshop.repository.user')->findByResetToken($resetToken);
+            $form = $this->container->get('form.factory')->createNamed('coreshop', ResetPasswordType::class);
 
             if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
                 $handledForm = $form->handleRequest($request);
@@ -119,7 +119,7 @@ class RegisterController extends FrontendController
                     $user->setPassword($resetPassword['password']);
                     $user->save();
 
-                    $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.password_reset_success'));
+                    $this->addFlash('success', $this->container->get('translator')->trans('coreshop.ui.password_reset_success'));
 
                     $dispatcher = $this->container->get('event_dispatcher');
                     $dispatcher->dispatch(new GenericEvent($user), 'coreshop.user.password_reset');
@@ -142,7 +142,7 @@ class RegisterController extends FrontendController
             /**
              * @var CustomerInterface $customer
              */
-            $customer = $this->get(CustomerContextInterface::class)->getCustomer();
+            $customer = $this->container->get(CustomerContextInterface::class)->getCustomer();
 
             return $customer;
         } catch (\Exception) {

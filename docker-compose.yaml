@@ -8,22 +8,20 @@ networks:
 
 services:
   db:
-    image: mariadb:10.5
-    container_name: coreshop-3-mariadb
+    image: mysql:8
+    container_name: coreshop-pimcore11-3
     networks:
       - cors_dev
       - coreshop_3
     working_dir: /application
     command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci]
     volumes:
-      - coreshop-3-database:/var/lib/mysql
+      - coreshop-3:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=ROOT
       - MYSQL_DATABASE=pimcore
       - MYSQL_USER=pimcore
       - MYSQL_PASSWORD=pimcore
-    ports:
-      - "3306:3306"
 
   nginx:
     image: nginx:stable-alpine
@@ -38,34 +36,15 @@ services:
       - coreshop_3
     labels:
       - traefik.enable=true
-      - traefik.http.routers.coreshop_3.rule=Host(`coreshop-3.localhost`)
-      - traefik.http.routers.coreshop_3.entrypoints=cors_dev
-      - traefik.http.routers.coreshop_3.tls=true
-      - traefik.http.services.coreshop_3.loadbalancer.server.port=80
-      - traefik.docker.network=cors_dev
-
-  nginx8:
-    image: nginx:stable-alpine
-    volumes:
-      - .:/var/www/html:cached
-      -  ./.docker/nginx8.conf:/etc/nginx/conf.d/default.conf:ro
-    depends_on:
-      - php
-      - php-debug
-    networks:
-      - cors_dev
-      - coreshop_3
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.coreshop_3_php8.rule=Host(`coreshop-3-php8.localhost`)
-      - traefik.http.routers.coreshop_3_php8.entrypoints=cors_dev
-      - traefik.http.routers.coreshop_3_php8.tls=true
-      - traefik.http.services.coreshop_3_php8.loadbalancer.server.port=80
+      - traefik.http.routers.coreshop_3_11.rule=Host(`coreshop-3-11.localhost`)
+      - traefik.http.routers.coreshop_3_11.entrypoints=cors_dev
+      - traefik.http.routers.coreshop_3_11.tls=true
+      - traefik.http.services.coreshop_3_11.loadbalancer.server.port=80
       - traefik.docker.network=cors_dev
 
   php:
     image: pimcore/pimcore:php8.1-latest
-    container_name: coreshop-php
+    container_name: coreshop-pimcore11-php
     networks:
       - coreshop_3
     environment:
@@ -77,42 +56,18 @@ services:
 
   php-debug:
     image: pimcore/pimcore:php8.1-debug-latest
-    container_name: coreshop-php-debug
+    container_name: coreshop-pimcore11-php-debug
     networks:
       - coreshop_3
     depends_on:
       - db
     volumes:
       - .:/var/www/html:cached
+      - ./.docker/xdebug-config.ini:/usr/local/etc/php/conf.d/21-xdebug.ini
     environment:
       PHP_IDE_CONFIG: serverName=localhost
       XDEBUG_TRIGGER: PHPSTORM
       COMPOSER_HOME: /var/www/html
 
-  php8:
-    image: pimcore/pimcore:PHP8.0-fpm
-    container_name: coreshop-php8
-    networks:
-      - coreshop_3
-    environment:
-      COMPOSER_HOME: /var/www/html
-    depends_on:
-      - db
-    volumes:
-      - .:/var/www/html:cached
-
-  php8-debug:
-    image: pimcore/pimcore:PHP8.0-fpm-debug
-    container_name: coreshop-php8-debug
-    networks:
-      - coreshop_3
-    depends_on:
-      - db
-    volumes:
-      - .:/var/www/html:cached
-    environment:
-      PHP_IDE_CONFIG: serverName=localhost
-      COMPOSER_HOME: /var/www/html
-
 volumes:
-  coreshop-3-database:
+  coreshop-3:

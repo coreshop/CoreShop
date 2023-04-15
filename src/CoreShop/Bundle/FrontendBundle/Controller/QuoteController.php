@@ -31,10 +31,10 @@ class QuoteController extends FrontendController
     {
         $this->denyAccessUnlessGranted('CORESHOP_QUOTE_DETAIL');
 
-        $quote = $this->get('coreshop.repository.order')->find($this->getParameterFromRequest($request, 'quote'));
+        $quote = $this->container->get('coreshop.repository.order')->find($this->getParameterFromRequest($request, 'quote'));
 
         try {
-            $currentCustomer = $this->get(CustomerContextInterface::class)->getCustomer();
+            $currentCustomer = $this->container->get(CustomerContextInterface::class)->getCustomer();
         } catch (CustomerNotFoundException) {
             return $this->redirectToRoute('coreshop_index');
         }

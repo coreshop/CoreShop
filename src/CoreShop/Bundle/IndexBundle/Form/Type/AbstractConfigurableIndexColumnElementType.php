@@ -103,7 +103,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
             return $data->getObjectType();
         }
 
-        if (null !== $form->getConfig()->hasOption('configuration_type')) {
+        if ($form->getConfig()->hasOption('configuration_type')) {
             return $form->getConfig()->getOption('configuration_type');
         }
 

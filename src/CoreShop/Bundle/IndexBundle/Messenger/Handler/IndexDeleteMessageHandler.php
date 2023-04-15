@@ -21,9 +21,8 @@ namespace CoreShop\Bundle\IndexBundle\Messenger\Handler;
 use CoreShop\Bundle\IndexBundle\Messenger\IndexDeleteMessage;
 use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
 use Pimcore\Model\DataObject\AbstractObject;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class IndexDeleteMessageHandler implements MessageHandlerInterface
+class IndexDeleteMessageHandler
 {
     private array $validObjectTypes = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
 

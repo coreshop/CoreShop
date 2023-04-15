@@ -38,10 +38,6 @@ class CacheResourceMarshaller implements MarshallerInterface
             if ($data instanceof Concrete) {
                 $class = $data->getClass();
 
-                if (!$class) {
-                    continue;
-                }
-
                 foreach ($class->getFieldDefinitions() as $fd) {
                     if (!$fd instanceof CacheMarshallerInterface) {
                         continue;
@@ -58,16 +54,12 @@ class CacheResourceMarshaller implements MarshallerInterface
         return $this->defaultMarshaller->marshall($values, $failed);
     }
 
-    public function unmarshall(string $value)
+    public function unmarshall(string $value): mixed
     {
         $data = $this->defaultMarshaller->unmarshall($value);
 
         if ($data instanceof Concrete) {
             $class = $data->getClass();
-
-            if (!$class) {
-                return $data;
-            }
 
             foreach ($class->getFieldDefinitions() as $fd) {
                 if (!$fd instanceof CacheMarshallerInterface) {

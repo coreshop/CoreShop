@@ -99,12 +99,16 @@
     "payum/payum": "^1.7",
     "payum/payum-bundle": "^2.5",
     "php-http/guzzle7-adapter": "^0.1",
-    "pimcore/pimcore": "^10.5",
+    "pimcore/admin-ui-classic-bundle": "^1.0@beta",
+    "pimcore/google-marketing-bundle": "^1.0@beta",
+    "pimcore/pimcore": "^11.0",
     "rinvex/countries": "^7.3",
     "stof/doctrine-extensions-bundle": "^1.6",
     "sylius/theme-bundle": "^2.2",
-    "symfony/notifier": "^5.4.0",
-    "symfony/serializer": "^5.4.0",
+    "symfony/dotenv": "^6.2",
+    "symfony/intl": "^6.2",
+    "symfony/notifier": "^6.1",
+    "symfony/serializer": "^6.1",
     "webmozart/assert": "^1.10"
   },
   "require-dev": {
@@ -122,7 +126,7 @@
     "phpstan/phpstan-webmozart-assert": "^1.1.2",
     "phpunit/phpunit": "^9.5",
     "robertfausk/behat-panther-extension": "^1.0",
-    "symfony/panther": "^1.0",
+    "symfony/panther": "^2.0",
     "symplify/easy-coding-standard": "^11.1",
     "vimeo/psalm": "^4.10"
   },

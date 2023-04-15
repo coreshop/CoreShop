@@ -55,7 +55,7 @@ interface ListingInterface extends \Countable, PaginateListingInterface
     /**
      * @return PimcoreModelInterface[]
      */
-    public function getItems($offset, $itemCountPerPage);
+    public function getItems(int $offset, int $itemCountPerPage): array;
 
     /**
      * Adds filter condition to product list

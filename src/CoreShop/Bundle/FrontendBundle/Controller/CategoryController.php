@@ -139,7 +139,7 @@ class CategoryController extends FrontendController
         $viewParameters = [];
 
         if ($category->getFilter() instanceof FilterInterface) {
-            $filteredList = $this->get(FilteredListingFactoryInterface::class)->createList($category->getFilter(), $request->request);
+            $filteredList = $this->container->get(FilteredListingFactoryInterface::class)->createList($category->getFilter(), $request->request);
             $filteredList->setLocale($request->getLocale());
             $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
             $filteredList->addCondition(new LikeCondition('stores', 'both', sprintf('%1$s%2$s%1$s', ',', $this->getContext()->getStore()->getId())), 'stores');
@@ -155,8 +155,8 @@ class CategoryController extends FrontendController
             $filteredList->setOrderKey($sortParsed['name']);
             $filteredList->setOrder($sortParsed['direction']);
 
-            $currentFilter = $this->get(FilterProcessorInterface::class)->processConditions($category->getFilter(), $filteredList, $request->query);
-            $preparedConditions = $this->get(FilterProcessorInterface::class)->prepareConditionsForRendering($category->getFilter(), $filteredList, $currentFilter);
+            $currentFilter = $this->container->get(FilterProcessorInterface::class)->processConditions($category->getFilter(), $filteredList, $request->query);
+            $preparedConditions = $this->container->get(FilterProcessorInterface::class)->prepareConditionsForRendering($category->getFilter(), $filteredList, $currentFilter);
 
             $paginator = $this->getPaginator()->paginate(
                 $filteredList,
@@ -213,10 +213,10 @@ class CategoryController extends FrontendController
         $viewParameters['validSortElements'] = $this->validSortProperties;
 
         foreach ($paginator as $product) {
-            $this->get(TrackerInterface::class)->trackProductImpression($product);
+            $this->container->get(TrackerInterface::class)->trackProductImpression($product);
         }
 
-        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($category);
+        $this->container->get(SEOPresentationInterface::class)->updateSeoMetadata($category);
 
         return $this->render($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
@@ -225,7 +225,7 @@ class CategoryController extends FrontendController
     {
         $isFrontendRequestByAdmin = false;
 
-        if ($this->get(RequestHelper::class)->isFrontendRequestByAdmin($request)) {
+        if ($this->container->get(RequestHelper::class)->isFrontendRequestByAdmin($request)) {
             $isFrontendRequestByAdmin = true;
         }
 
@@ -266,26 +266,26 @@ class CategoryController extends FrontendController
 
     protected function getRepository(): CategoryRepositoryInterface
     {
-        return $this->get('coreshop.repository.category');
+        return $this->container->get('coreshop.repository.category');
     }
 
     protected function getProductRepository(): ProductRepositoryInterface
     {
-        return $this->get('coreshop.repository.product');
+        return $this->container->get('coreshop.repository.product');
     }
 
     protected function getConfigurationService(): ConfigurationServiceInterface
     {
-        return $this->get(ConfigurationServiceInterface::class);
+        return $this->container->get(ConfigurationServiceInterface::class);
     }
 
     protected function getContext(): ShopperContextInterface
     {
-        return $this->get(ShopperContextInterface::class);
+        return $this->container->get(ShopperContextInterface::class);
     }
 
     protected function getPaginator(): PaginatorInterface
     {
-        return $this->get(PaginatorInterface::class);
+        return $this->container->get(PaginatorInterface::class);
     }
 }

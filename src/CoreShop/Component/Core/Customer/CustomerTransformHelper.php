@@ -92,7 +92,6 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
             ),
         );
 
-        /** @psalm-suppress InternalMethod */
         $company->setKey(File::getValidFilename($company->getName()));
 
         if ($company instanceof Concrete) {

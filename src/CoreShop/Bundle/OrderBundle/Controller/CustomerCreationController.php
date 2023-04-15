@@ -40,7 +40,7 @@ class CustomerCreationController extends PimcoreController
         FolderCreationServiceInterface $folderCreationService,
         ErrorSerializer $errorSerializer,
     ): Response {
-        $form = $this->get('form.factory')->createNamed('', AdminCustomerCreationType::class);
+        $form = $this->container->get('form.factory')->createNamed('', AdminCustomerCreationType::class);
 
         if ($request->getMethod() === 'POST') {
             $form = $form->handleRequest($request);
@@ -69,7 +69,6 @@ class CustomerCreationController extends PimcoreController
                 );
 
                 $customer->setPublished(true);
-                /** @psalm-suppress InternalMethod */
                 $customer->setKey(File::getValidFilename($customer->getEmail()));
                 /** @psalm-suppress InvalidArgument */
                 $customer->setKey(Service::getUniqueKey($customer));
@@ -93,7 +92,7 @@ class CustomerCreationController extends PimcoreController
                     $customer->addAddress($address);
                 }
 
-                $this->get('event_dispatcher')->dispatch(
+                $this->container->get('event_dispatcher')->dispatch(
                     new AdminCustomerCreationEvent($customer, $data),
                     Events::ADMIN_CUSTOMER_CREATION,
                 );

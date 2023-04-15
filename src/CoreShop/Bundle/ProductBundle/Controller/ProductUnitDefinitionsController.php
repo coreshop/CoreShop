@@ -36,7 +36,7 @@ class ProductUnitDefinitionsController extends ResourceController
         $definitions = [];
 
         /** @var StackRepositoryInterface $repository */
-        $repository = $this->get('coreshop.repository.stack.product');
+        $repository = $this->container->get('coreshop.repository.stack.product');
 
         /** @var ProductInterface $product */
         $product = $repository->find($this->getParameterFromRequest($request, 'productId'));
@@ -53,7 +53,7 @@ class ProductUnitDefinitionsController extends ResourceController
         $definitions = [];
 
         /** @var StackRepositoryInterface $repository */
-        $repository = $this->get('coreshop.repository.stack.product');
+        $repository = $this->container->get('coreshop.repository.stack.product');
 
         /** @var ProductInterface $product */
         $product = $repository->find($this->getParameterFromRequest($request, 'productId'));

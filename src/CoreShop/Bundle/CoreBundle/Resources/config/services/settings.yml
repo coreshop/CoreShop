@@ -20,12 +20,6 @@ services:
         calls:
           - [setContainer, ['@service_container']]
 
-    CoreShop\Bundle\CoreBundle\Controller\ProductPreviewController:
-        arguments:
-            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-            - [setContainer, ['@service_container']]
-
     CoreShop\Bundle\CoreBundle\Controller\ProductValidationController:
         arguments:
             - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'

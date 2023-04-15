@@ -245,16 +245,16 @@ class CustomerTransformerController extends AdminController
 
     protected function getCustomerRepository(): CustomerRepositoryInterface
     {
-        return $this->get('coreshop.repository.customer');
+        return $this->container->get('coreshop.repository.customer');
     }
 
     protected function getCompanyRepository(): CompanyRepositoryInterface
     {
-        return $this->get('coreshop.repository.company');
+        return $this->container->get('coreshop.repository.company');
     }
 
     protected function getCustomerTransformerHelper(): CustomerTransformHelperInterface
     {
-        return $this->get(CustomerTransformHelperInterface::class);
+        return $this->container->get(CustomerTransformHelperInterface::class);
     }
 }

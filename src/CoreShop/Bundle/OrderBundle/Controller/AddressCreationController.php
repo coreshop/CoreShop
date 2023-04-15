@@ -37,7 +37,7 @@ class AddressCreationController extends PimcoreController
         ObjectServiceInterface $objectService,
         ErrorSerializer $errorSerializer,
     ): Response {
-        $form = $this->get('form.factory')->createNamed('', AdminAddressCreationType::class);
+        $form = $this->container->get('form.factory')->createNamed('', AdminAddressCreationType::class);
 
         if ($request->getMethod() === 'POST') {
             $form = $form->handleRequest($request);
@@ -68,7 +68,7 @@ class AddressCreationController extends PimcoreController
                     $customer->addAddress($address);
                 }
 
-                $this->get('event_dispatcher')->dispatch(
+                $this->container->get('event_dispatcher')->dispatch(
                     new AdminAddressCreationEvent($address, $customer, $data),
                     Events::ADMIN_ADDRESS_CREATION,
                 );

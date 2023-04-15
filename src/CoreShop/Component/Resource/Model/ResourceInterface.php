@@ -20,23 +20,9 @@ namespace CoreShop\Component\Resource\Model;
 
 interface ResourceInterface
 {
-    /**
-     * @return int|string|null
-     */
-    public function getId();
+    public function getId(): ?int;
 
-    /**
-     * @param array $data
-     *
-     * @return $this
-     */
-    public function setValues($data = []);
+    public function setValues(array $data = []): static;
 
-    /**
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return $this
-     */
-    public function setValue($key, $value);
+    public function setValue(string $key, mixed $value, bool $ignoreEmptyValues = false): static;
 }

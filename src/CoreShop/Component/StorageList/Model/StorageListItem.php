@@ -35,9 +35,9 @@ abstract class StorageListItem implements StorageListItemInterface
         return $this->getProduct() instanceof $product && $this->getProduct()->getId() === $product->getId();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
-        return $this->product ? $this->product->getId() : 0;
+        return $this->product ? $this->product->getId() : null;
     }
 
     public function getProduct(): ResourceInterface

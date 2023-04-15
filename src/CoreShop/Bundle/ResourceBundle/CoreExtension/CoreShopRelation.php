@@ -27,19 +27,11 @@ use Pimcore\Model\Element;
  */
 class CoreShopRelation extends Data\ManyToOneRelation
 {
-    public $fieldtype = 'coreShopRelation';
+    public string $fieldtype = 'coreShopRelation';
 
-    public $stack;
+    public string|null $stack;
 
-    public $relationType = true;
-
-    public $objectsAllowed = true;
-
-    public $assetsAllowed = false;
-
-    public $documentsAllowed = false;
-
-    public $returnConcrete = false;
+    public bool $returnConcrete = false;
 
     public function getStack()
     {
@@ -102,19 +94,21 @@ class CoreShopRelation extends Data\ManyToOneRelation
      *
      * @return $this
      */
-    public function setClasses($classes)
+    public function setClasses(array $classes): static
     {
         if (null === $this->stack) {
             return $this;
         }
 
-        return parent::setClasses(Element\Service::fixAllowedTypes($this->getCoreShopPimcoreClasses()[$this->stack], 'classes'));
+        parent::setClasses(Element\Service::fixAllowedTypes($this->getCoreShopPimcoreClasses()[$this->stack], 'classes'));
+
+        return $this;
     }
 
     /**
      * @return bool
      */
-    public function getObjectsAllowed()
+    public function getObjectsAllowed(): bool
     {
         return true;
     }
@@ -122,7 +116,7 @@ class CoreShopRelation extends Data\ManyToOneRelation
     /**
      * @return bool
      */
-    public function getDocumentsAllowed()
+    public function getDocumentsAllowed(): bool
     {
         return false;
     }
@@ -130,7 +124,7 @@ class CoreShopRelation extends Data\ManyToOneRelation
     /**
      * @return array
      */
-    public function getDocumentTypes()
+    public function getDocumentTypes(): array
     {
         return [];
     }
@@ -138,7 +132,7 @@ class CoreShopRelation extends Data\ManyToOneRelation
     /**
      * @return bool
      */
-    public function getAssetsAllowed()
+    public function getAssetsAllowed(): bool
     {
         return false;
     }
@@ -146,7 +140,7 @@ class CoreShopRelation extends Data\ManyToOneRelation
     /**
      * @return array
      */
-    public function getAssetTypes()
+    public function getAssetTypes(): array
     {
         return [];
     }

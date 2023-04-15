@@ -32,7 +32,7 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
     ) {
     }
 
-    public function generate(Concrete $object, array $params = []): string
+    public function generate(object $object, array $params = []): string
     {
         $locale = $params['_locale'] ?? null;
 

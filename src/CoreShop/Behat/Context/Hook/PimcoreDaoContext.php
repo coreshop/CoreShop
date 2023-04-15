@@ -54,7 +54,7 @@ final class PimcoreDaoContext implements Context
     public function purgeObjects(): void
     {
         Cache::clearAll();
-        Cache\Runtime::clear();
+        Cache\RuntimeCache::clear();
 
         /**
          * Delete Orders first, otherwise the CustomerDeletionListener would trigger.
@@ -110,7 +110,7 @@ final class PimcoreDaoContext implements Context
     public function clearRuntimeCacheScenario(): void
     {
         //Clearing it here is totally fine, since each scenario has its own separated context of objects
-        \Pimcore\Cache\Runtime::clear();
+        \Pimcore\Cache\RuntimeCache::clear();
     }
 
     /**
@@ -120,7 +120,7 @@ final class PimcoreDaoContext implements Context
     {
         //We should not clear Pimcore Objects here, otherwise we lose the reference to it
         //and end up having the same object twice
-        $copy = \Pimcore\Cache\Runtime::getInstance()->getArrayCopy();
+        $copy = \Pimcore\Cache\RuntimeCache::getInstance()->getArrayCopy();
         $keepItems = [];
 
         foreach ($copy as $key => $value) {
@@ -129,7 +129,7 @@ final class PimcoreDaoContext implements Context
             }
         }
 
-        \Pimcore\Cache\Runtime::clear($keepItems);
+        \Pimcore\Cache\RuntimeCache::clear($keepItems);
     }
 
     /**

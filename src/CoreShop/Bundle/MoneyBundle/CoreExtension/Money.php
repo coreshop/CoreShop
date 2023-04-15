@@ -30,12 +30,7 @@ class Money extends DataObject\ClassDefinition\Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopMoney';
+    public string $fieldtype = 'coreShopMoney';
 
     /**
      * @var int
@@ -68,6 +63,11 @@ class Money extends DataObject\ClassDefinition\Data implements
      * @var bool
      */
     public $nullable = false;
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     public function getParameterTypeDeclaration(): ?string
     {
@@ -177,17 +177,17 @@ class Money extends DataObject\ClassDefinition\Data implements
         $this->nullable = $nullable;
     }
 
-    public function getColumnType()
+    public function getColumnType(): string
     {
         return 'bigint(20)';
     }
 
-    public function getQueryColumnType()
+    public function getQueryColumnType(): string
     {
         return 'bigint(20)';
     }
 
-    public function getDataForResource($data, $object = null, $params = [])
+    public function getDataForResource(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if (is_numeric($data) && !is_int($data)) {
             $data = (int) $data;
@@ -218,7 +218,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $data;
     }
 
-    public function getGetterCode($class)
+    public function getGetterCode(DataObject\ClassDefinition|DataObject\Objectbrick\Definition|DataObject\Fieldcollection\Definition $class): string
     {
         $key = $this->getName();
         $code = '';
@@ -258,7 +258,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    public function getSetterCode($class)
+    public function getSetterCode(DataObject\ClassDefinition|DataObject\Objectbrick\Definition|DataObject\Fieldcollection\Definition $class): string
     {
         $returnType = 'mixed';
 
@@ -318,7 +318,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    public function getGetterCodeObjectbrick($brickClass)
+    public function getGetterCodeObjectbrick(DataObject\Objectbrick\Definition $brickClass): string
     {
         $key = $this->getName();
         $code = '';
@@ -354,7 +354,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    public function getSetterCodeObjectbrick($brickClass)
+    public function getSetterCodeObjectbrick(DataObject\Objectbrick\Definition $brickClass): string
     {
         $key = $this->getName();
 
@@ -397,7 +397,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    public function getGetterCodeFieldcollection($fieldcollectionDefinition)
+    public function getGetterCodeFieldcollection(DataObject\Fieldcollection\Definition $fieldcollectionDefinition): string
     {
         $key = $this->getName();
 
@@ -426,7 +426,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    public function getSetterCodeFieldcollection($fieldcollectionDefinition)
+    public function getSetterCodeFieldcollection(DataObject\Fieldcollection\Definition $fieldcollectionDefinition): string
     {
         $key = $this->getName();
         $code = '';
@@ -469,7 +469,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    public function getGetterCodeLocalizedfields($class)
+    public function getGetterCodeLocalizedfields(DataObject\ClassDefinition|DataObject\Objectbrick\Definition|DataObject\Fieldcollection\Definition $class): string
     {
         $key = $this->getName();
         $code = '/**' . "\n";
@@ -496,7 +496,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    public function getSetterCodeLocalizedfields($class)
+    public function getSetterCodeLocalizedfields(DataObject\ClassDefinition|DataObject\Objectbrick\Definition|DataObject\Fieldcollection\Definition $class): string
     {
         $key = $this->getName();
 
@@ -546,7 +546,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    public function getDataFromResource($data, $object = null, $params = [])
+    public function getDataFromResource(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if (is_numeric($data)) {
             return $this->toNumeric($data);
@@ -559,12 +559,12 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $data;
     }
 
-    public function getDataForQueryResource($data, $object = null, $params = [])
+    public function getDataForQueryResource(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         return $this->getDataForResource($data, $object, $params);
     }
 
-    public function getDataForEditmode($data, $object = null, $params = [])
+    public function getDataForEditmode(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if (null === $data) {
             return $this->nullable ? null : 0;
@@ -573,7 +573,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         return round($data / $this->getDecimalFactor(), $this->getDecimalPrecision());
     }
 
-    public function getDataFromEditmode($data, $object = null, $params = [])
+    public function getDataFromEditmode(mixed $data, Concrete $object = null, array $params = []): mixed
     {
         if (is_numeric($data)) {
             return (int) round((round((float) $data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
@@ -586,12 +586,12 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $data;
     }
 
-    public function getVersionPreview($data, $object = null, $params = [])
+    public function getVersionPreview(mixed $data, Concrete $object = null, array $params = []): string
     {
         return $data;
     }
 
-    public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
+    public function checkValidity(mixed $data, bool $omitMandatoryCheck = false, array $params = []): void
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
             throw new ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
@@ -618,34 +618,24 @@ class Money extends DataObject\ClassDefinition\Data implements
         }
     }
 
-    public function getForCsvExport($object, $params = [])
+    public function getForCsvExport(DataObject\Fieldcollection\Data\AbstractData|DataObject\Objectbrick\Data\AbstractData|DataObject\Localizedfield|Concrete $object, array $params = []): string
     {
         $data = $this->getDataFromObjectParam($object, $params);
 
         return (string) $data;
     }
 
-    public function getFromCsvImport($importValue, $object = null, $params = [])
-    {
-        return $this->toNumeric(str_replace(',', '.', $importValue));
-    }
-
-    public function isDiffChangeAllowed($object, $params = [])
+    public function isDiffChangeAllowed(Concrete $object, array $params = []): bool
     {
         return false;
     }
 
-    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    public function getDiffDataForEditMode(mixed $data, Concrete $object = null, array $params = []): ?array
     {
         return [];
     }
 
-    /**
-     * @param mixed $data
-     *
-     * @return bool
-     */
-    public function isEmpty($data)
+    public function isEmpty(mixed $data): bool
     {
         return null === $data || $data === '';
     }

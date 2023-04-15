@@ -1,9 +1,9 @@
 name: Behat
 on:
   push:
-    branches: [ '2.2', '3.0', 'master' ]
+    branches: [ '3.x-next' ]
   pull_request:
-    branches: [ '2.2', '3.0', 'master' ]
+    branches: [ '3.x-next' ]
   release:
     types: [ created ]
   schedule:
@@ -30,8 +30,8 @@ jobs:
 
     strategy:
       matrix:
-        php: [ 8.0, 8.1 ]
-        pimcore: [ ^10.5 ]
+        php: [ 8.1, 8.2 ]
+        pimcore: [ ^11.0 ]
         dependencies: [ highest, lowest ]
         exclude:
           - php: 8.1
@@ -39,7 +39,7 @@ jobs:
 
     services:
       database:
-        image: "mariadb:10.5"
+        image: "mysql:8"
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:

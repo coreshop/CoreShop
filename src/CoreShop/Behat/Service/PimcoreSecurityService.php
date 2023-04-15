@@ -18,29 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Service;
 
-use Pimcore\Model\User;
-use Pimcore\Tool\Session;
-use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
-
-final class PimcoreSecurityService implements PimcoreSecurityServiceInterface
+final class PimcoreSecurityService extends SecurityService
 {
-    public function __construct(
-        private CookieSetterInterface $cookieSetter,
-    ) {
-    }
 
-    public function logIn(User $user): void
-    {
-        Session::invalidate();
-        Session::useSession(static function (AttributeBagInterface $adminSession) use ($user) {
-            $adminSession->set('user', $user);
-        });
-
-        $this->cookieSetter->setCookie(Session::getSessionName(), Session::getSessionId());
-    }
-
-    public function logOut(): void
-    {
-        Session::invalidate();
-    }
 }

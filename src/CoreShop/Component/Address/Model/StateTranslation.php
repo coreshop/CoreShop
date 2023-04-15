@@ -38,7 +38,7 @@ class StateTranslation extends AbstractTranslation implements StateTranslationIn
      */
     protected $name;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

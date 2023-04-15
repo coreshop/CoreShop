@@ -25,10 +25,10 @@ use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
  */
 class PaymentProviderMultiselect extends Multiselect
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopPaymentProviderMultiselect';
+    public string $fieldtype = 'coreShopPaymentProviderMultiselect';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 }

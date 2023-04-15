@@ -60,12 +60,9 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
         $this->hash = Random::generateToken();
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): ?int
     {
-        return $this->hash;
+        return null;
     }
 
     public function setDetails($details)

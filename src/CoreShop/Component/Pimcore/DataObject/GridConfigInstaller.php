@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
-use Pimcore\Model\GridConfig;
+use Pimcore\Bundle\AdminBundle\Model\GridConfig;
 
 class GridConfigInstaller implements GridConfigInstallerInterface
 {

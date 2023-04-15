@@ -117,7 +117,7 @@ final class AbandonedCartsReport implements ReportInterface, ExportReportInterfa
             unset($entry['items']);
         }
 
-        return array_values($data);
+        return $data;
     }
 
     public function getExportReportData(ParameterBag $parameterBag): array

@@ -30,7 +30,7 @@ class ReportsController extends AdminController
     public function getReportDataAction(Request $request): Response
     {
         $reportId = $this->getParameterFromRequest($request, 'report');
-        $reportRegistry = $this->get('coreshop.registry.reports');
+        $reportRegistry = $this->container->get('coreshop.registry.reports');
 
         if (!$reportRegistry->has($reportId)) {
             throw new \InvalidArgumentException(sprintf('Report %s not found', $reportId));
@@ -49,7 +49,7 @@ class ReportsController extends AdminController
     public function exportReportCsvAction(Request $request): Response
     {
         $reportType = $this->getParameterFromRequest($request, 'report');
-        $reportRegistry = $this->get('coreshop.registry.reports');
+        $reportRegistry = $this->container->get('coreshop.registry.reports');
 
         if (!$reportRegistry->has($reportType)) {
             throw new \InvalidArgumentException(sprintf('Report %s not found', $reportType));
@@ -64,7 +64,7 @@ class ReportsController extends AdminController
             $data = $report->getReportData($request->query);
         }
 
-        $csvData = $this->get('serializer')->encode($data, 'csv');
+        $csvData = $this->container->get('serializer')->encode($data, 'csv');
 
         $response = new Response($csvData);
         $disposition = $response->headers->makeDisposition(

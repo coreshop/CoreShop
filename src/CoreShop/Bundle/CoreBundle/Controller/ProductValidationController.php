@@ -98,6 +98,6 @@ class ProductValidationController extends AdminController
 
     protected function getProductRepository(): StackRepositoryInterface
     {
-        return $this->get('coreshop.repository.stack.product');
+        return $this->container->get('coreshop.repository.stack.product');
     }
 }

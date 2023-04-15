@@ -26,8 +26,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
+/**
+ * TOOD: Refactor https://symfony.com/blog/new-in-symfony-5-1-simpler-logout-customization
+ */
+
 /** @psalm-suppress DeprecatedInterface */
-final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
+final class ShopUserLogoutHandler /*implements LogoutSuccessHandlerInterface*/
 {
     public function __construct(
         private RouterInterface $router,

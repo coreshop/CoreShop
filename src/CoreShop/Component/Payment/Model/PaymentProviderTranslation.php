@@ -53,7 +53,7 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
         return $this->getTitle();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

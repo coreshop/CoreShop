@@ -21,7 +21,7 @@ namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory;
 use CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\PriceFormatter;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
-use Pimcore\DataObject\GridColumnConfig\Operator\Factory\OperatorFactoryInterface;
+use Pimcore\Bundle\AdminBundle\DataObject\GridColumnConfig\Operator\Factory\OperatorFactoryInterface;
 
 class PriceFormatterFactory implements OperatorFactoryInterface
 {

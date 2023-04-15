@@ -70,7 +70,7 @@ class StackRepository extends PimcoreRepository implements StackRepositoryInterf
 
     public function forceFind($id, bool $force = true)
     {
-        $instance = DataObject::getById($id, $force);
+        $instance = DataObject::getById($id, ['force' => $force]);
 
         if (null === $instance) {
             return null;

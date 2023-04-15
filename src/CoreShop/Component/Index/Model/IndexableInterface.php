@@ -20,10 +20,7 @@ namespace CoreShop\Component\Index\Model;
 
 interface IndexableInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
+    public function getId(): ?int;
 
     /**
      * @return string

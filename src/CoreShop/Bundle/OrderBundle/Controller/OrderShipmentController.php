@@ -80,7 +80,7 @@ class OrderShipmentController extends PimcoreController
 
                 $event = new GenericEvent($orderItem, $itemToReturn);
 
-                $this->get('event_dispatcher')->dispatch($event, 'coreshop.order.shipment.prepare_ship_able');
+                $this->container->get('event_dispatcher')->dispatch($event, 'coreshop.order.shipment.prepare_ship_able');
 
                 $itemsToReturn[] = $event->getArguments();
             }
@@ -93,7 +93,7 @@ class OrderShipmentController extends PimcoreController
     {
         $orderId = $this->getParameterFromRequest($request, 'id');
 
-        $form = $this->get('form.factory')->createNamed('', OrderShipmentCreationType::class);
+        $form = $this->container->get('form.factory')->createNamed('', OrderShipmentCreationType::class);
 
         $handledForm = $form->handleRequest($request);
 
@@ -102,7 +102,7 @@ class OrderShipmentController extends PimcoreController
                 return $this->viewHandler->handle(
                     [
                         'success' => false,
-                        'message' => $this->get(ErrorSerializer::class)->serializeErrorFromHandledForm($form),
+                        'message' => $this->container->get(ErrorSerializer::class)->serializeErrorFromHandledForm($form),
                     ],
                 );
             }
@@ -190,36 +190,36 @@ class OrderShipmentController extends PimcoreController
 
     protected function getOrderDocumentRenderer(): OrderDocumentRendererInterface
     {
-        return $this->get('coreshop.renderer.order.pdf');
+        return $this->container->get('coreshop.renderer.order.pdf');
     }
 
     protected function getOrderShipmentRepository(): OrderShipmentRepositoryInterface
     {
-        return $this->get('coreshop.repository.order_shipment');
+        return $this->container->get('coreshop.repository.order_shipment');
     }
 
     protected function getProcessableHelper(): ProcessableInterface
     {
-        return $this->get('coreshop.order.shipment.processable');
+        return $this->container->get('coreshop.order.shipment.processable');
     }
 
     protected function getOrderRepository(): PimcoreRepositoryInterface
     {
-        return $this->get('coreshop.repository.order');
+        return $this->container->get('coreshop.repository.order');
     }
 
     protected function getShipmentFactory(): FactoryInterface
     {
-        return $this->get('coreshop.factory.order_shipment');
+        return $this->container->get('coreshop.factory.order_shipment');
     }
 
     protected function getOrderToShipmentTransformer(): OrderDocumentTransformerInterface
     {
-        return $this->get(OrderToShipmentTransformer::class);
+        return $this->container->get(OrderToShipmentTransformer::class);
     }
 
     protected function getStateMachineManager(): StateMachineManager
     {
-        return $this->get('coreshop.state_machine_manager');
+        return $this->container->get('coreshop.state_machine_manager');
     }
 }

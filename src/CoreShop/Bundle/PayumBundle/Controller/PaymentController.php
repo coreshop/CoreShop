@@ -98,7 +98,7 @@ class PaymentController extends AbstractController
 
     protected function getPayum(): Payum
     {
-        return $this->get('payum');
+        return $this->container->get('payum');
     }
 
     private function provideTokenBasedOnPayment(PaymentInterface $payment): TokenInterface

@@ -40,7 +40,7 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
      */
     protected $unitDefinition;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

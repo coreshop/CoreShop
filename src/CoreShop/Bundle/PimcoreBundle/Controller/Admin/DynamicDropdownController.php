@@ -150,6 +150,7 @@ final class DynamicDropdownController extends AdminController
                 }
             } elseif ($child instanceof $fqcn) {
                 $key = $usesI18n ? $child->$source($currentLang) : $child->$source();
+                /** @psalm-suppress PossiblyFalseReference */
                 $options[] = [
                     'value' => $child->getId(),
                     'key' => ltrim($path . $this->separator . $key, $this->separator),

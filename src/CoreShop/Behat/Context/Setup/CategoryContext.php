@@ -75,7 +75,6 @@ final class CategoryContext implements Context
 
         /** @var CategoryInterface $category */
         $category = $this->categoryFactory->createNew();
-
         $category->setKey(File::getValidFilename($categoryName));
         $category->setParent(Folder::getByPath('/'));
         $category->setName($categoryName, 'en');

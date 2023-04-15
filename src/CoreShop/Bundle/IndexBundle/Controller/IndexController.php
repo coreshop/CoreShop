@@ -59,7 +59,7 @@ class IndexController extends ResourceController
         }
 
         foreach ($interpreters as $interpreter) {
-            $class = $this->get('coreshop.registry.index.interpreter')->get($interpreter);
+            $class = $this->container->get('coreshop.registry.index.interpreter')->get($interpreter);
             $localized = in_array(LocalizedInterpreterInterface::class, class_implements($class), true);
             $relation = in_array(RelationInterpreterInterface::class, class_implements($class), true);
 

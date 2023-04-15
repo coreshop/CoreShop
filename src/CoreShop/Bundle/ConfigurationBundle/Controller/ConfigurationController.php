@@ -25,20 +25,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ConfigurationController extends ResourceController
 {
-    public function saveAllAction(Request $request): Response
+    public function saveAllAction(Request $request, ConfigurationServiceInterface $configurationService): Response
     {
         $values = $this->getParameterFromRequest($request, 'values');
         $values = array_htmlspecialchars($values);
 
         foreach ($values as $key => $value) {
-            $this->getConfigurationService()->set($key, $value);
+            $configurationService->set($key, $value);
         }
 
         return $this->viewHandler->handle(['success' => true]);
-    }
-
-    private function getConfigurationService(): ConfigurationServiceInterface
-    {
-        return $this->get(ConfigurationServiceInterface::class);
     }
 }
