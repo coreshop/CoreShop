@@ -1,7 +1,7 @@
 services:
-    _defaults:
-        public: true
+  _defaults:
+    public: true
 
-    coreshop.configuration.service:
-        alias: CoreShop\Component\Configuration\Service\ConfigurationServiceInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Configuration\Service\ConfigurationServiceInterface instead'
+  coreshop.configuration.service:
+    alias: CoreShop\Component\Configuration\Service\ConfigurationServiceInterface
+    deprecated: { package: "coreshop/configuration-bundle",  version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Configuration\Service\ConfigurationServiceInterface instead' }

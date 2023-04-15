@@ -4,12 +4,12 @@ services:
 
     coreshop.theme.resolver.composite:
         alias: CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface instead'
+        deprecated: { package: "coreshop/theme-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface instead' }
 
     coreshop.theme.helper:
         alias: CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface instead'
+        deprecated: { package: "coreshop/theme-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface instead' }
 
     coreshop.theme.resolver:
         alias: CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface instead'
+        deprecated: { package: "coreshop/theme-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface instead' }

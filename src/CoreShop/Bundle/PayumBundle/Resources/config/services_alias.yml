@@ -4,37 +4,37 @@ services:
 
     coreshop.payum_action.resolve_next_route:
         alias: CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction instead'
+        deprecated: { package: "coreshop/payum-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction instead' }
 
     coreshop.payum_action.confirm_order:
         alias: CoreShop\Bundle\PayumBundle\Action\ConfirmOrderAction
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\ConfirmOrderAction instead'
+        deprecated: { package: "coreshop/payum-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\ConfirmOrderAction instead' }
 
     coreshop.payum_action.offline.convert_payment:
         alias: CoreShop\Bundle\PayumBundle\Action\Offline\ConvertPaymentAction
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\Offline\ConvertPaymentAction instead'
+        deprecated: { package: "coreshop/payum-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\Offline\ConvertPaymentAction instead' }
 
     coreshop.payum_action.offine.resolve_next_route:
         alias: CoreShop\Bundle\PayumBundle\Action\Offline\ResolveNextRouteAction
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\Offline\ResolveNextRouteAction instead'
+        deprecated: { package: "coreshop/payum-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\Offline\ResolveNextRouteAction instead' }
 
     coreshop.payum_action.offine.confirm_order:
         alias: CoreShop\Bundle\PayumBundle\Action\Offline\ConfirmOrderAction
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\Offline\ConfirmOrderAction instead'
+        deprecated: { package: "coreshop/payum-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\Offline\ConfirmOrderAction instead' }
 
     coreshop.payum_action.offline.status:
         alias: CoreShop\Bundle\PayumBundle\Action\Offline\StatusAction
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\Offline\StatusAction instead'
+        deprecated: { package: "coreshop/payum-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Action\Offline\StatusAction instead' }
 
     coreshop.factory.payum_get_status:
         alias: CoreShop\Bundle\PayumBundle\Factory\GetStatusFactoryInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Factory\GetStatusFactoryInterface instead'
+        deprecated: { package: "coreshop/payum-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Factory\GetStatusFactoryInterface instead' }
 
     coreshop.factory.payum_resolve_next_route:
         alias: CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactoryInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactoryInterface instead'
+        deprecated: { package: "coreshop/payum-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactoryInterface instead' }
 
     coreshop.factory.payum_confirm_order:
         alias: CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactoryInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactoryInterface instead'
+        deprecated: { package: "coreshop/payum-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactoryInterface instead' }
 

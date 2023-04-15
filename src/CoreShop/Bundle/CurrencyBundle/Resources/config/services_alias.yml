@@ -4,16 +4,16 @@ services:
 
     coreshop.context.currency:
         alias: CoreShop\Component\Currency\Context\CurrencyContextInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Currency\Context\CurrencyContextInterface instead'
+        deprecated: { package: "coreshop/currency-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Currency\Context\CurrencyContextInterface instead' }
 
     coreshop.currency_converter:
         alias: CoreShop\Component\Currency\Converter\CurrencyConverterInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Currency\Converter\CurrencyConverterInterface instead'
+        deprecated: { package: "coreshop/currency-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Currency\Converter\CurrencyConverterInterface instead' }
 
     coreshop.context.currency.cached:
         alias: CoreShop\Component\Currency\Context\CachedCurrencyContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Currency\Context\CachedCurrencyContext instead'
+        deprecated: { package: "coreshop/currency-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Currency\Context\CachedCurrencyContext instead' }
 
     coreshop.context.currency.fixed:
         alias: CoreShop\Component\Currency\Context\FixedCurrencyContext
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Currency\Context\FixedCurrencyContext instead'
+        deprecated: { package: "coreshop/currency-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Currency\Context\FixedCurrencyContext instead' }

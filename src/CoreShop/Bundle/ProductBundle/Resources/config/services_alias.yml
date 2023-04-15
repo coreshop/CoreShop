@@ -4,37 +4,37 @@ services:
 
     coreshop.product.retail_price_calculator:
         alias: CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface instead'
+        deprecated: { package: "coreshop/product-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface instead' }
 
     coreshop.product.discount_price_calculator:
         alias: CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface instead'
+        deprecated: { package: "coreshop/product-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface instead' }
 
     coreshop.product.discount_calculator:
         alias: CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface instead'
+        deprecated: { package: "coreshop/product-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface instead' }
 
     coreshop.product_price_rule.condition.timespan:
         alias: CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker instead'
+        deprecated: { package: "coreshop/product-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker instead' }
 
     coreshop.product_price_rule.action.price:
         alias: CoreShop\Component\Product\Rule\Action\PriceActionProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Rule\Action\PriceActionProcessor instead'
+        deprecated: { package: "coreshop/product-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Rule\Action\PriceActionProcessor instead' }
 
     coreshop.product_price_rule.action.discount_price:
         alias: CoreShop\Component\Product\Rule\Action\DiscountPriceActionProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Rule\Action\DiscountPriceActionProcessor instead'
+        deprecated: { package: "coreshop/product-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Rule\Action\DiscountPriceActionProcessor instead' }
 
     coreshop.product_price_rule.action.discount_amount:
         alias: CoreShop\Component\Product\Rule\Action\DiscountAmountActionProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Rule\Action\DiscountAmountActionProcessor instead'
+        deprecated: { package: "coreshop/product-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Rule\Action\DiscountAmountActionProcessor instead' }
 
     coreshop.product_price_rule.action.discount_percent:
         alias: CoreShop\Component\Product\Rule\Action\DiscountPercentActionProcessor
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Rule\Action\DiscountPercentActionProcessor instead'
+        deprecated: { package: "coreshop/product-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Rule\Action\DiscountPercentActionProcessor instead' }
 
     coreshop.product.price_calculator:
         alias: CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface instead'
+        deprecated: { package: "coreshop/product-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface instead' }
 
