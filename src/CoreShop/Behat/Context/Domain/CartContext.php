@@ -355,6 +355,7 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         Assert::isInstanceOf($cart, OrderInterface::class);
+        Assert::isInstanceOf($cart->getCarrier(), CarrierInterface::class);
 
         Assert::eq(
             $carrier->getId(),

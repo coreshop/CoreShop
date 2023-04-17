@@ -30,4 +30,8 @@ interface ShippableInterface
     public function setWeight(?float $weight);
 
     public function getSubtotal(bool $withTax = true): int;
+
+    public function getTotal(bool $withTax = true): int;
+
+    public function getShipping(bool $withTax = true): int;
 }
