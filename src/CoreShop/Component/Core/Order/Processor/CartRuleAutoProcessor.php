@@ -21,6 +21,7 @@ namespace CoreShop\Component\Core\Order\Processor;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\PriceRuleItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 
@@ -36,6 +37,26 @@ final class CartRuleAutoProcessor implements CartProcessorInterface
     public function process(OrderInterface $cart): void
     {
         $eligibleRules = $this->cartPriceRuleRepository->findNonVoucherRules();
+
+        /**
+         * Remove all Rules to properly re-calculate them later
+         *
+         * We have to remove them again, since the priority and possible
+         * un-combinable rules might be affected and cause other rules
+         * to be valid or invalid.
+         */
+        $existingItems = $cart->getPriceRuleItems()?->getItems() ?? [];
+        foreach ($existingItems as $priceRuleItem) {
+            if (!$priceRuleItem instanceof PriceRuleItemInterface) {
+                continue;
+            }
+
+            if (null !== $priceRuleItem->getVoucherCode()) {
+                continue;
+            }
+
+            $this->cartPriceRuleUnProcessor->unProcess($cart, $priceRuleItem->getCartPriceRule());
+        }
 
         foreach ($eligibleRules as $eligibleRule) {
             if (!$this->cartPriceRuleProcessor->process($cart, $eligibleRule)) {
