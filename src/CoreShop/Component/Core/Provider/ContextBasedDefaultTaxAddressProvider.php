@@ -33,9 +33,9 @@ class ContextBasedDefaultTaxAddressProvider implements DefaultTaxAddressProvider
     public function getAddress(array $context = []): ?AddressInterface
     {
         if (array_key_exists('cart', $context) && $context['cart'] instanceof OrderInterface) {
-            $shippingAddress = $context['cart']->getShippingAddress();
-            if ( $shippingAddress instanceof AddressInterface ) {
-                return $shippingAddress;
+            $invoiceAddress = $context['cart']->getInvoiceAddress();
+            if ( $invoiceAddress instanceof AddressInterface ) {
+                return $invoiceAddress;
             }
         }
 
