@@ -13,6 +13,12 @@
         <field name="description" column="description" nullable="true"/>
         <field name="isVoucherRule" column="isVoucherRule" type="boolean"/>
         <field name="active" column="active" type="boolean"/>
+        <field name="priority" column="priority" type="integer">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
+
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>

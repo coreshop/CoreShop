@@ -94,6 +94,11 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 fieldLabel: t('active'),
                 checked: this.data.active
             }, {
+                xtype: 'numberfield',
+                name: 'priority',
+                fieldLabel: t('priority'),
+                value: this.data.priority
+            }, {
                 xtype: 'checkbox',
                 name: 'isVoucherRule',
                 fieldLabel: t('coreshop_is_voucher_rule'),
