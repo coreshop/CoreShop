@@ -96,6 +96,10 @@ body.pimcore_version_10 .coreshop_nav_icon_quote_create {
     background: url(../img/voucher.svg) center center no-repeat !important;
 }
 
+.coreshop_rule_icon_condition_not_combinable {
+    background: url(../img/not_combinable.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_cart, .coreshop_icon_carts {
     background: url(../img/cart.svg) center center no-repeat !important;
 }

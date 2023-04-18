@@ -154,6 +154,10 @@ services:
         tags:
             - { name: coreshop.cart_price_rule.condition, type: voucher, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\VoucherConfigurationType }
 
+    CoreShop\Component\Order\Cart\Rule\Condition\NotCombinableConditionChecker:
+        tags:
+            - { name: coreshop.cart_price_rule.condition, type: not_combinable, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NotCombinableConfigurationType }
+
     CoreShop\Component\Order\Cart\Rule\Condition\AmountConditionChecker:
         tags:
             - { name: coreshop.cart_price_rule.condition, type: amount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType }

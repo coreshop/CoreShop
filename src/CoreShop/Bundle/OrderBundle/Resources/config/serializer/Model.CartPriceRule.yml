@@ -19,9 +19,17 @@ CoreShop\Component\Order\Model\CartPriceRule:
             expose: true
             type: boolean
             groups: [Detailed]
+        autoRuleNotCombinable:
+            expose: true
+            type: boolean
+            groups: [Detailed]
         active:
             expose: true
             type: boolean
+            groups: [List, Detailed]
+        priority:
+            expose: true
+            type: integer
             groups: [List, Detailed]
         conditions:
             expose: true

@@ -38,6 +38,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurati
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargeAmountConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargePercentConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType;
+use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NotCombinableConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
@@ -116,6 +117,19 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
 
         $this->sharedStorage->set('cart-price-rule', $rule);
+    }
+
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has priority "([^"]+)"$/
+     * @Given /^the (cart rule) has priority "([^"]+)"$/
+     */
+    public function theCartPriceRuleHasPriority(CartPriceRuleInterface $rule, int $priority): void
+    {
+        $rule->setPriority($priority);
+
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
     }
 
     /**
@@ -370,6 +384,29 @@ final class CartPriceRuleContext implements Context
         }
 
         $this->addCondition($rule, $this->createConditionWithForm('products', $configuration));
+    }
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has a condition not combinable with (cart rule "[^"]+")$/
+     * @Given /^the (cart rule) has a condition not combinable with (cart rule "[^"]+")$/
+     * @Given /^the (cart rule) has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
+     * @Given /^the (cart rule "[^"]+") has a condition not combinable with (cart rule "[^"]+") and (cart rule "[^"]+")$/
+     */
+    public function theCartPriceRuleHasANotCombinableCondition(CartPriceRuleInterface $rule, CartPriceRuleInterface $notCombinable, CartPriceRuleInterface $notCombinable2 = null): void
+    {
+        $this->assertConditionForm(NotCombinableConfigurationType::class, 'not_combinable');
+
+        $configuration = [
+            'price_rules' => [
+                $notCombinable->getId(),
+            ],
+        ];
+
+        if (null !== $notCombinable2) {
+            $configuration['price_rules'][] = $notCombinable2->getId();
+        }
+
+        $this->addCondition($rule, $this->createConditionWithForm('not_combinable', $configuration));
     }
 
     /**
