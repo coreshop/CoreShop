@@ -66,7 +66,7 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
                 $cart->setItems($tempItems);
             }
 
-            $items = array_values($cart->getObjectVar('items'));
+            $items = array_values($cart->getObjectVar('items') ?? []);
 
             /**
              * @var OrderItemInterface $item
