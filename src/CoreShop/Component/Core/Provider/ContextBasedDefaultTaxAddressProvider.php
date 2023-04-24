@@ -34,7 +34,7 @@ class ContextBasedDefaultTaxAddressProvider implements DefaultTaxAddressProvider
     {
         if (array_key_exists('cart', $context) && $context['cart'] instanceof OrderInterface) {
             $invoiceAddress = $context['cart']->getInvoiceAddress();
-            if ( $invoiceAddress instanceof AddressInterface ) {
+            if ($invoiceAddress instanceof AddressInterface) {
                 return $invoiceAddress;
             }
         }

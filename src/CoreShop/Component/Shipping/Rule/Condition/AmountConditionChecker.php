@@ -33,8 +33,7 @@ class AmountConditionChecker extends AbstractConditionChecker
 
         if ($total) {
             $totalAmount = $shippable->getTotal($gross) - $shippable->getShipping($gross);
-        }
-        else {
+        } else {
             $totalAmount = $shippable->getSubtotal($gross);
         }
 
