@@ -26,7 +26,6 @@ use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
-use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
 final class CartManager implements CartManagerInterface, StorageListManagerInterface
@@ -34,7 +33,6 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
     public function __construct(
         private CartProcessorInterface $cartProcessor,
         private FolderCreationServiceInterface $folderCreationService,
-        private Connection $connection,
     ) {
     }
 
@@ -52,50 +50,50 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
             'path' => 'cart',
         ]);
 
-        $this->connection->transactional(function () use ($cart, $cartsFolder) {
-            VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
+        VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
+            if (!$cart->getId()) {
                 $tempItems = $cart->getItems();
-
-                if (!$cart->getId()) {
-                    $cart->setItems([]);
-
-                    /**
-                     * @psalm-suppress DocblockTypeContradiction
-                     */
-                    if (!$cart->getParent()) {
-                        $cart->setParent($cartsFolder);
-                    }
-
-                    $cart->save();
-                }
+                $cart->setItems([]);
 
                 /**
-                 * @var OrderItemInterface $item
+                 * @psalm-suppress DocblockTypeContradiction
                  */
-                foreach ($tempItems as $index => $item) {
-                    $item->setParent(
-                        $this->folderCreationService->createFolderForResource(
-                            $item,
-                            ['prefix' => $cart->getFullPath()],
-                        ),
-                    );
-                    $item->setPublished(true);
-                    $item->setKey($index + 1);
-                    $item->save();
-                }
-
-                $cart->setItems($tempItems);
-                $this->cartProcessor->process($cart);
-
-                /**
-                 * @var OrderItemInterface $cartItem
-                 */
-                foreach ($cart->getItems() as $cartItem) {
-                    $cartItem->save();
+                if (!$cart->getParent()) {
+                    $cart->setParent($cartsFolder);
                 }
 
                 $cart->save();
-            }, false);
-        });
+                $cart->setItems($tempItems);
+            }
+
+            $items = array_values($cart->getObjectVar('items') ?? []);
+
+            /**
+             * @var OrderItemInterface $item
+             */
+            foreach ($items as $index => $item) {
+                $item->setParent(
+                    $this->folderCreationService->createFolderForResource(
+                        $item,
+                        ['prefix' => $cart->getFullPath()],
+                    ),
+                );
+                //$item->setPath($cart->getFullPath());
+                $item->setPublished(true);
+                $item->setKey((string)((int)$index + 1));
+                $item->save();
+            }
+
+            $this->cartProcessor->process($cart);
+
+            /**
+             * @var OrderItemInterface $cartItem
+             */
+            foreach ($cart->getItems() as $cartItem) {
+                $cartItem->save();
+            }
+
+            $cart->save();
+        }, false);
     }
 }
