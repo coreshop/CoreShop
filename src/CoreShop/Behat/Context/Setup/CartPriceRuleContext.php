@@ -119,7 +119,6 @@ final class CartPriceRuleContext implements Context
         $this->sharedStorage->set('cart-price-rule', $rule);
     }
 
-
     /**
      * @Given /^the (cart rule "[^"]+") has priority "([^"]+)"$/
      * @Given /^the (cart rule) has priority "([^"]+)"$/
