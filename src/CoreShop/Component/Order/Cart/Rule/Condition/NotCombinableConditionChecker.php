@@ -29,7 +29,7 @@ class NotCombinableConditionChecker extends AbstractConditionChecker
         OrderInterface $cart,
         CartPriceRuleInterface $cartPriceRule,
         ?CartPriceRuleVoucherCodeInterface $voucher,
-        array $configuration
+        array $configuration,
     ): bool {
         if (!$cart->hasPriceRules()) {
             return true;
