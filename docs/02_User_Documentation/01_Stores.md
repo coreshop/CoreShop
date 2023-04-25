@@ -8,7 +8,7 @@ By default a store is connected with a pimcore Site.
 This is CoreShops default behaviour. One store for your default page, which is also your default store.
 If you have multiple Domains it's possible to add a store to each domain.
 
-> **Tip:** Learn more about pimcore multi sites: [https://www.pimcore.org/docs/latest/MVC/Routing_and_URLs/Working_with_Sites.html](https://www.pimcore.org/docs/latest/MVC/Routing_and_URLs/Working_with_Sites.html)
+> **Tip:** Learn more about pimcore multi sites: [Pimcore Sites](https://pimcore.com/docs/pimcore/current/Development_Documentation/MVC/Routing_and_URLs/Working_with_Sites.html)
 
 ## Custom Store Locator
 Sometimes you have just one site installation but you want do use different Stores.

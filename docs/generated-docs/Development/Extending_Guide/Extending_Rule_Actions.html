@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>       <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>          <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>          <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Extending Rule Actions - CoreShop 3.0.x - Pimcore eCommerce - Documentation</title>
+    <meta name="description" content="CoreShop 3.0.x - Pimcore eCommerce" />
+    <meta name="author" content="">
+    <meta charset="UTF-8">
+    <link rel="icon" href="../../themes/pimcore/img/favicon.png" type="image/x-icon">
+    <!-- Mobile -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:100,200,300,400,500,600,700,800,900' rel='stylesheet' type='text/css'>
+    <!-- CSS -->
+    <link href='../../themes/pimcore/css/pimcore-core.min.css' rel='stylesheet' type='text/css'>
+            <!-- Tipue Search -->
+        <link href="../../tipuesearch/tipuesearch.css" rel="stylesheet">
+    
+    <!--[if lt IE 9]>
+    <script src="../../themes/pimcore/js/source/html5shiv-3.7.3.min.js"></script>
+    <![endif]-->
+</head>
+<body class=" ">
+    <div class="Columns content">
+    <aside class="Columns__left Collapsible">
+        <button type="button" class="Button Collapsible__trigger">
+            <span class="Collapsible__trigger--bar"></span>
+            <span class="Collapsible__trigger--bar"></span>
+            <span class="Collapsible__trigger--bar"></span>
+        </button>
+
+        <a class="Brand" href="../../index.html">
+    <span class="Brand__logo">CoreShop 3.0.x - Pimcore eCommerce - Documentation</span>
+
+    
+    </a>
+
+    <div class="Search">
+        <svg class="Search__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 451 451">
+            <path d="M447.05 428l-109.6-109.6c29.4-33.8 47.2-77.9 47.2-126.1C384.65 86.2 298.35 0 192.35 0 86.25 0 .05 86.3.05 192.3s86.3 192.3 192.3 192.3c48.2 0 92.3-17.8 126.1-47.2L428.05 447c2.6 2.6 6.1 4 9.5 4s6.9-1.3 9.5-4c5.2-5.2 5.2-13.8 0-19zM26.95 192.3c0-91.2 74.2-165.3 165.3-165.3 91.2 0 165.3 74.2 165.3 165.3s-74.1 165.4-165.3 165.4c-91.1 0-165.3-74.2-165.3-165.4z"/>
+        </svg>
+        <input type="search" id="tipue_search_input" class="Search__field" placeholder="Search..." autocomplete="on"
+               results=25 autosave=text_search>
+    </div>
+
+        <div class="Collapsible__content">
+            <!-- Navigation -->
+            <ul class='Nav'><li class='Nav__item  has-children'><a href="../../Getting_Started/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Getting Started</a><ul class='Nav'><li class='Nav__item '><a href="../../Getting_Started/Installation.html">Installation</a></li><li class='Nav__item '><a href="../../Getting_Started/Architecture_Overview.html">Architecture Overview</a></li><li class='Nav__item '><a href="../../Getting_Started/Upgrade_Notes.html">Upgrade Notes</a></li><li class='Nav__item '><a href="../../Getting_Started/Difference_to_ecommerce_Framework.html">Difference to ecommerce Framework</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Bundles/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Bundles</a><ul class='Nav'><li class='Nav__item '><a href="../../Bundles/Address_Bundle.html">Address Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Configuration_Bundle.html">Configuration Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Core_Bundle.html">Core Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Currency_Bundle.html">Currency Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Customer_Bundle.html">Customer Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Fixture_Bundle.html">Fixture Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Frontend_Bundle.html">Frontend Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Index_Bundle.html">Index Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Inventory_Bundle.html">Inventory Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Locale_Bundle.html">Locale Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Menu_Bundle.html">Menu Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Messenger_Bundle.html">Messenger Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Money_Bundle.html">Money Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Notification_Bundle.html">Notification Bundle</a></li><li class='Nav__item '><a href="../../Bundles/OptimisticEntityLock_Bundle.html">OptimisticEntityLock Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Order_Bundle.html">Order Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Payment_Bundle.html">Payment Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Payum_Bundle.html">Payum Bundle</a></li><li class='Nav__item '><a href="../../Bundles/PayumPayment_Bundle.html">PayumPayment Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Pimcore_Bundle.html">Pimcore Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Product_Bundle.html">Product Bundle</a></li><li class='Nav__item '><a href="../../Bundles/ProductQuantityPriceRules_Bundle.html">ProductQuantityPriceRules Bundle</a></li><li class='Nav__item  has-children'><a href="../../Bundles/Resource_Bundle/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Resource Bundle</a><ul class='Nav'><li class='Nav__item '><a href="../../Bundles/Resource_Bundle/CustomEntities.html">CustomEntities</a></li><li class='Nav__item '><a href="../../Bundles/Resource_Bundle/PimcoreEntities.html">PimcoreEntities</a></li><li class='Nav__item '><a href="../../Bundles/Resource_Bundle/Installation.html">Installation</a></li></ul></li><li class='Nav__item '><a href="../../Bundles/Rule_Bundle.html">Rule Bundle</a></li><li class='Nav__item '><a href="../../Bundles/SEO_Bundle.html">SEO Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Sequence_Bundle.html">Sequence Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Shipping_Bundle.html">Shipping Bundle</a></li><li class='Nav__item '><a href="../../Bundles/StorageList_Bundle.html">StorageList Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Store_Bundle.html">Store Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Taxation_Bundle.html">Taxation Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Theme_Bundle.html">Theme Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Tracking_Bundle.html">Tracking Bundle</a></li><li class='Nav__item '><a href="../../Bundles/User_Bundle.html">User Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Variant_Bundle.html">Variant Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Wishlist_Bundle.html">Wishlist Bundle</a></li><li class='Nav__item '><a href="../../Bundles/Workflow_Bundle.html">Workflow Bundle</a></li></ul></li><li class='Nav__item  has-children'><a href="../../User_Documentation/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>User Documentation</a><ul class='Nav'><li class='Nav__item '><a href="../../User_Documentation/Stores.html">Stores</a></li><li class='Nav__item '><a href="../../User_Documentation/Settings.html">Settings</a></li><li class='Nav__item  has-children'><a href="../../User_Documentation/Price_Rules/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Price Rules</a><ul class='Nav'><li class='Nav__item '><a href="../../User_Documentation/Price_Rules/Cart_Price_Rules.html">Cart Price Rules</a></li><li class='Nav__item '><a href="../../User_Documentation/Price_Rules/Product_Price_Rules.html">Product Price Rules</a></li><li class='Nav__item '><a href="../../User_Documentation/Price_Rules/Specific_Price_Rules.html">Specific Price Rules</a></li><li class='Nav__item '><a href="../../User_Documentation/Price_Rules/Quantity_Price_Rules.html">Quantity Price Rules</a></li><li class='Nav__item '><a href="../../User_Documentation/Price_Rules/Vouchers.html">Vouchers</a></li><li class='Nav__item '><a href="../../User_Documentation/Price_Rules/Actions.html">Actions</a></li><li class='Nav__item '><a href="../../User_Documentation/Price_Rules/Conditions.html">Conditions</a></li></ul></li><li class='Nav__item  has-children'><a href="../../User_Documentation/Localization/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Localization</a><ul class='Nav'><li class='Nav__item '><a href="../../User_Documentation/Localization/Countries.html">Countries</a></li><li class='Nav__item '><a href="../../User_Documentation/Localization/States.html">States</a></li><li class='Nav__item '><a href="../../User_Documentation/Localization/Zones.html">Zones</a></li><li class='Nav__item '><a href="../../User_Documentation/Localization/Currencies.html">Currencies</a></li><li class='Nav__item '><a href="../../User_Documentation/Localization/Taxes.html">Taxes</a></li><li class='Nav__item '><a href="../../User_Documentation/Localization/TaxRules.html">TaxRules</a></li></ul></li><li class='Nav__item  has-children'><a href="../../User_Documentation/Shipping/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Shipping</a><ul class='Nav'><li class='Nav__item '><a href="../../User_Documentation/Shipping/Carriers.html">Carriers</a></li><li class='Nav__item '><a href="../../User_Documentation/Shipping/Shipping_Rules.html">Shipping Rules</a></li></ul></li><li class='Nav__item '><a href="../../User_Documentation/Cart/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Cart</a><ul class='Nav'></ul></li><li class='Nav__item  has-children'><a href="../../User_Documentation/Order/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Order</a><ul class='Nav'><li class='Nav__item '><a href="../../User_Documentation/Order/Orders.html">Orders</a></li><li class='Nav__item '><a href="../../User_Documentation/Order/Order_Detail.html">Order Detail</a></li><li class='Nav__item '><a href="../../User_Documentation/Order/Order_Workflow.html">Order Workflow</a></li><li class='Nav__item '><a href="../../User_Documentation/Order/Order_Comments.html">Order Comments</a></li></ul></li><li class='Nav__item  has-children'><a href="../../User_Documentation/Catalog/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Catalog</a><ul class='Nav'><li class='Nav__item '><a href="../../User_Documentation/Catalog/Products.html">Products</a></li><li class='Nav__item '><a href="../../User_Documentation/Catalog/Product_Variants.html">Product Variants</a></li><li class='Nav__item '><a href="../../User_Documentation/Catalog/Categories.html">Categories</a></li></ul></li><li class='Nav__item '><a href="../../User_Documentation/Geo_IP.html">Geo IP</a></li><li class='Nav__item '><a href="../../User_Documentation/Inventory/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Inventory</a><ul class='Nav'></ul></li><li class='Nav__item  has-children'><a href="../../User_Documentation/Reports/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Reports</a><ul class='Nav'><li class='Nav__item '><a href="../../User_Documentation/Reports/Sales.html">Sales</a></li><li class='Nav__item '><a href="../../User_Documentation/Reports/Carts.html">Carts</a></li><li class='Nav__item '><a href="../../User_Documentation/Reports/Abandoned_Carts.html">Abandoned Carts</a></li><li class='Nav__item '><a href="../../User_Documentation/Reports/Products.html">Products</a></li><li class='Nav__item '><a href="../../User_Documentation/Reports/Categories.html">Categories</a></li><li class='Nav__item '><a href="../../User_Documentation/Reports/Customers.html">Customers</a></li><li class='Nav__item '><a href="../../User_Documentation/Reports/Carrier_Distribution.html">Carrier Distribution</a></li><li class='Nav__item '><a href="../../User_Documentation/Reports/Payment_Distribution.html">Payment Distribution</a></li><li class='Nav__item '><a href="../../User_Documentation/Reports/Vouchers.html">Vouchers</a></li></ul></li><li class='Nav__item '><a href="../../User_Documentation/Automation/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Automation</a><ul class='Nav'></ul></li></ul></li><li class='Nav__item Nav__item--open has-children'><a href="../../Development/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Development</a><ul class='Nav'><li class='Nav__item Nav__item--open has-children'><a href="../../Development/Extending_Guide/Extend_CoreShop_Resources.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Extending Guide</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Extending_Guide/Extend_CoreShop_Resources.html">Extend CoreShop Resources</a></li><li class='Nav__item '><a href="../../Development/Extending_Guide/Extend_CoreShop_Forms.html">Extend CoreShop Forms</a></li><li class='Nav__item '><a href="../../Development/Extending_Guide/Extend_CoreShop_DataObjects.html">Extend CoreShop DataObjects</a></li><li class='Nav__item Nav__item--active'><a href="../../Development/Extending_Guide/Extending_Rule_Actions.html">Extending Rule Actions</a></li><li class='Nav__item '><a href="../../Development/Extending_Guide/Extending_Rule_Conditions.html">Extending Rule Conditions</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Localization/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Localization</a><ul class='Nav'><li class='Nav__item  has-children'><a href="../../Development/Localization/Currencies/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Currencies</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Localization/Currencies/CRUD.html">CRUD</a></li><li class='Nav__item '><a href="../../Development/Localization/Currencies/Context.html">Context</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Localization/Countries/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Countries</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Localization/Countries/CRUD.html">CRUD</a></li><li class='Nav__item '><a href="../../Development/Localization/Countries/Context.html">Context</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Localization/States/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>States</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Localization/States/CRUD.html">CRUD</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Localization/Zones/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Zones</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Localization/Zones/CRUD.html">CRUD</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Localization/Taxes/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Taxes</a><ul class='Nav'><li class='Nav__item  has-children'><a href="../../Development/Localization/Taxes/Tax_Rate/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Tax Rate</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Localization/Taxes/Tax_Rate/CRUD.html">CRUD</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Localization/Taxes/Tax_Rule/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Tax Rule</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Localization/Taxes/Tax_Rule/CRUD.html">CRUD</a></li><li class='Nav__item '><a href="../../Development/Localization/Taxes/Tax_Rule/Tax_Factory.html">Tax Factory</a></li></ul></li></ul></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Products/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Products</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Products/CRUD.html">CRUD</a></li><li class='Nav__item '><a href="../../Development/Products/Price_Calculation.html">Price Calculation</a></li><li class='Nav__item '><a href="../../Development/Products/Price_Rules/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Price Rules</a><ul class='Nav'></ul></li><li class='Nav__item '><a href="../../Development/Products/Configuration.html">Configuration</a></li><li class='Nav__item '><a href="../../Development/Products/Multiple_Product_DataObjects.html">Multiple Product DataObjects</a></li><li class='Nav__item '><a href="../../Development/Products/Units.html">Units</a></li><li class='Nav__item '><a href="../../Development/Products/Unit_Definitions.html">Unit Definitions</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Cart/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Cart</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Cart/CRUD.html">CRUD</a></li><li class='Nav__item '><a href="../../Development/Cart/Cart_Manager.html">Cart Manager</a></li><li class='Nav__item '><a href="../../Development/Cart/Cart_Modifier.html">Cart Modifier</a></li><li class='Nav__item '><a href="../../Development/Cart/Cart_Processor.html">Cart Processor</a></li><li class='Nav__item '><a href="../../Development/Cart/Commands.html">Commands</a></li><li class='Nav__item '><a href="../../Development/Cart/Context.html">Context</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Checkout/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Checkout</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Checkout/Checkout_Manager.html">Checkout Manager</a></li><li class='Nav__item '><a href="../../Development/Checkout/Checkout_Step.html">Checkout Step</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Order/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Order</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Order/Order_Creation.html">Order Creation</a></li><li class='Nav__item '><a href="../../Development/Order/Transformer.html">Transformer</a></li><li class='Nav__item '><a href="../../Development/Order/Order_Workflow.html">Order Workflow</a></li><li class='Nav__item  has-children'><a href="../../Development/Order/Invoice/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Invoice</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Order/Invoice/Invoice_Creation.html">Invoice Creation</a></li></ul></li><li class='Nav__item '><a href="../../Development/Order/Purchasable.html">Purchasable</a></li><li class='Nav__item  has-children'><a href="../../Development/Order/Shipment/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Shipment</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Order/Shipment/Shipment_Creation.html">Shipment Creation</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Order/OrderList/Filter.html" class="folder"><i class="Nav__arrow">&nbsp;</i>OrderList</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Order/OrderList/Filter.html">Filter</a></li><li class='Nav__item '><a href="../../Development/Order/OrderList/Action.html">Action</a></li></ul></li><li class='Nav__item '><a href="../../Development/Order/TemplateHelper.html">TemplateHelper</a></li><li class='Nav__item '><a href="../../Development/Order/AdditionalData.html">AdditionalData</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Shipping/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Shipping</a><ul class='Nav'><li class='Nav__item  has-children'><a href="../../Development/Shipping/Carrier/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Carrier</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Shipping/Carrier/CRUD.html">CRUD</a></li><li class='Nav__item '><a href="../../Development/Shipping/Carrier/Carrier_Discovery.html">Carrier Discovery</a></li><li class='Nav__item '><a href="../../Development/Shipping/Carrier/Price_Calculation.html">Price Calculation</a></li></ul></li><li class='Nav__item '><a href="../../Development/Shipping/Shipping_Rules/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Shipping Rules</a><ul class='Nav'></ul></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Index_and_Filters/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Index and Filters</a><ul class='Nav'><li class='Nav__item  has-children'><a href="../../Development/Index_and_Filters/Index/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Index</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Index_and_Filters/Index/Interpreter.html">Interpreter</a></li><li class='Nav__item '><a href="../../Development/Index_and_Filters/Index/Extension.html">Extension</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Index_and_Filters/Filter/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Filter</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Index_and_Filters/Filter/Custom_Filter.html">Custom Filter</a></li></ul></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Notification_Rules/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Notification Rules</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Notification_Rules/Custom_Actions.html">Custom Actions</a></li><li class='Nav__item '><a href="../../Development/Notification_Rules/Custom_Conditions.html">Custom Conditions</a></li><li class='Nav__item '><a href="../../Development/Notification_Rules/Custom_Types.html">Custom Types</a></li><li class='Nav__item '><a href="../../Development/Notification_Rules/Triggering.html">Triggering</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Payment/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Payment</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Payment/Payment_Provider.html">Payment Provider</a></li><li class='Nav__item '><a href="../../Development/Payment/Omnipay_Bridge.html">Omnipay Bridge</a></li><li class='Nav__item '><a href="../../Development/Payment/Payum_Providers.html">Payum Providers</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Stores/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Stores</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Stores/CRUD.html">CRUD</a></li><li class='Nav__item '><a href="../../Development/Stores/Context.html">Context</a></li><li class='Nav__item '><a href="../../Development/Stores/Theme.html">Theme</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/Customers/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Customers</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Customers/CRUD.html">CRUD</a></li><li class='Nav__item '><a href="../../Development/Customers/Context.html">Context</a></li><li class='Nav__item '><a href="../../Development/Customers/Customer_Manager.html">Customer Manager</a></li><li class='Nav__item '><a href="../../Development/Customers/Registration_Types.html">Registration Types</a></li><li class='Nav__item '><a href="../../Development/Customers/Company_Extension.html">Company Extension</a></li></ul></li><li class='Nav__item '><a href="../../Development/Ecommerce_Tracking/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Ecommerce Tracking</a><ul class='Nav'></ul></li><li class='Nav__item '><a href="../../Development/Events/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Events</a><ul class='Nav'></ul></li><li class='Nav__item  has-children'><a href="../../Development/Store_Front/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Store Front</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/Store_Front/Controllers.html">Controllers</a></li></ul></li><li class='Nav__item  has-children'><a href="../../Development/State_Machine/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>State Machine</a><ul class='Nav'><li class='Nav__item '><a href="../../Development/State_Machine/Available_Workflows.html">Available Workflows</a></li><li class='Nav__item '><a href="../../Development/State_Machine/Create_Callbacks.html">Create Callbacks</a></li><li class='Nav__item '><a href="../../Development/State_Machine/Things_To_Know.html">Things To Know</a></li><li class='Nav__item '><a href="../../Development/State_Machine/Extend_Workflows.html">Extend Workflows</a></li></ul></li><li class='Nav__item '><a href="../../Development/Inventory/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Inventory</a><ul class='Nav'></ul></li><li class='Nav__item '><a href="../../Development/SEO/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>SEO</a><ul class='Nav'></ul></li><li class='Nav__item '><a href="../../Development/Currency_Fractions/index.html" class="folder"><i class="Nav__arrow">&nbsp;</i>Currency Fractions</a><ul class='Nav'></ul></li></ul></li></ul>
+            
+            <div class="Links">
+                                    <hr/>
+                                            <a href="https://www.coreshop.org" target="_blank">Website</a>
+                        <br />
+                                            <a href="https://github.com/coreshop/CoreShop" target="_blank">Github</a>
+                        <br />
+                                    
+                
+                
+
+                <hr>
+                
+            </div>
+        </div>
+    </aside>
+    <div class="Columns__right ">
+        <div class="Columns__right__content">
+            <div class="doc_content">
+                <article class="Page">
+
+    <div class="Page__header">
+        <p class="breadcrumbs">
+            <a href="../../Development/index.html">Development</a> <svg class="Page__header--separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175"><path d="M360.73 229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1 0s-5.3 13.8 0 19.1l215.5 215.5-215.5 215.5c-5.3 5.3-5.3 13.8 0 19.1 2.6 2.6 6.1 4 9.5 4 3.4 0 6.9-1.3 9.5-4l225.1-225.1c5.3-5.2 5.3-13.8.1-19z"/></svg> <a href="../../Development/Extending_Guide/Extend_CoreShop_Resources.html">Extending Guide</a> <svg class="Page__header--separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175"><path d="M360.73 229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1 0s-5.3 13.8 0 19.1l215.5 215.5-215.5 215.5c-5.3 5.3-5.3 13.8 0 19.1 2.6 2.6 6.1 4 9.5 4 3.4 0 6.9-1.3 9.5-4l225.1-225.1c5.3-5.2 5.3-13.8.1-19z"/></svg> <a href="../../Development/Extending_Guide/Extending_Rule_Actions.html">Extending Rule Actions</a>        </p>
+
+            </div>
+
+    <div class="action-box">
+                    <span class="edit_on">
+        <a href="https://github.com/coreshop/CoreShop/edit/master/doc/03_Development/01_Extending_Guide/04_Extending_Rule_Actions.md" target="_blank">Edit on GitHub</a>
+    </span>
+    </div>
+
+    <div class="s-content">
+        <h1 id="page_Custom-Price-Rule-Shipping-Rule-Notification-Rule-Actions">Custom Price-Rule/Shipping-Rule/Notification-Rule Actions</h1>
+<p>Adding Price-, Shipping- or Notification-Rule Actions is the same for all of these types. Their only difference is the
+tag you use and Interface you need to implement for them.</p>
+<table>
+<thead>
+<tr>
+<th>Action Type</th>
+<th>Tag</th>
+<th>Interface</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cart Price Rule</td>
+<td>coreshop.cart_price_rule.action</td>
+<td><a href="https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Cart/Rule/Action/CartPriceRuleActionProcessorInterface.php" class="Link--external"><code>CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface</code></a></td>
+</tr>
+<tr>
+<td>Product Price Rule</td>
+<td>coreshop.product_price_rule.action</td>
+<td><a href="https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Rule/Action/ProductPriceActionProcessorInterface.php" class="Link--external"><code>CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface</code></a></td>
+</tr>
+<tr>
+<td>Product Specific Price</td>
+<td>coreshop.product_specific_price_rule.action</td>
+<td><a href="https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Rule/Action/ProductPriceActionProcessorInterface.php" class="Link--external"><code>CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface</code></a></td>
+</tr>
+<tr>
+<td>Shipping Rule</td>
+<td>coreshop.shipping_rule.action</td>
+<td><a href="https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Shipping/Rule/Action/CarrierPriceActionProcessorInterface.php" class="Link--external"><code>CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface</code></a></td>
+</tr>
+<tr>
+<td>Notification Rule</td>
+<td>coreshop.notification_rule.action</td>
+<td><a href="https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Notification/Rule/Action/NotificationRuleProcessorInterface.php" class="Link--external"><code>CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="page_Example-Adding-a-new-Action">Example Adding a new Action</h2>
+<p>Now, lets add a new Action for Product Price Rules.</p>
+<p>To do so, we first need to create a new class and implement the interface listed in the table above. For Product Price Rules, we need to use
+<a href="https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Rule/Action/ProductPriceActionProcessorInterface.php" class="Link--external"><code>CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface</code></a></p>
+<pre><code class="language-php">//AppBundle/CoreShop/CustomAction.php
+namespace AppBundle\CoreShop;
+
+final class CustomAction implements \CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface
+{
+    public function getPrice($subject, array $context, array $configuration): int 
+    {
+        //If your action gives the product a new Price, put your calculation here
+
+        return $configuration['some_value'];
+    }
+}
+</code></pre>
+<p>We also need a FormType for the actions configurations:</p>
+<pre><code class="language-php">//AppBundle/Form/Type/CustomActionType.php
+namespace AppBundle\Form\Type;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
+final class CustomActionType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            -&gt;add('some_value', TextType::class)
+        ;
+    }
+}
+</code></pre>
+<p>With configuration, comes a Javascript file as well:</p>
+<pre><code class="language-javascript">//AppBundle/Resources/public/pimcore/js/custom_action.js
+
+pimcore.registerNS('coreshop.product.pricerule.actions.custom');
+coreshop.product.pricerule.actions.custom = Class.create(coreshop.rules.actions.abstract, {
+
+    type: 'custom',
+
+    getForm: function () {
+        var some_value = 0;
+        var me = this;
+
+        if (this.data) {
+            some_value = this.data.some_value / 100;
+        }
+
+        var some_valueField = new Ext.form.NumberField({
+            fieldLabel: t('custom'),
+            name: 'some_value',
+            value: some_value,
+            decimalPrecision: 2
+        });
+
+        this.form = new Ext.form.Panel({
+            items: [
+                some_valueField
+            ]
+        });
+
+        return this.form;
+    }
+});
+
+</code></pre>
+<p>Don't forget to run the following command afterwards to deploy it if needed. If you're using the latest symfony structure, omit the <code>web</code>.</p>
+<pre><code>bin/console assets:install web
+</code></pre>
+<h2 id="page_Registering-the-Custom-Action-to-the-Container-and-load-the-Javascript-File">Registering the Custom Action to the Container and load the Javascript File</h2>
+<p>We now need to create our Service Definition for our Custom Action:</p>
+<pre><code class="language-yaml">app.product_price_rule.custom:
+    class: AppBundle\CoreShop\CustomAction
+    tags:
+      - { name: coreshop.product_price_rule.action, type: custom, form-type: AppBundle\Form\Type\CustomActionType }
+</code></pre>
+<p>and add this to your config.yml:</p>
+<pre><code class="language-yaml">core_shop_product:
+    pimcore_admin:
+        js:
+            custom_action: '/bundles/app/pimcore/js/custom_action.js'
+</code></pre>
+    </div>
+
+        <nav>
+        <ul class="Pager">
+            <li class=Pager--prev><a href="../../Development/Extending_Guide/Extend_CoreShop_DataObjects.html">Previous</a></li>            <li class=Pager--next><a href="../../Development/Extending_Guide/Extending_Rule_Conditions.html">Next</a></li>        </ul>
+    </nav>
+    
+
+</article>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75356862-4', '');
+    ga('send', 'pageview');
+</script>
+
+    <!-- JS -->
+    <script src="../../themes/pimcore/js/build/pimcore.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script src="https://cdn.jsdelivr.net/combine/npm/lightgallery,npm/lg-autoplay,npm/lg-fullscreen,npm/lg-hash,npm/lg-pager,npm/lg-share,npm/lg-thumbnail,npm/lg-video,npm/lg-zoom" />
+    <link type="text/css" rel="stylesheet" href="https://sachinchoolur.github.io/lightGallery/lightgallery/css/lightgallery.css" />
+
+
+    <style>
+        .smallimage { width: 50% }
+    </style>
+
+    <script>
+
+        $(document).ready(function() {
+            var divElement = document.querySelector(".lightbox1");
+            console.log(divElement);
+            var imageElement = document.querySelector(".lightbox1 + p > img");
+            console.log(imageElement);
+            console.log(imageElement.src);
+
+            divElement.innerHTML = '<a href="' + imageElement.src + '"><img class="smallimage" src="' + imageElement.src + '" /></a>';
+            imageElement.remove();
+
+            $(".lightbox1").lightGallery();
+        });
+
+    </script>
+
+
+            <!-- Tipue Search -->
+        <script type="text/javascript" src="../../tipuesearch/tipuesearch.js"></script>
+
+        <script>
+            window.onunload = function(){}; // force $(document).ready to be called on back/forward navigation in firefox
+            $(function() {
+                tipuesearch({
+                    'base_url': '../../',
+                    'showURL': false
+                });
+            });
+        </script>
+    
+</body>
+</html>

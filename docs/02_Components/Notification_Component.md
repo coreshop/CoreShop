@@ -1,3 +1,0 @@
-# CoreShop Notification Component
-
-TBD
