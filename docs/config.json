@@ -8,7 +8,7 @@
     "processor": "",
     "ignore": {
         "files": ["generate-api.sh", "generate-docs.sh", "generate-docs-local.sh", "config.json", "composer.json", "composer.lock"],
-        "folders": ["vendor", "themes", "generated_docs", "img"]
+        "folders": ["vendor", "themes", "generated_docs"]
     },
     "timezone": "Europe/Vienna",
     "live": {
