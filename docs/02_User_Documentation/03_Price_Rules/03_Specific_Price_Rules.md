@@ -1,7 +1,6 @@
-# CoreShop Specific Price Rules
+# CoreShop Specific Price Rules Documentation
 
-Specific Prices are basically the same as Product Price Rules, but are configured directly on the
-product and therefore are only applied on that product.
+Specific price rules in CoreShop provide a flexible way to create targeted discounts and special pricing for products in your e-commerce store built on the Pimcore platform. These rules apply directly to individual products or variants and can be based on customer groups, currencies, or countries. This documentation will guide you through creating and managing specific price rules in CoreShop.
 
 ![Specific Price Rules](img/specific-price-rules.png)
 

@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\Slug;
 
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Data\UrlSlug;
 use Pimcore\Model\Site;
 use Pimcore\Tool;
@@ -41,7 +43,10 @@ class DataObjectSlugGenerator implements DataObjectSlugGeneratorInterface
                 new UrlSlug($fallbackSlug, 0),
             ];
             $actualSlugs = [];
-            $existingSlugs = $sluggable->getSlug($language);
+            $existingSlugs = InheritanceHelper::useInheritedValues(
+                fn () => $sluggable->getSlug($language),
+                false,
+            );
 
             foreach ($sites as $site) {
                 $siteSlug = $this->generator->generateSlugsForSite($sluggable, $language, $site);
@@ -61,11 +66,24 @@ class DataObjectSlugGenerator implements DataObjectSlugGeneratorInterface
                         if ($existingSlug->getSlug() === $newSlug->getSlug()) {
                             $actualSlugs[] = $existingSlug;
                         } else {
-                            /**
-                             * @psalm-suppress InternalMethod
-                             */
-                            $newSlug->setPreviousSlug($existingSlug->getSlug());
-                            $actualSlugs[] = $newSlug;
+                            // $existingSlug is the slug to be saved from backend
+                            $dbSlug = null;
+                            if ($sluggable instanceof Concrete) {
+                                /** @psalm-suppress InternalMethod */
+                                $dbSlug = $sluggable->retrieveSlugData(['fieldname' => 'slug', 'ownertype' => 'object', 'position' => $language, 'siteId' => $existingSlug->getSiteId()])[0]['slug'] ?? null;
+                                if ($dbSlug === null) {
+                                    /** @psalm-suppress InternalMethod */
+                                    $dbSlug = $sluggable->retrieveSlugData(['fieldname' => 'slug', 'ownertype' => 'object', 'position' => $language])[0]['slug'] ?? null; // fallback slug
+                                }
+                            }
+
+                            if ($dbSlug && $dbSlug !== $existingSlug->getSlug()) {
+                                $existingSlug->setPreviousSlug($dbSlug);
+                            } elseif (!$dbSlug && !$existingSlug->getSlug()) {
+                                $actualSlugs[] = $newSlug;
+                            } else {
+                                $actualSlugs[] = $existingSlug;
+                            }
                         }
                         $found = true;
 

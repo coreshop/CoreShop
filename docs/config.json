@@ -1,19 +1,57 @@
 {
     "title" : "CoreShop 3.0.x - Pimcore eCommerce - Documentation",
+    "sub_title": "",
     "tagline" : "CoreShop 3.0.x - Pimcore eCommerce",
-    "repo": "coreshop/core-shop",
-    "html": {
-        "theme": "coreshop-blue",
-        "edit_on_github" : "coreshop/CoreShop/edit/master/docs"
-    },
-    "themes_directory" : "themes",
-    "links": {
-        "Website": "https://www.coreshop.org"
-    },
-    "breadcrumbs": false,
-    "google_analytics": "UA-75356862-4",
+    "author": "",
+    "languages": [],
+    "format": "html",
+    "processor": "",
     "ignore": {
         "files": ["generate-api.sh", "generate-docs.sh", "generate-docs-local.sh", "config.json", "composer.json", "composer.lock"],
-        "folders": ["vendor", "themes", "generated_docs", "img"]
+        "folders": ["vendor", "themes", "generated_docs"]
+    },
+    "timezone": "Europe/Vienna",
+    "live": {
+        "clean_urls": true
+    },
+    "html": {
+        "ribbon_text": "",
+        "theme": "pimcore-core",
+        "breadcrumbs": true,
+        "breadcrumb_separator": "Chevrons",
+        "toggle_code": false,
+        "date_modified": false,
+        "float": false,
+        "search": true,
+        "inherit_index": true,
+        "repo": "pimcore/pimcore",
+        "twitter": false,
+        "links": {
+            "Website": "https://www.coreshop.org",
+            "Github": "https://github.com/coreshop/CoreShop"
+        },
+        "google_analytics": "UA-75356862-4",
+        "banner": {
+
+        },
+        "linked_docs": {
+            "pimcore": {
+                "title": "Pimcore",
+                "description": "Picmore Docs",
+                "link": "https://pimcore.com/docs/",
+                "css_classes": "enterprise",
+                "ribbon_text": "Pimcore"
+            }
+        },
+        "edit_on_github": "coreshop/CoreShop/edit/master/doc",
+        "disqus": {
+            "include": false,
+            "url_prefix": "https://coreshop.org/docs/latest/"
+        },
+        "version_info": {
+            "include": true,
+            "source_url": "https://github.com/coreshop/CoreShop/commit/{commit_hash}",
+            "source_name": "coreshop/CoreShop@{short_commit_hash}"
+        }
     }
 }

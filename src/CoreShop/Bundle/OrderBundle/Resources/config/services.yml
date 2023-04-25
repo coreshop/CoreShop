@@ -31,7 +31,6 @@ services:
         arguments:
             - '@CoreShop\Component\Order\Processor\CartProcessorInterface'
             - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
-            - '@doctrine.dbal.default_connection'
 
     coreshop.cart_item.quantity_modifier: '@CoreShop\Component\StorageList\StorageListItemQuantityModifier'
     CoreShop\Component\StorageList\StorageListItemQuantityModifier: ~

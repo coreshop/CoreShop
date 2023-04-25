@@ -1,46 +1,5 @@
 # CoreShop Store Bundle
 
-## Installation
-```bash
-$ composer require coreshop/store-bundle:^3.0
-```
+CoreShop Store Bundle provides the abstraction of a Pimcore Website and a CoreShop Store. It handles the configuration for base-currencies and themes. 
 
-### Adding required bundles to kernel
-You need to enable the bundle inside the kernel
-
-```php
-<?php
-
-// app/AppKernel.php
-
-public function registerBundlesToCollection(BundleCollection $collection)
-{
-    $collection->addBundles([
-        new \CoreShop\Bundle\StoreBundle\StoreBundle(),
-    ]);
-}
-```
-
-### Updating database schema
-Run the following command.
-
-```bash
-$ php bin/console doctrine:schema:update --force
-```
-
-## Usage
-
-Nothing much to say here, adds a Store Model you can work with. It also adds Multi-theme Support.
-
-## Doctrine Entities
- - Store
-
-## Pimcore UI
-
- - Store
-
-How to use?
-
-```javascript
-coreshop.global.resource.open('coreshop.store', 'store');
-```
+> This Bundle can be used separately, but doesn't provide any detail information how to use it.
