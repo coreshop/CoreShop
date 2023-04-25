@@ -2,14 +2,4 @@
 
 Core Bundle glues all independent CoreShop Bundles into one e-commerce suite and extends certain parts accordingly.
 
-## Installation
-```bash
-$ composer require coreshop/core-shop:^3.0
-```
-
-### Enable and Install
-```bash
-$ bin/console pimcore:bundle:enable CoreShopCoreBundle
-$ bin/console coreshop:install
-```
-
+> This Bundle is not advised to be installed seperately!

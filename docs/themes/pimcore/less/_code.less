@@ -1,0 +1,70 @@
+@code-background-color: #f7f7f7;
+
+.s-content {
+    code {
+        text-rendering: initial;
+        -webkit-font-smoothing: initial;
+        font-size: 13px;
+    }
+
+    pre {
+        margin: 20px -20px;
+        background: @code-background-color;
+
+        code {
+            font-size: 13px;
+        }
+    }
+}
+
+// tabbed code sections: create a <div class="code-section"> around multiple fenced code blocks to enable tabs (e.g.
+// PHP and Twig)
+.code-section {
+    pre {
+        margin-top: 0;
+    }
+
+    .tab-pane {
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+
+    .nav-tabs {
+        .clearfix();
+
+        list-style: none;
+        border-bottom: none;
+        padding-left: 0;
+        clear: left;
+        margin-bottom: 0;
+
+        li {
+            float: left;
+
+            a {
+                display: block;
+                background-color: #ddd;
+                border-radius: 4px 4px 0 0;
+                border-color: #eee #eee #ddd;
+                color: #333;
+                padding: 7px 12px;
+                margin-right: 4px;
+            }
+
+            &.active {
+                > a,
+                > a:focus,
+                > a:hover {
+                    background-color: @code-background-color;
+                    border-color: #222;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+@import "_highlight-style.less";

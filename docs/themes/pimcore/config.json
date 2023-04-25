@@ -1,0 +1,22 @@
+{
+    "favicon": "<theme_url>img/favicon.png",
+    "css": [],
+    "js": [
+        "<theme_url>js/build/pimcore.min.js"
+    ],
+    "fonts": [
+        "//fonts.googleapis.com/css?family=Open+Sans:100,200,300,400,500,600,700,800,900"
+    ],
+    "variants": {
+        "core": {
+            "css": [
+                "<theme_url>css/pimcore-core.min.css"
+            ]
+        },
+        "generic": {
+            "css": [
+                "<theme_url>css/pimcore-generic.min.css"
+            ]
+        }
+    }
+}

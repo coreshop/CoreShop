@@ -1,0 +1,352 @@
+/*!
+ * Pimcore Documentation
+ * License: GPLv3
+ */
+
+@import "../../../vendor/daux/daux.io/themes/common/less/vendor/normalize.less";
+
+@font-family-text:      "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@font-family-heading:   @font-family-text;
+@font-family-monospace: Monaco, Menlo, Consolas, "Courier New", monospace;
+
+// Daux Utils
+@import "../../../vendor/daux/daux.io/themes/daux/less/_mixins.less";
+@import "../../../vendor/daux/daux.io/themes/daux/less/_utilities.less";
+
+// Layout
+@import "../../../vendor/daux/daux.io/themes/daux/less/_structure.less";
+
+// Content presentation
+@import "../../../vendor/daux/daux.io/themes/daux/less/_typography.less";
+@import "../../../vendor/daux/daux.io/themes/daux/less/_components.less";
+@import "../../../vendor/daux/daux.io/themes/daux/less/_homepage.less";
+@import "_code.less";
+@import "_boxes.less";
+
+@media print {
+    @import "../../../vendor/daux/daux.io/themes/daux/less/_print.less";
+}
+
+body {
+    font-family: @font-family-text;
+}
+
+.Brand {
+    background: #222;
+    color: #fff;
+
+    .Brand__logo {
+        color: transparent;
+        display: block;
+        max-width: 170px;
+        height: 50px;
+        background: transparent url(../img/logo-white.svg) no-repeat left center;
+    }
+
+    .subtitle {
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+}
+
+.Pager {
+    margin: 30px 0 10px;
+}
+
+.breadcrumbs {
+    margin-top: 25px;
+}
+
+.s-content {
+    h2 {
+        margin-top: 25px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    img {
+        margin: 0; // common sets margin to 0 auto to center images
+
+        @media screen and (min-width: 768px) {
+            &.img-narrow {
+                max-width: 50%;
+            }
+        }
+    }
+
+    table {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    blockquote {
+        font-size: 16px;
+        border-color: #ffeaae;
+        background: #fffdf6;
+        color: #666;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        .headerlink {
+            color: transparent;
+            font-size: 75%;
+            font-weight: 400;
+            line-height: 1;
+            margin: 0;
+            padding: 0 0 0 6px;
+        }
+
+        &:hover .headerlink {
+            color: @sidebar-hover;
+
+            &:hover {
+                color: @light;
+            }
+        }
+    }
+}
+
+.disqus-separator {
+    margin: 15px 0 20px;
+}
+
+.Columns__landing {
+    .Nav {
+        padding-left: 15px;
+    }
+}
+
+.ribbon-box {
+    //https://www.cssportal.com/css-ribbon-generator/
+
+    position: relative;
+
+    .ribbon {
+        position: absolute;
+        right: -5px;
+        top: -5px;
+        z-index: 1;
+        overflow: hidden;
+        width: 86px;
+        height: 86px;
+        text-align: right;
+    }
+
+    &.navigation .ribbon {
+        right: -26px;
+        top: -78px;
+    }
+
+    .ribbon span {
+        font-size: 10px;
+        font-weight: bold;
+        color: #fff;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 20px;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        width: 115px;
+        display: block;
+        background: linear-gradient(@ribbon-start 0%, @ribbon-end 100%);
+        box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 24px;
+        right: -23px;
+    }
+
+    .ribbon span::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 100%;
+        z-index: -1;
+        border-left: 3px solid @ribbon-end;
+        border-right: 3px solid transparent;
+        border-bottom: 3px solid transparent;
+        border-top: 3px solid @ribbon-end;
+    }
+
+    .ribbon span::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 100%;
+        z-index: -1;
+        border-left: 3px solid transparent;
+        border-right: 3px solid @ribbon-end;
+        border-bottom: 3px solid transparent;
+        border-top: 3px solid @ribbon-end;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .ribbon-box.navigation .ribbon {
+        top: 44px;
+        pointer-events: none;
+    }
+}
+
+.extension-card {
+    border: 1px solid @lines;
+    border-radius: 4px;
+    padding: 20px;
+    height: 100%;
+    position: relative;
+
+    .button {
+        display: inline-block;
+        padding: 5px 14px;
+        border: 1px solid @lines;
+        border-radius: 15px;
+
+        &:hover {
+            background-color: @lines;
+        }
+    }
+}
+
+.action-box {
+    font-size: 12px;
+    float: right;
+
+    .edit_on {
+        color: gray;
+        margin-left: 3px;
+        display: block;
+        text-align: right;
+    }
+
+    .version-switcher {
+        font-size: 16px;
+        display: block;
+        margin-bottom: 5px;
+
+        select {
+            margin-left: 3px;
+        }
+    }
+}
+
+.column {
+    margin: 20px 0;
+}
+
+@media screen and (min-width: 768px) {
+    .Columns__landing {
+        display: flex;
+        flex-wrap: wrap;
+
+        .column {
+            width: 48%;
+
+            &:nth-child(even) {
+                margin-left: 4%;
+            }
+        }
+    }
+}
+
+aside.Collapsible {
+    .version-info {
+        font-size: 11px;
+        margin-bottom: 25px;
+    }
+}
+
+.SearchResults {
+    .SearchResults__highlight {
+        font-weight: normal;
+        background: lighten(@light, 50%);
+    }
+
+    .SearchResults__title,
+    .SearchResults__url,
+    .SearchResults__text,
+    .SearchResults__warning {
+        font-weight: normal;
+
+        a {
+            color: @light;
+        }
+    }
+}
+
+.landingpage {
+    .Nav__item--open > a {
+        background: transparent !important;
+    }
+
+    .Columns__landing div > .Nav {
+        li a {
+            // display: inline-block;
+            background: none;
+            line-height: 1.5;
+        }
+
+        > li {
+            > a {
+                display: block;
+                color: @light;
+                padding-left: 0;
+                font-size: 16px;
+                margin-top: 15px;
+
+                .Nav__arrow {
+                    // display: none;
+                }
+            }
+
+            ul > li > a {
+                padding-left: 16px;
+            }
+        }
+    }
+}
+
+.Banner {
+    margin: 40px 0 10px;
+
+    .img {
+        width: 100%;
+    }
+}
+
+.lightbox {
+    /* Default to hidden */
+    display: none;
+
+    /* Overlay entire screen */
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    /* A bit of padding around image */
+    padding: 1em;
+
+    /* Translucent background */
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* Unhide the lightbox when it's the target */
+.lightbox:target {
+    display: block;
+}
+
+.lightbox img {
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
+}
+
+img.lightbox-thumbnail, .image-as-lightbox + p > img {
+    max-width: 50%;
+    max-height: 350px;
+}

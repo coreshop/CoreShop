@@ -1,6 +1,5 @@
 # CoreShop Payum Bundle
 
-## Installation
-```bash
-$ composer require coreshop/payum-bundle:^3.0
-```
+Handles the Payum Integration with CoreShop. This Bundle requires the Core and can only be used in the full installation.
+
+> This Bundle is not advised to be installed seperately!

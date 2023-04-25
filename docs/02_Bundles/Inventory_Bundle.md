@@ -1,6 +1,5 @@
 # CoreShop Inventory Bundle
 
-## Installation
-```bash
-$ composer require coreshop/inventory-bundle:^3.0
-```
+CoreShop Inventory Bundle provides a Basic implementation to handle Inventory for a Product.
+
+> This Bundle can be used separately, but doesn't provide any detail information how to use it.

@@ -1,3 +1,0 @@
-# CoreShop Tracking Component
-
-TBD

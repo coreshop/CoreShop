@@ -1,7 +1,6 @@
-# CoreShop Cart Price Rules
+# CoreShop Cart Price Rules Documentation
 
-Cart Price Rules are applied as discount on your cart.
-Cart Price Rules can also be used with voucher codes.
+Cart price rules in CoreShop provide a flexible way to offer discounts and promotions in your e-commerce store built on the Pimcore platform. These rules can be based on various conditions, such as cart subtotal, specific products, customer groups, or other criteria. This documentation will guide you through creating and managing cart price rules in CoreShop.
 
 ![Cart Price Rules](img/cart-pricerule.png)
 

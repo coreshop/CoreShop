@@ -6,7 +6,6 @@ This guide should lead you through how CoreShop handles Orders.
  - [Order Workflow](./03_Order_Workflow.md)
  - [Invoice](./05_Invoice)
  - [Shipment](./06_Shipment)
- - [Quote](./07_Quote)
  - [Template/Twig Helper](./08_TemplateHelper.md)
  - [Extend Order with additional data](./09_AdditionalData.md)
 
