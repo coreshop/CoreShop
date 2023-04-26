@@ -23,6 +23,7 @@ use CoreShop\Component\Pimcore\Slug\SluggableInterface;
 use Pimcore\Model\DataObject\Data\UrlSlug;
 use Pimcore\Model\Document;
 use Pimcore\Model\Site;
+use Pimcore\Model\Staticroute;
 use Pimcore\Tool;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,8 +90,12 @@ final class LocaleSwitcherExtension extends AbstractExtension
             $link = '';
             if ($this->getMainRequest()->attributes->get('pimcore_request_source') === 'staticroute') {
                 $route = $this->getMainRequest()->attributes->get('_route');
-                $link = $this->container->get('router')->generate($route, ['_locale' => $language]);
-
+                $staticRoute = Staticroute::getByName($route);
+                $params = [];
+                if (strpos($staticRoute->getVariables(), '_locale')) {
+                    $params = ['_locale' => $language];
+                }
+                $link = $this->container->get('router')->generate($route, $params);
             } else {
                 if ( isset($translations[$language]) ) {
                     $localizedDocument = Document::getById($translations[$language]);
