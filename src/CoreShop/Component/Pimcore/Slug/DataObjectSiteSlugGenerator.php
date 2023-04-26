@@ -34,7 +34,7 @@ class DataObjectSiteSlugGenerator implements DataObjectSiteSlugGeneratorInterfac
     public function generateSlugsForSite(SluggableInterface $sluggable, string $locale, ?Site $site = null): string
     {
         $slug = $this->slugger->slug($sluggable, $locale, null);
-        $slug = $this->dispatchSlugEvent($sluggable, $slug, null, $site);
+        $slug = $this->dispatchSlugEvent($sluggable, $slug, null, $site, $locale);
 
         $i = 1;
 
@@ -47,7 +47,7 @@ class DataObjectSiteSlugGenerator implements DataObjectSiteSlugGeneratorInterfac
             }
 
             $slug = $this->slugger->slug($sluggable, $locale, (string) $i);
-            $slug = $this->dispatchSlugEvent($sluggable, $slug, (string) $i, $site);
+            $slug = $this->dispatchSlugEvent($sluggable, $slug, (string) $i, $site, $locale);
 
             ++$i;
         }
@@ -55,9 +55,9 @@ class DataObjectSiteSlugGenerator implements DataObjectSiteSlugGeneratorInterfac
         return $slug;
     }
 
-    private function dispatchSlugEvent(SluggableInterface $sluggable, string $slug, string $prefix = null, ?Site $site = null)
+    private function dispatchSlugEvent(SluggableInterface $sluggable, string $slug, string $prefix = null, ?Site $site = null, ?string $locale = null)
     {
-        $event = new SlugGenerationEvent($sluggable, $slug, $prefix, $site);
+        $event = new SlugGenerationEvent($sluggable, $slug, $prefix, $site, $locale);
         $this->eventDispatcher->dispatch($event);
 
         return $event->getSlug();
