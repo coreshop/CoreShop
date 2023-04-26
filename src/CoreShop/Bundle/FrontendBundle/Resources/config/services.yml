@@ -21,6 +21,7 @@ services:
             - '@Pimcore\Model\Document\Service'
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'
             - '@Symfony\Component\HttpFoundation\RequestStack'
+            - '@service_container'
         tags:
             - { name: twig.extension }
 
