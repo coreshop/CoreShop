@@ -57,12 +57,21 @@ class OrderCommitter implements OrderCommitterInterface
         Assert::isInstanceOf($order, \CoreShop\Component\Core\Model\OrderInterface::class);
 
         $orderFolder = $this->folderCreationService->createFolderForResource($order, [
-            'suffix' => date('Y/m/d'),
+            'suffix' => date('Y/m/d') . '/' . $order->getToken(),
             'path' => 'order',
         ]);
         $orderNumber = $this->numberGenerator->generate($order);
 
         $order->setParent($orderFolder);
+
+        foreach ($order->getItems() as $item) {
+            $item->setParent($this->folderCreationService->createFolderForResource(
+                $item,
+                    ['prefix' => $orderFolder->getFullPath()],
+                )
+            );
+        }
+
         $order->setSaleState(OrderSaleStates::STATE_ORDER);
         $order->setOrderDate(Carbon::now());
         $order->setOrderNumber($orderNumber);
@@ -71,9 +80,6 @@ class OrderCommitter implements OrderCommitterInterface
         $order->setShippingState(OrderShipmentStates::STATE_NEW);
         $order->setPaymentState(OrderPaymentStates::STATE_NEW);
         $order->setInvoiceState(OrderInvoiceStates::STATE_NEW);
-
-        $tokenGenerator = new UniqueTokenGenerator();
-        $order->setToken($tokenGenerator->generate(10));
 
         $this->cartManager->persistCart($order);
 

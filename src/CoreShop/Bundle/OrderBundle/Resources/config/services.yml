@@ -106,12 +106,15 @@ services:
         arguments:
             - '@CoreShop\Component\Order\Factory\OrderItemFactory.inner'
 
+    CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator: ~
+
     CoreShop\Component\Order\Factory\OrderFactory:
         decorates: coreshop.factory.order
         decoration_priority: 256
         public: false
         arguments:
             - '@CoreShop\Component\Order\Factory\OrderFactory.inner'
+            - '@CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator'
 
     CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface: '@CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory'
     CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory:

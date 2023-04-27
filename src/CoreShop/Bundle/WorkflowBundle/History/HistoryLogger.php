@@ -57,6 +57,6 @@ class HistoryLogger implements HistoryLoggerInterface
             $note->setDescription($description);
         }
 
-        $this->noteService->storeNote($note);
+        //$this->noteService->storeNote($note);
     }
 }

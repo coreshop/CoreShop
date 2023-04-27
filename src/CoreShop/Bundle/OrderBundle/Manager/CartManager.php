@@ -46,7 +46,7 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
     public function persistCart(OrderInterface $cart): void
     {
         $cartsFolder = $this->folderCreationService->createFolderForResource($cart, [
-            'suffix' => date('Y/m/d'),
+            'suffix' => date('Y/m/d') . '/' . $cart->getToken(),
             'path' => 'cart',
         ]);
 
@@ -72,12 +72,14 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
              * @var OrderItemInterface $item
              */
             foreach ($items as $index => $item) {
-                $item->setParent(
-                    $this->folderCreationService->createFolderForResource(
-                        $item,
-                        ['prefix' => $cart->getFullPath()],
-                    ),
-                );
+                if (!$item->getParent()) {
+                    $item->setParent(
+                        $this->folderCreationService->createFolderForResource(
+                            $item,
+                            ['prefix' => $cartsFolder->getFullPath()],
+                        ),
+                    );
+                }
                 //$item->setPath($cart->getFullPath());
                 $item->setPublished(true);
                 $item->setKey((string)((int)$index + 1));
