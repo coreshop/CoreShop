@@ -92,7 +92,7 @@ final class LocaleSwitcherExtension extends AbstractExtension
                 $route = $this->getMainRequest()->attributes->get('_route');
                 $staticRoute = Staticroute::getByName($route);
                 $params = [];
-                if (strpos($staticRoute->getVariables(), '_locale')) {
+                if ( str_contains($staticRoute->getVariables(), '_locale') ) {
                     $params = ['_locale' => $language];
                 }
                 $link = $this->container->get('router')->generate($route, $params);
