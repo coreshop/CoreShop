@@ -21,6 +21,7 @@ namespace CoreShop\Bundle\SequenceBundle\Doctrine\ORM;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Sequence\Model\SequenceInterface;
 use CoreShop\Component\Sequence\Repository\SequenceRepositoryInterface;
+use Doctrine\DBAL\LockMode;
 
 class SequenceRepository extends EntityRepository implements SequenceRepositoryInterface
 {
@@ -30,6 +31,7 @@ class SequenceRepository extends EntityRepository implements SequenceRepositoryI
             ->andWhere('o.type = :type')
             ->setParameter('type', $type)
             ->getQuery()
+            ->setLockMode(LockMode::PESSIMISTIC_WRITE)
             ->getOneOrNullResult()
         ;
     }
