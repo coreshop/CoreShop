@@ -75,10 +75,10 @@ final class CacheListener implements EventSubscriberInterface
                     continue;
                 }
 
-                Cache::addIgnoredTagOnSave('object_'.$item->getId());
+                Cache::addIgnoredTagOnSave('object_' . $item->getId());
             }
 
-            Cache::addIgnoredTagOnSave('object_'.$list->getId());
+            Cache::addIgnoredTagOnSave('object_' . $list->getId());
         }
     }
 }
