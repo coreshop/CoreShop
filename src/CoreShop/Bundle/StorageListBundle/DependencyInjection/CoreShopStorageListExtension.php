@@ -106,7 +106,6 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $sessionSubscriber->addTag('kernel.event_subscriber');
 
                 $container->setDefinition('coreshop.storage_list.session_subscriber.' . $name, $sessionSubscriber);
-
             }
 
             $cacheSubscriber = new Definition(CacheListener::class, [

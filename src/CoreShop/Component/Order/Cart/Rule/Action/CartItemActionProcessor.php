@@ -94,8 +94,7 @@ class CartItemActionProcessor implements CartPriceRuleActionProcessorInterface
 
             if (!$result) {
                 $item->removePriceRule($priceRuleItem);
-            }
-            else if (!$existingPriceRule) {
+            } elseif (!$existingPriceRule) {
                 $item->addPriceRule($priceRuleItem);
             }
 
