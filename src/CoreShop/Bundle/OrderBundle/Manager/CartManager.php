@@ -80,7 +80,7 @@ final class CartManager implements CartManagerInterface, StorageListManagerInter
                 );
                 //$item->setPath($cart->getFullPath());
                 $item->setPublished(true);
-                $item->setKey((string)((int)$index + 1));
+                $item->setKey((string) ((int) $index + 1));
                 $item->save();
             }
 
