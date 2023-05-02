@@ -35,7 +35,7 @@ class Store extends Select
      */
     public $fieldtype = 'coreShopStore';
 
-    /** @var array */
+    /** @var array|null */
     public $options = [];
 
     /** @var string */
@@ -63,7 +63,7 @@ class Store extends Select
 
     public function getOptionsProviderClass()
     {
-        return '@' . StoreOptionProvider::class;
+        return $this->optionsProviderClass;
     }
 
     public function getDataForGrid($data, $object = null, $params = [])
