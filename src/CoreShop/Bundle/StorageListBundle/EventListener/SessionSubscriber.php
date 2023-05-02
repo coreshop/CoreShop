@@ -69,7 +69,7 @@ final class SessionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (0 !== $list->getId()) {
+        if (null !== $list->getId()) {
             $session = $request->getSession();
 
             $session->set(

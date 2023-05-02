@@ -72,9 +72,6 @@ class OrderCommitter implements OrderCommitterInterface
         $order->setPaymentState(OrderPaymentStates::STATE_NEW);
         $order->setInvoiceState(OrderInvoiceStates::STATE_NEW);
 
-        $tokenGenerator = new UniqueTokenGenerator();
-        $order->setToken($tokenGenerator->generate(10));
-
         $this->cartManager->persistCart($order);
 
         $originalShippingAddress = $order->hasShippableItems() === false ? $order->getInvoiceAddress() : $order->getShippingAddress();
