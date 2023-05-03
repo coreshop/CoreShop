@@ -22,8 +22,8 @@ use CoreShop\Component\Core\Wishlist\Repository\WishlistRepositoryInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
-
-class WishlistRepository extends \CoreShop\Bundle\WishlistBundle\Pimcore\Repository\WishlistRepository implements WishlistRepositoryInterface
+use CoreShop\Bundle\WishlistBundle\Pimcore\Repository\WishlistRepository as BaseWishlistRepository;
+class WishlistRepository extends BaseWishlistRepository implements WishlistRepositoryInterface
 {
     public function findLatestByStoreAndCustomer(
         StoreInterface $store,
