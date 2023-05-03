@@ -55,9 +55,6 @@
                         "assetTypes": [],
                         "documentTypes": [],
                         "classes": [
-                            {
-                                "classes": "CoreShopProduct"
-                            }
                         ],
                         "pathFormatterClass": "",
                         "name": "product",
@@ -119,11 +116,6 @@
                         "invisible": false,
                         "visibleGridView": false,
                         "visibleSearch": false,
-                        "classes": [
-                            {
-                                "classes": "CoreShopWishlist"
-                            }
-                        ],
                         "pathFormatterClass": "",
                         "width": null,
                         "assetUploadPath": null,

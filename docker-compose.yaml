@@ -84,6 +84,7 @@ services:
       - db
     volumes:
       - .:/var/www/html:cached
+      - ./.docker/xdebug-config.ini:/usr/local/etc/php/conf.d/21-xdebug.ini
     environment:
       PHP_IDE_CONFIG: serverName=localhost
       XDEBUG_TRIGGER: PHPSTORM
@@ -110,6 +111,7 @@ services:
       - db
     volumes:
       - .:/var/www/html:cached
+      - ./.docker/xdebug-config.ini:/usr/local/etc/php/conf.d/21-xdebug.ini
     environment:
       PHP_IDE_CONFIG: serverName=localhost
       COMPOSER_HOME: /var/www/html
