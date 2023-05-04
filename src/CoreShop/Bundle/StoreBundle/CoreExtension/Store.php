@@ -20,6 +20,8 @@ namespace CoreShop\Bundle\StoreBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Store\Model\StoreInterface;
+use InvalidArgumentException;
+use Pimcore\Model\DataObject\ClassDefinition\Helper\OptionsProviderResolver;
 
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
@@ -32,6 +34,12 @@ class Store extends Select
      * @var string
      */
     public $fieldtype = 'coreShopStore';
+
+    /** @var array|null */
+    public $options = [];
+
+    /** @var string */
+    public $optionsProviderClass = '@'.StoreOptionProvider::class;
 
     protected function getRepository()
     {
@@ -55,6 +63,68 @@ class Store extends Select
 
     public function getOptionsProviderClass()
     {
-        return '@' . StoreOptionProvider::class;
+        return $this->optionsProviderClass;
+    }
+
+    public function getDataForGrid($data, $object = null, $params = [])
+    {
+        $optionsProvider = OptionsProviderResolver::resolveProvider(
+            $this->getOptionsProviderClass(),
+            OptionsProviderResolver::MODE_SELECT
+        );
+
+        if ($optionsProvider) {
+            $context = $params['context'] ?? [];
+            $context['object'] = $object;
+            if ($object) {
+                $context['class'] = $object->getClass();
+            }
+
+            $context['fieldname'] = $this->getName();
+            $options = $optionsProvider->{'getOptions'}($context, $this);
+            $this->setOptions($options);
+
+            if (isset($params['purpose']) && $params['purpose'] === 'editmode') {
+                $result = $data?->getId();
+            } else {
+                $result = ['value' => $data?->getId(), 'options' => $this->getOptions()];
+            }
+
+            return $result;
+        }
+
+        return $data?->getId();
+    }
+
+    /**
+     * @param array|null $options
+     *
+     * @return $this
+     */
+    public function setOptions(?array $options)
+    {
+        if (is_array($options)) {
+            $this->options = [];
+            foreach ($options as $option) {
+                $option = (array)$option;
+                if (!array_key_exists('key', $option) || !array_key_exists('value', $option)) {
+                    throw new InvalidArgumentException('Please provide select options as associative array with fields "key" and "value"');
+                }
+
+                $this->options[] = $option;
+            }
+        } else {
+            $this->options = null;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 }
