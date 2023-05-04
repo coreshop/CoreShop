@@ -28,6 +28,7 @@ use Pimcore\Tool;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -37,7 +38,7 @@ final class LocaleSwitcherExtension extends AbstractExtension
         private Document\Service $documentService,
         private ShopperContextInterface $shopperContext,
         private RequestStack $requestStack,
-        protected ContainerInterface $container,
+        private RouterInterface $router,
     ) {
     }
 
@@ -95,7 +96,7 @@ final class LocaleSwitcherExtension extends AbstractExtension
                 if ( str_contains($staticRoute->getVariables(), '_locale') ) {
                     $params = ['_locale' => $language];
                 }
-                $link = $this->container->get('router')->generate($route, $params);
+                $link = $this->router->generate($route, $params);
             } else {
                 if ( isset($translations[$language]) ) {
                     $localizedDocument = Document::getById($translations[$language]);
