@@ -74,6 +74,7 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                 ->variableNode('options')->end()
                                 ->arrayNode('path')
+                                    ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('wishlist')->defaultValue('wishlists')->end()
                                     ->end()

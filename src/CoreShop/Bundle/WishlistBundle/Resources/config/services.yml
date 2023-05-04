@@ -25,13 +25,6 @@ services:
         arguments:
             - '@coreshop.factory.wishlist.storage_list.inner'
 
-    coreshop.wishlist.context.factory:
-        class: CoreShop\Component\StorageList\Context\StorageListFactoryContext
-        arguments:
-            - '@coreshop.factory.wishlist'
-        tags:
-            - { name: coreshop.context.wishlist, priority: -999 }
-
     CoreShop\Bundle\WishlistBundle\Form\Type\WishlistType:
         arguments:
             - '%coreshop.model.wishlist.class%'

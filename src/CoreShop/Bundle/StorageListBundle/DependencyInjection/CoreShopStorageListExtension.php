@@ -29,6 +29,7 @@ use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Context\StorageListFactoryContext;
 use CoreShop\Component\StorageList\Core\Context\CustomerAndStoreBasedStorageListContext;
 use CoreShop\Component\StorageList\Core\Context\SessionAndStoreBasedStorageListContext;
+use CoreShop\Component\StorageList\Context\SessionBasedListContext;
 use CoreShop\Component\StorageList\Core\Context\StoreBasedStorageListContext;
 use CoreShop\Component\StorageList\StorageListsManager;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
@@ -152,10 +153,14 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 new Reference($list['services']['modifier']),
             ]);
 
+            $contextsRegistered = false;
+
             if (interface_exists(CustomerAwareInterface::class) && interface_exists(StoreAwareInterface::class)) {
                 $implements = \class_implements($list['resource']['interface']);
 
                 if (isset($implements[StoreAwareInterface::class], $implements[CustomerAwareInterface::class])) {
+                    $contextsRegistered = true;
+
                     $customerAndStoreBasedContextDefinition = new Definition(CustomerAndStoreBasedStorageListContext::class);
                     $customerAndStoreBasedContextDefinition->setArgument('$customerContext', new Reference('coreshop.context.customer'));
                     $customerAndStoreBasedContextDefinition->setArgument('$storeContext', new Reference('coreshop.context.store'));
@@ -210,6 +215,22 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
 
                     $container->setDefinition('coreshop.storage_list.blamer.' . $name, $blamer);
                 }
+            }
+
+            if (!$contextsRegistered && $list['session']['enabled']) {
+                $sessionContext = new Definition(
+                    SessionBasedListContext::class,
+                );
+                $sessionContext->setArgument(
+                    '$inner',
+                    new Reference('coreshop.storage_list.context.' . $name .'.session.inner'),
+                );
+                $sessionContext->setArgument('$requestStack', new Reference('request_stack'));
+                $sessionContext->setArgument('$sessionKeyName', $list['session']['key']);
+                $sessionContext->setArgument('$repository', new Reference($list['resource']['repository']));
+                $sessionContext->setDecoratedService('coreshop.storage_list.context.factory.' . $name);
+
+                $container->setDefinition('coreshop.storage_list.context.' . $name .'.session', $sessionContext);
             }
 
             $tags[] = [
