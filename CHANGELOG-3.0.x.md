@@ -1,3 +1,30 @@
+# 3.0.5
+
+## Bugs
+ - [CoreBundle] fix column names for coreshop_carrier_store table (https://github.com/coreshop/CoreShop/pull/2187)
+ - [PHP] Require at least php 8 via composer.json (https://github.com/coreshop/CoreShop/pull/2210)
+ - [Store] Throw exception if site store isnt found in SiteBasedRequestResolver (https://github.com/coreshop/CoreShop/pull/2209)
+ - [FrontendBundle] Checkout allow to pass query params from step to step (https://github.com/coreshop/CoreShop/pull/2224)
+ - [ResourceBundle] fix: added event.js on ResourceBundle (https://github.com/coreshop/CoreShop/pull/2228)
+ - [FrontendBundle] restrict parentCategoryIds in filter index (https://github.com/coreshop/CoreShop/pull/2230)
+ - [Variant] fix sorting in findMainVariant (https://github.com/coreshop/CoreShop/pull/2232)
+ - [StorageList] fix missing classes (https://github.com/coreshop/CoreShop/pull/2235)
+ - [ResourceBundle] re-implement expression evaluation (https://github.com/coreshop/CoreShop/pull/2237)
+ - [CoreBundle] add missing parameter identifier (https://github.com/coreshop/CoreShop/pull/2241)
+ - [StorageListBundle] fix loading 'coreshop.context.cart' (https://github.com/coreshop/CoreShop/pull/2246)
+ - [SEO] Check first if metatitle is not null before setting it SEO TitleExtractor (https://github.com/coreshop/CoreShop/pull/2242)
+ - [Services] Fix deprecation format (https://github.com/coreshop/CoreShop/pull/2244)
+ - [Shipping] don't include shipping total in amount shipping condition (https://github.com/coreshop/CoreShop/pull/2238)
+ - [Slugs] Make URL slugs overwritable (https://github.com/coreshop/CoreShop/pull/2236)
+ - [Core] Use invoice address of logged in customer for tax calculation (https://github.com/coreshop/CoreShop/pull/2254)
+ - [Order] don't add CartItemPriceRule if not applicable (https://github.com/coreshop/CoreShop/pull/2258)
+ - [Cache] disabling caching of StorageLists for better concurrency (https://github.com/coreshop/CoreShop/pull/2250)
+ - [Docs] Update docs (https://github.com/coreshop/CoreShop/pull/2259)
+ - [Pimcore] add locale to SlugGenerationEvent (https://github.com/coreshop/CoreShop/pull/2260)
+ - [Core] Support "store" field type in grid (https://github.com/coreshop/CoreShop/pull/2262)
+ - [WishlistBundle] make wishlist easier usable outside of CoreShop (https://github.com/coreshop/CoreShop/pull/2266)
+ - [FrontendBundle] Adjusted locale switcher for internal shop pages without translations (https://github.com/coreshop/CoreShop/pull/2261)
+ 
 # 3.0.4
 
 ## Bugs
