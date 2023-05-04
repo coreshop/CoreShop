@@ -275,8 +275,8 @@ class ProductQuantityPriceRules extends Data implements
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
-        $calculationBehaviourTypes = [];
-        $pricingBehaviourTypes = [];
+        $calculationBehaviorTypes = [];
+        $pricingBehaviorTypes = [];
 
         /**
          * @var array $calculators
@@ -289,11 +289,11 @@ class ProductQuantityPriceRules extends Data implements
         $actions = $this->getContainer()->getParameter('coreshop.product_quantity_price_rules.actions');
 
         foreach ($calculators as $type) {
-            $calculationBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_calculator_' . strtolower($type)];
+            $calculationBehaviorTypes[] = [$type, 'coreshop_product_quantity_price_rules_calculator_' . strtolower($type)];
         }
 
         foreach ($actions as $type) {
-            $pricingBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_behaviour_' . strtolower($type)];
+            $pricingBehaviorTypes[] = [$type, 'coreshop_product_quantity_price_rules_behavior_' . strtolower($type)];
         }
 
         $serializedData = [
@@ -301,8 +301,8 @@ class ProductQuantityPriceRules extends Data implements
             'actions' => array_keys($this->getConfigActions()),
             'rules' => [],
             'stores' => [
-                'calculationBehaviourTypes' => $calculationBehaviourTypes,
-                'pricingBehaviourTypes' => $pricingBehaviourTypes,
+                'calculationBehaviorTypes' => $calculationBehaviorTypes,
+                'pricingBehaviorTypes' => $pricingBehaviorTypes,
             ],
         ];
 

@@ -5,7 +5,7 @@ By default a store is connected with a pimcore Site.
 ![Stores](img/stores.png)
 
 ## Domain based Store
-This is CoreShops default behaviour. One store for your default page, which is also your default store.
+This is CoreShops default behavior. One store for your default page, which is also your default store.
 If you have multiple Domains it's possible to add a store to each domain.
 
 > **Tip:** Learn more about pimcore multi sites: [Pimcore Sites](https://pimcore.com/docs/pimcore/current/Development_Documentation/MVC/Routing_and_URLs/Working_with_Sites.html)

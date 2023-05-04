@@ -91,7 +91,7 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
         var rangeContainerClass = this.getRangeContainerClass();
         var conditionContainerClass = this.getConditionContainerClass();
 
-        this.ranges = new rangeContainerClass(this.getId(), this.objectId, this.parentPanel.getClipboardManager(), this.parentPanel.getTranslatedStoreData('pricingBehaviourTypes'));
+        this.ranges = new rangeContainerClass(this.getId(), this.objectId, this.parentPanel.getClipboardManager(), this.parentPanel.getTranslatedStoreData('pricingBehaviorTypes'));
         this.conditions = new conditionContainerClass(this.parentPanel.getConditions());
 
         var items = [
@@ -139,12 +139,12 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
                 },
                 {
                     xtype: 'combobox',
-                    name: 'calculationBehaviour',
-                    fieldLabel: t('coreshop_product_quantity_price_rules_calculation_behaviour'),
+                    name: 'calculationBehavior',
+                    fieldLabel: t('coreshop_product_quantity_price_rules_calculation_behavior'),
                     width: 250,
                     editable: false,
-                    value: this.data.calculationBehaviour,
-                    store: this.parentPanel.getTranslatedStoreData('calculationBehaviourTypes')
+                    value: this.data.calculationBehavior,
+                    store: this.parentPanel.getTranslatedStoreData('calculationBehaviorTypes')
                 }, {
                     xtype: 'numberfield',
                     name: 'priority',

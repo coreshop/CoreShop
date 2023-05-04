@@ -12,11 +12,11 @@ Feature: Viewing product details with quantity price rules
         And the product has the default unit "Pieces"
         And the product has an additional unit "Carton" with conversion rate "24" and price 200000
         And the product has an additional unit "Palette" with conversion rate "200" and price 1500000
-        And adding a quantity price rule to this product named "default-product-quantity-price-rule" with calculation-behaviour "volume"
+        And adding a quantity price rule to this product named "default-product-quantity-price-rule" with calculation-behavior "volume"
         And the quantity price rule is active
 
     Scenario: View product with quantity price rule
-        Given the quantity price rule has a range starting from 5 with behaviour percentage-decrease of 10%
+        Given the quantity price rule has a range starting from 5 with behavior percentage-decrease of 10%
         And the price range is only valid for unit "Pieces"
         When I open the product's detail page
         Then I should see the price "€100.00"
@@ -24,9 +24,9 @@ Feature: Viewing product details with quantity price rules
         And I should see the quantity price rule 1 starting from "5" for unit "Pieces"
 
     Scenario: View product with quantity price rules having multiple ranges
-        Given the quantity price rule has a range starting from 5 with behaviour percentage-decrease of 10%
+        Given the quantity price rule has a range starting from 5 with behavior percentage-decrease of 10%
         And the price range is only valid for unit "Pieces"
-        And the quantity price rule has a range starting from 10 with behaviour percentage-decrease of 20%
+        And the quantity price rule has a range starting from 10 with behavior percentage-decrease of 20%
         And the price range is only valid for unit "Pieces"
         When I open the product's detail page
         Then I should see the price "€100.00"
@@ -35,17 +35,17 @@ Feature: Viewing product details with quantity price rules
         And I should see the quantity price rule 2 with price "€80.00" for unit "Pieces"
 
     Scenario: View product with quantity price rules having multiple ranges for multiple units
-        Given the quantity price rule has a range starting from 5 with behaviour percentage-decrease of 10%
+        Given the quantity price rule has a range starting from 5 with behavior percentage-decrease of 10%
         And the price range is only valid for unit "Pieces"
-        And the quantity price rule has a range starting from 10 with behaviour percentage-decrease of 20%
+        And the quantity price rule has a range starting from 10 with behavior percentage-decrease of 20%
         And the price range is only valid for unit "Pieces"
-        And the quantity price rule has a range starting from 20 with behaviour percentage-decrease of 10%
+        And the quantity price rule has a range starting from 20 with behavior percentage-decrease of 10%
         And the price range is only valid for unit "Carton"
-        And the quantity price rule has a range starting from 40 with behaviour percentage-decrease of 20%
+        And the quantity price rule has a range starting from 40 with behavior percentage-decrease of 20%
         And the price range is only valid for unit "Carton"
-        And the quantity price rule has a range starting from 100 with behaviour percentage-decrease of 10%
+        And the quantity price rule has a range starting from 100 with behavior percentage-decrease of 10%
         And the price range is only valid for unit "Palette"
-        And the quantity price rule has a range starting from 200 with behaviour percentage-decrease of 20%
+        And the quantity price rule has a range starting from 200 with behavior percentage-decrease of 20%
         And the price range is only valid for unit "Palette"
         When I open the product's detail page
         Then I should see the price "€100.00"

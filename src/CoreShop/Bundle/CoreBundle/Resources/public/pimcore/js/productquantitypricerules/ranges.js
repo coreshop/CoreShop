@@ -13,8 +13,8 @@
 coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_quantity_price_rules.ranges, {
 
     productUnitDefinitionsStore: null,
-    amountBasedBehaviour: ['fixed', 'amount_decrease', 'amount_increase'],
-    percentBasedBehaviour: ['percentage_decrease', 'percentage_increase'],
+    amountBasedBehavior: ['fixed', 'amount_decrease', 'amount_increase'],
+    percentBasedBehavior: ['percentage_decrease', 'percentage_increase'],
 
     afterInitialization: function () {
 
@@ -81,7 +81,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
             ranges.push({
                 'id': record.get('rangeId'),
                 'rangeStartingFrom': record.get('rangeStartingFrom'),
-                'pricingBehaviour': record.get('pricingBehaviour'),
+                'pricingBehavior': record.get('pricingBehavior'),
                 'unitDefinition': record.get('unitDefinition'),
                 'amount': record.get('amount'),
                 'currency': record.get('currency'),
@@ -188,13 +188,13 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                 },
                 renderer: function (value, cell, record) {
                     var prefix = '';
-                    if (record.get('pricingBehaviour') === 'amount_increase') {
+                    if (record.get('pricingBehavior') === 'amount_increase') {
                         prefix = '+';
-                    } else if (record.get('pricingBehaviour') === 'amount_decrease') {
+                    } else if (record.get('pricingBehavior') === 'amount_decrease') {
                         prefix = '-';
                     }
 
-                    if (_.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
+                    if (_.isInArray(record.get('pricingBehavior'), _.percentBasedBehavior)) {
                         _.setDisabledStyleForCell(cell);
                     }
 
@@ -223,7 +223,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                 renderer: function (currencyId, cell, record) {
                     var store, currencyObject;
 
-                    if (_.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
+                    if (_.isInArray(record.get('pricingBehavior'), _.percentBasedBehavior)) {
                         _.setDisabledStyleForCell(cell);
                     }
 
@@ -250,13 +250,13 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                 }.bind(this),
                 renderer: function (value, cell, record) {
                     var prefix = '';
-                    if (record.get('pricingBehaviour') === 'percentage_increase') {
+                    if (record.get('pricingBehavior') === 'percentage_increase') {
                         prefix = '+';
-                    } else if (record.get('pricingBehaviour') === 'percentage_decrease') {
+                    } else if (record.get('pricingBehavior') === 'percentage_decrease') {
                         prefix = '-';
                     }
 
-                    if (_.isInArray(record.get('pricingBehaviour'), _.amountBasedBehaviour)) {
+                    if (_.isInArray(record.get('pricingBehavior'), _.amountBasedBehavior)) {
                         _.setDisabledStyleForCell(cell);
                     }
 
@@ -279,7 +279,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                 },
                 renderer: function (value, cell, record) {
 
-                    if (_.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
+                    if (_.isInArray(record.get('pricingBehavior'), _.percentBasedBehaviour)) {
                         _.setDisabledStyleForCell(cell);
                     }
 

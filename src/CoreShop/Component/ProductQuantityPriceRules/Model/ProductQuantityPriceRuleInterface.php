@@ -36,12 +36,12 @@ interface ProductQuantityPriceRuleInterface extends RuleInterface
     /**
      * @return string
      */
-    public function getCalculationBehaviour();
+    public function getCalculationBehavior();
 
     /**
-     * @param string $calculationBehaviour
+     * @param string $calculationBehavior
      */
-    public function setCalculationBehaviour($calculationBehaviour);
+    public function setCalculationBehavior($calculationBehavior);
 
     /**
      * @return Collection|QuantityRangeInterface[]

@@ -63,13 +63,13 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^adding a quantity price rule to (product "[^"]+") named "([^"]+)" and with calculation-behaviour "([^"]+)"$/
-     * @Given /^adding a quantity price rule to this (product) named "([^"]+)" with calculation-behaviour "([^"]+)"$/
+     * @Given /^adding a quantity price rule to (product "[^"]+") named "([^"]+)" and with calculation-behavior "([^"]+)"$/
+     * @Given /^adding a quantity price rule to this (product) named "([^"]+)" with calculation-behavior "([^"]+)"$/
      */
     public function addingAProductQuantityPriceRuleToProduct(
         ProductInterface $product,
         $ruleName,
-        $calculationBehaviourName,
+        $calculationBehaviorName,
     ): void {
         /**
          * @var ProductQuantityPriceRuleInterface $rule
@@ -77,7 +77,7 @@ final class ProductQuantityPriceRuleContext implements Context
         $rule = $this->productQuantityPriceRuleFactory->createNew();
         $rule->setName($ruleName);
         $rule->setProduct($product->getId());
-        $rule->setCalculationBehaviour($calculationBehaviourName);
+        $rule->setCalculationBehavior($calculationBehaviorName);
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();
@@ -110,8 +110,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour percentage-decrease of ([^"]+)%$/
-     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour percentage-decrease of ([^"]+)%$/
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behavior percentage-decrease of ([^"]+)%$/
+     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behavior percentage-decrease of ([^"]+)%$/
      */
     public function theProductQuantityPriceRuleHasRangePercentageDecrease(
         ProductQuantityPriceRuleInterface $rule,
@@ -122,7 +122,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour('percentage_decrease');
+        $range->setPricingBehavior('percentage_decrease');
         $range->setPercentage($percentage);
         $range->setRangeStartingFrom($from);
 
@@ -132,8 +132,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (quantity price rule "[^"]+") has a range starting from to ([^"]+) with behaviour percentage-increase of ([^"]+)%$/
-     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour percentage-increase of ([^"]+)%$/
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from to ([^"]+) with behavior percentage-increase of ([^"]+)%$/
+     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behavior percentage-increase of ([^"]+)%$/
      */
     public function theProductQuantityPriceRuleHasRangePercentageIncrease(
         ProductQuantityPriceRuleInterface $rule,
@@ -144,7 +144,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour('percentage_increase');
+        $range->setPricingBehavior('percentage_increase');
         $range->setPercentage($percentage);
         $range->setRangeStartingFrom($from);
 
@@ -154,7 +154,7 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour amount-decrease of (\d+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behavior amount-decrease of (\d+) in (currency "[^"]+")$/
      * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour amount-decrease of (\d+) in (currency "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasRangeAmountDecrease(
@@ -167,7 +167,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour('amount_decrease');
+        $range->setPricingBehavior('amount_decrease');
         $range->setAmount($amount);
         $range->setRangeStartingFrom($from);
         $range->setCurrency($currency);
@@ -191,7 +191,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour('amount_increase');
+        $range->setPricingBehavior('amount_increase');
         $range->setAmount($amount);
         $range->setRangeStartingFrom($from);
         $range->setCurrency($currency);
@@ -215,7 +215,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour('fixed');
+        $range->setPricingBehavior('fixed');
         $range->setAmount($amount);
         $range->setRangeStartingFrom($from);
         $range->setCurrency($currency);
@@ -239,7 +239,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour('percentage_decrease');
+        $range->setPricingBehavior('percentage_decrease');
         $range->setPercentage($percentage);
         $range->setRangeStartingFrom($from);
         $range->setUnitDefinition($unitDefinition);
@@ -263,7 +263,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour('percentage_increase');
+        $range->setPricingBehavior('percentage_increase');
         $range->setPercentage($percentage);
         $range->setRangeStartingFrom($from);
         $range->setUnitDefinition($unitDefinition);
@@ -288,7 +288,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour('amount_decrease');
+        $range->setPricingBehavior('amount_decrease');
         $range->setAmount($amount);
         $range->setRangeStartingFrom($from);
         $range->setCurrency($currency);

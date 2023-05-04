@@ -6,7 +6,7 @@ After a customer has been connected to a company by using the 1to1 relation `com
 > Note! This is only available if a customer already is connected to a valid company!
 
 ### Own Only
-If set, the customer can create, edit and delete own addresses and choose them in checkout as well. This is the default behaviour.
+If set, the customer can create, edit and delete own addresses and choose them in checkout as well. This is the default behavior.
 
 ### Company Only
 If set, the customer can create, edit und delete company addresses and choose them in checkout as well. He's not able to add addresses to himself.

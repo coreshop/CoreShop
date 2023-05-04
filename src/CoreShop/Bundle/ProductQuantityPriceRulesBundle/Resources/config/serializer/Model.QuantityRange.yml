@@ -11,7 +11,7 @@ CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange:
             expose: true
             type: int
             groups: [Detailed, Version]
-        pricingBehaviour:
+        pricingBehavior:
             expose: true
             type: string
             groups: [Detailed, Version]

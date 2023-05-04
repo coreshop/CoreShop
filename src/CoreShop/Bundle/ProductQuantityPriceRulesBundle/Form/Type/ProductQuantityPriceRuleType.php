@@ -40,7 +40,7 @@ final class ProductQuantityPriceRuleType extends RuleType
     {
         $builder
             ->add('name', TextareaType::class)
-            ->add('calculationBehaviour', ChoiceType::class, [
+            ->add('calculationBehavior', ChoiceType::class, [
                 'choices' => $this->calculatorTypes,
                 'constraints' => [
                     new NotBlank(['groups' => $this->validationGroups]),

@@ -19,7 +19,7 @@ Settings can be different for each Store.
  - Contact Technology: Default contact used for technology messages
 
 #### Stock
- - Default Stock Behaviour: Describes the default stock behaviour for products
+ - Default Stock Behavior: Describes the default stock behavior for products
 
 #### Tax
  - Validate VAT: Describes if the VAT-Number for European Countries should be validated

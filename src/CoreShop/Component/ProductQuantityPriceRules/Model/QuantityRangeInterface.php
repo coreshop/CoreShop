@@ -32,9 +32,9 @@ interface QuantityRangeInterface extends ResourceInterface
     /**
      * @return string
      */
-    public function getPricingBehaviour();
+    public function getPricingBehavior();
 
-    public function setPricingBehaviour(string $pricingBehaviour);
+    public function setPricingBehavior(string $pricingBehavior);
 
     /**
      * @return float

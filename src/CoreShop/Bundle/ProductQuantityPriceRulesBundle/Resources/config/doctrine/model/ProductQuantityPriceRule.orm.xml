@@ -13,7 +13,7 @@
         <field name="active" column="active" type="boolean"/>
         <field name="priority" column="priority" type="integer"/>
         <field name="product" column="product" type="integer"/>
-        <field name="calculationBehaviour" column="calculation_behaviour"/>
+        <field name="calculationBehavior" column="calculation_behavior"/>
         <field name="creationDate" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>

@@ -10,6 +10,6 @@ core_shop_product_quantity_price_rules:
         -
             class: 'CoreShop\Bundle\CoreBundle\Validator\Constraints\QuantityRangePriceCurrencyAware'
             groups:
-                - 'coreshop_product_quantity_price_rules_range_validation_behaviour_fixed'
-                - 'coreshop_product_quantity_price_rules_range_validation_behaviour_amount_decrease'
-                - 'coreshop_product_quantity_price_rules_range_validation_behaviour_amount_increase'
+                - 'coreshop_product_quantity_price_rules_range_validation_behavior_fixed'
+                - 'coreshop_product_quantity_price_rules_range_validation_behavior_amount_decrease'
+                - 'coreshop_product_quantity_price_rules_range_validation_behavior_amount_increase'

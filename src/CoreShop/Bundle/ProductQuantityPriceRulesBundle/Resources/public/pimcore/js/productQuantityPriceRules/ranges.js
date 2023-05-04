@@ -17,16 +17,16 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
     ruleId: null,
     objectId: null,
     clipboardManager: null,
-    pricingBehaviourTypes: [],
+    pricingBehaviorTypes: [],
     storeDataChanged: false,
 
-    initialize: function (ruleId, objectId, clipboardManager, pricingBehaviourTypes) {
+    initialize: function (ruleId, objectId, clipboardManager, pricingBehaviorTypes) {
         this.storeDataChanged = false;
         this.internalTmpId = Ext.id();
         this.ruleId = ruleId;
         this.objectId = objectId;
         this.clipboardManager = clipboardManager;
-        this.pricingBehaviourTypes = pricingBehaviourTypes;
+        this.pricingBehaviorTypes = pricingBehaviorTypes;
 
         this.afterInitialization();
     },
@@ -111,7 +111,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
             ranges.push({
                 'id': record.get('rangeId'),
                 'rangeStartingFrom': record.get('rangeStartingFrom'),
-                'pricingBehaviour': record.get('pricingBehaviour'),
+                'pricingBehavior': record.get('pricingBehavior'),
                 'highlighted': record.get('highlighted'),
             });
         });
@@ -179,21 +179,21 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                 }
             },
             {
-                text: t('coreshop_product_quantity_price_rules_behaviour'),
+                text: t('coreshop_product_quantity_price_rules_behavior'),
                 flex: 1,
                 sortable: false,
-                dataIndex: 'pricingBehaviour',
-                name: 'pricing_behaviour',
+                dataIndex: 'pricingBehavior',
+                name: 'pricing_behavior',
                 getEditor: function () {
                     return new Ext.form.ComboBox({
-                        store: this.pricingBehaviourTypes,
+                        store: this.pricingBehaviorTypes,
                         listeners: {
-                            change: this.onPriceBehaviourChange.bind(this),
+                            change: this.onPriceBehaviorChange.bind(this),
                             select: function (combo) {
                                 var grid = this.up('grid'),
                                     selectedModel = grid.getSelectionModel().getSelected().getAt(0);
 
-                                selectedModel.set('pricingBehaviour', combo.getValue());
+                                selectedModel.set('pricingBehavior', combo.getValue());
                                 combo.up('editor').completeEdit(true);
                                 combo.up('grid').getView().refresh();
                             }
@@ -205,9 +205,9 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                 }.bind(this),
                 renderer: function (value) {
                     if (value === undefined || value === null) {
-                        return t('coreshop_product_quantity_price_rules_behaviour_nothing_selected');
+                        return t('coreshop_product_quantity_price_rules_behavior_nothing_selected');
                     }
-                    return t('coreshop_product_quantity_price_rules_behaviour_' + value);
+                    return t('coreshop_product_quantity_price_rules_behavior_' + value);
                 }
             },
             {
@@ -421,7 +421,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         // keep it for 3rd party modifiers.
     },
 
-    onPriceBehaviourChange: function (field) {
+    onPriceBehaviorChange: function (field) {
         // keep it for 3rd party modifiers.
     },
 
@@ -514,7 +514,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
 
         return new modelClass({
             rangeStartingFrom: lastEntry !== null ? lastEntry.get('rangeStartingFrom') + 10 : 0,
-            pricingBehaviour: 'fixed',
+            pricingBehavior: 'fixed',
             highlight: false,
             rangeId: null
         });

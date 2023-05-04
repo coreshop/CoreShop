@@ -60,12 +60,12 @@ class VolumeCalculator implements CalculatorInterface
 
     public function calculateRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $originalPrice, array $context): int
     {
-        $pricingBehaviour = $range->getPricingBehaviour();
+        $pricingBehavior = $range->getPricingBehavior();
 
         /**
          * @var ProductQuantityPriceRuleActionInterface $service
          */
-        $service = $this->actionRegistry->get($pricingBehaviour);
+        $service = $this->actionRegistry->get($pricingBehavior);
 
         return $service->calculate($range, $subject, $originalPrice, $context);
     }

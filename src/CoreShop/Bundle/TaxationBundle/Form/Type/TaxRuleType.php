@@ -32,9 +32,9 @@ class TaxRuleType extends AbstractResourceType
             ])
             ->add('behavior', ChoiceType::class, [
                 'choices' => [
-                    'coreshop.form.tax_rule.behaviour.disable' => 0,
-                    'coreshop.form.tax_rule.behaviour.combine' => 1,
-                    'coreshop.form.tax_rule.behaviour.one_after_another' => 2,
+                    'coreshop.form.tax_rule.behavior.disable' => 0,
+                    'coreshop.form.tax_rule.behavior.combine' => 1,
+                    'coreshop.form.tax_rule.behavior.one_after_another' => 2,
                 ],
                 'choice_translation_domain' => false,
             ])

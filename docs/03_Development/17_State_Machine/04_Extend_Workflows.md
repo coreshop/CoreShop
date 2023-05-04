@@ -69,7 +69,7 @@ class WorkflowListener
 }
 ```
 
-## Example B: Change default Transition Behaviour of Shipment Workflow
+## Example B: Change default Transition Behavior of Shipment Workflow
 
 > **Note:** Be careful while changing transitions. Test your application if a workflow still runs smoothly after changing it!
 

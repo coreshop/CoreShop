@@ -8,9 +8,9 @@ Feature: Viewing product details with quantity price rules
     Scenario: View product with quantity price rule
         Given the site has a product "T-Shirt" priced at 10000
         And the product is active and published and available for store "Austria"
-        And adding a quantity price rule to this product named "default-product-quantity-price-rule" with calculation-behaviour "volume"
+        And adding a quantity price rule to this product named "default-product-quantity-price-rule" with calculation-behavior "volume"
         And the quantity price rule is active
-        And the quantity price rule has a range starting from 5 with behaviour percentage-decrease of 10%
+        And the quantity price rule has a range starting from 5 with behavior percentage-decrease of 10%
         When I open the product's detail page
         Then I should see the price "€100.00"
         And I should see one quantity price rule with price "€90.00"
@@ -19,10 +19,10 @@ Feature: Viewing product details with quantity price rules
     Scenario: View product with quantity price rules having multiple ranges
         Given the site has a product "T-Shirt" priced at 10000
         And the product is active and published and available for store "Austria"
-        And adding a quantity price rule to this product named "default-product-quantity-price-rule" with calculation-behaviour "volume"
+        And adding a quantity price rule to this product named "default-product-quantity-price-rule" with calculation-behavior "volume"
         And the quantity price rule is active
-        And the quantity price rule has a range starting from 5 with behaviour percentage-decrease of 10%
-        And the quantity price rule has a range starting from 10 with behaviour percentage-decrease of 20%
+        And the quantity price rule has a range starting from 5 with behavior percentage-decrease of 10%
+        And the quantity price rule has a range starting from 10 with behavior percentage-decrease of 20%
         When I open the product's detail page
         Then I should see the price "€100.00"
         And I should see the quantity price rule 1 starting from "5"

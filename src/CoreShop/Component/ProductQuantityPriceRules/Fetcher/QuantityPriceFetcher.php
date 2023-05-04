@@ -41,7 +41,7 @@ class QuantityPriceFetcher implements QuantityPriceFetcherInterface
         /**
          * @var CalculatorInterface $service
          */
-        $service = $this->calculatorRegistry->get($rule->getCalculationBehaviour());
+        $service = $this->calculatorRegistry->get($rule->getCalculationBehavior());
 
         return $service->calculateForQuantity($rule, $subject, $quantity, $originalPrice, $context);
     }
@@ -55,7 +55,7 @@ class QuantityPriceFetcher implements QuantityPriceFetcherInterface
         /**
          * @var CalculatorInterface $service
          */
-        $service = $this->calculatorRegistry->get($range->getRule()->getCalculationBehaviour());
+        $service = $this->calculatorRegistry->get($range->getRule()->getCalculationBehavior());
 
         return $service->calculateForRange($range, $subject, $originalPrice, $context);
     }

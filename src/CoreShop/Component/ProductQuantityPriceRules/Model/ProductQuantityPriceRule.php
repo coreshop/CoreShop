@@ -58,7 +58,7 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
     /**
      * @var string
      */
-    protected $calculationBehaviour;
+    protected $calculationBehavior;
 
     /**
      * @var ArrayCollection|ConditionInterface[]
@@ -192,14 +192,14 @@ class ProductQuantityPriceRule extends AbstractResource implements ProductQuanti
         return $this;
     }
 
-    public function getCalculationBehaviour()
+    public function getCalculationBehavior()
     {
-        return $this->calculationBehaviour;
+        return $this->calculationBehavior;
     }
 
-    public function setCalculationBehaviour($calculationBehaviour)
+    public function setCalculationBehavior($calculationBehavior)
     {
-        $this->calculationBehaviour = $calculationBehaviour;
+        $this->calculationBehavior = $calculationBehavior;
     }
 
     public function getPriority()

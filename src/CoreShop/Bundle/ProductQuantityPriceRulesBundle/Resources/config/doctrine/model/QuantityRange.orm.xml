@@ -9,7 +9,7 @@
         </id>
 
         <field name="rangeStartingFrom" column="range_starting_from" type="float"/>
-        <field name="pricingBehaviour" column="pricing_behaviour"/>
+        <field name="pricingBehavior" column="pricing_behavior"/>
         <field name="percentage" column="percentage" type="float"/>
         <field name="highlighted" column="highlighted" type="boolean"/>
 

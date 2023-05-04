@@ -44,7 +44,7 @@ final class ProductQuantityRangeType extends AbstractResourceType
 
         $builder
             ->add('rangeStartingFrom', NumberType::class)
-            ->add('pricingBehaviour', ChoiceType::class, [
+            ->add('pricingBehavior', ChoiceType::class, [
                 'choices' => $this->actionTypes,
             ])
             ->add('highlighted', CheckboxType::class, [])
@@ -67,7 +67,7 @@ final class ProductQuantityRangeType extends AbstractResourceType
                 $validationGroups = ['coreshop_product_quantity_price_rules_range_validation_default'];
                 /** @var QuantityRangeInterface $data */
                 $data = $form->getData();
-                $validationGroups[] = sprintf('coreshop_product_quantity_price_rules_range_validation_behaviour_%s', $data->getPricingBehaviour());
+                $validationGroups[] = sprintf('coreshop_product_quantity_price_rules_range_validation_behavior_%s', $data->getPricingBehavior());
 
                 return $validationGroups;
             },

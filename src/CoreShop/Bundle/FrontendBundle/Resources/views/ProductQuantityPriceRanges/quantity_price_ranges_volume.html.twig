@@ -14,7 +14,7 @@
     {% set sorted_unit_ranges = sorted_unit_ranges|merge({ (unit_identifier): {'ranges' : current_ranges, 'unit_definition' : unit_definition } }) %}
 {% endfor %}
 
-<div class="product-quantity-price-ranges quantity-type-{{ rule.calculationBehaviour }} d-block">
+<div class="product-quantity-price-ranges quantity-type-{{ rule.calculationBehavior }} d-block">
     <h3>{{ 'coreshop.ui.product_quantity_price_rules.ranges_available'|trans }}</h3>
     <table class="table table-striped">
         <thead class="">
@@ -71,9 +71,9 @@
                             <small>{{ 'coreshop.ui.product_quantity_price_rules.list_price'|trans }}
                                 <del>{{ currency.convertAndFormatFromCustomCurrency(range.currency.isoCode, range.pseudoPrice) }}</del>
                             </small>
-                        {% elseif range.pricingBehaviour == 'percentage_decrease' %}
+                        {% elseif range.pricingBehavior == 'percentage_decrease' %}
                             <small>{{ 'coreshop.ui.product_quantity_price_rules.you_save'|trans }}: {{ range.percentage }}%</small>
-                        {% elseif range.pricingBehaviour == 'amount_decrease' %}
+                        {% elseif range.pricingBehavior == 'amount_decrease' %}
                             <small>{{ 'coreshop.ui.product_quantity_price_rules.you_save'|trans }}: {{ currency.convertAndFormatFromCustomCurrency(range.currency.isoCode, range.amount) }}</small>
                         {% endif %}
                     </td>

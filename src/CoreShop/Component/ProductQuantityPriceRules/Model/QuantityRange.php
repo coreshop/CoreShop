@@ -38,7 +38,7 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
     /**
      * @var string
      */
-    protected $pricingBehaviour;
+    protected $pricingBehavior;
 
     /**
      * @var float
@@ -75,14 +75,14 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
         $this->rangeStartingFrom = $rangeStartingFrom;
     }
 
-    public function getPricingBehaviour()
+    public function getPricingBehavior()
     {
-        return $this->pricingBehaviour;
+        return $this->pricingBehavior;
     }
 
-    public function setPricingBehaviour(string $pricingBehaviour)
+    public function setPricingBehavior(string $pricingBehavior)
     {
-        $this->pricingBehaviour = $pricingBehaviour;
+        $this->pricingBehavior = $pricingBehavior;
     }
 
     public function getPercentage()
