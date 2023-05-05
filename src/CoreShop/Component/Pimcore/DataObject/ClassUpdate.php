@@ -23,7 +23,7 @@ use Pimcore\Model\DataObject;
 
 class ClassUpdate extends AbstractDefinitionUpdate
 {
-    private DataObject\ClassDefinition $classDefinition;
+    private ?DataObject\ClassDefinition $classDefinition;
 
     public function __construct(
         string $className,
