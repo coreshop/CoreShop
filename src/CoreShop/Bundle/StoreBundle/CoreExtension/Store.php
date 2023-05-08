@@ -39,7 +39,7 @@ class Store extends Select
     public $options = [];
 
     /** @var string */
-    public $optionsProviderClass = '@'.StoreOptionProvider::class;
+    public $optionsProviderClass = '@' . StoreOptionProvider::class;
 
     protected function getRepository()
     {
@@ -70,7 +70,7 @@ class Store extends Select
     {
         $optionsProvider = OptionsProviderResolver::resolveProvider(
             $this->getOptionsProviderClass(),
-            OptionsProviderResolver::MODE_SELECT
+            OptionsProviderResolver::MODE_SELECT,
         );
 
         if ($optionsProvider) {
@@ -97,8 +97,6 @@ class Store extends Select
     }
 
     /**
-     * @param array|null $options
-     *
      * @return $this
      */
     public function setOptions(?array $options)
@@ -106,7 +104,7 @@ class Store extends Select
         if (is_array($options)) {
             $this->options = [];
             foreach ($options as $option) {
-                $option = (array)$option;
+                $option = (array) $option;
                 if (!array_key_exists('key', $option) || !array_key_exists('value', $option)) {
                     throw new InvalidArgumentException('Please provide select options as associative array with fields "key" and "value"');
                 }

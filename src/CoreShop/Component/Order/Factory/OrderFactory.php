@@ -26,7 +26,7 @@ class OrderFactory implements FactoryInterface
     public function __construct(
         private FactoryInterface $cartFactory,
         private UniqueTokenGenerator $tokenGenerator,
-        private int $tokenLength = 10
+        private int $tokenLength = 10,
     ) {
     }
 

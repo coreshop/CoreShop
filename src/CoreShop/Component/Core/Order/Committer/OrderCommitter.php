@@ -34,7 +34,6 @@ use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
-use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
