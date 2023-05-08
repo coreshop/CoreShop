@@ -56,7 +56,7 @@ final class SessionBasedListContext implements StorageListContextInterface
             $storageList = $this->repository->find($sessionId);
         }
 
-        if (null === $storageList) {
+        if (!$storageList instanceof StorageListInterface) {
             $this->storageList = $this->inner->getStorageList();
         } else {
             $this->storageList = $storageList;
