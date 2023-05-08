@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\WishlistBundle\Pimcore\Repository;
 
+use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
@@ -25,6 +26,23 @@ use CoreShop\Component\Wishlist\Repository\WishlistRepositoryInterface;
 
 class WishlistRepository extends PimcoreRepository implements WishlistRepositoryInterface
 {
+    public function findExpiredStorageLists(int $days, array $params = []): array
+    {
+        $daysTimestamp = Carbon::now();
+        $daysTimestamp->subDays($days);
+        $queryParams = [$daysTimestamp->getTimestamp()];
+
+        $list = $this->getList();
+        $list->setCondition('o_modificationDate < ?', $queryParams);
+
+        /**
+         * @var StorageListInterface[] $result
+         */
+        $result = $list->getObjects();
+
+        return $result;
+    }
+
     public function findByStorageListId(int $id): ?StorageListInterface
     {
         return $this->find($id);

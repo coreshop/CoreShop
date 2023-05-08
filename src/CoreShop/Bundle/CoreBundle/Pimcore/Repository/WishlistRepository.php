@@ -22,11 +22,10 @@ use CoreShop\Bundle\WishlistBundle\Pimcore\Repository\WishlistRepository as Base
 use CoreShop\Component\Core\Wishlist\Repository\WishlistRepositoryInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\StorageList\Repository\CustomerExpiryRepositoryTrait;
-use CoreShop\Component\StorageList\Repository\ExpireAbleStorageListRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
 
-class WishlistRepository extends BaseWishlistRepository implements WishlistRepositoryInterface, ExpireAbleStorageListRepositoryInterface
+class WishlistRepository extends BaseWishlistRepository implements WishlistRepositoryInterface
 {
     use CustomerExpiryRepositoryTrait;
 

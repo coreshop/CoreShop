@@ -18,11 +18,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Wishlist\Repository;
 
+use CoreShop\Component\StorageList\Repository\ExpireAbleStorageListRepositoryInterface;
 use CoreShop\Component\StorageList\Repository\PimcoreStorageListRepositoryInterface;
 use CoreShop\Component\StorageList\Repository\ShareableStorageListRepositoryInterface;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
 
-interface WishlistRepositoryInterface extends PimcoreStorageListRepositoryInterface, ShareableStorageListRepositoryInterface
+interface WishlistRepositoryInterface extends PimcoreStorageListRepositoryInterface, ShareableStorageListRepositoryInterface, ExpireAbleStorageListRepositoryInterface
 {
     public function findByToken(string $token): ?WishlistInterface;
 }
