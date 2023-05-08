@@ -25,7 +25,6 @@ use Pimcore\Model\Document;
 use Pimcore\Model\Site;
 use Pimcore\Model\Staticroute;
 use Pimcore\Tool;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
@@ -93,18 +92,18 @@ final class LocaleSwitcherExtension extends AbstractExtension
                 $route = $this->getMainRequest()->attributes->get('_route');
                 $staticRoute = Staticroute::getByName($route);
                 $params = [];
-                if ( str_contains($staticRoute->getVariables(), '_locale') ) {
+                if (str_contains($staticRoute->getVariables(), '_locale')) {
                     $params = ['_locale' => $language];
                 }
                 $link = $this->router->generate($route, $params);
             } else {
-                if ( isset($translations[$language]) ) {
+                if (isset($translations[$language])) {
                     $localizedDocument = Document::getById($translations[$language]);
                 } else {
                     $localizedDocument = Document::getByPath($target);
                 }
 
-                if ( $localizedDocument instanceof Document && $localizedDocument->getPublished() ) {
+                if ($localizedDocument instanceof Document && $localizedDocument->getPublished()) {
                     $link = $localizedDocument->getFullPath();
                 }
             }
