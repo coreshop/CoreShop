@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\WishlistBundle\Pimcore\Repository;
 
-use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\Wishlist\Model\WishlistInterface;
