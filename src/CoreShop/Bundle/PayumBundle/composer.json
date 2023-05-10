@@ -32,7 +32,7 @@
     "payum/payum": "^1.7",
     "symfony/notifier": "^5.4.0",
     "symfony/serializer": "^5.4.0",
-    "php-http/guzzle7-adapter": "^0.1",
+    "php-http/guzzle7-adapter": "^1.0",
     "pimcore/pimcore": "^10.5"
   },
   "require-dev": {

@@ -28,7 +28,7 @@
     "coreshop/payum-payment": "^3.0",
     "pimcore/pimcore": "^10.5",
     "payum/payum-bundle": "^2.5",
-    "php-http/guzzle7-adapter": "^0.1"
+    "php-http/guzzle7-adapter": "^1.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.5.4",
