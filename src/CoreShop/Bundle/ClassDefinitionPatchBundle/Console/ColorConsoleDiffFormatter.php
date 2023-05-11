@@ -67,7 +67,11 @@ class ColorConsoleDiffFormatter
     {
         $escapedDiff = OutputFormatter::escape(rtrim($diff));
 
-        $escapedDiffLines = (new UnicodeString($escapedDiff))->split(self::NEWLINES_REGEX);
+        $escapedDiffLines = array_map(
+            static function(UnicodeString $string) {
+                return $string->toString();
+            }, (new UnicodeString($escapedDiff))->split(self::NEWLINES_REGEX)
+        );
 
         // remove description of added + remove; obvious on diffs
         foreach ($escapedDiffLines as $key => $escapedDiffLine) {
