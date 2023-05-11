@@ -77,3 +77,4 @@ split 'src/CoreShop/Bundle/VariantBundle' variant-bundle
 split 'src/CoreShop/Bundle/StorageListBundle' storage-list-bundle
 split 'src/CoreShop/Bundle/WishlistBundle' wishlist-bundle
 split 'src/CoreShop/Bundle/MessengerBundle' messenger-bundle
+split 'src/CoreShop/Bundle/ClassDefinitionPatchBundle' coreshop/class-definition-patch-bundle

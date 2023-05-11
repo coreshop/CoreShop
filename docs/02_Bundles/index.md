@@ -36,3 +36,4 @@ CoreShop is a set of Bundles that provide different functionality. Each Bundle i
  - [Variant Bundle](./Variant_Bundle.md)
  - [Wishlist Bundle](./Wishlist_Bundle.md)
  - [Workflow Bundle](./Workflow_Bundle.md)
+ - [Class Definition Patch Bundle](./ClassDefinitionPatch_Bundle.md)
