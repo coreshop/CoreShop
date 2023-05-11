@@ -1,6 +1,6 @@
 # CoreShop Class Definition Patch Bundle
 
-CoreShop Class Definition Patch Bundles allows you to patch class definitions from other bundles. This is useful if you want to add new properties to existing classes with a configuration.
+CoreShop Class Definition Patch Bundle allows you to patch class definitions from other bundles. This is useful if you want to add new properties to existing classes with a configuration.
 
 ## Installation
 ```bash
