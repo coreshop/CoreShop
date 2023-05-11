@@ -103,7 +103,7 @@
     "php-http/guzzle7-adapter": "^0.1",
     "pimcore/pimcore": "^10.5",
     "rinvex/countries": "^7.3",
-    "sebastian/diff": "^4.0",
+    "sebastian/diff": "^4.0 | ^5.0",
     "stof/doctrine-extensions-bundle": "^1.6",
     "sylius/theme-bundle": "^2.2",
     "symfony/notifier": "^5.4.0",
