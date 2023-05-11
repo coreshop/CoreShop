@@ -62,7 +62,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
             $value = $condition->getConfiguration()['preSelect'];
         }
 
-        if (!empty($value)) {
+        if (null !== $value) {
             $value = filter_var($value, \FILTER_VALIDATE_BOOLEAN, \FILTER_NULL_ON_FAILURE);
 
             $currentFilter[$field] = $value;
