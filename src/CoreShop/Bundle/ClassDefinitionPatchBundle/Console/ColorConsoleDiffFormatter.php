@@ -18,8 +18,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ClassDefinitionPatchBundle\Console;
 
-use Nette\Utils\Strings;
 use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\String\UnicodeString;
 
 class ColorConsoleDiffFormatter
 {
@@ -67,7 +67,7 @@ class ColorConsoleDiffFormatter
     {
         $escapedDiff = OutputFormatter::escape(rtrim($diff));
 
-        $escapedDiffLines = Strings::split($escapedDiff, self::NEWLINES_REGEX);
+        $escapedDiffLines = (new UnicodeString($escapedDiff))->split(self::NEWLINES_REGEX);
 
         // remove description of added + remove; obvious on diffs
         foreach ($escapedDiffLines as $key => $escapedDiffLine) {
@@ -97,16 +97,16 @@ class ColorConsoleDiffFormatter
 
     private function makePlusLinesGreen(string $string): string
     {
-        return Strings::replace($string, self::PLUS_START_REGEX, '<fg=green>$1</fg=green>');
+        return (new UnicodeString($string))->replace(self::PLUS_START_REGEX, '<fg=green>$1</fg=green>')->toString();
     }
 
     private function makeMinusLinesRed(string $string): string
     {
-        return Strings::replace($string, self::MINUT_START_REGEX, '<fg=red>$1</fg=red>');
+        return (new UnicodeString($string))->replace(self::MINUT_START_REGEX, '<fg=red>$1</fg=red>')->toString();
     }
 
     private function makeAtNoteCyan(string $string): string
     {
-        return Strings::replace($string, self::AT_START_REGEX, '<fg=cyan>$1</fg=cyan>');
+        return (new UnicodeString($string))->replace(self::AT_START_REGEX, '<fg=cyan>$1</fg=cyan>')->toString();
     }
 }

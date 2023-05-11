@@ -21,23 +21,20 @@ namespace CoreShop\Bundle\ClassDefinitionPatchBundle\DependencyInjection;
 use CoreShop\Bundle\ClassDefinitionPatchBundle\Patch;
 use CoreShop\Bundle\ClassDefinitionPatchBundle\Patches;
 use CoreShop\Bundle\ClassDefinitionPatchBundle\PatchField;
-use CoreShop\Bundle\ClassDefinitionPatchBundle\PatchFieldInterface;
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
-use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class CoreShopClassDefinitionPatchExtension extends AbstractModelExtension
+final class CoreShopClassDefinitionPatchExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
         $patches = [];
@@ -48,12 +45,15 @@ final class CoreShopClassDefinitionPatchExtension extends AbstractModelExtension
             foreach ($patch['fields'] as $fieldName => $field) {
                 $fieldId = sprintf('coreshop.patch.%s.field.%s', $className, $fieldName);
 
-                $container->setDefinition($fieldId, new Definition(PatchField::class, [
-                    $fieldName,
-                    $field['after'] ?? null,
-                    $field['before'] ?? null,
-                    $field['definition'] ?? null,
-                ]));
+                $container->setDefinition(
+                    $fieldId,
+                    new Definition(PatchField::class, [
+                        $fieldName,
+                        $field['after'] ?? null,
+                        $field['before'] ?? null,
+                        $field['definition'] ?? null,
+                    ])
+                );
 
                 $fields[] = new Reference($fieldId);
             }
