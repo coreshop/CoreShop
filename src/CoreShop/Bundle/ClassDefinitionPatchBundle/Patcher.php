@@ -36,19 +36,7 @@ class Patcher implements PatcherInterface
         foreach ($this->patches->getPatches() as $patch) {
             $this->patchClass($patch);
         }
-    }
-
-    public function diff(): array
-    {
-        $diffs = [];
-        foreach ($this->patches->getPatches() as $patch) {
-            $diffs[] = $this->diffClass($patch);
-        }
-
-        return $diffs;
-    }
-
-    public function old(PatchInterface $patch): array
+    }public function old(PatchInterface $patch): array
     {
         return $this->patchWithClassUpdate($patch)->getOriginalJsonDefinition();
     }
