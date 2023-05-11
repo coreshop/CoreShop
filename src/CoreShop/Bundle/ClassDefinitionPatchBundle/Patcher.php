@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ClassDefinitionPatchBundle;
 
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
-use Pimcore\Model\DataObject\ClassDefinition;
 
 class Patcher implements PatcherInterface
 {
@@ -57,11 +56,6 @@ class Patcher implements PatcherInterface
     public function new(PatchInterface $patch): array
     {
         return $this->patchWithClassUpdate($patch)->getJsonDefinition();
-    }
-
-    public function diffClass(PatchInterface $patch): array
-    {
-        return $this->patchWithClassUpdate($patch)->diff(false);
     }
 
     public function patchClass(Patch $patch): void
