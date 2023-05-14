@@ -9,6 +9,7 @@ splits:
     - { prefix: src/CoreShop/Bundle/AddressBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/AddressBundle.git' }
     - { prefix: src/CoreShop/Component/Configuration, target: 'https://${GH_TOKEN}@github.com/coreshop/Configuration.git' }
     - { prefix: src/CoreShop/Bundle/ConfigurationBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/ConfigurationBundle.git' }
+    - { prefix: src/CoreShop/Bundle/ClassDefinitionPatchBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/ClassDefinitionPatchBundle.git' }
     - { prefix: src/CoreShop/Component/Core, target: 'https://${GH_TOKEN}@github.com/coreshop/Core.git' }
     - { prefix: src/CoreShop/Bundle/CoreBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/CoreBundle.git' }
     - { prefix: src/CoreShop/Component/Currency, target: 'https://${GH_TOKEN}@github.com/coreshop/Currency.git' }
