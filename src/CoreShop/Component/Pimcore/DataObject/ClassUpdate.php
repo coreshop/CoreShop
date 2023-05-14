@@ -20,6 +20,7 @@ namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException;
 use Pimcore\Model\DataObject;
+use Pimcore\Model\DataObject\ClassDefinition;
 
 class ClassUpdate extends AbstractDefinitionUpdate
 {
@@ -41,6 +42,7 @@ class ClassUpdate extends AbstractDefinitionUpdate
             DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->classDefinition),
             true,
         );
+        $this->originalJsonDefinition = $this->jsonDefinition;
     }
 
     public function save(): bool

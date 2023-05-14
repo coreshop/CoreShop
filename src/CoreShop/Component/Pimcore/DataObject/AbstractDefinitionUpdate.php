@@ -25,6 +25,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 {
     protected array $jsonDefinition;
+    protected array $originalJsonDefinition;
 
     protected array $fieldDefinitions;
 
@@ -38,6 +39,16 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     }
 
     abstract public function save(): bool;
+
+    public function getJsonDefinition(): array
+    {
+        return $this->jsonDefinition;
+    }
+
+    public function getOriginalJsonDefinition(): array
+    {
+        return $this->originalJsonDefinition;
+    }
 
     public function getProperty(string $property): mixed
     {

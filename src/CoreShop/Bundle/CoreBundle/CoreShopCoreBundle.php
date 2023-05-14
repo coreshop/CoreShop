@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle;
 
 use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
+use CoreShop\Bundle\ClassDefinitionPatchBundle\CoreShopClassDefinitionPatchBundle;
 use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterIndexProductExtensionPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
@@ -97,6 +98,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Compose
         $collection->addBundle(new CoreShopPayumBundle(), 1700);
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
         $collection->addBundle(new CoreShopWishlistBundle(), 1500);
+        $collection->addBundle(new CoreShopClassDefinitionPatchBundle(), 1400);
     }
 
     public function getPackageName(): string
