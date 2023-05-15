@@ -25,11 +25,11 @@ use CoreShop\Bundle\StorageListBundle\EventListener\CacheListener;
 use CoreShop\Bundle\StorageListBundle\EventListener\SessionSubscriber;
 use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
+use CoreShop\Component\StorageList\Context\SessionBasedListContext;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Context\StorageListFactoryContext;
 use CoreShop\Component\StorageList\Core\Context\CustomerAndStoreBasedStorageListContext;
 use CoreShop\Component\StorageList\Core\Context\SessionAndStoreBasedStorageListContext;
-use CoreShop\Component\StorageList\Context\SessionBasedListContext;
 use CoreShop\Component\StorageList\Core\Context\StoreBasedStorageListContext;
 use CoreShop\Component\StorageList\StorageListsManager;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
@@ -223,14 +223,14 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 );
                 $sessionContext->setArgument(
                     '$inner',
-                    new Reference('coreshop.storage_list.context.' . $name .'.session.inner'),
+                    new Reference('coreshop.storage_list.context.' . $name . '.session.inner'),
                 );
                 $sessionContext->setArgument('$requestStack', new Reference('request_stack'));
                 $sessionContext->setArgument('$sessionKeyName', $list['session']['key']);
                 $sessionContext->setArgument('$repository', new Reference($list['resource']['repository']));
                 $sessionContext->setDecoratedService('coreshop.storage_list.context.factory.' . $name);
 
-                $container->setDefinition('coreshop.storage_list.context.' . $name .'.session', $sessionContext);
+                $container->setDefinition('coreshop.storage_list.context.' . $name . '.session', $sessionContext);
             }
 
             $tags[] = [
