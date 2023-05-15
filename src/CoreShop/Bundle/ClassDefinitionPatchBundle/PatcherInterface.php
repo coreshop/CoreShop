@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ClassDefinitionPatchBundle;
 
-use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
-
 interface PatcherInterface
 {
     public function getPatches(): array;
@@ -27,6 +25,7 @@ interface PatcherInterface
     public function old(PatchInterface $patch): array;
 
     public function new(PatchInterface $patch): array;
+
     public function patch(): void;
 
     public function patchClass(Patch $patch): void;

@@ -20,8 +20,9 @@ namespace CoreShop\Bundle\ClassDefinitionPatchBundle;
 
 class Patches implements PatchesInterface
 {
-    public function __construct(protected array $patches = [])
-    {
+    public function __construct(
+        protected array $patches = [],
+    ) {
     }
 
     public function getPatches(): array

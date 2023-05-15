@@ -24,7 +24,7 @@ final class ConsoleDiffer
 {
     public function __construct(
         private Differ $differ,
-        private ColorConsoleDiffFormatter $colorConsoleDiffFormatter
+        private ColorConsoleDiffFormatter $colorConsoleDiffFormatter,
     ) {
     }
 

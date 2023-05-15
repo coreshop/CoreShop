@@ -20,7 +20,6 @@ namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\DataObject\ClassDefinition;
 
 class ClassUpdate extends AbstractDefinitionUpdate
 {

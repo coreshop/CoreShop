@@ -41,7 +41,6 @@ class CaptureAction implements ActionInterface
     {
         return
             $request instanceof Capture &&
-            $request->getModel() instanceof \ArrayAccess
-        ;
+            $request->getModel() instanceof \ArrayAccess;
     }
 }

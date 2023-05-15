@@ -25,36 +25,40 @@ class ColorConsoleDiffFormatter
 {
     /**
      * @var string
+     *
      * @see https://regex101.com/r/ovLMDF/1
      */
     private const PLUS_START_REGEX = '#^(\+.*)#';
 
     /**
      * @var string
+     *
      * @see https://regex101.com/r/xwywpa/1
      */
     private const MINUT_START_REGEX = '#^(\-.*)#';
 
     /**
      * @var string
+     *
      * @see https://regex101.com/r/CMlwa8/1
      */
     private const AT_START_REGEX = '#^(@.*)#';
 
     /**
      * @var string
+     *
      * @see https://regex101.com/r/qduj2O/1
      */
     private const NEWLINES_REGEX = "#\n\r|\n#";
 
     private string $template;
 
-    public function __construct()
-    {
+    public function __construct(
+        ) {
         $this->template = sprintf(
-            '<comment>    ---------- begin diff ----------</comment>%s%%s%s<comment>    ----------- end diff -----------</comment>' . PHP_EOL,
-            PHP_EOL,
-            PHP_EOL
+            '<comment>    ---------- begin diff ----------</comment>%s%%s%s<comment>    ----------- end diff -----------</comment>' . \PHP_EOL,
+            \PHP_EOL,
+            \PHP_EOL,
         );
     }
 
@@ -68,9 +72,10 @@ class ColorConsoleDiffFormatter
         $escapedDiff = OutputFormatter::escape(rtrim($diff));
 
         $escapedDiffLines = array_map(
-            static function(UnicodeString $string) {
+            static function (UnicodeString $string) {
                 return $string->toString();
-            }, (new UnicodeString($escapedDiff))->split(self::NEWLINES_REGEX)
+            },
+            (new UnicodeString($escapedDiff))->split(self::NEWLINES_REGEX),
         );
 
         // remove description of added + remove; obvious on diffs
@@ -96,7 +101,7 @@ class ColorConsoleDiffFormatter
             return $string;
         }, $escapedDiffLines);
 
-        return sprintf($template, implode(PHP_EOL, $coloredLines));
+        return sprintf($template, implode(\PHP_EOL, $coloredLines));
     }
 
     private function makePlusLinesGreen(string $string): string

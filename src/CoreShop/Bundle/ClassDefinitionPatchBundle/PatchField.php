@@ -25,8 +25,7 @@ class PatchField implements PatchFieldInterface
         protected ?string $after,
         protected ?string $before,
         protected ?array $definition,
-    )
-    {
+    ) {
         if (null === $this->definition) {
             $this->definition = [];
         }
