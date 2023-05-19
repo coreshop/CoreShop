@@ -80,7 +80,6 @@ final class CapturePaymentAction implements ActionInterface, GatewayAwareInterfa
     {
         return
             $request instanceof Capture &&
-            $request->getModel() instanceof CoreShopPaymentInterface
-        ;
+            $request->getModel() instanceof CoreShopPaymentInterface;
     }
 }
