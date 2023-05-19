@@ -44,7 +44,8 @@ final class PatchCommand extends Command
                 <<<EOT
 The <info>%command.name%</info> executes all Class Patches.
 EOT
-            );
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -58,8 +59,8 @@ EOT
                 $output->writeln(
                     $this->consoleDiffer->diff(
                         print_r($this->patcher->old($patch), true),
-                        print_r($this->patcher->new($patch), true)
-                    )
+                        print_r($this->patcher->new($patch), true),
+                    ),
                 );
             }
         }

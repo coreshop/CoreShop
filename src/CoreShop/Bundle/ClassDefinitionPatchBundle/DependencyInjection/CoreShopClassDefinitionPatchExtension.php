@@ -34,7 +34,7 @@ final class CoreShopClassDefinitionPatchExtension extends Extension
     {
         $configs = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
         $patches = [];
@@ -52,12 +52,11 @@ final class CoreShopClassDefinitionPatchExtension extends Extension
                         $field['after'] ?? null,
                         $field['before'] ?? null,
                         $field['definition'] ?? null,
-                    ])
+                    ]),
                 );
 
                 $fields[] = new Reference($fieldId);
             }
-
 
             $patches[$className] = new Definition(Patch::class, [
                 $className,

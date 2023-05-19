@@ -22,8 +22,9 @@ use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 
 class Patcher implements PatcherInterface
 {
-    public function __construct(protected Patches $patches)
-    {
+    public function __construct(
+        protected Patches $patches,
+    ) {
     }
 
     public function getPatches(): array
@@ -36,10 +37,12 @@ class Patcher implements PatcherInterface
         foreach ($this->patches->getPatches() as $patch) {
             $this->patchClass($patch);
         }
-    }public function old(PatchInterface $patch): array
-    {
-        return $this->patchWithClassUpdate($patch)->getOriginalJsonDefinition();
     }
+
+public function old(PatchInterface $patch): array
+{
+    return $this->patchWithClassUpdate($patch)->getOriginalJsonDefinition();
+}
 
     public function new(PatchInterface $patch): array
     {
@@ -116,14 +119,11 @@ class Patcher implements PatcherInterface
         foreach ($patch->getFields() as $field) {
             if ($classUpdater->hasField($field->getFieldName())) {
                 $classUpdater->replaceField($field->getFieldName(), $field->getDefinition());
-            }
-            elseif ($field->getBefore()) {
+            } elseif ($field->getBefore()) {
                 $classUpdater->insertFieldBefore($field->getBefore(), $field->getDefinition());
-            }
-            elseif ($field->getAfter()) {
+            } elseif ($field->getAfter()) {
                 $classUpdater->insertFieldAfter($field->getAfter(), $field->getDefinition());
-            }
-            else {
+            } else {
                 $classUpdater->insertField($field->getDefinition());
             }
         }

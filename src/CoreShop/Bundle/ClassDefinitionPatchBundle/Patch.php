@@ -30,8 +30,7 @@ class Patch implements PatchInterface
         protected ?string $useTraits,
         protected ?string $listingUseTraits,
         protected ?array $fields,
-    )
-    {
+    ) {
     }
 
     public function getClassName(): string

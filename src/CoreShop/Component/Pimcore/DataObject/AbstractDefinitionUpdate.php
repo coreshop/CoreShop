@@ -25,6 +25,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 {
     protected array $jsonDefinition;
+
     protected array $originalJsonDefinition;
 
     protected array $fieldDefinitions;
