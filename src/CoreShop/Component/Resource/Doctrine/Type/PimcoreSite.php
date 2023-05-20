@@ -34,7 +34,14 @@ class PimcoreSite extends Type
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?Site
     {
-        return Site::getById($value);
+        //not sure why this might return a string
+        $site = Site::getById($value);
+
+        if ($site instanceof Site) {
+            return $site;
+        }
+
+        return null;
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?int
