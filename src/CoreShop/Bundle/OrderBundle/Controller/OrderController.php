@@ -743,7 +743,7 @@ class OrderController extends PimcoreController
         $this->addressFormatter = $addressFormatter;
     }
 
-    public function setJmsSerializer(SerializerInterface $jmsSerializer): void
+    public function setJmsSerializer(ArrayTransformerInterface $jmsSerializer): void
     {
         $this->jmsSerializer = $jmsSerializer;
     }
