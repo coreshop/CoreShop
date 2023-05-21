@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         php: [ 8.0, 8.1 ]
-        pimcore: [ ^10.5 ]
+        pimcore: [ ~10.5, ~10.6 ]
         dependencies: [ highest, lowest ]
         exclude:
           - php: 8.1

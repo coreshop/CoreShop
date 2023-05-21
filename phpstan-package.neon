@@ -30,9 +30,6 @@ parameters:
         - '/Constant PIMCORE_DEVMODE not found./'
         - '/Class Zend_Paginator_Adapter_Interface not found and could not be autoloaded./'
 
-        - '/Class LuceneSearchBundle/'
-        - '/unknown class LuceneSearchBundle/'
-        - '/typehint type LuceneSearchBundle/'
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)/'
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface/'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::save\(\)./'
@@ -43,17 +40,12 @@ parameters:
         - '/PHPDoc type string of property CoreShop\\Bundle\\PayumBundle\\Request\\GetStatus::\$status is not covariant with PHPDoc type int of overridden property Payum\\Core\\Request\\BaseGetStatus::\$status./'
 
         # Pimcore BC Breaks
-        - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Href not found/'
-        - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Multihref not found/'
         - '/Class Pimcore\\Bundle\\AdminBundle\\Helper\\GridHelperService not found/'
         - '/Class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface not found/'
         - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\\CustomVersionMarshalInterface not found/'
         - '/Call to method markLazyKeyAsLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
         - '/Call to method isLazyKeyLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
         - '/Access to undefined constant PackageVersions\\Versions::VERSIONS/'
-
-        # BC Breaks that will be resolved with 3.0
-        - '/Method CoreShop\\Bundle\\ThemeBundle\\Service\\ThemeResolverInterface::resolveTheme\(\)/'
 
 includes:
     - ./vendor/phpstan/phpstan-doctrine/extension.neon
