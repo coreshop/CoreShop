@@ -32,7 +32,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [ 8.0, 8.1 ]
-        pimcore: [ ^10.5 ]
+        pimcore: [ ~10.5, ~10.6 ]
         dependencies: [ highest, lowest ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
         exclude:
