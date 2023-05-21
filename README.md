@@ -4,10 +4,9 @@
 
 **CoreShop - Pimcore eCommerce**
 
-[![Join the chat at https://gitter.im/coreshop/coreshop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/coreshop/coreshop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-![Behat UI Tests](https://github.com/coreshop/CoreShop/workflows/PHP%20Stan/badge.svg)
+![Static Tests (Lint, Stan)](https://github.com/coreshop/CoreShop/actions/workflows/static.yml/badge.svg)
 ![Behat UI Tests](https://github.com/coreshop/CoreShop/workflows/Behat%20UI/badge.svg)
-![Behat UI Tests](https://github.com/coreshop/CoreShop/workflows/Behat/badge.svg)
+![Behat Tests](https://github.com/coreshop/CoreShop/workflows/Behat/badge.svg)
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 [![Latest Pre-Release](https://img.shields.io/packagist/vpre/coreshop/core-shop.svg)](https://www.packagist.org/packages/coreshop/core-shop)
 
