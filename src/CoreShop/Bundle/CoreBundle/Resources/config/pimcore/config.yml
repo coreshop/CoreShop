@@ -17,9 +17,9 @@ twig:
         coreshop: '@CoreShop\Component\Core\Context\ShopperContextInterface'
 
 pimcore:
-#    security:
-#        encoder_factories:
-#            '%coreshop.model.user.class%': coreshop.security.user.password_encoder_factory
+    security:
+        encoder_factories:
+            '%coreshop.model.user.class%': coreshop.security.user.password_encoder_factory
     objects:
         class_definitions:
             data:
