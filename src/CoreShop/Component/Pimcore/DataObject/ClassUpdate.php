@@ -23,7 +23,7 @@ use Pimcore\Model\DataObject;
 
 class ClassUpdate extends AbstractDefinitionUpdate
 {
-    private DataObject\ClassDefinition $classDefinition;
+    private ?DataObject\ClassDefinition $classDefinition;
 
     public function __construct(
         string $className,
@@ -44,6 +44,7 @@ class ClassUpdate extends AbstractDefinitionUpdate
             512,
             JSON_THROW_ON_ERROR
         );
+        $this->originalJsonDefinition = $this->jsonDefinition;
     }
 
     public function save(): bool

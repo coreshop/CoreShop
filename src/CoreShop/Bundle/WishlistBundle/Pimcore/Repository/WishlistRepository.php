@@ -25,6 +25,23 @@ use CoreShop\Component\Wishlist\Repository\WishlistRepositoryInterface;
 
 class WishlistRepository extends PimcoreRepository implements WishlistRepositoryInterface
 {
+    public function findExpiredStorageLists(int $days, array $params = []): array
+    {
+        $daysTimestamp = Carbon::now();
+        $daysTimestamp->subDays($days);
+        $queryParams = [$daysTimestamp->getTimestamp()];
+
+        $list = $this->getList();
+        $list->setCondition('o_modificationDate < ?', $queryParams);
+
+        /**
+         * @var StorageListInterface[] $result
+         */
+        $result = $list->getObjects();
+
+        return $result;
+    }
+
     public function findByStorageListId(int $id): ?StorageListInterface
     {
         return $this->find($id);

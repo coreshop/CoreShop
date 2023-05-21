@@ -76,6 +76,7 @@ final class CoreShopResourceExtension extends AbstractPimcoreExtension
             'priority' => 10,
         ]);
 
+        $container->setParameter('coreshop.resources', []);
         $container->setDefinition('coreshop.body_listener', $bodyListener);
 
         $container

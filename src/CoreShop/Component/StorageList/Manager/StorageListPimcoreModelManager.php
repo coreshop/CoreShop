@@ -44,49 +44,47 @@ final class StorageListPimcoreModelManager implements StorageListManagerInterfac
             'path' => 'storage-list',
         ]);
 
-        $this->connection->transactional(function () use ($storageList, $folder) {
-            VersionHelper::useVersioning(function () use ($storageList, $folder) {
-                $tempItems = $storageList->getItems();
+        VersionHelper::useVersioning(function () use ($storageList, $folder) {
+            $tempItems = $storageList->getItems();
 
-                if (!$storageList->getId()) {
-                    $storageList->setItems([]);
-
-                    /**
-                     * @psalm-suppress DocblockTypeContradiction
-                     */
-                    if (!$storageList->getParent()) {
-                        $storageList->setParent($folder);
-                    }
-
-                    $storageList->save();
-                }
+            if (!$storageList->getId()) {
+                $storageList->setItems([]);
 
                 /**
-                 * @var AbstractPimcoreModel $item
+                 * @psalm-suppress DocblockTypeContradiction
                  */
-                foreach ($tempItems as $index => $item) {
-                    $item->setParent(
-                        $this->folderCreationService->createFolderForResource(
-                            $item,
-                            ['prefix' => $storageList->getFullPath()],
-                        ),
-                    );
-                    $item->setPublished(true);
-                    $item->setKey($index + 1);
-                    $item->save();
-                }
-
-                $storageList->setItems($tempItems);
-
-                /**
-                 * @var AbstractPimcoreModel $storageListItem
-                 */
-                foreach ($storageList->getItems() as $storageListItem) {
-                    $storageListItem->save();
+                if (!$storageList->getParent()) {
+                    $storageList->setParent($folder);
                 }
 
                 $storageList->save();
-            }, false);
-        });
+            }
+
+            /**
+             * @var AbstractPimcoreModel $item
+             */
+            foreach ($tempItems as $index => $item) {
+                $item->setParent(
+                    $this->folderCreationService->createFolderForResource(
+                        $item,
+                        ['prefix' => $storageList->getFullPath()],
+                    ),
+                );
+                $item->setPublished(true);
+                $item->setKey($index + 1);
+                $item->save();
+            }
+
+            $storageList->setItems($tempItems);
+
+            /**
+             * @var AbstractPimcoreModel $storageListItem
+             */
+            foreach ($storageList->getItems() as $storageListItem) {
+                $storageListItem->save();
+            }
+
+            $storageList->save();
+        }, false);
     }
 }

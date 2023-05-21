@@ -20,6 +20,7 @@ namespace CoreShop\Component\Core\Provider;
 
 use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 
 class ContextBasedDefaultTaxAddressProvider implements DefaultTaxAddressProviderInterface
@@ -31,6 +32,13 @@ class ContextBasedDefaultTaxAddressProvider implements DefaultTaxAddressProvider
 
     public function getAddress(array $context = []): ?AddressInterface
     {
+        if (array_key_exists('cart', $context) && $context['cart'] instanceof OrderInterface) {
+            $invoiceAddress = $context['cart']->getInvoiceAddress();
+            if ($invoiceAddress instanceof AddressInterface) {
+                return $invoiceAddress;
+            }
+        }
+
         $address = $this->addressFactory->createNew();
 
         if (array_key_exists('country', $context)) {

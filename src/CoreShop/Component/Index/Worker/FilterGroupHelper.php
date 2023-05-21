@@ -80,10 +80,6 @@ class FilterGroupHelper implements FilterGroupHelperInterface
                     $explode = is_string($v['value']) ? explode(',', $v['value']) : [$v['value']];
 
                     foreach ($explode as $e) {
-                        if (!$e) {
-                            continue;
-                        }
-
                         if (array_key_exists($e, $values)) {
                             $values[$e]['count'] += $v['count'];
 

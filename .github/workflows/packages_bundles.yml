@@ -1,9 +1,9 @@
 name: Packages Bundles
 on:
   push:
-    branches: [ '3.x-next' ]
+    branches: [ '2.2', '3.0', '3.1', 'master' ]
   pull_request:
-    branches: [ '3.x-next' ]
+    branches: [ '2.2', '3.0', '3.1', 'master' ]
   release:
     types: [ created ]
   schedule:
@@ -31,8 +31,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+<<<<<<< HEAD
         php: [ 8.1, 8.2 ]
         pimcore: [ ^11.0 ]
+=======
+        php: [ 8.0, 8.1 ]
+        pimcore: [ ~10.5, ~10.6 ]
+>>>>>>> master
         dependencies: [ highest, lowest ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
         exclude:

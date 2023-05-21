@@ -49,7 +49,8 @@ final class CartCreationCartItemType extends AbstractResourceType
             ->add('quantity', IntegerType::class, [
                 'attr' => ['min' => 1],
                 'label' => 'coreshop.ui.quantity',
-            ])->setDataMapper($this->dataMapper);
+            ])->setDataMapper($this->dataMapper)
+        ;
 
         if ($options['allow_custom_price']) {
             $builder

@@ -21,9 +21,11 @@ namespace CoreShop\Bundle\StorageListBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\StorageListBundle\Core\EventListener\SessionStoreStorageListSubscriber;
 use CoreShop\Bundle\StorageListBundle\Core\EventListener\StorageListBlamerListener;
+use CoreShop\Bundle\StorageListBundle\EventListener\CacheListener;
 use CoreShop\Bundle\StorageListBundle\EventListener\SessionSubscriber;
 use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\StorageList\Context\CompositeStorageListContext;
+use CoreShop\Component\StorageList\Context\SessionBasedListContext;
 use CoreShop\Component\StorageList\Context\StorageListContextInterface;
 use CoreShop\Component\StorageList\Context\StorageListFactoryContext;
 use CoreShop\Component\StorageList\Core\Context\CustomerAndStoreBasedStorageListContext;
@@ -102,9 +104,18 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                     new Reference($contextCompositeServiceName),
                     $list['session']['key'],
                 ]);
+                $sessionSubscriber->addTag('kernel.event_subscriber');
 
                 $container->setDefinition('coreshop.storage_list.session_subscriber.' . $name, $sessionSubscriber);
             }
+
+            $cacheSubscriber = new Definition(CacheListener::class, [
+                new Reference(PimcoreContextResolver::class),
+                new Reference($contextCompositeServiceName),
+            ]);
+            $cacheSubscriber->addTag('kernel.event_subscriber');
+
+            $container->setDefinition('coreshop.storage_list.cache_subscriber.' . $name, $cacheSubscriber);
 
             if ($list['controller']['enabled']) {
                 $class = $list['controller']['class'];
@@ -144,10 +155,14 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 new Reference($list['services']['modifier']),
             ]);
 
+            $contextsRegistered = false;
+
             if (interface_exists(CustomerAwareInterface::class) && interface_exists(StoreAwareInterface::class)) {
                 $implements = \class_implements($list['resource']['interface']);
 
                 if (isset($implements[StoreAwareInterface::class], $implements[CustomerAwareInterface::class])) {
+                    $contextsRegistered = true;
+
                     $customerAndStoreBasedContextDefinition = new Definition(CustomerAndStoreBasedStorageListContext::class);
                     $customerAndStoreBasedContextDefinition->setArgument('$customerContext', new Reference('coreshop.context.customer'));
                     $customerAndStoreBasedContextDefinition->setArgument('$storeContext', new Reference('coreshop.context.store'));
@@ -233,6 +248,22 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
 
                     $container->setDefinition('coreshop.storage_list.expiration.task.' . $name, $expireTask);
                 }
+            }
+
+            if (!$contextsRegistered && $list['session']['enabled']) {
+                $sessionContext = new Definition(
+                    SessionBasedListContext::class,
+                );
+                $sessionContext->setArgument(
+                    '$inner',
+                    new Reference('coreshop.storage_list.context.' . $name . '.session.inner'),
+                );
+                $sessionContext->setArgument('$requestStack', new Reference('request_stack'));
+                $sessionContext->setArgument('$sessionKeyName', $list['session']['key']);
+                $sessionContext->setArgument('$repository', new Reference($list['resource']['repository']));
+                $sessionContext->setDecoratedService('coreshop.storage_list.context.factory.' . $name);
+
+                $container->setDefinition('coreshop.storage_list.context.' . $name . '.session', $sessionContext);
             }
 
             $tags[] = [

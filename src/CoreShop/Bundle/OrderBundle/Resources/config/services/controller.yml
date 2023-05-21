@@ -5,7 +5,7 @@ services:
             - ['setEventDispatcher', ['@event_dispatcher']]
             - ['setObjectNoteService', ['@CoreShop\Component\Pimcore\DataObject\NoteServiceInterface']]
             - ['setAddressFormatter', ['@CoreShop\Component\Address\Formatter\AddressFormatterInterface']]
-            - ['setSerializer', ['@jms_serializer.serializer']]
+            - ['setJmsSerializer', ['@jms_serializer.serializer']]
             - ['setWorkflowStateManager', ['@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface']]
             - ['setInvoiceProcessableHelper', ['@coreshop.order.invoice.processable']]
             - ['setShipmentProcessableHelper', ['@coreshop.order.shipment.processable']]

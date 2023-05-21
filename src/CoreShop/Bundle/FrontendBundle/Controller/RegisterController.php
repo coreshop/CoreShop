@@ -28,6 +28,7 @@ use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RegisterController extends FrontendController
@@ -106,8 +107,13 @@ class RegisterController extends FrontendController
             /**
              * @var UserInterface $user
              */
-            $user = $this->container->get('coreshop.repository.user')->findByResetToken($resetToken);
-            $form = $this->container->get('form.factory')->createNamed('coreshop', ResetPasswordType::class);
+            $user = $this->get('coreshop.repository.user')->findByResetToken($resetToken);
+
+            if (!$user) {
+                throw new NotFoundHttpException();
+            }
+
+            $form = $this->get('form.factory')->createNamed('coreshop', ResetPasswordType::class);
 
             if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
                 $handledForm = $form->handleRequest($request);
