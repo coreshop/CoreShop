@@ -41,5 +41,5 @@ jobs:
       if: github.ref == 'refs/heads/master'
       with:
         path: 'docs/generated-docs/'
-        destination: 'cors-wolke-coreshop-docs/3.1.0'
+        destination: 'cors-wolke-coreshop-docs/4.0.0'
         parent: false
