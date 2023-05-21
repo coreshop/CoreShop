@@ -30,6 +30,7 @@
     "coreshop/core": "^3.0",
     "payum/payum-bundle": "^2.5",
     "payum/payum": "^1.7",
+    "php-http/message-factory": "^1.0",
     "symfony/notifier": "^5.4.0",
     "symfony/serializer": "^5.4.0",
     "php-http/guzzle7-adapter": "^1.0",
