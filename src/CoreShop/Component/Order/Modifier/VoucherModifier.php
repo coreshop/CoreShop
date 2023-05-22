@@ -77,6 +77,10 @@ class VoucherModifier implements VoucherModifierInterface
                 continue;
             }
 
+            if (!$item->getVoucherCode()) {
+                continue;
+            }
+
             $voucherCode = $this->voucherCodeRepository->findByCode($item->getVoucherCode());
             if ($voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                 if ($voucherCode->getUses() !== 0) {
