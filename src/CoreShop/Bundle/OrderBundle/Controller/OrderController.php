@@ -355,7 +355,7 @@ class OrderController extends PimcoreController
 
     protected function getDetails(OrderInterface $order): array
     {
-        $jsonSale = $this->jmsSerializer->toArray($order);
+        $jsonSale = json_decode($this->jmsSerializer->normalize($order, 'json'), true, 512, JSON_THROW_ON_ERROR);
 
         $jsonSale['o_id'] = $order->getId();
         $jsonSale['saleNumber'] = $order->getOrderNumber();
@@ -484,7 +484,7 @@ class OrderController extends PimcoreController
                 'cancel',
             ], false);
 
-            $data = $this->jmsSerializer->toArray($invoice);
+            $data = json_decode($this->jmsSerializer->normalize($invoice, 'json'), true, 512, JSON_THROW_ON_ERROR);
 
             $data['stateInfo'] = $this->workflowStateManager->getStateInfo('coreshop_invoice', $invoice->getState(), false);
             $data['transitions'] = $availableTransitions;
@@ -507,7 +507,7 @@ class OrderController extends PimcoreController
                 'cancel',
             ], false);
 
-            $data = $this->jmsSerializer->toArray($shipment);
+            $data = json_decode($this->jmsSerializer->normalize($shipment, 'json'), true, 512, JSON_THROW_ON_ERROR);
 
             $data['stateInfo'] = $this->workflowStateManager->getStateInfo('coreshop_shipment', $shipment->getState(), false);
             $data['transitions'] = $availableTransitions;
