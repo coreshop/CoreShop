@@ -56,6 +56,7 @@ use Pimcore\Model\User;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -67,7 +68,7 @@ class OrderController extends PimcoreController
 
     protected AddressFormatterInterface $addressFormatter;
 
-    protected ArrayTransformerInterface $jmsSerializer;
+    protected SerializerInterface $jmsSerializer;
 
     protected WorkflowStateInfoManagerInterface $workflowStateManager;
 
@@ -742,7 +743,7 @@ class OrderController extends PimcoreController
         $this->addressFormatter = $addressFormatter;
     }
 
-    public function setJmsSerializer(ArrayTransformerInterface $jmsSerializer): void
+    public function setJmsSerializer(SerializerInterface $jmsSerializer): void
     {
         $this->jmsSerializer = $jmsSerializer;
     }
