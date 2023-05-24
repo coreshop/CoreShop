@@ -48,6 +48,10 @@ class PimcoreGuard
             $user = $user->getUser();
         }
 
+        if (class_exists(\Pimcore\Bundle\AdminBundle\Security\User\User::class) && $user instanceof \Pimcore\Bundle\AdminBundle\Security\User\User) {
+            $user = $user->getUser();
+        }
+
         if ($user instanceof User) {
             return $user->isAllowed((string) $item->getAttribute('permission'));
         }
