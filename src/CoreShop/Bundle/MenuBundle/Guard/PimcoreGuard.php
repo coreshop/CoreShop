@@ -45,10 +45,16 @@ class PimcoreGuard
         $user = $token->getUser();
 
         if (class_exists(\Pimcore\Security\User\User::class) && $user instanceof \Pimcore\Security\User\User) {
+            /**
+             * @psalm-suppress UndefinedClass, UndefinedInterfaceMethod
+             */
             $user = $user->getUser();
         }
 
         if (class_exists(\Pimcore\Bundle\AdminBundle\Security\User\User::class) && $user instanceof \Pimcore\Bundle\AdminBundle\Security\User\User) {
+            /**
+             * @psalm-suppress UndefinedClass, UndefinedInterfaceMethod
+             */
             $user = $user->getUser();
         }
 
