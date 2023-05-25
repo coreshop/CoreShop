@@ -55,11 +55,6 @@ class ResourceController extends AdminController
         if ($this->metadata->hasParameter('permission')) {
             $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
 
-            /**
-             * @var User $user
-             *
-             * @psalm-var User $user
-             */
             $user = $this->getUser();
 
             if (class_exists(\Pimcore\Security\User\User::class) && $user instanceof \Pimcore\Security\User\User) {
