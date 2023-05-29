@@ -19,14 +19,13 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MenuBundle\Guard;
 
 use Knp\Menu\ItemInterface;
-use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
 use Pimcore\Model\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PimcoreGuard
 {
     public function __construct(
-        private TokenStorageInterface $tokenStorage
+        private TokenStorageInterface $tokenStorage,
     ) {
     }
 
