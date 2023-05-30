@@ -20,3 +20,5 @@ coreshop_admin_payment_rule:
           action: getConfig
           methods:
             - GET
+
+

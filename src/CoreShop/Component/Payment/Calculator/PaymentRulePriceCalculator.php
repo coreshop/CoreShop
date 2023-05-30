@@ -47,7 +47,9 @@ class PaymentRulePriceCalculator
                 $payable,
                 $context,
             );
-            $price = $payable->getPaymentTotal();
+            if (!$price) {
+                $price = $payable->getPaymentTotal();
+            }
 
             $modifications = $this->paymentRuleProcessor->getModification(
                 $paymentRule,
@@ -57,7 +59,7 @@ class PaymentRulePriceCalculator
                 $context,
             );
 
-            return $price + $modifications;
+            return $modifications;
         }
 
         return 0;

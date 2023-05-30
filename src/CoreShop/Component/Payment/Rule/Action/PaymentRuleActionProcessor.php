@@ -57,7 +57,7 @@ class PaymentRuleActionProcessor implements ProviderPriceActionProcessorInterfac
         $paymentRule = $this->paymentRuleRepository->find($configuration['paymentRule']);
 
         if ($paymentRule instanceof PaymentRuleInterface) {
-            return $this->paymentRuleProcessor->getModification($paymentRule, $paymentProvider,$configuration, $price, $context);
+            return $this->paymentRuleProcessor->getModification($paymentRule, $paymentProvider, $configuration, $price, $context);
         }
 
         return 0;

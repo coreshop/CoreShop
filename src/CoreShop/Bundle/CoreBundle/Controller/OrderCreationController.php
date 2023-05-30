@@ -116,6 +116,11 @@ class OrderCreationController extends BaseOrderCreationController
 
         array_splice($result, 6, 0, [
             [
+                'key' => 'payment',
+                'value' => $cart->getPayment(),
+                'convertedValue' => $cart->getConvertedShipping(true),
+            ],
+            [
                 'key' => 'shipping',
                 'value' => $cart->getShipping(true),
                 'convertedValue' => $cart->getConvertedShipping(true),
