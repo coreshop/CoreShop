@@ -22,6 +22,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
+use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\Asset;
 
 interface PaymentProviderInterface extends
@@ -98,4 +99,23 @@ interface PaymentProviderInterface extends
      * @param Asset $logo
      */
     public function setLogo($logo);
+
+    /**
+     * @return Collection|PaymentRuleGroupInterface[]
+     */
+    public function getPaymentRules();
+
+    /**
+     * @return bool
+     */
+    public function hasPaymentRules();
+
+    /**
+     * @return bool
+     */
+    public function hasPaymentRule(PaymentRuleGroupInterface $paymentRuleGroup);
+
+    public function addPaymentRule(PaymentRuleGroupInterface $paymentRuleGroup);
+
+    public function removePaymentRule(PaymentRuleGroupInterface $paymentRuleGroup);
 }

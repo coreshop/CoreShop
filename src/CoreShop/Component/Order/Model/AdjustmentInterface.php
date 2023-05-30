@@ -24,6 +24,8 @@ interface AdjustmentInterface extends ResourceInterface
 {
     public const SHIPPING = 'shipping';
 
+    public const PAYMENT = 'payment';
+
     public const CART_PRICE_RULE = 'cart_price_rule';
 
     public function getAdjustable(): ?AdjustableInterface;
