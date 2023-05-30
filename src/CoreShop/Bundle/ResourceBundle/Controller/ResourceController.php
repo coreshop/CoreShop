@@ -26,7 +26,6 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -62,14 +61,12 @@ class ResourceController extends AdminController
                  * @psalm-suppress UndefinedClass, UndefinedInterfaceMethod
                  */
                 $user = $user->getUser();
-            }
-            else if (class_exists(\Pimcore\Bundle\AdminBundle\Security\User\User::class) && $user instanceof \Pimcore\Bundle\AdminBundle\Security\User\User) {
+            } elseif (class_exists(\Pimcore\Bundle\AdminBundle\Security\User\User::class) && $user instanceof \Pimcore\Bundle\AdminBundle\Security\User\User) {
                 /**
                  * @psalm-suppress UndefinedClass, UndefinedInterfaceMethod
                  */
                 $user = $user->getUser();
-            }
-            else {
+            } else {
                 throw new \RuntimeException(sprintf('Unknown Pimcore Admin User Class given "%s"', get_class($user)));
             }
 
