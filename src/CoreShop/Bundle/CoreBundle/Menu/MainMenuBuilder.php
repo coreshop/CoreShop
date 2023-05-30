@@ -363,13 +363,32 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setExtra('order', 80)
         ;
 
-        $menuItem->addChild('coreshop_payment_providers')
+        $paymentMenu = $menuItem
+            ->addChild('coreshop_payment_providers')
+            ->setLabel('coreshop_payment_providers')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_payment_provider')
+            ->setAttribute('container', true)
+            ->setExtra('order', 90)
+        ;
+
+        $paymentMenu
+            ->addChild('coreshop_payment_providers')
             ->setLabel('coreshop_payment_providers')
             ->setAttribute('permission', 'coreshop_permission_payment_provider')
             ->setAttribute('iconCls', 'coreshop_nav_icon_payment_provider')
             ->setAttribute('resource', 'coreshop.payment')
             ->setAttribute('function', 'payment_provider')
-            ->setExtra('order', 90)
+            ->setExtra('order', 10)
+        ;
+
+        $paymentMenu
+            ->addChild('coreshop_payment_rules')
+            ->setLabel('coreshop_payment_rules')
+            ->setAttribute('permission', 'coreshop_permission_payment_provider')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_payment_provider')
+            ->setAttribute('resource', 'coreshop.payment')
+            ->setAttribute('function', 'payment_rules')
+            ->setExtra('order', 20)
         ;
 
         $menuItem->addChild('coreshop_stores')

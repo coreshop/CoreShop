@@ -1,6 +1,17 @@
 parameters:
     coreshop.form.type.payment_provider.validation_groups: [coreshop]
     coreshop.form.type.payment_provider_translation.validation_groups: [coreshop]
+    coreshop.form.type.payment_rule.validation_groups: [coreshop]
+    coreshop.form.type.payment_rule_group.validation_groups: [coreshop]
+    coreshop.form.type.payment_rule.action.addition_percent.validation_groups: [ coreshop ]
+    coreshop.form.type.payment_rule.action.discount_percent.validation_groups: [ coreshop ]
+    coreshop.form.type.payment_rule.rule.validation_groups: [coreshop]
+    coreshop.form.type.payment_rule.rule_action.validation_groups: [coreshop]
+    coreshop.form.type.payment_rule.rule_condition.validation_groups: [coreshop]
+    coreshop.form.type.payment_rule.common.payment_rule.validation_groups: [coreshop]
+    coreshop.form.type.payment_rule.condition.amount.validation_groups: [coreshop]
+    coreshop.form.type.payment_rule.condition.nested.validation_groups: [coreshop]
+
 
 services:
     _defaults:
@@ -12,12 +23,19 @@ services:
         tags:
             - { name: form.type }
 
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleChoiceType:
+        arguments:
+            - '@coreshop.repository.payment_rule'
+        tags:
+            - { name: form.type }
+
     CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType:
         arguments:
             - '%coreshop.model.payment_provider.class%'
             - '%coreshop.form.type.payment_provider.validation_groups%'
         tags:
             - { name: form.type }
+
 
     CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType:
         arguments:
@@ -26,3 +44,80 @@ services:
         tags:
             - { name: form.type }
 
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleConditionType:
+        arguments:
+            - '%coreshop.model.rule_condition.class%'
+            - '%coreshop.form.type.payment_rule.rule_condition.validation_groups%'
+            - '@coreshop.form_registry.payment_rule.conditions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Condition\AmountConfigurationType:
+        arguments:
+            - '%coreshop.form.type.payment_rule.condition.amount.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Condition\NestedConfigurationType:
+        arguments:
+            - '%coreshop.form.type.payment_rule.condition.nested.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleType:
+        arguments:
+            - '%coreshop.model.payment_rule.class%'
+            - '%coreshop.form.type.payment_rule.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleConditionCollectionType:
+        arguments:
+            - '@coreshop.registry.payment_rule.conditions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleActionCollectionType:
+        arguments:
+            - '@coreshop.registry.payment_rule.actions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleConditionChoiceType:
+        arguments:
+            - '%coreshop.payment_rule.conditions%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleActionChoiceType:
+        arguments:
+            - '%coreshop.payment_rule.actions%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleActionType:
+        arguments:
+            - '%coreshop.model.rule_action.class%'
+            - '%coreshop.form.type.payment_rule.rule_action.validation_groups%'
+            - '@coreshop.form_registry.payment_rule.actions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleGroupType:
+        arguments:
+            - '%coreshop.model.payment_rule_group.class%'
+            - '%coreshop.form.type.payment_rule_group.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType:
+        arguments:
+            - '%coreshop.form.type.payment_rule.action.addition_percent.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType:
+        arguments:
+            - '%coreshop.form.type.payment_rule.action.discount_percent.validation_groups%'
+        tags:
+            - { name: form.type }

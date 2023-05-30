@@ -22,6 +22,8 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\Asset;
 
 /**
@@ -57,9 +59,15 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
      */
     protected $logo;
 
+    /**
+     * @var Collection|PaymentRuleGroupInterface[]
+     */
+    protected $paymentRules;
+
     public function __construct(
         ) {
         $this->initializeTranslationsCollection();
+        $this->paymentRules = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -143,5 +151,35 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     protected function createTranslation(): PaymentProviderTranslationInterface
     {
         return new PaymentProviderTranslation();
+    }
+
+    public function getPaymentRules()
+    {
+        return $this->paymentRules;
+    }
+
+    public function hasPaymentRules()
+    {
+        return !$this->paymentRules->isEmpty();
+    }
+
+    public function hasPaymentRule(PaymentRuleGroupInterface $paymentRuleGroup)
+    {
+        return $this->paymentRules->contains($paymentRuleGroup);
+    }
+
+    public function addPaymentRule(PaymentRuleGroupInterface $paymentRuleGroup)
+    {
+        if (!$this->hasPaymentRule($paymentRuleGroup)) {
+            $this->paymentRules->add($paymentRuleGroup);
+        }
+    }
+
+    public function removePaymentRule(PaymentRuleGroupInterface $paymentRuleGroup)
+    {
+        if ($this->hasShippingRule($paymentRuleGroup)) {
+            $this->paymentRules->removeElement($paymentRuleGroup);
+            $paymentRuleGroup->setCarrier(null);
+        }
     }
 }

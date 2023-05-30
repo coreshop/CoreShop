@@ -38,7 +38,6 @@ use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationT
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationType;
-use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
@@ -646,7 +645,7 @@ final class ShippingContext implements Context
 
     protected function getActionFormClass(): string
     {
-        return ShippingRuleActionType::class;
+        return PaymentRuleActionType::class;
     }
 
     protected function getFormFactory(): FormFactoryInterface

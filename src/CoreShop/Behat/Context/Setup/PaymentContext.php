@@ -21,19 +21,33 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use Carbon\Carbon;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleConditionType;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
+use CoreShop\Component\Payment\Model\PaymentRuleInterface;
 use CoreShop\Component\PayumPayment\Model\GatewayConfig;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Rule\Model\ActionInterface;
+use CoreShop\Component\Rule\Model\ConditionInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use Pimcore\Tool;
+use Symfony\Component\Form\FormFactoryInterface;
 
 final class PaymentContext implements Context
 {
+    use ConditionFormTrait;
+    use ActionFormTrait;
+
     public function __construct(
         private SharedStorageInterface $sharedStorage,
         private EntityManagerInterface $entityManager,
+        private ObjectManager $objectManager,
+        private FormFactoryInterface $formFactory,
+        private FormTypeRegistryInterface $conditionFormTypeRegistry,
+        private FormTypeRegistryInterface $actionFormTypeRegistry,
         private FactoryInterface $paymentFactory,
         private FactoryInterface $paymentProviderFactory,
         private FactoryInterface $gatewayConfigFactory,
@@ -96,5 +110,46 @@ final class PaymentContext implements Context
         $this->entityManager->flush();
 
         $this->sharedStorage->set('orderPayment', $payment);
+    }
+
+    protected function getConditionFormRegistry(): FormTypeRegistryInterface
+    {
+        return $this->conditionFormTypeRegistry;
+    }
+
+    protected function getConditionFormClass(): string
+    {
+        return PaymentRuleConditionType::class;
+    }
+
+    private function addCondition(PaymmentRuleInterface $rule, ConditionInterface $condition): void
+    {
+        $rule->addCondition($condition);
+
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
+    }
+
+    private function addAction(PaymentRuleInterface $rule, ActionInterface $action): void
+    {
+        $rule->addAction($action);
+
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
+    }
+
+    protected function getActionFormRegistry(): FormTypeRegistryInterface
+    {
+        return $this->actionFormTypeRegistry;
+    }
+
+    protected function getActionFormClass(): string
+    {
+        return ShippingRuleActionType::class;
+    }
+
+    protected function getFormFactory(): FormFactoryInterface
+    {
+        return $this->formFactory;
     }
 }

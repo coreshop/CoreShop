@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Resolver;
 
+use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
@@ -30,6 +31,9 @@ class PaymentProviderResolver implements PaymentProviderResolverInterface
 
     public function resolvePaymentProviders(ResourceInterface $subject = null): array
     {
+        /**
+         * @var PaymentProviderInterface[] $paymentProviders
+         */
         return $this->paymentProviderRepository->findActive();
     }
 }
