@@ -6,6 +6,10 @@
 {% set discountIt = cart.discount(true) %}
 {% set taxes = cart.taxes %}
 {% set rowspan = 10 + taxes|length %}
+{% set payment = cart.payment() %}
+    {# {% set payment = cart.payment(false) %}
+{% set paymentIt = cart.payment(true) %}  #}
+
 
 {% if shipping == 0 %}
     {% set rowspan = rowspan - 1 %}
@@ -63,6 +67,16 @@
         </td>
         <td colspan="2" class="text-right cart-shipping">
             {{ currency.convertAndFormat(shipping) }}
+        </td>
+    </tr>
+{% endif %}
+{% if payment != 0 %}
+    <tr>
+        <td class="text-right" colspan="3">
+            <strong>PAymentCost:</strong>
+        </td>
+        <td colspan="2" class="text-right cart-discount">
+            {{ currency.convertAndFormat(payment) }}
         </td>
     </tr>
 {% endif %}

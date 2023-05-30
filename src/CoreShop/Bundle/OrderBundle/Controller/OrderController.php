@@ -418,6 +418,34 @@ class OrderController extends PimcoreController
             $jsonSale['priceRule'] = $rules;
         }
 
+        if ($order->getPriceRuleItems() instanceof DataObject\Fieldcollection) {
+            $rules = [];
+
+            foreach ($order->getPriceRuleItems()->getItems() as $ruleItem) {
+                if ($ruleItem instanceof PriceRuleItemInterface) {
+                    $rule = $ruleItem->getCartPriceRule();
+
+                    $ruleData = [
+                        'id' => -1,
+                        'name' => '--',
+                        'code' => empty($ruleItem->getVoucherCode()) ? null : $ruleItem->getVoucherCode(),
+                        'discount' => $ruleItem->getDiscount(),
+                    ];
+
+                    if ($rule instanceof CartPriceRuleInterface) {
+                        $ruleData = array_merge($ruleData, [
+                            'id' => $rule->getId(),
+                            'name' => $rule->getName(),
+                        ]);
+                    }
+
+                    $rules[] = $ruleData;
+                }
+            }
+
+            $jsonSale['priceRule'] = $rules;
+        }
+
         $jsonSale['orderState'] = $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState() ?? OrderStates::STATE_NEW, false);
         $jsonSale['orderPaymentState'] = $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState() ?? OrderPaymentStates::STATE_NEW, false);
         $jsonSale['orderShippingState'] = $this->workflowStateManager->getStateInfo('coreshop_order_shipment', $order->getShippingState() ?? OrderShipmentStates::STATE_NEW, false);

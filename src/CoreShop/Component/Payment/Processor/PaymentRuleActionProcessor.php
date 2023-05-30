@@ -45,7 +45,6 @@ class PaymentRuleActionProcessor implements PaymentRuleActionProcessorInterface
             $processor = $this->actionServiceRegistry->get($action->getType());
 
             if ($processor instanceof ProviderPriceActionProcessorInterface) {
-                dd($processor);
                 $price += $processor->getPrice(
                     $paymentProvider,
                     $payable,
