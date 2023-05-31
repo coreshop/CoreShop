@@ -2,7 +2,7 @@ name: Monorepo split
 on:
     push:
         branches:
-            - master
+            - next
             - 2.0
             - 2.1
             - 2.2
