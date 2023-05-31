@@ -33,8 +33,6 @@ abstract class Order extends BaseOrder implements OrderInterface
 
     public function getPayment(): int
     {
-        dd($this->getAdjustmentsTotal(AdjustmentInterface::PAYMENT, false));
-
         return $this->getAdjustmentsTotal(AdjustmentInterface::PAYMENT, true);
     }
 

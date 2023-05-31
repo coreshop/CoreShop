@@ -41,10 +41,10 @@ final class CartPaymentProcessor implements CartProcessorInterface
         $cart->setPaymentTotal(
             (int) round((round($cart->getTotal() / $this->decimalFactor, $this->decimalPrecision) * 100), 0),
         );
-        $old = $cart->getTotal();
-        $context = $this->cartContextResolver->resolveCartContext($cart);
 
         if ($cart->getPaymentProvider()) {
+            $context = $this->cartContextResolver->resolveCartContext($cart);
+
             $price = $this->priceCalculator->getPrice(
                 $cart->getPaymentProvider(),
                 $cart,
@@ -59,10 +59,6 @@ final class CartPaymentProcessor implements CartProcessorInterface
                     $price,
                 ),
             );
-            $cart->setPaymentTotal(
-                (int) round((round($price / $this->decimalFactor, $this->decimalPrecision) * 100), 0),
-            );
         }
-        dump($cart);
     }
 }
