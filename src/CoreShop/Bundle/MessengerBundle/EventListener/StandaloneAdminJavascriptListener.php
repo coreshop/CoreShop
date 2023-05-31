@@ -21,9 +21,15 @@ namespace CoreShop\Bundle\MessengerBundle\EventListener;
 use Pimcore\Event\BundleManager\PathsEvent;
 use Pimcore\Event\BundleManagerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Routing\RouterInterface;
 
-final class AdminJavascriptListener implements EventSubscriberInterface
+final class StandaloneAdminJavascriptListener implements EventSubscriberInterface
 {
+    public function __construct(
+        private RouterInterface $router,
+    ) {
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -35,7 +41,8 @@ final class AdminJavascriptListener implements EventSubscriberInterface
     {
         $event->setPaths(
             array_merge($event->getPaths(), [
-                '/bundles/coreshopmessenger/pimcore/js/resource.js',
+                $this->router->generate('coreshop_menu', ['type' => 'coreshop.messenger']),
+                '/bundles/coreshopmessenger/pimcore/js/resource_standalone.js',
             ]),
         );
     }
