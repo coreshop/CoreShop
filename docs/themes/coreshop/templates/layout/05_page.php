@@ -1,27 +1,13 @@
-<?php
-/**
- * CoreShop.
- *
- * This source file is subject to the GNU General Public License version 3 (GPLv3)
- * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
- * files that are distributed with this source code.
- *
- * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
- * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */$this->layout('theme::layout/00_layout') ?>
-
-<header class="Navbar hidden-print">
-    <?php $this->insert('theme::partials/navbar_content', ['params' => $params]); ?>
-</header>
+<?php $this->layout('theme::layout/00_layout') ?>
 <div class="Columns content">
     <aside class="Columns__left Collapsible">
-        <div class="Collapsible__container">
-            <button type="button" class="Button Collapsible__trigger">
-                <span class="Collapsible__trigger--bar"></span>
-                <span class="Collapsible__trigger--bar"></span>
-                <span class="Collapsible__trigger--bar"></span>
-            </button>
-        </div>
+        <button type="button" class="Button Collapsible__trigger">
+            <span class="Collapsible__trigger--bar"></span>
+            <span class="Collapsible__trigger--bar"></span>
+            <span class="Collapsible__trigger--bar"></span>
+        </button>
+
+        <?php $this->insert('theme::partials/navbar_content', ['params' => $params]); ?>
 
         <div class="Collapsible__content">
             <!-- Navigation -->
@@ -30,13 +16,22 @@
             $path = '';
 
             if ($page['language'] !== '') {
-                $rendertree = $tree->value[$page['language']];
+                $rendertree = $tree[$page['language']];
                 $path = $page['language'];
             }
 
             echo $this->get_navigation($rendertree, $path, isset($params['request']) ? $params['request'] : '', $base_page, $params['mode']);
             ?>
 
+            <?php if (!empty($params['html']['banner'])) { ?>
+                <?php foreach ($params['html']['banner'] as $name => $bannerConfig) { ?>
+                    <div class="Banner">
+                        <a href="<?= $bannerConfig['link'] ?>" target="_blank">
+                            <img class="img" src="<?= $bannerConfig['image'] ?>">
+                        </a>
+                    </div>
+                <?php } ?>
+            <?php } ?>
 
             <div class="Links">
                 <?php if (!empty($params['html']['links'])) {
@@ -85,8 +80,6 @@
                         <?php foreach ($params['html']['twitter'] as $handle) {
                     ?>
                             <iframe allowtransparency="true" frameborder="0" scrolling="no" style="width:162px; height:20px;" src="https://platform.twitter.com/widgets/follow_button.html?screen_name=<?= $handle; ?>&amp;show_count=false"></iframe>
-                            <br />
-                            <br />
                         <?php
 
                 } ?>
@@ -94,6 +87,11 @@
                 <?php
 
             } ?>
+
+
+                <hr>
+                <?php $this->insert('theme::partials/version_info', ['params' => $params]); ?>
+
             </div>
         </div>
     </aside>

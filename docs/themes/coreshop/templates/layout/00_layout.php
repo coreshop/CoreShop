@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
     <title><?= $page['title']; ?> <?php if ($page['title'] != $params['title']) {
-    echo '- '.$params['title'];
+    echo '- ' . $params['title'];
 } ?></title>
     <meta name="description" content="<?= $params['tagline']; ?>" />
     <meta name="author" content="<?= $params['author']; ?>">
@@ -34,10 +34,10 @@
 } ?>
 
     <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="<?= $base_url; ?>themes/pimcore/js/source/html5shiv-3.7.3.min.js"></script>
     <![endif]-->
 </head>
-<body class="<?= $params['html']['float'] ? 'with-float' : ''; ?>">
+<body class="<?= $params['html']['float'] ? 'with-float' : ''; ?> <?= $this->section('classes'); ?>">
     <?= $this->section('content'); ?>
 
     <?php
@@ -49,60 +49,57 @@
     }
     ?>
 
-    <!-- jQuery -->
-    <script src="<?= $base_url; ?>themes/coreshop/js/jquery-1.11.3.min.js"></script>
-
-    <!-- hightlight.js -->
-    <script src="<?= $base_url; ?>themes/coreshop/js/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
     <!-- JS -->
     <?php foreach ($params['theme']['js'] as $js) {
-        echo '<script src="'.$js.'"></script>';
+        echo '<script src="' . $js . '"></script>';
     } ?>
 
-    <script src="<?= $base_url; ?>themes/coreshop/js/daux.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script src="https://cdn.jsdelivr.net/combine/npm/lightgallery,npm/lg-autoplay,npm/lg-fullscreen,npm/lg-hash,npm/lg-pager,npm/lg-share,npm/lg-thumbnail,npm/lg-video,npm/lg-zoom" />
+    <link type="text/css" rel="stylesheet" href="https://sachinchoolur.github.io/lightGallery/lightgallery/css/lightgallery.css" />
+
+
+    <style>
+        .smallimage { width: 50% }
+    </style>
+
+    <script>
+
+        $(document).ready(function() {
+            var divElement = document.querySelector(".lightbox1");
+            console.log(divElement);
+            var imageElement = document.querySelector(".lightbox1 + p > img");
+            console.log(imageElement);
+            console.log(imageElement.src);
+
+            divElement.innerHTML = '<a href="' + imageElement.src + '"><img class="smallimage" src="' + imageElement.src + '" /></a>';
+            imageElement.remove();
+
+            $(".lightbox1").lightGallery();
+        });
+
+    </script>
+
 
     <?php if ($params['html']['search']) {
         ?>
-        <script>
-            <?php
-            $search_strings = [
-                "Search_one_result",
-                "Search_results",
-                "Search_no_results",
-                "Search_common_words_ignored",
-                "Search_too_short",
-                "Search_one_character_or_more",
-                "Search_should_be_x_or_more",
-                "Link_previous",
-                "Link_next",
-            ];
-            $search_translations = [];
-            foreach ($search_strings as $key) {
-                $search_translations[$key] = $this->translate($key);
-            }
-            ?>
-
-            window.searchLanguage = <?= json_encode($page['language']) ?>;
-            window.searchTranslation = <?= json_encode($search_translations) ?>;
-        </script>
-
         <!-- Tipue Search -->
         <script type="text/javascript" src="<?php echo $base_url; ?>tipuesearch/tipuesearch.js"></script>
 
         <script>
-            window.onunload = function () {
-            }; // force $(document).ready to be called on back/forward navigation in firefox
-            $(function () {
+            window.onunload = function(){}; // force $(document).ready to be called on back/forward navigation in firefox
+            $(function() {
                 tipuesearch({
-                    'base_url': '<?php echo $base_url?>'
+                    'base_url': '<?php echo $base_url?>',
+                    'showURL': false
                 });
             });
         </script>
     <?php
 
-    } ?>
+    }
+    ?>
 
 </body>
 </html>
