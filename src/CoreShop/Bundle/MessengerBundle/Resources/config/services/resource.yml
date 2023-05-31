@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    public: true
+
+  CoreShop\Bundle\MessengerBundle\EventListener\AdminJavascriptListener:
+    tags:
+      - { name: kernel.event_subscriber }
