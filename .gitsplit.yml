@@ -1,7 +1,7 @@
 cache_url: 'file://cache'
 project_url: 'https://@github.com/coreshop/CoreShop.git'
 origins:
-    - ^master$
+    - ^next$
     - ^\d+\.\d+$
     - ^\d+\.\d+\.\d+$
 splits:
