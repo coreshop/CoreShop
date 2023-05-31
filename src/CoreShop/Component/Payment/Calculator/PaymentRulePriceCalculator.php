@@ -47,19 +47,16 @@ class PaymentRulePriceCalculator
                 $payable,
                 $context,
             );
-            if (!$price) {
-                $price = $payable->getPaymentTotal();
-            }
 
             $modifications = $this->paymentRuleProcessor->getModification(
                 $paymentRule,
                 $paymentProvider,
                 $payable,
-                $price,
+                $payable->getTotalGross(),
                 $context,
             );
 
-            return $modifications;
+            return $price + $modifications;
         }
 
         return 0;

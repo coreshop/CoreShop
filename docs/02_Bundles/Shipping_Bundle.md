@@ -1,10 +1,11 @@
 # CoreShop Shipping Bundle
-### recommended
+
 
 ## Purpose: Let You define different shipping carriers
 ### & optional shipping rules for them
+based on weight, payment total, countries, postcodes and so on.
 ### & apply tax rules on shipping rules
-definitely a module u want to install for running a real CoreShop
+
 
 
 ## Installation
@@ -17,7 +18,7 @@ $ composer require coreshop/shipping-bundle:^3.0
  - TaxationBundle
 
 ## Configure
-via Pimcore Backend Menu @ developer nothing to do here
+
 
 ## Options
 
