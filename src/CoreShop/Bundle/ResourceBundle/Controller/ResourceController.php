@@ -26,7 +26,6 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -55,12 +54,21 @@ class ResourceController extends AdminController
         if ($this->metadata->hasParameter('permission')) {
             $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
 
-            /**
-             * @var User $user
-             *
-             * @psalm-var User $user
-             */
-            $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
+            $user = $this->getUser();
+
+            if (class_exists(\Pimcore\Security\User\User::class) && $user instanceof \Pimcore\Security\User\User) {
+                /**
+                 * @psalm-suppress UndefinedClass, UndefinedInterfaceMethod
+                 */
+                $user = $user->getUser();
+            } elseif (class_exists(\Pimcore\Bundle\AdminBundle\Security\User\User::class) && $user instanceof \Pimcore\Bundle\AdminBundle\Security\User\User) {
+                /**
+                 * @psalm-suppress UndefinedClass, UndefinedInterfaceMethod
+                 */
+                $user = $user->getUser();
+            } else {
+                throw new \RuntimeException(sprintf('Unknown Pimcore Admin User Class given "%s"', get_class($user)));
+            }
 
             if ($user->isAllowed($permission)) {
                 return;

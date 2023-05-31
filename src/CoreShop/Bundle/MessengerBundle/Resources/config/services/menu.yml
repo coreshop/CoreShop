@@ -6,7 +6,7 @@ services:
         tags:
             - { name: 'coreshop.menu', type: messenger, menu: messenger }
 
-    CoreShop\Bundle\MessengerBundle\EventListener\AdminJavascriptListener:
+    CoreShop\Bundle\MessengerBundle\EventListener\StandaloneAdminJavascriptListener:
         arguments:
             - '@router'
         tags:

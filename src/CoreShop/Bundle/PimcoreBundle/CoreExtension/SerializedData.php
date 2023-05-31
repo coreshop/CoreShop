@@ -134,7 +134,9 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
 
     public function getVersionPreview($data, $object = null, $params = [])
     {
-        return $this->getDataFromResource($data, $object, $params);
+        $data = $this->getDataFromResource($data, $object, $params);
+
+        return is_array($data) ? serialize($data) : '--';
     }
 
     /**
