@@ -70,16 +70,7 @@
         </td>
     </tr>
 {% endif %}
-{% if payment != 0 %}
-    <tr>
-        <td class="text-right" colspan="3">
-            <strong>{{ 'coreshop.ui.payment_fee'|trans }}:</strong>
-        </td>
-        <td colspan="2" class="text-right cart-discount">
-            {{ currency.convertAndFormat(payment) }}
-        </td>
-    </tr>
-{% endif %}
+
 {% for taxItem in taxes %}
     <tr>
         <td class="text-right cart-tax-detail" colspan="3">
@@ -90,6 +81,7 @@
         </td>
     </tr>
 {% endfor %}
+
 <tr>
     <td class="text-right" colspan="3">
         <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
@@ -98,6 +90,16 @@
         {{ currency.convertAndFormat(cart.totalTax) }}
     </td>
 </tr>
+{% if payment != 0 %}
+    <tr>
+        <td class="text-right" colspan="3">
+            <strong>{{ 'coreshop.ui.payment_fee'|trans }}:</strong>
+        </td>
+        <td colspan="2" class="text-right cart-discount">
+            {{ currency.convertAndFormat(payment) }}
+        </td>
+    </tr>
+{% endif %}
 <tr>
     <td class="text-right" colspan="3">
         <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
