@@ -54,7 +54,7 @@ final class CartPaymentProcessor implements CartProcessorInterface
             $cart->addAdjustment(
                 $this->adjustmentFactory->createWithData(
                     AdjustmentInterface::PAYMENT,
-                    'PaymentProvider Tax',
+                    'PaymentProvider fee',
                     $price,
                     $price,
                 ),
