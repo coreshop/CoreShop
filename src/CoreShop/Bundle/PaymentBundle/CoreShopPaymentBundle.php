@@ -45,8 +45,6 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
 
         $collection->addBundle(new CoreShopWorkflowBundle(), 1550);
         $collection->addBundle(new CoreShopRuleBundle(), 3500);
-        $collection->addBundle(new CoreShopMoneyBundle(), 3600);
-        $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
     }
 
     public function build(ContainerBuilder $container): void

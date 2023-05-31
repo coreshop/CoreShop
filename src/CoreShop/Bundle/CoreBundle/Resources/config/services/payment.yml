@@ -17,18 +17,9 @@ services:
 #        tags:
 #            - { name: coreshop.payment_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
 #
-#    CoreShop\Component\Core\PAyment\Rule\Condition\ZonesConditionChecker:
+#    CoreShop\Component\Core\Payment\Rule\Condition\ZonesConditionChecker:
 #        tags:
 #            - { name: coreshop.payment_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
 #
 #
 
-#    CoreShop\Component\Core\Payment\Rule\Condition\CountriesConditionChecker:
-#        tags:
-#            - { name: coreshop.payment_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
-#
-#    CoreShop\Component\Core\PAyment\Rule\Condition\ZonesConditionChecker:
-#        tags:
-#            - { name: coreshop.payment_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
-#
-#

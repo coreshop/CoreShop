@@ -177,9 +177,9 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
 
     public function removePaymentRule(PaymentRuleGroupInterface $paymentRuleGroup)
     {
-        if ($this->hasShippingRule($paymentRuleGroup)) {
+        if ($this->hasPaymentRule($paymentRuleGroup)) {
             $this->paymentRules->removeElement($paymentRuleGroup);
-            $paymentRuleGroup->setCarrier(null);
+            $paymentRuleGroup->setPaymentProvider(null);
         }
     }
 }

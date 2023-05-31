@@ -38,6 +38,7 @@ interface OrderInterface extends
 
     public function getWeight(): ?float;
 
+    public function getPayment(): int;
     public function getShipping(bool $withTax = true): int;
 
     public function getShippingTax(): int;

@@ -35,6 +35,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Tool;
 use Symfony\Component\Form\FormFactoryInterface;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleActionType;
+
 
 final class PaymentContext implements Context
 {
@@ -122,7 +124,7 @@ final class PaymentContext implements Context
         return PaymentRuleConditionType::class;
     }
 
-    private function addCondition(PaymmentRuleInterface $rule, ConditionInterface $condition): void
+    private function addCondition(PaymentRuleInterface $rule, ConditionInterface $condition): void
     {
         $rule->addCondition($condition);
 
@@ -145,7 +147,7 @@ final class PaymentContext implements Context
 
     protected function getActionFormClass(): string
     {
-        return ShippingRuleActionType::class;
+        return PaymentRuleActionType::class;
     }
 
     protected function getFormFactory(): FormFactoryInterface

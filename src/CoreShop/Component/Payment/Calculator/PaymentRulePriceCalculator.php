@@ -52,7 +52,7 @@ class PaymentRulePriceCalculator
                 $paymentRule,
                 $paymentProvider,
                 $payable,
-                $payable->getTotalGross(),
+                $payable->getPaymentTotal(),
                 $context,
             );
 
