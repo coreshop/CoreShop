@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @property ContainerInterface $container
  */
-class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
+class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController
 {
     public function __construct(
         protected ViewHandlerInterface $viewHandler,

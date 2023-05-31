@@ -115,7 +115,9 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
 
     public function getVersionPreview(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): string
     {
-        return $this->getDataFromResource($data, $object, $params);
+        $data = $this->getDataFromResource($data, $object, $params);
+
+        return is_array($data) ? serialize($data) : '--';
     }
 
     public function getForCsvExport(Model\DataObject\Concrete|Model\DataObject\Objectbrick\Data\AbstractData|Model\DataObject\Fieldcollection\Data\AbstractData|Model\DataObject\Localizedfield $object, array $params = []): string

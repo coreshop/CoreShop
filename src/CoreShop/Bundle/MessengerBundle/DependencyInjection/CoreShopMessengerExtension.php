@@ -38,6 +38,9 @@ final class CoreShopMessengerExtension extends AbstractPimcoreExtension
         if (!array_key_exists('CoreShopCoreBundle', $bundles)) {
             $loader->load('services/menu.yml');
         }
+        else {
+            $loader->load('services/resource.yml');
+        }
 
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
     }
