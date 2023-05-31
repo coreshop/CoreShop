@@ -13,9 +13,9 @@ $ bin/console coreshop:cart:expire --user
 $ bin/console coreshop:cart:expire --days=20
 ```
 
-## Expire Abandoned Carts via Maintenance Mode
+## Expire Abandoned Carts via maintenance job
 By default, this feature is disabled.
-If you want to swipe abandoned carts by default you need to define a expiration date:
+If you want to delete abandoned carts, you need to define an expiration date:
 
 ```yml
 core_shop_order:
