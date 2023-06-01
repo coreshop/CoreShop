@@ -156,10 +156,7 @@
     "symfony-bin-dir": "bin",
     "symfony-var-dir": "var",
     "symfony-tests-dir": "tests",
-    "symfony-assets-install": "relative",
-    "branch-alias": {
-      "dev-master": "3.0-dev"
-    }
+    "symfony-assets-install": "relative"
   },
   "config": {
     "sort-packages": true,
