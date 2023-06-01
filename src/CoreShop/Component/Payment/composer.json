@@ -47,7 +47,8 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-next": "3.0-dev"
+      "dev-next": "3.0-dev",
+      "dev-master": "3.0-dev"
     }
   },
   "config": {

@@ -158,6 +158,7 @@
     "symfony-tests-dir": "tests",
     "symfony-assets-install": "relative",
     "branch-alias": {
+      "dev-next": "3.0-dev",
       "dev-master": "3.0-dev"
     }
   },
