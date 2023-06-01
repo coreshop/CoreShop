@@ -1,6 +1,6 @@
 CoreShop\Component\Payment\Model\PaymentProviderRule:
     exclusion_policy: ALL
-    xml_root_name: payment_rule
+    xml_root_name: payment_provider_rule
     properties:
         id:
             expose: true

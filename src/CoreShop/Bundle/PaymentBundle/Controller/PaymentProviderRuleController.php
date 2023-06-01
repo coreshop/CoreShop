@@ -37,7 +37,7 @@ class PaymentProviderRuleController extends ResourceController
      */
     protected function getConfigActions(): array
     {
-        return $this->container->getParameter('coreshop.payment_rule.actions');
+        return $this->container->getParameter('coreshop.payment_provider_rule.actions');
     }
 
     /**
@@ -45,6 +45,6 @@ class PaymentProviderRuleController extends ResourceController
      */
     protected function getConfigConditions(): array
     {
-        return $this->container->getParameter('coreshop.payment_rule.conditions');
+        return $this->container->getParameter('coreshop.payment_provider_rule.conditions');
     }
 }

@@ -54,11 +54,11 @@ final class CoreShopPaymentExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(PaymentConditionCheckerInterface::class)
-            ->addTag(PaymentProviderRuleConditionPass::PAYMENT_RULE_CONDITION_TAG)
+            ->addTag(PaymentProviderRuleConditionPass::PAYMENT_PROVIDER_RULE_CONDITION_TAG)
         ;
         $container
             ->registerForAutoconfiguration(PaymentProviderRuleActionProcessorInterface::class)
-            ->addTag(PaymentProviderRuleActionPass::PAYMENT_RULE_ACTION_TAG)
+            ->addTag(PaymentProviderRuleActionPass::PAYMENT_PROVIDER_RULE_ACTION_TAG)
         ;
         $container
             ->registerForAutoconfiguration(PaymentPriceCalculatorInterface::class)

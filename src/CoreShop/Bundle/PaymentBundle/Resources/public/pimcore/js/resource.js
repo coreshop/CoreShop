@@ -18,7 +18,7 @@ coreshop.payment.resource = Class.create(coreshop.resource, {
             {name: 'identifier'}
         ]);
 
-        coreshop.global.addStoreWithRoute('coreshop_payment_rules', 'coreshop_payment_rule_list');
+        coreshop.global.addStoreWithRoute('coreshop_payment_provider_rules', 'coreshop_payment_provider_rule_list');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.payment', this);
     },
@@ -26,7 +26,7 @@ coreshop.payment.resource = Class.create(coreshop.resource, {
     openResource: function (item) {
         if (item === 'payment_provider') {
             this.openPaymentProvider();
-        }else if (item === 'payment_rules') {
+        }else if (item === 'payment_provider_rule') {
             this.openPaymentProviderRules();
         }
     },

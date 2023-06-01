@@ -40,25 +40,25 @@ class PaymentProviderRulePriceCalculator
          */
         $paymentProviderRule = $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $payable);
 
-        if ($paymentProviderRule instanceof PaymentProviderRuleInterface) {
-            $price = $this->paymentProviderRuleProcessor->getPrice(
-                $paymentProviderRule,
-                $paymentProvider,
-                $payable,
-                $context,
-            );
-
-            $modifications = $this->paymentProviderRuleProcessor->getModification(
-                $paymentProviderRule,
-                $paymentProvider,
-                $payable,
-                $payable->getPaymentTotal(),
-                $context,
-            );
-
-            return $price + $modifications;
+        if (!$paymentProviderRule instanceof PaymentProviderRuleInterface) {
+            return 0;
         }
 
-        return 0;
+        $price = $this->paymentProviderRuleProcessor->getPrice(
+            $paymentProviderRule,
+            $paymentProvider,
+            $payable,
+            $context,
+        );
+
+        $modifications = $this->paymentProviderRuleProcessor->getModification(
+            $paymentProviderRule,
+            $paymentProvider,
+            $payable,
+            $payable->getPaymentTotal(),
+            $context,
+        );
+
+        return $price + $modifications;
     }
 }

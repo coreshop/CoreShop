@@ -38,6 +38,6 @@ final class PaymentProviderRuleConditionType extends RuleConditionType
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_payment_rule_condition';
+        return 'coreshop_payment_provider_rule_condition';
     }
 }

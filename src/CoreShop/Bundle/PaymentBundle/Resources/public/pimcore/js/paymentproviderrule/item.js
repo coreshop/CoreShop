@@ -14,10 +14,10 @@ pimcore.registerNS('coreshop.paymentproviderrule.item');
 
 coreshop.paymentproviderrule.item = Class.create(coreshop.rules.item, {
 
-    iconCls: 'coreshop_icon_carrier_shipping_rule',
+    iconCls: 'coreshop_nav_icon_payment_provider_rule',
 
     routing: {
-        save: 'coreshop_payment_rule_save'
+        save: 'coreshop_payment_provider_rule_save'
     },
 
     getPanel: function () {

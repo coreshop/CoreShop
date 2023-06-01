@@ -178,7 +178,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             data: this.data.paymentProviderRules
         });
 
-        var store = Ext.create('store.coreshop_payment_rules');
+        var store = Ext.create('store.coreshop_payment_provider_rules');
         store.load(function() {
             this.paymentProviderRuleGroupsGrid.setStore(this.paymentProviderRuleGroupsStore);
         }.bind(this));
@@ -186,7 +186,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         this.paymentProviderRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
             columns: [
                 {
-                    header: t('coreshop_carriers_payment_rule'),
+                    header: t('coreshop_carriers_payment_provider_rule'),
                     flex: 2,
                     dataIndex: 'paymentProviderRule',
                     editor: new Ext.form.ComboBox({

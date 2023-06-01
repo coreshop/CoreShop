@@ -59,6 +59,6 @@ final class AmountConfigurationType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_payment_rule_condition_amount';
+        return 'coreshop_payment_provider_rule_condition_amount';
     }
 }

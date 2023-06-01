@@ -63,6 +63,6 @@ final class PaymentProviderRuleChoiceType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_payment_rule_choice';
+        return 'coreshop_payment_provider_rule_choice';
     }
 }
