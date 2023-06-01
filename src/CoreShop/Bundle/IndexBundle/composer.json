@@ -55,7 +55,6 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
-    ,
     "pimcore": {
       "bundles": [
         "CoreShop\\Bundle\\IndexBundle\\CoreShopIndexBundle"
