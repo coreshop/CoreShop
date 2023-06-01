@@ -52,12 +52,12 @@ bin/console messenger:consume coreshop_notification coreshop_index --time-limit=
  - [Pimcore Forum](https://talk.pimcore.org)
 
 # Demo
-You can see a running demo here [CoreShop 3.x Demo](https://demox.coreshop.org)
+You can see a running demo here [CoreShop 3.x Demo](https://demo3.coreshop.org)
 
 **Backend Credentials**
 
 ```
-Admin: https://demox.coreshop.org/admin
+Admin: https://demo3.coreshop.org/admin
 
 Username: admin
 Password: coreshop
