@@ -24,10 +24,11 @@ use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Rule\Action\ProviderActionProcessorInterface;
-use CoreShop\Component\Payment\Rule\Action\ProviderPriceModificationActionProcessorInterface;
+
+use CoreShop\Component\Payment\Rule\Action\ProviderPriceActionProcessorInterface;
 use Webmozart\Assert\Assert;
 
-class AdditionAmountActionProcessor implements ProviderPriceModificationActionProcessorInterface
+class PriceActionProcessor implements ProviderPriceActionProcessorInterface
 {
     public function __construct(
         protected CurrencyRepositoryInterface $currencyRepository,
@@ -35,9 +36,8 @@ class AdditionAmountActionProcessor implements ProviderPriceModificationActionPr
     ) {
     }
 
-    public function getModification(PaymentProviderInterface $paymentProvider, PayableInterface $payable, int $price, array $configuration, array $context): int
+    public function getPrice(PaymentProviderInterface $paymentProvider, PayableInterface $payable,  array $configuration, array $context): int
     {
-
         Assert::keyExists($context, 'base_currency');
         Assert::isInstanceOf($context['base_currency'], CurrencyInterface::class);
 
@@ -45,12 +45,12 @@ class AdditionAmountActionProcessor implements ProviderPriceModificationActionPr
          * @var CurrencyInterface $contextCurrency
          */
         $contextCurrency = $context['base_currency'];
-        $amount = $configuration['amount'];
+        $price = $configuration['price'];
 
         $currency = $this->currencyRepository->find($configuration['currency']);
 
         Assert::isInstanceOf($currency, CurrencyInterface::class);
 
-        return $this->moneyConverter->convert($amount, $currency->getIsoCode(), $contextCurrency->getIsoCode());
+        return $this->moneyConverter->convert($price, $currency->getIsoCode(), $contextCurrency->getIsoCode());
     }
 }

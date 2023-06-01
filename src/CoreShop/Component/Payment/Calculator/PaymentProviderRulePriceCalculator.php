@@ -41,6 +41,7 @@ class PaymentProviderRulePriceCalculator
         $paymentProviderRule = $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $payable);
 
         if ($paymentProviderRule instanceof PaymentProviderRuleInterface) {
+
             $price = $this->paymentProviderRuleProcessor->getPrice(
                 $paymentProviderRule,
                 $paymentProvider,

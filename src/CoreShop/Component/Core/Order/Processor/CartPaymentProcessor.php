@@ -43,6 +43,7 @@ final class CartPaymentProcessor implements CartProcessorInterface
         );
 
         if ($cart->getPaymentProvider()) {
+
             $context = $this->cartContextResolver->resolveCartContext($cart);
 
             $price = $this->priceCalculator->getPrice(

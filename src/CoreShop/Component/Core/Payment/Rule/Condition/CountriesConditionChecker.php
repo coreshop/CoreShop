@@ -16,14 +16,22 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Payment\Rule\Condition;
+namespace CoreShop\Component\Core\Payment\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Payment\Rule\Condition\AbstractConditionChecker;
 
-interface PaymentConditionCheckerInterface extends ConditionCheckerInterface
+class CountriesConditionChecker extends AbstractConditionChecker
 {
-    public function isPaymentProviderRuleValid(PaymentProviderInterface $paymentProvider, PayableInterface $payable,  array $configuration, AddressInterface $address = null): bool;
+    public function isPaymentProviderRuleValid(
+        PaymentProviderInterface $paymentProvider, PayableInterface $payable,  array $configuration, AddressInterface $address = null
+    ): bool {
+        $country = $address->getCountry();
+
+        return in_array($country->getId(), $configuration['countries']);
+    }
 }

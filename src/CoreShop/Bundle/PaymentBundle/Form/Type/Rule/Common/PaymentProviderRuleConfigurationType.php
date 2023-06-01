@@ -16,16 +16,16 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Action;
+namespace CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Common;
 
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleChoiceType;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Range;
-use Symfony\Component\Validator\Constraints\Type;
 
-class AdditionPercentActionConfigurationType extends AbstractType
+final class PaymentProviderRuleConfigurationType extends AbstractType
 {
     /**
      * @param string[] $validationGroups
@@ -38,18 +38,33 @@ class AdditionPercentActionConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('percent', NumberType::class, [
+            ->add('paymentproviderRule', PaymentProviderRuleChoiceType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => $this->validationGroups]),
-                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
-                    new Range(['min' => 0, 'max' => 100, 'groups' => $this->validationGroups]),
                 ],
             ])
         ;
+
+        $builder->get('paymentproviderRule')->addModelTransformer(new CallbackTransformer(
+            function (mixed $paymentproviderRule) {
+                if ($paymentproviderRule instanceof PaymentProviderRuleInterface) {
+                    return $paymentproviderRule->getId();
+                }
+
+                return null;
+            },
+            function (mixed $paymentproviderRule) {
+                if ($paymentproviderRule instanceof PaymentProviderRuleInterface) {
+                    return $paymentproviderRule->getId();
+                }
+
+                return null;
+            },
+        ));
     }
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_payment_rule_action_addition_percent';
+        return 'coreshop_payment_rule_condition_payment_rule';
     }
 }

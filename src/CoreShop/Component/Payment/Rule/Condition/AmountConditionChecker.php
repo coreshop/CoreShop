@@ -18,12 +18,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Rule\Condition;
 
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 
 class AmountConditionChecker extends AbstractConditionChecker
 {
-    public function isPaymentProviderRuleValid(PaymentProviderInterface $paymentProvider, PayableInterface $payable, array $configuration): bool
+    public function isPaymentProviderRuleValid(PaymentProviderInterface $paymentProvider, PayableInterface $payable, array $configuration, AddressInterface $address = null): bool
     {
         $minAmount = $configuration['minAmount'];
         $maxAmount = $configuration['maxAmount'];

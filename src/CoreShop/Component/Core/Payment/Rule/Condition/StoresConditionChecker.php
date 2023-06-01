@@ -16,14 +16,23 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Payment\Rule\Condition;
+namespace CoreShop\Component\Core\Payment\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Payment\Rule\Condition\AbstractConditionChecker;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 
-interface PaymentConditionCheckerInterface extends ConditionCheckerInterface
+final class StoresConditionChecker extends AbstractConditionChecker
 {
-    public function isPaymentProviderRuleValid(PaymentProviderInterface $paymentProvider, PayableInterface $payable,  array $configuration, AddressInterface $address = null): bool;
+    public function isPaymentProviderRuleValid(
+        PaymentProviderInterface $paymentProvider, PayableInterface $payable,  array $configuration, AddressInterface $address = null
+    ): bool {
+        if (!$payable instanceof StoreAwareInterface) {
+            return false;
+        }
+
+        return in_array($payable->getStore()->getId(), $configuration['stores']);
+    }
 }

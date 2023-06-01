@@ -121,3 +121,10 @@ services:
             - '%coreshop.form.type.payment_rule.action.discount_percent.validation_groups%'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Common\PaymentProviderRuleConfigurationType:
+        arguments:
+            - '%coreshop.form.type.payment_rule.common.payment_rule.validation_groups%'
+        tags:
+            - { name: form.type }
+
