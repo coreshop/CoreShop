@@ -39,12 +39,12 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
 
         if (method_exists($category, 'getChildrenSortBy')) {
             $list->setOrderKey(
-                sprintf('o_%s ASC', $category->getChildrenSortBy()),
+                sprintf('%s ASC', $category->getChildrenSortBy()),
                 false,
             );
         } else {
             $list->setOrderKey(
-                'o_key ASC',
+                '`key` ASC',
                 false,
             );
         }

@@ -29,7 +29,7 @@ class CoreShopRelation extends Data\ManyToOneRelation
 {
     public string $fieldtype = 'coreShopRelation';
 
-    public string|null $stack;
+    public string|null $stack = null;
 
     public bool $returnConcrete = false;
 

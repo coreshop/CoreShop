@@ -23,6 +23,7 @@ use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\ShippingCalculatorType;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier;
@@ -30,6 +31,7 @@ use CoreShop\Component\Order\Cart\CartModifierInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -41,6 +43,7 @@ use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,12 +51,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class CartController extends FrontendController
 {
     public function widgetAction(Request $request): Response
     {
-        return $this->render($this->templateConfigurator->findTemplate('Cart/_widget.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Cart/_widget.html'), [
             'cart' => $this->getCart(),
         ]);
     }
@@ -134,7 +138,7 @@ class CartController extends FrontendController
             }
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Cart/summary.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Cart/summary.html'), [
             'cart' => $cart,
             'form' => $form->createView(),
         ]);
@@ -181,7 +185,7 @@ class CartController extends FrontendController
             });
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Cart/ShipmentCalculator/_widget.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Cart/ShipmentCalculator/_widget.html'), [
             'cart' => $cart,
             'form' => $form->createView(),
             'availableCarriers' => $availableCarriers,
@@ -269,7 +273,7 @@ class CartController extends FrontendController
         }
 
         return $this->render(
-            $this->getParameterFromRequest($request, 'template', $this->templateConfigurator->findTemplate('Product/_addToCart.html')),
+            $this->getParameterFromRequest($request, 'template', $this->getTemplateConfigurator()->findTemplate('Product/_addToCart.html')),
             [
                 'form' => $form->createView(),
                 'product' => $product,
@@ -370,6 +374,21 @@ class CartController extends FrontendController
     {
         return $this->container->get(CartManagerInterface::class);
     }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() +
+            [
+                new SubscribedService('coreshop.repository.stack.purchasable', StackRepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.stack.purchasable')),
+                new SubscribedService('coreshop.factory.order_item', OrderItemFactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.order_item')),
+                new SubscribedService(CartItemQuantityModifier::class, CartItemQuantityModifier::class),
+                new SubscribedService(AddToCartFactoryInterface::class, AddToCartFactoryInterface::class),
+                new SubscribedService(CartModifierInterface::class, CartModifierInterface::class),
+                new SubscribedService(CartManagerInterface::class, CartManagerInterface::class),
+                new SubscribedService(TrackerInterface::class, TrackerInterface::class),
+            ];
+    }
+
 
     private function getCartItemErrors(OrderItemInterface $cartItem): ConstraintViolationListInterface
     {

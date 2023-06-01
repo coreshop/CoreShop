@@ -27,7 +27,7 @@ coreshop.order.order.detail.blocks.customer = Class.create(coreshop.order.order.
                     tooltip: t('open'),
                     handler: function () {
                         if (me.sale.customer) {
-                            pimcore.helpers.openObject(me.sale.customer.o_id);
+                            pimcore.helpers.openObject(me.sale.customer.id);
                         }
                     }.bind(this)
                 }
@@ -51,7 +51,7 @@ coreshop.order.order.detail.blocks.customer = Class.create(coreshop.order.order.
         var me = this;
 
         var guestStr = me.sale.customer.user ? ' –  ' + t('coreshop_is_guest') : '';
-        me.customerInfo.setTitle(t('coreshop_customer') + ': ' + (me.sale.customer ? me.sale.customer.firstname + ' (' + me.sale.customer.o_id + ')' : t('unknown')) + guestStr);
+        me.customerInfo.setTitle(t('coreshop_customer') + ': ' + (me.sale.customer ? me.sale.customer.firstname + ' (' + me.sale.customer.id + ')' : t('unknown')) + guestStr);
         me.customerInfo.removeAll();
 
         var items = [];
@@ -88,7 +88,7 @@ coreshop.order.order.detail.blocks.customer = Class.create(coreshop.order.order.
                         {
                             xtype: 'label',
                             style: 'display:block',
-                            text: Ext.Date.format(new Date(me.sale.customer.o_creationDate * 1000), t('coreshop_date_time_format'))
+                            text: Ext.Date.format(new Date(me.sale.customer.creationDate * 1000), t('coreshop_date_time_format'))
                         }
                     ]
                 });
@@ -147,7 +147,7 @@ coreshop.order.order.detail.blocks.customer = Class.create(coreshop.order.order.
                         iconCls: 'coreshop_icon_open',
                         text: t('open'),
                         handler: function () {
-                            pimcore.helpers.openObject(address.o_id);
+                            pimcore.helpers.openObject(address.id);
                         }
                     }
                 ]

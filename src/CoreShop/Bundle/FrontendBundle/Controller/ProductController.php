@@ -19,14 +19,18 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
+use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Pimcore\Http\RequestHelper;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class ProductController extends FrontendController
 {
@@ -34,7 +38,7 @@ class ProductController extends FrontendController
     {
         $productRepository = $this->container->get('coreshop.repository.product');
 
-        return $this->render($this->templateConfigurator->findTemplate('Product/_latest.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Product/_latest.html'), [
             'products' => $productRepository->findLatestByStore($this->container->get(StoreContextInterface::class)->getStore()),
         ]);
     }
@@ -46,7 +50,7 @@ class ProductController extends FrontendController
         $this->container->get(SEOPresentationInterface::class)->updateSeoMetadata($object);
         $this->container->get(TrackerInterface::class)->trackProduct($object);
 
-        return $this->render($this->templateConfigurator->findTemplate('Product/detail.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Product/detail.html'), [
             'product' => $object,
         ]);
     }
@@ -64,7 +68,7 @@ class ProductController extends FrontendController
         $this->container->get(SEOPresentationInterface::class)->updateSeoMetadata($product);
         $this->container->get(TrackerInterface::class)->trackProduct($product);
 
-        return $this->render($this->templateConfigurator->findTemplate('Product/detail.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Product/detail.html'), [
             'product' => $product,
         ]);
     }
@@ -86,6 +90,14 @@ class ProductController extends FrontendController
         }
     }
 
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+           'coreshop.repository.product' => ProductRepositoryInterface::class,
+            StoreContextInterface::class => StoreContextInterface::class,
+            TrackerInterface::class => TrackerInterface::class,
+        ];
+    }
     protected function getProductByRequest(Request $request): ?PurchasableInterface
     {
         return $this->container->get('coreshop.repository.stack.purchasable')->find($this->getParameterFromRequest($request, 'product'));

@@ -74,9 +74,9 @@ class DataLoader implements DataLoaderInterface
 
         $loadedObjects[] = $data->getId();
 
-        $objectData['o_id'] = $data->getId();
-        $objectData['o_creationDate'] = $data->getCreationDate();
-        $objectData['o_modificationDate'] = $data->getModificationDate();
+        $objectData['id'] = $data->getId();
+        $objectData['creationDate'] = $data->getCreationDate();
+        $objectData['modificationDate'] = $data->getModificationDate();
 
         return $objectData;
     }

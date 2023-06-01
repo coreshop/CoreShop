@@ -35,7 +35,7 @@ class WishlistRepository extends BaseWishlistRepository implements WishlistRepos
     ): ?WishlistInterface {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND store = ?', [$customer->getId(), $store->getId()]);
-        $list->setOrderKey('o_creationDate');
+        $list->setOrderKey('creationDate');
         $list->setOrder('DESC');
         $list->load();
 

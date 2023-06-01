@@ -3,20 +3,20 @@ version: '3.4'
 networks:
   cors_dev:
     external: true
-  coreshop_3:
+  coreshop_next:
     external: false
 
 services:
   db:
     image: mysql:8
-    container_name: coreshop-pimcore11-3
+    container_name: coreshop-next
     networks:
       - cors_dev
-      - coreshop_3
+      - coreshop_next
     working_dir: /application
     command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci]
     volumes:
-      - coreshop-3:/var/lib/mysql
+      - coreshop-next:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=ROOT
       - MYSQL_DATABASE=pimcore
@@ -25,6 +25,7 @@ services:
 
   nginx:
     image: nginx:stable-alpine
+    container_name: coreshop-next-nginx
     volumes:
       - .:/var/www/html:cached
       -  ./.docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
@@ -33,20 +34,20 @@ services:
       - php-debug
     networks:
       - cors_dev
-      - coreshop_3
+      - coreshop_next
     labels:
       - traefik.enable=true
-      - traefik.http.routers.coreshop_3_11.rule=Host(`coreshop-3-11.localhost`)
-      - traefik.http.routers.coreshop_3_11.entrypoints=cors_dev
-      - traefik.http.routers.coreshop_3_11.tls=true
-      - traefik.http.services.coreshop_3_11.loadbalancer.server.port=80
+      - traefik.http.routers.coreshop_next.rule=Host(`coreshop-next.localhost`)
+      - traefik.http.routers.coreshop_next.entrypoints=cors_dev
+      - traefik.http.routers.coreshop_next.tls=true
+      - traefik.http.services.coreshop_next.loadbalancer.server.port=80
       - traefik.docker.network=cors_dev
 
   php:
-    image: pimcore/pimcore:php8.1-latest
-    container_name: coreshop-pimcore11-php
+    image: pimcore/pimcore:php8.2-latest
+    container_name: coreshop-next-php
     networks:
-      - coreshop_3
+      - coreshop_next
     environment:
       COMPOSER_HOME: /var/www/html
     depends_on:
@@ -55,19 +56,19 @@ services:
       - .:/var/www/html:cached
 
   php-debug:
-    image: pimcore/pimcore:php8.1-debug-latest
-    container_name: coreshop-pimcore11-php-debug
+    image: pimcore/pimcore:php8.2-debug-latest
+    container_name: coreshop-next-php-debug
     networks:
-      - coreshop_3
+      - coreshop_next
     depends_on:
       - db
     volumes:
       - .:/var/www/html:cached
-      - ./.docker/xdebug-config.ini:/usr/local/etc/php/conf.d/21-xdebug.ini
     environment:
       PHP_IDE_CONFIG: serverName=localhost
       XDEBUG_TRIGGER: PHPSTORM
       COMPOSER_HOME: /var/www/html
+      XDEBUG_HOST: 198.19.248.254
 
 volumes:
-  coreshop-3:
+  coreshop-next:

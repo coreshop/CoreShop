@@ -77,7 +77,7 @@ coreshop.order.order.editInvoice = {
                         style: 'margin: 5px 0;',
                         tooltip: t('open'),
                         handler: function (widgetColumn) {
-                            pimcore.helpers.openObject(invoice.get('o_id'), 'object');
+                            pimcore.helpers.openObject(invoice.get('id'), 'object');
 
                             window.close();
                         },

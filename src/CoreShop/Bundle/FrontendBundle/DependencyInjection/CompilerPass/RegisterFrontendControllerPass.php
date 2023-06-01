@@ -47,18 +47,14 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
             if ($container->hasDefinition($controllerClass)) {
                 $customController = $container->getDefinition($controllerClass);
 
-                $customController->addMethodCall('setContainer', [new Reference('service_container')]);
-                $customController->addMethodCall('setTemplateConfigurator', [new Reference(TemplateConfiguratorInterface::class)]);
+                $customController->addTag('container.service_subscriber');
 
                 $container->setDefinition($serviceName, $customController)->setPublic(true);
-                $container->setAlias($controllerKey, $serviceName)->setPublic(true);
 
                 continue;
             }
 
             $controllerDefinition = new Definition($controllerClass);
-            $controllerDefinition->addMethodCall('setContainer', [new Reference('service_container')]);
-            $controllerDefinition->addMethodCall('setTemplateConfigurator', [new Reference(TemplateConfiguratorInterface::class)]);
             $controllerDefinition->setPublic(true);
 
             switch ($key) {
@@ -76,18 +72,7 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
                     ]);
 
                     break;
-                case 'category':
-                    $controllerDefinition->setArguments([
-                        new Parameter('coreshop.frontend.category.valid_sort_options'),
-                        new Parameter('coreshop.frontend.category.default_sort_name'),
-                        new Parameter('coreshop.frontend.category.default_sort_direction'),
-                    ]);
-
-                    break;
                 case 'payment':
-                    $controllerDefinition->setMethodCalls([
-                        ['setContainer', [new Reference('service_container')]],
-                    ]);
                     $controllerDefinition->setArguments([
                         new Reference(OrderPaymentProviderInterface::class),
                         new Reference('coreshop.repository.order'),
@@ -100,9 +85,9 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
             }
 
             $controllerDefinition->addTag('controller.service_arguments');
+            $controllerDefinition->addTag('container.service_subscriber');
 
             $container->setDefinition($serviceName, $controllerDefinition)->setPublic(true);
-            $container->setAlias($controllerKey, $serviceName)->setPublic(true);
 
             if ($controllerClass !== $serviceName) {
                 $container->setAlias($controllerClass, $serviceName)->setPublic(true);

@@ -38,7 +38,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         ];
 
         /** @psalm-suppress InvalidScalarArgument */
-        return $this->findBy($conditions, ['o_creationDate' => 'DESC'], $count);
+        return $this->findBy($conditions, ['creationDate' => 'DESC'], $count);
     }
 
     public function findAllVariants(ProductInterface $product, bool $recursive = true): array
@@ -47,9 +47,9 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
 
         if ($recursive) {
-            $list->setCondition('o_path LIKE ?', [$product->getRealFullPath() . '/%']);
+            $list->setCondition('path LIKE ?', [$product->getRealFullPath() . '/%']);
         } else {
-            $list->setCondition('o_parentId = ?', [$product->getId()]);
+            $list->setCondition('parentId = ?', [$product->getId()]);
         }
 
         return $list->getObjects();
@@ -65,7 +65,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             ->select()
             ->from($dao->getTableName())
             ->select('oo_id')
-            ->where('o_path LIKE :path')
+            ->where('path LIKE :path')
             ->andWhere('stores LIKE :stores')
             ->andWhere('o_type = :variant')
             ->setParameter('path', $product->getRealFullPath() . '/%')
@@ -150,7 +150,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
                 }
             }
             if (count($categoryIds) > 0) {
-                $list->addConditionParam('(o_id IN (SELECT DISTINCT src_id FROM object_relations_' . $classId . ' WHERE fieldname = "categories" AND dest_id IN (' . implode(',', $categoryIds) . ')))');
+                $list->addConditionParam('(id IN (SELECT DISTINCT src_id FROM object_relations_' . $classId . ' WHERE fieldname = "categories" AND dest_id IN (' . implode(',', $categoryIds) . ')))');
             }
         }
 

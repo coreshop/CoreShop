@@ -82,32 +82,32 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         $this->identifier = $identifier;
     }
 
-    public function getTitle($language = null)
+    public function getTitle(?string $language = null)
     {
         return $this->getTranslation($language)->getTitle();
     }
 
-    public function setTitle($title, $language = null)
+    public function setTitle($title, ?string $language = null)
     {
         $this->getTranslation($language)->setTitle($title);
     }
 
-    public function getDescription($language = null)
+    public function getDescription(?string $language = null)
     {
         return $this->getTranslation($language)->getDescription();
     }
 
-    public function setDescription($description, $language = null)
+    public function setDescription($description, ?string $language = null)
     {
         $this->getTranslation($language)->setDescription($description);
     }
 
-    public function getInstructions($language = null)
+    public function getInstructions(?string $language = null)
     {
         return $this->getTranslation($language)->getInstructions();
     }
 
-    public function setInstructions($instructions, $language = null)
+    public function setInstructions($instructions, ?string $language = null)
     {
         $this->getTranslation($language)->setInstructions($instructions);
     }

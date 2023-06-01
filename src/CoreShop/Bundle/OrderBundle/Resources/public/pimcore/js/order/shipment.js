@@ -25,7 +25,7 @@ coreshop.order.order.shipment = Class.create({
         Ext.Ajax.request({
             url: Routing.generate('coreshop_admin_order_shipment_get_processable_items'),
             params: {
-                id: this.order.o_id
+                id: this.order.id
             },
             success: function (response) {
                 var res = Ext.decode(response.responseText);
@@ -149,7 +149,7 @@ coreshop.order.order.shipment = Class.create({
             resizeable: true,
             modal: true,
             layout: 'fit',
-            title: t('coreshop_shipment_create_new') + ' (' + this.order.o_id + ')',
+            title: t('coreshop_shipment_create_new') + ' (' + this.order.id + ')',
             items: [panel],
             buttons: [
                 {
@@ -167,7 +167,7 @@ coreshop.order.order.shipment = Class.create({
                         window.setLoading(t('loading'));
 
                         var data = panel.getForm().getFieldValues();
-                        data['id'] = parseInt(this.order.o_id);
+                        data['id'] = parseInt(this.order.id);
                         data['items'] = itemsToShip;
 
                         Ext.Ajax.request({

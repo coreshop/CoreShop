@@ -34,37 +34,23 @@ use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Pimcore\Http\RequestHelper;
 use Pimcore\Model\DataObject\Data\UrlSlug;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class CategoryController extends FrontendController
 {
-    protected array $validSortProperties;
-
     protected string $repositoryIdentifier = 'oo_id';
 
     protected string $requestIdentifier = 'category';
-
-    protected string $defaultSortName;
-
-    protected string $defaultSortDirection;
-
-    public function __construct(
-        array $validSortProperties,
-        string $defaultSortName,
-        string $defaultSortDirection,
-    ) {
-        $this->validSortProperties = $validSortProperties;
-        $this->defaultSortName = $defaultSortName;
-        $this->defaultSortDirection = $defaultSortDirection;
-    }
 
     public function menuAction(): Response
     {
         $categories = $this->getRepository()->findFirstLevelForStore($this->getContext()->getStore());
 
-        return $this->render($this->templateConfigurator->findTemplate('Category/_menu.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Category/_menu.html'), [
             'categories' => $categories,
         ]);
     }
@@ -80,7 +66,7 @@ class CategoryController extends FrontendController
             $activeSubCategories = $this->getRepository()->findChildCategoriesForStore($activeCategory, $this->getContext()->getStore());
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Category/_menu-left.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Category/_menu-left.html'), [
             'categories' => $firstLevelCategories,
             'activeCategory' => $activeCategory,
             'activeSubCategories' => $activeSubCategories,
@@ -148,7 +134,7 @@ class CategoryController extends FrontendController
             $orderDirection = $category->getFilter()->getOrderDirection();
             $orderKey = $category->getFilter()->getOrderKey();
 
-            $sortKey = (empty($orderKey) ? $this->defaultSortName : $orderKey) . '_' . (empty($orderDirection) ? $this->defaultSortDirection : $orderDirection);
+            $sortKey = (empty($orderKey) ? $this->getParameter('defaultSortName') : $orderKey) . '_' . (empty($orderDirection) ? $this->getParameter('defaultSortDirection') : $orderDirection);
             $sort = $this->getParameterFromRequest($request, 'sort', $sortKey);
             $sortParsed = $this->parseSorting($sort);
 
@@ -171,7 +157,7 @@ class CategoryController extends FrontendController
             $viewParameters['conditions'] = $preparedConditions;
         } else {
             //Classic Listing Mode
-            $sort = $this->getParameterFromRequest($request, 'sort', $this->defaultSortName . '_' . $this->defaultSortDirection);
+            $sort = $this->getParameterFromRequest($request, 'sort', $this->getParameter('defaultSortName') . '_' . $this->getParameter('defaultSortDirection'));
             $sortParsed = $this->parseSorting($sort);
 
             $categories = [$category];
@@ -210,7 +196,7 @@ class CategoryController extends FrontendController
         $viewParameters['type'] = $type;
         $viewParameters['perPageAllowed'] = $allowedPerPage;
         $viewParameters['sort'] = $sort;
-        $viewParameters['validSortElements'] = $this->validSortProperties;
+        $viewParameters['validSortElements'] = $this->getParameter('validSortProperties');
 
         foreach ($paginator as $product) {
             $this->container->get(TrackerInterface::class)->trackProductImpression($product);
@@ -218,7 +204,7 @@ class CategoryController extends FrontendController
 
         $this->container->get(SEOPresentationInterface::class)->updateSeoMetadata($category);
 
-        return $this->render($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Category/index.html'), $viewParameters);
     }
 
     protected function validateCategory(Request $request, CategoryInterface $category): void
@@ -254,7 +240,7 @@ class CategoryController extends FrontendController
         $name = $sortString[0];
         $direction = $sortString[1];
 
-        if (in_array($name, $this->validSortProperties) && in_array($direction, ['desc', 'asc'])) {
+        if (in_array($name, $this->getParameter('validSortProperties')) && in_array($direction, ['desc', 'asc'])) {
             return [
                 'name' => $name,
                 'direction' => $direction,
@@ -263,6 +249,17 @@ class CategoryController extends FrontendController
 
         return $sort;
     }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+            new SubscribedService('validSortProperties', 'array', attributes: new Autowire('%coreshop.frontend.category.valid_sort_options%')),
+            new SubscribedService('defaultSortName', 'string', attributes: new Autowire('%coreshop.frontend.category.default_sort_name%')),
+            new SubscribedService('defaultSortDirection', 'string', attributes: new Autowire('%coreshop.frontend.category.default_sort_direction%')),
+            'coreshop.repository.category' => CategoryRepositoryInterface::class,
+        ];
+    }
+
 
     protected function getRepository(): CategoryRepositoryInterface
     {

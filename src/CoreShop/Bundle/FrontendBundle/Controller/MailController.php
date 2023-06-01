@@ -27,7 +27,7 @@ class MailController extends FrontendController
 {
     public function mailAction(Request $request): Response
     {
-        return $this->render($this->templateConfigurator->findTemplate('Mail/mail.html'));
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Mail/mail.html'));
     }
 
     public function orderConfirmationAction(Request $request): Response
@@ -39,6 +39,6 @@ class MailController extends FrontendController
             $viewParameters['order'] = $order;
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Mail/order-confirmation.html'), $viewParameters);
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Mail/order-confirmation.html'), $viewParameters);
     }
 }

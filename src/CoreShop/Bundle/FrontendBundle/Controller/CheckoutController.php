@@ -149,7 +149,7 @@ class CheckoutController extends FrontendController
 
     protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, string $stepIdentifier, array $dataForStep): Response
     {
-        $template = $this->templateConfigurator->findTemplate(sprintf('Checkout/steps/%s.html', $stepIdentifier));
+        $template = $this->getTemplateConfigurator()->findTemplate(sprintf('Checkout/steps/%s.html', $stepIdentifier));
 
         return $this->render($template, $dataForStep);
     }
@@ -285,7 +285,7 @@ class CheckoutController extends FrontendController
 
         $this->container->get(TrackerInterface::class)->trackCheckoutComplete($order);
 
-        return $this->render($this->templateConfigurator->findTemplate('Checkout/thank-you.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Checkout/thank-you.html'), [
             'order' => $order,
         ]);
     }

@@ -23,7 +23,7 @@
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
-        "childs": [
+        "children": [
             {
                 "fieldtype": "tabpanel",
                 "name": "Layout",
@@ -37,7 +37,7 @@
                 "bodyStyle": "",
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
@@ -53,7 +53,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "fieldset",
                                 "labelWidth": 100,
@@ -68,10 +68,10 @@
                                 "bodyStyle": null,
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "localizedfields",
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "input",
                                                 "width": null,
@@ -115,7 +115,7 @@
                                                 "fieldtype": "urlSlug",
                                                 "width": "",
                                                 "domainLabelWidth": null,
-                                                "action": "CoreShop\\Bundle\\FrontendBundle\\Controller\\ProductController:detailSlugAction",
+                                                "action": "CoreShop\\Bundle\\FrontendBundle\\Controller\\ProductController::detailSlugAction",
                                                 "availableSites": [],
                                                 "name": "slug",
                                                 "title": "coreshop.product.slug",
@@ -272,7 +272,7 @@
                                         "options": [],
                                         "width": "",
                                         "height": "",
-                                        "maxItems": "",
+                                        "maxItems": null,
                                         "name": "stores",
                                         "title": "coreshop.product.stores",
                                         "tooltip": "",
@@ -309,10 +309,10 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "localizedfields",
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "input",
                                         "width": null,
@@ -395,10 +395,10 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "localizedfields",
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "wysiwyg",
                                         "width": "",
@@ -461,7 +461,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "coreShopRelation",
                                 "stack": "coreshop.purchasable",
@@ -503,7 +503,7 @@
                                 "documentsAllowed": false,
                                 "width": null,
                                 "height": "",
-                                "maxItems": "",
+                                "maxItems": null,
                                 "assetUploadPath": null,
                                 "assetTypes": [],
                                 "documentTypes": [],
@@ -533,7 +533,7 @@
                                 "documentsAllowed": false,
                                 "width": null,
                                 "height": "",
-                                "maxItems": "",
+                                "maxItems": null,
                                 "assetUploadPath": null,
                                 "assetTypes": [],
                                 "documentTypes": [],
@@ -575,7 +575,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "coreShopRelations",
                                 "height": "400",
@@ -614,12 +614,12 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "manyToManyRelation",
                                 "width": "",
                                 "height": "",
-                                "maxItems": "",
+                                "maxItems": null,
                                 "assetUploadPath": "",
                                 "relationType": true,
                                 "objectsAllowed": false,
@@ -666,7 +666,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "numeric",
                                 "width": "",
@@ -767,7 +767,7 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "numeric",
                                         "width": "",
@@ -780,8 +780,8 @@
                                         "minValue": 0,
                                         "maxValue": null,
                                         "unique": false,
-                                        "decimalSize": 1,
-                                        "decimalPrecision": 1,
+                                        "decimalSize": null,
+                                        "decimalPrecision": null,
                                         "name": "minimumQuantityToOrder",
                                         "title": "coreshop.product.minimum_quantity_to_order",
                                         "tooltip": "",
@@ -809,8 +809,8 @@
                                         "minValue": 0,
                                         "maxValue": null,
                                         "unique": false,
-                                        "decimalSize": 1,
-                                        "decimalPrecision": 1,
+                                        "decimalSize": null,
+                                        "decimalPrecision": null,
                                         "name": "maximumQuantityToOrder",
                                         "title": "coreshop.product.maximal_quantity_to_order",
                                         "tooltip": "",
@@ -847,7 +847,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "fieldset",
                                 "labelWidth": 100,
@@ -862,7 +862,7 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "coreShopProductUnitDefinitions",
                                         "width": "",
@@ -917,8 +917,8 @@
                                         "minValue": null,
                                         "maxValue": null,
                                         "unique": false,
-                                        "decimalSize": 1,
-                                        "decimalPrecision": 1,
+                                        "decimalSize": null,
+                                        "decimalPrecision": null,
                                         "name": "itemQuantityFactor",
                                         "title": "coreshop.product.item_quantity_factor",
                                         "tooltip": "coreshop.product.item_quantity_factor.tooltip",
@@ -1018,7 +1018,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "coreShopProductSpecificPriceRules",
                                 "height": null,
@@ -1073,7 +1073,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "numeric",
                                 "width": "",

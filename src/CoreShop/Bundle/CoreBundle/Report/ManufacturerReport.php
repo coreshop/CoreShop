@@ -90,7 +90,7 @@ class ManufacturerReport implements ReportInterface
             SELECT SQL_CALC_FOUND_ROWS
               `manufacturers`.oo_id as manufacturerId,
               `manufacturers`.name as manufacturerName,
-              `manufacturers`.o_key as manufacturerKey,
+              `manufacturers`.key as manufacturerKey,
               `orders`.store,
               SUM(orderItems.totalGross) AS sales,
               SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,

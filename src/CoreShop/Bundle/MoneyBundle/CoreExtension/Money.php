@@ -476,7 +476,7 @@ class Money extends DataObject\ClassDefinition\Data implements
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
         $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function get' . ucfirst($key) . ' ($language = null): ' . ($this->nullable ? '?' : '') . 'int {' . "\n";
+        $code .= 'public function get' . ucfirst($key) . ' (?string $language = null): ' . ($this->nullable ? '?' : '') . 'int {' . "\n";
 
         $code .= "\t" . '$data = $this->getLocalizedfields()->getLocalizedValue("' . $key . '", $language);' . "\n";
 

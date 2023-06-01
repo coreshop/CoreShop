@@ -53,7 +53,7 @@ class Filter extends AbstractResource implements FilterInterface
     /**
      * @var string
      */
-    protected $orderKey = 'o_id';
+    protected $orderKey = 'id';
 
     /**
      * @var IndexInterface

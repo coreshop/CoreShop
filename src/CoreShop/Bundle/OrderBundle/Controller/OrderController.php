@@ -138,7 +138,7 @@ class OrderController extends PimcoreController
         OrderRepositoryInterface $orderRepository,
         StateMachineManagerInterface $stateMachineManager,
     ): Response {
-        $orderId = $this->getParameterFromRequest($request, 'o_id');
+        $orderId = $this->getParameterFromRequest($request, 'id');
         $transition = $this->getParameterFromRequest($request, 'transition');
         $order = $orderRepository->find($orderId);
 
@@ -271,7 +271,7 @@ class OrderController extends PimcoreController
 
         if ($number) {
             $list = $orderRepository->getList();
-            $list->setCondition('orderNumber = ? OR o_id = ?', [$number, $number]);
+            $list->setCondition('orderNumber = ? OR id = ?', [$number, $number]);
 
             $orders = $list->getData();
 
@@ -288,7 +288,7 @@ class OrderController extends PimcoreController
         $date = $order->getOrderDate()->getTimestamp();
 
         $element = [
-            'o_id' => $order->getId(),
+            'id' => $order->getId(),
             'saleDate' => $date,
             'saleNumber' => $order->getOrderNumber(),
             'lang' => $order->getLocaleCode(),
@@ -356,7 +356,7 @@ class OrderController extends PimcoreController
     {
         $jsonSale = $this->jmsSerializer->toArray($order);
 
-        $jsonSale['o_id'] = $order->getId();
+        $jsonSale['id'] = $order->getId();
         $jsonSale['saleNumber'] = $order->getOrderNumber();
         $jsonSale['saleDate'] = $order->getOrderDate() ? $order->getOrderDate()->getTimestamp() : null;
         $jsonSale['currency'] = $this->getCurrency($order->getCurrency());
@@ -572,7 +572,7 @@ class OrderController extends PimcoreController
     protected function prepareSaleItem(OrderItemInterface $item): array
     {
         return [
-            'o_id' => $item->getId(),
+            'id' => $item->getId(),
             'productName' => $item->getName(),
             'productImage' => null,
             'quantity' => $item->getQuantity(),

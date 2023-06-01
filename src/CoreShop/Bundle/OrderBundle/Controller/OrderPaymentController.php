@@ -61,7 +61,7 @@ class OrderPaymentController extends PimcoreController
     {
         //TODO: Use Form here
 
-        $orderId = $this->getParameterFromRequest($request, 'o_id');
+        $orderId = $this->getParameterFromRequest($request, 'id');
         $order = $this->getSaleRepository()->find($orderId);
         $amount = (int) round($this->getParameterFromRequest($request, 'amount', 0) * $this->container->getParameter('coreshop.currency.decimal_factor'));
 

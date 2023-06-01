@@ -58,7 +58,7 @@ class RegisterController extends FrontendController
             }
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Register/register.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Register/register.html'), [
             'form' => $form->createView(),
         ]);
     }
@@ -94,7 +94,7 @@ class RegisterController extends FrontendController
             }
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Register/password-reset-request.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Register/password-reset-request.html'), [
             'form' => $form->createView(),
         ]);
     }
@@ -134,7 +134,7 @@ class RegisterController extends FrontendController
                 }
             }
 
-            return $this->render($this->templateConfigurator->findTemplate('Register/password-reset.html'), [
+            return $this->render($this->getTemplateConfigurator()->findTemplate('Register/password-reset.html'), [
                 'form' => $form->createView(),
             ]);
         }

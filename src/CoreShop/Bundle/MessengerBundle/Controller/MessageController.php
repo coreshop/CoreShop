@@ -22,7 +22,7 @@ use CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRejecter;
 use CoreShop\Bundle\MessengerBundle\Messenger\FailedMessageRetryer;
 use Symfony\Component\HttpFoundation\Request;
 
-class MessageController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
+class MessageController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController
 {
     public function deleteStoredMessageAction(Request $request, FailedMessageRejecter $failedMessageRejecter)
     {

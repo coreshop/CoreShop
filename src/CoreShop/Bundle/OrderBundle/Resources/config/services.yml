@@ -3,7 +3,6 @@ parameters:
     coreshop.dto.add_multiple_to_cart.class: 'CoreShop\Bundle\OrderBundle\DTO\AddMultipleToCart'
 
 imports:
-    - { resource: services_alias.yml }
     - { resource: services/order.yml }
     - { resource: services/order_invoice.yml }
     - { resource: services/order_shipment.yml }

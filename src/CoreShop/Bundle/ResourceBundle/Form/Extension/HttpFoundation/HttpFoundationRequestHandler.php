@@ -92,7 +92,7 @@ final class HttpFoundationRequestHandler implements RequestHandlerInterface
                 $default = $form->getConfig()->getCompound() ? [] : null;
 
                 if ($request->request->has($name)) {
-                    $params = $request->request->get($name);
+                    $params = $request->request->all($name);
                 } else {
                     $params = $default;
                 }

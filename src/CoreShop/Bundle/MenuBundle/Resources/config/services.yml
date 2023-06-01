@@ -1,9 +1,6 @@
 parameters:
     coreshop.menu.json.template: '@@CoreShopMenu/knp_menu.js.twig'
 
-imports:
-    - { resource: services_alias.yml }
-
 services:
     _defaults:
         public: true

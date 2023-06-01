@@ -20,11 +20,12 @@ namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
 use CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface;
 use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
+use Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class GridController extends AdminController
+class GridController extends AdminAbstractController
 {
     public function getGridFiltersAction(string $listType): Response
     {

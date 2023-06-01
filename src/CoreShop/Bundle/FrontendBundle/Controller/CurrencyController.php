@@ -27,6 +27,7 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class CurrencyController extends FrontendController
 {
@@ -34,7 +35,7 @@ class CurrencyController extends FrontendController
     {
         $currencies = $this->container->get('coreshop.repository.currency')->findActiveForStore($this->container->get(ShopperContextInterface::class)->getStore());
 
-        return $this->render($this->templateConfigurator->findTemplate('Currency/_widget.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Currency/_widget.html'), [
             'currencies' => $currencies,
         ]);
     }
@@ -64,5 +65,12 @@ class CurrencyController extends FrontendController
     protected function getCurrencyRepository(): CurrencyRepositoryInterface
     {
         return $this->container->get('coreshop.repository.currency');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+            new SubscribedService('coreshop.repository.currency', CurrencyRepositoryInterface::class),
+        ];
     }
 }

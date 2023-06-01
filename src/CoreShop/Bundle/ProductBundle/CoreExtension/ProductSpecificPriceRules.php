@@ -44,7 +44,9 @@ class ProductSpecificPriceRules extends Data implements
     Data\CustomRecyclingMarshalInterface,
     Data\CustomDataCopyInterface,
     CacheMarshallerInterface,
-    Data\EqualComparisonInterface
+    Data\EqualComparisonInterface,
+    Data\PreGetDataInterface,
+    Data\PreSetDataInterface
 {
     use TempEntityManagerTrait;
     use SimpleComparisonTrait;
@@ -86,7 +88,7 @@ class ProductSpecificPriceRules extends Data implements
      *
      * @return ProductSpecificPriceRuleInterface[]
      */
-    public function preGetData($object)
+    public function preGetData(mixed $object, array $params = []): mixed
     {
         Assert::isInstanceOf($object, ProductInterface::class);
 
@@ -179,10 +181,10 @@ class ProductSpecificPriceRules extends Data implements
      *
      * @return mixed
      */
-    public function preSetData($object, $data, $params = [])
+    public function preSetData(mixed $container, mixed $data, array $params = []): mixed
     {
-        if ($object instanceof LazyLoadedFieldsInterface) {
-            $object->markLazyKeyAsLoaded($this->getName());
+        if ($container instanceof LazyLoadedFieldsInterface) {
+            $container->markLazyKeyAsLoaded($this->getName());
         }
 
         return $data;

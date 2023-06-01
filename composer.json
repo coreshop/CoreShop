@@ -100,10 +100,11 @@
     "payum/payum": "^1.7",
     "payum/payum-bundle": "^2.5",
     "php-http/guzzle7-adapter": "^1.0",
+    "php-http/message-factory": "^1.0",
     "pimcore/admin-ui-classic-bundle": "^1.0",
     "pimcore/google-marketing-bundle": "^1.0",
+    "pimcore/newsletter-bundle": "^1.0",
     "pimcore/pimcore": "^11.0",
-    "php-http/message-factory": "^1.0",
     "rinvex/countries": "^7.3",
     "sebastian/diff": "^4.0 | ^5.0",
     "stof/doctrine-extensions-bundle": "^1.6",
@@ -112,6 +113,7 @@
     "symfony/intl": "^6.2",
     "symfony/notifier": "^6.1",
     "symfony/serializer": "^6.1",
+    "symfony/twig-bundle": "^6.3",
     "webmozart/assert": "^1.10"
   },
   "require-dev": {
@@ -150,6 +152,9 @@
     ]
   },
   "autoload-dev": {
+    "psr-4": {
+      "Pimcore\\Model\\DataObject\\": "var/classes/DataObject"
+    },
     "classmap": [
       "src/Kernel.php",
       "src/BehatKernel.php",

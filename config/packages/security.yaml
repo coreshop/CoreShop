@@ -1,12 +1,9 @@
-parameters:
-    coreshop.security.frontend_regex: "^/(?!admin)[^/]*"
-
 security:
+    enable_authenticator_manager: true
+
     providers:
-        coreshop_user:
-            id: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
         pimcore_admin:
-            id: Pimcore\Bundle\AdminBundle\Security\User\UserProvider
+            id: Pimcore\Security\User\UserProvider
 
     firewalls:
         dev:
@@ -14,77 +11,25 @@ security:
             security: false
 
         # Pimcore WebDAV HTTP basic // DO NOT CHANGE!
-        pimcore_admin_webdav:
-            pattern: ^/admin/asset/webdav
+        pimcore_webdav:
+            pattern: ^/asset/webdav
             provider: pimcore_admin
             http_basic: ~
 
-        # Pimcore admin form login // DO NOT CHANGE!
-        pimcore_admin:
-            pattern: ^/admin(/.*)?$
-            user_checker: Pimcore\Bundle\AdminBundle\Security\User\UserChecker
-            provider: pimcore_admin
-            login_throttling:
-                max_attempts: 3
-                interval: '5 minutes'
-            logout:
-                path: pimcore_admin_logout
-                target: pimcore_admin_login
-            form_login:
-                default_target_path: pimcore_admin_index
-                always_use_default_target_path: true
-                login_path: pimcore_admin_login
-                check_path: pimcore_admin_login_check
-                username_parameter: username
-                password_parameter: password
-            custom_authenticators:
-                - Pimcore\Bundle\AdminBundle\Security\Authenticator\AdminTokenAuthenticator
-            two_factor:
-                auth_form_path: /admin/login/2fa                   # Path or route name of the two-factor form
-                check_path: /admin/login/2fa-verify                # Path or route name of the two-factor code check
-                default_target_path: /admin            # Where to redirect by default after successful authentication
-                always_use_default_target_path: false  # If it should always redirect to default_target_path
-                auth_code_parameter_name: _auth_code   # Name of the parameter for the two-factor authentication code
-                trusted_parameter_name: _trusted       # Name of the parameter for the trusted device option
-                multi_factor: false                    # If ALL active two-factor methods need to be fulfilled (multi-factor authentication)
-#
-#        coreshop_frontend:
-#            anonymous: ~
-#            provider: coreshop_user
-#            pattern: '%coreshop.security.frontend_regex%'
-#            context: shop
-#            form_login:
-#                login_path: coreshop_login
-#                check_path: coreshop_login_check
-#                provider: coreshop_user
-#                failure_path: coreshop_login
-#                default_target_path: coreshop_index
-#                use_forward: false
-#                use_referer: true
-#            remember_me:
-#                secret: "%secret%"
-#                name: APP_CORESHOP_REMEMBER_ME
-#                lifetime: 31536000
-#                remember_me_parameter: _remember_me
-#            logout:
-#                path: coreshop_logout
-#                target: coreshop_login
-#                invalidate_session: false
-#                success_handler: CoreShop\Bundle\CoreBundle\EventListener\ShopUserLogoutHandler
+        # Pimcore Admin Bundle firewall
+        pimcore_admin: '%pimcore_admin_bundle.firewall_settings%'
 
     access_control:
         # Pimcore admin ACl  // DO NOT CHANGE!
-        - { path: ^/admin/settings/display-custom-logo, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/settings/display-custom-logo, roles: PUBLIC_ACCESS }
         - { path: ^/admin/login/2fa-verify, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+        - { path: ^/admin/login/2fa-setup, roles: ROLE_PIMCORE_USER }
         - { path: ^/admin/login/2fa, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
-        - { path: ^/admin/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/login/(login|lostpassword|deeplink|csrf-token)$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/admin/login/(login|lostpassword|deeplink|csrf-token)$, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_PIMCORE_USER }
-
-        # CoreShop
-        - { path: "%coreshop.security.frontend_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
-        - { path: "%coreshop.security.frontend_regex%/_partial", role: ROLE_NO_ACCESS }
+        - { path: ^/asset/webdav, roles: ROLE_PIMCORE_USER }
 
     role_hierarchy:
         # Pimcore admin  // DO NOT CHANGE!
-        ROLE_PIMCORE_ADMIN: [ ROLE_PIMCORE_USER ]
+        ROLE_PIMCORE_ADMIN: [ROLE_PIMCORE_USER]

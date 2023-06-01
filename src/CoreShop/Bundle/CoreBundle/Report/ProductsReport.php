@@ -86,14 +86,14 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         if ($objectTypeFilter === 'container') {
             $unionData = [];
             foreach ($this->productStackRepository->getClassIds() as $id) {
-                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
+                $unionData[] = 'SELECT `id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
             }
 
             $union = implode(' UNION ALL ', $unionData);
 
             $query = "
               SELECT SQL_CALC_FOUND_ROWS
-                products.o_id as productId,
+                products.id as productId,
                 products.`name` as productName,
                 SUM(orderItems.totalGross) AS sales, 
                 AVG(orderItems.totalGross) AS salesPrice,
@@ -101,11 +101,11 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 SUM(orderItems.quantity) AS `quantityCount`,
                 COUNT(`order`.oo_id) AS `orderCount`
                 FROM ($union) AS products
-                INNER JOIN object_query_$orderItemClassId AS orderItems ON products.o_id = orderItems.mainObjectId
+                INNER JOIN object_query_$orderItemClassId AS orderItems ON products.id = orderItems.mainObjectId
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderClassId AS `order` ON `order`.oo_id = orderRelations.src_id
                 WHERE products.o_type = 'object' AND `order`.store = $storeId" . (($orderStateFilter !== null) ? ' AND `order`.orderState IN (' . rtrim(str_repeat('?,', count($orderStateFilter)), ',') . ')' : '') . " AND `order`.orderDate > ? AND `order`.orderDate < ?
-                GROUP BY products.o_id
+                GROUP BY products.id
             LIMIT $offset,$limit";
         } else {
             $productTypeCondition = '1=1';

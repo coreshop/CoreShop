@@ -31,7 +31,7 @@ class SearchController extends FrontendController
     {
         $form = $this->createSearchForm();
 
-        return $this->render($this->templateConfigurator->findTemplate('Search/_widget.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Search/_widget.html'), [
             'form' => $form->createView(),
         ]);
     }
@@ -70,7 +70,7 @@ class SearchController extends FrontendController
                 $itemsPerPage,
             );
 
-            return $this->render($this->templateConfigurator->findTemplate('Search/search.html'), [
+            return $this->render($this->getTemplateConfigurator()->findTemplate('Search/search.html'), [
                 'paginator' => $paginator,
                 'searchText' => $text,
             ]);

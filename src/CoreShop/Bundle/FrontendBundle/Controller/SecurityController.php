@@ -47,8 +47,8 @@ class SecurityController extends FrontendController
 
         $renderLayout = $this->getParameterFromRequest($request, 'renderLayout', true);
 
-        $viewWithLayout = $this->templateConfigurator->findTemplate('Security/login.html');
-        $viewWithoutLayout = $this->templateConfigurator->findTemplate('Security/_login-form.html');
+        $viewWithLayout = $this->getTemplateConfigurator()->findTemplate('Security/login.html');
+        $viewWithoutLayout = $this->getTemplateConfigurator()->findTemplate('Security/_login-form.html');
 
         return $this->render($renderLayout ? $viewWithLayout : $viewWithoutLayout, [
             'form' => $form->createView(),

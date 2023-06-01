@@ -241,7 +241,7 @@ SELECT *
 FROM `{$tableName}`
 LEFT JOIN {$localizedTable}
     ON( 
-        {$tableName}.o_id = {$localizedTable}.oo_id AND
+        {$tableName}.id = {$localizedTable}.oo_id AND
         {$localizedTable}.language = '{$language}'
     )
 QUERY;

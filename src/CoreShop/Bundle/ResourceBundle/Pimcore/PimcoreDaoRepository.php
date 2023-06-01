@@ -130,8 +130,13 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
             $list->setOrder($orders);
         }
 
-        $list->setLimit($limit);
-        $list->setOffset($offset);
+        if (null !== $offset) {
+            $list->setOffset($offset);
+        }
+
+        if (null !== $limit) {
+            $list->setLimit($limit);
+        }
 
         return $list->load();
     }
@@ -153,7 +158,7 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
      * Input could be
      *
      * [
-     *     "condition" => "o_id=?",
+     *     "condition" => "id=?",
      *     "conditionVariables" => [1]
      * ]
      *
@@ -161,7 +166,7 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
      *
      * [
      *     "condition" => [
-     *          "o_id" => 1
+     *          "id" => 1
      *     ]
      * ]
      *

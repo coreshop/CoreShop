@@ -25,7 +25,7 @@
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
-        "childs": [
+        "children": [
             {
                 "fieldtype": "panel",
                 "layout": null,
@@ -41,10 +41,10 @@
                 "bodyStyle": "",
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "localizedfields",
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "input",
                                 "width": "",

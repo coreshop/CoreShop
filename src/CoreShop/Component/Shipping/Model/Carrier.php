@@ -94,7 +94,7 @@ class Carrier extends AbstractResource implements CarrierInterface
         $this->identifier = $identifier;
     }
 
-    public function getDescription($language = null)
+    public function getDescription(?string $language = null)
     {
         return $this->getTranslation($language)->getDescription();
     }

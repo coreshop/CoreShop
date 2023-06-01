@@ -37,7 +37,7 @@ class CustomerController extends FrontendController
 {
     public function headerAction(Request $request): Response
     {
-        return $this->render($this->templateConfigurator->findTemplate('Customer/_header.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/_header.html'), [
             'catalogMode' => false,
             'customer' => $this->getCustomer(),
         ]);
@@ -45,7 +45,7 @@ class CustomerController extends FrontendController
 
     public function footerAction(): Response
     {
-        return $this->render($this->templateConfigurator->findTemplate('Customer/_footer.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/_footer.html'), [
             'catalogMode' => false,
             'customer' => $this->getCustomer(),
         ]);
@@ -61,7 +61,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/profile.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/profile.html'), [
             'customer' => $customer,
         ]);
     }
@@ -76,7 +76,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/orders.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/orders.html'), [
             'customer' => $customer,
             'orders' => $this->container->get('coreshop.repository.order')->findOrdersByCustomer($this->getCustomer()),
         ]);
@@ -103,7 +103,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_customer_orders');
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/order_detail.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/order_detail.html'), [
             'customer' => $customer,
             'order' => $order,
         ]);
@@ -119,7 +119,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/addresses.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/addresses.html'), [
             'customer' => $customer,
         ]);
     }
@@ -188,7 +188,7 @@ class CustomerController extends FrontendController
             }
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/address.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/address.html'), [
             'address' => $address,
             'customer' => $customer,
             'form' => $form->createView(),
@@ -256,7 +256,7 @@ class CustomerController extends FrontendController
             }
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/settings.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/settings.html'), [
             'customer' => $customer,
             'form' => $form->createView(),
         ]);
@@ -293,7 +293,7 @@ class CustomerController extends FrontendController
             }
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/change_password.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/change_password.html'), [
             'customer' => $customer,
             'form' => $form->createView(),
         ]);
@@ -329,7 +329,7 @@ class CustomerController extends FrontendController
             $this->addFlash('error', $this->container->get('translator')->trans('coreshop.ui.newsletter_confirmation_error'));
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Customer/confirm_newsletter.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Customer/confirm_newsletter.html'), [
             'newsletterUser' => $newsletterUser,
             'success' => $success,
         ]);

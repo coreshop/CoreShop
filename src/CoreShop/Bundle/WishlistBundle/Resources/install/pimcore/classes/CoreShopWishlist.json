@@ -76,7 +76,7 @@
                         "documentsAllowed": false,
                         "width": null,
                         "height": "",
-                        "maxItems": "",
+                        "maxItems": null,
                         "assetUploadPath": null,
                         "assetTypes": [],
                         "documentTypes": [],

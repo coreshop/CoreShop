@@ -29,9 +29,9 @@ use Pimcore\Model\DataObject\Concrete;
 class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface, Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
 {
     public string $fieldtype = 'coreShopMoneyCurrency';
-    public int $width = 0;
-    public float $minValue = 0;
-    public float $maxValue = 0;
+    public ?int $width = 0;
+    public ?float $minValue = 0;
+    public ?float $maxValue = 0;
 
     public function getFieldType(): string
     {

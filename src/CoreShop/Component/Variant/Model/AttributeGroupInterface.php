@@ -24,13 +24,13 @@ interface AttributeGroupInterface extends PimcoreModelInterface
 {
     public function getName(string $language = null): ?string;
 
-    public function setName(?string $name, $language = null);
+    public function setName(?string $name, ?string $language = null): static;
 
     public function getSorting(): ?float;
 
-    public function setSorting(?float $sorting);
+    public function setSorting(?float $sorting): static;
 
     public function getShowInList(): ?bool;
 
-    public function setShowInList(?bool $showInList);
+    public function setShowInList(?bool $showInList): static;
 }

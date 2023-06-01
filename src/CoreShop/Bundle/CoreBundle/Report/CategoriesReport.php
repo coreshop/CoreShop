@@ -81,7 +81,7 @@ class CategoriesReport implements ReportInterface
         $query = "
             SELECT SQL_CALC_FOUND_ROWS
               `categories`.oo_id as categoryId,
-              `categories`.o_key as categoryKey,
+              `categories`.key as categoryKey,
               `localizedCategories`.name as categoryName,
               `orders`.store,
               SUM(orderItems.totalGross) AS sales,

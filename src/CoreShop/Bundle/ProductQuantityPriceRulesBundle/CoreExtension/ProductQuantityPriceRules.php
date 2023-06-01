@@ -46,7 +46,9 @@ class ProductQuantityPriceRules extends Data implements
     Data\CustomVersionMarshalInterface,
     Data\CustomRecyclingMarshalInterface,
     Data\CustomDataCopyInterface,
-    CacheMarshallerInterface
+    CacheMarshallerInterface,
+    Data\PreGetDataInterface,
+    Data\PreSetDataInterface
 {
     use TempEntityManagerTrait;
 
@@ -87,7 +89,7 @@ class ProductQuantityPriceRules extends Data implements
      *
      * @return ProductQuantityPriceRuleInterface[]
      */
-    public function preGetData($object)
+    public function preGetData(mixed $object, array $params = []): mixed
     {
         Assert::isInstanceOf($object, QuantityRangePriceAwareInterface::class);
 
@@ -109,7 +111,7 @@ class ProductQuantityPriceRules extends Data implements
         return $data;
     }
 
-    public function preSetData($object, $data, $params = [])
+    public function preSetData(mixed $object, mixed $data, array $params = []): mixed
     {
         $this->markAsLoaded($object);
 

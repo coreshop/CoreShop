@@ -74,7 +74,7 @@ final class PimcoreDaoContext implements Context
          */
         $list = new DataObject\Listing();
         $list->setUnpublished(true);
-        $list->setCondition('o_id <> 1');
+        $list->setCondition('id <> 1');
         $list->load();
 
         foreach ($list->getObjects() as $obj) {
@@ -82,7 +82,7 @@ final class PimcoreDaoContext implements Context
         }
 
         //Force
-        $this->connection->executeQuery('DELETE FROM objects WHERE o_id <> 1');
+        $this->connection->executeQuery('DELETE FROM objects WHERE id <> 1');
     }
 
     /**
