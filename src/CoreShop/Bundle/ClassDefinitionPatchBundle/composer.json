@@ -47,7 +47,8 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
-
+    "dev-next": "3.1-dev",
+    "dev-master": "3.1-dev"
   },
   "config": {
     "sort-packages": true
