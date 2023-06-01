@@ -22,6 +22,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use CoreShop\Behat\Service\Tracking\ConfigResolver;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce;
+use CoreShop\Bundle\TrackingBundle\Tracker\Google\GA4Ecommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce;
@@ -55,9 +56,15 @@ final class TrackingContext implements Context
          */
         $googleAnalyticsUniversalTracker = $this->trackerRegistry->get('google-analytics-universal-ecommerce');
 
+        /**
+         * @var GA4Ecommerce $ga4Tracker
+         */
+        $ga4Tracker = $this->trackerRegistry->get('google-analytics-4');
+
         $googleAnalyticsEnhancedTracker->setConfigResolver(new ConfigResolver());
-        $googleGTagEnhancedTracker->setConfigResolver(new ConfigResolver());
+        $googleGTagEnhancedTracker->setConfigResolver(new ConfigResolver(true));
         $googleAnalyticsUniversalTracker->setConfigResolver(new ConfigResolver());
+        $ga4Tracker->setConfigResolver(new ConfigResolver());
     }
 
     /**
@@ -144,10 +151,13 @@ final class TrackingContext implements Context
 
         $tracker->trackCheckoutComplete($this->trackingExtractor->updateMetadata($order));
 
-        $result = str_replace('##id##', (string) $order->getId(), $code->getRaw());
-        $result = str_replace('##item_id##', (string) $order->getItems()[0]->getId(), $result);
+        $result = str_replace(
+            ['##id##', '##item_id##'],
+            [(string)$order->getId(), (string)$order->getItems()[0]->getId()],
+            $code->getRaw()
+        );
 
-        Assert::eq($this->getRenderedPartForTracker($tracker), $code);
+        Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
 
     private function getRenderedPartForTracker(TrackerInterface $tracker): string
@@ -160,15 +170,16 @@ final class TrackingContext implements Context
             $code = implode('', $tracker->getCodeTracker()->getBlocks());
         } elseif ($tracker instanceof AnalyticsEnhancedEcommerce ||
             $tracker instanceof GlobalSiteTagEnhancedEcommerce ||
-            $tracker instanceof UniversalEcommerce
+            $tracker instanceof UniversalEcommerce ||
+            $tracker instanceof GA4Ecommerce
         ) {
             $trackerReflector = new \ReflectionClass(AbstractTracker::class);
-            $codeCollectorProperty = $trackerReflector->getProperty('codeCollector');
-            $codeCollectorProperty->setAccessible(true);
+            $codeCollectorMethod = $trackerReflector->getMethod('getCodeCollector');
+            $codeCollectorMethod->setAccessible(true);
 
-            $codeCollector = $codeCollectorProperty->getValue($tracker->tracker);
+            $codeCollector = $codeCollectorMethod->getClosure($tracker->tracker)();
 
-            $codeCollectorProperty->setAccessible(false);
+            $codeCollectorMethod->setAccessible(false);
 
             $codeCollectorReflector = new \ReflectionClass(CodeCollector::class);
 
@@ -178,6 +189,17 @@ final class TrackingContext implements Context
             $blocks = $codePartsProperty->getValue($codeCollector);
 
             $codePartsProperty->setAccessible(false);
+
+            if (!isset($blocks[CodeCollector::CONFIG_KEY_GLOBAL])) {
+                $blocks[CodeCollector::CONFIG_KEY_GLOBAL] = [
+                    Tracker::BLOCK_BEFORE_TRACK => [
+                        'append' => [],
+                    ],
+                    Tracker::BLOCK_AFTER_TRACK => [
+                        'append' => [],
+                    ],
+                ];
+            }
 
             if ($tracker instanceof UniversalEcommerce) {
                 $code = implode(

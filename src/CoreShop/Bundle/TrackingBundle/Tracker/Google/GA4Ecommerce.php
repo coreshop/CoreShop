@@ -24,15 +24,11 @@ use Pimcore\Analytics\Google\Tracker as GoogleTracker;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
+class GA4Ecommerce extends AbstractEcommerceTracker
 {
     public TrackerInterface $tracker;
 
     public ConfigResolverInterface $config;
-
-    protected array $dependencies = ['ec'];
-
-    protected bool $dependenciesIncluded = false;
 
     public function setTracker(TrackerInterface $tracker): void
     {
@@ -49,22 +45,20 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => '@CoreShopTracking/Tracking/analytics/enhanced',
+            'template_prefix' => '@CoreShopTracking/Tracking/ga4',
         ]);
     }
 
     public function trackProduct($product): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
-            return;
-        }
-
-        $this->ensureDependencies($product['currency']);
-
         $parameters = [];
-        $parameters['productData'] = $this->transformProductAction($product);
+        $actionData = [
+            'items' => [$this->transformProductAction($product)],
+        ];
 
-        unset($parameters['productData']['price']);
+        $parameters['actionData'] = $actionData;
+
+        //unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_view', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -72,15 +66,16 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackProductImpression($product): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
-            return;
-        }
-
-        $this->ensureDependencies($product['currency']);
-
-        $parameters = [
-            'productData' => $this->transformProductAction($product),
+        $parameters = [];
+        $actionData = [
+            'currency' => $product['currency'],
+            'value' => $product['price'],
+            'items' => [$this->transformProductAction($product)],
         ];
+
+        $parameters['actionData'] = $actionData;
+
+        //unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_impression', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -88,45 +83,30 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
-            return;
-        }
-
-        $this->ensureDependencies($cart['currency']);
         $this->trackCartAction($product, 'add', $quantity);
     }
 
     public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
-            return;
-        }
-
-        $this->ensureDependencies($cart['currency']);
         $this->trackCartAction($product, 'remove', $quantity);
     }
 
     public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
-            return;
-        }
-
-        $this->ensureDependencies($cart['currency']);
-
         $parameters = [];
         $parameters['items'] = $cart['items'];
-        $parameters['calls'] = [];
-        $parameters['actionData'] = [];
+        $actionData = [];
 
         if (null !== $stepIdentifier || null !== $checkoutOption) {
-            $actionData = ['step' => $stepIdentifier];
-            if (null !== $checkoutOption) {
-                $actionData['option'] = $checkoutOption;
-            }
+            $actionData['checkout_step'] = $stepIdentifier + 1;
 
-            $parameters['actionData'] = $actionData;
+            if (!empty($cart['voucher'])) {
+                $actionData['coupon'] = $cart['voucher'];
+            }
         }
+
+        $parameters['actionData'] = $actionData;
+        $parameters['event'] = $isFirstStep === true ? 'begin_checkout' : 'checkout_progress';
 
         $result = $this->renderTemplate('checkout', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -134,44 +114,33 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
     public function trackCheckoutComplete($order): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
-            return;
-        }
-
-        $this->ensureDependencies($order['currency']);
-
         $orderData = $this->transformOrder($order);
         $items = $order['items'];
 
-        $parameters = [];
-        $parameters['order'] = $orderData;
-        $parameters['items'] = $items;
+        $actionData = array_merge($orderData, ['items' => []]);
 
-        $calls = [];
         foreach ($items as $item) {
-            $calls[] = $this->transformProductAction($item);
+            $actionData['items'][] = $this->transformProductAction($item);
         }
 
-        $parameters['calls'] = $calls;
+        $parameters = [];
+        $parameters['actionData'] = $actionData;
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    protected function trackCartAction($product, $action, float $quantity = 1): void
+    protected function trackCartAction($product, $action, float $quantity = 1.0): void
     {
-        if ($this->isGlobalSiteTagMode() === true) {
-            return;
-        }
-
-        $this->ensureDependencies($product['currency']);
-
         $product = $this->transformProductAction($product);
         $product['quantity'] = $quantity;
 
         $parameters = [];
-        $parameters['productData'] = $product;
-        $parameters['action'] = $action;
+        $actionData = ['currency' => $product['currency'] ?? null, 'value' => $product['price'] * $quantity, 'items' => []];
+        $actionData['items'][] = $product;
+
+        $parameters['actionData'] = $actionData;
+        $parameters['event'] = $action === 'remove' ? 'remove_from_cart' : 'add_to_cart';
 
         $result = $this->renderTemplate('product_action', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -180,9 +149,9 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
     protected function transformOrder(array $actionData): array
     {
         return [
-            'id' => $actionData['id'],
-            'affiliation' => $actionData['affiliation'] ?: '',
-            'total' => $actionData['total'],
+            'transaction_id' => $actionData['id'],
+//            'affiliation' => $actionData['affiliation'] ?: '',
+            'value' => $actionData['total'],
             'tax' => $actionData['totalTax'],
             'shipping' => $actionData['shipping'],
             'currency' => $actionData['currency'],
@@ -192,14 +161,14 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
     protected function transformProductAction(array $item): array
     {
         return $this->filterNullValues([
-            'id' => $item['id'],
-            'name' => $item['name'],
-            'category' => $item['category'],
-            'brand' => $item['brand'] ?? null,
-            'variant' => $item['variant'] ?? null,
+            'item_id' => $item['id'],
+            'item_name' => $item['name'],
+            'item_category' => $item['category'],
+            'item_brand' => $item['brand'] ?? null,
+            'item_variant' => $item['variant'] ?? null,
             'price' => round($item['price'], 2),
             'quantity' => $item['quantity'] ?? 1,
-            'position' => $item['position'] ?? null,
+            'index' => $item['position'] ?? null,
             'currency' => $item['currency'],
         ]);
     }
@@ -212,31 +181,5 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         }
 
         return $calls;
-    }
-
-    protected function ensureDependencies($currency): void
-    {
-        if ($this->dependenciesIncluded || empty($this->dependencies)) {
-            return;
-        }
-
-        $result = $this->renderTemplate('dependencies', [
-            'dependencies' => $this->dependencies,
-            'currency' => $currency,
-        ]);
-
-        $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
-
-        $this->dependenciesIncluded = true;
-    }
-
-    protected function isGlobalSiteTagMode(): bool
-    {
-        $config = $this->config->getGoogleConfig();
-        if ($config === null) {
-            return false;
-        }
-
-        return (bool) $config->get('gtagcode');
     }
 }
