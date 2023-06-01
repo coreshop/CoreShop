@@ -45,7 +45,6 @@ final class PaymentContext implements Context
     public function __construct(
         private SharedStorageInterface $sharedStorage,
         private EntityManagerInterface $entityManager,
-        private ObjectManager $objectManager,
         private FormFactoryInterface $formFactory,
         private FormTypeRegistryInterface $conditionFormTypeRegistry,
         private FormTypeRegistryInterface $actionFormTypeRegistry,
@@ -127,16 +126,16 @@ final class PaymentContext implements Context
     {
         $rule->addCondition($condition);
 
-        $this->objectManager->persist($rule);
-        $this->objectManager->flush();
+        $this->entityManager->persist($rule);
+        $this->entityManager->flush();
     }
 
     private function addAction(PaymentProviderRuleInterface $rule, ActionInterface $action): void
     {
         $rule->addAction($action);
 
-        $this->objectManager->persist($rule);
-        $this->objectManager->flush();
+        $this->entityManager->persist($rule);
+        $this->entityManager->flush();
     }
 
     protected function getActionFormRegistry(): FormTypeRegistryInterface
