@@ -10,7 +10,6 @@ core_shop_payment:
             payment_provider_rule_condition: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/condition.js'
             payment_provider_rule_conditions_amount: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/conditions/amount.js'
             payment_provider_rule_conditions_nested: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/conditions/nested.js'
-            payment_provider_rule_conditions_paymentProviderRule: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/conditions/paymentProviderRule.js'
             payment_provider_rule_actions_addition_percent: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/actions/additionPercent.js'
             payment_provider_rule_actions_discount_percent: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/actions/discountPercent.js'
             payment_gateway_abstract: '/bundles/coreshoppayment/pimcore/js/provider/gateways/abstract.js'
