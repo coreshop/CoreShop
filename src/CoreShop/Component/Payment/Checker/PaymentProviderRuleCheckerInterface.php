@@ -18,14 +18,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Checker;
 
+use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use Coreshop\Component\Payment\Model\PaymentProviderRuleInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 
 interface PaymentProviderRuleCheckerInterface
 {
     public function findValidPaymentProviderRule(
         PaymentProviderInterface $paymentProvider,
-        ResourceInterface $subject = null,
+        PayableInterface $payable,
     ): ?PaymentProviderRuleInterface;
 }

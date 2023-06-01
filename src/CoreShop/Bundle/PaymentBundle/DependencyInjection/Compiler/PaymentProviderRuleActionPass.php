@@ -22,15 +22,15 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class PaymentProviderRuleActionPass extends RegisterRegistryTypePass
 {
-    public const PAYMENT_RULE_ACTION_TAG = 'coreshop.payment_rule.action';
+    public const PAYMENT_PROVIDER_RULE_ACTION_TAG = 'coreshop.payment_provider_rule.action';
 
     public function __construct(
         ) {
         parent::__construct(
-            'coreshop.registry.payment_rule.actions',
-            'coreshop.form_registry.payment_rule.actions',
-            'coreshop.payment_rule.actions',
-            self::PAYMENT_RULE_ACTION_TAG,
+            'coreshop.registry.payment_provider_rule.actions',
+            'coreshop.form_registry.payment_provider_rule.actions',
+            'coreshop.payment_provider_rule.actions',
+            self::PAYMENT_PROVIDER_RULE_ACTION_TAG,
         );
     }
 }

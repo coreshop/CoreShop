@@ -15,17 +15,17 @@ coreshop.paymentproviderrule.panel = Class.create(coreshop.rules.panel, {
     /**
      * @var string
      */
-    layoutId: 'coreshop_payment_rule_panel',
-    storeId: 'coreshop_payment_rules',
-    iconCls: 'coreshop_nav_icon_payment_provider',
-    type: 'coreshop_payment_rules',
+    layoutId: 'coreshop_payment_provider_rule_panel',
+    storeId: 'coreshop_payment_provider_rules',
+    iconCls: 'coreshop_nav_icon_payment_provider_rule',
+    type: 'coreshop_payment_provider_rule',
 
     routing: {
-        add: 'coreshop_payment_rule_add',
-        delete: 'coreshop_payment_rule_delete',
-        get: 'coreshop_payment_rule_get',
-        list: 'coreshop_payment_rule_list',
-        config: 'coreshop_payment_rule_getConfig'
+        add: 'coreshop_payment_provider_rule_add',
+        delete: 'coreshop_payment_provider_rule_delete',
+        get: 'coreshop_payment_provider_rule_get',
+        list: 'coreshop_payment_provider_rule_list',
+        config: 'coreshop_payment_provider_rule_getConfig'
     },
 
     getItemClass: function () {

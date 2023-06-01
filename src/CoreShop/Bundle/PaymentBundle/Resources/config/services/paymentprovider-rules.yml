@@ -62,13 +62,13 @@ services:
     CoreShop\Component\Payment\Rule\Action\DiscountPercentActionProcessor:
         tags:
             - { name: coreshop.payment_rule.action, type: discountPercent, form-type: CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType }
-#
-#    CoreShop\Component\Payment\Rule\Action\PaymentProviderRuleActionProcessor:
-#        arguments:
-#            - '@CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface'
-#            - '@coreshop.repository.payment_rule'
-#        tags:
-#            - { name: coreshop.payment_rule.action, type: paymentProviderRule, form-type: CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Common\PaymentProviderRuleConfigurationType }
+
+    CoreShop\Component\Payment\Rule\Action\PaymentProviderRuleActionProcessor:
+        arguments:
+            - '@CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface'
+            - '@coreshop.repository.payment_rule'
+        tags:
+            - { name: coreshop.payment_rule.action, type: paymentProviderRule, form-type: CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Common\PaymentProviderRuleConfigurationType }
 
     CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface: '@CoreShop\Component\Payment\Processor\PaymentProviderRuleActionProcessor'
     CoreShop\Component\Payment\Processor\PaymentProviderRuleActionProcessor:

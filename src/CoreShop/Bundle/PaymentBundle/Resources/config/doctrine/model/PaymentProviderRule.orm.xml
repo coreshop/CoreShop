@@ -4,7 +4,7 @@
                   xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
 
     <mapped-superclass name="CoreShop\Component\Payment\Model\PaymentProviderRule"
-                       table="coreshop_payment_rule">
+                       table="coreshop_payment_provider_rule">
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO"/>
         </id>
@@ -19,9 +19,9 @@
         </field>
 
         <many-to-many field="conditions" target-entity="CoreShop\Component\Rule\Model\ConditionInterface" orphan-removal="true">
-            <join-table name="coreshop_payment_rule_conditions">
+            <join-table name="coreshop_payment_provider_rule_conditions">
                 <join-columns>
-                    <join-column name="payment_rule_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+                    <join-column name="payment_provider_rule_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
                 </join-columns>
                 <inverse-join-columns>
                     <join-column name="condition_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
@@ -36,9 +36,9 @@
         </many-to-many>
 
         <many-to-many field="actions" target-entity="CoreShop\Component\Rule\Model\ActionInterface" orphan-removal="true">
-            <join-table name="coreshop_payment_rule_actions">
+            <join-table name="coreshop_payment_provider_rule_actions">
                 <join-columns>
-                    <join-column name="payment_rule_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+                    <join-column name="payment_provider_rule_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
                 </join-columns>
                 <inverse-join-columns>
                     <join-column name="action_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>

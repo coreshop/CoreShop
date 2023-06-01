@@ -18,13 +18,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Validator;
 
+use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface PaymentProviderRuleValidatorInterface
 {
     public function isPaymentProviderRuleValid(
         PaymentProviderInterface $paymentProvider,
-        ResourceInterface $subject,
+        PayableInterface $payable,
     ): bool;
 }

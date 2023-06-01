@@ -24,6 +24,6 @@ class PaymentProviderRuleActionChoiceType extends RuleActionChoiceType
 {
     public function getBlockPrefix(): string
     {
-        return 'coreshop_payment_rule_action_choice';
+        return 'coreshop_payment_provider_rule_action_choice';
     }
 }

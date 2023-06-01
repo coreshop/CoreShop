@@ -32,6 +32,6 @@ class PaymentProviderRuleConditionCollectionType extends RuleConditionCollection
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_payment_rule_condition_collection';
+        return 'coreshop_payment_provider_rule_condition_collection';
     }
 }

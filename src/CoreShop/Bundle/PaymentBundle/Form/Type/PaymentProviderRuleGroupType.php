@@ -37,6 +37,6 @@ class PaymentProviderRuleGroupType extends AbstractResourceType
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_payment_rule_group';
+        return 'coreshop_payment_provider_rule_group';
     }
 }

@@ -18,10 +18,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Checker;
 
+use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use Coreshop\Component\Payment\Model\PaymentProviderRuleGroupInterface;
-use Coreshop\Component\Payment\Model\PaymentProviderRuleInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleGroupInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
 class PaymentProviderRuleChecker implements PaymentProviderRuleCheckerInterface
@@ -33,7 +33,7 @@ class PaymentProviderRuleChecker implements PaymentProviderRuleCheckerInterface
 
     public function findValidPaymentProviderRule(
         PaymentProviderInterface $paymentProvider,
-        ResourceInterface $subject = null,
+        PayableInterface $payable,
     ): ?PaymentProviderRuleInterface {
         $paymentProviderRules = $paymentProvider->getPaymentProviderRules();
 
@@ -42,12 +42,9 @@ class PaymentProviderRuleChecker implements PaymentProviderRuleCheckerInterface
         }
 
         foreach ($paymentProviderRules as $rule) {
-            $isValid = false;
-            if ($subject) {
-                $isValid = $this->ruleValidationProcessor->isValid($paymentProvider, $rule instanceof PaymentProviderRuleInterface ? $rule : $rule->getPaymentProviderRule(), [
-                    'payable' => $subject,
-                ]);
-            }
+            $isValid = $this->ruleValidationProcessor->isValid($paymentProvider, $rule instanceof PaymentProviderRuleInterface ? $rule : $rule->getPaymentProviderRule(), [
+                'payable' => $payable,
+            ]);
 
             if ($isValid === false && ($rule instanceof PaymentProviderRuleGroupInterface && $rule->getStopPropagation() === true)) {
                 return null;

@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Resolver;
 
+use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 use CoreShop\Component\Payment\Validator\PaymentProviderRuleValidatorInterface;
@@ -37,7 +38,11 @@ class RuleBasedPaymentProviderResolver implements PaymentProviderResolverInterfa
          * @var PaymentProviderInterface[] $paymentProviders
          */
         $paymentProviders = $this->paymentProviderRepository->findActive();
-        // PaymentProviderRuleProviderRuleChecker
+
+        if (!$subject instanceof PayableInterface) {
+            return $paymentProviders;
+        }
+
         $validProviders = [];
 
         foreach ($paymentProviders as $provider) {

@@ -52,7 +52,7 @@
     "coreshop/variant-bundle": "^3.0",
     "coreshop/wishlist-bundle": "^3.0",
     "coreshop/messenger-bundle": "^3.0",
-    "coreshop/class-definition-patch-bundle": "^3.0",
+    "coreshop/class-definition-patch-bundle": "^3.1",
     "coreshop/core": "^3.0",
     "fakerphp/faker": "^1.16",
     "rinvex/countries": "^7.3",
@@ -78,6 +78,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
+      "dev-next": "3.1-dev",
       "dev-master": "3.1-dev"
     }
   },

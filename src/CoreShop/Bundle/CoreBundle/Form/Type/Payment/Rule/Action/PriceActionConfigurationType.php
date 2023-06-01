@@ -68,6 +68,6 @@ class PriceActionConfigurationType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_payment_rule_action_price';
+        return 'coreshop_payment_provider_rule_action_price';
     }
 }

@@ -19,8 +19,8 @@ declare(strict_types=1);
 namespace CoreShop\Component\Payment\Validator;
 
 use CoreShop\Component\Payment\Checker\PaymentProviderRuleCheckerInterface;
+use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
 
 class PaymentProviderRuleValidator implements PaymentProviderRuleValidatorInterface
 {
@@ -29,12 +29,12 @@ class PaymentProviderRuleValidator implements PaymentProviderRuleValidatorInterf
     ) {
     }
 
-    public function isPaymentProviderRuleValid(PaymentProviderInterface $paymentProvider, ResourceInterface $subject = null): bool
+    public function isPaymentProviderRuleValid(PaymentProviderInterface $paymentProvider, PayableInterface $payable): bool
     {
         if (count($paymentProvider->getPaymentProviderRules()) === 0) {
             return true;
         }
 
-        return null !== $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $subject);
+        return null !== $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $payable);
     }
 }
