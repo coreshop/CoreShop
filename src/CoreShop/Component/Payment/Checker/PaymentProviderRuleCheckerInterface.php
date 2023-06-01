@@ -16,14 +16,16 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\PaymentBundle\Form\Type;
+namespace CoreShop\Component\Payment\Checker;
 
-use CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionChoiceType;
+use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use Coreshop\Component\Payment\Model\PaymentProviderRuleInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
-class PaymentRuleConditionChoiceType extends RuleConditionChoiceType
+interface PaymentProviderRuleCheckerInterface
 {
-    public function getBlockPrefix(): string
-    {
-        return 'coreshop_payment_rule_action_condition_choice';
-    }
+    public function findValidPaymentProviderRule(
+        PaymentProviderInterface $paymentProvider,
+        ResourceInterface $subject = null,
+    ): ?PaymentProviderRuleInterface;
 }

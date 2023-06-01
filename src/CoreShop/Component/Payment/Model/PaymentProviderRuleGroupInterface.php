@@ -21,7 +21,7 @@ namespace CoreShop\Component\Payment\Model;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
 
-interface PaymentRuleGroupInterface extends ResourceInterface, TimestampableInterface
+interface PaymentProviderRuleGroupInterface extends ResourceInterface, TimestampableInterface
 {
     /**
      * @return PaymentProviderInterface
@@ -51,9 +51,9 @@ interface PaymentRuleGroupInterface extends ResourceInterface, TimestampableInte
     public function setStopPropagation($stopPropagation);
 
     /**
-     * @return PaymentRuleInterface
+     * @return PaymentProviderRuleInterface
      */
-    public function getPaymentRule();
+    public function getPaymentProviderRule();
 
-    public function setPaymentRule(PaymentRuleInterface $paymentRule);
+    public function setPaymentProviderRule(PaymentProviderRuleInterface $paymentProviderRule);
 }

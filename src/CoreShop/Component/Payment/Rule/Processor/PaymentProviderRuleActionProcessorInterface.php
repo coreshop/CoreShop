@@ -20,11 +20,11 @@ namespace CoreShop\Component\Payment\Rule\Processor;
 
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Payment\Model\PaymentRuleInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 
-interface PaymentRuleActionProcessorInterface
+interface PaymentProviderRuleActionProcessorInterface
 {
-    public function getPrice(PaymentRuleInterface $paymentRule, PaymentProviderInterface $paymentProvider, PayableInterface $payable, array $context): int;
+    public function getPrice(PaymentProviderRuleInterface $paymentProviderRule, PaymentProviderInterface $paymentProvider, PayableInterface $payable, array $context): int;
 
-    public function getModification(PaymentRuleInterface $paymentRule, PaymentProviderInterface $paymentProvider, PayableInterface $payable, int $price, array $context): int;
+    public function getModification(PaymentProviderRuleInterface $paymentProviderRule, PaymentProviderInterface $paymentProvider, PayableInterface $payable, int $price, array $context): int;
 }

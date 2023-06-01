@@ -16,15 +16,14 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Payment\Validator;
+namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
-use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionChoiceType;
 
-interface PaymentRuleValidatorInterface
+class PaymentProviderRuleConditionChoiceType extends RuleConditionChoiceType
 {
-    public function isPaymentRuleValid(
-        PaymentProviderInterface $paymentProvider,
-        ResourceInterface $subject,
-    ): bool;
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_payment_rule_action_condition_choice';
+    }
 }

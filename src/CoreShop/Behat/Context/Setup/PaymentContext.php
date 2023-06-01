@@ -21,12 +21,13 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use Carbon\Carbon;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleConditionType;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleActionType;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleConditionType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
-use CoreShop\Component\Payment\Model\PaymentRuleInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 use CoreShop\Component\PayumPayment\Model\GatewayConfig;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -35,8 +36,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Tool;
 use Symfony\Component\Form\FormFactoryInterface;
-use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleActionType;
-
 
 final class PaymentContext implements Context
 {
@@ -121,10 +120,10 @@ final class PaymentContext implements Context
 
     protected function getConditionFormClass(): string
     {
-        return PaymentRuleConditionType::class;
+        return PaymentProviderRuleConditionType::class;
     }
 
-    private function addCondition(PaymentRuleInterface $rule, ConditionInterface $condition): void
+    private function addCondition(PaymentProviderRuleInterface $rule, ConditionInterface $condition): void
     {
         $rule->addCondition($condition);
 
@@ -132,7 +131,7 @@ final class PaymentContext implements Context
         $this->objectManager->flush();
     }
 
-    private function addAction(PaymentRuleInterface $rule, ActionInterface $action): void
+    private function addAction(PaymentProviderRuleInterface $rule, ActionInterface $action): void
     {
         $rule->addAction($action);
 
@@ -147,7 +146,7 @@ final class PaymentContext implements Context
 
     protected function getActionFormClass(): string
     {
-        return PaymentRuleActionType::class;
+        return PaymentProviderRuleActionType::class;
     }
 
     protected function getFormFactory(): FormFactoryInterface

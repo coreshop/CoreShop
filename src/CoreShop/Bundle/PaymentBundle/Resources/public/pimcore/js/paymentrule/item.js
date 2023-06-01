@@ -10,9 +10,9 @@
  *
  */
 
-pimcore.registerNS('coreshop.paymentrule.item');
+pimcore.registerNS('coreshop.paymentproviderrule.item');
 
-coreshop.paymentrule.item = Class.create(coreshop.rules.item, {
+coreshop.paymentproviderrule.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_carrier_shipping_rule',
 
@@ -66,56 +66,13 @@ coreshop.paymentrule.item = Class.create(coreshop.rules.item, {
 
         return this.settingsForm;
     },
-    //
-    // getUsedByPanel: function () {
-    //     this.store = new Ext.data.JsonStore({
-    //         fields: [
-    //             'id',
-    //             'name'
-    //         ],
-    //         proxy: {
-    //             type: 'ajax',
-    //             url: '/admin/coreshop/carrier-shipping-rule/get-used-by-carriers',
-    //             reader: {
-    //                 type: 'json',
-    //                 rootProperty: 'carriers'
-    //             },
-    //             extraParams: {
-    //                 id: this.data.id
-    //             }
-    //         }
-    //     });
-    //
-    //     var columns = [
-    //         {
-    //             text: t('id'),
-    //             dataIndex: 'id'
-    //         },
-    //         {
-    //             text: t('coreshop_carrier'),
-    //             dataIndex: 'name',
-    //             flex: 1
-    //         }
-    //     ];
-    //
-    //     this.grid = Ext.create('Ext.grid.Panel', {
-    //         title: t('coreshop_carriers'),
-    //         iconCls: 'coreshop_icon_carriers',
-    //         store: this.store,
-    //         columns: columns,
-    //         region: 'center'
-    //     });
-    //
-    //     this.store.load();
-    //
-    //     return this.grid;
-    // },
+
 
     getActionContainerClass: function () {
-        return coreshop.paymentrule.action;
+        return coreshop.paymentproviderrule.action;
     },
 
     getConditionContainerClass: function () {
-        return coreshop.paymentrule.condition;
+        return coreshop.paymentproviderrule.condition;
     }
 });

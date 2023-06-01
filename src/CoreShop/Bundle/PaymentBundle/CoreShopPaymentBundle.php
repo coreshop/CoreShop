@@ -18,11 +18,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle;
 
-use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
-use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
 use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentCalculatorsPass;
-use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentRuleActionPass;
-use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentRuleConditionPass;
+use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleActionPass;
+use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
@@ -51,8 +49,8 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new PaymentRuleConditionPass());
-        $container->addCompilerPass(new PaymentRuleActionPass());
+        $container->addCompilerPass(new PaymentProviderRuleConditionPass());
+        $container->addCompilerPass(new PaymentProviderRuleActionPass());
         $container->addCompilerPass(new PaymentCalculatorsPass());
     }
 

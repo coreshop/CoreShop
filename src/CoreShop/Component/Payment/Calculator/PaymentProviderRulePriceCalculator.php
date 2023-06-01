@@ -18,17 +18,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Calculator;
 
-use CoreShop\Component\Payment\Checker\PaymentRuleCheckerInterface;
+use CoreShop\Component\Payment\Checker\PaymentProviderRuleCheckerInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Payment\Model\PaymentRuleInterface;
-use CoreShop\Component\Payment\Rule\Processor\PaymentRuleActionProcessorInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
+use CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface;
 
-class PaymentRulePriceCalculator
+class PaymentProviderRulePriceCalculator
 {
     public function __construct(
-        protected PaymentRuleCheckerInterface $paymentRuleChecker,
-        protected PaymentRuleActionProcessorInterface $paymentRuleProcessor,
+        protected PaymentProviderRuleCheckerInterface $paymentProviderRuleChecker,
+        protected PaymentProviderRuleActionProcessorInterface $paymentProviderRuleProcessor,
     ) {
     }
 
@@ -38,18 +38,18 @@ class PaymentRulePriceCalculator
          * First valid price rule wins. so, we loop through all ShippingRuleGroups
          * get the first valid one, and process it for the price.
          */
-        $paymentRule = $this->paymentRuleChecker->findValidPaymentRule($paymentProvider, $payable);
+        $paymentProviderRule = $this->paymentProviderRuleChecker->findValidPaymentProviderRule($paymentProvider, $payable);
 
-        if ($paymentRule instanceof PaymentRuleInterface) {
-            $price = $this->paymentRuleProcessor->getPrice(
-                $paymentRule,
+        if ($paymentProviderRule instanceof PaymentProviderRuleInterface) {
+            $price = $this->paymentProviderRuleProcessor->getPrice(
+                $paymentProviderRule,
                 $paymentProvider,
                 $payable,
                 $context,
             );
 
-            $modifications = $this->paymentRuleProcessor->getModification(
-                $paymentRule,
+            $modifications = $this->paymentProviderRuleProcessor->getModification(
+                $paymentProviderRule,
                 $paymentProvider,
                 $payable,
                 $payable->getPaymentTotal(),

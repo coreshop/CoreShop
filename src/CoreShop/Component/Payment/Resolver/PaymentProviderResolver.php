@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Resolver;
 
-use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 

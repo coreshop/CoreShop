@@ -19,42 +19,42 @@ declare(strict_types=1);
 namespace CoreShop\Component\Payment\Checker;
 
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use Coreshop\Component\Payment\Model\PaymentRuleGroupInterface;
-use Coreshop\Component\Payment\Model\PaymentRuleInterface;
+use Coreshop\Component\Payment\Model\PaymentProviderRuleGroupInterface;
+use Coreshop\Component\Payment\Model\PaymentProviderRuleInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
-class PaymentRuleChecker implements PaymentRuleCheckerInterface
+class PaymentProviderRuleChecker implements PaymentProviderRuleCheckerInterface
 {
     public function __construct(
         protected RuleValidationProcessorInterface $ruleValidationProcessor,
     ) {
     }
 
-    public function findValidPaymentRule(
+    public function findValidPaymentProviderRule(
         PaymentProviderInterface $paymentProvider,
         ResourceInterface $subject = null,
-    ): ?PaymentRuleInterface {
-        $paymentRules = $paymentProvider->getPaymentRules();
+    ): ?PaymentProviderRuleInterface {
+        $paymentProviderRules = $paymentProvider->getPaymentProviderRules();
 
-        if (count($paymentRules) === 0) {
+        if (count($paymentProviderRules) === 0) {
             return null;
         }
 
-        foreach ($paymentRules as $rule) {
+        foreach ($paymentProviderRules as $rule) {
             $isValid = false;
             if ($subject) {
-                $isValid = $this->ruleValidationProcessor->isValid($paymentProvider, $rule instanceof PaymentRuleInterface ? $rule : $rule->getPaymentRule(), [
+                $isValid = $this->ruleValidationProcessor->isValid($paymentProvider, $rule instanceof PaymentProviderRuleInterface ? $rule : $rule->getPaymentProviderRule(), [
                     'payable' => $subject,
                 ]);
             }
 
-            if ($isValid === false && ($rule instanceof PaymentRuleGroupInterface && $rule->getStopPropagation() === true)) {
+            if ($isValid === false && ($rule instanceof PaymentProviderRuleGroupInterface && $rule->getStopPropagation() === true)) {
                 return null;
             }
 
             if ($isValid === true) {
-                return $rule instanceof PaymentRuleInterface ? $rule : $rule->getPaymentRule();
+                return $rule instanceof PaymentProviderRuleInterface ? $rule : $rule->getPaymentProviderRule();
             }
         }
 

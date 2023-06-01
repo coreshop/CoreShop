@@ -10,7 +10,7 @@
  *
  */
 
-pimcore.registerNS('coreshop.paymentrule.actions.discountPercent');
-coreshop.paymentrule.actions.discountPercent = Class.create(coreshop.paymentrule.actions.additionPercent, {
+pimcore.registerNS('coreshop.paymentproviderrule.actions.discountPercent');
+coreshop.paymentproviderrule.actions.discountPercent = Class.create(coreshop.paymentproviderrule.actions.additionPercent, {
     type: 'discountPercent'
 });

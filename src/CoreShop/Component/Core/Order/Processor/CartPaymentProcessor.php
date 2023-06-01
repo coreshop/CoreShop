@@ -23,14 +23,14 @@ use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
-use CoreShop\Component\Payment\Calculator\PaymentRulePriceCalculator;
+use CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculator;
 
 final class CartPaymentProcessor implements CartProcessorInterface
 {
     public function __construct(
         private int $decimalFactor,
         private int $decimalPrecision,
-        protected PaymentRulePriceCalculator $priceCalculator,
+        protected PaymentProviderRulePriceCalculator $priceCalculator,
         private CartContextResolverInterface $cartContextResolver,
         private AdjustmentFactoryInterface $adjustmentFactory,
     ) {

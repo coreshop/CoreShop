@@ -20,13 +20,13 @@ namespace CoreShop\Component\Payment\Processor;
 
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Payment\Model\PaymentRuleInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 use CoreShop\Component\Payment\Rule\Action\ProviderPriceActionProcessorInterface;
 use CoreShop\Component\Payment\Rule\Action\ProviderPriceModificationActionProcessorInterface;
-use CoreShop\Component\Payment\Rule\Processor\PaymentRuleActionProcessorInterface;
+use CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 
-class PaymentRuleActionProcessor implements PaymentRuleActionProcessorInterface
+class PaymentProviderRuleActionProcessor implements PaymentProviderRuleActionProcessorInterface
 {
     public function __construct(
         protected ServiceRegistryInterface $actionServiceRegistry,
@@ -34,14 +34,14 @@ class PaymentRuleActionProcessor implements PaymentRuleActionProcessorInterface
     }
 
     public function getPrice(
-        PaymentRuleInterface $paymentRule,
+        PaymentProviderRuleInterface $paymentProviderRule,
         PaymentProviderInterface $paymentProvider,
         PayableInterface $payable,
         array $context,
     ): int {
         $price = 0;
 
-        foreach ($paymentRule->getActions() as $action) {
+        foreach ($paymentProviderRule->getActions() as $action) {
             $processor = $this->actionServiceRegistry->get($action->getType());
 
             if ($processor instanceof ProviderPriceActionProcessorInterface) {
@@ -58,7 +58,7 @@ class PaymentRuleActionProcessor implements PaymentRuleActionProcessorInterface
     }
 
     public function getModification(
-        PaymentRuleInterface $paymentRule,
+        PaymentProviderRuleInterface $paymentProviderRule,
         PaymentProviderInterface $paymentProvider,
         PayableInterface $payable,
         int $price,
@@ -66,7 +66,7 @@ class PaymentRuleActionProcessor implements PaymentRuleActionProcessorInterface
     ): int {
         $modifications = 0;
 
-        foreach ($paymentRule->getActions() as $action) {
+        foreach ($paymentProviderRule->getActions() as $action) {
             $processor = $this->actionServiceRegistry->get($action->getType());
 
             if ($processor instanceof ProviderPriceModificationActionProcessorInterface) {

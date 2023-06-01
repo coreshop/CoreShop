@@ -250,19 +250,10 @@ class OrderCreationController extends PimcoreController
             ],
             [
                 'key' => 'payment',
-                'value' => -1 * $cart->getDiscount(true),
-                'convertedValue' => -1 * $cart->getConvertedDiscount(true),
+                'value' =>  $cart->getSubtotal(true),
+                'convertedValue' => -1 * $cart->getConvertedSubtotal(true),
             ],
-            [
-                'key' => 'payment_without_tax',
-                'value' => -1 * $cart->getDiscount(false),
-                'convertedValue' => -1 * $cart->getConvertedDiscount(false),
-            ],
-            [
-                'key' => 'payment_tax',
-                'value' => -1 * $cart->getDiscount(true) - $cart->getDiscount(false),
-                'convertedValue' => -1 * $cart->getConvertedDiscount(true) - $cart->getConvertedDiscount(false),
-            ],
+
             [
                 'key' => 'total',
                 'value' => $cart->getTotal(true),

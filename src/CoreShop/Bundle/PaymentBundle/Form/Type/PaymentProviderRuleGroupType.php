@@ -18,26 +18,25 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
-use CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionType;
+use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class PaymentRuleConditionType extends RuleConditionType
+class PaymentProviderRuleGroupType extends AbstractResourceType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options = []): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        parent::buildForm($builder, $options);
-
         $builder
-            ->add('type', PaymentRuleConditionChoiceType::class, [
-                'attr' => [
-                    'data-form-collection' => 'update',
-                ],
-            ])
+            ->add('priority', NumberType::class)
+            ->add('stopPropagation', CheckboxType::class)
+            ->add('paymentProviderRule', PaymentProviderRuleChoiceType::class)
+            ->add('paymentProvider', PaymentProviderChoiceType::class)
         ;
     }
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_payment_rule_condition';
+        return 'coreshop_payment_rule_group';
     }
 }

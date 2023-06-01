@@ -101,21 +101,21 @@ interface PaymentProviderInterface extends
     public function setLogo($logo);
 
     /**
-     * @return Collection|PaymentRuleGroupInterface[]
+     * @return Collection|PaymentProviderRuleGroupInterface[]
      */
-    public function getPaymentRules();
+    public function getPaymentProviderRules();
 
     /**
      * @return bool
      */
-    public function hasPaymentRules();
+    public function hasPaymentProviderRules();
 
     /**
      * @return bool
      */
-    public function hasPaymentRule(PaymentRuleGroupInterface $paymentRuleGroup);
+    public function hasPaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup);
 
-    public function addPaymentRule(PaymentRuleGroupInterface $paymentRuleGroup);
+    public function addPaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup);
 
-    public function removePaymentRule(PaymentRuleGroupInterface $paymentRuleGroup);
+    public function removePaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup);
 }

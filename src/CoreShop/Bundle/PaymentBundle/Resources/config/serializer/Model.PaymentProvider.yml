@@ -27,7 +27,7 @@ CoreShop\Component\Payment\Model\PaymentProvider:
             expose: true
             type: ArrayCollection
             groups: [Detailed]
-        paymentRules:
+        paymentProviderRules:
             expose: true
             type: ArrayCollection
             groups: [Detailed]

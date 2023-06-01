@@ -45,7 +45,7 @@ coreshop.payment.resource = Class.create(coreshop.resource, {
             pimcore.globalmanager.get('coreshop_payment_providers_panel_rules').activate();
         }
         catch (e) {
-            pimcore.globalmanager.add('coreshop_payment_providers_panel_rules', new coreshop.paymentrule.panel());
+            pimcore.globalmanager.add('coreshop_payment_providers_panel_rules', new coreshop.paymentproviderrule.panel());
         }
     }
 });

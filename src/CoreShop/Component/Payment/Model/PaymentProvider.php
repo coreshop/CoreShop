@@ -60,14 +60,14 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     protected $logo;
 
     /**
-     * @var Collection|PaymentRuleGroupInterface[]
+     * @var Collection|PaymentProviderRuleGroupInterface[]
      */
-    protected $paymentRules;
+    protected $paymentProviderRules;
 
     public function __construct(
         ) {
         $this->initializeTranslationsCollection();
-        $this->paymentRules = new ArrayCollection();
+        $this->paymentProviderRules = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -153,33 +153,33 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return new PaymentProviderTranslation();
     }
 
-    public function getPaymentRules()
+    public function getPaymentProviderRules()
     {
-        return $this->paymentRules;
+        return $this->paymentProviderRules;
     }
 
-    public function hasPaymentRules()
+    public function hasPaymentProviderRules()
     {
-        return !$this->paymentRules->isEmpty();
+        return !$this->paymentProviderRules->isEmpty();
     }
 
-    public function hasPaymentRule(PaymentRuleGroupInterface $paymentRuleGroup)
+    public function hasPaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup)
     {
-        return $this->paymentRules->contains($paymentRuleGroup);
+        return $this->paymentProviderRules->contains($paymentProviderRuleGroup);
     }
 
-    public function addPaymentRule(PaymentRuleGroupInterface $paymentRuleGroup)
+    public function addPaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup)
     {
-        if (!$this->hasPaymentRule($paymentRuleGroup)) {
-            $this->paymentRules->add($paymentRuleGroup);
+        if (!$this->hasPaymentProviderRule($paymentProviderRuleGroup)) {
+            $this->paymentProviderRules->add($paymentProviderRuleGroup);
         }
     }
 
-    public function removePaymentRule(PaymentRuleGroupInterface $paymentRuleGroup)
+    public function removePaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup)
     {
-        if ($this->hasPaymentRule($paymentRuleGroup)) {
-            $this->paymentRules->removeElement($paymentRuleGroup);
-            $paymentRuleGroup->setPaymentProvider(null);
+        if ($this->hasPaymentProviderRule($paymentProviderRuleGroup)) {
+            $this->paymentProviderRules->removeElement($paymentProviderRuleGroup);
+            $paymentProviderRuleGroup->setPaymentProvider(null);
         }
     }
 }

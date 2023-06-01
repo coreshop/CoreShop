@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.paymentrule.conditions.nested');
+pimcore.registerNS('coreshop.paymentproviderrule.conditions.nested');
 
-coreshop.paymentrule.conditions.nested = Class.create(coreshop.rules.conditions.nested, {
+coreshop.paymentproviderrule.conditions.nested = Class.create(coreshop.rules.conditions.nested, {
 
 });

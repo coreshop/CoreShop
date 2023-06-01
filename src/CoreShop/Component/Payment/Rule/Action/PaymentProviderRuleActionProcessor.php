@@ -20,15 +20,15 @@ namespace CoreShop\Component\Payment\Rule\Action;
 
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Payment\Model\PaymentRuleInterface;
-use CoreShop\Component\Payment\Rule\Processor\PaymentRuleActionProcessorInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
+use CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
-class PaymentRuleActionProcessor implements ProviderPriceActionProcessorInterface, ProviderPriceModificationActionProcessorInterface
+class PaymentProviderRuleActionProcessor implements ProviderPriceActionProcessorInterface, ProviderPriceModificationActionProcessorInterface
 {
     public function __construct(
-        protected PaymentRuleActionProcessorInterface $paymentRuleProcessor,
-        protected RepositoryInterface $paymentRuleRepository,
+        protected PaymentProviderRuleActionProcessorInterface $paymentProviderRuleProcessor,
+        protected RepositoryInterface $paymentProviderRuleRepository,
     ) {
     }
 
@@ -38,10 +38,10 @@ class PaymentRuleActionProcessor implements ProviderPriceActionProcessorInterfac
         array $configuration,
         array $context,
     ): int {
-        $paymentRule = $this->paymentRuleRepository->find($configuration['paymentRule']);
+        $paymentProviderRule = $this->paymentProviderRuleRepository->find($configuration['paymentProviderRule']);
 
-        if ($paymentRule instanceof PaymentRuleInterface) {
-            return $this->paymentRuleProcessor->getPrice($paymentRule, $paymentProvider, $payable, $context);
+        if ($paymentProviderRule instanceof PaymentProviderRuleInterface) {
+            return $this->paymentProviderRuleProcessor->getPrice($paymentProviderRule, $paymentProvider, $payable, $context);
         }
 
         return 0;
@@ -54,10 +54,10 @@ class PaymentRuleActionProcessor implements ProviderPriceActionProcessorInterfac
         array $configuration,
         array $context,
     ): int {
-        $paymentRule = $this->paymentRuleRepository->find($configuration['paymentRule']);
+        $paymentProviderRule = $this->paymentProviderRuleRepository->find($configuration['paymentProviderRule']);
 
-        if ($paymentRule instanceof PaymentRuleInterface) {
-            return $this->paymentRuleProcessor->getModification($paymentRule, $paymentProvider, $configuration, $price, $context);
+        if ($paymentProviderRule instanceof PaymentProviderRuleInterface) {
+            return $this->paymentProviderRuleProcessor->getModification($paymentProviderRule, $paymentProvider, $payable, $price, $context);
         }
 
         return 0;

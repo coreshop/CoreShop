@@ -6,16 +6,16 @@ core_shop_payment:
             payment_panel: '/bundles/coreshoppayment/pimcore/js/provider/panel.js'
             
             
-            payment_rule_item: '/bundles/coreshoppayment/pimcore/js/paymentrule/item.js'
-            payment_rule_panel: '/bundles/coreshoppayment/pimcore/js/paymentrule/panel.js'
-            payment_rule_action: '/bundles/coreshoppayment/pimcore/js/paymentrule/action.js'
-            payment_rule_condition: '/bundles/coreshoppayment/pimcore/js/paymentrule/condition.js'
+            payment_rule_item: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/item.js'
+            payment_rule_panel: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/panel.js'
+            payment_rule_action: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/action.js'
+            payment_rule_condition: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/condition.js'
             
-            payment_rule_conditions_amount: '/bundles/coreshoppayment/pimcore/js/paymentrule/conditions/amount.js'
-            payment_rule_conditions_nested: '/bundles/coreshoppayment/pimcore/js/paymentrule/conditions/nested.js'
-            payment_rule_conditions_paymentRule: '/bundles/coreshoppayment/pimcore/js/paymentrule/conditions/paymentRule.js'
-            payment_rule_actions_addition_percent: '/bundles/coreshoppayment/pimcore/js/paymentrule/actions/additionPercent.js'
-            payment_rule_actions_discount_percent: '/bundles/coreshoppayment/pimcore/js/paymentrule/actions/discountPercent.js'
+            payment_rule_conditions_amount: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/conditions/amount.js'
+            payment_rule_conditions_nested: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/conditions/nested.js'
+            payment_rule_conditions_paymentProviderRule: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/conditions/paymentProviderRule.js'
+            payment_rule_actions_addition_percent: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/actions/additionPercent.js'
+            payment_rule_actions_discount_percent: '/bundles/coreshoppayment/pimcore/js/paymentproviderrule/actions/discountPercent.js'
 
 
             payment_gateway_abstract: '/bundles/coreshoppayment/pimcore/js/provider/gateways/abstract.js'

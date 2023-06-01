@@ -22,7 +22,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PaymentRuleController extends ResourceController
+class PaymentProviderRuleController extends ResourceController
 {
     public function getConfigAction(Request $request): Response
     {

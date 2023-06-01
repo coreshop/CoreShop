@@ -3,7 +3,7 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                   xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
 
-    <mapped-superclass name="CoreShop\Component\Payment\Model\PaymentRule"
+    <mapped-superclass name="CoreShop\Component\Payment\Model\PaymentProviderRule"
                        table="coreshop_payment_rule">
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO"/>

@@ -81,7 +81,7 @@ services:
         arguments:
             - '%coreshop.currency.decimal_factor%'
             - '%coreshop.currency.decimal_precision%'
-            - '@CoreShop\Component\Payment\Calculator\PaymentRulePriceCalculator'
+            - '@CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculator'
             - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
             - '@coreshop.factory.adjustment'
         tags:

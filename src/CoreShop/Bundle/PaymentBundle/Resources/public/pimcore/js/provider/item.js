@@ -140,20 +140,6 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             defaults: {
                 forceLayout: true
             },
-            /*
-            buttons: [
-                {
-                    text: t('save'),
-                    handler: this.save.bind(this, function (res) {
-                        if (res.success) {
-                            this.formPanel.down('#paymentFactory').setReadOnly(true);
-                        }
-                    }.bind(this)),
-                    iconCls: 'pimcore_icon_apply'
-                }
-            ],
-
-             */
             items: [
                 {
                     xtype: 'fieldset',
@@ -184,25 +170,25 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         return this.gatewayConfigPanel;
     },
 
-    getPaymentRulesGrid: function () {
-        this.paymentRuleGroupsStore = new Ext.data.Store({
+    getPaymentProviderRulesGrid: function () {
+        this.paymentProviderRuleGroupsStore = new Ext.data.Store({
             restful: false,
             idProperty: 'id',
             sorters: 'priority',
-            data: this.data.paymentRules
+            data: this.data.paymentProviderRules
         });
 
         var store = Ext.create('store.coreshop_payment_rules');
         store.load(function() {
-            this.paymentRuleGroupsGrid.setStore(this.paymentRuleGroupsStore);
+            this.paymentProviderRuleGroupsGrid.setStore(this.paymentProviderRuleGroupsStore);
         }.bind(this));
 
-        this.paymentRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
+        this.paymentProviderRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
             columns: [
                 {
                     header: t('coreshop_carriers_payment_rule'),
                     flex: 2,
-                    dataIndex: 'paymentRule',
+                    dataIndex: 'paymentProviderRule',
                     editor: new Ext.form.ComboBox({
                         store: store,
                         valueField: 'id',
@@ -210,8 +196,8 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
                         queryMode: 'local',
                         required: true
                     }),
-                    renderer: function (paymentRule) {
-                        var pos = store.findExact('id', paymentRule);
+                    renderer: function (paymentProviderRule) {
+                        var pos = store.findExact('id', paymentProviderRule);
                         if (pos >= 0) {
                             return store.getAt(pos).get('name');
                         }
@@ -266,10 +252,10 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
                 {
                     text: t('add'),
                     handler: function () {
-                        this.paymentRuleGroupsStore.add({
+                        this.paymentProviderRuleGroupsStore.add({
                             id: null,
                             carrier: this.data.id,
-                            paymentRule: null,
+                            paymentProviderRule: null,
                             stopPropagation: false,
                             priority: 100
                         });
@@ -284,7 +270,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             })
         });
 
-        return this.paymentRuleGroupsGrid;
+        return this.paymentProviderRuleGroupsGrid;
     },
 
     getPaymentLocationsAndCosts: function () {
@@ -295,7 +281,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             bodyStyle: 'padding:10px;',
             autoScroll: true,
             border: false,
-            items: [this.getPaymentRulesGrid()]
+            items: [this.getPaymentProviderRulesGrid()]
         });
 
         return this.paymentProviderRules;
@@ -316,22 +302,22 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
 
     getSaveData: function () {
         var data = {
-            paymentRules: []
+            paymentProviderRules: []
         };
 
         Ext.apply(data, this.formPanel.getForm().getFieldValues());
 
-        var ruleGroups = this.paymentRuleGroupsStore.getRange();
+        var ruleGroups = this.paymentProviderRuleGroupsStore.getRange();
 
         Ext.each(ruleGroups, function (group) {
             var rule = {
                 priority: group.get('priority'),
                 stopPropagation: group.get('stopPropagation'),
-                paymentRule: group.get('paymentRule'),
+                paymentProviderRule: group.get('paymentProviderRule'),
                 paymentProvider: this.data.id
             };
 
-            data.paymentRules.push(rule);
+            data.paymentProviderRules.push(rule);
         }.bind(this));
 
         return data;

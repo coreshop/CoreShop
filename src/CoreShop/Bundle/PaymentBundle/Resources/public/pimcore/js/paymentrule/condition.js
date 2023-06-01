@@ -10,10 +10,10 @@
  *
  */
 
-pimcore.registerNS('coreshop.paymentrule.condition');
+pimcore.registerNS('coreshop.paymentproviderrule.condition');
 
-coreshop.paymentrule.condition = Class.create(coreshop.rules.condition, {
+coreshop.paymentproviderrule.condition = Class.create(coreshop.rules.condition, {
     getConditionClassNamespace: function () {
-        return coreshop.paymentrule.conditions;
+        return coreshop.paymentproviderrule.conditions;
     }
 });

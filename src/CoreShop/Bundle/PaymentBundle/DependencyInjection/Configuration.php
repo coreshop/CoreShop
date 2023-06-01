@@ -18,13 +18,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\DependencyInjection;
 
-use CoreShop\Bundle\PaymentBundle\Controller\PaymentRuleController;
+use CoreShop\Bundle\PaymentBundle\Controller\PaymentProviderRuleController;
 use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentProviderRepository;
 use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentRepository;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleGroupType;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType;
-use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleGroupType;
-use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
@@ -32,12 +32,12 @@ use CoreShop\Component\Payment\Model\Payment;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProvider;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRule;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleGroup;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleGroupInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderTranslation;
 use CoreShop\Component\Payment\Model\PaymentProviderTranslationInterface;
-use CoreShop\Component\Payment\Model\PaymentRule;
-use CoreShop\Component\Payment\Model\PaymentRuleGroup;
-use CoreShop\Component\Payment\Model\PaymentRuleGroupInterface;
-use CoreShop\Component\Payment\Model\PaymentRuleInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\TranslatableFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -128,12 +128,12 @@ final class Configuration implements ConfigurationInterface
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue(PaymentRule::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(PaymentRuleInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(PaymentRuleController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue(PaymentProviderRule::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(PaymentProviderRuleInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(PaymentProviderRuleController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(RuleRepository::class)->end()
-                                        ->scalarNode('form')->defaultValue(PaymentRuleType::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(PaymentProviderRuleType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -145,11 +145,11 @@ final class Configuration implements ConfigurationInterface
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue(PaymentRuleGroup::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(PaymentRuleGroupInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue(PaymentProviderRuleGroup::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(PaymentProviderRuleGroupInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
-                                        ->scalarNode('form')->defaultValue(PaymentRuleGroupType::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(PaymentProviderRuleGroupType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()

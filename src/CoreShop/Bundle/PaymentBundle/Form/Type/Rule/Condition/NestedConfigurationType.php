@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Condition;
 
-use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleConditionCollectionType;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleConditionCollectionType;
 use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\AbstractNestedConfigurationType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -40,7 +40,7 @@ final class NestedConfigurationType extends AbstractNestedConfigurationType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('conditions', PaymentRuleConditionCollectionType::class, [
+            ->add('conditions', PaymentProviderRuleConditionCollectionType::class, [
                 'constraints' => [new Valid(['groups' => $this->validationGroups])],
                 'nested' => true,
             ])

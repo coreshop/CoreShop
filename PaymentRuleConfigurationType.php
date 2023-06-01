@@ -18,14 +18,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Common;
 
-use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleChoiceType;
-use CoreShop\Component\Payment\Model\PaymentRuleInterface;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleChoiceType;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-final class PaymentRuleConfigurationType extends AbstractType
+final class PaymentProviderRuleConfigurationType extends AbstractType
 {
     /**
      * @param string[] $validationGroups
@@ -38,24 +38,24 @@ final class PaymentRuleConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('paymentRule', PaymentRuleChoiceType::class, [
+            ->add('paymentProviderRule', PaymentProviderRuleChoiceType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => $this->validationGroups]),
                 ],
             ])
         ;
 
-        $builder->get('paymentRule')->addModelTransformer(new CallbackTransformer(
-            function (mixed $paymentRule) {
-                if ($paymentRule instanceof PaymentRuleInterface) {
-                    return $paymentRule->getId();
+        $builder->get('paymentProviderRule')->addModelTransformer(new CallbackTransformer(
+            function (mixed $paymentProviderRule) {
+                if ($paymentProviderRule instanceof PaymentProviderRuleInterface) {
+                    return $paymentProviderRule->getId();
                 }
 
                 return null;
             },
-            function (mixed $paymentRule) {
-                if ($paymentRule instanceof PaymentRuleInterface) {
-                    return $paymentRule->getId();
+            function (mixed $paymentProviderRule) {
+                if ($paymentProviderRule instanceof PaymentProviderRuleInterface) {
+                    return $paymentProviderRule->getId();
                 }
 
                 return null;

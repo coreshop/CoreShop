@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.paymentrule.actions.additionPercent');
-coreshop.paymentrule.actions.additionPercent = Class.create(coreshop.rules.actions.abstract, {
+pimcore.registerNS('coreshop.paymentproviderrule.actions.additionPercent');
+coreshop.paymentproviderrule.actions.additionPercent = Class.create(coreshop.rules.actions.abstract, {
     type: 'additionPercent',
 
     getForm: function () {

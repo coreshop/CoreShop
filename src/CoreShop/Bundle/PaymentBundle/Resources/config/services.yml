@@ -3,7 +3,7 @@ imports:
     - { resource: services/form.yml }
     - { resource: services/workflow.yml }
     - { resource: services/pimcore.yml }
-    - { resource: services/payment-rules.yml }
+    - { resource: services/paymentprovider-rules.yml }
 
 services:
     _defaults:
@@ -17,9 +17,9 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: paymentPriceCalculators }
 
-    CoreShop\Component\Payment\Calculator\PaymentRulePriceCalculator:
+    CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculator:
         arguments:
-            - '@CoreShop\Component\Payment\Checker\PaymentRuleCheckerInterface'
-            - '@CoreShop\Component\Payment\Rule\Processor\PaymentRuleActionProcessorInterface'
+            - '@CoreShop\Component\Payment\Checker\PaymentProviderRuleCheckerInterface'
+            - '@CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface'
         tags:
             - { name: coreshop.payment.price_calculator, type: payment-rule, priority: 256 }

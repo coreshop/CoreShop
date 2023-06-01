@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.paymentrule.panel');
-coreshop.paymentrule.panel = Class.create(coreshop.rules.panel, {
+pimcore.registerNS('coreshop.paymentproviderrule.panel');
+coreshop.paymentproviderrule.panel = Class.create(coreshop.rules.panel, {
     /**
      * @var string
      */
@@ -29,6 +29,6 @@ coreshop.paymentrule.panel = Class.create(coreshop.rules.panel, {
     },
 
     getItemClass: function () {
-        return coreshop.paymentrule.item;
+        return coreshop.paymentproviderrule.item;
     }
 });

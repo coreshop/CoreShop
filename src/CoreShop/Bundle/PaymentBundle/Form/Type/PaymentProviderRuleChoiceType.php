@@ -18,17 +18,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
-use CoreShop\Component\Payment\Model\PaymentRuleInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class PaymentRuleChoiceType extends AbstractType
+final class PaymentProviderRuleChoiceType extends AbstractType
 {
     public function __construct(
-        private RepositoryInterface $paymentRuleRepository,
+        private RepositoryInterface $paymentProviderRuleRepository,
     ) {
     }
 
@@ -38,15 +38,15 @@ final class PaymentRuleChoiceType extends AbstractType
             ->setDefaults([
                 'choices' => function (Options $options) {
                     /**
-                     * @var PaymentRuleInterface[] $paymentRules
+                     * @var PaymentProviderRuleInterface[] $paymentProviderRules
                      */
-                    $paymentRules = $this->paymentRuleRepository->findAll();
+                    $paymentProviderRules = $this->paymentProviderRuleRepository->findAll();
 
-                    usort($paymentRules, function (PaymentRuleInterface $a, PaymentRuleInterface $b): int {
+                    usort($paymentProviderRules, function (PaymentProviderRuleInterface $a, PaymentProviderRuleInterface $b): int {
                         return $a->getName() <=> $b->getName();
                     });
 
-                    return $paymentRules;
+                    return $paymentProviderRules;
                 },
                 'choice_value' => 'id',
                 'choice_label' => 'name',

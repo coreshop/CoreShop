@@ -1,4 +1,4 @@
-CoreShop\Component\Payment\Model\PaymentRule:
+CoreShop\Component\Payment\Model\PaymentProviderRule:
     exclusion_policy: ALL
     xml_root_name: payment_rule
     properties:

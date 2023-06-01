@@ -19,13 +19,13 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\PaymentBundle\DependencyInjection;
 
 use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentCalculatorsPass;
-use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentRuleActionPass;
-use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentRuleConditionPass;
+use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleActionPass;
+use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Payment\Calculator\PaymentPriceCalculatorInterface;
 use CoreShop\Component\Payment\Rule\Condition\PaymentConditionCheckerInterface;
-use CoreShop\Component\Payment\Rule\Processor\PaymentRuleActionProcessorInterface;
+use CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -54,11 +54,11 @@ final class CoreShopPaymentExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(PaymentConditionCheckerInterface::class)
-            ->addTag(PaymentRuleConditionPass::PAYMENT_RULE_CONDITION_TAG)
+            ->addTag(PaymentProviderRuleConditionPass::PAYMENT_RULE_CONDITION_TAG)
         ;
         $container
-            ->registerForAutoconfiguration(PaymentRuleActionProcessorInterface::class)
-            ->addTag(PaymentRuleActionPass::PAYMENT_RULE_ACTION_TAG)
+            ->registerForAutoconfiguration(PaymentProviderRuleActionProcessorInterface::class)
+            ->addTag(PaymentProviderRuleActionPass::PAYMENT_RULE_ACTION_TAG)
         ;
         $container
             ->registerForAutoconfiguration(PaymentPriceCalculatorInterface::class)

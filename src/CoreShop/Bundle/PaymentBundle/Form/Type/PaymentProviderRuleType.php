@@ -18,26 +18,25 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
-use CoreShop\Bundle\RuleBundle\Form\Type\RuleActionType;
+use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class PaymentRuleActionType extends RuleActionType
+final class PaymentProviderRuleType extends RuleType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options = []): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        parent::buildForm($builder, $options);
-
         $builder
-            ->add('type', PaymentRuleActionChoiceType::class, [
-                'attr' => [
-                    'data-form-collection' => 'update',
-                ],
-            ])
+            ->add('name', TextareaType::class)
+            ->add('active', CheckboxType::class)
+            ->add('conditions', PaymentProviderRuleConditionCollectionType::class)
+            ->add('actions', PaymentProviderRuleActionCollectionType::class)
         ;
     }
 
     public function getBlockPrefix(): string
     {
-        return 'coreshop_payment_rule_action';
+        return 'coreshop_payment_rule';
     }
 }

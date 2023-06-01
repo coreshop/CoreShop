@@ -1,4 +1,4 @@
-CoreShop\Component\Payment\Model\PaymentRuleGroup:
+CoreShop\Component\Payment\Model\PaymentProviderRuleGroup:
     exclusion_policy: ALL
     xml_root_name: payment_rule
     properties:
@@ -19,7 +19,7 @@ CoreShop\Component\Payment\Model\PaymentRuleGroup:
             expose: true
             type: boolean
             groups: [Detailed]
-        paymentRule:
+        paymentProviderRule:
             expose: true
             type: relation
             groups: [Detailed]

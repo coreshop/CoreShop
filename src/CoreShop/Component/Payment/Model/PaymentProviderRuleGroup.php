@@ -24,7 +24,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 /**
  * @psalm-suppress MissingConstructor
  */
-class PaymentRuleGroup implements PaymentRuleGroupInterface
+class PaymentProviderRuleGroup implements PaymentProviderRuleGroupInterface
 {
     use TimestampableTrait;
     use SetValuesTrait;
@@ -50,9 +50,9 @@ class PaymentRuleGroup implements PaymentRuleGroupInterface
     private $stopPropagation = false;
 
     /**
-     * @var PaymentRuleInterface
+     * @var PaymentProviderRuleInterface
      */
-    private $paymentRule;
+    private $paymentProviderRule;
 
     public function getId()
     {
@@ -89,13 +89,13 @@ class PaymentRuleGroup implements PaymentRuleGroupInterface
         $this->stopPropagation = $stopPropagation;
     }
 
-    public function getPaymentRule()
+    public function getPaymentProviderRule()
     {
-        return $this->paymentRule;
+        return $this->paymentProviderRule;
     }
 
-    public function setPaymentRule(PaymentRuleInterface $paymentRule)
+    public function setPaymentProviderRule(PaymentProviderRuleInterface $paymentProviderRule)
     {
-        $this->paymentRule = $paymentRule;
+        $this->paymentProviderRule = $paymentProviderRule;
     }
 }

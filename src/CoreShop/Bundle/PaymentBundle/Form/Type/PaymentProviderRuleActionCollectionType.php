@@ -18,26 +18,20 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use CoreShop\Bundle\RuleBundle\Form\Type\RuleActionCollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PaymentRuleGroupCollectionType extends AbstractType
+final class PaymentProviderRuleActionCollectionType extends RuleActionCollectionType
 {
-    public function getParent(): string
-    {
-        return CollectionType::class;
-    }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults([
-            'entry_type' => PaymentRuleGroupType::class,
-            'allow_add' => true,
-            'allow_delete' => true,
-            'by_reference' => true,
-        ]);
+        $resolver->setDefault('entry_type', PaymentProviderRuleActionType::class);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'coreshop_payment_action_collection';
     }
 }

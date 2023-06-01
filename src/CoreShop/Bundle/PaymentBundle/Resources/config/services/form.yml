@@ -23,7 +23,7 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleChoiceType:
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleChoiceType:
         arguments:
             - '@coreshop.repository.payment_rule'
         tags:
@@ -44,7 +44,7 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleConditionType:
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleConditionType:
         arguments:
             - '%coreshop.model.rule_condition.class%'
             - '%coreshop.form.type.payment_rule.rule_condition.validation_groups%'
@@ -64,38 +64,38 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleType:
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleType:
         arguments:
             - '%coreshop.model.payment_rule.class%'
             - '%coreshop.form.type.payment_rule.validation_groups%'
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleConditionCollectionType:
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleConditionCollectionType:
         arguments:
             - '@coreshop.registry.payment_rule.conditions'
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleActionCollectionType:
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleActionCollectionType:
         arguments:
             - '@coreshop.registry.payment_rule.actions'
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleConditionChoiceType:
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleConditionChoiceType:
         arguments:
             - '%coreshop.payment_rule.conditions%'
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleActionChoiceType:
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleActionChoiceType:
         arguments:
             - '%coreshop.payment_rule.actions%'
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleActionType:
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleActionType:
         arguments:
             - '%coreshop.model.rule_action.class%'
             - '%coreshop.form.type.payment_rule.rule_action.validation_groups%'
@@ -103,7 +103,7 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentRuleGroupType:
+    CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleGroupType:
         arguments:
             - '%coreshop.model.payment_rule_group.class%'
             - '%coreshop.form.type.payment_rule_group.validation_groups%'

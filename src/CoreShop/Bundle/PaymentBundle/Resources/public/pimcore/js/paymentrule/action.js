@@ -10,10 +10,10 @@
  *
  */
 
-pimcore.registerNS('coreshop.paymentrule.action');
+pimcore.registerNS('coreshop.paymentproviderrule.action');
 
-coreshop.paymentrule.action = Class.create(coreshop.rules.action, {
+coreshop.paymentproviderrule.action = Class.create(coreshop.rules.action, {
     getActionClassNamespace: function () {
-        return coreshop.paymentrule.actions;
+        return coreshop.paymentproviderrule.actions;
     }
 });

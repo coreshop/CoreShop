@@ -18,22 +18,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Model;
 
-use CoreShop\Component\Rule\Model\RuleTrait;
+use CoreShop\Component\Rule\Model\RuleInterface;
 
-/**
- * @psalm-suppress MissingConstructor
- */
-class PaymentRule implements PaymentRuleInterface
+interface PaymentProviderRuleInterface extends RuleInterface
 {
-    use RuleTrait;
-
-    /**
-     * @var int
-     */
-    protected $id;
-
-    public function getId()
-    {
-        return $this->id;
-    }
 }

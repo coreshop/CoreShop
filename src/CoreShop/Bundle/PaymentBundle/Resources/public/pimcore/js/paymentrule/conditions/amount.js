@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.paymentrule.conditions.amount');
-coreshop.paymentrule.conditions.amount = Class.create(coreshop.rules.conditions.abstract, {
+pimcore.registerNS('coreshop.paymentproviderrule.conditions.amount');
+coreshop.paymentproviderrule.conditions.amount = Class.create(coreshop.rules.conditions.abstract, {
     type: 'amount',
 
     getForm: function () {

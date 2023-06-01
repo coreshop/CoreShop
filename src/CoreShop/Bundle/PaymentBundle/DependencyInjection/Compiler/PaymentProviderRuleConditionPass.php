@@ -20,7 +20,7 @@ namespace CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler;
 
 use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
-final class PaymentRuleConditionPass extends RegisterRegistryTypePass
+final class PaymentProviderRuleConditionPass extends RegisterRegistryTypePass
 {
     public const PAYMENT_RULE_CONDITION_TAG = 'coreshop.payment_rule.condition';
 
