@@ -6,9 +6,8 @@
 {% set discountIt = cart.discount(true) %}
 {% set taxes = cart.taxes %}
 {% set rowspan = 10 + taxes|length %}
-{% set payment = cart.payment() %}
-    {# {% set payment = cart.payment(false) %}
-{% set paymentIt = cart.payment(true) %}  #}
+{% set payment_fee = cart.paymentproviderfee() %}
+
 
 
 {% if shipping == 0 %}
@@ -90,13 +89,13 @@
         {{ currency.convertAndFormat(cart.totalTax) }}
     </td>
 </tr>
-{% if payment != 0 %}
+{% if payment_fee != 0 %}
     <tr>
         <td class="text-right" colspan="3">
             <strong>{{ 'coreshop.ui.payment_fee'|trans }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-discount">
-            {{ currency.convertAndFormat(payment) }}
+            {{ currency.convertAndFormat(payment_fee) }}
         </td>
     </tr>
 {% endif %}

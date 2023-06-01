@@ -165,6 +165,11 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
         return $this->getConvertedAdjustmentsTotal(AdjustmentInterface::SHIPPING, $withTax);
     }
 
+    public function getConvertedPaymentProviderFee(): int
+    {
+        return $this->getConvertedAdjustmentsTotal(AdjustmentInterface::PAYMENT, false);
+    }
+
     public function getTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
