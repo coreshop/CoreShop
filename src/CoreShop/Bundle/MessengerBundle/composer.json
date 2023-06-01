@@ -47,7 +47,6 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
-    ,
     "pimcore": {
       "bundles": [
         "CoreShop\\Bundle\\MessengerBundle\\CoreShopMessengerBundle"
