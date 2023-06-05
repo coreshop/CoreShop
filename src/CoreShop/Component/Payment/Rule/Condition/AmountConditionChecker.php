@@ -24,7 +24,7 @@ use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 
 class AmountConditionChecker extends AbstractConditionChecker
 {
-    public function isPaymentProviderRuleValid(PaymentProviderInterface $paymentProvider, PayableInterface $payable, array $configuration, AddressInterface $address = null): bool
+    public function isPaymentProviderRuleValid(PaymentProviderInterface $paymentProvider, PayableInterface $payable, array $configuration): bool
     {
         $minAmount = $configuration['minAmount'];
         $maxAmount = $configuration['maxAmount'];

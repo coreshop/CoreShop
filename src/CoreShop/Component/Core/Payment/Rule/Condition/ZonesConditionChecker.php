@@ -20,6 +20,7 @@ namespace CoreShop\Component\Core\Payment\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Rule\Condition\AbstractConditionChecker;
@@ -30,8 +31,11 @@ class ZonesConditionChecker extends AbstractConditionChecker
         PaymentProviderInterface $paymentProvider,
         PayableInterface $payable,
         array $configuration,
-        AddressInterface $address = null,
     ): bool {
+        if (!$payable instanceof OrderInterface) {
+            return false;
+        }
+        $address = $payable->getInvoiceAddress();
         $country = $address->getCountry();
 
         if (!$country instanceof CountryInterface) {

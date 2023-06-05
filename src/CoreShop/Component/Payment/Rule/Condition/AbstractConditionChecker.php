@@ -34,6 +34,6 @@ abstract class AbstractConditionChecker implements PaymentConditionCheckerInterf
             throw new \InvalidArgumentException('Payment Rule Condition $subject needs to be an array with a payable value');
         }
 
-        return $this->isPaymentProviderRuleValid($subject, $params['payable'], $configuration, $params['payable']->getInvoiceAddress());
+        return $this->isPaymentProviderRuleValid($subject, $params['payable'], $configuration);
     }
 }

@@ -99,9 +99,7 @@ final class PaymentProviderContext implements Context
      */
     public function paymentProviderShouldBeValidForMyCart(PaymentProviderInterface $paymentProvider, OrderInterface $cart): void
     {
-        $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
-
-        $ruleResult = $this->paymentRuleValidator->isPaymentProviderRuleValid($paymentProvider, $cart, $address);
+        $ruleResult = $this->paymentRuleValidator->isPaymentProviderRuleValid($paymentProvider, $cart);
 
         Assert::true(
             $ruleResult,

@@ -32,7 +32,6 @@ final class CustomerGroupsConditionChecker extends AbstractConditionChecker
         PaymentProviderInterface $paymentProvider,
         PayableInterface $payable,
         array $configuration,
-        AddressInterface $address = null,
     ): bool {
         if (!$payable instanceof CustomerAwareInterface) {
             return false;
