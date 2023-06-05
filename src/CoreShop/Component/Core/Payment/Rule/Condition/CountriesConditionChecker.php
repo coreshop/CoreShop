@@ -35,6 +35,11 @@ class CountriesConditionChecker extends AbstractConditionChecker
             return false;
         }
         $address = $payable->getInvoiceAddress();
+
+        if (!$address instanceof AddressInterface) {
+            return false;
+        }
+
         $country = $address->getCountry();
 
         return in_array($country->getId(), $configuration['countries']);

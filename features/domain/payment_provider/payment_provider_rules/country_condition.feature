@@ -15,6 +15,7 @@ Feature: Adding a new Payment Provider Rule
     And I add the product "Shoe" to my cart
     And the cart belongs to customer "some-customer@something.com"
     And the cart ships to customer "some-customer@something.com" first address
+    And the cart invoices to customer "some-customer@something.com" address with postcode "4600"
     And There is a payment provider "Bankwire" using factory "Bankwire"
 
   Scenario: Add a new country payment-provider-rule which is valid
@@ -43,6 +44,6 @@ Feature: Adding a new Payment Provider Rule
     And the payment-provider-rule is active
     And the site has a country "Germany" with currency "EUR"
     And the customer "some-customer@something.com" has an address with country "Germany", "47200", "Anytown", "Anystreet", "9"
-    And the cart ships to customer "some-customer@something.com" address with postcode "47200"
+    And the cart invoices to customer "some-customer@something.com" address with postcode "47200"
     And the payment-provider-rule has a condition countries with country "Germany"
     Then the payment-provider-rule should be valid for my cart with payment provider "Bankwire"

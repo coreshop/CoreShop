@@ -36,6 +36,11 @@ class ZonesConditionChecker extends AbstractConditionChecker
             return false;
         }
         $address = $payable->getInvoiceAddress();
+
+        if (!$address instanceof AddressInterface) {
+            return false;
+        }
+
         $country = $address->getCountry();
 
         if (!$country instanceof CountryInterface) {

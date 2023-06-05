@@ -13,7 +13,7 @@ Feature: Adding a new Payment Provider Rule
     And There is a payment provider "Bankwire" using factory "Bankwire"
     And adding a payment-provider-rule named "fixed"
     And the payment-provider-rule is active
-#    And the payment-provider-rule has a action price of 20 in currency "EUR"
+    And the payment-provider-rule has a action price of 100 in currency "EUR"
     And the payment-provider-rule belongs to payment provider "Bankwire"
     Then the payment-provider-rule should be valid for my cart with payment provider "Bankwire"
 
@@ -22,16 +22,16 @@ Feature: Adding a new Payment Provider Rule
 
   Scenario: Creating a Payment Provider Rule with a fixed price plus and additional amount
     Given the payment-provider-rule has a action additional-amount of 5 in currency "EUR"
-    Then payment for my cart with payment provider "Bankwire" should be priced at "1005"
+    Then payment for my cart with payment provider "Bankwire" should be priced at "10500"
 
   Scenario: Creating a Payment Provider Rule with a fixed price plus and additional percent
     Given the payment-provider-rule has a action additional-percent of 10%
-    Then payment for my cart with payment provider "Bankwire" should be priced at "2200"
+    Then payment for my cart with payment provider "Bankwire" should be priced at "11000"
 
   Scenario: Creating a Payment Provider Rule with a fixed price plus and discount amount
     Given the payment-provider-rule has a action discount-amount of 5 in currency "EUR"
-    Then payment for my cart with payment provider "Bankwire" should be priced at "1500"
+    Then payment for my cart with payment provider "Bankwire" should be priced at "9500"
 
   Scenario: Creating a Payment Provider Rule with a fixed price plus and discount percent
     Given the payment-provider-rule has a action discount-percent of 10%
-    Then payment for my cart with payment provider "Bankwire" should be priced at "1800"
+    Then payment for my cart with payment provider "Bankwire" should be priced at "9000"
