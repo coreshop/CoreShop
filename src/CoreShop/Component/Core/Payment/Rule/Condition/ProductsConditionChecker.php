@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Payment\Rule\Condition;
 
-use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Core\Rule\Condition\ProductVariantsCheckerTrait;
@@ -55,6 +55,9 @@ class ProductsConditionChecker extends AbstractConditionChecker
             $configuration['include_variants'] ?: false,
         );
 
+        if (!$payable instanceof OrderInterface) {
+            return false;
+        }
         $cartItems = $payable->getItems();
 
         foreach ($cartItems as $item) {
