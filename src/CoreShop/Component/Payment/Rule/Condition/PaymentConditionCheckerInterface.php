@@ -25,5 +25,5 @@ use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 
 interface PaymentConditionCheckerInterface extends ConditionCheckerInterface
 {
-    public function isPaymentProviderRuleValid(PaymentProviderInterface $paymentProvider, PayableInterface $payable,  array $configuration, AddressInterface $address = null): bool;
+    public function isPaymentProviderRuleValid(PaymentProviderInterface $paymentProvider, PayableInterface $payable, array $configuration, AddressInterface $address = null): bool;
 }

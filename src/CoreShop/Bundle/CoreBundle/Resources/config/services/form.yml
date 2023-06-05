@@ -7,8 +7,8 @@ parameters:
     coreshop.form.type.shipping_rule.action.addition_amount.validation_groups: [coreshop]
     coreshop.form.type.shipping_rule.action.discount_amount.validation_groups: [coreshop]
     coreshop.form.type.shipping_rule.action.price.validation_groups: [coreshop]
-    coreshop.form.type.payment_rule.action.addition_amount.validation_groups: [ coreshop ]
-    coreshop.form.type.payment_rule.action.discount_amount.validation_groups: [ coreshop ]
+    coreshop.form.type.payment_provider_rule.action.addition_amount.validation_groups: [ coreshop ]
+    coreshop.form.type.payment_provider_rule.action.discount_amount.validation_groups: [ coreshop ]
 
 services:
     _defaults:
@@ -71,13 +71,13 @@ services:
 
     CoreShop\Bundle\CoreBundle\Form\Type\Payment\Rule\Action\AdditionAmountActionConfigurationType:
         arguments:
-            - '%coreshop.form.type.payment_rule.action.addition_amount.validation_groups%'
+            - '%coreshop.form.type.payment_provider_rule.action.addition_amount.validation_groups%'
         tags:
             - { name: form.type }
 
     CoreShop\Bundle\CoreBundle\Form\Type\Payment\Rule\Action\DiscountAmountActionConfigurationType:
         arguments:
-            - '%coreshop.form.type.payment_rule.action.discount_amount.validation_groups%'
+            - '%coreshop.form.type.payment_provider_rule.action.discount_amount.validation_groups%'
         tags:
             - { name: form.type }
 

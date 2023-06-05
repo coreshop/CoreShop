@@ -252,6 +252,8 @@ services:
             - '@coreshop.factory.payment'
             - '@coreshop.factory.payment_provider'
             - '@coreshop.factory.gateway_config'
+            - '@coreshop.factory.payment_provider_rule'
+            - '@coreshop.factory.payment_provider_rule_group'
         tags:
             - { name: fob.context_service }
 

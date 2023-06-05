@@ -24,10 +24,9 @@ use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Core\Rule\Condition\CategoriesConditionCheckerTrait;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use CoreShop\Component\Payment\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-
-use CoreShop\Component\Payment\Rule\Condition\AbstractConditionChecker;
 
 final class CategoriesConditionChecker extends AbstractConditionChecker
 {
@@ -42,7 +41,10 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
     }
 
     public function isPaymentProviderRuleValid(
-        PaymentProviderInterface $paymentProvider, PayableInterface $payable,  array $configuration, AddressInterface $address = null
+        PaymentProviderInterface $paymentProvider,
+        PayableInterface $payable,
+        array $configuration,
+        AddressInterface $address = null,
     ): bool {
         if (!$payable instanceof OrderInterface) {
             return false;

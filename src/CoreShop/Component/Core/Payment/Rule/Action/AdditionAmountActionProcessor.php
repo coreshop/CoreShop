@@ -23,7 +23,6 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Payment\Rule\Action\ProviderActionProcessorInterface;
 use CoreShop\Component\Payment\Rule\Action\ProviderPriceModificationActionProcessorInterface;
 use Webmozart\Assert\Assert;
 
@@ -37,7 +36,6 @@ class AdditionAmountActionProcessor implements ProviderPriceModificationActionPr
 
     public function getModification(PaymentProviderInterface $paymentProvider, PayableInterface $payable, int $price, array $configuration, array $context): int
     {
-
         Assert::keyExists($context, 'base_currency');
         Assert::isInstanceOf($context['base_currency'], CurrencyInterface::class);
 

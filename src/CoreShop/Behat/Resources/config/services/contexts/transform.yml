@@ -154,6 +154,7 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.payment_provider'
+            - '@coreshop.repository.payment_provider_rule'
         tags:
             - { name: fob.context_service }
 

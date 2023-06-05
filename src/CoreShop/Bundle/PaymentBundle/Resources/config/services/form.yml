@@ -124,7 +124,7 @@ services:
 
     CoreShop\Bundle\PaymentBundle\Form\Type\Rule\Common\PaymentProviderRuleConfigurationType:
         arguments:
-            - '%coreshop.form.type.payment_rule.common.payment_rule.validation_groups%'
+            - '%coreshop.form.type.payment_provider_rule.common.payment_provider_rule.validation_groups%'
         tags:
             - { name: form.type }
 

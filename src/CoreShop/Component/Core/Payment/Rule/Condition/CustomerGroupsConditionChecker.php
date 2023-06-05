@@ -23,13 +23,16 @@ use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Payment\Rule\Condition\AbstractConditionChecker;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
 final class CustomerGroupsConditionChecker extends AbstractConditionChecker
 {
     public function isPaymentProviderRuleValid(
-        PaymentProviderInterface $paymentProvider, PayableInterface $payable,  array $configuration, AddressInterface $address = null
+        PaymentProviderInterface $paymentProvider,
+        PayableInterface $payable,
+        array $configuration,
+        AddressInterface $address = null,
     ): bool {
         if (!$payable instanceof CustomerAwareInterface) {
             return false;

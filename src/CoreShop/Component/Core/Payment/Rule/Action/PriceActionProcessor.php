@@ -23,8 +23,6 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Payment\Rule\Action\ProviderActionProcessorInterface;
-
 use CoreShop\Component\Payment\Rule\Action\ProviderPriceActionProcessorInterface;
 use Webmozart\Assert\Assert;
 
@@ -36,7 +34,7 @@ class PriceActionProcessor implements ProviderPriceActionProcessorInterface
     ) {
     }
 
-    public function getPrice(PaymentProviderInterface $paymentProvider, PayableInterface $payable,  array $configuration, array $context): int
+    public function getPrice(PaymentProviderInterface $paymentProvider, PayableInterface $payable, array $configuration, array $context): int
     {
         Assert::keyExists($context, 'base_currency');
         Assert::isInstanceOf($context['base_currency'], CurrencyInterface::class);

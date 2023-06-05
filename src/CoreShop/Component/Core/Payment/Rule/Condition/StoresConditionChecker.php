@@ -27,7 +27,10 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 final class StoresConditionChecker extends AbstractConditionChecker
 {
     public function isPaymentProviderRuleValid(
-        PaymentProviderInterface $paymentProvider, PayableInterface $payable,  array $configuration, AddressInterface $address = null
+        PaymentProviderInterface $paymentProvider,
+        PayableInterface $payable,
+        array $configuration,
+        AddressInterface $address = null,
     ): bool {
         if (!$payable instanceof StoreAwareInterface) {
             return false;

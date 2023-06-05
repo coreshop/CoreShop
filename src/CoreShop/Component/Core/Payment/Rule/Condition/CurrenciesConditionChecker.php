@@ -22,14 +22,15 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
-use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Payment\Rule\Condition\AbstractConditionChecker;
 
 final class CurrenciesConditionChecker extends AbstractConditionChecker
 {
     public function isPaymentProviderRuleValid(
-        PaymentProviderInterface $paymentProvider, PayableInterface $payable,  array $configuration, AddressInterface $address = null
+        PaymentProviderInterface $paymentProvider,
+        PayableInterface $payable,
+        array $configuration,
+        AddressInterface $address = null,
     ): bool {
         if (!$payable instanceof CurrencyAwareInterface) {
             return false;

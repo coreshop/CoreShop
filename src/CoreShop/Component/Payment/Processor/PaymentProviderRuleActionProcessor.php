@@ -21,7 +21,6 @@ namespace CoreShop\Component\Payment\Processor;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
-use CoreShop\Component\Payment\Rule\Action\ProviderActionProcessorInterface;
 use CoreShop\Component\Payment\Rule\Action\ProviderPriceActionProcessorInterface;
 use CoreShop\Component\Payment\Rule\Action\ProviderPriceModificationActionProcessorInterface;
 use CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface;
@@ -71,7 +70,6 @@ class PaymentProviderRuleActionProcessor implements PaymentProviderRuleActionPro
             $processor = $this->actionServiceRegistry->get($action->getType());
 
             if ($processor instanceof ProviderPriceModificationActionProcessorInterface) {
-
                 $modifications += $processor->getModification(
                     $paymentProvider,
                     $payable,
@@ -80,8 +78,6 @@ class PaymentProviderRuleActionProcessor implements PaymentProviderRuleActionPro
                     $context,
                 );
             }
-
-
         }
 
         return $modifications;
