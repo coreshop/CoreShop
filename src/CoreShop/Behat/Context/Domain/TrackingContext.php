@@ -23,6 +23,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use CoreShop\Behat\Service\Tracking\ConfigResolver;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\GA4Ecommerce;
+use CoreShop\Bundle\TrackingBundle\Tracker\Google\GA4TagManagerEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce;
@@ -61,10 +62,16 @@ final class TrackingContext implements Context
          */
         $ga4Tracker = $this->trackerRegistry->get('google-analytics-4');
 
+        /**
+         * @var GA4TagManagerEcommerce $ga4TmTracker
+         */
+        $ga4TmTracker = $this->trackerRegistry->get('google-analytics-4-tag-manager');
+
         $googleAnalyticsEnhancedTracker->setConfigResolver(new ConfigResolver());
         $googleGTagEnhancedTracker->setConfigResolver(new ConfigResolver(true));
         $googleAnalyticsUniversalTracker->setConfigResolver(new ConfigResolver());
         $ga4Tracker->setConfigResolver(new ConfigResolver());
+        $ga4TmTracker->setConfigResolver(new ConfigResolver());
     }
 
     /**
