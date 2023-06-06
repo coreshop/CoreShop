@@ -22,9 +22,9 @@ final class Version
 {
     public const MAJOR_VERSION = '3';
 
-    public const MINOR_VERSION = '0';
+    public const MINOR_VERSION = '1';
 
-    public const RELEASE_VERSION = '6';
+    public const RELEASE_VERSION = '0';
 
     public const EXTRA_VERSION = '';
 
