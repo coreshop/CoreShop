@@ -1,3 +1,20 @@
+# 3.0.6
+
+## Bugs
+ - [StorageList] add default session based context resolver (https://github.com/coreshop/CoreShop/pull/2269)
+ - [Pimcore] Handle unknown class names in ClassUpdate (https://github.com/coreshop/CoreShop/pull/2271)
+ - [Guzzle] use ^1.0 for guzzle adapter (https://github.com/coreshop/CoreShop/pull/2274)
+ - [FrontendBundle] throw 404 when Reset-Token not found (https://github.com/coreshop/CoreShop/pull/2277)
+ - [IndexBundle] support 'zero' values for filtering (https://github.com/coreshop/CoreShop/pull/2282)
+ - [Pimcore] make compatible with Pimcore 10.6 (https://github.com/coreshop/CoreShop/pull/2285)
+ - [Order] fix voucher modifier calling findByCode with null (https://github.com/coreshop/CoreShop/pull/2289)
+ - [MenuBundle] fix Pimcore 10.6 compatibility issue (https://github.com/coreshop/CoreShop/pull/2292)
+ - [ResourceBundle] fix Pimcore 10.6 compatibility to find Admin User (https://github.com/coreshop/CoreShop/pull/2293)
+ - [OrderBundle] improve unlinking files in pdf generation (https://github.com/coreshop/CoreShop/pull/2294)
+ - [SerializedData] show data as string in version preview (https://github.com/coreshop/CoreShop/pull/2295)
+ - [Docs] Maintenance mode <-> Maintenance job (https://github.com/coreshop/CoreShop/pull/2299)
+ - [MessengerBundle] fix for standalone installation (https://github.com/coreshop/CoreShop/pull/2298)
+
 # 3.0.5
 
 ## Bugs
