@@ -15,13 +15,13 @@ Feature: In order to track ecommerce sales
   Scenario: Track Product Impression
     Then tracking product impression with tracker "google-gtm-enhanced-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({'ecommerce' : {"impressions":{"id":##id##,"name":"T-Shirt","category":"","price":24,"quantity":1},"currencyCode":"EUR"} });
+      window.dataLayer = window.dataLayer || [];dataLayer.push({'event': 'csProductImpressions', 'ecommerce' : {"impressions":{"id":##id##,"name":"T-Shirt","category":"","price":24},"currencyCode":"EUR"} });
       """
 
   Scenario: Track Product
     Then tracking product with tracker "google-gtm-enhanced-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({'ecommerce': {'detail': {"actionField":[],"products":[{"id":##id##,"name":"T-Shirt","category":"","price":24,"quantity":1}]} }});
+      window.dataLayer = window.dataLayer || [];dataLayer.push({'event': 'csProductDetailImpressions', 'ecommerce': {'detail': {"actionField":[],"products":[{"id":##id##,"name":"T-Shirt","category":"","price":24}]} }});
       """
 
   Scenario: Track Cart Add
@@ -40,7 +40,7 @@ Feature: In order to track ecommerce sales
     Given I add the product "T-Shirt" to my cart
     Then tracking checkout step for my cart with tracker "google-gtm-enhanced-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({ 'event': 'csCheckout', 'checkout': {"products":[{"id":##item_id##,"sku":null,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]} });
+      window.dataLayer = window.dataLayer || [];dataLayer.push({'event': 'csCheckout', 'ecommerce': {'checkout': {"products":[{"id":##item_id##,"sku":null,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]} }});
       """
 
   Scenario: Track Checkout Complete
@@ -53,5 +53,5 @@ Feature: In order to track ecommerce sales
     And I create an order from my cart
     Then tracking my order checkout complete with tracker "google-gtm-enhanced-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({'ecommerce' : { 'purchase' : {"actionField":{"id":##id##,"affiliation":24,"total":24,"tax":4,"shipping":0,"currency":"EUR"},"products":[{"id":##item_id##,"sku":null,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]} } });
+      window.dataLayer = window.dataLayer || [];dataLayer.push({'event': 'csPurchase', 'ecommerce' : { 'purchase' : {"actionField":{"id":##id##,"affiliation":24,"revenue":24,"tax":4,"shipping":0,"currency":"EUR"},"products":[{"id":##item_id##,"sku":null,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]} } });
       """

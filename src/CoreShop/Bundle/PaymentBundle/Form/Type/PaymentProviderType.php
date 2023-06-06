@@ -44,6 +44,7 @@ final class PaymentProviderType extends AbstractResourceType
             ->add('active', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('paymentProviderRules', PaymentProviderRuleGroupCollectionType::class)
         ;
     }
 

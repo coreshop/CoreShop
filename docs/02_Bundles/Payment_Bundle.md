@@ -48,3 +48,4 @@ How to use?
 ```javascript
 coreshop.global.resource.open('coreshop.payment', 'payment_provider');
 ```
+

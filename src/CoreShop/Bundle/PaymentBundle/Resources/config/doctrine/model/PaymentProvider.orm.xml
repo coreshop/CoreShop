@@ -19,5 +19,13 @@
         <field name="modificationDate" type="datetime" nullable="true">
             <gedmo:timestampable on="update"/>
         </field>
+        <one-to-many field="paymentProviderRules" target-entity="CoreShop\Component\Payment\Model\PaymentProviderRuleGroup" mapped-by="paymentProvider" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+            <order-by>
+                <order-by-field name="priority">ASC</order-by-field>
+            </order-by>
+        </one-to-many>
     </mapped-superclass>
 </doctrine-mapping>

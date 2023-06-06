@@ -20,3 +20,4 @@ imports:
     - domain/version.yml
     - domain/recycle_bin.yml
     - domain/optimistic_entity_lock.yml
+    - domain/payment_provider.yml

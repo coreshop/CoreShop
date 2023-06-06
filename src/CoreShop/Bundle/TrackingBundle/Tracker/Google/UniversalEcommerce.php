@@ -132,11 +132,11 @@ class UniversalEcommerce extends AbstractEcommerceTracker
             'id' => $item['id'],
             'name' => $item['name'],
             'category' => $item['category'],
-            'brand' => $item['brand'],
-            'variant' => $item['variant'],
+            'brand' => $item['brand'] ?? null,
+            'variant' => $item['variant'] ?? null,
             'price' => round($item['price'], 2),
             'quantity' => $item['quantity'] ?: 1,
-            'position' => $item['position'],
+            'position' => $item['position'] ?? null,
             'currency' => $item['currency'],
         ]);
     }

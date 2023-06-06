@@ -54,6 +54,24 @@ services:
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-enhanced-ecommerce }
 
+    CoreShop\Bundle\TrackingBundle\Tracker\Google\GA4Ecommerce:
+        parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
+        public: true
+        calls:
+            - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
+            - [setConfigResolver, ['@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver']]
+        tags:
+            - { name: coreshop.tracking.tracker, type: google-analytics-4 }
+
+    CoreShop\Bundle\TrackingBundle\Tracker\Google\GA4TagManagerEcommerce:
+        parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
+        public: true
+        calls:
+            - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
+            - [setConfigResolver, ['@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver']]
+        tags:
+            - { name: coreshop.tracking.tracker, type: google-analytics-4-tag-manager }
+
     CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true

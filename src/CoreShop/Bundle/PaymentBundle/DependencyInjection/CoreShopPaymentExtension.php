@@ -18,8 +18,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\DependencyInjection;
 
+use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentCalculatorsPass;
+use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleActionPass;
+use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Payment\Calculator\PaymentPriceCalculatorInterface;
+use CoreShop\Component\Payment\Rule\Condition\PaymentConditionCheckerInterface;
+use CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -45,5 +51,18 @@ final class CoreShopPaymentExtension extends AbstractModelExtension
         }
 
         $loader->load('services.yml');
+
+        $container
+            ->registerForAutoconfiguration(PaymentConditionCheckerInterface::class)
+            ->addTag(PaymentProviderRuleConditionPass::PAYMENT_PROVIDER_RULE_CONDITION_TAG)
+        ;
+        $container
+            ->registerForAutoconfiguration(PaymentProviderRuleActionProcessorInterface::class)
+            ->addTag(PaymentProviderRuleActionPass::PAYMENT_PROVIDER_RULE_ACTION_TAG)
+        ;
+        $container
+            ->registerForAutoconfiguration(PaymentPriceCalculatorInterface::class)
+            ->addTag(PaymentCalculatorsPass::PAYMENT_PRICE_CALCULATOR_TAG)
+        ;
     }
 }
