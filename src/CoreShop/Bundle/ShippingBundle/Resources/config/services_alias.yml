@@ -14,10 +14,6 @@ services:
         alias: CoreShop\Component\Shipping\Resolver\CarriersResolver
         deprecated: { package: "coreshop/shipping-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Resolver\CarriersResolver instead' }
 
-    coreshop.carrier.price_calculator.shipping_rules:
-        alias: CoreShop\Component\Shipping\Calculator\CarrierShippingRulePriceCalculator
-        deprecated: { package: "coreshop/shipping-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Calculator\CarrierShippingRulePriceCalculator instead' }
-
     coreshop.carrier.price_calculator:
         alias: CoreShop\Component\Shipping\Calculator\CarrierPriceCalculator
         deprecated: { package: "coreshop/shipping-bundle", version: "3.0", message: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculator instead' }

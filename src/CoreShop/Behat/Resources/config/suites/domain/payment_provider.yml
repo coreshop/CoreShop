@@ -1,0 +1,50 @@
+default:
+  suites:
+    domain_payment_provider:
+      contexts:
+        - coreshop.behat.context.hook.pimcore_setup
+        - coreshop.behat.context.hook.coreshop_setup
+
+        - coreshop.behat.context.hook.doctrine_orm
+        - coreshop.behat.context.hook.pimcore_dao
+
+
+        - coreshop.behat.context.transform.shared_storage
+        - coreshop.behat.context.transform.product
+        - coreshop.behat.context.transform.product_price_rule
+        - coreshop.behat.context.transform.product_specific_price_rule
+        - coreshop.behat.context.transform.category
+        - coreshop.behat.context.transform.country
+        - coreshop.behat.context.transform.currency
+        - coreshop.behat.context.transform.customer
+        - coreshop.behat.context.transform.customer_group
+        - coreshop.behat.context.transform.zone
+        - coreshop.behat.context.transform.store
+        - coreshop.behat.context.transform.tax_rate
+        - coreshop.behat.context.transform.tax_rule_group
+        - coreshop.behat.context.transform.shipping
+        - coreshop.behat.context.transform.payment
+        - coreshop.behat.context.transform.cart
+        - coreshop.behat.context.transform.cart_price_rule
+
+        - coreshop.behat.context.setup.payment
+        - coreshop.behat.context.setup.product
+        - coreshop.behat.context.setup.product_price_rule
+        - coreshop.behat.context.setup.product_specific_price_rule
+        - coreshop.behat.context.setup.store
+        - coreshop.behat.context.setup.category
+        - coreshop.behat.context.setup.country
+        - coreshop.behat.context.setup.currency
+        - coreshop.behat.context.setup.customer
+        - coreshop.behat.context.setup.customer_group
+        - coreshop.behat.context.setup.zone
+        - coreshop.behat.context.setup.shipping
+        - coreshop.behat.context.setup.cart
+        - coreshop.behat.context.setup.cart_price_rule
+        - coreshop.behat.context.setup.tax_rate
+        - coreshop.behat.context.setup.tax_rule_group
+
+        - coreshop.behat.context.domain.payment
+        - coreshop.behat.context.domain.cart
+      filters:
+        tags: "@domain&&@payment_provider"

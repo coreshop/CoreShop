@@ -246,9 +246,14 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@doctrine.orm.entity_manager'
+            - '@form.factory'
+            - '@coreshop.form_registry.payment_provider_rule.conditions'
+            - '@coreshop.form_registry.payment_provider_rule.actions'
             - '@coreshop.factory.payment'
             - '@coreshop.factory.payment_provider'
             - '@coreshop.factory.gateway_config'
+            - '@coreshop.factory.payment_provider_rule'
+            - '@coreshop.factory.payment_provider_rule_group'
         tags:
             - { name: fob.context_service }
 

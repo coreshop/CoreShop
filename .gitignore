@@ -58,3 +58,4 @@ drivers
 vendor/
 cache/
 docs/generated-docs
+node_modules

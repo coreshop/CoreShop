@@ -173,6 +173,8 @@ interface OrderInterface extends
 
     public function setInvoiceAddress(?AddressInterface $invoiceAddress);
 
+    public function getConvertedPaymentProviderFee(): int;
+
     /**
      * @return Fieldcollection
      */

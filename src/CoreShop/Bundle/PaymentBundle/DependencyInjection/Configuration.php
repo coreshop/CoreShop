@@ -18,16 +18,24 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle\DependencyInjection;
 
+use CoreShop\Bundle\PaymentBundle\Controller\PaymentProviderRuleController;
 use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentProviderRepository;
 use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentRepository;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleGroupType;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderRuleType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Component\Payment\Model\Payment;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProvider;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRule;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleGroup;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleGroupInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderRuleInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderTranslation;
 use CoreShop\Component\Payment\Model\PaymentProviderTranslationInterface;
 use CoreShop\Component\Resource\Factory\Factory;
@@ -112,6 +120,40 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
+                        ->arrayNode('payment_provider_rule')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->scalarNode('permission')->defaultValue('payment_provider_rule')->cannotBeOverwritten()->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(PaymentProviderRule::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(PaymentProviderRuleInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(PaymentProviderRuleController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(RuleRepository::class)->end()
+                                        ->scalarNode('form')->defaultValue(PaymentProviderRuleType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('payment_provider_rule_group')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(PaymentProviderRuleGroup::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(PaymentProviderRuleGroupInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(PaymentProviderRuleGroupType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end()
@@ -142,7 +184,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['payment_provider'])
+                        ->defaultValue(['payment_provider', 'payment_provider_rule'])
                     ->end()
                 ->end()
             ->end()

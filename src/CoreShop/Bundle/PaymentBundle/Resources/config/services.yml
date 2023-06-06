@@ -3,17 +3,23 @@ imports:
     - { resource: services/form.yml }
     - { resource: services/workflow.yml }
     - { resource: services/pimcore.yml }
+    - { resource: services/paymentprovider-rules.yml }
 
 services:
     _defaults:
         public: true
 
-    CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface: '@CoreShop\Component\Payment\Resolver\PaymentProviderResolver'
-    CoreShop\Component\Payment\Resolver\PaymentProviderResolver:
+    coreshop.registry.payment.price_calculators:
+        class: CoreShop\Component\Registry\PrioritizedServiceRegistry
         arguments:
-            - '@coreshop.repository.payment_provider'
+            - CoreShop\Component\Payment\Calculator\PaymentPriceCalculatorInterface
+            - payment-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: paymentPriceCalculators }
 
-    CoreShop\Component\Payment\Validator\PaymentProviderValidatorInterface: '@CoreShop\Component\Payment\Validator\PaymentProviderValidator'
-    CoreShop\Component\Payment\Validator\PaymentProviderValidator:
+    CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculator:
         arguments:
-            - '@CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface'
+            - '@CoreShop\Component\Payment\Checker\PaymentProviderRuleCheckerInterface'
+            - '@CoreShop\Component\Payment\Rule\Processor\PaymentProviderRuleActionProcessorInterface'
+        tags:
+            - { name: coreshop.payment.price_calculator, type: payment-rule, priority: 256 }

@@ -1,0 +1,25 @@
+CoreShop\Component\Payment\Model\PaymentProviderRuleGroup:
+    exclusion_policy: ALL
+    xml_root_name: payment_provider_rule
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        paymentProvider:
+            expose: true
+            type: relation
+            groups: [ Detailed ]
+        priority:
+            expose: true
+            type: integer
+            groups: [Detailed]
+        stopPropagation:
+            expose: true
+            type: boolean
+            groups: [Detailed]
+        paymentProviderRule:
+            expose: true
+            type: relation
+            groups: [Detailed]

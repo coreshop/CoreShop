@@ -19,8 +19,29 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         save: 'coreshop_payment_provider_save'
     },
 
+    getPanel: function () {
+        return new Ext.TabPanel({
+            activeTab: 0,
+            title: this.getTitleText(),
+            closable: true,
+            deferredRender: false,
+            forceLayout: true,
+            iconCls: this.iconCls,
+            buttons: [{
+                text: t('save'),
+                iconCls: 'pimcore_icon_apply',
+                handler: this.save.bind(this)
+            }],
+            items: this.getItems()
+        });
+    },
+
     getItems: function () {
-        return [this.getFormPanel()];
+        return [
+            this.getFormPanel(),
+            this.getPaymentLocationsAndCosts()
+
+        ];
     },
 
     getTitleText: function () {
@@ -114,21 +135,11 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             border: false,
             region: 'center',
             autoScroll: true,
+            title: t('coreshop_payment_provider_main_panel'),
             forceLayout: true,
             defaults: {
                 forceLayout: true
             },
-            buttons: [
-                {
-                    text: t('save'),
-                    handler: this.save.bind(this, function (res) {
-                        if (res.success) {
-                            this.formPanel.down('#paymentFactory').setReadOnly(true);
-                        }
-                    }.bind(this)),
-                    iconCls: 'pimcore_icon_apply'
-                }
-            ],
             items: [
                 {
                     xtype: 'fieldset',
@@ -159,6 +170,123 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         return this.gatewayConfigPanel;
     },
 
+    getPaymentProviderRulesGrid: function () {
+        this.paymentProviderRuleGroupsStore = new Ext.data.Store({
+            restful: false,
+            idProperty: 'id',
+            sorters: 'priority',
+            data: this.data.paymentProviderRules
+        });
+
+        var store = Ext.create('store.coreshop_payment_provider_rules');
+        store.load(function() {
+            this.paymentProviderRuleGroupsGrid.setStore(this.paymentProviderRuleGroupsStore);
+        }.bind(this));
+
+        this.paymentProviderRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
+            columns: [
+                {
+                    header: t('coreshop_carriers_payment_provider_rule'),
+                    flex: 2,
+                    dataIndex: 'paymentProviderRule',
+                    editor: new Ext.form.ComboBox({
+                        store: store,
+                        valueField: 'id',
+                        displayField: 'name',
+                        queryMode: 'local',
+                        required: true
+                    }),
+                    renderer: function (paymentProviderRule) {
+                        var pos = store.findExact('id', paymentProviderRule);
+                        if (pos >= 0) {
+                            return store.getAt(pos).get('name');
+                        }
+
+                        return null;
+                    }
+                },
+                {
+                    header: t('priority'),
+                    width: 200,
+                    dataIndex: 'priority',
+                    editor: {
+                        xtype: 'numberfield',
+                        decimalPrecision: 0,
+                        required: true
+                    }
+                },
+                {
+                    header: t('coreshop_carriers_stop_propagation'),
+                    dataIndex: 'stopPropagation',
+                    flex: 1,
+                    xtype: 'checkcolumn',
+                    listeners: {
+                        checkchange: function (column, rowIndex, checked, eOpts) {
+                            var grid = column.up('grid'),
+                                store = grid.getStore();
+                            if (checked) {
+                                store.each(function (record, index) {
+                                    if (rowIndex !== index) {
+                                        record.set('stopPropagation', false);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                },
+                {
+                    xtype: 'actioncolumn',
+                    width: 40,
+                    items: [{
+                        iconCls: 'pimcore_icon_delete',
+                        tooltip: t('delete'),
+                        handler: function (grid, rowIndex, colIndex) {
+                            var rec = grid.getStore().getAt(rowIndex);
+
+                            grid.getStore().remove(rec);
+                        }
+                    }]
+                }
+            ],
+            tbar: [
+                {
+                    text: t('add'),
+                    handler: function () {
+                        this.paymentProviderRuleGroupsStore.add({
+                            id: null,
+                            carrier: this.data.id,
+                            paymentProviderRule: null,
+                            stopPropagation: false,
+                            priority: 100
+                        });
+                    }.bind(this),
+                    iconCls: 'pimcore_icon_add'
+                }
+            ],
+
+            plugins: Ext.create('Ext.grid.plugin.CellEditing', {
+                clicksToEdit: 1,
+                listeners: {}
+            })
+        });
+
+        return this.paymentProviderRuleGroupsGrid;
+    },
+
+    getPaymentLocationsAndCosts: function () {
+        //Payment locations and costs
+        this.paymentProviderRules = new Ext.form.Panel({
+            iconCls: 'coreshop_carrier_costs_icon',
+            title: t('coreshop_payment_provider_rule'),
+            bodyStyle: 'padding:10px;',
+            autoScroll: true,
+            border: false,
+            items: [this.getPaymentProviderRulesGrid()]
+        });
+
+        return this.paymentProviderRules;
+    },
+
     getLogoSelect: function () {
         return new coreshop.object.elementHref({
             id: this.data.logo,
@@ -170,6 +298,29 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             name: 'logo',
             title: t('coreshop_logo')
         });
+    },
+
+    getSaveData: function () {
+        var data = {
+            paymentProviderRules: []
+        };
+
+        Ext.apply(data, this.formPanel.getForm().getFieldValues());
+
+        var ruleGroups = this.paymentProviderRuleGroupsStore.getRange();
+
+        Ext.each(ruleGroups, function (group) {
+            var rule = {
+                priority: group.get('priority'),
+                stopPropagation: group.get('stopPropagation'),
+                paymentProviderRule: group.get('paymentProviderRule'),
+                paymentProvider: this.data.id
+            };
+
+            data.paymentProviderRules.push(rule);
+        }.bind(this));
+
+        return data;
     },
 
     getGatewayConfigPanelLayout: function (type) {
@@ -188,15 +339,5 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         } else {
             this.getGatewayConfigPanel().hide();
         }
-    },
-
-    getSaveData: function () {
-        var values = this.formPanel.getForm().getFieldValues();
-
-        if (!values['active']) {
-            delete values['active'];
-        }
-
-        return values;
     }
 });
