@@ -25,7 +25,7 @@ class Kernel extends PimcoreKernel
     {
         parent::registerBundlesToCollection($collection);
 
-        $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(), 100);
+        $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(), 90);
         $collection->addBundle(new \FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle());
         $collection->addBundle(new \CoreShop\Bundle\TestBundle\CoreShopTestBundle(), 0);
     }

@@ -1,9 +1,19 @@
+parameters:
+    coreshop.security.frontend_regex: "^/(?!admin)[^/]*"
+
+pimcore:
+    security:
+        encoder_factories:
+            Pimcore\Model\DataObject\CoreShopUser: coreshop.security.user.password_encoder_factory
+
 security:
     enable_authenticator_manager: true
 
     providers:
         pimcore_admin:
             id: Pimcore\Security\User\UserProvider
+        coreshop_user:
+            id: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
 
     firewalls:
         dev:
@@ -19,6 +29,28 @@ security:
         # Pimcore Admin Bundle firewall
         pimcore_admin: '%pimcore_admin_bundle.firewall_settings%'
 
+        coreshop_frontend:
+            provider: coreshop_user
+            pattern: '%coreshop.security.frontend_regex%'
+            context: shop
+            form_login:
+                login_path: coreshop_login
+                check_path: coreshop_login_check
+                provider: coreshop_user
+                failure_path: coreshop_login
+                default_target_path: coreshop_index
+                use_forward: false
+                use_referer: true
+            remember_me:
+                secret: "%secret%"
+                name: APP_CORESHOP_REMEMBER_ME
+                lifetime: 31536000
+                remember_me_parameter: _remember_me
+            logout:
+                path: coreshop_logout
+                target: coreshop_login
+                invalidate_session: false
+
     access_control:
         # Pimcore admin ACl  // DO NOT CHANGE!
         - { path: ^/admin/settings/display-custom-logo, roles: PUBLIC_ACCESS }
@@ -29,6 +61,8 @@ security:
         - { path: ^/admin/login/(login|lostpassword|deeplink|csrf-token)$, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_PIMCORE_USER }
         - { path: ^/asset/webdav, roles: ROLE_PIMCORE_USER }
+        - { path: "%coreshop.security.frontend_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: "%coreshop.security.frontend_regex%/_partial", role: ROLE_NO_ACCESS }
 
     role_hierarchy:
         # Pimcore admin  // DO NOT CHANGE!

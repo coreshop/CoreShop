@@ -25,6 +25,7 @@ use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Payment\OrderPaymentProviderInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
@@ -37,15 +38,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentController extends AbstractController
 {
-    public function __construct(
-        private OrderPaymentProviderInterface $orderPaymentProvider,
-        private PimcoreRepositoryInterface $orderRepository,
-        private GetStatusFactoryInterface $getStatusRequestFactory,
-        private ResolveNextRouteFactoryInterface $resolveNextRouteRequestFactory,
-        private ConfirmOrderFactoryInterface $confirmOrderFactory,
-    ) {
-    }
-
     public function prepareCaptureAction(Request $request): RedirectResponse
     {
         if ($request->attributes->has('token')) {
@@ -59,7 +51,7 @@ class PaymentController extends AbstractController
         /**
          * @var OrderInterface|null $order
          */
-        $order = $this->orderRepository->findOneBy([$property => $identifier]);
+        $order = $this->getOrderRepository()->findOneBy([$property => $identifier]);
 
         if (null === $order) {
             throw new NotFoundHttpException(sprintf('Order with %s "%s" does not exist.', $property, $identifier));
@@ -68,7 +60,7 @@ class PaymentController extends AbstractController
         /**
          * @var PaymentInterface $payment
          */
-        $payment = $this->orderPaymentProvider->provideOrderPayment($order);
+        $payment = $this->getOrderPaymentProvider()->provideOrderPayment($order);
 
         $storage = $this->getPayum()->getStorage($payment);
         $storage->update($payment);
@@ -83,13 +75,13 @@ class PaymentController extends AbstractController
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 
         /** @var Generic $status */
-        $status = $this->getStatusRequestFactory->createNewWithModel($token);
+        $status = $this->getGetStatusFactory()->createNewWithModel($token);
         $this->getPayum()->getGateway($token->getGatewayName())->execute($status);
 
-        $confirmOrderRequest = $this->confirmOrderFactory->createNewWithModel($status->getFirstModel());
+        $confirmOrderRequest = $this->getConfirmOrderFactory()->createNewWithModel($status->getFirstModel());
         $this->getPayum()->getGateway($token->getGatewayName())->execute($confirmOrderRequest);
 
-        $resolveNextRoute = $this->resolveNextRouteRequestFactory->createNewWithModel($status->getFirstModel());
+        $resolveNextRoute = $this->getResolveNextRouteFactory()->createNewWithModel($status->getFirstModel());
         $this->getPayum()->getGateway($token->getGatewayName())->execute($resolveNextRoute);
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
 
@@ -99,6 +91,43 @@ class PaymentController extends AbstractController
     protected function getPayum(): Payum
     {
         return $this->container->get('payum');
+    }
+
+    protected function getOrderPaymentProvider()
+    {
+        return $this->container->get(OrderPaymentProviderInterface::class);
+    }
+    
+    protected function getOrderRepository()
+    {
+        return $this->container->get(OrderRepositoryInterface::class);
+    }
+    
+    protected function getGetStatusFactory()
+    {
+        return $this->container->get(GetStatusFactoryInterface::class);
+    }
+    
+    protected function getResolveNextRouteFactory()
+    {
+        return $this->container->get(ResolveNextRouteFactoryInterface::class);
+    }
+    
+    protected function getConfirmOrderFactory()
+    {
+        return $this->container->get(ConfirmOrderFactoryInterface::class);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() +
+            [
+                OrderPaymentProviderInterface::class => OrderPaymentProviderInterface::class,
+                OrderRepositoryInterface::class => OrderRepositoryInterface::class,
+                GetStatusFactoryInterface::class => GetStatusFactoryInterface::class,
+                ResolveNextRouteFactoryInterface::class => ResolveNextRouteFactoryInterface::class,
+                ConfirmOrderFactoryInterface::class => ConfirmOrderFactoryInterface::class,
+            ];
     }
 
     private function provideTokenBasedOnPayment(PaymentInterface $payment): TokenInterface

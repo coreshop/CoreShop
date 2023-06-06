@@ -36,14 +36,10 @@ use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CheckoutController extends FrontendController
 {
-    public function __construct(
-        protected CheckoutManagerFactoryInterface $checkoutManagerFactory,
-    ) {
-    }
-
     public function processAction(Request $request): Response
     {
         $this->denyAccessUnlessGranted('CORESHOP_CHECKOUT');
@@ -52,7 +48,7 @@ class CheckoutController extends FrontendController
             return $this->redirectToRoute('coreshop_cart_summary');
         }
 
-        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
+        $checkoutManager = $this->getCheckoutManagerFactory()->createCheckoutManager($this->getCart());
 
         $stepIdentifier = $this->getParameterFromRequest($request, 'stepIdentifier');
         $step = $checkoutManager->getStep($stepIdentifier);
@@ -159,7 +155,7 @@ class CheckoutController extends FrontendController
         $this->denyAccessUnlessGranted('CORESHOP_ORDER_CREATE');
 
         $cart = $this->getCart();
-        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
+        $checkoutManager = $this->getCheckoutManagerFactory()->createCheckoutManager($cart);
 
         /*
          * after the last step, we come here
@@ -288,6 +284,21 @@ class CheckoutController extends FrontendController
         return $this->render($this->getTemplateConfigurator()->findTemplate('Checkout/thank-you.html'), [
             'order' => $order,
         ]);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() +
+            [
+                'coreshop.checkout_manager.factory' => CheckoutManagerFactoryInterface::class,
+                'event_dispatcher' => EventDispatcherInterface::class,
+                TrackerInterface::class => TrackerInterface::class,
+            ];
+    }
+
+    protected function getCheckoutManagerFactory(): CheckoutManagerFactoryInterface
+    {
+        return $this->container->get('coreshop.checkout_manager.factory');
     }
 
     protected function addEventFlash(string $type, string $message = null, array $parameters = []): void

@@ -93,7 +93,7 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
             );
         }
 
-        return $class::getById($id, $force);
+        return $class::getById($id, ['force' => $force]);
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)

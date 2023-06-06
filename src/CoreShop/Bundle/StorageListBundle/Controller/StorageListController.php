@@ -30,6 +30,7 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\Repository\ShareableStorageListRepositoryInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -43,6 +44,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class StorageListController extends AbstractController
 {
     public function __construct(
+        ContainerInterface $container,
         protected string $identifier,
         protected FormFactoryInterface $formFactory,
         protected RepositoryInterface $repository,
@@ -60,6 +62,7 @@ class StorageListController extends AbstractController
         protected string $templateAddToList,
         protected string $templateSummary,
     ) {
+        $this->setContainer($container);
     }
 
     public function addItemAction(Request $request): Response

@@ -27,23 +27,16 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends FrontendController
 {
-    public function __construct(
-        protected AuthenticationUtils $authenticationUtils,
-        protected FormFactoryInterface $formFactory,
-        protected ShopperContextInterface $shopperContext,
-    ) {
-    }
-
     public function loginAction(Request $request): Response
     {
-        if ($this->shopperContext->hasCustomer()) {
+        if ($this->container->get(ShopperContextInterface::class)->hasCustomer()) {
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $lastError = $this->authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $this->authenticationUtils->getLastUsername();
+        $lastError = $this->container->get(AuthenticationUtils::class)->getLastAuthenticationError();
+        $lastUsername = $this->container->get(AuthenticationUtils::class)->getLastUsername();
 
-        $form = $this->formFactory->createNamed('', CustomerLoginType::class);
+        $form = $this->container->get('form.factory')->createNamed('', CustomerLoginType::class);
 
         $renderLayout = $this->getParameterFromRequest($request, 'renderLayout', true);
 
@@ -58,6 +51,16 @@ class SecurityController extends FrontendController
             'failure' => $this->getParameterFromRequest($request, 'failure', null),
         ]);
     }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() +
+            [
+                AuthenticationUtils::class => AuthenticationUtils::class,
+                ShopperContextInterface::class => ShopperContextInterface::class
+            ];
+    }
+
 
     public function checkAction(Request $request): void
     {

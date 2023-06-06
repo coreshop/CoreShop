@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType;
 use CoreShop\Bundle\UserBundle\Event\RequestPasswordChangeEvent;
 use CoreShop\Bundle\UserBundle\Form\Type\RequestResetPasswordType;
@@ -25,11 +26,15 @@ use CoreShop\Bundle\UserBundle\Form\Type\ResetPasswordType;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class RegisterController extends FrontendController
 {
@@ -52,7 +57,7 @@ class RegisterController extends FrontendController
                 $customer = $form->getData();
                 $customer->setLocaleCode($this->container->get('coreshop.context.locale')->getLocaleCode());
 
-                $this->container->get('coreshop.customer.manager')->persistCustomer($customer);
+                $this->container->get(CustomerManagerInterface::class)->persistCustomer($customer);
 
                 return $this->redirect($redirect);
             }
@@ -141,6 +146,17 @@ class RegisterController extends FrontendController
 
         return $this->redirectToRoute('coreshop_index');
     }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() +
+            [
+                new SubscribedService('coreshop.factory.customer', FactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.customer')),
+                new SubscribedService('coreshop.context.locale', LocaleContextInterface::class),
+                new SubscribedService(CustomerManagerInterface::class, CustomerManagerInterface::class),
+            ];
+    }
+
 
     protected function getCustomer(): ?CustomerInterface
     {

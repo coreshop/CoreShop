@@ -146,7 +146,7 @@ final class CoreShopStorageListExtension extends AbstractModelExtension
                 $controllerDefinition->setArgument('$templateSummary', $list['templates']['summary']);
                 $controllerDefinition->setArgument('$templateAddToList', $list['templates']['add_to_cart']);
                 $controllerDefinition->addTag('controller.service_arguments');
-                $controllerDefinition->addMethodCall('setContainer', [new Reference('service_container')]);
+                $controllerDefinition->addTag('container.service_subscriber');
 
                 $container->setDefinition('coreshop.storage_list.controller.' . $name, $controllerDefinition);
             }

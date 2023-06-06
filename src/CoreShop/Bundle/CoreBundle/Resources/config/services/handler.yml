@@ -7,3 +7,7 @@ services:
             - '@router'
             - '%coreshop.after_logout_redirect_route%'
             - '@CoreShop\Component\Store\Context\StoreContextInterface'
+        tags:
+            - name: 'kernel.event_listener'
+              event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
+              dispatcher: security.event_dispatcher.coreshop_frontend

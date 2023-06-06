@@ -58,20 +58,6 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
             $controllerDefinition->setPublic(true);
 
             switch ($key) {
-                case 'security':
-                    $controllerDefinition->setArguments([
-                        new Reference('security.authentication_utils'),
-                        new Reference('form.factory'),
-                        new Reference(ShopperContextInterface::class),
-                    ]);
-
-                    break;
-                case 'checkout':
-                    $controllerDefinition->setArguments([
-                        new Reference('coreshop.checkout_manager.factory'),
-                    ]);
-
-                    break;
                 case 'payment':
                     $controllerDefinition->setArguments([
                         new Reference(OrderPaymentProviderInterface::class),
