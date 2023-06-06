@@ -80,6 +80,7 @@ services:
             - '@coreshop.form_registry.payment.settings'
             - '@coreshop.repository.payment_provider'
             - '%coreshop.gateway_factories%'
+            - '@CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface'
         tags:
             - { name: form.type }
 

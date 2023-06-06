@@ -12,3 +12,66 @@ services:
             - '@coreshop.repository.payment_provider'
             - '@CoreShop\Component\Store\Context\StoreContextInterface'
 
+
+    # conditions
+    CoreShop\Component\Core\Payment\Rule\Condition\CategoriesConditionChecker:
+        arguments:
+            - '@coreshop.repository.category'
+        tags:
+            - { name: coreshop.payment_provider_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
+
+    CoreShop\Component\Core\Payment\Rule\Condition\ProductsConditionChecker:
+        arguments:
+            - '@coreshop.repository.product'
+        tags:
+            - { name: coreshop.payment_provider_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
+
+    CoreShop\Component\Core\Payment\Rule\Condition\CountriesConditionChecker:
+        tags:
+            - { name: coreshop.payment_provider_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
+
+    CoreShop\Component\Core\Payment\Rule\Condition\ZonesConditionChecker:
+        tags:
+            - { name: coreshop.payment_provider_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
+
+    CoreShop\Component\Core\Payment\Rule\Condition\CustomersConditionChecker:
+        tags:
+            - { name: coreshop.payment_provider_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
+
+    CoreShop\Component\Core\Payment\Rule\Condition\CustomerGroupsConditionChecker:
+        tags:
+            - { name: coreshop.payment_provider_rule.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
+
+    CoreShop\Component\Core\Payment\Rule\Condition\StoresConditionChecker:
+        tags:
+            - { name: coreshop.payment_provider_rule.condition, type: stores, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType }
+
+    CoreShop\Component\Core\Payment\Rule\Condition\CurrenciesConditionChecker:
+        tags:
+            - { name: coreshop.payment_provider_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
+
+
+
+    # Actions
+
+    CoreShop\Component\Core\Payment\Rule\Action\PriceActionProcessor:
+        arguments:
+            - '@coreshop.repository.currency'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
+        tags:
+            - { name: coreshop.payment_provider_rule.action, type: price, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Payment\Rule\Action\PriceActionConfigurationType }
+
+    CoreShop\Component\Core\Payment\Rule\Action\AdditionAmountActionProcessor:
+        arguments:
+            - '@coreshop.repository.currency'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
+        tags:
+            - { name: coreshop.payment_provider_rule.action, type: additionAmount, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Payment\Rule\Action\AdditionAmountActionConfigurationType }
+
+    CoreShop\Component\Core\Payment\Rule\Action\DiscountAmountActionProcessor:
+        arguments:
+            - '@coreshop.repository.currency'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
+        tags:
+            - { name: coreshop.payment_provider_rule.action, type: discountAmount, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Payment\Rule\Action\DiscountAmountActionConfigurationType }
+

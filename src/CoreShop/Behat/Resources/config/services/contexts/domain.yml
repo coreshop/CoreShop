@@ -94,6 +94,18 @@ services:
         tags:
             - { name: fob.context_service }
 
+    coreshop.behat.context.domain.payment:
+        class: CoreShop\Behat\Context\Domain\PaymentProviderContext
+        arguments:
+            - '@coreshop.repository.payment_provider'
+            - '@coreshop.payment_provider_rule.processor'
+            - '@coreshop.factory.address'
+            - '@CoreShop\Component\Payment\Calculator\PaymentProviderRulePriceCalculator'
+            - '@CoreShop\Component\Payment\Validator\PaymentProviderRuleValidatorInterface'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
+        tags:
+            - { name: fob.context_service }
+
     coreshop.behat.context.domain.country:
         class: CoreShop\Behat\Context\Domain\CountryContext
         arguments:

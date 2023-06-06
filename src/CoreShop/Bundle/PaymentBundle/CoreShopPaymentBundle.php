@@ -18,10 +18,15 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PaymentBundle;
 
+use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentCalculatorsPass;
+use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleActionPass;
+use CoreShop\Bundle\PaymentBundle\DependencyInjection\Compiler\PaymentProviderRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
 use CoreShop\Bundle\WorkflowBundle\CoreShopWorkflowBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPaymentBundle extends AbstractResourceBundle
 {
@@ -37,6 +42,16 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
         parent::registerDependentBundles($collection);
 
         $collection->addBundle(new CoreShopWorkflowBundle(), 1550);
+        $collection->addBundle(new CoreShopRuleBundle(), 3500);
+    }
+
+    public function build(ContainerBuilder $container): void
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new PaymentProviderRuleConditionPass());
+        $container->addCompilerPass(new PaymentProviderRuleActionPass());
+        $container->addCompilerPass(new PaymentCalculatorsPass());
     }
 
     protected function getModelNamespace(): string

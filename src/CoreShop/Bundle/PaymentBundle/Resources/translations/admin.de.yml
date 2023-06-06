@@ -1,6 +1,7 @@
 ---
 coreshop_save_error: 'Fehler beim speichern des Elements'
 coreshop_payment_provider: 'Payment Anbieter'
+coreshop_payment_provider_rules: 'Payment Anbieter Regeln'
 coreshop_payment_provider_multiselect: 'Payment Anbieter Multiselect'
 coreshop_identifier: 'Identifier'
 coreshop_position: 'Position'
@@ -13,3 +14,4 @@ coreshop_permission_payment_provider: 'CoreShop: Zahlungsanbieter'
 coreshop_payment_sofort_config_key: 'Konfigurationsschlüssel'
 coreshop_paypal_sandbox: 'Sandbox'
 coreshop_logo: 'Logo'
+coreshop_payment_provider_rule: 'Zahlungsanbieterregel'

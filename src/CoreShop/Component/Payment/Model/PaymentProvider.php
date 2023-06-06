@@ -22,6 +22,8 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\Asset;
 
 /**
@@ -57,9 +59,15 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
      */
     protected $logo;
 
+    /**
+     * @var Collection|PaymentProviderRuleGroupInterface[]
+     */
+    protected $paymentProviderRules;
+
     public function __construct(
         ) {
         $this->initializeTranslationsCollection();
+        $this->paymentProviderRules = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -143,5 +151,35 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     protected function createTranslation(): PaymentProviderTranslationInterface
     {
         return new PaymentProviderTranslation();
+    }
+
+    public function getPaymentProviderRules()
+    {
+        return $this->paymentProviderRules;
+    }
+
+    public function hasPaymentProviderRules()
+    {
+        return !$this->paymentProviderRules->isEmpty();
+    }
+
+    public function hasPaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup)
+    {
+        return $this->paymentProviderRules->contains($paymentProviderRuleGroup);
+    }
+
+    public function addPaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup)
+    {
+        if (!$this->hasPaymentProviderRule($paymentProviderRuleGroup)) {
+            $this->paymentProviderRules->add($paymentProviderRuleGroup);
+        }
+    }
+
+    public function removePaymentProviderRule(PaymentProviderRuleGroupInterface $paymentProviderRuleGroup)
+    {
+        if ($this->hasPaymentProviderRule($paymentProviderRuleGroup)) {
+            $this->paymentProviderRules->removeElement($paymentProviderRuleGroup);
+            $paymentProviderRuleGroup->setPaymentProvider(null);
+        }
     }
 }

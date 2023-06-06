@@ -22,8 +22,21 @@ use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
 
 class ConfigResolver implements ConfigResolverInterface
 {
-    public function getGoogleConfig(): array
+    public function __construct(private bool $addGtagCode = false)
     {
-        return [];
+    }
+
+    public function getGoogleConfig(): ConfigObject
+    {
+        $params = [];
+
+        if ($this->addGtagCode) {
+            $params['gtagcode'] = 'coreshop';
+        }
+
+        /**
+         * @psalm-suppress DeprecatedClass
+         */
+        return new ConfigObject($params);
     }
 }

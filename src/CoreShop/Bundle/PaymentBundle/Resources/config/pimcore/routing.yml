@@ -2,3 +2,23 @@ coreshop_admin_payment_provider:
     type: coreshop.resources
     resource: |
       alias: coreshop.payment_provider
+      additional_routes:
+        config:
+          path: get-config
+          action: getConfig
+          methods:
+            - GET
+
+
+coreshop_admin_payment_provider_rule:
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.payment_provider_rule
+      additional_routes:
+        config:
+          path: get-config
+          action: getConfig
+          methods:
+            - GET
+
+

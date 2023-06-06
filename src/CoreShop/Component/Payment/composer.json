@@ -25,7 +25,9 @@
   ],
   "require": {
     "php": "^8.0",
-    "coreshop/resource": "^3.0"
+    "coreshop/resource": "^3.0",
+    "coreshop/registry": "^3.0",
+    "coreshop/rule": "^3.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",
@@ -45,9 +47,10 @@
   ],
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "extra": {
+   "extra": {
     "branch-alias": {
-      "dev-next": "4.0-dev"
+      "dev-next": "4.0-dev",
+      "dev-master": "4.0-dev"
     }
   },
   "config": {

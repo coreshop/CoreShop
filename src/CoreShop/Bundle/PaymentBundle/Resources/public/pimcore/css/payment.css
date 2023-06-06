@@ -25,6 +25,14 @@ body.pimcore_version_10 .coreshop_nav_icon_payment_provider {
     background: url(../img/payment-provider_white.svg) center center no-repeat !important;
 }
 
+.coreshop_nav_icon_payment_provider_rule {
+    background: url(../img/payment-provider-rule.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_10 .coreshop_nav_icon_payment_provider_rule {
+    background: url(../img/payment-provider-rule_white.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_report_payments, .coreshop_icon_payment {
     background: url(../img/payments.svg) center center no-repeat !important;
 }
