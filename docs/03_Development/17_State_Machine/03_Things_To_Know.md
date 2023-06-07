@@ -23,8 +23,11 @@ $ coreshop:order:expire
 #### Change Orders Expiration Date
 
 ```yml
-core_shop_order:
-    expiration:
+core_shop_storage_list:
+    list:
         order:
-            days: 30
+            expiration:
+                params:
+                    order:
+                        days: 30
 ```

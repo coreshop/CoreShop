@@ -18,12 +18,17 @@ By default, this feature is disabled.
 If you want to delete abandoned carts, you need to define an expiration date:
 
 ```yml
-core_shop_order:
-    expiration:
-        cart:
+core_shop_storage_list:
+  list:
+    order:
+      expiration:
+        params:
+          cart:
             days: 20
-            anonymous: true
-            customer: true
+            params:
+              anonymous: true
+              customer: false
+
 ```
 
 Read more about automation [here](../../02_User_Documentation/10_Automation#expired-carts).
