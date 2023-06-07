@@ -1,5 +1,34 @@
 # 3.1.0
 
+## BC Breaks:
+- core_shop_order.expiration
+  ```
+  core_shop_order:
+   expiration:
+       cart:
+           days: 20
+           anonymous: true
+           customer: true
+       order:
+          days: 20
+
+  ```
+  is now configured like:
+  ```
+    core_shop_storage_list:
+        list:
+           order:
+               expiration:
+                   params:
+                       cart:
+                           days: 0
+                           params:
+                               anonymous: true
+                               customer: false
+                       order:
+                           days: 20
+  ```
+
 ## Bugs
  - [Performance] optimization (https://github.com/coreshop/CoreShop/pull/2265)
 
