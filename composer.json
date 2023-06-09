@@ -99,6 +99,7 @@
     "laminas/laminas-zendframework-bridge": "^1.5",
     "payum/payum": "^1.7",
     "payum/payum-bundle": "^2.5",
+    "php-http/message-factory": "^1.1",
     "pimcore/admin-ui-classic-bundle": "^1.0",
     "pimcore/google-marketing-bundle": "^1.0",
     "pimcore/newsletter-bundle": "^1.0",
@@ -108,11 +109,11 @@
     "stof/doctrine-extensions-bundle": "^1.6",
     "sylius/theme-bundle": "^2.2",
     "symfony/dotenv": "^6.3",
+    "symfony/http-client": "^6.3",
     "symfony/intl": "^6.3",
     "symfony/notifier": "^6.3",
     "symfony/serializer": "^6.3",
     "symfony/twig-bundle": "^6.3",
-    "symfony/http-client": "^6.3",
     "webmozart/assert": "^1.10"
   },
   "require-dev": {
