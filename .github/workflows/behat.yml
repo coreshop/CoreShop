@@ -94,7 +94,7 @@ jobs:
       run: bin/console assets:install --symlink
 
     - name: Install Pimcore
-      run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --ignore-existing-config --env=test --skip-database-config
+      run: PIMCORE_KERNEL_CLASS=Kernel vendor/bin/pimcore-install --env=test --skip-database-config
 
     - name: Install CoreShop
       run: |

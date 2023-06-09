@@ -26,7 +26,7 @@
   "require": {
     "coreshop/resource-bundle": "^4.0",
     "coreshop/storage-list-bundle": "^4.0",
-    "coreshop/wishlist": "^3.0"
+    "coreshop/wishlist": "^4.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",
