@@ -28,12 +28,14 @@ use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class RegisterController extends FrontendController
@@ -152,8 +154,10 @@ class RegisterController extends FrontendController
         return parent::getSubscribedServices() +
             [
                 new SubscribedService('coreshop.factory.customer', FactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.customer')),
+                new SubscribedService('coreshop.repository.user', RepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.user')),
                 new SubscribedService('coreshop.context.locale', LocaleContextInterface::class),
                 new SubscribedService(CustomerManagerInterface::class, CustomerManagerInterface::class),
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
             ];
     }
 

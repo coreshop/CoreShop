@@ -73,7 +73,7 @@ final class ProductContext implements Context
         $list = $this->productRepository->getList();
         $list->setLocale('en');
         $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
-        $list->setCondition('key = ?', [$productName]);
+        $list->setCondition('`key` = ?', [$productName]);
         $list->load();
 
         Assert::eq(

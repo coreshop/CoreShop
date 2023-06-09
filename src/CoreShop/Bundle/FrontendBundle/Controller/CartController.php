@@ -39,6 +39,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
@@ -382,6 +383,7 @@ class CartController extends FrontendController
             [
                 new SubscribedService('coreshop.repository.stack.purchasable', StackRepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.stack.purchasable')),
                 new SubscribedService('coreshop.factory.order_item', OrderItemFactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.order_item')),
+                new SubscribedService('coreshop.repository.order_item', RepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.order_item')),
                 new SubscribedService(CartItemQuantityModifier::class, CartItemQuantityModifier::class),
                 new SubscribedService(AddToCartFactoryInterface::class, AddToCartFactoryInterface::class),
                 new SubscribedService(CartModifierInterface::class, CartModifierInterface::class),
@@ -389,6 +391,7 @@ class CartController extends FrontendController
                 new SubscribedService(TrackerInterface::class, TrackerInterface::class),
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
                 new SubscribedService('coreshop.repository.cart_price_rule_voucher_code', CartPriceRuleVoucherRepositoryInterface::class),
+                new SubscribedService(CartPriceRuleProcessorInterface::class, CartPriceRuleProcessorInterface::class),
             ];
     }
 

@@ -71,6 +71,10 @@ class CurrencyController extends FrontendController
     {
         return parent::getSubscribedServices() + [
             new SubscribedService('coreshop.repository.currency', CurrencyRepositoryInterface::class),
+            new SubscribedService(StoreContextInterface::class, StoreContextInterface::class),
+            new SubscribedService(CurrencyStorageInterface::class, CurrencyStorageInterface::class),
+            new SubscribedService(CartManagerInterface::class, CartManagerInterface::class),
+            new SubscribedService(CartContextInterface::class, CartContextInterface::class),
         ];
     }
 }
