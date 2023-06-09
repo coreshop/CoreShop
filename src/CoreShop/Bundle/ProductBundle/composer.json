@@ -24,12 +24,12 @@
     }
   ],
   "require": {
-    "coreshop/product": "^3.0",
-    "coreshop/registry": "^3.0",
-    "coreshop/rule-bundle": "^3.0",
-    "coreshop/currency-bundle": "^3.0",
-    "coreshop/resource-bundle": "^3.0",
-    "coreshop/money-bundle": "^3.0",
+    "coreshop/product": "^4.0",
+    "coreshop/registry": "^4.0",
+    "coreshop/rule-bundle": "^4.0",
+    "coreshop/currency-bundle": "^4.0",
+    "coreshop/resource-bundle": "^4.0",
+    "coreshop/money-bundle": "^4.0",
     "pimcore/pimcore": "^11.0"
   },
   "require-dev": {

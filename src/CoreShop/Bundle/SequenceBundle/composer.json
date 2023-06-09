@@ -24,8 +24,8 @@
     }
   ],
   "require": {
-    "coreshop/sequence": "^3.0",
-    "coreshop/resource-bundle": "^3.0",
+    "coreshop/sequence": "^4.0",
+    "coreshop/resource-bundle": "^4.0",
     "pimcore/pimcore": "^11.0"
   },
   "require-dev": {

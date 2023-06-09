@@ -24,8 +24,8 @@
     }
   ],
   "require": {
-    "coreshop/inventory": "^3.0",
-    "coreshop/resource-bundle": "^3.0",
+    "coreshop/inventory": "^4.0",
+    "coreshop/resource-bundle": "^4.0",
     "pimcore/pimcore": "^11.0"
   },
   "require-dev": {

@@ -24,11 +24,11 @@
     }
   ],
   "require": {
-    "coreshop/resource": "^3.0",
-    "coreshop/registry": "^3.0",
-    "coreshop/taxation": "^3.0",
-    "coreshop/address": "^3.0",
-    "coreshop/rule": "^3.0",
+    "coreshop/resource": "^4.0",
+    "coreshop/registry": "^4.0",
+    "coreshop/taxation": "^4.0",
+    "coreshop/address": "^4.0",
+    "coreshop/rule": "^4.0",
     "pimcore/pimcore": "^11.0",
     "laminas/laminas-stdlib": "^3.6"
   },

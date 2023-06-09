@@ -24,8 +24,8 @@
     }
   ],
   "require": {
-    "coreshop/registry": "^3.0",
-    "coreshop/pimcore-bundle": "^3.0",
+    "coreshop/registry": "^4.0",
+    "coreshop/pimcore-bundle": "^4.0",
     "sylius/theme-bundle": "^2.2",
     "pimcore/pimcore": "^11.0",
     "laminas/laminas-stdlib": "^3.6"

@@ -30,8 +30,8 @@
     }
   ],
   "require": {
-    "coreshop/pimcore": "^3.0",
-    "coreshop/registry": "^3.0",
+    "coreshop/pimcore": "^4.0",
+    "coreshop/registry": "^4.0",
     "symfony/config": "^5.2.0",
     "symfony/workflow": "^5.2.0",
     "symfony/yaml": "^5.2.0",

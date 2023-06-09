@@ -24,17 +24,17 @@
     }
   ],
   "require": {
-    "coreshop/address-bundle": "^3.0",
-    "coreshop/currency-bundle": "^3.0",
-    "coreshop/customer-bundle": "^3.0",
-    "coreshop/payment-bundle": "^3.0",
-    "coreshop/registry": "^3.0",
-    "coreshop/rule-bundle": "^3.0",
-    "coreshop/store-bundle": "^3.0",
-    "coreshop/storage-list-bundle": "^3.0",
-    "coreshop/money-bundle": "^3.0",
-    "coreshop/workflow-bundle": "^3.0",
-    "coreshop/order": "^3.0",
+    "coreshop/address-bundle": "^4.0",
+    "coreshop/currency-bundle": "^4.0",
+    "coreshop/customer-bundle": "^4.0",
+    "coreshop/payment-bundle": "^4.0",
+    "coreshop/registry": "^4.0",
+    "coreshop/rule-bundle": "^4.0",
+    "coreshop/store-bundle": "^4.0",
+    "coreshop/storage-list-bundle": "^4.0",
+    "coreshop/money-bundle": "^4.0",
+    "coreshop/workflow-bundle": "^4.0",
+    "coreshop/order": "^4.0",
     "pimcore/pimcore": "^11.0"
   },
   "require-dev": {

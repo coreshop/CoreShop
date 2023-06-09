@@ -24,9 +24,9 @@
     }
   ],
   "require": {
-    "coreshop/registry": "^3.0",
-    "coreshop/tracking": "^3.0",
-    "coreshop/pimcore-bundle": "^3.0",
+    "coreshop/registry": "^4.0",
+    "coreshop/tracking": "^4.0",
+    "coreshop/pimcore-bundle": "^4.0",
     "pimcore/pimcore": "^11.0",
     "pimcore/google-marketing-bundle": "^1.0"
   },

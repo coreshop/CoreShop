@@ -24,7 +24,7 @@
     }
   ],
   "require": {
-    "coreshop/resource-bundle": "^3.0",
+    "coreshop/resource-bundle": "^4.0",
     "symfony/framework-bundle": "^5.2.0",
     "symfony/doctrine-bridge": "^5.2.0",
     "symfony/twig-bundle": "^5.2.0",

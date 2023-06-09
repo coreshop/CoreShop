@@ -24,7 +24,7 @@
     }
   ],
   "require": {
-    "coreshop/pimcore": "^3.0",
+    "coreshop/pimcore": "^4.0",
     "pimcore/pimcore": "^11.0",
     "sebastian/diff": "^4.0 | ^5.0"
   },

@@ -24,8 +24,8 @@
     }
   ],
   "require": {
-    "coreshop/address": "^3.0",
-    "coreshop/resource-bundle": "^3.0",
+    "coreshop/address": "^4.0",
+    "coreshop/resource-bundle": "^4.0",
     "pimcore/pimcore": "^11.0"
   },
   "require-dev": {

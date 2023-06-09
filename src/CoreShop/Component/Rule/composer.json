@@ -24,8 +24,8 @@
     }
   ],
   "require": {
-    "coreshop/resource": "^3.0",
-    "coreshop/registry": "^3.0",
+    "coreshop/resource": "^4.0",
+    "coreshop/registry": "^4.0",
     "pimcore/pimcore": "^11.0"
   },
   "require-dev": {

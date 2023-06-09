@@ -24,10 +24,10 @@
     }
   ],
   "require": {
-    "coreshop/notification": "^3.0",
-    "coreshop/registry": "^3.0",
-    "coreshop/rule-bundle": "^3.0",
-    "coreshop/messenger-bundle": "^3.0",
+    "coreshop/notification": "^4.0",
+    "coreshop/registry": "^4.0",
+    "coreshop/rule-bundle": "^4.0",
+    "coreshop/messenger-bundle": "^4.0",
     "pimcore/pimcore": "^11.0"
   },
   "require-dev": {

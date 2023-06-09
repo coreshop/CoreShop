@@ -24,10 +24,10 @@
     }
   ],
   "require": {
-    "coreshop/index": "^3.0",
-    "coreshop/registry": "^3.0",
-    "coreshop/resource-bundle": "^3.0",
-    "coreshop/menu-bundle": "^3.0",
+    "coreshop/index": "^4.0",
+    "coreshop/registry": "^4.0",
+    "coreshop/resource-bundle": "^4.0",
+    "coreshop/menu-bundle": "^4.0",
     "pimcore/pimcore": "^11.0"
   },
   "conflict": {

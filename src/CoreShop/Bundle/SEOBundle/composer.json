@@ -24,7 +24,7 @@
     }
   ],
   "require": {
-    "coreshop/seo": "^3.0",
+    "coreshop/seo": "^4.0",
     "pimcore/pimcore": "^11.0"
   },
   "require-dev": {
