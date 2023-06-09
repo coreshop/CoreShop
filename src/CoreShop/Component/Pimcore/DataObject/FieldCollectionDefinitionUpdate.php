@@ -39,7 +39,7 @@ class FieldCollectionDefinitionUpdate extends AbstractDefinitionUpdate
         $this->fieldCollectionDefinition = $fieldCollectionDefinition;
         $this->fieldDefinitions = $this->fieldCollectionDefinition->getFieldDefinitions();
         /** @psalm-suppress InvalidArgument */
-        $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->fieldCollectionDefinition), true);
+        $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateFieldCollectionJson($this->fieldCollectionDefinition), true);
         $this->originalJsonDefinition = $this->jsonDefinition;
     }
 

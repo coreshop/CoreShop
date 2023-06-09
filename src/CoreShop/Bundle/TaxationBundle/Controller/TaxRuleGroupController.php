@@ -26,19 +26,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TaxRuleGroupController extends ResourceController
 {
-    public function listRulesAction(Request $request): Response
+    public function listRulesAction(Request $request, TaxRuleRepositoryInterface $taxRuleRepository): Response
     {
         /**
          * @var TaxRuleGroupInterface $ruleGroup
          */
         $ruleGroup = $this->findOr404($this->getParameterFromRequest($request, 'id'));
-        $data = $this->getTaxRulesRepository()->findByGroup($ruleGroup);
+        $data = $taxRuleRepository->findByGroup($ruleGroup);
 
         return $this->viewHandler->handle($data);
-    }
-
-    protected function getTaxRulesRepository(): TaxRuleRepositoryInterface
-    {
-        return $this->container->get('coreshop.repository.tax_rule');
     }
 }

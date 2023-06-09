@@ -212,6 +212,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     {
         $config = $this->config->getGoogleConfig();
 
-        return $config['gtagcode'] ?? false;
+        return isset($config['gtagcode']);
     }
 }

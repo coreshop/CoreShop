@@ -31,6 +31,7 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\ValidatorAutoMap
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Pimcore\Bundle\AdminBundle\PimcoreAdminBundle;
 use Pimcore\Bundle\ApplicationLoggerBundle\PimcoreApplicationLoggerBundle;
+use Pimcore\Bundle\SimpleBackendSearchBundle\PimcoreSimpleBackendSearchBundle;
 use Pimcore\Bundle\StaticRoutesBundle\PimcoreStaticRoutesBundle;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
@@ -74,6 +75,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $collection->addBundle(new PimcoreAdminBundle(), 10);
         $collection->addBundle(new PimcoreApplicationLoggerBundle(), 10);
         $collection->addBundle(new PimcoreStaticRoutesBundle(), 10);
+        $collection->addBundle(new PimcoreSimpleBackendSearchBundle(), 10);
     }
 
     public function getNiceName(): string

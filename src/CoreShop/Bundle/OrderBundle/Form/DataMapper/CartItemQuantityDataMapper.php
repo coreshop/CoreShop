@@ -57,7 +57,7 @@ class CartItemQuantityDataMapper implements DataMapperInterface
         }
 
         if (!empty($formsOtherThanQuantity)) {
-            $this->propertyPathDataMapper->mapFormsToData($formsOtherThanQuantity, $viewData);
+            $this->propertyPathDataMapper->mapFormsToData(new \ArrayObject($formsOtherThanQuantity), $viewData);
         }
 
         if (null !== $quantityForm) {

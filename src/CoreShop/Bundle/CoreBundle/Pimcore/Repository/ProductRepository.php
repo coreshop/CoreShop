@@ -67,7 +67,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             ->select('oo_id')
             ->where('path LIKE :path')
             ->andWhere('stores LIKE :stores')
-            ->andWhere('o_type = :variant')
+            ->andWhere('type = :variant')
             ->setParameter('path', $product->getRealFullPath() . '/%')
             ->setParameter('stores', '%,' . $store->getId() . ',%')
             ->setParameter('variant', 'variant')

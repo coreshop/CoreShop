@@ -598,7 +598,7 @@ class OrderController extends PimcoreController
         $statesHistory = [];
 
         foreach ($history as $note) {
-            $user = User::getById($note->getUser());
+            $user = $note->getUser() ? User::getById($note->getUser()) : null;
             $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
             $date = Carbon::createFromTimestamp($note->getDate());
             $statesHistory[] = [

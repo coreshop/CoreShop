@@ -167,14 +167,12 @@ final class PimcoreDriver extends AbstractDriver
 
         $container->setDefinition($metadata->getServiceId('repository'), $definition);
 
-        if (method_exists($container, 'registerAliasForArgument')) {
-            foreach (class_implements($repositoryClass) as $typehintClass) {
-                $container->registerAliasForArgument(
-                    $metadata->getServiceId('repository'),
-                    $typehintClass,
-                    $metadata->getHumanizedName() . ' repository',
-                );
-            }
+        foreach (class_implements($repositoryClass) as $typehintClass) {
+            $container->registerAliasForArgument(
+                $metadata->getServiceId('repository'),
+                $typehintClass,
+                $metadata->getHumanizedName() . ' repository',
+            );
         }
     }
 
@@ -204,14 +202,12 @@ final class PimcoreDriver extends AbstractDriver
 
         $container->setDefinition($metadata->getServiceId('repository.factory'), $definition);
 
-        if (method_exists($container, 'registerAliasForArgument')) {
-            foreach (class_implements($repositoryClass) as $typehintClass) {
-                $container->registerAliasForArgument(
-                    $metadata->getServiceId('repository.factory'),
-                    $typehintClass,
-                    $metadata->getHumanizedName() . ' repository factory',
-                );
-            }
+        foreach (class_implements($repositoryClass) as $typehintClass) {
+            $container->registerAliasForArgument(
+                $metadata->getServiceId('repository.factory'),
+                $typehintClass,
+                $metadata->getHumanizedName() . ' repository factory',
+            );
         }
     }
 
@@ -225,12 +221,10 @@ final class PimcoreDriver extends AbstractDriver
             $alias,
         );
 
-        if (method_exists($container, 'registerAliasForArgument')) {
-            $container->registerAliasForArgument(
-                $metadata->getServiceId('manager'),
-                ObjectManager::class,
-                $metadata->getHumanizedName() . ' manager',
-            );
-        }
+        $container->registerAliasForArgument(
+            $metadata->getServiceId('manager'),
+            ObjectManager::class,
+            $metadata->getHumanizedName() . ' manager',
+        );
     }
 }

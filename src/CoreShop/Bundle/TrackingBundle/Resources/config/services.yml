@@ -55,7 +55,7 @@ services:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
         calls:
-            - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
+            - [setTracker, ['@Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker']]
             - [setConfigResolver, ['@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver']]
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-4 }
@@ -64,7 +64,7 @@ services:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
         calls:
-            - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
+            - [setTracker, ['@Pimcore\Bundle\GoogleMarketingBundle\Tracker\Tracker']]
             - [setConfigResolver, ['@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver']]
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-4-tag-manager }

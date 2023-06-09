@@ -20,5 +20,5 @@ namespace CoreShop\Bundle\TrackingBundle\Resolver;
 
 interface ConfigResolverInterface
 {
-    public function getGoogleConfig(): array;
+    public function getGoogleConfig(): ?array;
 }

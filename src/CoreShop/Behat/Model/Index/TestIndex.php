@@ -33,33 +33,21 @@ class TestIndex extends AbstractPimcoreModel implements IndexableInterface
 
     public function getIndexableEnabled(IndexInterface $index): bool
     {
-        $enabled = $this->getEnabled();
-
-        if (!is_bool($enabled)) {
-            return false;
-        }
-
-        return $enabled;
+        return $this->getEnabled() ?? false;
     }
 
-    public function getEnabled()
+    public function getEnabled(): ?bool
     {
-        return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    public function getName($language)
+    public function getName(?string $language): ?string
     {
-        return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     public function getIndexableName(IndexInterface $index, string $language): string
     {
-        $name = $this->getName($language);
-
-        if (!is_string($name)) {
-            return '';
-        }
-
-        return $name;
+        return $this->getName($language) ?? '';
     }
 }

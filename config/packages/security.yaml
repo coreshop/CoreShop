@@ -3,8 +3,8 @@ parameters:
 
 pimcore:
     security:
-        encoder_factories:
-            Pimcore\Model\DataObject\CoreShopUser: coreshop.security.user.password_encoder_factory
+        password_hasher_factories:
+            Pimcore\Model\DataObject\CoreShopUser: coreshop.security.user.password_hasher_factories
 
 security:
     enable_authenticator_manager: true

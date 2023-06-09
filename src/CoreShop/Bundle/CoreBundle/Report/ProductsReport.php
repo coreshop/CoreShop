@@ -86,7 +86,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         if ($objectTypeFilter === 'container') {
             $unionData = [];
             foreach ($this->productStackRepository->getClassIds() as $id) {
-                $unionData[] = 'SELECT `id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
+                $unionData[] = 'SELECT `id`, `name`, `type` FROM object_localized_' . $id . '_' . $locale;
             }
 
             $union = implode(' UNION ALL ', $unionData);

@@ -26,7 +26,7 @@ class ConfigResolver implements ConfigResolverInterface
     {
     }
 
-    public function getGoogleConfig(): ConfigObject
+    public function getGoogleConfig(): ?array
     {
         $params = [];
 
@@ -34,9 +34,6 @@ class ConfigResolver implements ConfigResolverInterface
             $params['gtagcode'] = 'coreshop';
         }
 
-        /**
-         * @psalm-suppress DeprecatedClass
-         */
-        return new ConfigObject($params);
+        return $params;
     }
 }

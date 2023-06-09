@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.selector.object');
-coreshop.selector.object = Class.create(pimcore.element.selector.object, {
+coreshop.selector.object = Class.create(pimcore.bundle.search.element.selector.object, {
     getForm: function () {
         var i;
 
@@ -147,5 +147,3 @@ coreshop.selector.object = Class.create(pimcore.element.selector.object, {
         }
     },
 });
-
-pimcore.element.selector.object.addMethods(pimcore.element.helpers.gridColumnConfig);

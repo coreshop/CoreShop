@@ -31,15 +31,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductUnitDefinitionsController extends ResourceController
 {
-    public function productUnitDefinitionsListAction(Request $request): Response
+    public function productUnitDefinitionsListAction(Request $request, StackRepositoryInterface $productStackRepository): Response
     {
         $definitions = [];
 
-        /** @var StackRepositoryInterface $repository */
-        $repository = $this->container->get('coreshop.repository.stack.product');
-
         /** @var ProductInterface $product */
-        $product = $repository->find($this->getParameterFromRequest($request, 'productId'));
+        $product = $productStackRepository->find($this->getParameterFromRequest($request, 'productId'));
 
         if ($product instanceof ProductInterface) {
             $definitions = $this->getUnitDefinitionsForProduct($product, 'all');
@@ -48,15 +45,12 @@ class ProductUnitDefinitionsController extends ResourceController
         return $this->viewHandler->handle($definitions);
     }
 
-    public function productAdditionalUnitDefinitionsListAction(Request $request): Response
+    public function productAdditionalUnitDefinitionsListAction(Request $request, StackRepositoryInterface $productStackRepository): Response
     {
         $definitions = [];
 
-        /** @var StackRepositoryInterface $repository */
-        $repository = $this->container->get('coreshop.repository.stack.product');
-
         /** @var ProductInterface $product */
-        $product = $repository->find($this->getParameterFromRequest($request, 'productId'));
+        $product = $productStackRepository->find($this->getParameterFromRequest($request, 'productId'));
 
         if ($product instanceof Concrete) {
             $product = VersionHelper::getLatestVersion($product);

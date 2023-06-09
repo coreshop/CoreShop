@@ -24,14 +24,22 @@ use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Address\Model\AddressIdentifierInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Customer\Address\AddressAssignmentManagerInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\User\Model\UserInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class CustomerController extends FrontendController
 {
@@ -133,7 +141,11 @@ class CustomerController extends FrontendController
         }
 
         $addressId = $this->getParameterFromRequest($request, 'address');
-        $address = $this->container->get('coreshop.repository.address')->find($addressId);
+        $address = null;
+
+        if ($addressId) {
+            $address = $this->container->get('coreshop.repository.address')->find($addressId);
+        }
 
         if ($address instanceof AddressInterface) {
             $this->denyAccessUnlessGranted('CORESHOP_CUSTOMER_PROFILE_ADDRESS_EDIT');
@@ -337,18 +349,31 @@ class CustomerController extends FrontendController
 
     protected function getCustomer(): ?CustomerInterface
     {
-        try {
-            /**
-             * @var CustomerInterface $customer
-             */
-            $customer = $this->container->get(CustomerContextInterface::class)->getCustomer();
+        $shopperContext = $this->container->get(ShopperContextInterface::class);
 
-            return $customer;
-        } catch (\Exception) {
-            // fail silently
+        if (!$shopperContext->hasCustomer()) {
+            return null;
         }
 
-        return null;
+        $customer = $shopperContext->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            return null;
+        }
+
+        return $customer;
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+                ShopperContextInterface::class,
+                AddressAssignmentManagerInterface::class,
+                new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
+                new SubscribedService('coreshop.repository.address', RepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.address')),
+                new SubscribedService('coreshop.factory.address', FactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.address')),
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+            ];
     }
 
     protected function fireEvent(Request $request, mixed $object, string $eventName): void

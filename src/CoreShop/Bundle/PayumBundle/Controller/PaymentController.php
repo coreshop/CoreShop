@@ -26,7 +26,6 @@ use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Payment\OrderPaymentProviderInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
 use Payum\Core\Request\Generic;
@@ -35,9 +34,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class PaymentController extends AbstractController
 {
+    public function __construct(\Psr\Container\ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     public function prepareCaptureAction(Request $request): RedirectResponse
     {
         if ($request->attributes->has('token')) {
@@ -51,7 +56,7 @@ class PaymentController extends AbstractController
         /**
          * @var OrderInterface|null $order
          */
-        $order = $this->getOrderRepository()->findOneBy([$property => $identifier]);
+        $order = $this->getOrderRepository()->findOneBy([$property => $identifier], true);
 
         if (null === $order) {
             throw new NotFoundHttpException(sprintf('Order with %s "%s" does not exist.', $property, $identifier));
@@ -100,7 +105,7 @@ class PaymentController extends AbstractController
     
     protected function getOrderRepository()
     {
-        return $this->container->get(OrderRepositoryInterface::class);
+        return $this->container->get('coreshop.repository.order');
     }
     
     protected function getGetStatusFactory()
@@ -123,10 +128,11 @@ class PaymentController extends AbstractController
         return parent::getSubscribedServices() +
             [
                 OrderPaymentProviderInterface::class => OrderPaymentProviderInterface::class,
-                OrderRepositoryInterface::class => OrderRepositoryInterface::class,
+                new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
                 GetStatusFactoryInterface::class => GetStatusFactoryInterface::class,
                 ResolveNextRouteFactoryInterface::class => ResolveNextRouteFactoryInterface::class,
                 ConfirmOrderFactoryInterface::class => ConfirmOrderFactoryInterface::class,
+                new SubscribedService('payum', Payum::class),
             ];
     }
 

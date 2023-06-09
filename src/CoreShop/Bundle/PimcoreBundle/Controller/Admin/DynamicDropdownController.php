@@ -25,6 +25,9 @@ use Pimcore\Model\Factory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @psalm-suppress InternalClass
+ */
 final class DynamicDropdownController extends AdminAbstractController
 {
     private string $separator = ' - ';

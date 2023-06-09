@@ -21,13 +21,12 @@ namespace CoreShop\Component\User\Model;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
 
-interface UserInterface extends ResourceInterface, PimcoreModelInterface, SymfonyUserInterface, EquatableInterface
+interface UserInterface extends ResourceInterface, PimcoreModelInterface, SymfonyUserInterface, EquatableInterface, PasswordAuthenticatedUserInterface
 {
     public const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
-
-    public const CORESHOP_ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
     public function getLoginIdentifier(): ?string;
 

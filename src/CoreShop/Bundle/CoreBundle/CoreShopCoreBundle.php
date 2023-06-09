@@ -49,6 +49,7 @@ use CoreShop\Bundle\TrackingBundle\CoreShopTrackingBundle;
 use CoreShop\Bundle\UserBundle\CoreShopUserBundle;
 use CoreShop\Bundle\VariantBundle\CoreShopVariantBundle;
 use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
+use Pimcore\Bundle\CustomReportsBundle\PimcoreCustomReportsBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -99,6 +100,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Compose
         $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
         $collection->addBundle(new CoreShopWishlistBundle(), 1500);
         $collection->addBundle(new CoreShopClassDefinitionPatchBundle(), 1400);
+        $collection->addBundle(new PimcoreCustomReportsBundle(), 10);
     }
 
     public function getPackageName(): string

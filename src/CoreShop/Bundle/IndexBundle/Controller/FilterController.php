@@ -23,6 +23,9 @@ use CoreShop\Component\Index\Factory\ListingFactoryInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
+use CoreShop\Component\Registry\ServiceRegistry;
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -39,9 +42,9 @@ class FilterController extends ResourceController
         );
     }
 
-    public function getFieldsForIndexAction(Request $request): Response
+    public function getFieldsForIndexAction(Request $request, RepositoryInterface $indexRepository): Response
     {
-        $index = $this->container->get('coreshop.repository.index')->find($this->getParameterFromRequest($request, 'index'));
+        $index = $indexRepository->find($this->getParameterFromRequest($request, 'index'));
 
         if ($index instanceof IndexInterface) {
             $columns = [
@@ -59,16 +62,16 @@ class FilterController extends ResourceController
         return $this->viewHandler->handle(false);
     }
 
-    public function getValuesForFilterFieldAction(Request $request): Response
+    public function getValuesForFilterFieldAction(Request $request, RepositoryInterface $indexRepository, ServiceRegistry $workerRegistry, ListingFactoryInterface $listingFactory): Response
     {
-        $index = $this->container->get('coreshop.repository.index')->find($this->getParameterFromRequest($request, 'index'));
+        $index = $indexRepository->find($this->getParameterFromRequest($request, 'index'));
 
         if ($index instanceof IndexInterface) {
             /**
              * @var WorkerInterface $worker
              */
-            $worker = $this->container->get('coreshop.registry.index.worker')->get($index->getWorker());
-            $list = $this->container->get(ListingFactoryInterface::class)->createList($index);
+            $worker = $workerRegistry->get($index->getWorker());
+            $list = $listingFactory->createList($index);
             $list->setLocale($request->getLocale());
             $filterGroupHelper = $worker->getFilterGroupHelper();
             $field = $this->getParameterFromRequest($request, 'field');

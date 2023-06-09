@@ -30,6 +30,7 @@ use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 abstract class AbstractDriver implements DriverInterface
 {
@@ -82,8 +83,10 @@ abstract class AbstractDriver implements DriverInterface
                 new Reference(EventDispatcherInterface::class),
                 new Reference(ResourceFormFactoryInterface::class),
                 new Reference(ErrorSerializer::class),
+                new Reference(TokenStorageInterface::class),
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')])
+            ->addTag('controller.service_arguments')
         ;
 
         $container->setDefinition($metadata->getServiceId('admin_controller'), $definition);
@@ -109,14 +112,12 @@ abstract class AbstractDriver implements DriverInterface
 
         $container->setDefinition($metadata->getServiceId('factory'), $definition);
 
-        if (method_exists($container, 'registerAliasForArgument')) {
-            foreach (class_implements($factoryClass) as $typehintClass) {
-                $container->registerAliasForArgument(
-                    $metadata->getServiceId('factory'),
-                    $typehintClass,
-                    $metadata->getHumanizedName() . ' factory',
-                );
-            }
+        foreach (class_implements($factoryClass) as $typehintClass) {
+            $container->registerAliasForArgument(
+                $metadata->getServiceId('factory'),
+                $typehintClass,
+                $metadata->getHumanizedName() . ' factory',
+            );
         }
     }
 

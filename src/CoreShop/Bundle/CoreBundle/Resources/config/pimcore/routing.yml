@@ -3,68 +3,68 @@ payum_all:
 
 coreshop_admin_payment_provider_config:
     path: /%coreshop.admin.route.base%/payment_providers/get-config
-    defaults: { _controller: 'coreshop.admin_controller.payment_provider:getConfigAction'}
+    defaults: { _controller: 'coreshop.admin_controller.payment_provider::getConfigAction'}
     options:
         expose: true
 
 coreshop_admin_configuration_save_all:
     path: /%coreshop.admin.route.base%/configurations/save-all
-    defaults: { _controller: 'coreshop.admin_controller.configuration:saveAllAction'}
+    defaults: { _controller: 'coreshop.admin_controller.configuration::saveAllAction'}
     options:
         expose: true
 
 coreshop_admin_configuration_get_all:
     path: /%coreshop.admin.route.base%/configurations/get-all
-    defaults: { _controller: 'coreshop.admin_controller.configuration:getAllAction'}
+    defaults: { _controller: 'coreshop.admin_controller.configuration::getAllAction'}
     options:
         expose: true
 
 coreshop_admin_settings_get_settings:
     path: /%coreshop.admin.route.base%/settings/get-settings
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\SettingsController:getSettingsAction }
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\SettingsController::getSettingsAction }
     options:
         expose: true
 
 coreshop_admin_report_get_data:
     path: /%coreshop.admin.route.base%/report/get-data
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ReportsController:getReportDataAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ReportsController::getReportDataAction}
     options:
         expose: true
 
 coreshop_admin_report_export:
     path: /%coreshop.admin.route.base%/report/export
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ReportsController:exportReportCsvAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ReportsController::exportReportCsvAction}
     options:
         expose: true
 
 coreshop_admin_portlet_get_data:
     path: /%coreshop.admin.route.base%/portlet/get-data
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\PortletsController:getPortletDataAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\PortletsController::getPortletDataAction}
     options:
         expose: true
 
 coreshop_admin_report_portlet:
     path: /%coreshop.admin.route.base%/portlet/export
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\PortletsController:exportPortletCsvAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\PortletsController::exportPortletCsvAction}
     options:
         expose: true
 
 coreshop_admin_settings_get:
     path: /%coreshop.admin.route.base%/settings/get
     methods: [GET]
-    defaults:  { _controller: coreshop.admin_controller.settings:getAction }
+    defaults:  { _controller: coreshop.admin_controller.settings::getAction }
     options:
         expose: true
 
 coreshop_admin_settings_set:
     path: /%coreshop.admin.route.base%/settings/set
     methods: [POST]
-    defaults:  { _controller: coreshop.admin_controller.settings:setAction }
+    defaults:  { _controller: coreshop.admin_controller.settings::setAction }
     options:
         expose: true
 
@@ -85,7 +85,7 @@ coreshop_admin_purchsable_variant_unit_solidifier_check:
 coreshop_admin_purchsable_variant_unit_solidifier_apply:
     path: /%coreshop.admin.route.base%/product-variant-solidifier/apply/{objectId}
     methods: [PUT]
-    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController:applyAction}
+    defaults:  { _controller: CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController::applyAction}
     options:
         expose: true
 
@@ -105,7 +105,7 @@ coreshop_admin_product:
 coreshop_admin_customer_company_modifier_get_entity_details:
     path: /%coreshop.admin.route.base%/customer-company-modifier/get-entity-details/{type}/{objectId}
     methods: [GET]
-    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController:getEntityDetailsAction}
+    defaults: { _controller: CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController::getEntityDetailsAction}
     options:
         expose: true
 

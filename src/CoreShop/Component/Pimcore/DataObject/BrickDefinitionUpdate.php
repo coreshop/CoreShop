@@ -39,7 +39,7 @@ class BrickDefinitionUpdate extends AbstractDefinitionUpdate
         $this->brickDefinition = $brickDefinition;
         $this->fieldDefinitions = $this->brickDefinition->getFieldDefinitions();
         /** @psalm-suppress InvalidArgument */
-        $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->brickDefinition), true);
+        $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateObjectBrickJson($this->brickDefinition), true);
         $this->originalJsonDefinition = $this->jsonDefinition;
     }
 

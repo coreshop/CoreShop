@@ -28,10 +28,6 @@ final class RegisterTypeHintRegistriesPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!method_exists($container, 'registerAliasForArgument')) {
-            return;
-        }
-
         foreach ($container->findTaggedServiceIds('coreshop.registry') as $id => $attributes) {
             foreach ($attributes as $tag) {
                 if (!isset($tag['type_hint'])) {

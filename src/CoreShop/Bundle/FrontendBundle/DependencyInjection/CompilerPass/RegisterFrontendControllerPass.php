@@ -41,7 +41,14 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
 
         foreach ($controllers as $key => $value) {
             $controllerKey = sprintf('coreshop.frontend.controller.%s', $key);
-            $serviceName = sprintf('CoreShop\\Bundle\\FrontendBundle\\Controller\\%sController', ucfirst($key));
+
+            if ($key === 'payment') {
+                $serviceName = 'CoreShop\\Bundle\\PayumBundle\\Controller\\PaymentController';
+            }
+            else {
+                $serviceName = sprintf('CoreShop\\Bundle\\FrontendBundle\\Controller\\%sController', ucfirst($key));
+            }
+
             $controllerClass = (string) $container->getParameter($controllerKey);
 
             if ($container->hasDefinition($controllerClass)) {
@@ -56,20 +63,6 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
 
             $controllerDefinition = new Definition($controllerClass);
             $controllerDefinition->setPublic(true);
-
-            switch ($key) {
-                case 'payment':
-                    $controllerDefinition->setArguments([
-                        new Reference(OrderPaymentProviderInterface::class),
-                        new Reference('coreshop.repository.order'),
-                        new Reference(GetStatusFactoryInterface::class),
-                        new Reference(ResolveNextRouteFactoryInterface::class),
-                        new Reference(ConfirmOrderFactoryInterface::class),
-                    ]);
-
-                    break;
-            }
-
             $controllerDefinition->addTag('controller.service_arguments');
             $controllerDefinition->addTag('container.service_subscriber');
 

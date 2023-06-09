@@ -174,13 +174,6 @@ class ProductSpecificPriceRules extends Data implements
         return $newPriceRules;
     }
 
-    /**
-     * @param Concrete $object
-     * @param mixed    $data
-     * @param array    $params
-     *
-     * @return mixed
-     */
     public function preSetData(mixed $container, mixed $data, array $params = []): mixed
     {
         if ($container instanceof LazyLoadedFieldsInterface) {

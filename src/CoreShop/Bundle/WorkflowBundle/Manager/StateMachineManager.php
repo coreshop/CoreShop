@@ -27,6 +27,7 @@ final class StateMachineManager implements StateMachineManagerInterface
     public function __construct(
         private Registry $registry,
     ) {
+
     }
 
     public function get(object $subject, string $workflowName = null): Workflow

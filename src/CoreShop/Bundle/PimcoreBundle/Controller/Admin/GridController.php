@@ -25,6 +25,9 @@ use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @psalm-suppress InternalClass
+ */
 class GridController extends AdminAbstractController
 {
     public function getGridFiltersAction(string $listType): Response

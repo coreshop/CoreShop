@@ -50,13 +50,11 @@ abstract class AbstractDoctrineDriver extends AbstractDriver
             $alias,
         );
 
-        if (method_exists($container, 'registerAliasForArgument')) {
-            $container->registerAliasForArgument(
-                $metadata->getServiceId('manager'),
-                ObjectManager::class,
-                $metadata->getHumanizedName() . ' manager',
-            );
-        }
+        $container->registerAliasForArgument(
+            $metadata->getServiceId('manager'),
+            ObjectManager::class,
+            $metadata->getHumanizedName() . ' manager',
+        );
     }
 
     protected function getObjectManagerName(MetadataInterface $metadata): ?string

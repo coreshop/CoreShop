@@ -45,7 +45,9 @@ class ProductUnitDefinitions extends Data implements
     Data\CustomVersionMarshalInterface,
     Data\CustomRecyclingMarshalInterface,
     Data\CustomDataCopyInterface,
-    CacheMarshallerInterface
+    CacheMarshallerInterface,
+    Data\PreGetDataInterface,
+    Data\PreSetDataInterface
 {
     use TempEntityManagerTrait;
 
@@ -303,33 +305,34 @@ class ProductUnitDefinitions extends Data implements
         return [];
     }
 
-    public function preGetData($object, $params = [])
+    public function preGetData(mixed $container, array $params = []): mixed
     {
-        /**
-         * @var Model\DataObject\Concrete $object
-         */
-        $data = $object->getObjectVar($this->getName());
+        if (!$container instanceof Concrete) {
+            return null;
+        }
 
-        if (!$object->isLazyKeyLoaded($this->getName())) {
-            $data = $this->load($object, ['force' => true]);
+        $data = $container->getObjectVar($this->getName());
+
+        if (!$container->isLazyKeyLoaded($this->getName())) {
+            $data = $this->load($container, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
-            if (method_exists($object, $setter)) {
-                $object->$setter($data);
+            if (method_exists($container, $setter)) {
+                $container->$setter($data);
             }
         }
 
-        if ($data instanceof ProductUnitDefinitionsInterface && $object instanceof ProductInterface) {
-            $data->setProduct($object);
+        if ($data instanceof ProductUnitDefinitionsInterface && $container instanceof ProductInterface) {
+            $data->setProduct($container);
         }
 
         return $data;
     }
 
-    public function preSetData($object, $data, $params = [])
+    public function preSetData(mixed $container, mixed $data, array $params = []): mixed
     {
-        if ($object instanceof LazyLoadedFieldsInterface) {
-            $object->markLazyKeyAsLoaded($this->getName());
+        if ($container instanceof LazyLoadedFieldsInterface) {
+            $container->markLazyKeyAsLoaded($this->getName());
         }
 
         return $data;

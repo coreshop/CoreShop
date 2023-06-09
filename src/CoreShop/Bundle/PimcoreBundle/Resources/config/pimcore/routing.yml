@@ -1,34 +1,34 @@
 coreshop_pimcore_grid_get_filters:
     path: /%coreshop.admin.route.base%/grid/filters/{listType}
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController:getGridFiltersAction }
+    defaults:  { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController::getGridFiltersAction }
     options:
         expose: true
 
 coreshop_pimcore_grid_get_actions:
     path: /%coreshop.admin.route.base%/grid/actions/{listType}
     methods: [GET]
-    defaults:  { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController:getGridActionsAction }
+    defaults:  { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController::getGridActionsAction }
     options:
         expose: true
 
 coreshop_pimcore_grid_apply_action:
     path: /%coreshop.admin.route.base%/grid/apply-action
     methods: [POST]
-    defaults:  { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController:applyGridAction }
+    defaults:  { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController::applyGridAction }
     options:
         expose: true
 
 coreshop_dynamic_dropdown_options:
     path: /%coreshop.admin.route.base%/dynamic-dropdown/options
-    defaults: { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController:optionsAction }
+    defaults: { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController::optionsAction }
     methods:  [GET, POST]
     options:
         expose: true
 
 coreshop_dynamic_dropdown_methods:
     path: /%coreshop.admin.route.base%/dynamic-dropdown/methods
-    defaults: { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController:methodsAction }
+    defaults: { _controller: CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController::methodsAction }
     methods:  [GET, POST]
     options:
         expose: true

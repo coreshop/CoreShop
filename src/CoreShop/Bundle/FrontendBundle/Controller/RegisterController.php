@@ -70,7 +70,7 @@ class RegisterController extends FrontendController
 
     public function passwordResetRequestAction(Request $request): Response
     {
-        $resetIdentifier = $this->container->getParameter('coreshop.customer.security.login_identifier');
+        $resetIdentifier = $this->getParameter('coreshop.customer.security.login_identifier');
         $form = $this->container->get('form.factory')->createNamed('coreshop', RequestResetPasswordType::class, null, ['reset_identifier' => $resetIdentifier]);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
@@ -112,13 +112,13 @@ class RegisterController extends FrontendController
             /**
              * @var UserInterface $user
              */
-            $user = $this->get('coreshop.repository.user')->findByResetToken($resetToken);
+            $user = $this->container->get('coreshop.repository.user')->findByResetToken($resetToken);
 
             if (!$user) {
                 throw new NotFoundHttpException();
             }
 
-            $form = $this->get('form.factory')->createNamed('coreshop', ResetPasswordType::class);
+            $form = $this->container->get('form.factory')->createNamed('coreshop', ResetPasswordType::class);
 
             if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
                 $handledForm = $form->handleRequest($request);
@@ -175,7 +175,7 @@ class RegisterController extends FrontendController
 
     protected function generateResetPasswordHash(UserInterface $customer): string
     {
-        $this->container->getParameter('coreshop.customer.security.login_identifier');
+        $this->getParameter('coreshop.customer.security.login_identifier');
 
         return hash('md5', $customer->getId() . $customer->getLoginIdentifier() . mt_rand() . time());
     }

@@ -47,6 +47,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface,
     Model\DataObject\ClassDefinition\Data\CustomRecyclingMarshalInterface,
     Model\DataObject\ClassDefinition\Data\CustomDataCopyInterface,
+    Model\DataObject\ClassDefinition\Data\PreGetDataInterface,
+    Model\DataObject\ClassDefinition\Data\PreSetDataInterface,
     CacheMarshallerInterface
 {
     use TempEntityManagerTrait;
@@ -320,34 +322,27 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return [];
     }
 
-    public function preGetData($object, $params = [])
+    public function preGetData(mixed $container, array $params = []): mixed
     {
-        /**
-         * @var Model\DataObject\Concrete $object
-         */
-        $data = $object->getObjectVar($this->getName());
+        if (!$container instanceof Model\DataObject\Concrete) {
+            return null;
+        }
+
+        $data = $container->getObjectVar($this->getName());
         $returnData = [];
 
-        if (!$object->isLazyKeyLoaded($this->getName())) {
-            $data = $this->load($object, ['force' => true]);
+        if (!$container->isLazyKeyLoaded($this->getName())) {
+            $data = $this->load($container, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
-            if (method_exists($object, $setter)) {
-                $object->$setter($data);
+            if (method_exists($container, $setter)) {
+                $container->$setter($data);
             }
         }
 
         if (!is_array($data)) {
             $data = [];
         }
-//
-//        foreach ($data as &$storeEntry) {
-//            if ($storeEntry instanceof ProductStoreValuesInterface) {
-//                $storeEntry->setProduct($object);
-//            }
-//        }
-
-//        unset($storeEntry);
 
         foreach ($data as $storeValue) {
             if (!$storeValue) {
@@ -360,10 +355,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $returnData;
     }
 
-    public function preSetData($object, $data, $params = [])
+    public function preSetData(mixed $container, mixed $data, array $params = []): mixed
     {
-        if ($object instanceof Model\DataObject\LazyLoadedFieldsInterface) {
-            $object->markLazyKeyAsLoaded($this->getName());
+        if ($container instanceof Model\DataObject\LazyLoadedFieldsInterface) {
+            $container->markLazyKeyAsLoaded($this->getName());
         }
 
         return $data;

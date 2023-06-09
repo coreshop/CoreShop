@@ -45,13 +45,13 @@ coreshop.core.resource = Class.create(coreshop.resource, {
         new coreshop.menu.coreshop.main();
 
         //Add Report Definition
-        pimcore.report.broker.addGroup('coreshop', 'coreshop_reports', 'coreshop_icon_report');
+        pimcore.bundle.customreports.broker.addGroup('coreshop', 'coreshop_reports', 'coreshop_icon_report');
 
         Ext.each(coreshop.settings.reports, function (report) {
             if (coreshop.report.reports.hasOwnProperty(report)) {
                 report = coreshop.report.reports[report];
 
-                pimcore.report.broker.addReport(report, 'coreshop', {
+                pimcore.bundle.customreports.broker.addReport(report, 'coreshop', {
                     name: report.prototype.getName(),
                     text: report.prototype.getName(),
                     niceName: report.prototype.getName(),
@@ -62,8 +62,7 @@ coreshop.core.resource = Class.create(coreshop.resource, {
     },
 
     postOpenObject: function (tab) {
-
-        switch (tab.data.general.o_className) {
+        switch (tab.data.general.className) {
             case coreshop.class_map.coreshop.order:
                 this._enrichOrderObject(tab);
                 break;
@@ -181,7 +180,7 @@ coreshop.core.resource = Class.create(coreshop.resource, {
 
         tab.tabbar.insert(1, new coreshop.core.object.store_preview(tab).getLayout());
 
-        if (tab.data.general.o_type === 'object') {
+        if (tab.data.general.type === 'object') {
             productMoreButtons.push({
                 text: t('coreshop_solidify_variant_unit_definition_data'),
                 scale: 'medium',

@@ -27,11 +27,14 @@ use Pimcore\Model\Element;
  */
 class CoreShopRelation extends Data\ManyToOneRelation
 {
-    public string $fieldtype = 'coreShopRelation';
-
     public string|null $stack = null;
 
     public bool $returnConcrete = false;
+
+    public function getFieldType(): string
+    {
+        return 'coreShopRelation';
+    }
 
     public function getStack()
     {

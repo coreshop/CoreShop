@@ -26,7 +26,10 @@ use Pimcore\Model\DataObject\Concrete;
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement, RedundantCondition
  */
-class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface, Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
+class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
+    Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface,
+    Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface,
+    Model\DataObject\ClassDefinition\Data\PreGetDataInterface
 {
     public string $fieldtype = 'coreShopMoneyCurrency';
     public ?int $width = 0;
@@ -126,12 +129,12 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return $this->minValue;
     }
 
-    public function preGetData($object, $params = [])
+    public function preGetData(mixed $container, array $params = []): mixed
     {
         /**
-         * @var Concrete $object
+         * @var Concrete $container
          */
-        $data = $object->getObjectVar($this->getName());
+        $data = $container->getObjectVar($this->getName());
 
         if ($data instanceof Money) {
             if ($data->getCurrency()) {

@@ -30,6 +30,7 @@ use Pimcore\Security\User\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ResourceController extends AdminController
@@ -43,6 +44,7 @@ class ResourceController extends AdminController
         protected EventDispatcherInterface $eventDispatcher,
         protected ResourceFormFactoryInterface $resourceFormFactory,
         protected ErrorSerializer $formErrorSerializer,
+        protected TokenStorageInterface $tokenStorage
     ) {
         parent::__construct($viewHandler);
     }
@@ -55,7 +57,7 @@ class ResourceController extends AdminController
         if ($this->metadata->hasParameter('permission')) {
             $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
 
-            $user = $this->getUser();
+            $user = $this->tokenStorage->getToken()?->getUser();
 
             if (!$user instanceof User) {
                 throw new \RuntimeException(sprintf('Unknown Pimcore Admin User Class given "%s"', get_class($user)));

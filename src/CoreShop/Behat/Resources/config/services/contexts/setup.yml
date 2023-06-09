@@ -361,7 +361,7 @@ services:
     coreshop.behat.context.setup.configuration:
         class: CoreShop\Behat\Context\Setup\ConfigurationContext
         arguments:
-            - '@coreshop.configuration.service'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
         tags:
             - { name: fob.context_service }
 

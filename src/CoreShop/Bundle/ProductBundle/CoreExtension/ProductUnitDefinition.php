@@ -34,7 +34,9 @@ class ProductUnitDefinition extends Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
     Data\CustomVersionMarshalInterface,
-    CacheMarshallerInterface
+    CacheMarshallerInterface,
+    Data\PreGetDataInterface,
+    Data\PreSetDataInterface
 {
     public string $fieldtype = 'coreShopProductUnitDefinition';
     public string $phpdocType = '\\' . ProductUnitDefinitionInterface::class;
@@ -85,23 +87,24 @@ class ProductUnitDefinition extends Data implements
         return [];
     }
 
-    public function preSetData($object, $data, $params = [])
+    public function preSetData(mixed $container, mixed $data, array $params = []): mixed
     {
         if (is_int($data) || is_string($data)) {
             if ((int) $data) {
-                return $this->getDataFromResource($data, $object, $params);
+                return $this->getDataFromResource($data, $container, $params);
             }
         }
 
         return $data;
     }
 
-    public function preGetData($object, $params = [])
+    public function preGetData(mixed $container, array $params = []): mixed
     {
-        /**
-         * @var Concrete $object
-         */
-        $data = $object->getObjectVar($this->getName());
+        if (!$container instanceof Concrete) {
+            return null;
+        }
+
+        $data = $container->getObjectVar($this->getName());
 
         if ($data instanceof ResourceInterface && $data->getId()) {
             //Reload from Database, but only if available
@@ -111,7 +114,7 @@ class ProductUnitDefinition extends Data implements
                 //Dirty Fix, Pimcore sometimes calls properties without getter
                 //This could cause Problems with translations, therefore, we need to set
                 //the value here
-                $object->setValue($this->getName(), $tmpData);
+                $container->setValue($this->getName(), $tmpData);
 
                 return $tmpData;
             }

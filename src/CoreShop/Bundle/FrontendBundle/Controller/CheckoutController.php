@@ -32,6 +32,7 @@ use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\OrderTransitions;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\Request;
@@ -291,8 +292,10 @@ class CheckoutController extends FrontendController
         return parent::getSubscribedServices() +
             [
                 'coreshop.checkout_manager.factory' => CheckoutManagerFactoryInterface::class,
+                'coreshop.repository.order' => OrderRepositoryInterface::class,
                 'event_dispatcher' => EventDispatcherInterface::class,
                 TrackerInterface::class => TrackerInterface::class,
+                StateMachineManagerInterface::class,
             ];
     }
 

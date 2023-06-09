@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @property ContainerInterface $container
+ * @psalm-suppress InternalClass
  */
 class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController
 {
