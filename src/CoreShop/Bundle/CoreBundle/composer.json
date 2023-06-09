@@ -45,7 +45,6 @@
     "coreshop/payum-payment-bundle": "^4.0",
     "coreshop/configuration-bundle": "^4.0",
     "coreshop/notification-bundle": "^4.0",
-    "coreshop/fixture-bundle": "^4.0",
     "coreshop/workflow-bundle": "^4.0",
     "coreshop/menu-bundle": "^4.0",
     "coreshop/user-bundle": "^4.0",
@@ -54,6 +53,7 @@
     "coreshop/messenger-bundle": "^4.0",
     "coreshop/class-definition-patch-bundle": "^4.0",
     "coreshop/core": "^4.0",
+    "doctrine/data-fixtures": "^1.5",
     "fakerphp/faker": "^1.16",
     "rinvex/countries": "^7.3",
     "pimcore/pimcore": "^11.0"

@@ -18,25 +18,20 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ConfigurationFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class ConfigurationFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
+    public function __construct(private ConfigurationServiceInterface $configurationService)
     {
-        return '2.0';
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['application'];
     }
 
     public function load(ObjectManager $manager): void
@@ -62,7 +57,7 @@ class ConfigurationFixture extends AbstractFixture implements ContainerAwareInte
         ];
 
         foreach ($configurations as $key => $value) {
-            $this->container->get(ConfigurationServiceInterface::class)->set($key, $value);
+            $this->configurationService->set($key, $value);
         }
     }
 }

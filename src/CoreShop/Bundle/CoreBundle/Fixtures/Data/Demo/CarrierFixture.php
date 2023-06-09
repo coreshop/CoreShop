@@ -18,29 +18,31 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Lorem;
 use Pimcore\Tool;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CarrierFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
+class CarrierFixture extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
 
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private CarrierRepositoryInterface $carrierRepository,
+        private StoreRepositoryInterface $storeRepository,
+        private FactoryInterface $carrierFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['demo'];
     }
 
     public function getDependencies(): array
@@ -52,8 +54,8 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
 
     public function load(ObjectManager $manager): void
     {
-        if (!count($this->container->get('coreshop.repository.carrier')->findAll())) {
-            $defaultStore = $this->container->get('coreshop.repository.store')->findStandard();
+        if (!count($this->carrierRepository->findAll())) {
+            $defaultStore = $this->storeRepository->findStandard();
 
             $faker = Factory::create();
             $faker->addProvider(new Lorem($faker));
@@ -61,7 +63,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
             /**
              * @var CarrierInterface $carrier
              */
-            $carrier = $this->container->get('coreshop.factory.carrier')->createNew();
+            $carrier = $this->carrierFactory->createNew();
             $carrier->setIdentifier('Standard');
             $carrier->setTrackingUrl('https://coreshop.at/track/%s');
             $carrier->setHideFromCheckout(false);
@@ -70,7 +72,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
 
             foreach (Tool::getValidLanguages() as $lang) {
                 $carrier->setDescription(implode(\PHP_EOL, $faker->paragraphs(3)), $lang);
-                $carrier->setTitle('Standard - ' . strtoupper($lang), $lang);
+                $carrier->setTitle('Standard - '.strtoupper($lang), $lang);
             }
 
             $manager->persist($carrier);

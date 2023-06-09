@@ -62,7 +62,6 @@ split 'src/CoreShop/Bundle/ShippingBundle' shipping-bundle
 split 'src/CoreShop/Bundle/StoreBundle' store-bundle
 split 'src/CoreShop/Bundle/TaxationBundle' taxation-bundle
 split 'src/CoreShop/Bundle/TrackingBundle' tracking-bundle
-split 'src/CoreShop/Bundle/FixtureBundle' fixture-bundle
 split 'src/CoreShop/Bundle/InventoryBundle' inventory-bundle
 split 'src/CoreShop/Bundle/WorkflowBundle' workflow-bundle
 split 'src/CoreShop/Bundle/SEOBundle' seo-bundle

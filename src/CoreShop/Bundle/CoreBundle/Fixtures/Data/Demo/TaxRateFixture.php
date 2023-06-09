@@ -18,40 +18,39 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Taxation\Repository\TaxRateRepositoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class TaxRateFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class TaxRateFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private TaxRateRepositoryInterface $taxRateRepository,
+        private FactoryInterface $taxRateFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['demo'];
     }
 
     public function load(ObjectManager $manager): void
     {
-        if (!count($this->container->get('coreshop.repository.tax_rate')->findAll())) {
+        if (!count($this->taxRateRepository->findAll())) {
             /**
              * @var TaxRateInterface $taxRate
              */
-            $taxRate = $this->container->get('coreshop.factory.tax_rate')->createNew();
+            $taxRate = $this->taxRateFactory->createNew();
             $taxRate->setName('20AT', 'de');
             $taxRate->setName('20AT', 'en');
             $taxRate->setActive(true);
             $taxRate->setRate(20);
 
-            $taxRate10 = $this->container->get('coreshop.factory.tax_rate')->createNew();
+            $taxRate10 = $this->taxRateFactory->createNew();
             $taxRate10->setName('10AT', 'de');
             $taxRate10->setName('10AT', 'en');
             $taxRate10->setActive(true);

@@ -51,6 +51,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class CartController extends FrontendController
@@ -386,6 +387,8 @@ class CartController extends FrontendController
                 new SubscribedService(CartModifierInterface::class, CartModifierInterface::class),
                 new SubscribedService(CartManagerInterface::class, CartManagerInterface::class),
                 new SubscribedService(TrackerInterface::class, TrackerInterface::class),
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+                new SubscribedService('coreshop.repository.cart_price_rule_voucher_code', CartPriceRuleVoucherRepositoryInterface::class),
             ];
     }
 

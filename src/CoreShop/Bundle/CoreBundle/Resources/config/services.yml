@@ -31,6 +31,7 @@ imports:
     - { resource: services/menu.yml }
     - { resource: services/shipping-taxation.yml }
     - { resource: services/taxation.yml }
+    - { resource: services/fixtures.yaml }
 
 services:
     _defaults:

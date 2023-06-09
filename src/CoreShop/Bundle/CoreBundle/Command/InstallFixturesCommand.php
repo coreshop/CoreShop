@@ -38,7 +38,7 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->runCommands(['coreshop:fixture:data:load'], $output);
+        $this->runCommands(['doctrine:fixtures:load' => ['--group' => ['application'], '--append' => true]], $output);
 
         return 0;
     }

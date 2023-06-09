@@ -18,32 +18,32 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Rule\Model\Action;
 use CoreShop\Component\Rule\Model\Condition;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class ShippingRuleFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
 
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private RepositoryInterface $shippingRuleRepository,
+        private RepositoryInterface $storeRepository,
+        private FactoryInterface $shippingRuleFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['demo'];
     }
-
     public function load(ObjectManager $manager): void
     {
-        if (!count($this->container->get('coreshop.repository.shipping_rule')->findAll())) {
-            $defaultStore = $this->container->get('coreshop.repository.store')->findStandard();
+        if (!count($this->shippingRuleRepository->findAll())) {
+            $defaultStore = $this->storeRepository->findStandard();
             $currency = $defaultStore->getCurrency()->getId();
 
             $configuration = [
@@ -113,7 +113,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
             ];
 
             foreach ($configuration as $index => $config) {
-                $rule = $this->container->get('coreshop.factory.shipping_rule')->createNew();
+                $rule = $this->shippingRuleFactory->createNew();
                 $rule->setName($config['name']);
                 $rule->setActive(true);
 
@@ -135,7 +135,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
 
                 $manager->persist($rule);
 
-                $this->setReference('shippingRule' . $index, $rule);
+                $this->setReference('shippingRule'.$index, $rule);
             }
 
             $manager->flush();

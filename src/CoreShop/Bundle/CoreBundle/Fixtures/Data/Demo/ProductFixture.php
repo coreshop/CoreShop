@@ -18,13 +18,19 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProductFixture extends AbstractProductFixture
+class ProductFixture extends AbstractProductFixture implements FixtureGroupInterface
 {
+    public static function getGroups(): array
+    {
+        return ['demo'];
+    }
+
     public function load(ObjectManager $manager): void
     {
-        if (!count($this->container->get('coreshop.repository.product')->findAll())) {
+        if (!count($this->productRepository->findAll())) {
             $productsCount = 25;
 
             for ($i = 0; $i < $productsCount; ++$i) {

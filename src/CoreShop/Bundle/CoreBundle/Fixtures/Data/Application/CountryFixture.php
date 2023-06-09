@@ -18,31 +18,35 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Tool;
 use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Intl\Languages;
 
-class CountryFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
+class CountryFixture extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
 
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private CountryRepositoryInterface $countryRepository,
+        private FactoryInterface $countryFactory,
+        private RepositoryInterface $zoneRepository,
+        private RepositoryInterface $currencyRepository,
+        private FactoryInterface $stateFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['application'];
     }
 
     public function getDependencies(): array
@@ -103,10 +107,10 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 /**
                  * @var CountryInterface $newCountry
                  */
-                $newCountry = $this->container->get('coreshop.repository.country')->findByCode($country->getIsoAlpha2());
+                $newCountry = $this->countryRepository->findByCode($country->getIsoAlpha2());
 
                 if (null === $newCountry) {
-                    $newCountry = $this->container->get('coreshop.factory.country')->createNew();
+                    $newCountry = $this->countryFactory->createNew();
                 }
 
                 foreach ($languages as $lang) {
@@ -117,10 +121,12 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
                 $newCountry->setIsoCode($country->getIsoAlpha2());
                 $newCountry->setActive($country->getIsoAlpha2() === 'AT' || $newCountry->getActive());
-                $newCountry->setZone($this->container->get('coreshop.repository.zone')->findOneBy(['name' => $country->getContinent()]));
-                $newCountry->setCurrency($this->container->get('coreshop.repository.currency')->getByCode($country->getCurrency()['iso_4217_code']));
+                $newCountry->setZone($this->zoneRepository->findOneBy(['name' => $country->getContinent()]));
+                $newCountry->setCurrency(
+                    $this->currencyRepository->getByCode($country->getCurrency()['iso_4217_code'])
+                );
 
-                $this->setReference('country_' . $country->getIsoAlpha2(), $newCountry);
+                $this->setReference('country_'.$country->getIsoAlpha2(), $newCountry);
 
                 $extra = $country->getExtra();
                 $addressFormat = $defaultAddressFormat;
@@ -135,7 +141,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                     }
 
                     $replaceTo = trim(implode(' ', $replaces));
-                    $replaceFrom = '{{' . $replaceKey . '}}';
+                    $replaceFrom = '{{'.$replaceKey.'}}';
 
                     $addressFormat = str_replace($replaceFrom, $replaceTo, $addressFormat);
                 }
@@ -160,7 +166,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                                 continue;
                             }
 
-                            $state = $this->container->get('coreshop.factory.state')->createNew();
+                            $state = $this->stateFactory->createNew();
 
                             foreach ($languages as $lang) {
                                 $state->setName($division['name'], $lang);

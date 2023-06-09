@@ -18,29 +18,27 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Intl\Currencies;
 
-class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class CurrencyFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private CurrencyRepositoryInterface $currencyRepository,
+        private FactoryInterface $currencyFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['application'];
     }
-
     public function load(ObjectManager $manager): void
     {
         $countries = CountryLoader::countries(true, true);
@@ -63,16 +61,16 @@ class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface
         }
 
         foreach ($currencies as $iso => $c) {
-            $currency = $this->container->get('coreshop.repository.currency')->getByCode($iso);
+            $currency = $this->currencyRepository->getByCode($iso);
             if (null === $currency) {
-                $currency = $this->container->get('coreshop.factory.currency')->createNew();
+                $currency = $this->currencyFactory->createNew();
             }
             $currency->setName($c['iso_4217_name']);
             $currency->setIsoCode($iso);
             $currency->setNumericIsoCode($c['iso_4217_numeric']);
             $currency->setSymbol(Currencies::getSymbol($iso));
 
-            $this->setReference('currency_' . $iso, $currency);
+            $this->setReference('currency_'.$iso, $currency);
 
             $manager->persist($currency);
         }

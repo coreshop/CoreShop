@@ -18,30 +18,28 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class StoreFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class StoreFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private StoreRepositoryInterface $storeRepository,
+        private FactoryInterface $storeFactory
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['application'];
     }
-
     public function load(ObjectManager $manager): void
     {
-        if (!$this->container->get('coreshop.repository.store')->findStandard()) {
-            $store = $this->container->get('coreshop.factory.store')->createNew();
+        if (!$this->storeRepository->findStandard()) {
+            $store = $this->storeFactory->createNew();
             $store->setName('Standard');
             $store->setTemplate('Standard');
             $store->setIsDefault(true);
@@ -51,6 +49,9 @@ class StoreFixture extends AbstractFixture implements ContainerAwareInterface, V
             $manager->flush();
 
             $this->setReference('store', $store);
+        }
+        else {
+            $this->setReference('store', $this->storeRepository->findStandard());
         }
     }
 }
