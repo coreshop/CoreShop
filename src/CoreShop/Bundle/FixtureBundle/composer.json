@@ -25,9 +25,9 @@
   ],
   "require": {
     "coreshop/resource-bundle": "^4.0",
-    "symfony/framework-bundle": "^5.2.0",
-    "symfony/doctrine-bridge": "^5.2.0",
-    "symfony/twig-bundle": "^5.2.0",
+    "symfony/framework-bundle": "^6.3",
+    "symfony/doctrine-bridge": "^6.3",
+    "symfony/twig-bundle": "^6.3",
     "doctrine/data-fixtures": "^1.5",
     "doctrine/dbal": "^2.13",
     "doctrine/orm": "^2.9",
