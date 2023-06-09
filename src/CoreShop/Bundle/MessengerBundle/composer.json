@@ -25,6 +25,7 @@
   ],
   "require": {
     "pimcore/pimcore": "^11.0",
+    "pimcore/admin-ui-classic-bundle": "^1.0",
     "coreshop/pimcore-bundle": "^4.0",
     "coreshop/menu-bundle": "^4.0"
   },
