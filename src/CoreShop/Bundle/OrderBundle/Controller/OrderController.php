@@ -86,7 +86,7 @@ class OrderController extends PimcoreController
         /**
          * @var array $identifiers
          */
-        $identifiers = $this->container->getParameter('coreshop.state_machines');
+        $identifiers = $this->getParameter('coreshop.state_machines');
         $states = [];
         $transitions = [];
 
@@ -97,7 +97,7 @@ class OrderController extends PimcoreController
             /**
              * @var StateMachine $stateMachine
              */
-            $stateMachine = $this->container->get(sprintf('state_machine.%s', $identifier));
+            $stateMachine = $this->get(sprintf('state_machine.%s', $identifier));
             $places = $stateMachine->getDefinition()->getPlaces();
             $machineTransitions = $stateMachine->getDefinition()->getTransitions();
 
@@ -173,8 +173,8 @@ class OrderController extends PimcoreController
 
         $type = $this->getParameterFromRequest($request, 'saleType', 'order');
 
-        $orderClassId = (string) $this->container->getParameter('coreshop.model.order.pimcore_class_name');
-        $folderPath = (string) $this->container->getParameter('coreshop.folder.' . $type);
+        $orderClassId = (string) $this->getParameter('coreshop.model.order.pimcore_class_name');
+        $folderPath = (string) $this->getParameter('coreshop.folder.' . $type);
         $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
         $folder = DataObject::getByPath('/' . $folderPath);
@@ -206,7 +206,7 @@ class OrderController extends PimcoreController
             /** @psalm-suppress InternalMethod */
             $conditionFilters[] = $gridHelper->getFilterCondition(
                 $this->getParameterFromRequest($request, 'filter'),
-                DataObject\ClassDefinition::getByName((string) $this->container->getParameter('coreshop.model.order.pimcore_class_name')),
+                DataObject\ClassDefinition::getByName((string) $this->getParameter('coreshop.model.order.pimcore_class_name')),
             );
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
@@ -323,7 +323,7 @@ class OrderController extends PimcoreController
         $prefix = 'address' . ucfirst($type);
         $values = [];
         $fullAddress = [];
-        $classDefinition = DataObject\ClassDefinition::getByName((string) $this->container->getParameter('coreshop.model.address.pimcore_class_name'));
+        $classDefinition = DataObject\ClassDefinition::getByName((string) $this->getParameter('coreshop.model.address.pimcore_class_name'));
 
         foreach ($classDefinition->getFieldDefinitions() as $fieldDefinition) {
             $value = '';

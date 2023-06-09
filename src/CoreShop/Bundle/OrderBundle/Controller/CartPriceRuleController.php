@@ -216,7 +216,7 @@ class CartPriceRuleController extends ResourceController
      */
     protected function getConfigActions(): array
     {
-        return $this->container->getParameter('coreshop.cart_price_rule.actions');
+        return $this->getParameter('coreshop.cart_price_rule.actions');
     }
 
     /**
@@ -224,7 +224,7 @@ class CartPriceRuleController extends ResourceController
      */
     protected function getConfigConditions(): array
     {
-        return $this->container->getParameter('coreshop.cart_price_rule.conditions');
+        return $this->getParameter('coreshop.cart_price_rule.conditions');
     }
 
     /**
@@ -232,7 +232,7 @@ class CartPriceRuleController extends ResourceController
      */
     protected function getCartItemConfigActions(): array
     {
-        return $this->container->getParameter('coreshop.cart_item_price_rule.actions');
+        return $this->getParameter('coreshop.cart_item_price_rule.actions');
     }
 
     /**
@@ -240,6 +240,6 @@ class CartPriceRuleController extends ResourceController
      */
     protected function getCartItemConfigConditions(): array
     {
-        return $this->container->getParameter('coreshop.cart_item_price_rule.conditions');
+        return $this->getParameter('coreshop.cart_item_price_rule.conditions');
     }
 }

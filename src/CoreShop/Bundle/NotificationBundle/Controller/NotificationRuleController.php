@@ -36,12 +36,12 @@ class NotificationRuleController extends ResourceController
         /**
          * @var array $actionTypes
          */
-        $actionTypes = $this->container->getParameter('coreshop.notification_rule.actions.types');
+        $actionTypes = $this->getParameter('coreshop.notification_rule.actions.types');
 
         /**
          * @var array $conditionTypes
          */
-        $conditionTypes = $this->container->getParameter('coreshop.notification_rule.conditions.types');
+        $conditionTypes = $this->getParameter('coreshop.notification_rule.conditions.types');
 
         foreach ($actionTypes as $type) {
             if (!in_array($type, $types)) {
@@ -59,20 +59,20 @@ class NotificationRuleController extends ResourceController
             $actionParameter = 'coreshop.notification_rule.actions.' . $type;
             $conditionParameter = 'coreshop.notification_rule.conditions.' . $type;
 
-            if ($this->container->hasParameter($actionParameter)) {
+            if ($this->container->get('parameter_bag')->hasParameter($actionParameter)) {
                 if (!array_key_exists($type, $actions)) {
                     $actions[$type] = [];
                 }
 
-                $actions[$type] = array_merge($actions[$type], array_keys($this->container->getParameter($actionParameter)));
+                $actions[$type] = array_merge($actions[$type], array_keys($this->getParameter($actionParameter)));
             }
 
-            if ($this->container->hasParameter($conditionParameter)) {
+            if ($this->container->get('parameter_bag')->hasParameter($conditionParameter)) {
                 if (!array_key_exists($type, $conditions)) {
                     $conditions[$type] = [];
                 }
 
-                $conditions[$type] = array_merge($conditions[$type], array_keys($this->container->getParameter($conditionParameter)));
+                $conditions[$type] = array_merge($conditions[$type], array_keys($this->getParameter($conditionParameter)));
             }
         }
 
