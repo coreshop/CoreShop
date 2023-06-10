@@ -65,7 +65,7 @@
     <td class="text-center">
         {% if not item.isGiftItem and is_granted('CORESHOP_CART_REMOVE_ITEM') %}
             <a
-                href="{{ path('coreshop_cart_remove', {cartItem: item.id}) }}"
+                href="{{ path('coreshop_cart_remove', {cartItem: item.id|coreshop_string}) }}"
                 title="{{ 'coreshop.ui.remove'|trans }}"
                 class="btn btn-danger tool-tip"
                 data-id="{{ item.id }}"

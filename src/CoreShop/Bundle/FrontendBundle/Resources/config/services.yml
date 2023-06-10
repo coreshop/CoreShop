@@ -37,3 +37,7 @@ services:
     CoreShop\Bundle\FrontendBundle\Twig\MergeRecursiveExtension:
         tags:
             - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\TypeCastExtension:
+        tags:
+            - { name: twig.extension }
