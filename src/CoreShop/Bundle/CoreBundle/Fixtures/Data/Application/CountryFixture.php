@@ -21,6 +21,7 @@ namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
+use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -39,7 +40,7 @@ class CountryFixture extends Fixture implements DependentFixtureInterface, Fixtu
         private CountryRepositoryInterface $countryRepository,
         private FactoryInterface $countryFactory,
         private RepositoryInterface $zoneRepository,
-        private RepositoryInterface $currencyRepository,
+        private CurrencyRepositoryInterface $currencyRepository,
         private FactoryInterface $stateFactory,
     ) {
     }

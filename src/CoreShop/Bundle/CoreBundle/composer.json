@@ -54,6 +54,7 @@
     "coreshop/class-definition-patch-bundle": "^4.0",
     "coreshop/core": "^4.0",
     "doctrine/data-fixtures": "^1.5",
+    "doctrine/doctrine-fixtures-bundle": "^3.4",
     "fakerphp/faker": "^1.16",
     "rinvex/countries": "^7.3",
     "pimcore/pimcore": "^11.0"

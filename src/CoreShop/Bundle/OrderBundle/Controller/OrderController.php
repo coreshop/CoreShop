@@ -97,7 +97,7 @@ class OrderController extends PimcoreController
             /**
              * @var StateMachine $stateMachine
              */
-            $stateMachine = $this->get(sprintf('state_machine.%s', $identifier));
+            $stateMachine = $this->getParameter(sprintf('state_machine.%s', $identifier));
             $places = $stateMachine->getDefinition()->getPlaces();
             $machineTransitions = $stateMachine->getDefinition()->getTransitions();
 

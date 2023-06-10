@@ -403,7 +403,7 @@ class IndexController extends ResourceController
      */
     protected function getInterpreterTypes(): array
     {
-        return $this->container->getParameter('coreshop.index.interpreters');
+        return $this->getParameter('coreshop.index.interpreters');
     }
 
     /**

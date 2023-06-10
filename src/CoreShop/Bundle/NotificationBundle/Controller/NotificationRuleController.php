@@ -59,7 +59,7 @@ class NotificationRuleController extends ResourceController
             $actionParameter = 'coreshop.notification_rule.actions.' . $type;
             $conditionParameter = 'coreshop.notification_rule.conditions.' . $type;
 
-            if ($this->container->get('parameter_bag')->hasParameter($actionParameter)) {
+            if ($this->container->get('parameter_bag')->has($actionParameter)) {
                 if (!array_key_exists($type, $actions)) {
                     $actions[$type] = [];
                 }
@@ -67,7 +67,7 @@ class NotificationRuleController extends ResourceController
                 $actions[$type] = array_merge($actions[$type], array_keys($this->getParameter($actionParameter)));
             }
 
-            if ($this->container->get('parameter_bag')->hasParameter($conditionParameter)) {
+            if ($this->container->get('parameter_bag')->has($conditionParameter)) {
                 if (!array_key_exists($type, $conditions)) {
                     $conditions[$type] = [];
                 }

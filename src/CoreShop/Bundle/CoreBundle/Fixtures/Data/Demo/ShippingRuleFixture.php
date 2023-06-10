@@ -22,6 +22,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Rule\Model\Action;
 use CoreShop\Component\Rule\Model\Condition;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -31,7 +32,7 @@ class ShippingRuleFixture extends Fixture implements FixtureGroupInterface
 
     public function __construct(
         private RepositoryInterface $shippingRuleRepository,
-        private RepositoryInterface $storeRepository,
+        private StoreRepositoryInterface $storeRepository,
         private FactoryInterface $shippingRuleFactory,
     ) {
     }
