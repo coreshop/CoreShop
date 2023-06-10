@@ -17,6 +17,7 @@ parameters:
         - 'Core/Context/SessionAndStoreBasedStorageListContext.php'
         - 'Core/Context/StoreBasedStorageListContext.php'
         - 'Core/Repository/CustomerAndStoreAwareRepositoryInterface.php'
+        - 'DependencyInjection/CoreShopStorageListExtension.php'
 
     ignoreErrors:
         # Magic calls
