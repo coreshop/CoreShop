@@ -29,6 +29,7 @@ use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class ProductVariantUnitSolidifierController extends AdminController
 {
@@ -159,5 +160,14 @@ class ProductVariantUnitSolidifierController extends AdminController
     protected function getUnitDefinitionsCloner(): ProductClonerInterface
     {
         return $this->container->get(ProductUnitDefinitionsCloner::class);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+            new SubscribedService('coreshop.repository.product', ProductRepositoryInterface::class),
+            ProductQuantityPriceRulesCloner::class,
+            ProductUnitDefinitionsCloner::class
+        ];
     }
 }

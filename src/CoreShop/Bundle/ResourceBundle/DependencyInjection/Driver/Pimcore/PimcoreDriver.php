@@ -76,27 +76,17 @@ final class PimcoreDriver extends AbstractDriver
     protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, string $classValue, string $suffix = null): void
     {
         $definition = new Definition($classValue);
-
-        $classes = array_merge([$classValue], class_parents($classValue));
-        foreach ($classes as $parent) {
-            if ($container->hasDefinition($parent)) {
-                $definition = new ChildDefinition($parent);
-
-                break;
-            }
-        }
-
         $definition
             ->setClass($classValue)
             ->setPublic(true)
             ->setArguments([
-                $this->getMetadataDefinition($metadata),
-                new Reference($metadata->getServiceId('repository')),
-                new Reference($metadata->getServiceId('factory')),
-                new Reference(ViewHandlerInterface::class),
+                '$metadata' => $this->getMetadataDefinition($metadata),
+                '$repository' => new Reference($metadata->getServiceId('repository')),
+                '$factory' => new Reference($metadata->getServiceId('factory')),
+                '$viewHandler' => new Reference(ViewHandlerInterface::class),
             ])
-            ->addMethodCall('setContainer', [new Reference('service_container')])
             ->addTag('controller.service_arguments')
+            ->addTag('container.service_subscriber')
         ;
 
         $serviceId = $metadata->getServiceId('pimcore_controller');

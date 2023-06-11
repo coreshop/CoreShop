@@ -75,18 +75,18 @@ abstract class AbstractDriver implements DriverInterface
         $definition
             ->setPublic(true)
             ->setArguments([
-                $this->getMetadataDefinition($metadata),
-                new Reference($metadata->getServiceId('repository')),
-                new Reference($metadata->getServiceId('factory')),
-                new Reference($metadata->getServiceId('manager')),
-                new Reference(ViewHandlerInterface::class),
-                new Reference(EventDispatcherInterface::class),
-                new Reference(ResourceFormFactoryInterface::class),
-                new Reference(ErrorSerializer::class),
-                new Reference(TokenStorageInterface::class),
+                '$metadata' => $this->getMetadataDefinition($metadata),
+                '$repository' => new Reference($metadata->getServiceId('repository')),
+                '$factory' => new Reference($metadata->getServiceId('factory')),
+                '$manager' => new Reference($metadata->getServiceId('manager')),
+                '$viewHandler' => new Reference(ViewHandlerInterface::class),
+                '$eventDispatcher' => new Reference(EventDispatcherInterface::class),
+                '$resourceFormFactory' => new Reference(ResourceFormFactoryInterface::class),
+                '$formErrorSerializer' => new Reference(ErrorSerializer::class),
+                '$tokenStorage' => new Reference(TokenStorageInterface::class),
             ])
-            ->addMethodCall('setContainer', [new Reference('service_container')])
             ->addTag('controller.service_arguments')
+            ->addTag('container.service_subscriber')
         ;
 
         $container->setDefinition($metadata->getServiceId('admin_controller'), $definition);

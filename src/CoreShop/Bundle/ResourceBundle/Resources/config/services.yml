@@ -61,9 +61,9 @@ services:
 
     CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController:
         arguments:
-          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandler'
-        calls:
-          - [setContainer, ['@service_container']]
+            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandler'
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer:
         arguments:

@@ -27,6 +27,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject;
 use Pimcore\Security\User\User;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -36,6 +37,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ResourceController extends AdminController
 {
     public function __construct(
+        ContainerInterface $container,
         protected MetadataInterface $metadata,
         protected RepositoryInterface $repository,
         protected FactoryInterface $factory,
@@ -46,7 +48,7 @@ class ResourceController extends AdminController
         protected ErrorSerializer $formErrorSerializer,
         protected TokenStorageInterface $tokenStorage
     ) {
-        parent::__construct($viewHandler);
+        parent::__construct($container, $viewHandler);
     }
 
     /**

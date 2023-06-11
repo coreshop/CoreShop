@@ -22,23 +22,32 @@ use CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\OrderShipmentTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
+use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
+use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class OrderShipmentController extends PimcoreController
 {
@@ -221,5 +230,20 @@ class OrderShipmentController extends PimcoreController
     protected function getStateMachineManager(): StateMachineManager
     {
         return $this->container->get('coreshop.state_machine_manager');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+                new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
+                new SubscribedService('coreshop.renderer.order.pdf', OrderDocumentRendererInterface::class, attributes: new Autowire('coreshop.renderer.order.pdf')),
+                new SubscribedService('coreshop.repository.order_shipment', OrderShipmentRepositoryInterface::class, attributes: new Autowire('coreshop.repository.order_shipment')),
+                new SubscribedService('coreshop.order.shipment.processable', ProcessableInterface::class, attributes: new Autowire('coreshop.order.shipment.processable')),
+                new SubscribedService('coreshop.factory.order_shipment', FactoryInterface::class, attributes: new Autowire('coreshop.factory.order_shipment')),
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+                new SubscribedService(OrderToShipmentTransformer::class, OrderToShipmentTransformer::class),
+                new SubscribedService(ErrorSerializer::class, ErrorSerializer::class),
+                new SubscribedService(StateMachineManagerInterface::class, StateMachineManagerInterface::class),
+            ];
     }
 }

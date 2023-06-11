@@ -22,6 +22,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
@@ -32,12 +33,17 @@ use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
+use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class OrderInvoiceController extends PimcoreController
 {
@@ -223,6 +229,21 @@ class OrderInvoiceController extends PimcoreController
 
     protected function getStateMachineManager(): StateMachineManager
     {
-        return $this->container->get('coreshop.state_machine_manager');
+        return $this->container->get(StateMachineManagerInterface::class);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+                new SubscribedService('coreshop.repository.order', ProcessableInterface::class, attributes: new Autowire('coreshop.repository.order')),
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+                new SubscribedService(ErrorSerializer::class, ErrorSerializer::class),
+                new SubscribedService('coreshop.order.invoice.processable', NoteServiceInterface::class),
+                new SubscribedService('coreshop.renderer.order.pdf', OrderDocumentRendererInterface::class, attributes: new Autowire('coreshop.renderer.order.pdf')),
+                new SubscribedService('coreshop.factory.order_invoice', FactoryInterface::class, attributes: new Autowire('coreshop.factory.order_invoice')),
+                new SubscribedService('coreshop.order.transformer.order_to_invoice', OrderDocumentTransformerInterface::class, attributes: new Autowire('coreshop.order.transformer.order_to_invoice')),
+                new SubscribedService('coreshop.repository.order_invoice', OrderInvoiceRepositoryInterface::class),
+                new SubscribedService(StateMachineManagerInterface::class, StateMachineManagerInterface::class),
+            ];
     }
 }

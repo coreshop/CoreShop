@@ -25,9 +25,11 @@ use CoreShop\Component\Core\Model\QuantityRangeInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\DataObject;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class ProductValidationController extends AdminController
 {
@@ -99,5 +101,12 @@ class ProductValidationController extends AdminController
     protected function getProductRepository(): StackRepositoryInterface
     {
         return $this->container->get('coreshop.repository.stack.product');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+            new SubscribedService('coreshop.repository.stack.product', StackRepositoryInterface::class, attributes: new Autowire('coreshop.repository.stack.product')),
+        ];
     }
 }

@@ -46,6 +46,13 @@ abstract class RegisterSimpleRegistryTypePass implements CompilerPassInterface
             $isPrioritizedRegistry = true;
         }
 
+        $tagName = str_replace(['coreshop.', '.'], ['', '_'], $this->tag);
+        $container->registerAliasForArgument(
+            $this->registry,
+            ServiceRegistryInterface::class,
+            strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $tagName))). ' service registry',
+        );
+
         $map = [];
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
             $definition = $container->findDefinition($id);

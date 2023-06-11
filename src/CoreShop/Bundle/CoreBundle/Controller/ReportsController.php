@@ -21,9 +21,12 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class ReportsController extends AdminController
 {
@@ -75,5 +78,12 @@ class ReportsController extends AdminController
         $response->headers->set('Content-Disposition', $disposition);
 
         return $response;
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+            new SubscribedService('coreshop.registry.reports', ServiceRegistryInterface::class, attributes: new Autowire('coreshop.registry.reports')),
+        ];
     }
 }

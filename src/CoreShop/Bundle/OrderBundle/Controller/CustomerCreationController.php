@@ -32,6 +32,8 @@ use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class CustomerCreationController extends PimcoreController
 {
@@ -111,5 +113,12 @@ class CustomerCreationController extends PimcoreController
         }
 
         return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+            ];
     }
 }

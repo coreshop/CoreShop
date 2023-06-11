@@ -139,4 +139,13 @@ class OrderCreationController extends BaseOrderCreationController
 
         return $result;
     }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+            CarriersResolverInterface::class,
+            TaxedShippingCalculatorInterface::class,
+            CartContextResolverInterface::class
+        ];
+    }
 }

@@ -21,12 +21,15 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Notes;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class OrderCommentController extends PimcoreController
 {
@@ -98,5 +101,14 @@ class OrderCommentController extends PimcoreController
     private function getOrderRepository(): PimcoreRepositoryInterface
     {
         return $this->container->get('coreshop.repository.order');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+                new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+                new SubscribedService(NoteServiceInterface::class, NoteServiceInterface::class),
+            ];
     }
 }

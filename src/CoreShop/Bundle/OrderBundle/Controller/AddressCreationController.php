@@ -29,6 +29,8 @@ use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class AddressCreationController extends PimcoreController
 {
@@ -87,5 +89,12 @@ class AddressCreationController extends PimcoreController
         }
 
         return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+            new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+        ];
     }
 }

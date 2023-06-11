@@ -4,36 +4,36 @@ services:
 
     CoreShop\Bundle\CoreBundle\Controller\SettingsController:
         arguments:
-          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-          - [setContainer, ['@service_container']]
+          $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\ReportsController:
         arguments:
-          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-          - [setContainer, ['@service_container']]
+            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\PortletsController:
         arguments:
-          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-          - [setContainer, ['@service_container']]
+            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\ProductValidationController:
         arguments:
-            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-            - [setContainer, ['@service_container']]
+            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController:
         arguments:
-            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-            - [setContainer, ['@service_container']]
+            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        tags:
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController:
         arguments:
-            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
-        calls:
-            - [setContainer, ['@service_container']]
+            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        tags:
+            - { name: container.service_subscriber }

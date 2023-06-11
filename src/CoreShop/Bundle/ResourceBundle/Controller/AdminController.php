@@ -27,8 +27,10 @@ use Symfony\Component\HttpFoundation\Request;
 class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController
 {
     public function __construct(
+        \Psr\Container\ContainerInterface $container,
         protected ViewHandlerInterface $viewHandler,
     ) {
+        $this->container = $container;
     }
 
     /**

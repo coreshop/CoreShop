@@ -20,20 +20,30 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
+use CoreShop\Component\Order\Processable\ProcessableInterface;
+use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
+use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
 use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
+use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class OrderPaymentController extends PimcoreController
 {
@@ -165,5 +175,17 @@ class OrderPaymentController extends PimcoreController
     protected function getSaleRepository(): OrderRepositoryInterface
     {
         return $this->container->get('coreshop.repository.order');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+                new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
+                new SubscribedService('coreshop.repository.payment', PaymentRepositoryInterface::class),
+                new SubscribedService('doctrine.orm.entity_manager', EntityManager::class, attributes: new Autowire('doctrine.orm.entity_manager')),
+                new SubscribedService('coreshop.repository.payment_provider', PaymentProviderRepositoryInterface::class),
+                new SubscribedService('coreshop.factory.payment', FactoryInterface::class, attributes: new Autowire('coreshop.factory.payment')),
+                new SubscribedService(StateMachineManagerInterface::class, StateMachineManagerInterface::class),
+            ];
     }
 }

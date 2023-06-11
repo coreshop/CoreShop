@@ -21,9 +21,12 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Core\Portlet\ExportPortletInterface;
 use CoreShop\Component\Core\Portlet\PortletInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class PortletsController extends AdminController
 {
@@ -74,5 +77,12 @@ class PortletsController extends AdminController
         $response->headers->set('Content-Disposition', $disposition);
 
         return $response;
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+            new SubscribedService('coreshop.registry.portlets', ServiceRegistryInterface::class, attributes: new Autowire('coreshop.registry.reports')),
+        ];
     }
 }

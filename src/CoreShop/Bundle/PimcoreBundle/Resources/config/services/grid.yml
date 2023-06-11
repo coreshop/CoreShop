@@ -3,10 +3,9 @@ services:
         public: true
 
     CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController:
-        calls:
-            - [setContainer, ['@service_container']]
         tags:
             - { name: controller.service_arguments }
+            - { name: container.service_subscriber }
 
     CoreShop\Bundle\PimcoreBundle\EventListener\Grid\ObjectListFilterListener:
         arguments:
