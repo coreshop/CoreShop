@@ -529,7 +529,7 @@ class OrderController extends PimcoreController
 
     protected function getInvoices(OrderInterface $order): array
     {
-        $invoices = $this->container->get(OrderInvoiceRepositoryInterface::class)->getDocuments($order);
+        $invoices = $this->container->get('coreshop.repository.order_invoice')->getDocuments($order);
         $invoiceArray = [];
 
         foreach ($invoices as $invoice) {
@@ -559,7 +559,7 @@ class OrderController extends PimcoreController
 
     protected function getShipments(OrderInterface $order): array
     {
-        $shipments = $this->container->get(OrderShipmentRepositoryInterface::class)->getDocuments($order);
+        $shipments = $this->container->get('coreshop.repository.order_shipment')->getDocuments($order);
         $shipmentArray = [];
 
         foreach ($shipments as $shipment) {
@@ -689,7 +689,7 @@ class OrderController extends PimcoreController
 
     protected function getPayments(OrderInterface $order): array
     {
-        $payments = $this->container->get(PaymentRepositoryInterface::class)->findForPayable($order);
+        $payments = $this->container->get('coreshop.repository.payment')->findForPayable($order);
         $return = [];
 
         foreach ($payments as $payment) {
@@ -809,7 +809,6 @@ class OrderController extends PimcoreController
     public static function getSubscribedServices(): array
     {
         return parent::getSubscribedServices() + [
-                'coreshop.repository.payment' => PaymentRepositoryInterface::class,
                 'event_dispatcher' => EventDispatcherInterface::class,
                 new SubscribedService(
                     WorkflowStateInfoManagerInterface::class, WorkflowStateInfoManagerInterface::class
@@ -826,9 +825,9 @@ class OrderController extends PimcoreController
                 new SubscribedService('jms_serializer', SerializerInterface::class),
                 AddressFormatterInterface::class,
                 NoteServiceInterface::class,
-                OrderInvoiceRepositoryInterface::class,
-                OrderShipmentRepositoryInterface::class,
-                PaymentRepositoryInterface::class,
+                new SubscribedService('coreshop.repository.order_invoice', OrderInvoiceRepositoryInterface::class, attributes: new Autowire('coreshop.repository.order_invoice')),
+                new SubscribedService('coreshop.repository.order_shipment', OrderShipmentRepositoryInterface::class, attributes: new Autowire('coreshop.repository.order_shipment')),
+                new SubscribedService('coreshop.repository.payment', PaymentRepositoryInterface::class, attributes: new Autowire('coreshop.repository.payment')),
                 HistoryLogger::class
             ];
     }
