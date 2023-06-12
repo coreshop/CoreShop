@@ -808,6 +808,7 @@ class OrderController extends PimcoreController
 
     public static function getSubscribedServices(): array
     {
+        /** @psalm-suppress ArgumentTypeCoercion */
         return parent::getSubscribedServices() + [
                 'event_dispatcher' => EventDispatcherInterface::class,
                 new SubscribedService(
