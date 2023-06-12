@@ -23,9 +23,9 @@ use Pimcore\Config\Config as ConfigObject;
 
 class ConfigResolver implements ConfigResolverInterface
 {
-
-    public function __construct(private bool $addGtagCode = false)
-    {
+    public function __construct(
+        private bool $addGtagCode = false,
+    ) {
     }
 
     public function getGoogleConfig(): ConfigObject
