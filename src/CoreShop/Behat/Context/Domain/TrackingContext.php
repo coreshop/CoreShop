@@ -160,8 +160,8 @@ final class TrackingContext implements Context
 
         $result = str_replace(
             ['##id##', '##item_id##'],
-            [(string)$order->getId(), (string)$order->getItems()[0]->getId()],
-            $code->getRaw()
+            [(string) $order->getId(), (string) $order->getItems()[0]->getId()],
+            $code->getRaw(),
         );
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
