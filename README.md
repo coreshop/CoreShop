@@ -15,7 +15,7 @@
 ![CoreShop Interface](docs/img/screenshot5.png)
 
 # Requirements 
- - Pimcore `^10.5`
+ - Pimcore `^11.0`
 
 # Installation
  - Allow dev version to be installed:
@@ -25,7 +25,7 @@
    ```
  - Install with composer 
    ```
-   composer require coreshop/core-shop:^3.0
+   composer require coreshop/core-shop:^4.0
    ```
  - Run enable Bundle command
    ```
