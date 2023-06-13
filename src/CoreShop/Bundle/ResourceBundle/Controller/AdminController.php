@@ -58,10 +58,11 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstra
 
     /**
      * @psalm-suppress ImplementedReturnTypeMismatch
-     * @phpstan-ignore-next-line
+     * @psalm-suppress InvalidReturnType
+     * @return non-empty-array<array-key, SubscribedService|string>
      */
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [];
+        return parent::getSubscribedServices();
     }
 }
