@@ -30,10 +30,10 @@
     }
   ],
   "require": {
-    "coreshop/product-quantity-price-rules": "^3.0",
-    "coreshop/rule-bundle": "^3.0",
-    "coreshop/money-bundle": "^3.0",
-    "pimcore/pimcore": "^10.5"
+    "coreshop/product-quantity-price-rules": "^4.0",
+    "coreshop/rule-bundle": "^4.0",
+    "coreshop/money-bundle": "^4.0",
+    "pimcore/pimcore": "^11.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",

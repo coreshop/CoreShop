@@ -61,7 +61,7 @@ class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterfac
 
     public function createOrUpdateIndexStructures(IndexInterface $index): void
     {
-        $schemaManager = $this->database->getSchemaManager();
+        $schemaManager = $this->database->createSchemaManager();
 
         $tableName = $this->getTablename($index->getName());
         $localizedTableName = $this->getLocalizedTablename($index->getName());
@@ -71,17 +71,18 @@ class MysqlWorker extends AbstractWorker implements WorkerDeleteableByIdInterfac
 
         foreach ([$tableName, $localizedTableName, $relationalTableName] as $searchTableName) {
             if ($schemaManager->tablesExist([$searchTableName])) {
-                $oldTables[] = $schemaManager->listTableDetails($searchTableName);
+                $oldTables[] = $schemaManager->introspectTable($searchTableName);
             }
         }
 
-        $newSchema = new Schema([], [], $this->database->getSchemaManager()->createSchemaConfig());
-        $oldSchema = new Schema($oldTables, [], $this->database->getSchemaManager()->createSchemaConfig());
+        $newSchema = new Schema([], [], $this->database->createSchemaManager()->createSchemaConfig());
+        $oldSchema = new Schema($oldTables, [], $this->database->createSchemaManager()->createSchemaConfig());
 
         $this->createTableSchema($index, $newSchema);
         $this->createLocalizedTableSchema($index, $newSchema);
         $this->createRelationalTableSchema($index, $newSchema);
 
+        /** @psalm-suppress DeprecatedMethod */
         $queries = $newSchema->getMigrateFromSql($oldSchema, $this->database->getDatabasePlatform());
 
         //Show run in an Transaction, but doctrine transactional does not work with PDO for some odd reason....
@@ -300,14 +301,14 @@ QUERY;
                 $this->getLocalizedTablename($oldName) => $this->getLocalizedTablename($newName),
                 $this->getRelationTablename($oldName) => $this->getRelationTablename($newName),
             ];
-            $allViews = $this->database->getSchemaManager()->listViews();
+            $allViews = $this->database->createSchemaManager()->listViews();
 
             foreach ($languages as $language) {
                 $potentialTables[$this->getLocalizedViewName($oldName, $language)] = $this->getLocalizedViewName($newName, $language);
             }
 
             foreach ($potentialTables as $oldTable => $newTable) {
-                if (array_key_exists($oldTable, $allViews) || $this->database->getSchemaManager()->tablesExist($oldTable)) {
+                if (array_key_exists($oldTable, $allViews) || $this->database->createSchemaManager()->tablesExist($oldTable)) {
                     $this->database->executeQuery(
                         sprintf(
                             'RENAME TABLE `%s` TO `%s`',
@@ -489,6 +490,7 @@ QUERY;
         }
 
         if (Type::hasType($doctrineType)) {
+            /** @psalm-suppress DeprecatedMethod */
             return Type::getType($doctrineType)->getName();
         }
 

@@ -2,9 +2,7 @@ CoreShop\Component\Order\Model\OrderInvoice:
     exclusion_policy: ALL
     xml_root_name: order_invoice
     virtual_properties:
-        o_id:
-            serialized_name: o_id
-            exp: object.getId()
+        id:
             type: integer
             groups: [Detailed]
         documentType:

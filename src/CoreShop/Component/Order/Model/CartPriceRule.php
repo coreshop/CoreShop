@@ -72,7 +72,7 @@ class CartPriceRule implements CartPriceRuleInterface
         $this->voucherCodes = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

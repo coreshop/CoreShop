@@ -26,14 +26,18 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject;
+use Pimcore\Security\User\User;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ResourceController extends AdminController
 {
     public function __construct(
+        ContainerInterface $container,
         protected MetadataInterface $metadata,
         protected RepositoryInterface $repository,
         protected FactoryInterface $factory,
@@ -42,8 +46,9 @@ class ResourceController extends AdminController
         protected EventDispatcherInterface $eventDispatcher,
         protected ResourceFormFactoryInterface $resourceFormFactory,
         protected ErrorSerializer $formErrorSerializer,
+        protected TokenStorageInterface $tokenStorage
     ) {
-        parent::__construct($viewHandler);
+        parent::__construct($container, $viewHandler);
     }
 
     /**
@@ -54,21 +59,13 @@ class ResourceController extends AdminController
         if ($this->metadata->hasParameter('permission')) {
             $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
 
-            $user = $this->getUser();
+            $user = $this->tokenStorage->getToken()?->getUser();
 
-            if (class_exists(\Pimcore\Security\User\User::class) && $user instanceof \Pimcore\Security\User\User) {
-                /**
-                 * @psalm-suppress UndefinedClass, UndefinedInterfaceMethod
-                 */
-                $user = $user->getUser();
-            } elseif (class_exists(\Pimcore\Bundle\AdminBundle\Security\User\User::class) && $user instanceof \Pimcore\Bundle\AdminBundle\Security\User\User) {
-                /**
-                 * @psalm-suppress UndefinedClass, UndefinedInterfaceMethod
-                 */
-                $user = $user->getUser();
-            } else {
+            if (!$user instanceof User) {
                 throw new \RuntimeException(sprintf('Unknown Pimcore Admin User Class given "%s"', get_class($user)));
             }
+
+            $user = $user->getUser();
 
             if ($user->isAllowed($permission)) {
                 return;

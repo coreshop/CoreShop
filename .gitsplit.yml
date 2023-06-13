@@ -16,7 +16,6 @@ splits:
     - { prefix: src/CoreShop/Bundle/CurrencyBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/CurrencyBundle.git' }
     - { prefix: src/CoreShop/Component/Customer, target: 'https://${GH_TOKEN}@github.com/coreshop/Customer.git' }
     - { prefix: src/CoreShop/Bundle/CustomerBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/CustomerBundle.git' }
-    - { prefix: src/CoreShop/Bundle/FixtureBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/FixtureBundle.git' }
     - { prefix: src/CoreShop/Bundle/FrontendBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/FrontendBundle.git' }
     - { prefix: src/CoreShop/Component/Index, target: 'https://${GH_TOKEN}@github.com/coreshop/Index.git' }
     - { prefix: src/CoreShop/Bundle/IndexBundle, target: 'https://${GH_TOKEN}@github.com/coreshop/IndexBundle.git' }

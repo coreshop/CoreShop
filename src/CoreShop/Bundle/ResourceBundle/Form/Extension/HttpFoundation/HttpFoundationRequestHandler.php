@@ -44,7 +44,7 @@ final class HttpFoundationRequestHandler implements RequestHandlerInterface
         $this->serverParams = $serverParams ?: new ServerParams();
     }
 
-    public function handleRequest(FormInterface $form, $request = null)
+    public function handleRequest(FormInterface $form, mixed $request = null)
     {
         if (!$request instanceof Request) {
             throw new UnexpectedTypeException($request, 'Symfony\Component\HttpFoundation\Request');
@@ -92,7 +92,7 @@ final class HttpFoundationRequestHandler implements RequestHandlerInterface
                 $default = $form->getConfig()->getCompound() ? [] : null;
 
                 if ($request->request->has($name)) {
-                    $params = $request->request->get($name);
+                    $params = $request->request->all($name);
                 } else {
                     $params = $default;
                 }
@@ -114,7 +114,7 @@ final class HttpFoundationRequestHandler implements RequestHandlerInterface
         $form->submit($data, 'PATCH' !== $method);
     }
 
-    public function isFileUpload($data)
+    public function isFileUpload(mixed $data): bool
     {
         return $data instanceof File;
     }

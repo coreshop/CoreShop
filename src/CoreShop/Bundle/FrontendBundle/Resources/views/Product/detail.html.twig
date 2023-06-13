@@ -109,11 +109,11 @@
                 <div class="options">
                     <div class="cart-button btn-group">
                         {% if wishlist_allowed %}
-                            {{ render(url('coreshop_partial_wishlist_add', {'product': product.id})) }}
+                            {{ render(url('coreshop_partial_wishlist_add', {'product': product.id|coreshop_string})) }}
                         {% endif %}
 
                         {% if cart_allowed %}
-                            {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
+                            {{ render(url('coreshop_partial_cart_add', {'product': product.id|coreshop_string})) }}
                         {% endif %}
                     </div>
                 </div>

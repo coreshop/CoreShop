@@ -38,7 +38,7 @@ interface OrderItemInterface extends
 
     public function getName(): ?string;
 
-    public function setName(?string $name, $language = null);
+    public function setName(?string $name, ?string $language = null);
 
     public function getSubtotal(bool $withTax = true): int;
 

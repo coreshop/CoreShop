@@ -27,7 +27,12 @@ use CoreShop\Component\Address\Repository\AddressIdentifierRepositoryInterface;
  */
 class AddressIdentifier extends Select
 {
-    public $fieldtype = 'coreShopAddressIdentifier';
+    public string $fieldtype = 'coreShopAddressIdentifier';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     protected function getRepository(): AddressIdentifierRepositoryInterface
     {

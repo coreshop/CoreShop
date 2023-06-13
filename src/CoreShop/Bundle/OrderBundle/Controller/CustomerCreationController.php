@@ -32,6 +32,8 @@ use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class CustomerCreationController extends PimcoreController
 {
@@ -40,7 +42,7 @@ class CustomerCreationController extends PimcoreController
         FolderCreationServiceInterface $folderCreationService,
         ErrorSerializer $errorSerializer,
     ): Response {
-        $form = $this->get('form.factory')->createNamed('', AdminCustomerCreationType::class);
+        $form = $this->container->get('form.factory')->createNamed('', AdminCustomerCreationType::class);
 
         if ($request->getMethod() === 'POST') {
             $form = $form->handleRequest($request);
@@ -69,7 +71,6 @@ class CustomerCreationController extends PimcoreController
                 );
 
                 $customer->setPublished(true);
-                /** @psalm-suppress InternalMethod */
                 $customer->setKey(File::getValidFilename($customer->getEmail()));
                 /** @psalm-suppress InvalidArgument */
                 $customer->setKey(Service::getUniqueKey($customer));
@@ -93,7 +94,7 @@ class CustomerCreationController extends PimcoreController
                     $customer->addAddress($address);
                 }
 
-                $this->get('event_dispatcher')->dispatch(
+                $this->container->get('event_dispatcher')->dispatch(
                     new AdminCustomerCreationEvent($customer, $data),
                     Events::ADMIN_CUSTOMER_CREATION,
                 );
@@ -112,5 +113,12 @@ class CustomerCreationController extends PimcoreController
         }
 
         return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+                new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
+            ];
     }
 }

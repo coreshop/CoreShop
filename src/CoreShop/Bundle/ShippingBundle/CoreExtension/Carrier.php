@@ -26,12 +26,12 @@ use CoreShop\Component\Shipping\Model\CarrierInterface;
  */
 class Carrier extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopCarrier';
+    public string $fieldtype = 'coreShopCarrier';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     protected function getRepository()
     {

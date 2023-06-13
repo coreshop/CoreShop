@@ -38,7 +38,7 @@ class TaxRateTranslation extends AbstractTranslation implements TaxRateTranslati
      */
     protected $name;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

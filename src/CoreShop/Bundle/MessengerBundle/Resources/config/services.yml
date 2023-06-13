@@ -6,9 +6,9 @@ services:
 
   coreshop.messenger.pimcore.messenger_logger:
     public: true
-    class: Pimcore\Log\ApplicationLogger
+    class: Pimcore\Bundle\ApplicationLoggerBundle\ApplicationLogger
     calls:
-      - [ addWriter, [ '@Pimcore\Log\Handler\ApplicationLoggerDb' ] ]
+      - [ addWriter, [ '@Pimcore\Bundle\ApplicationLoggerBundle\Handler\ApplicationLoggerDb' ] ]
       - [ setComponent, [ 'coreshop_messenger' ] ]
 
   CoreShop\Bundle\MessengerBundle\EventListener\FailureListener:

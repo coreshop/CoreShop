@@ -1,5 +1,4 @@
 imports:
-    - { resource: services_alias.yml }
     - { resource: services/form.yml }
     - { resource: services/extension.yml }
     - { resource: services/factory.yml }
@@ -11,7 +10,8 @@ services:
     coreshop.form_registry.payum_gateway_config:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    coreshop.payum.http_client: '@psr18.http_client'
+    # TODO:
+    #coreshop.payum.http_client: '@psr18.http_client'
 
     CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction:
         tags:

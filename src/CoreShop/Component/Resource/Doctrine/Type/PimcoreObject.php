@@ -34,7 +34,11 @@ class PimcoreObject extends Type
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?AbstractObject
     {
-        return AbstractObject::getById($value);
+        if (null === $value) {
+            return null;
+        }
+
+        return AbstractObject::getById((int)$value);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?int

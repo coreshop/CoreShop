@@ -19,18 +19,25 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Component\Resource\Model\AbstractObject;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Barcode;
 use Faker\Provider\Lorem;
 
-class ProductWithAttributesFixture extends AbstractProductFixture
+class ProductWithAttributesFixture extends AbstractProductFixture implements FixtureGroupInterface
 {
     public function getDependencies(): array
     {
         return array_merge(parent::getDependencies(), [
             AttributeGroupsFixture::class,
         ]);
+    }
+
+    public static function getGroups(): array
+    {
+        return ['demo'];
     }
 
     public function load(ObjectManager $manager): void
@@ -239,7 +246,7 @@ class ProductWithAttributesFixture extends AbstractProductFixture
             $allowedAttributeGroups = [];
 
             foreach ($usedAttributeGroups as $attributeGroupKey) {
-                $allowedAttributeGroups[] = $this->container->get('coreshop.repository.attribute_group')->findOneBy(['name' => $attributeGroupKey]);
+                $allowedAttributeGroups[] = $this->attributeGroupRepository->findOneBy(['name' => $attributeGroupKey]);
             }
 
             $product->setAllowedAttributeGroups($allowedAttributeGroups);
@@ -257,13 +264,13 @@ class ProductWithAttributesFixture extends AbstractProductFixture
 
                 $attributes = array_map(function ($key, $value) {
                     if ($key === 'color') {
-                        return $this->container->get('coreshop.repository.attribute_color')->findOneBy(['name' => $value]);
+                        return $this->attributeColorRepository->findOneBy(['name' => $value]);
                     }
 
-                    return $this->container->get('coreshop.repository.attribute_value')->findOneBy(['name' => $value]);
+                    return $this->attributeValueRepository->findOneBy(['name' => $value]);
                 }, array_keys($variantAttributes), $variantAttributes);
 
-                $variant = $this->container->get('coreshop.factory.product')->createNew();
+                $variant = $this->productFactory->createNew();
                 $variant->setKey(implode(' - ', $variantAttributes));
                 $variant->setParent($product);
                 $variant->setPublished(true);

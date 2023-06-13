@@ -26,12 +26,12 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
  */
 class TaxRuleGroup extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopTaxRuleGroup';
+    public string $fieldtype = 'coreShopTaxRuleGroup';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     protected function getRepository()
     {

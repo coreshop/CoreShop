@@ -30,6 +30,7 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\Repository\ShareableStorageListRepositoryInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -39,10 +40,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class StorageListController extends AbstractController
 {
     public function __construct(
+        ContainerInterface $container,
         protected string $identifier,
         protected FormFactoryInterface $formFactory,
         protected RepositoryInterface $repository,
@@ -59,7 +62,9 @@ class StorageListController extends AbstractController
         protected string $indexRoute,
         protected string $templateAddToList,
         protected string $templateSummary,
+        protected TranslatorInterface $translator,
     ) {
+        $this->setContainer($container);
     }
 
     public function addItemAction(Request $request): Response
@@ -103,7 +108,7 @@ class StorageListController extends AbstractController
                 $this->modifier->addToList($addToStorageList->getStorageList(), $addToStorageList->getStorageListItem());
                 $this->manager->persist($storageList);
 
-                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
+                $this->addFlash('success', $this->translator->trans('coreshop.ui.item_added'));
 
                 if ($request->isXmlHttpRequest()) {
                     return new JsonResponse([
@@ -166,7 +171,7 @@ class StorageListController extends AbstractController
             return $this->redirectToRoute($this->indexRoute);
         }
 
-        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
+        $this->addFlash('success', $this->translator->trans('coreshop.ui.item_removed'));
 
         $this->modifier->removeFromList($storageList, $storageListItem);
         $this->manager->persist($storageList);
@@ -212,7 +217,7 @@ class StorageListController extends AbstractController
                 if ($form->isValid()) {
                     $list = $form->getData();
 
-                    $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.cart_updated'));
+                    $this->addFlash('success', $this->translator->trans('coreshop.ui.cart_updated'));
 
                     $this->manager->persist($list);
 

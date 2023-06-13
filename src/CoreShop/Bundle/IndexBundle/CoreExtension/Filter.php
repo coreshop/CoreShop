@@ -26,12 +26,12 @@ use CoreShop\Component\Index\Model\FilterInterface;
  */
 class Filter extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopFilter';
+    public string $fieldtype = 'coreShopFilter';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     protected function getRepository()
     {

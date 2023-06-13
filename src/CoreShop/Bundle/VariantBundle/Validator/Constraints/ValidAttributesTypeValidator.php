@@ -53,7 +53,7 @@ class ValidAttributesTypeValidator extends ConstraintValidator
         }
 
         $concreteListing = new DataObject\Listing();
-        $concreteListing->setCondition('o_path LIKE \'' . $parent->getFullPath() . '/%\'');
+        $concreteListing->setCondition('path LIKE \'' . $parent->getFullPath() . '/%\'');
 
         foreach ($concreteListing as $child) {
             if (!$child instanceof AttributeInterface) {

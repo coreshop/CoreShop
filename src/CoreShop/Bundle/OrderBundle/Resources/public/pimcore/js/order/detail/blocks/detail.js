@@ -304,7 +304,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                 handler: function (grid, rowIndex) {
                     var record = grid.getStore().getAt(rowIndex);
 
-                    pimcore.helpers.openObject(record.get('o_id'));
+                    pimcore.helpers.openObject(record.get('id'));
                 }
             }
         ];

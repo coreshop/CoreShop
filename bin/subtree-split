@@ -96,7 +96,6 @@ remote shipping-bundle git@github.com:CoreShop/ShippingBundle.git
 remote store-bundle git@github.com:CoreShop/StoreBundle.git
 remote taxation-bundle git@github.com:CoreShop/TaxationBundle.git
 remote tracking-bundle git@github.com:CoreShop/TrackingBundle.git
-remote fixture-bundle git@github.com:CoreShop/FixtureBundle.git
 remote inventory-bundle git@github.com:CoreShop/InventoryBundle.git
 remote workflow-bundle git@github.com:CoreShop/WorkflowBundle.git
 remote seo-bundle git@github.com:CoreShop/SEOBundle.git
@@ -163,7 +162,6 @@ split 'src/CoreShop/Bundle/ShippingBundle' shipping-bundle
 split 'src/CoreShop/Bundle/StoreBundle' store-bundle
 split 'src/CoreShop/Bundle/TaxationBundle' taxation-bundle
 split 'src/CoreShop/Bundle/TrackingBundle' tracking-bundle
-split 'src/CoreShop/Bundle/FixtureBundle' fixture-bundle
 split 'src/CoreShop/Bundle/InventoryBundle' inventory-bundle
 split 'src/CoreShop/Bundle/WorkflowBundle' workflow-bundle
 split 'src/CoreShop/Bundle/SEOBundle' seo-bundle

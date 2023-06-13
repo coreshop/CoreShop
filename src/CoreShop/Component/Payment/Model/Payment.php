@@ -76,7 +76,7 @@ class Payment implements PaymentInterface
      */
     protected $description;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

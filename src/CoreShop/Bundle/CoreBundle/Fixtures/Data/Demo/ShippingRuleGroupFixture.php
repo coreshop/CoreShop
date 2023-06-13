@@ -18,26 +18,25 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ShippingRuleGroupFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
+class ShippingRuleGroupFixture extends AbstractFixture implements DependentFixtureInterface, FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private RepositoryInterface $shippingRuleGroupRepository,
+        private FactoryInterface $shippingRuleGroupFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['demo'];
     }
 
     /**
@@ -53,23 +52,23 @@ class ShippingRuleGroupFixture extends AbstractFixture implements ContainerAware
 
     public function load(ObjectManager $manager): void
     {
-        if (!count($this->container->get('coreshop.repository.shipping_rule_group')->findAll())) {
+        if (!count($this->shippingRuleGroupRepository->findAll())) {
             $carrier = $this->getReference('carrier');
 
             /**
              * @var ShippingRuleGroupInterface $shippingRuleGroup
              */
-            $shippingRuleGroup = $this->container->get('coreshop.factory.shipping_rule_group')->createNew();
+            $shippingRuleGroup = $this->shippingRuleGroupFactory->createNew();
             $shippingRuleGroup->setShippingRule($this->getReference('shippingRule0'));
             $shippingRuleGroup->setPriority(1);
             $shippingRuleGroup->setCarrier($carrier);
 
-            $shippingRuleGroup2 = $this->container->get('coreshop.factory.shipping_rule_group')->createNew();
+            $shippingRuleGroup2 = $this->shippingRuleGroupFactory->createNew();
             $shippingRuleGroup2->setShippingRule($this->getReference('shippingRule1'));
             $shippingRuleGroup2->setPriority(1);
             $shippingRuleGroup2->setCarrier($carrier);
 
-            $shippingRuleGroup3 = $this->container->get('coreshop.factory.shipping_rule_group')->createNew();
+            $shippingRuleGroup3 = $this->shippingRuleGroupFactory->createNew();
             $shippingRuleGroup3->setShippingRule($this->getReference('shippingRule2'));
             $shippingRuleGroup3->setPriority(1);
             $shippingRuleGroup3->setCarrier($carrier);

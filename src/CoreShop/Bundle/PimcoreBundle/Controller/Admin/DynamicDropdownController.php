@@ -18,14 +18,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
-use Pimcore\Bundle\AdminBundle\Controller\AdminController;
+use Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Element\Service;
 use Pimcore\Model\Factory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-final class DynamicDropdownController extends AdminController
+/**
+ * @psalm-suppress InternalClass
+ */
+final class DynamicDropdownController extends AdminAbstractController
 {
     private string $separator = ' - ';
 
@@ -150,6 +153,7 @@ final class DynamicDropdownController extends AdminController
                 }
             } elseif ($child instanceof $fqcn) {
                 $key = $usesI18n ? $child->$source($currentLang) : $child->$source();
+                /** @psalm-suppress PossiblyFalseReference */
                 $options[] = [
                     'value' => $child->getId(),
                     'key' => ltrim($path . $this->separator . $key, $this->separator),

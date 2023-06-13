@@ -24,13 +24,13 @@
     }
   ],
   "require": {
-    "coreshop/resource": "^3.0",
-    "coreshop/store": "^3.0",
-    "coreshop/pimcore": "^3.0",
-    "coreshop/customer": "^3.0",
-    "coreshop/product": "^3.0",
-    "coreshop/storage-list": "^3.0",
-    "pimcore/pimcore": "^10.5",
+    "coreshop/resource": "^4.0",
+    "coreshop/store": "^4.0",
+    "coreshop/pimcore": "^4.0",
+    "coreshop/customer": "^4.0",
+    "coreshop/product": "^4.0",
+    "coreshop/storage-list": "^4.0",
+    "pimcore/pimcore": "^11.0",
     "laminas/laminas-stdlib": "^3.6"
   },
   "require-dev": {
@@ -53,13 +53,8 @@
   "prefer-stable": true,
    "extra": {
     "branch-alias": {
-<<<<<<< HEAD
       "dev-next": "4.0-dev",
       "dev-master": "4.0-dev"
-=======
-      "dev-next": "3.1-dev",
-      "dev-master": "3.1-dev"
->>>>>>> 3.1
     }
   }
 }

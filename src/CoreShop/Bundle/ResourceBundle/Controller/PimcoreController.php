@@ -22,6 +22,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\User;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class PimcoreController extends AdminController
@@ -30,9 +31,10 @@ class PimcoreController extends AdminController
         protected MetadataInterface $metadata,
         protected PimcoreRepositoryInterface $repository,
         protected FactoryInterface $factory,
+        ContainerInterface $container,
         ViewHandlerInterface $viewHandler,
     ) {
-        parent::__construct($viewHandler);
+        parent::__construct($container, $viewHandler);
     }
 
     /**
@@ -45,8 +47,9 @@ class PimcoreController extends AdminController
              * @var User $user
              *
              * @psalm-var User $user
+             * @psalm-suppress InternalMethod
              */
-            $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
+            $user = $this->getAdminUser();
 
             if ($user->isAllowed($this->getPermission())) {
                 return;

@@ -40,7 +40,7 @@ interface StateInterface extends ResourceInterface, TranslatableInterface, Times
      *
      * @return mixed
      */
-    public function getName($language = null);
+    public function getName(?string $language = null);
 
     /**
      * @param string $name
@@ -48,7 +48,7 @@ interface StateInterface extends ResourceInterface, TranslatableInterface, Times
      *
      * @return mixed
      */
-    public function setName($name, $language = null);
+    public function setName($name, ?string $language = null);
 
     /**
      * @return CountryInterface

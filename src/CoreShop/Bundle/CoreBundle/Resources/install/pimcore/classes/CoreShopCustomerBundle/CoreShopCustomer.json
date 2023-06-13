@@ -22,7 +22,7 @@
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
-        "childs": [
+        "children": [
             {
                 "fieldtype": "tabpanel",
                 "name": "Layout",
@@ -36,7 +36,7 @@
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "fieldset",
                         "labelWidth": 100,
@@ -51,7 +51,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "input",
                                 "width": null,
@@ -153,22 +153,23 @@
                                 "visibleSearch": true
                             },
                             {
-                                "fieldtype": "newsletterActive",
-                                "defaultValue": 0,
                                 "name": "newsletterActive",
                                 "title": "coreshop.customer.newsletter_active",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": false,
-                                "index": null,
+                                "index": 0,
                                 "locked": false,
                                 "style": "",
                                 "permissions": null,
-                                "datatype": "data",
+                                "fieldtype": "newsletterActive",
                                 "relationType": false,
                                 "invisible": false,
-                                "visibleGridView": true,
-                                "visibleSearch": true
+                                "visibleGridView": false,
+                                "visibleSearch": false,
+                                "defaultValue": null,
+                                "defaultValueGenerator": "",
+                                "datatype": "data"
                             },
                             {
                                 "fieldtype": "newsletterConfirmed",
@@ -309,7 +310,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "select",
                                 "options": null,
@@ -394,7 +395,7 @@
                         "bodyStyle": "",
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "coreShopRelations",
                                 "height": "400",

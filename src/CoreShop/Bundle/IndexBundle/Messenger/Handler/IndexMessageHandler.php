@@ -26,9 +26,8 @@ use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class IndexMessageHandler implements MessageHandlerInterface
+class IndexMessageHandler
 {
     private array $validObjectTypes = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
 

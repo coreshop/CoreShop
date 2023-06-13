@@ -47,7 +47,7 @@ class Action implements ActionInterface
      */
     protected $configuration;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

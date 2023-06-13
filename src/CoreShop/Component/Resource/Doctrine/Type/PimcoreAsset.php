@@ -34,7 +34,11 @@ class PimcoreAsset extends Type
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?Asset
     {
-        return Asset::getById($value);
+        if (null === $value) {
+            return null;
+        }
+
+        return Asset::getById((int) $value);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?int

@@ -28,12 +28,12 @@ use Pimcore\Model\DataObject\ClassDefinition\Helper\OptionsProviderResolver;
  */
 class Store extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopStore';
+    public string $fieldtype = 'coreShopStore';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     /** @var array|null */
     public $options = [];

@@ -25,7 +25,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
  */
 interface StorageListItemInterface
 {
-    public function getId();
+    public function getId(): ?int;
 
     public function equals(self $storageListItem): bool;
 

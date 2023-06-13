@@ -42,7 +42,7 @@ class CompositeLinkGenerator implements LinkGeneratorInterface
         $this->linkGenerator->insert($linkGenerator, $priority);
     }
 
-    public function generate(Concrete $object, array $params = []): string
+    public function generate(object $object, array $params = []): string
     {
         foreach ($this->linkGenerator as $linkGenerator) {
             try {

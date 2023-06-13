@@ -32,7 +32,7 @@ class ResourceSlugLinkGenerator implements LinkGeneratorInterface
     ) {
     }
 
-    public function generate(Concrete $object, array $params = []): string
+    public function generate(object $object, array $params = []): string
     {
         if (!$object instanceof SluggableInterface) {
             throw new LinkGenerationNotPossibleException(

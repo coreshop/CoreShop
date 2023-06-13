@@ -87,8 +87,16 @@
         <InternalMethod>
             <errorLevel type="info">
                 <referencedMethod name="Symfony\Bundle\SecurityBundle\Security\_FirewallMap::getFirewallConfig" />
+                <referencedMethod name="Symfony\Component\Workflow\Registry::get" />
+                <referencedMethod name="Pimcore\File::getValidFilename" />
             </errorLevel>
         </InternalMethod>
+
+        <InternalClass>
+            <errorLevel type="info">
+                <referencedClass name="Pimcore\File" />
+            </errorLevel>
+        </InternalClass>
 
         <MissingReturnType errorLevel="info" />
 
@@ -135,6 +143,12 @@
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::scalarNode" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::variableNode" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::end" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::arrayNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::booleanNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::children" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::integerNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::scalarNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::variableNode" />
             </errorLevel>
         </PossiblyUndefinedMethod>
 

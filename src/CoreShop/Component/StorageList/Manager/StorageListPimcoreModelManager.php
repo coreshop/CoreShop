@@ -71,7 +71,7 @@ final class StorageListPimcoreModelManager implements StorageListManagerInterfac
                     ),
                 );
                 $item->setPublished(true);
-                $item->setKey($index + 1);
+                $item->setKey((string)($index + 1));
                 $item->save();
             }
 

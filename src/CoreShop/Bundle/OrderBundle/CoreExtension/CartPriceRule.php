@@ -26,12 +26,7 @@ use CoreShop\Component\Order\Model\CartPriceRuleInterface;
  */
 class CartPriceRule extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopCartPriceRule';
+    public string $fieldtype = 'coreShopCartPriceRule';
 
     /**
      * Type for the generated phpdoc.
@@ -39,6 +34,11 @@ class CartPriceRule extends Select
      * @var string
      */
     public $phpdocType = \CoreShop\Component\Order\Model\CartPriceRule::class;
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     protected function getRepository()
     {

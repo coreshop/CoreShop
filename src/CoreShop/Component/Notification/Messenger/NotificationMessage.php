@@ -33,6 +33,9 @@ class NotificationMessage
         return $this->type;
     }
 
+    /**
+     * @psalm-return class-string
+     */
     public function getResourceType(): string
     {
         return $this->resourceType;

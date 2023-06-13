@@ -1,0 +1,157 @@
+services:
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Application\AddressIdentifierFixture:
+    arguments:
+      - '@coreshop.factory.address_identifier'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Application\ConfigurationFixture:
+    arguments:
+      - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Application\CountryFixture:
+    arguments:
+      - '@coreshop.repository.country'
+      - '@coreshop.factory.country'
+      - '@coreshop.repository.zone'
+      - '@coreshop.repository.currency'
+      - '@coreshop.factory.state'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Application\CurrencyFixture:
+    arguments:
+      - '@coreshop.repository.currency'
+      - '@coreshop.factory.currency'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Application\NotificationRulesFixture:
+    arguments:
+      - '%coreshop.installer.resources%'
+      - '@kernel'
+      - '@coreshop.repository.notification_rule'
+      - '@form.factory'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Application\StoreFixture:
+    arguments:
+      - '@coreshop.repository.store'
+      - '@coreshop.factory.store'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Application\ZoneFixture:
+    arguments:
+      - '@coreshop.factory.zone'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\AttributeGroupsFixture:
+    arguments:
+      - '@coreshop.repository.attribute_group'
+      - '@coreshop.factory.attribute_group'
+      - '@coreshop.factory.attribute_color'
+      - '@coreshop.factory.attribute_value'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\CarrierFixture:
+    arguments:
+      - '@coreshop.repository.carrier'
+      - '@coreshop.repository.store'
+      - '@coreshop.factory.carrier'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\CategoryFixture:
+    arguments:
+      - '@coreshop.repository.category'
+      - '@coreshop.repository.store'
+      - '@coreshop.factory.category'
+      - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\PaymentProviderFixture:
+    arguments:
+      - '@coreshop.repository.payment_provider'
+      - '@coreshop.repository.store'
+      - '@coreshop.factory.payment_provider'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\ProductUnitFixture:
+    arguments:
+      - '@coreshop.factory.product_unit'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\AbstractProductFixture:
+    abstract: true
+    arguments:
+      - '%coreshop.currency.decimal_factor%'
+      - '@coreshop.repository.store'
+      - '@kernel'
+      - '@coreshop.repository.category'
+      - '@coreshop.factory.product'
+      - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+      - '@coreshop.repository.product'
+      - '@coreshop.repository.attribute_group'
+      - '@coreshop.repository.attribute_color'
+      - '@coreshop.repository.attribute_value'
+      - '@coreshop.factory.product_unit_definition'
+      - '@coreshop.factory.product_unit_definitions'
+      - '@coreshop.factory.product_unit_definition_price'
+      - '@coreshop.factory.product_store_values'
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\ProductFixture:
+    parent: 'CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\AbstractProductFixture'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\ProductWithAttributesFixture:
+    parent: 'CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\AbstractProductFixture'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\ProductWithUnitFixture:
+    parent: 'CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\AbstractProductFixture'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\ShippingRuleFixture:
+    arguments:
+      - '@coreshop.repository.shipping_rule'
+      - '@coreshop.repository.store'
+      - '@coreshop.factory.shipping_rule'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\ShippingRuleGroupFixture:
+    arguments:
+      - '@coreshop.repository.shipping_rule_group'
+      - '@coreshop.factory.shipping_rule_group'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\TaxRateFixture:
+    arguments:
+      - '@coreshop.repository.tax_rate'
+      - '@coreshop.factory.tax_rate'
+    tags:
+      - { name: doctrine.fixture.orm }
+
+  CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo\TaxRuleGroupFixture:
+    arguments:
+      - '@coreshop.repository.tax_rule_group'
+      - '@coreshop.factory.tax_rule_group'
+      - '@coreshop.factory.tax_rule'
+      - '@coreshop.repository.country'
+    tags:
+      - { name: doctrine.fixture.orm }

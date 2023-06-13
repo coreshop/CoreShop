@@ -48,7 +48,7 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
         return $this->getDescription();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

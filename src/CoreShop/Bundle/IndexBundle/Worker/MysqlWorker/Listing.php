@@ -267,8 +267,15 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         $this->addQueryFromConditions($queryBuilder);
         $this->addOrderBy($queryBuilder);
         $this->addJoins($queryBuilder);
-        $queryBuilder->setMaxResults($this->getLimit());
-        $queryBuilder->setFirstResult($this->getOffset());
+
+        if (null !== $this->getLimit()) {
+            $queryBuilder->setMaxResults($this->getLimit());
+        }
+
+        if (null !== $this->getOffset()) {
+            $queryBuilder->setFirstResult($this->getOffset());
+        }
+
         $objectRaws = $this->dao->load($queryBuilder);
         $this->totalCount = $this->count();
         $className = $this->index->getClass();
@@ -496,10 +503,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         return current($this->objects);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getItems($offset, $itemCountPerPage)
+    public function getItems(int $offset, int $itemCountPerPage): array
     {
         $this->setOffset($offset);
         $this->setLimit($itemCountPerPage);

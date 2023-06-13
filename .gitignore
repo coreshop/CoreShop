@@ -58,4 +58,7 @@ drivers
 vendor/
 cache/
 docs/generated-docs
+docs/build
+docs/node_modules
+docs/.docusaurus
 node_modules

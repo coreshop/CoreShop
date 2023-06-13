@@ -79,7 +79,7 @@ class CustomersReport implements ReportInterface
             );
         }
 
-        return array_values($results);
+        return $results;
     }
 
     public function getTotal(): int

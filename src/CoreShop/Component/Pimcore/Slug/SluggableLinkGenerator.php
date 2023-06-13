@@ -32,8 +32,12 @@ class SluggableLinkGenerator implements LinkGeneratorInterface
     ) {
     }
 
-    public function generate(Concrete $object, array $params = []): string
+    public function generate(object $object, array $params = []): string
     {
+        if (!$object instanceof Concrete) {
+            throw new \InvalidArgumentException(sprintf('Object must be an instance of %s', Concrete::class));
+        }
+        
         if (!$object instanceof SluggableInterface) {
             throw new LinkGenerationNotPossibleException(sprintf(
                 'Object with Path "%s" must implement %s',

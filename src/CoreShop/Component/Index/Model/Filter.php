@@ -53,7 +53,7 @@ class Filter extends AbstractResource implements FilterInterface
     /**
      * @var string
      */
-    protected $orderKey = 'o_id';
+    protected $orderKey = 'id';
 
     /**
      * @var IndexInterface
@@ -76,7 +76,7 @@ class Filter extends AbstractResource implements FilterInterface
         $this->conditions = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

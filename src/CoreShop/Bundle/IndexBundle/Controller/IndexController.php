@@ -22,6 +22,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Registry\ServiceRegistry;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +44,7 @@ class IndexController extends ResourceController
         return $this->viewHandler->handle($typesObject);
     }
 
-    public function getConfigAction(): Response
+    public function getConfigAction(ServiceRegistry $indexInterpreterRegistry): Response
     {
         $interpreters = $this->getInterpreterTypes();
         $interpretersResult = [];
@@ -59,7 +60,7 @@ class IndexController extends ResourceController
         }
 
         foreach ($interpreters as $interpreter) {
-            $class = $this->get('coreshop.registry.index.interpreter')->get($interpreter);
+            $class = $indexInterpreterRegistry->get($interpreter);
             $localized = in_array(LocalizedInterpreterInterface::class, class_implements($class), true);
             $relation = in_array(RelationInterpreterInterface::class, class_implements($class), true);
 
@@ -74,7 +75,7 @@ class IndexController extends ResourceController
         /**
          * @var array $fieldTypes
          */
-        $fieldTypes = $this->container->getParameter('coreshop.index.mapping_types');
+        $fieldTypes = $this->getParameter('coreshop.index.mapping_types');
         $fieldTypesResult = [];
 
         foreach ($fieldTypes as $type) {
@@ -402,7 +403,7 @@ class IndexController extends ResourceController
      */
     protected function getInterpreterTypes(): array
     {
-        return $this->container->getParameter('coreshop.index.interpreters');
+        return $this->getParameter('coreshop.index.interpreters');
     }
 
     /**
@@ -410,7 +411,7 @@ class IndexController extends ResourceController
      */
     protected function getGetterTypes(): array
     {
-        return $this->container->getParameter('coreshop.index.getters');
+        return $this->getParameter('coreshop.index.getters');
     }
 
     /**
@@ -418,6 +419,6 @@ class IndexController extends ResourceController
      */
     protected function getWorkerTypes(): array
     {
-        return $this->container->getParameter('coreshop.index.workers');
+        return $this->getParameter('coreshop.index.workers');
     }
 }

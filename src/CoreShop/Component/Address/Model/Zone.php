@@ -57,7 +57,7 @@ class Zone extends AbstractResource implements ZoneInterface, \Stringable
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

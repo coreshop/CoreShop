@@ -71,7 +71,7 @@ final class RecycleBinContext implements Context
 
         $item->restore();
 
-        $product = DataObject::getById($concrete->getId(), true);
+        $product = DataObject::getById($concrete->getId(), ['force' => true]);
 
         Assert::isInstanceOf($product, ProductInterface::class);
 

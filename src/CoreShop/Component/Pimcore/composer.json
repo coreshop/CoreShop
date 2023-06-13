@@ -24,7 +24,8 @@
     }
   ],
   "require": {
-    "pimcore/pimcore": "^10.5",
+    "pimcore/pimcore": "^11.0",
+    "pimcore/admin-ui-classic-bundle": "^1.0",
     "laminas/laminas-stdlib": "^3.6"
   },
   "require-dev": {

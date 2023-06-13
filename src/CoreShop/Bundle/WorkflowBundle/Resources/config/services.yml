@@ -1,9 +1,6 @@
 parameters:
     coreshop.workflow.manager.history_log_state_identifier: !php/const CoreShop\Bundle\WorkflowBundle\Notes::HISTORY_STATE_LOG
 
-imports:
-    - { resource: services_alias.yml }
-
 services:
     _defaults:
         public: true
@@ -11,7 +8,7 @@ services:
     CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface: '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager'
     CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager:
         arguments:
-            - '@workflow.registry'
+            - '@.workflow.registry'
 
     CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface: '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
     CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier:

@@ -22,11 +22,8 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreFieldcollection;
 
 abstract class TaxItem extends AbstractPimcoreFieldcollection implements TaxItemInterface
 {
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): ?int
     {
-        return $this->getObject()->getId() . '_tax_item_' . $this->getIndex();
+        return null;
     }
 }

@@ -70,7 +70,7 @@ class Index extends AbstractResource implements IndexInterface
         $this->columns = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

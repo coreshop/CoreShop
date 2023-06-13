@@ -36,7 +36,7 @@ coreshop.order.order.detail.panel = Class.create({
         me.modules = {};
         me.eventManager = new CoreShop.resource.EventManager();
         me.sale = sale;
-        me.layoutId = 'coreshop_' + this.type + '_' + this.sale.o_id;
+        me.layoutId = 'coreshop_' + this.type + '_' + this.sale.id;
         me.iconCls = 'coreshop_icon_' + this.type;
         me.getLayout();
     },
@@ -54,7 +54,7 @@ coreshop.order.order.detail.panel = Class.create({
         Ext.Ajax.request({
             url: Routing.generate('coreshop_admin_order_get_order'),
             params: {
-                id: me.sale.o_id
+                id: me.sale.id
             },
             success: function (response) {
                 var res = Ext.decode(response.responseText);

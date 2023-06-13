@@ -16,7 +16,7 @@
     },
     "html": {
         "ribbon_text": "",
-        "theme": "pimcore-core",
+        "theme": "coreshop",
         "breadcrumbs": true,
         "breadcrumb_separator": "Chevrons",
         "toggle_code": false,
@@ -24,7 +24,7 @@
         "float": false,
         "search": true,
         "inherit_index": true,
-        "repo": "pimcore/pimcore",
+        "repo": "coreshop/coreshop",
         "twitter": false,
         "links": {
             "Website": "https://www.coreshop.org",

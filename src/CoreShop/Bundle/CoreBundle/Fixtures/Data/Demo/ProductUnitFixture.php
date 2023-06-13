@@ -18,30 +18,28 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ProductUnitFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class ProductUnitFixture extends Fixture implements FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
 
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private FactoryInterface $productUnitFactory,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['demo'];
     }
 
     public function load(ObjectManager $manager): void
     {
-        $factory = $this->container->get('coreshop.factory.product_unit');
+        $factory = $this->productUnitFactory;
 
         /**
          * @var ProductUnitInterface $productUnitPiece

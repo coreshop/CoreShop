@@ -154,7 +154,7 @@ class OrderCreationController extends PimcoreController
     {
         $jsonCart = $this->getDataForObject($cart);
 
-        $jsonCart['o_id'] = $cart->getId();
+        $jsonCart['id'] = $cart->getId();
         $jsonCart['customer'] = $cart->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($cart->getCustomer()) : null;
         $jsonCart['items'] = $this->getItemDetails($cart);
         $jsonCart['currency'] = $this->getCurrency($cart->getCurrency() ?: $cart->getStore()->getCurrency());

@@ -85,6 +85,6 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
          */
         $manager = $this->doctrineRegistry->getManager();
 
-        return $manager->getConnection()->getSchemaManager();
+        return $manager->getConnection()->createSchemaManager();
     }
 }

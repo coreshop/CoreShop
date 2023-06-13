@@ -20,7 +20,7 @@
     background: url(../img/price-rules.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_10 .coreshop_nav_icon_price_rule {
+body.pimcore_version_11 .coreshop_nav_icon_price_rule {
     background: url(../img/price-rules_white.svg) center center no-repeat !important;
 }
 
@@ -36,7 +36,7 @@ body.pimcore_version_10 .coreshop_nav_icon_price_rule {
     background: url(../img/product.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_10 .coreshop_nav_icon_product {
+body.pimcore_version_11 .coreshop_nav_icon_product {
     background: url(../img/product_white.svg) center center no-repeat !important;
 }
 
@@ -95,7 +95,7 @@ body.pimcore_version_10 .coreshop_nav_icon_product {
     background: url(../img/product-units.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_10 .coreshop_nav_icon_product_units {
+body.pimcore_version_11 .coreshop_nav_icon_product_units {
     background: url(../img/product-units_white.svg) center center no-repeat !important;
 }
 

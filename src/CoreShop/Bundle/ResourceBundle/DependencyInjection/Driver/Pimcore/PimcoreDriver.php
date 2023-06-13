@@ -76,27 +76,17 @@ final class PimcoreDriver extends AbstractDriver
     protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, string $classValue, string $suffix = null): void
     {
         $definition = new Definition($classValue);
-
-        $classes = array_merge([$classValue], class_parents($classValue));
-        foreach ($classes as $parent) {
-            if ($container->hasDefinition($parent)) {
-                $definition = new ChildDefinition($parent);
-
-                break;
-            }
-        }
-
         $definition
             ->setClass($classValue)
             ->setPublic(true)
             ->setArguments([
-                $this->getMetadataDefinition($metadata),
-                new Reference($metadata->getServiceId('repository')),
-                new Reference($metadata->getServiceId('factory')),
-                new Reference(ViewHandlerInterface::class),
+                '$metadata' => $this->getMetadataDefinition($metadata),
+                '$repository' => new Reference($metadata->getServiceId('repository')),
+                '$factory' => new Reference($metadata->getServiceId('factory')),
+                '$viewHandler' => new Reference(ViewHandlerInterface::class),
             ])
-            ->addMethodCall('setContainer', [new Reference('service_container')])
             ->addTag('controller.service_arguments')
+            ->addTag('container.service_subscriber')
         ;
 
         $serviceId = $metadata->getServiceId('pimcore_controller');
@@ -167,14 +157,12 @@ final class PimcoreDriver extends AbstractDriver
 
         $container->setDefinition($metadata->getServiceId('repository'), $definition);
 
-        if (method_exists($container, 'registerAliasForArgument')) {
-            foreach (class_implements($repositoryClass) as $typehintClass) {
-                $container->registerAliasForArgument(
-                    $metadata->getServiceId('repository'),
-                    $typehintClass,
-                    $metadata->getHumanizedName() . ' repository',
-                );
-            }
+        foreach (class_implements($repositoryClass) as $typehintClass) {
+            $container->registerAliasForArgument(
+                $metadata->getServiceId('repository'),
+                $typehintClass,
+                $metadata->getHumanizedName() . ' repository',
+            );
         }
     }
 
@@ -204,14 +192,12 @@ final class PimcoreDriver extends AbstractDriver
 
         $container->setDefinition($metadata->getServiceId('repository.factory'), $definition);
 
-        if (method_exists($container, 'registerAliasForArgument')) {
-            foreach (class_implements($repositoryClass) as $typehintClass) {
-                $container->registerAliasForArgument(
-                    $metadata->getServiceId('repository.factory'),
-                    $typehintClass,
-                    $metadata->getHumanizedName() . ' repository factory',
-                );
-            }
+        foreach (class_implements($repositoryClass) as $typehintClass) {
+            $container->registerAliasForArgument(
+                $metadata->getServiceId('repository.factory'),
+                $typehintClass,
+                $metadata->getHumanizedName() . ' repository factory',
+            );
         }
     }
 
@@ -225,12 +211,10 @@ final class PimcoreDriver extends AbstractDriver
             $alias,
         );
 
-        if (method_exists($container, 'registerAliasForArgument')) {
-            $container->registerAliasForArgument(
-                $metadata->getServiceId('manager'),
-                ObjectManager::class,
-                $metadata->getHumanizedName() . ' manager',
-            );
-        }
+        $container->registerAliasForArgument(
+            $metadata->getServiceId('manager'),
+            ObjectManager::class,
+            $metadata->getHumanizedName() . ' manager',
+        );
     }
 }

@@ -34,7 +34,11 @@ class PimcoreDocument extends Type
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?Document
     {
-        return Document::getById($value);
+        if (null === $value) {
+            return null;
+        }
+
+        return Document::getById((int)$value);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?int

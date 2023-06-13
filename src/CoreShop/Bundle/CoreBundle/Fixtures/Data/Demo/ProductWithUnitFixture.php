@@ -22,19 +22,25 @@ use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Barcode;
 use Faker\Provider\Lorem;
 
-class ProductWithUnitFixture extends AbstractProductFixture
+class ProductWithUnitFixture extends AbstractProductFixture implements FixtureGroupInterface
 {
+    public static function getGroups(): array
+    {
+        return ['demo'];
+    }
+
     public function load(ObjectManager $manager): void
     {
-        $stores = $this->container->get('coreshop.repository.store')->findAll();
+        $stores = $this->storeRepository->findAll();
 
         $productsCount = 10;
-        $decimalFactor = $this->container->getParameter('coreshop.currency.decimal_factor');
+        $decimalFactor = $this->decimalFactor;
         $faker = Factory::create();
         $faker->addProvider(new Lorem($faker));
         $faker->addProvider(new Barcode($faker));
@@ -42,10 +48,10 @@ class ProductWithUnitFixture extends AbstractProductFixture
         for ($i = 0; $i < $productsCount; ++$i) {
             $product = $this->createProduct('products-with-unit');
 
-            $productUnitDefinitionFactory = $this->container->get('coreshop.factory.product_unit_definition');
-            $productUnitDefinitionsFactory = $this->container->get('coreshop.factory.product_unit_definitions');
-            $productUnitDefinitionPriceFactory = $this->container->get('coreshop.factory.product_unit_definition_price');
-            $storeValuesFactory = $this->container->get('coreshop.factory.product_store_values');
+            $productUnitDefinitionFactory = $this->productUnitDefinitionFactory;
+            $productUnitDefinitionsFactory = $this->productUnitDefinitionsFactory;
+            $productUnitDefinitionPriceFactory = $this->productUnitDefinitionPriceFactory;
+            $storeValuesFactory = $this->storeValuesFactory;
 
             /**
              * @var ProductUnitDefinitionsInterface $unitDefinitions

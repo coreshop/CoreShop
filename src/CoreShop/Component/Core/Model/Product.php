@@ -36,22 +36,22 @@ abstract class Product extends BaseProduct implements ProductInterface
         return 0 < $this->getOnHand();
     }
 
-    public function getMetaTitle($language = null): ?string
+    public function getMetaTitle(?string $language = null): ?string
     {
         return $this->getPimcoreMetaTitle($language) ?: $this->getName($language);
     }
 
-    public function getMetaDescription($language = null): ?string
+    public function getMetaDescription(?string $language = null): ?string
     {
         return $this->getPimcoreMetaDescription($language) ?: $this->getShortDescription($language);
     }
 
-    public function getOGTitle($language = null): ?string
+    public function getOGTitle(?string $language = null): ?string
     {
         return $this->getMetaTitle($language);
     }
 
-    public function getOGDescription($language = null): ?string
+    public function getOGDescription(?string $language = null): ?string
     {
         return $this->getMetaDescription($language);
     }

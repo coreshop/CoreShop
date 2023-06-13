@@ -43,7 +43,7 @@
     background-size: 20px;
 }
 
-body.pimcore_version_10 .coreshop_nav_icon_logo {
+body.pimcore_version_11 .coreshop_nav_icon_logo {
     background-image: url(../img/logo-fill_white.svg);
     background-position: center center;
     background-repeat: no-repeat;
@@ -58,19 +58,19 @@ body.pimcore_version_10 .coreshop_nav_icon_logo {
     background: url(../img//collaboration.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_10 .coreshop_nav_icon_localization {
+body.pimcore_version_11 .coreshop_nav_icon_localization {
     background: url(../img//collaboration_white.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_10 .coreshop_nav_icon_customer {
+body.pimcore_version_11 .coreshop_nav_icon_customer {
     background: url(../img/customer_white.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_10 .coreshop_nav_icon_customer_to_company_assign_to_new {
+body.pimcore_version_11 .coreshop_nav_icon_customer_to_company_assign_to_new {
     background: url(../img/customer_to_company_assign_to_new_white.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_10 .coreshop_nav_icon_customer_to_company_assign_to_existing {
+body.pimcore_version_11 .coreshop_nav_icon_customer_to_company_assign_to_existing {
     background: url(../img/customer_to_company_assign_to_existing_white.svg) center center no-repeat !important;
 }
 

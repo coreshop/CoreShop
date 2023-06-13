@@ -98,7 +98,7 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface, \Str
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

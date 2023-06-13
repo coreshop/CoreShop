@@ -26,7 +26,7 @@ coreshop.core.object.store_preview = Class.create({
         var me = this;
 
         if (me.layout == null) {
-            var iframeOnLoad = "pimcore.globalmanager.get('object_" + me.object.data.general.o_id + "').preview.iFrameLoaded()";
+            var iframeOnLoad = "pimcore.globalmanager.get('object_" + me.object.data.general.id + "').preview.iFrameLoaded()";
             me.frameId = 'coreshop_store_preview_iframe_' + me.object.id;
             me.layout = Ext.create('Ext.panel.Panel', {
                 title: t('coreshop_store_preview'),
@@ -91,7 +91,7 @@ coreshop.core.object.store_preview = Class.create({
         var me = this,
             date = new Date();
 
-        var url = Routing.generate('coreshop_admin_purchasable_store_preview', {id: me.object.data.general.o_id, time: date.getTime(), store: me.store});
+        var url = Routing.generate('coreshop_admin_purchasable_store_preview', {id: me.object.data.general.id, time: date.getTime(), store: me.store});
 
         try {
             Ext.get(me.frameId).dom.src = url;

@@ -22,7 +22,9 @@ use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
+use Pimcore\Bundle\AdminBundle\DataObject\GridColumnConfig\Operator\AbstractOperator;
+use Pimcore\Bundle\AdminBundle\DataObject\GridColumnConfig\ResultContainer;
+use Pimcore\Model\Element\ElementInterface;
 
 class PriceFormatter extends AbstractOperator
 {
@@ -35,16 +37,11 @@ class PriceFormatter extends AbstractOperator
         parent::__construct($config, $context);
     }
 
-    /**
-     * @param \Pimcore\Model\Element\ElementInterface $element
-     *
-     * @return \stdClass|string|null
-     */
-    public function getLabeledValue($element)
+    public function getLabeledValue(array|ElementInterface $element): ResultContainer|\stdClass|null
     {
         $result = new \stdClass();
         $result->label = $this->label;
-        $children = $this->getChilds();
+        $children = $this->getChildren();
 
         if (!$children) {
             return $result;

@@ -34,12 +34,8 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
         this.panels = [];
         this.conditions = data.conditions;
         this.actions = data.actions;
-        if (pimcore.eventDispatcher !== undefined) {
-            this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
-        }
-        else {
-            document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
-        }
+
+        document.addEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
     },
 
     postSaveObjectNew: function (e)

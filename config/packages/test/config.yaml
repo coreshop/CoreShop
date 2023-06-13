@@ -2,10 +2,6 @@ imports:
     - { resource: ../../config.yaml }
     - { resource: ../../../src/CoreShop/Behat/Resources/config/services.yml }
 
-pimcore:
-    targeting:
-        enabled: false
-
 doctrine:
     dbal:
         connections:
@@ -24,7 +20,7 @@ parameters:
 framework:
     session:
         handler_id:  ~
-        storage_id: session.storage.mock_file
+        storage_factory_id: session.storage.factory.mock_file
         name: MOCKSESSID
         gc_probability: null
     messenger:
@@ -39,3 +35,9 @@ monolog:
             level: error
         console:
             channels: ['!event', '!doctrine', '!console', '!cache']
+
+pimcore_static_routes:
+    config_location:
+        staticroutes:
+            write_target:
+                type: settings-store

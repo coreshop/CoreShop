@@ -2,7 +2,7 @@ CoreShop\Component\Product\Model\Product:
     exclusion_policy: ALL
     xml_root_name: product
     properties:
-        o_id:
+        id:
             expose: true
             type: integer
             xml_attribute: true

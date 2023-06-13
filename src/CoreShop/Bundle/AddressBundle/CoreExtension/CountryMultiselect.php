@@ -25,5 +25,10 @@ use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
  */
 class CountryMultiselect extends Multiselect
 {
-    public $fieldtype = 'coreShopCountryMultiselect';
+    public string $fieldtype = 'coreShopCountryMultiselect';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 }

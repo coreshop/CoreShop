@@ -24,9 +24,9 @@
     }
   ],
   "require": {
-    "coreshop/core-bundle": "^3.0",
+    "coreshop/core-bundle": "^4.0",
     "dachcom-digital/emailizr": "^2.0.0",
-    "pimcore/pimcore": "^10.5"
+    "pimcore/pimcore": "^11.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",

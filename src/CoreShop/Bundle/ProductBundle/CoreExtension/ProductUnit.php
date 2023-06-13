@@ -20,25 +20,26 @@ namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
+use Pimcore\Model\DataObject\Concrete;
 
 /**
  * @psalm-suppress InvalidReturnType, InvalidReturnStatement
  */
 class ProductUnit extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopProductUnit';
+    public string $fieldtype = 'coreShopProductUnit';
 
-    public function isDiffChangeAllowed($object, $params = [])
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
+
+    public function isDiffChangeAllowed(Concrete $object, array $params = []): bool
     {
         return false;
     }
 
-    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    public function getDiffDataForEditMode(mixed $data, Concrete $object = null, array $params = []): ?array
     {
         return [];
     }

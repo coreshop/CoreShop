@@ -38,7 +38,7 @@ class PriceRuleTranslation extends AbstractTranslation implements PriceRuleTrans
      */
     protected $label;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

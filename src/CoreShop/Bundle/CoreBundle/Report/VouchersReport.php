@@ -77,7 +77,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
               orderVouchers.discountGross AS discount,
               orders.orderDate
               FROM object_collection_CoreShopProposalCartPriceRuleItem_$classId as orderVouchers
-              INNER JOIN object_query_$classId as orders ON orders.oo_id = orderVouchers.o_id 
+              INNER JOIN object_query_$classId as orders ON orders.oo_id = orderVouchers.id 
               LEFT JOIN coreshop_cart_price_rule AS priceRule ON orderVouchers.cartPriceRule = priceRule.id 
               WHERE orderVouchers.voucherCode <> '' AND orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ?
               ORDER BY orders.orderDate DESC

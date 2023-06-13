@@ -21,6 +21,6 @@ coreshop.order.cart.detail.panel = Class.create(coreshop.order.order.detail.pane
     getLayout: function($super) {
         var layout = $super();
 
-        layout.setTitle(t('coreshop_' + this.type) + ': ' + this.sale.o_id);
+        layout.setTitle(t('coreshop_' + this.type) + ': ' + this.sale.id);
     },
 });

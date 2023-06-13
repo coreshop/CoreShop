@@ -103,7 +103,7 @@ class IndexType extends AbstractResourceType
             return $data->getWorker();
         }
 
-        if (null !== $form->getConfig()->hasOption('configuration_type')) {
+        if ($form->getConfig()->hasOption('configuration_type')) {
             return $form->getConfig()->getOption('configuration_type');
         }
 

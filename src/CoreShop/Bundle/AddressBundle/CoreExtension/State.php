@@ -27,7 +27,12 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
  */
 class State extends Select
 {
-    public $fieldtype = 'coreShopState';
+    public string $fieldtype = 'coreShopState';
+
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     protected function getRepository(): RepositoryInterface
     {

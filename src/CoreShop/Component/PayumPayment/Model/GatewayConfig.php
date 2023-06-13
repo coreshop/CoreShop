@@ -34,10 +34,7 @@ class GatewayConfig extends BaseGatewayConfig implements ResourceInterface
      */
     protected $id;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

@@ -25,14 +25,14 @@ use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
  */
 class StoreMultiselect extends Multiselect
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopStoreMultiselect';
+    public string $fieldtype = 'coreShopStoreMultiselect';
 
-    public function getOptionsProviderClass()
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
+
+    public function getOptionsProviderClass(): ?string
     {
         return '@' . StoreOptionProvider::class;
     }

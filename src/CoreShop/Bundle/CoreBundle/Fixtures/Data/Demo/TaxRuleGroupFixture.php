@@ -18,28 +18,30 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
+use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
+class TaxRuleGroupFixture extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
-    private ?ContainerInterface $container;
-
-    public function getVersion(): string
-    {
-        return '2.0';
+    public function __construct(
+        private RepositoryInterface $taxRuleGroupRepository,
+        private FactoryInterface $taxRuleGroupFactory,
+        private FactoryInterface $taxRuleFactory,
+        private CountryRepositoryInterface $countryRepository,
+    ) {
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public static function getGroups(): array
     {
-        $this->container = $container;
+        return ['demo'];
     }
 
     /**
@@ -54,19 +56,19 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
 
     public function load(ObjectManager $manager): void
     {
-        if (!count($this->container->get('coreshop.repository.tax_rule_group')->findAll())) {
+        if (!count($this->taxRuleGroupRepository->findAll())) {
             /**
              * @var TaxRuleGroupInterface $taxRuleGroup
              */
-            $taxRuleGroup = $this->container->get('coreshop.factory.tax_rule_group')->createNew();
+            $taxRuleGroup = $this->taxRuleGroupFactory->createNew();
             $taxRuleGroup->setName('AT');
             $taxRuleGroup->setActive(true);
 
             /**
              * @var TaxRuleInterface $taxRule
              */
-            $taxRule = $this->container->get('coreshop.factory.tax_rule')->createNew();
-            $taxRule->setCountry($this->container->get('coreshop.repository.country')->findByCode('AT'));
+            $taxRule = $this->taxRuleFactory->createNew();
+            $taxRule->setCountry($this->countryRepository->findByCode('AT'));
             $taxRule->setTaxRate($this->getReference('taxRate'));
             $taxRule->setTaxRuleGroup($taxRuleGroup);
             $taxRule->setBehavior(TaxCalculatorInterface::DISABLE_METHOD);

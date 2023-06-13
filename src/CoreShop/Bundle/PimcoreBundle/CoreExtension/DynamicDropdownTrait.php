@@ -53,12 +53,12 @@ trait DynamicDropdownTrait
      */
     public $onlyPublished;
 
-    public function getObjectsAllowed()
+    public function getObjectsAllowed(): bool
     {
         return true;
     }
 
-    public function getClasses()
+    public function getClasses(): array
     {
         return [['classes' => $this->getClassName()]];
     }

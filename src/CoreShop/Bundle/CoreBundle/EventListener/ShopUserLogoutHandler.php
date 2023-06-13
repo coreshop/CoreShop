@@ -24,10 +24,15 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Http\Event\LogoutEvent;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
+/**
+ * TOOD: Refactor https://symfony.com/blog/new-in-symfony-5-1-simpler-logout-customization
+ */
+
 /** @psalm-suppress DeprecatedInterface */
-final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
+final class ShopUserLogoutHandler /*implements LogoutSuccessHandlerInterface*/
 {
     public function __construct(
         private RouterInterface $router,
@@ -36,8 +41,9 @@ final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
     ) {
     }
 
-    public function onLogoutSuccess(Request $request): Response
+    public function onLogoutSuccess(LogoutEvent $event): Response
     {
+        $request = $event->getRequest();
         $store = $this->storeContext->getStore();
 
         if ($store instanceof StoreInterface) {

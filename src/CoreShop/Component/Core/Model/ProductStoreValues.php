@@ -55,7 +55,7 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
         $this->productUnitDefinitionPrices = new ArrayCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

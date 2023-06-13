@@ -12,13 +12,29 @@
 
 pimcore.registerNS("coreshop.resource");
 pimcore.registerNS("coreshop.resource.plugin");
-coreshop.resource.plugin = Class.create(pimcore.plugin.admin, {
-    getClassName: function () {
-        return "coreshop.resource.plugin";
-    },
-
+coreshop.resource.plugin = Class.create({
     initialize: function () {
-        pimcore.plugin.broker.registerPlugin(this);
+        document.addEventListener(pimcore.events.pimcoreReady, (e) => {
+            this.pimcoreReady(e.detail.params, e.detail.broker);
+        });
+        document.addEventListener(pimcore.events.postOpenObject, (e) => {
+            this.postOpenObject(e.detail.object, e.detail.type);
+        });
+        document.addEventListener(pimcore.events.preOpenObject, (e) => {
+            this.preOpenObject(e.detail.object, e.detail.type);
+        });
+        document.addEventListener(pimcore.events.postOpenAsset, (e) => {
+            this.postOpenAsset(e.detail.object, e.detail.type);
+        });
+        document.addEventListener(pimcore.events.preOpenAsset, (e) => {
+            this.preOpenAsset(e.detail.object, e.detail.type);
+        });
+        document.addEventListener(pimcore.events.postOpenDocument, (e) => {
+            this.postOpenDocument(e.detail.object, e.detail.type);
+        });
+        document.addEventListener(pimcore.events.preOpenDocument, (e) => {
+            this.preOpenDocument(e.detail.object, e.detail.type);
+        });
     },
 
     uninstall: function () {

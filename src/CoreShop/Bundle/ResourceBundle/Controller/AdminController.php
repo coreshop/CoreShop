@@ -20,15 +20,18 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 /**
- * @property ContainerInterface $container
+ * @psalm-suppress InternalClass
  */
-class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
+class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController
 {
     public function __construct(
+        \Psr\Container\ContainerInterface $container,
         protected ViewHandlerInterface $viewHandler,
     ) {
+        $this->container = $container;
     }
 
     /**
@@ -51,5 +54,15 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminContro
         }
 
         return $default;
+    }
+
+    /**
+     * @psalm-suppress ImplementedReturnTypeMismatch
+     * @psalm-suppress InvalidReturnType
+     * @return non-empty-array<array-key, SubscribedService|string>
+     */
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices();
     }
 }

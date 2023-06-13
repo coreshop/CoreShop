@@ -1,5 +1,4 @@
 imports:
-    - { resource: services_alias.yml }
     - { resource: services/form.yml }
     - { resource: services/listeners.yml }
     - { resource: services/commands.yml }

@@ -24,8 +24,8 @@
     }
   ],
   "require": {
-    "coreshop/seo": "^3.0",
-    "pimcore/pimcore": "^10.5"
+    "coreshop/seo": "^4.0",
+    "pimcore/pimcore": "^11.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",

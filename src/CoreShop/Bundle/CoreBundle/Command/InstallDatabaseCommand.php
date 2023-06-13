@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\CoreBundle\Command;
 
 use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
 use CoreShop\Bundle\CoreBundle\Installer\Provider\DatabaseSetupCommandsProviderInterface;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -56,7 +57,11 @@ EOT
             $this->getEnvironment(),
         ));
 
-        $commands = $this->databaseSetupCommand->getCommands($input, $output, $this->getHelper('question'));
+        /**
+         * @var QuestionHelper $questionHelper
+         */
+        $questionHelper = $this->getHelper('question');
+        $commands = $this->databaseSetupCommand->getCommands($input, $output, $questionHelper);
 
         $this->runCommands($commands, $output);
         $outputStyle->newLine();

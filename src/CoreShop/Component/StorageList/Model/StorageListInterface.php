@@ -20,7 +20,7 @@ namespace CoreShop\Component\StorageList\Model;
 
 interface StorageListInterface
 {
-    public function getId();
+    public function getId(): ?int;
 
     public function getItems(): ?array;
 

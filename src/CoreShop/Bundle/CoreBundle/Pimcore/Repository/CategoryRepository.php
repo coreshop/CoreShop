@@ -65,7 +65,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         $qb
             ->select('oo_id')
             ->from($dao->getTableName())
-            ->where('o_path LIKE :path')
+            ->where('path LIKE :path')
             ->andWhere('stores LIKE :stores')
             ->setParameter('path', $category->getRealFullPath() . '/%')
             ->setParameter('stores', '%,' . $store->getId() . ',%')
@@ -102,12 +102,12 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     {
         if (method_exists($category, 'getChildrenSortBy')) {
             $list->setOrderKey(
-                sprintf('o_%s ASC', $category->getChildrenSortBy()),
+                sprintf('%s ASC', $category->getChildrenSortBy()),
                 false,
             );
         } else {
             $list->setOrderKey(
-                'o_key ASC',
+                '`key` ASC',
                 false,
             );
         }
@@ -116,7 +116,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     private function setSortingForListingWithoutCategory(Listing $list): void
     {
         $list->setOrderKey(
-            'o_index ASC, o_key ASC',
+            '`index` ASC, `key` ASC',
             false,
         );
     }

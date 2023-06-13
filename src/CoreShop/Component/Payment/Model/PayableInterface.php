@@ -20,7 +20,7 @@ namespace CoreShop\Component\Payment\Model;
 
 interface PayableInterface
 {
-    public function getId();
+    public function getId(): ?int;
 
     public function getPaymentTotal(): ?int;
 }

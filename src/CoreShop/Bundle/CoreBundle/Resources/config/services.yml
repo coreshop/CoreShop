@@ -1,5 +1,4 @@
 imports:
-    - { resource: services_alias.yml }
     - { resource: services/context.yml }
     - { resource: services/storage.yml }
     - { resource: services/form.yml }
@@ -32,6 +31,7 @@ imports:
     - { resource: services/menu.yml }
     - { resource: services/shipping-taxation.yml }
     - { resource: services/taxation.yml }
+    - { resource: services/fixtures.yaml }
 
 services:
     _defaults:
@@ -42,10 +42,10 @@ services:
             - '@coreshop.repository.user'
             - '%coreshop.model.user.class%'
 
-    coreshop.security.user.password_encoder_factory:
-        class: Pimcore\Security\Encoder\Factory\UserAwareEncoderFactory
+    coreshop.security.user.password_hasher_factories:
+        class: Pimcore\Security\Hasher\Factory\UserAwarePasswordHasherFactory
         arguments:
-            - Pimcore\Security\Encoder\PasswordFieldEncoder
+            - Pimcore\Security\Hasher\PasswordFieldHasher
             - ['password']
 
     CoreShop\Component\Core\Configuration\ConfigurationServiceInterface: '@CoreShop\Component\Core\Configuration\ConfigurationService'

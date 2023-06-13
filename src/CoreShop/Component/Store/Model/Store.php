@@ -60,10 +60,7 @@ class Store extends AbstractResource implements StoreInterface, \Stringable
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

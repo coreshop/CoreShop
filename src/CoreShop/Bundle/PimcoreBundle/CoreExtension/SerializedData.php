@@ -25,19 +25,13 @@ use Pimcore\Model;
  */
 class SerializedData extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopSerializedData';
+    public string $fieldtype = 'coreShopSerializedData';
+    public string $phpdocType = '';
 
-    /**
-     * Type for the generated phpdoc.
-     *
-     * @var string
-     */
-    public $phpdocType;
+    public function getFieldType(): string
+    {
+        return $this->fieldtype;
+    }
 
     public function getParameterTypeDeclaration(): ?string
     {
@@ -59,32 +53,32 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
         return null;
     }
 
-    public function isDiffChangeAllowed($object, $params = [])
+    public function isDiffChangeAllowed(Model\DataObject\Concrete $object, array $params = []): bool
     {
         return false;
     }
 
-    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    public function getDiffDataForEditMode(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): ?array
     {
         return [];
     }
 
-    public function getDataForResource($data, $object = null, $params = [])
+    public function getDataForResource(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): mixed
     {
         return serialize($data);
     }
 
-    public function getDataFromResource($data, $object = null, $params = [])
+    public function getDataFromResource(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): mixed
     {
         return (is_string($data) ? unserialize($data) : $data) ?: null;
     }
 
-    public function getDataForEditmode($data, $object = null, $params = [])
+    public function getDataForEditmode(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): mixed
     {
         return $data;
     }
 
-    public function getDataFromEditmode($data, $object = null, $params = [])
+    public function getDataFromEditmode(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): mixed
     {
         return $this->getDataFromResource($data, $object, $params);
     }
@@ -99,62 +93,39 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
         return null;
     }
 
-    /**
-     * @return string
-     */
-    public function getColumnType()
+    public function getColumnType(): string
     {
         return 'LONGBLOB';
     }
 
-    public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
+    public function checkValidity(mixed $data, bool $omitMandatoryCheck = false, array $params = []): void
     {
-        return true;
+
     }
 
-    public function isEmpty($data)
+    public function isEmpty(mixed $data): bool
     {
         return null === $data;
     }
 
-    public function getForWebserviceExport($object, $params = [])
-    {
-        return null;
-    }
-
-    public function getFromWebserviceImport($value, $object = null, $params = [], $idMapper = null)
-    {
-        // not implemented
-    }
-
-    public function getDataForGrid($data, $object = null, $params = [])
+    public function getDataForGrid(mixed $data, Model\DataObject\Concrete $object = null, array $params = [])
     {
         return $this->getDataFromResource($data, $object, $params);
     }
 
-    public function getVersionPreview($data, $object = null, $params = [])
+    public function getVersionPreview(mixed $data, Model\DataObject\Concrete $object = null, array $params = []): string
     {
         $data = $this->getDataFromResource($data, $object, $params);
 
         return is_array($data) ? serialize($data) : '--';
     }
 
-    /**
-     * @return string
-     */
-    public function getForCsvExport($object, $params = [])
+    public function getForCsvExport(Model\DataObject\Concrete|Model\DataObject\Objectbrick\Data\AbstractData|Model\DataObject\Fieldcollection\Data\AbstractData|Model\DataObject\Localizedfield $object, array $params = []): string
     {
         return '';
     }
 
-    public function getFromCsvImport($importValue, $object = null, $params = [])
-    {
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilterCondition($value, $operator, $params = [])
+    public function getFilterCondition(mixed $value, string $operator, array $params = []): string
     {
         return '';
     }

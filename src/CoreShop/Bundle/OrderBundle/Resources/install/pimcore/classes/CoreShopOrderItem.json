@@ -26,7 +26,7 @@
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
-        "childs": [
+        "children": [
             {
                 "fieldtype": "panel",
                 "labelWidth": 100,
@@ -43,7 +43,7 @@
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
-                "childs": [
+                "children": [
                     {
                         "fieldtype": "tabpanel",
                         "border": false,
@@ -59,7 +59,7 @@
                         "bodyStyle": null,
                         "datatype": "layout",
                         "permissions": null,
-                        "childs": [
+                        "children": [
                             {
                                 "fieldtype": "fieldset",
                                 "labelWidth": 100,
@@ -74,11 +74,11 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "localizedfields",
                                         "phpdocType": "\\Pimcore\\Model\\DataObject\\Localizedfield",
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "input",
                                                 "width": null,
@@ -392,7 +392,7 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "panel",
                                         "labelWidth": 100,
@@ -409,7 +409,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
@@ -747,7 +747,7 @@
                                                     "CoreShopTaxItem"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -819,7 +819,7 @@
                                                     "CoreShopAdjustment"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -860,7 +860,7 @@
                                         "bodyStyle": "",
                                         "datatype": "layout",
                                         "permissions": null,
-                                        "childs": [
+                                        "children": [
                                             {
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
@@ -1198,7 +1198,7 @@
                                                     "CoreShopTaxItem"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -1270,7 +1270,7 @@
                                                     "CoreShopAdjustment"
                                                 ],
                                                 "lazyLoading": true,
-                                                "maxItems": "",
+                                                "maxItems": null,
                                                 "disallowAddRemove": false,
                                                 "disallowReorder": false,
                                                 "collapsed": false,
@@ -1312,7 +1312,7 @@
                                 "bodyStyle": "",
                                 "datatype": "layout",
                                 "permissions": null,
-                                "childs": [
+                                "children": [
                                     {
                                         "fieldtype": "fieldcollections",
                                         "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
@@ -1320,7 +1320,7 @@
                                             "CoreShopPriceRuleItem"
                                         ],
                                         "lazyLoading": true,
-                                        "maxItems": "",
+                                        "maxItems": null,
                                         "disallowAddRemove": false,
                                         "disallowReorder": false,
                                         "collapsed": false,

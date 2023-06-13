@@ -13,7 +13,7 @@
 
 pimcore.registerNS('coreshop.messenger.resource');
 
-coreshop.messenger.resource = Class.create(pimcore.plugin.admin, {
+coreshop.messenger.resource = Class.create({
     initialize: function () {
         var me = this;
 

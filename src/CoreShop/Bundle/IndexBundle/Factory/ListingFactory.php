@@ -23,7 +23,6 @@ use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use Symfony\Component\Intl\Exception\InvalidArgumentException;
 
 class ListingFactory implements ListingFactoryInterface
 {
@@ -37,7 +36,7 @@ class ListingFactory implements ListingFactoryInterface
         $worker = $index->getWorker();
 
         if (!$this->workerServiceRegistry->has($worker)) {
-            throw new InvalidArgumentException(sprintf('%s Worker not found', $worker));
+            throw new \InvalidArgumentException(sprintf('%s Worker not found', $worker));
         }
 
         /**

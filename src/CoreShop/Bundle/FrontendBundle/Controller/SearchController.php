@@ -31,7 +31,7 @@ class SearchController extends FrontendController
     {
         $form = $this->createSearchForm();
 
-        return $this->render($this->templateConfigurator->findTemplate('Search/_widget.html'), [
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Search/_widget.html'), [
             'form' => $form->createView(),
         ]);
     }
@@ -61,7 +61,7 @@ class SearchController extends FrontendController
                 '%' . $this->container->get(StoreContextInterface::class)->getStore()->getId() . '%',
             ];
 
-            $list = $this->get('coreshop.repository.product')->getList();
+            $list = $this->container->get('coreshop.repository.product')->getList();
             $list->setCondition('active = 1 AND (' . implode(' OR ', $query) . ') AND stores LIKE ?', $queryParams);
 
             $paginator = $this->getPaginator()->paginate(
@@ -70,7 +70,7 @@ class SearchController extends FrontendController
                 $itemsPerPage,
             );
 
-            return $this->render($this->templateConfigurator->findTemplate('Search/search.html'), [
+            return $this->render($this->getTemplateConfigurator()->findTemplate('Search/search.html'), [
                 'paginator' => $paginator,
                 'searchText' => $text,
             ]);
@@ -81,7 +81,7 @@ class SearchController extends FrontendController
 
     protected function createSearchForm(): FormInterface
     {
-        return $this->get('form.factory')->createNamed('coreshop', SearchType::class, null, [
+        return $this->container->get('form.factory')->createNamed('coreshop', SearchType::class, null, [
             'action' => $this->generateUrl('coreshop_search'),
             'method' => 'GET',
         ]);
@@ -89,6 +89,6 @@ class SearchController extends FrontendController
 
     protected function getPaginator(): PaginatorInterface
     {
-        return $this->get(PaginatorInterface::class);
+        return $this->container->get(PaginatorInterface::class);
     }
 }

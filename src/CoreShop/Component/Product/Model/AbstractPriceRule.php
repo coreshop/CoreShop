@@ -58,7 +58,7 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         $this->initializeTranslationsCollection();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

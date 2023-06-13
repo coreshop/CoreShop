@@ -58,10 +58,7 @@ class Currency extends AbstractResource implements CurrencyInterface, \Stringabl
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

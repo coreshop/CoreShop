@@ -27,7 +27,7 @@ class MailController extends FrontendController
 {
     public function mailAction(Request $request): Response
     {
-        return $this->render($this->templateConfigurator->findTemplate('Mail/mail.html'));
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Mail/mail.html'));
     }
 
     public function orderConfirmationAction(Request $request): Response
@@ -35,10 +35,10 @@ class MailController extends FrontendController
         $order = $request->attributes->get('object');
         $viewParameters = [];
 
-        if (!$this->get(EditmodeResolver::class)->isEditmode($request) && $order instanceof OrderInterface) {
+        if (!$this->container->get(EditmodeResolver::class)->isEditmode($request) && $order instanceof OrderInterface) {
             $viewParameters['order'] = $order;
         }
 
-        return $this->render($this->templateConfigurator->findTemplate('Mail/order-confirmation.html'), $viewParameters);
+        return $this->render($this->getTemplateConfigurator()->findTemplate('Mail/order-confirmation.html'), $viewParameters);
     }
 }

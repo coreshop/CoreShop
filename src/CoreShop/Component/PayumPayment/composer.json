@@ -25,9 +25,9 @@
   ],
   "require": {
     "php": "^8.0",
-    "coreshop/payment": "^3.0",
+    "coreshop/payment": "^4.0",
     "payum/payum": "^1.7",
-    "php-http/message-factory": "^1.0"
+    "symfony/http-client": "^6.3"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",
