@@ -32,7 +32,6 @@ use Pimcore\Tool;
 
 class CarrierFixture extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
-
     public function __construct(
         private CarrierRepositoryInterface $carrierRepository,
         private StoreRepositoryInterface $storeRepository,
@@ -72,7 +71,7 @@ class CarrierFixture extends Fixture implements DependentFixtureInterface, Fixtu
 
             foreach (Tool::getValidLanguages() as $lang) {
                 $carrier->setDescription(implode(\PHP_EOL, $faker->paragraphs(3)), $lang);
-                $carrier->setTitle('Standard - '.strtoupper($lang), $lang);
+                $carrier->setTitle('Standard - ' . strtoupper($lang), $lang);
             }
 
             $manager->persist($carrier);

@@ -38,6 +38,6 @@ class MoneyToIntegerTransformer implements DataTransformerInterface
 
     public function reverseTransform($value): mixed
     {
-        return null === $value ? null : (int)(round($value * $this->decimalFactor));
+        return null === $value ? null : (int) (round($value * $this->decimalFactor));
     }
 }

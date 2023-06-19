@@ -39,6 +39,7 @@ class CurrencyFixture extends Fixture implements FixtureGroupInterface
     {
         return ['application'];
     }
+
     public function load(ObjectManager $manager): void
     {
         $countries = CountryLoader::countries(true, true);
@@ -70,7 +71,7 @@ class CurrencyFixture extends Fixture implements FixtureGroupInterface
             $currency->setNumericIsoCode($c['iso_4217_numeric']);
             $currency->setSymbol(Currencies::getSymbol($iso));
 
-            $this->setReference('currency_'.$iso, $currency);
+            $this->setReference('currency_' . $iso, $currency);
 
             $manager->persist($currency);
         }

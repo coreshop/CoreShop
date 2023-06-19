@@ -32,8 +32,11 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
     Model\DataObject\ClassDefinition\Data\PreGetDataInterface
 {
     public string $fieldtype = 'coreShopMoneyCurrency';
+
     public ?int $width = 0;
+
     public ?float $minValue = 0;
+
     public ?float $maxValue = 0;
 
     public function getFieldType(): string

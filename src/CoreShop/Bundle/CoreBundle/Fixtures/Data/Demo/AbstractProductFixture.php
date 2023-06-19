@@ -556,10 +556,8 @@ abstract class AbstractProductFixture extends Fixture implements DependentFixtur
         protected FactoryInterface $productUnitDefinitionsFactory,
         protected FactoryInterface $productUnitDefinitionPriceFactory,
         protected FactoryInterface $storeValuesFactory,
-
     ) {
     }
-
 
     public function getDependencies(): array
     {
@@ -595,7 +593,7 @@ abstract class AbstractProductFixture extends Fixture implements DependentFixtur
                 '/demo/%s/%s',
                 $parentPath,
                 Service::getValidKey($usedCategory->getName(), 'asset'),
-            )
+            ),
         );
 
         $images = [];
@@ -609,7 +607,7 @@ abstract class AbstractProductFixture extends Fixture implements DependentFixtur
             );
 
             $fileName = sprintf('image_%s.jpg', uniqid('', true));
-            $fullPath = $folder->getFullPath().'/'.$fileName;
+            $fullPath = $folder->getFullPath() . '/' . $fileName;
 
             $existingImage = Asset::getByPath($fullPath);
 
@@ -645,7 +643,7 @@ abstract class AbstractProductFixture extends Fixture implements DependentFixtur
 //        $product->setWholesalePrice((int)($faker->randomFloat(2, 100, 200) * $decimalFactor));
 
         foreach ($stores as $store) {
-            $product->setStoreValuesOfType('price', (int)($faker->randomFloat(2, 200, 400) * $decimalFactor), $store);
+            $product->setStoreValuesOfType('price', (int) ($faker->randomFloat(2, 200, 400) * $decimalFactor), $store);
         }
 
         $product->setTaxRule($this->getReference('taxRule'));
@@ -661,8 +659,8 @@ abstract class AbstractProductFixture extends Fixture implements DependentFixtur
                     '/demo/%s/%s',
                     $parentPath,
                     Service::getValidKey($usedCategory->getName(), 'object'),
-                )
-            )
+                ),
+            ),
         );
         $product->setPublished(true);
         $product->setKey($product->getName());

@@ -26,11 +26,13 @@ use Pimcore\Model\Element\ElementInterface;
 interface PimcoreModelInterface extends ResourceInterface, ElementInterface
 {
     public function getId(): ?int;
+
     public function setKey(string $key): static;
 
     public function getKey(): ?string;
 
     public function setPublished(bool $published): static;
+
     public function getPublished(): bool;
 
     public function isPublished(): bool;

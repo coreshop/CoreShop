@@ -22,7 +22,6 @@ use CoreShop\Component\Pimcore\DataObject\AbstractSluggableLinkGenerator;
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Pimcore\Exception\LinkGenerationNotPossibleException;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
-use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ResourceConfigurationLinkGenerator extends AbstractSluggableLinkGenerator

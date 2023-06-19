@@ -18,7 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 
@@ -59,6 +58,7 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstra
     /**
      * @psalm-suppress ImplementedReturnTypeMismatch
      * @psalm-suppress InvalidReturnType
+     *
      * @return non-empty-array<array-key, SubscribedService|string>
      */
     public static function getSubscribedServices(): array

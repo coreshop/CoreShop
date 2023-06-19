@@ -38,8 +38,9 @@ use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class PaymentController extends AbstractController
 {
-    public function __construct(\Psr\Container\ContainerInterface $container)
-    {
+    public function __construct(
+        \Psr\Container\ContainerInterface $container,
+    ) {
         $this->container = $container;
     }
 
@@ -102,22 +103,22 @@ class PaymentController extends AbstractController
     {
         return $this->container->get(OrderPaymentProviderInterface::class);
     }
-    
+
     protected function getOrderRepository()
     {
         return $this->container->get('coreshop.repository.order');
     }
-    
+
     protected function getGetStatusFactory()
     {
         return $this->container->get(GetStatusFactoryInterface::class);
     }
-    
+
     protected function getResolveNextRouteFactory()
     {
         return $this->container->get(ResolveNextRouteFactoryInterface::class);
     }
-    
+
     protected function getConfirmOrderFactory()
     {
         return $this->container->get(ConfirmOrderFactoryInterface::class);

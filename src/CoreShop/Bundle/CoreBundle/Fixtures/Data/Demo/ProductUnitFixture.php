@@ -26,7 +26,6 @@ use Doctrine\Persistence\ObjectManager;
 
 class ProductUnitFixture extends Fixture implements FixtureGroupInterface
 {
-
     public function __construct(
         private FactoryInterface $productUnitFactory,
     ) {

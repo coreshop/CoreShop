@@ -119,7 +119,7 @@ final class CartContext implements Context
      */
     public function addProductInUnitToCart(array $productAndUnit, float $quantity = 1.0): void
     {
-         $cart = $this->cartContext->getCart();
+        $cart = $this->cartContext->getCart();
 
         /**
          * @var OrderItemInterface $cartItem

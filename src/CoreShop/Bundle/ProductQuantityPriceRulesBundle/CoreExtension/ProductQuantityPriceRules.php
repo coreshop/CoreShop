@@ -85,8 +85,6 @@ class ProductQuantityPriceRules extends Data implements
     }
 
     /**
-     * @param mixed $object
-     *
      * @return ProductQuantityPriceRuleInterface[]
      */
     public function preGetData(mixed $object, array $params = []): mixed

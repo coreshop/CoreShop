@@ -22,7 +22,6 @@ use CoreShop\Component\Pimcore\Exception\LinkGenerationNotPossibleException;
 use CoreShop\Component\Pimcore\Slug\SluggableInterface;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
-use Pimcore\Model\DataObject\Concrete;
 
 class ResourceSlugLinkGenerator implements LinkGeneratorInterface
 {

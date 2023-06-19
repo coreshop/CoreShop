@@ -84,6 +84,7 @@ class OrderController extends PimcoreController
 
                 if ($workflow->getName() === $identifier) {
                     $stateMachine = $workflow;
+
                     break;
                 }
             }
@@ -101,7 +102,7 @@ class OrderController extends PimcoreController
                 $states[$identifier][] = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
                     $identifier,
                     $place,
-                    false
+                    false,
                 );
             }
 
@@ -173,11 +174,11 @@ class OrderController extends PimcoreController
 
         $type = $this->getParameterFromRequest($request, 'saleType', 'order');
 
-        $orderClassId = (string)$this->getParameter('coreshop.model.order.pimcore_class_name');
-        $folderPath = (string)$this->getParameter('coreshop.folder.'.$type);
+        $orderClassId = (string) $this->getParameter('coreshop.model.order.pimcore_class_name');
+        $folderPath = (string) $this->getParameter('coreshop.folder.' . $type);
         $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
-        $folder = DataObject::getByPath('/'.$folderPath);
+        $folder = DataObject::getByPath('/' . $folderPath);
 
         if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
@@ -207,7 +208,7 @@ class OrderController extends PimcoreController
             $conditionFilters[] = $gridHelper->getFilterCondition(
                 $this->getParameterFromRequest($request, 'filter'),
                 DataObject\ClassDefinition::getByName(
-                    (string)$this->getParameter('coreshop.model.order.pimcore_class_name')
+                    (string) $this->getParameter('coreshop.model.order.pimcore_class_name'),
                 ),
             );
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
@@ -306,29 +307,29 @@ class OrderController extends PimcoreController
             'currencyName' => $order->getBaseCurrency() instanceof CurrencyInterface ? $order->getBaseCurrency(
             )->getName() : '',
             'customerName' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getFirstname(
-                ).' '.$order->getCustomer()->getLastname() : '',
+            ) . ' ' . $order->getCustomer()->getLastname() : '',
             'customerEmail' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getEmail(
             ) : '',
             'store' => $order->getStore() instanceof StoreInterface ? $order->getStore()->getId() : null,
             'orderState' => $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
                 'coreshop_order',
                 $order->getOrderState() ?? OrderStates::STATE_NEW,
-                false
+                false,
             ),
             'orderPaymentState' => $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
                 'coreshop_order_payment',
                 $order->getPaymentState(),
-                false
+                false,
             ),
             'orderShippingState' => $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
                 'coreshop_order_shipment',
                 $order->getShippingState(),
-                false
+                false,
             ),
             'orderInvoiceState' => $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
                 'coreshop_order_invoice',
                 $order->getInvoiceState(),
-                false
+                false,
             ),
         ];
 
@@ -341,18 +342,18 @@ class OrderController extends PimcoreController
 
     protected function prepareAddress(AddressInterface $address, string $type): array
     {
-        $prefix = 'address'.ucfirst($type);
+        $prefix = 'address' . ucfirst($type);
         $values = [];
         $fullAddress = [];
         $classDefinition = DataObject\ClassDefinition::getByName(
-            (string)$this->getParameter('coreshop.model.address.pimcore_class_name')
+            (string) $this->getParameter('coreshop.model.address.pimcore_class_name'),
         );
 
         foreach ($classDefinition->getFieldDefinitions() as $fieldDefinition) {
             $value = '';
 
             if ($address instanceof DataObject\Concrete) {
-                $getter = 'get'.ucfirst($fieldDefinition->getName());
+                $getter = 'get' . ucfirst($fieldDefinition->getName());
 
                 if (method_exists($address, $getter)) {
                     $value = $address->$getter();
@@ -365,13 +366,13 @@ class OrderController extends PimcoreController
                 }
             }
 
-            $values[$prefix.ucfirst($fieldDefinition->getName())] = $value;
+            $values[$prefix . ucfirst($fieldDefinition->getName())] = $value;
         }
 
         if ($address->getCountry() instanceof \CoreShop\Component\Address\Model\CountryInterface) {
-            $values[$prefix.'All'] = $this->container->get(AddressFormatterInterface::class)->formatAddress(
+            $values[$prefix . 'All'] = $this->container->get(AddressFormatterInterface::class)->formatAddress(
                 $address,
-                false
+                false,
             );
         }
 
@@ -403,18 +404,18 @@ class OrderController extends PimcoreController
         ];
 
         if ($order->getShippingAddress() instanceof AddressInterface && $order->getShippingAddress()->getCountry(
-            ) instanceof CountryInterface) {
+        ) instanceof CountryInterface) {
             $jsonSale['address']['shipping']['formatted'] = $this->container->get(
-                AddressFormatterInterface::class
+                AddressFormatterInterface::class,
             )->formatAddress($order->getShippingAddress());
         } else {
             $jsonSale['address']['shipping']['formatted'] = '';
         }
 
         if ($order->getInvoiceAddress() instanceof AddressInterface && $order->getInvoiceAddress()->getCountry(
-            ) instanceof CountryInterface) {
+        ) instanceof CountryInterface) {
             $jsonSale['address']['billing']['formatted'] = $this->container->get(
-                AddressFormatterInterface::class
+                AddressFormatterInterface::class,
             )->formatAddress($order->getInvoiceAddress());
         } else {
             $jsonSale['address']['billing']['formatted'] = '';
@@ -453,30 +454,31 @@ class OrderController extends PimcoreController
         $jsonSale['orderState'] = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
             'coreshop_order',
             $order->getOrderState() ?? OrderStates::STATE_NEW,
-            false
+            false,
         );
         $jsonSale['orderPaymentState'] = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
             'coreshop_order_payment',
             $order->getPaymentState() ?? OrderPaymentStates::STATE_NEW,
-            false
+            false,
         );
         $jsonSale['orderShippingState'] = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
             'coreshop_order_shipment',
             $order->getShippingState() ?? OrderShipmentStates::STATE_NEW,
-            false
+            false,
         );
         $jsonSale['orderInvoiceState'] = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
             'coreshop_order_invoice',
             $order->getInvoiceState() ?? OrderInvoiceStates::STATE_NEW,
-            false
+            false,
         );
 
         $availableTransitions = $this->container->get(WorkflowStateInfoManagerInterface::class)->parseTransitions(
             $order,
-            'coreshop_order', [
+            'coreshop_order',
+            [
             'cancel',
         ],
-            false
+            false,
         );
 
         $jsonSale['availableOrderTransitions'] = $availableTransitions;
@@ -490,7 +492,7 @@ class OrderController extends PimcoreController
         $jsonSale['shipments'] = $this->getShipments($order);
         $jsonSale['paymentCreationAllowed'] = !in_array(
             $order->getOrderState(),
-            [OrderStates::STATE_CANCELLED, OrderStates::STATE_COMPLETE]
+            [OrderStates::STATE_CANCELLED, OrderStates::STATE_COMPLETE],
         );
         $jsonSale['invoiceCreationAllowed'] = $this->container->get('coreshop.order.invoice.processable')->isProcessable($order);
         $jsonSale['shipmentCreationAllowed'] = $this->container->get('coreshop.order.shipment.processable')->isProcessable($order);
@@ -535,11 +537,12 @@ class OrderController extends PimcoreController
         foreach ($invoices as $invoice) {
             $availableTransitions = $this->container->get(WorkflowStateInfoManagerInterface::class)->parseTransitions(
                 $invoice,
-                'coreshop_invoice', [
+                'coreshop_invoice',
+                [
                 'complete',
                 'cancel',
             ],
-                false
+                false,
             );
 
             $data = $this->container->get('jms_serializer')->toArray($invoice);
@@ -547,7 +550,7 @@ class OrderController extends PimcoreController
             $data['stateInfo'] = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
                 'coreshop_invoice',
                 $invoice->getState(),
-                false
+                false,
             );
             $data['transitions'] = $availableTransitions;
 
@@ -565,12 +568,13 @@ class OrderController extends PimcoreController
         foreach ($shipments as $shipment) {
             $availableTransitions = $this->container->get(WorkflowStateInfoManagerInterface::class)->parseTransitions(
                 $shipment,
-                'coreshop_shipment', [
+                'coreshop_shipment',
+                [
                 'create',
                 'ship',
                 'cancel',
             ],
-                false
+                false,
             );
 
             $data = $this->container->get('jms_serializer')->toArray($shipment);
@@ -578,7 +582,7 @@ class OrderController extends PimcoreController
             $data['stateInfo'] = $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
                 'coreshop_shipment',
                 $shipment->getState(),
-                false
+                false,
             );
             $data['transitions'] = $availableTransitions;
 
@@ -710,12 +714,13 @@ class OrderController extends PimcoreController
 
             $availableTransitions = $this->container->get(WorkflowStateInfoManagerInterface::class)->parseTransitions(
                 $payment,
-                'coreshop_payment', [
+                'coreshop_payment',
+                [
                 'cancel',
                 'complete',
                 'refund',
             ],
-                false
+                false,
             );
 
             $return[] = [
@@ -728,7 +733,7 @@ class OrderController extends PimcoreController
                 'stateInfo' => $this->container->get(WorkflowStateInfoManagerInterface::class)->getStateInfo(
                     'coreshop_payment',
                     $payment->getState(),
-                    false
+                    false,
                 ),
                 'transitions' => $availableTransitions,
             ];
@@ -776,10 +781,10 @@ class OrderController extends PimcoreController
 
         if (is_array($data)) {
             if (count(
-                    array_filter($data, static function ($row) {
-                        return is_array($row);
-                    }),
-                ) > 0) {
+                array_filter($data, static function ($row) {
+                    return is_array($row);
+                }),
+            ) > 0) {
                 // we don't support sub arrays
                 $detail = htmlentities(json_encode($data, \JSON_THROW_ON_ERROR));
                 $data = '';
@@ -797,7 +802,7 @@ class OrderController extends PimcoreController
         }
 
         if (false === is_string($data)) {
-            $data = (string)$data;
+            $data = (string) $data;
         }
 
         return [
@@ -812,16 +817,23 @@ class OrderController extends PimcoreController
         return parent::getSubscribedServices() + [
                 'event_dispatcher' => EventDispatcherInterface::class,
                 new SubscribedService(
-                    WorkflowStateInfoManagerInterface::class, WorkflowStateInfoManagerInterface::class
+                    WorkflowStateInfoManagerInterface::class,
+                    WorkflowStateInfoManagerInterface::class,
                 ),
                 new SubscribedService(
-                    'coreshop.order.invoice.processable', ProcessableInterface::class, attributes: new Autowire('coreshop.order.invoice.processable')
+                    'coreshop.order.invoice.processable',
+                    ProcessableInterface::class,
+                    attributes: new Autowire('coreshop.order.invoice.processable'),
                 ),
                 new SubscribedService(
-                    'coreshop.order.shipment.processable', ProcessableInterface::class, attributes: new Autowire('coreshop.order.shipment.processable')
+                    'coreshop.order.shipment.processable',
+                    ProcessableInterface::class,
+                    attributes: new Autowire('coreshop.order.shipment.processable'),
                 ),
                 new SubscribedService(
-                    'workflows', 'iterable', attributes: new TaggedIterator('workflow.state_machine')
+                    'workflows',
+                    'iterable',
+                    attributes: new TaggedIterator('workflow.state_machine'),
                 ),
                 new SubscribedService('jms_serializer', SerializerInterface::class),
                 AddressFormatterInterface::class,
@@ -829,7 +841,7 @@ class OrderController extends PimcoreController
                 new SubscribedService('coreshop.repository.order_invoice', OrderInvoiceRepositoryInterface::class, attributes: new Autowire('coreshop.repository.order_invoice')),
                 new SubscribedService('coreshop.repository.order_shipment', OrderShipmentRepositoryInterface::class, attributes: new Autowire('coreshop.repository.order_shipment')),
                 new SubscribedService('coreshop.repository.payment', PaymentRepositoryInterface::class, attributes: new Autowire('coreshop.repository.payment')),
-                HistoryLogger::class
+                HistoryLogger::class,
             ];
     }
 }

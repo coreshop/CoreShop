@@ -20,7 +20,6 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -57,10 +56,9 @@ class SecurityController extends FrontendController
         return parent::getSubscribedServices() +
             [
                 AuthenticationUtils::class => AuthenticationUtils::class,
-                ShopperContextInterface::class => ShopperContextInterface::class
+                ShopperContextInterface::class => ShopperContextInterface::class,
             ];
     }
-
 
     public function checkAction(Request $request): void
     {

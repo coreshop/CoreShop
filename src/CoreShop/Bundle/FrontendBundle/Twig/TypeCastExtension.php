@@ -27,22 +27,22 @@ final class TypeCastExtension extends AbstractExtension
     {
         return [
             new TwigFilter('coreshop_int', function ($value) {
-                return (int)$value;
+                return (int) $value;
             }),
             new TwigFilter('coreshop_float', function ($value) {
-                return (float)$value;
+                return (float) $value;
             }),
             new TwigFilter('coreshop_string', function ($value) {
-                return (string)$value;
+                return (string) $value;
             }),
             new TwigFilter('coreshop_bool', function ($value) {
-                return (bool)$value;
+                return (bool) $value;
             }),
             new TwigFilter('coreshop_array', function (object $value) {
-                return (array)$value;
+                return (array) $value;
             }),
             new TwigFilter('coreshop_object', function (array $value) {
-                return (object)$value;
+                return (object) $value;
             }),
         ];
     }

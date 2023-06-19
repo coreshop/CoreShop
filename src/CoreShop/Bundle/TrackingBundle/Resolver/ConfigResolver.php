@@ -18,8 +18,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\TrackingBundle\Resolver;
 
-
-use Pimcore\Bundle\GoogleMarketingBundle\Config\Config;
 use Pimcore\Bundle\GoogleMarketingBundle\Config\ConfigProvider;
 use Pimcore\Bundle\GoogleMarketingBundle\SiteId\SiteIdProvider;
 

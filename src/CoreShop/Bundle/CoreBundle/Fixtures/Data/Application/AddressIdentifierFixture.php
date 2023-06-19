@@ -26,8 +26,9 @@ use Doctrine\Persistence\ObjectManager;
 
 class AddressIdentifierFixture extends Fixture implements FixtureGroupInterface
 {
-    public function __construct(private FactoryInterface $addressIdentifierFactory)
-    {
+    public function __construct(
+        private FactoryInterface $addressIdentifierFactory,
+    ) {
     }
 
     public static function getGroups(): array

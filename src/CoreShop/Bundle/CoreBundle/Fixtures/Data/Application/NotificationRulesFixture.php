@@ -46,7 +46,7 @@ final class NotificationRulesFixture extends Fixture implements FixtureGroupInte
     {
         $installResourcesDirectory = $this->installerResources;
         $jsonFile = $this->kernel->locateResource(
-            sprintf('%s/data/%s.json', $installResourcesDirectory, 'notification-rules')
+            sprintf('%s/data/%s.json', $installResourcesDirectory, 'notification-rules'),
         );
 
         $totalExistingRules = count($this->notificationRuleRepository->findAll());
@@ -68,7 +68,7 @@ final class NotificationRulesFixture extends Fixture implements FixtureGroupInte
 
                         foreach ($rule['actions'] as &$action) {
                             foreach ($action['configuration']['mails'] as &$mail) {
-                                $document = Document::getByPath('/'.$mail);
+                                $document = Document::getByPath('/' . $mail);
 
                                 if ($document instanceof Document\Email) {
                                     $mail = $document->getId();

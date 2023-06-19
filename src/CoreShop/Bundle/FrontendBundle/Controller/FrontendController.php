@@ -29,8 +29,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FrontendController extends AbstractController
 {
-    public function __construct(\Psr\Container\ContainerInterface $container)
-    {
+    public function __construct(
+        \Psr\Container\ContainerInterface $container,
+    ) {
         $this->container = $container;
     }
 
@@ -50,7 +51,6 @@ class FrontendController extends AbstractController
             SEOPresentationInterface::class => SEOPresentationInterface::class,
         ];
     }
-
 
     /**
      * @return mixed

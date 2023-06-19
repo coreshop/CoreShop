@@ -38,7 +38,7 @@ class PimcoreObject extends Type
             return null;
         }
 
-        return AbstractObject::getById((int)$value);
+        return AbstractObject::getById((int) $value);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?int

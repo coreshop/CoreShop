@@ -225,7 +225,7 @@ abstract class Select extends Data implements
     public function getDataForSearchIndex($object, $params = []): string
     {
         if ($object instanceof ResourceInterface) {
-            return (string)$object->getId();
+            return (string) $object->getId();
         }
 
         return parent::getDataForSearchIndex($object, $params);

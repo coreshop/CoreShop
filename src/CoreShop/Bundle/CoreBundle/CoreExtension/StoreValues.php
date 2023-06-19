@@ -53,9 +53,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 {
     use TempEntityManagerTrait;
 
-    /**
-     * @var string
-     */
     public string $fieldtype = 'coreShopStoreValues';
 
     /**
@@ -82,7 +79,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     {
         return $this->fieldtype;
     }
-
 
     /**
      * @return int

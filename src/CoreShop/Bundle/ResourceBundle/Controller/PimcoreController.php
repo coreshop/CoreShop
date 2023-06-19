@@ -47,6 +47,7 @@ class PimcoreController extends AdminController
              * @var User $user
              *
              * @psalm-var User $user
+             *
              * @psalm-suppress InternalMethod
              */
             $user = $this->getAdminUser();

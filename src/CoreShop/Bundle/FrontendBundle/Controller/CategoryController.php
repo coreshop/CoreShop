@@ -260,7 +260,6 @@ class CategoryController extends FrontendController
         ];
     }
 
-
     protected function getRepository(): CategoryRepositoryInterface
     {
         return $this->container->get('coreshop.repository.category');

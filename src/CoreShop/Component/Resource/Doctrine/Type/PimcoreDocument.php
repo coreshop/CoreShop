@@ -38,7 +38,7 @@ class PimcoreDocument extends Type
             return null;
         }
 
-        return Document::getById((int)$value);
+        return Document::getById((int) $value);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?int

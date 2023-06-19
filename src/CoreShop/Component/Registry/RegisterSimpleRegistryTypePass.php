@@ -50,7 +50,7 @@ abstract class RegisterSimpleRegistryTypePass implements CompilerPassInterface
         $container->registerAliasForArgument(
             $this->registry,
             ServiceRegistryInterface::class,
-            strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $tagName))). ' service registry',
+            strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $tagName))) . ' service registry',
         );
 
         $map = [];

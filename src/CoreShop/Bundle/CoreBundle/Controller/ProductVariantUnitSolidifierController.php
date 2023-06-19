@@ -167,7 +167,7 @@ class ProductVariantUnitSolidifierController extends AdminController
         return parent::getSubscribedServices() + [
             new SubscribedService('coreshop.repository.product', ProductRepositoryInterface::class),
             ProductQuantityPriceRulesCloner::class,
-            ProductUnitDefinitionsCloner::class
+            ProductUnitDefinitionsCloner::class,
         ];
     }
 }

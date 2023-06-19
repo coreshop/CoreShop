@@ -31,9 +31,8 @@ class ConfigurationController extends ResourceController
     public function saveAllAction(
         Request $request,
         ConfigurationServiceInterface $configurationService,
-        StoreRepositoryInterface $storeRepository
-    ): Response
-    {
+        StoreRepositoryInterface $storeRepository,
+    ): Response {
         $values = $this->decodeJson($this->getParameterFromRequest($request, 'values'));
         $values = array_htmlspecialchars($values);
 

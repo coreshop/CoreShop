@@ -22,7 +22,6 @@ use CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface;
 use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Bundle\AdminBundle\Controller\AdminAbstractController;
-use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -36,8 +35,7 @@ class GridController extends AdminAbstractController
         string $listType,
         ServiceRegistryInterface $gridFilterServiceRegistry,
         TranslatorInterface $translator,
-    ): Response
-    {
+    ): Response {
         $services = [];
         /** @var GridFilterInterface $service */
         foreach ($gridFilterServiceRegistry->all() as $id => $service) {
@@ -57,9 +55,8 @@ class GridController extends AdminAbstractController
     public function getGridActionsAction(
         string $listType,
         ServiceRegistryInterface $gridActionServiceRegistry,
-        TranslatorInterface $translator
-    ): Response
-    {
+        TranslatorInterface $translator,
+    ): Response {
         $services = [];
         /** @var GridActionInterface $service */
         foreach ($gridActionServiceRegistry->all() as $id => $service) {
@@ -79,8 +76,7 @@ class GridController extends AdminAbstractController
     public function applyGridAction(
         Request $request,
         ServiceRegistryInterface $gridActionServiceRegistry,
-    ): Response
-    {
+    ): Response {
         $requestedIds = $request->request->get('ids');
         $actionId = (string) $request->request->get('actionId');
 

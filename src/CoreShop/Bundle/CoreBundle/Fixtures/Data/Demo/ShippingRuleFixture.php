@@ -29,7 +29,6 @@ use Doctrine\Persistence\ObjectManager;
 
 class ShippingRuleFixture extends Fixture implements FixtureGroupInterface
 {
-
     public function __construct(
         private RepositoryInterface $shippingRuleRepository,
         private StoreRepositoryInterface $storeRepository,
@@ -41,6 +40,7 @@ class ShippingRuleFixture extends Fixture implements FixtureGroupInterface
     {
         return ['demo'];
     }
+
     public function load(ObjectManager $manager): void
     {
         if (!count($this->shippingRuleRepository->findAll())) {
@@ -136,7 +136,7 @@ class ShippingRuleFixture extends Fixture implements FixtureGroupInterface
 
                 $manager->persist($rule);
 
-                $this->setReference('shippingRule'.$index, $rule);
+                $this->setReference('shippingRule' . $index, $rule);
             }
 
             $manager->flush();

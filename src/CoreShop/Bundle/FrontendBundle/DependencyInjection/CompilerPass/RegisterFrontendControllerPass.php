@@ -18,17 +18,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\DependencyInjection\CompilerPass;
 
-use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
-use CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactoryInterface;
-use CoreShop\Bundle\PayumBundle\Factory\GetStatusFactoryInterface;
-use CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactoryInterface;
-use CoreShop\Component\Core\Context\ShopperContextInterface;
-use CoreShop\Component\Order\Payment\OrderPaymentProviderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterFrontendControllerPass implements CompilerPassInterface
 {
@@ -44,8 +36,7 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
 
             if ($key === 'payment') {
                 $serviceName = 'CoreShop\\Bundle\\PayumBundle\\Controller\\PaymentController';
-            }
-            else {
+            } else {
                 $serviceName = sprintf('CoreShop\\Bundle\\FrontendBundle\\Controller\\%sController', ucfirst($key));
             }
 
