@@ -26,6 +26,7 @@ use Pimcore\Model;
 class SerializedData extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface
 {
     public string $fieldtype = 'coreShopSerializedData';
+
     public string $phpdocType = '';
 
     public function getFieldType(): string
@@ -100,7 +101,6 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
 
     public function checkValidity(mixed $data, bool $omitMandatoryCheck = false, array $params = []): void
     {
-
     }
 
     public function isEmpty(mixed $data): bool

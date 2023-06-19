@@ -395,7 +395,6 @@ class CartController extends FrontendController
             ];
     }
 
-
     private function getCartItemErrors(OrderItemInterface $cartItem): ConstraintViolationListInterface
     {
         return $this

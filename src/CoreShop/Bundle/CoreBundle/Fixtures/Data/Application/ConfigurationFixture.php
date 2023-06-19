@@ -25,8 +25,9 @@ use Doctrine\Persistence\ObjectManager;
 
 class ConfigurationFixture extends Fixture implements FixtureGroupInterface
 {
-    public function __construct(private ConfigurationServiceInterface $configurationService)
-    {
+    public function __construct(
+        private ConfigurationServiceInterface $configurationService,
+    ) {
     }
 
     public static function getGroups(): array

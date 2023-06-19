@@ -46,7 +46,7 @@ class ResourceController extends AdminController
         protected EventDispatcherInterface $eventDispatcher,
         protected ResourceFormFactoryInterface $resourceFormFactory,
         protected ErrorSerializer $formErrorSerializer,
-        protected TokenStorageInterface $tokenStorage
+        protected TokenStorageInterface $tokenStorage,
     ) {
         parent::__construct($container, $viewHandler);
     }

@@ -35,7 +35,6 @@ use Symfony\Component\Intl\Languages;
 
 class CountryFixture extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
-
     public function __construct(
         private CountryRepositoryInterface $countryRepository,
         private FactoryInterface $countryFactory,
@@ -124,10 +123,10 @@ class CountryFixture extends Fixture implements DependentFixtureInterface, Fixtu
                 $newCountry->setActive($country->getIsoAlpha2() === 'AT' || $newCountry->getActive());
                 $newCountry->setZone($this->zoneRepository->findOneBy(['name' => $country->getContinent()]));
                 $newCountry->setCurrency(
-                    $this->currencyRepository->getByCode($country->getCurrency()['iso_4217_code'])
+                    $this->currencyRepository->getByCode($country->getCurrency()['iso_4217_code']),
                 );
 
-                $this->setReference('country_'.$country->getIsoAlpha2(), $newCountry);
+                $this->setReference('country_' . $country->getIsoAlpha2(), $newCountry);
 
                 $extra = $country->getExtra();
                 $addressFormat = $defaultAddressFormat;
@@ -142,7 +141,7 @@ class CountryFixture extends Fixture implements DependentFixtureInterface, Fixtu
                     }
 
                     $replaceTo = trim(implode(' ', $replaces));
-                    $replaceFrom = '{{'.$replaceKey.'}}';
+                    $replaceFrom = '{{' . $replaceKey . '}}';
 
                     $addressFormat = str_replace($replaceFrom, $replaceTo, $addressFormat);
                 }

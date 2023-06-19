@@ -32,8 +32,6 @@ use Pimcore\Tool;
 
 class PaymentProviderFixture extends Fixture implements FixtureGroupInterface
 {
-
-
     public function __construct(
         private PaymentProviderRepositoryInterface $paymentProviderRepository,
         private StoreRepositoryInterface $storeRepository,

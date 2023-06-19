@@ -42,7 +42,7 @@ class ClassUpdate extends AbstractDefinitionUpdate
             DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->classDefinition),
             true,
             512,
-            JSON_THROW_ON_ERROR
+            \JSON_THROW_ON_ERROR,
         );
         $this->originalJsonDefinition = $this->jsonDefinition;
     }
@@ -51,7 +51,7 @@ class ClassUpdate extends AbstractDefinitionUpdate
     {
         return DataObject\ClassDefinition\Service::importClassDefinitionFromJson(
             $this->classDefinition,
-                json_encode($this->jsonDefinition, JSON_THROW_ON_ERROR),
+            json_encode($this->jsonDefinition, \JSON_THROW_ON_ERROR),
             true,
         );
     }

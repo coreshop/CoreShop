@@ -145,7 +145,7 @@ class OrderCreationController extends BaseOrderCreationController
         return parent::getSubscribedServices() + [
             CarriersResolverInterface::class,
             TaxedShippingCalculatorInterface::class,
-            CartContextResolverInterface::class
+            CartContextResolverInterface::class,
         ];
     }
 }

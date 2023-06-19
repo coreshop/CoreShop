@@ -20,7 +20,6 @@ namespace CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator;
 
 use CoreShop\Component\Pimcore\DataObject\AbstractSluggableLinkGenerator;
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
-use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator

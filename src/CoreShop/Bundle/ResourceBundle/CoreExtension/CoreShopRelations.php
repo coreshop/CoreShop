@@ -102,41 +102,26 @@ class CoreShopRelations extends Data\ManyToManyRelation
         return $return;
     }
 
-    /**
-     * @return bool
-     */
     public function getObjectsAllowed(): bool
     {
         return true;
     }
 
-    /**
-     * @return bool
-     */
     public function getDocumentsAllowed(): bool
     {
         return false;
     }
 
-    /**
-     * @return array
-     */
     public function getDocumentTypes(): array
     {
         return [];
     }
 
-    /**
-     * @return bool
-     */
     public function getAssetsAllowed(): bool
     {
         return false;
     }
 
-    /**
-     * @return array
-     */
     public function getAssetTypes(): array
     {
         return [];

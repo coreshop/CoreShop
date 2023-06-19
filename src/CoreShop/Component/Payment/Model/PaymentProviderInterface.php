@@ -42,41 +42,32 @@ interface PaymentProviderInterface extends
     public function setIdentifier($identifier);
 
     /**
-     * @param string|null $language
-     *
      * @return string
      */
     public function getTitle(?string $language = null);
 
     /**
      * @param string $title
-     * @param string|null $language
      */
     public function setTitle($title, ?string $language = null);
 
     /**
-     * @param string|null $language
-     *
      * @return string
      */
     public function getDescription(?string $language = null);
 
     /**
      * @param string $description
-     * @param string|null $language
      */
     public function setDescription($description, ?string $language = null);
 
     /**
-     * @param string|null $language
-     *
      * @return string
      */
     public function getInstructions(?string $language = null);
 
     /**
      * @param string $instructions
-     * @param string|null $language
      */
     public function setInstructions($instructions, ?string $language = null);
 

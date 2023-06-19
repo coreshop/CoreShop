@@ -37,9 +37,9 @@ class PimcoreSite extends Type
         if (null === $value) {
             return null;
         }
-        
+
         //not sure why this might return a string
-        $site = Site::getById((int)$value);
+        $site = Site::getById((int) $value);
 
         if ($site instanceof Site) {
             return $site;

@@ -28,7 +28,7 @@ class StoreFixture extends Fixture implements FixtureGroupInterface
 {
     public function __construct(
         private StoreRepositoryInterface $storeRepository,
-        private FactoryInterface $storeFactory
+        private FactoryInterface $storeFactory,
     ) {
     }
 
@@ -36,6 +36,7 @@ class StoreFixture extends Fixture implements FixtureGroupInterface
     {
         return ['application'];
     }
+
     public function load(ObjectManager $manager): void
     {
         if (!$this->storeRepository->findStandard()) {
@@ -49,8 +50,7 @@ class StoreFixture extends Fixture implements FixtureGroupInterface
             $manager->flush();
 
             $this->setReference('store', $store);
-        }
-        else {
+        } else {
             $this->setReference('store', $this->storeRepository->findStandard());
         }
     }

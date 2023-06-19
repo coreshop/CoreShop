@@ -18,8 +18,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MessengerBundle\EventListener;
 
-use Pimcore\Event\BundleManager\PathsEvent;
 use Pimcore\Bundle\AdminBundle\Event\BundleManagerEvents;
+use Pimcore\Event\BundleManager\PathsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class AdminJavascriptListener implements EventSubscriberInterface

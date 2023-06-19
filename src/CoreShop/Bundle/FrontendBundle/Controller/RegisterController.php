@@ -161,7 +161,6 @@ class RegisterController extends FrontendController
             ];
     }
 
-
     protected function getCustomer(): ?CustomerInterface
     {
         try {

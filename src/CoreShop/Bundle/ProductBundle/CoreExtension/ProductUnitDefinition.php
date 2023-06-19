@@ -39,7 +39,9 @@ class ProductUnitDefinition extends Data implements
     Data\PreSetDataInterface
 {
     public string $fieldtype = 'coreShopProductUnitDefinition';
+
     public string $phpdocType = '\\' . ProductUnitDefinitionInterface::class;
+
     public bool $allowEmpty = false;
 
     public function getFieldType(): string
