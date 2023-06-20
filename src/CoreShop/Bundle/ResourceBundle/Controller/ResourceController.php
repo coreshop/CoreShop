@@ -254,7 +254,7 @@ class ResourceController extends AdminController
         return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
     }
 
-    protected function findOr404(int $id): ResourceInterface
+    protected function findOr404(int|string $id): ResourceInterface
     {
         $model = $this->repository->find($id);
 

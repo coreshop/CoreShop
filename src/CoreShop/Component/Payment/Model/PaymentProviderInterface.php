@@ -31,6 +31,8 @@ interface PaymentProviderInterface extends
     TranslatableInterface,
     TimestampableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return mixed
      */

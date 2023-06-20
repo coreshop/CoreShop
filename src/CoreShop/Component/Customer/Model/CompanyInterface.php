@@ -24,6 +24,8 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 
 interface CompanyInterface extends ResourceInterface, PimcoreModelInterface, EquatableInterface
 {
+    public function getId(): ?int;
+
     public function getName(): ?string;
 
     public function setName(?string $name);

@@ -25,6 +25,8 @@ use Doctrine\Common\Collections\Collection;
 
 interface RuleInterface extends ResourceInterface, TimestampableInterface, ToggleableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */

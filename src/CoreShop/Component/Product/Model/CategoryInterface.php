@@ -24,6 +24,8 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface CategoryInterface extends PimcoreModelInterface, SluggableInterface, KeyableSluggableInterface
 {
+    public function getId(): ?int;
+
     public function getName(?string $language = null): ?string;
 
     public function setName(?string $name, ?string $language = null);

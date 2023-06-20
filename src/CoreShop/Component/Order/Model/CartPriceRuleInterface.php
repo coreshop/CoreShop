@@ -24,6 +24,8 @@ use Doctrine\Common\Collections\Collection;
 
 interface CartPriceRuleInterface extends RuleInterface, TranslatableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */

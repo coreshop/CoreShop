@@ -24,6 +24,8 @@ use CoreShop\Component\Resource\Model\TranslationInterface;
 
 interface ProductUnitTranslationInterface extends ResourceInterface, TimestampableInterface, TranslationInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */

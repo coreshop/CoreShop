@@ -22,6 +22,8 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface SequenceInterface extends ResourceInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return int
      */

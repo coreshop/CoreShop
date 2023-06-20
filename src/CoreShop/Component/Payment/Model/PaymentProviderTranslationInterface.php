@@ -24,6 +24,8 @@ use CoreShop\Component\Resource\Model\TranslationInterface;
 
 interface PaymentProviderTranslationInterface extends ResourceInterface, TimestampableInterface, TranslationInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */

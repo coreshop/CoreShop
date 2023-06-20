@@ -25,6 +25,8 @@ use CoreShop\Component\Resource\Model\TranslatableInterface;
 
 interface TaxRateInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface, ToggleableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */
