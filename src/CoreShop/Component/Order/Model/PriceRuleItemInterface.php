@@ -22,6 +22,8 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface PriceRuleItemInterface extends ResourceInterface
 {
+    public function getId(): ?int;
+
     public function getCartPriceRule(): ?CartPriceRuleInterface;
 
     public function setCartPriceRule(?CartPriceRuleInterface $cartPriceRule);

@@ -24,6 +24,8 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface OrderDocumentInterface extends ResourceInterface, PimcoreModelInterface
 {
+    public function getId(): ?int;
+
     public static function getDocumentType(): string;
 
     public function getOrder(): ?OrderInterface;

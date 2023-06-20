@@ -24,6 +24,8 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, LocaleAwareInterface
 {
+    public function getId(): ?int;
+
     public function getSalutation(): ?string;
 
     public function setSalutation(?string $salutation);

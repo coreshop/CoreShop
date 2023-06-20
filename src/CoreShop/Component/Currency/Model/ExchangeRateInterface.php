@@ -22,6 +22,8 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface ExchangeRateInterface extends ResourceInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return float
      */

@@ -29,6 +29,8 @@ interface CountryInterface extends
     TimestampableInterface,
     ToggleableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */

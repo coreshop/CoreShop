@@ -28,6 +28,8 @@ interface UserInterface extends ResourceInterface, PimcoreModelInterface, Symfon
 {
     public const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
 
+    public function getId(): ?int;
+
     public function getLoginIdentifier(): ?string;
 
     public function setLoginIdentifier(?string $loginIdentifer);

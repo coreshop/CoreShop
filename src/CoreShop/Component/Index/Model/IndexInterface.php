@@ -24,6 +24,8 @@ use Doctrine\Common\Collections\Collection;
 
 interface IndexInterface extends ResourceInterface, TimestampableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */

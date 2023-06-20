@@ -20,7 +20,13 @@ namespace CoreShop\Component\Resource\Model;
 
 interface ResourceInterface
 {
-    public function getId(): ?int;
+    /**
+     * Can be a string or int or null, depending on where we store the data
+     * DataDefinitions for example uses a string identifier
+     *
+     * @return int|string|null
+     */
+    public function getId(): int|string|null;
 
     public function setValues(array $data = []): static;
 

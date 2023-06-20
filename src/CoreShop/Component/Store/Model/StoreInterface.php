@@ -24,6 +24,8 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 
 interface StoreInterface extends ResourceInterface, TimestampableInterface, CurrencyAwareInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */

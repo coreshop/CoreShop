@@ -22,6 +22,8 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface NotificationRuleInterface extends RuleInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */

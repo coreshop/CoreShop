@@ -23,6 +23,8 @@ use Doctrine\Common\Collections\Collection;
 
 interface ProductUnitDefinitionsInterface extends ResourceInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return ProductInterface
      */

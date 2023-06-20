@@ -43,6 +43,7 @@ interface OrderInterface extends
     PayableInterface,
     StorageListInterface
 {
+    public function getId(): ?int;
     public function getToken(): ?string;
 
     public function setToken(?string $token);

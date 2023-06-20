@@ -23,6 +23,8 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 
 interface TaxRuleInterface extends ResourceInterface, TimestampableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return int
      */

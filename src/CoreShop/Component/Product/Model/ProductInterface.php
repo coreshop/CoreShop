@@ -26,6 +26,8 @@ use Pimcore\Model\Asset\Image;
 
 interface ProductInterface extends PimcoreModelInterface, ToggleableInterface, SluggableInterface, KeyableSluggableInterface
 {
+    public function getId(): ?int;
+
     public function getSku(): ?string;
 
     public function setSku(?string $sku);

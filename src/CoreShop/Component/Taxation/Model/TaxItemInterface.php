@@ -22,6 +22,8 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface TaxItemInterface extends ResourceInterface
 {
+    public function getId(): ?int;
+
     public function getName(): ?string;
 
     public function setName(?string $name);

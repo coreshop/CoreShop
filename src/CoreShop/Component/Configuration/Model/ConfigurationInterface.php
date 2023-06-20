@@ -23,6 +23,8 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 
 interface ConfigurationInterface extends ResourceInterface, TimestampableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */

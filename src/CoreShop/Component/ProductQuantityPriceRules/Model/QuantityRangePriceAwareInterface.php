@@ -22,6 +22,8 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface QuantityRangePriceAwareInterface extends ResourceInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return ProductQuantityPriceRuleInterface[]
      */

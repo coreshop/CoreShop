@@ -25,6 +25,8 @@ use CoreShop\Component\Resource\Model\TranslatableInterface;
 
 interface StateInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface, ToggleableInterface
 {
+    public function getId(): ?int;
+
     /**
      * @return string
      */
