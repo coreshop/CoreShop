@@ -190,6 +190,15 @@ class CartController extends FrontendController
 
     public function addItemAction(Request $request): Response
     {
+        if ($request->isMethod('GET') && !($this->isGranted('CORESHOP_CART') && $this->isGranted('CORESHOP_CART_ADD_ITEM'))) {
+            return $this->render(
+                $this->getParameterFromRequest($request, 'template', $this->templateConfigurator->findTemplate('Product/_addToCart.html')),
+                [
+                    'form' => null,
+                    'product' => null,
+                ],
+            );
+        }
         $this->denyAccessUnlessGranted('CORESHOP_CART');
         $this->denyAccessUnlessGranted('CORESHOP_CART_ADD_ITEM');
 
