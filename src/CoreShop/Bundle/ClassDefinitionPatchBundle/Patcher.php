@@ -39,10 +39,10 @@ class Patcher implements PatcherInterface
         }
     }
 
-public function old(PatchInterface $patch): array
-{
-    return $this->patchWithClassUpdate($patch)->getOriginalJsonDefinition();
-}
+    public function old(PatchInterface $patch): array
+    {
+        return $this->patchWithClassUpdate($patch)->getOriginalJsonDefinition();
+    }
 
     public function new(PatchInterface $patch): array
     {

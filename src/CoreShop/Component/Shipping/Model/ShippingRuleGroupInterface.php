@@ -24,7 +24,7 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 interface ShippingRuleGroupInterface extends ResourceInterface, TimestampableInterface
 {
     public function getId(): ?int;
-    
+
     /**
      * @return CarrierInterface
      */
