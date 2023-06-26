@@ -23,8 +23,6 @@ interface ResourceInterface
     /**
      * Can be a string or int or null, depending on where we store the data
      * DataDefinitions for example uses a string identifier
-     *
-     * @return int|string|null
      */
     public function getId(): int|string|null;
 

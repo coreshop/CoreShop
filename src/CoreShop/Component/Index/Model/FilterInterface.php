@@ -25,7 +25,7 @@ use Doctrine\Common\Collections\Collection;
 interface FilterInterface extends ResourceInterface, TimestampableInterface
 {
     public function getId(): ?int;
-    
+
     /**
      * @return string
      */
