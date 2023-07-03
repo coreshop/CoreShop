@@ -55,6 +55,11 @@ final class CartRuleAutoProcessor implements CartProcessorInterface
                 continue;
             }
 
+            if (null === $priceRuleItem->getCartPriceRule()) {
+                $cart->removePriceRule($priceRuleItem);
+                continue;
+            }
+
             $this->cartPriceRuleUnProcessor->unProcess($cart, $priceRuleItem->getCartPriceRule());
         }
 
