@@ -4,3 +4,4 @@ services:
         public: true
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
