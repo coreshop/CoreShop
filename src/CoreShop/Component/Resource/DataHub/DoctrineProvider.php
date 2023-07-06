@@ -656,6 +656,11 @@ class DoctrineProvider
         return null;
     }
 
+    public function getRepository($class)
+    {
+        return $this->em->getRepository($class);
+    }
+
     private function hasParentClasses($entityMetaType): bool
     {
         return !(count($entityMetaType->parentClasses) === 0);
