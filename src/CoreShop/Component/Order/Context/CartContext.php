@@ -40,17 +40,6 @@ final class CartContext implements CartContextInterface
 
     public function getCart(): OrderInterface
     {
-        /**
-         * @var OrderInterface $cart
-         */
-        $cart = $this->cartFactory->createNew();
-        $cart->setPublished(true);
-        $cart->setSaleState(OrderSaleStates::STATE_CART);
-        $cart->setOrderState(OrderStates::STATE_INITIALIZED);
-        $cart->setShippingState(OrderShipmentStates::STATE_NEW);
-        $cart->setPaymentState(OrderPaymentStates::STATE_NEW);
-        $cart->setInvoiceState(OrderInvoiceStates::STATE_NEW);
-
-        return $cart;
+        return $this->cartFactory->createNew();
     }
 }

@@ -47,10 +47,10 @@ class Resource extends Input
             $class,
             $attribute,
             [
-            'name' => $fieldDefinition->getName(),
-            'type' => $this->getFieldType($fieldDefinition, $class, $container),
-            'resolve' => $this->getResolver($attribute, $fieldDefinition, $class),
-        ],
+                'name' => $fieldDefinition->getName(),
+                'type' => $this->getFieldType($fieldDefinition, $class, $container),
+                'resolve' => $this->getResolver($attribute, $fieldDefinition, $class),
+            ],
             $container,
         );
     }

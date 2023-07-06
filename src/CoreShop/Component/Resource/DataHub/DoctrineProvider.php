@@ -18,72 +18,131 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\DataHub;
 
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Resource\DataHub\Filter\FilterDateTime;
+use CoreShop\Component\Resource\DataHub\Filter\FilterDateTimeBetween;
+use CoreShop\Component\Resource\DataHub\Filter\FilterNumber;
+use CoreShop\Component\Resource\DataHub\Filter\FilterString;
 use CoreShop\Component\Resource\DataHub\Resolver\DoctrineField;
 use CoreShop\Component\Resource\DataHub\Resolver\DoctrineToMany;
 use CoreShop\Component\Resource\DataHub\Resolver\DoctrineToOne;
 use CoreShop\Component\Resource\DataHub\Type\ArrayType;
+use CoreShop\Component\Resource\DataHub\Type\BigIntType;
+use CoreShop\Component\Resource\DataHub\Type\DateTimeType;
 use CoreShop\Component\Resource\DataHub\Type\JsonType;
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\InterfaceType;
+use GraphQL\Type\Definition\IntType;
+use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
+use PHPStan\Type\BooleanType;
 
 class DoctrineProvider
 {
     public const JSON = 'Json';
-
     public const ARRAY = 'Array';
 
     /** @var Type[] */
     private static $standardTypes;
 
-    public array $doctrineMetadata = [];
+    /**
+     * @var array
+     */
+    private $doctrineMetadata = [];
 
-    private array $types = [];
+    /**
+     * @var array
+     */
+    private $types = [];
 
-    private array $typeClass = [];
+    /**
+     * @var array
+     */
+    private $typeClass = [];
+    /**
+     * @var array
+     */
+    private $doctrineToName = [];
 
-    private array $doctrineToName = [];
+    /**
+     * @var array
+     */
+    private $inputTypes = [];
 
-    private array $inputTypes = [];
+    /**
+     * @var array
+     */
+    private $inputTypesToName = [];
 
-    private array $inputTypesToName = [];
+    /**
+     * @var array
+     */
+    private $inputQueryFilterTypes = [];
 
-    private array $identifierFields = [];
+    /**
+     * @var array
+     */
+    private $identifierFields = [];
 
-    private EntityManagerInterface $em;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
 
-    private array $dataBuffers = [];
+    private $metadataRegistry;
 
-    public function __construct(
-        EntityManagerInterface $entityManager,
-    ) {
+    private $niceNameMap = [];
+
+    public function __construct(EntityManagerInterface $entityManager, RegistryInterface $metadataRegistry)
+    {
         $this->em = $entityManager;
+        $this->metadataRegistry = $metadataRegistry;
 
-        /**
-         * @var ClassMetadataInfo $metaType
-         */
-        foreach ($this->em->getMetadataFactory()->getAllMetadata() as $metaType) {
-            // Ignore superclasses as they cannot be instantiated so always ignore;
-            if ($metaType->isMappedSuperclass) {
+        $this->types[GraphPageInfo::NAME] = GraphPageInfo::getType();
+        $this->types[GraphSortField::NAME] = GraphSortField::getType();
+        $this->types[FilterString::NAME] = FilterString::getType();
+        $this->types[FilterNumber::NAME.'_int'] = FilterNumber::getType(Type::int());
+        $this->types[FilterDateTimeBetween::NAME] = FilterDateTimeBetween::getType($this->getType('datetime'));
+        $this->types[FilterDateTime::NAME] = FilterDateTime::getType($this->getType('datetime'), $this->getType(FilterDateTimeBetween::NAME));
+
+        foreach ($metadataRegistry->getAll() as $metadata) {
+            if ($metadata->getDriver() !== CoreShopResourceBundle::DRIVER_DOCTRINE_ORM) {
                 continue;
             }
 
-            $this->initializeObjectType($metaType);
+            $className = $metadata->getClass('model');
+            $niceName = ucfirst($metadata->getApplicationName()) . ucfirst(str_replace('_', '', ucwords($metadata->getName(), '_')));
+
+            $this->initializeClass($className, $niceName);
         }
     }
 
-    public function initializeObjectType(ClassMetadataInfo $entityMetaType)
+    public function initializeClass(string $className, string $niceName): void
+    {
+        $this->initializeResource($this->em->getClassMetadata($className), $niceName);
+    }
+
+    public function initializeResource(ClassMetadataInfo $entityMetaType, string $niceName): void
     {
         $config = [];
         $doctrineClass = $entityMetaType->getName();
-        $name = $this->getGraphName($entityMetaType);
+
+        $class = $entityMetaType->getReflectionClass();
+        $className = $this->getGraphName($entityMetaType);
+        $name = $niceName;
+
+        $this->niceNameMap[$className] = $niceName;
 
         // Setup some core data
         $this->doctrineMetadata[$name] = $entityMetaType;
         $this->typeClass[$name] = $doctrineClass;
+
+        $queryFilterFields = GraphPageInfo::getQueryFilters($this);
 
         $this->storeTypeName($doctrineClass, $name);
 
@@ -102,10 +161,49 @@ class DoctrineProvider
 
             $resolver = new DoctrineField($fieldName, $fieldType);
             $fields[$fieldName] = $resolver->getDefinition();
-            $inputFields[$fieldName] = [
+            $inputFields[$fieldName] = array(
                 'name' => $fieldName,
                 'type' => $fieldType,
-            ];
+            );
+
+            $filterFields[$fieldName] = array(
+                'name' => $fieldName,
+                'type' => Type::listOf($fieldType),
+            );
+
+            // Define the top level query filters
+            if ($fieldType instanceof StringType) {
+                $queryFilterFields[$fieldName] = array(
+                    'name' => $fieldName,
+                    'type' => $this->getType(FilterString::NAME),
+                );
+            } elseif ($fieldType instanceof DateTimeType) {
+                $queryFilterFields[$fieldName] = array(
+                    'name' => $fieldName,
+                    'type' => $this->getType(FilterDateTime::NAME),
+                );
+            } elseif ($fieldType instanceof BigIntType) {
+                $queryFilterFields[$fieldName] = array(
+                    'name' => $fieldName,
+                    'type' => $this->getType(FilterNumber::NAME.'_bigint'),
+                );
+            } elseif ($fieldType instanceof IntType) {
+                $queryFilterFields[$fieldName] = array(
+                    'name' => $fieldName,
+                    'type' => $this->getType(FilterNumber::NAME.'_int'),
+                );
+            } else {
+                $queryFilterFields[$fieldName] = array(
+                    'name' => $fieldName,
+                    'type' => Type::listOf($fieldType),
+                );
+            }
+
+            // Define the input properties
+            $inputFields[$fieldName] = array(
+                'name' => $fieldName,
+                'type' => $fieldType,
+            );
         }
 
         $config['fields'] = function () use ($entityMetaType, $fields) {
@@ -134,7 +232,7 @@ class DoctrineProvider
 
         if ($this->hasSubClasses($entityMetaType)) {
             $interfaceConfig = $config;
-            $interfaceKey = $name . '__Interface';
+            $interfaceKey = $name.'__Interface';
             $interfaceConfig['name'] .= '__Interface';
             $interfaceConfig['resolveType'] = function ($value) use ($entityMetaType) {
                 $column = $entityMetaType->discriminatorColumn['fieldName'];
@@ -156,7 +254,7 @@ class DoctrineProvider
             foreach ($entityMetaType->parentClasses as $parent) {
                 $parentName = $this->getTypeName($parent);
 
-                $interfaces[] = $this->getType($parentName . '__Interface');
+                $interfaces[] = $this->getType($parentName.'__Interface');
             }
 
             if (count($interfaces) > 0) {
@@ -167,17 +265,17 @@ class DoctrineProvider
         $this->types[$name] = new ObjectType($config);
 
         $inputConfig = [
-            'name' => $config['name'] . '__Input',
+            'name' => $config['name'].'__Input',
             'fields' => function () use ($entityMetaType, $inputFields) {
                 foreach ($entityMetaType->getAssociationMappings() as $association) {
                     if ($association['type'] === ClassMetadataInfo::MANY_TO_ONE || $association['type'] === ClassMetadataInfo::ONE_TO_ONE) {
                         $fieldName = $association['fieldName'];
                         $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
 
-                        $inputFields[$fieldName] = [
+                        $inputFields[$fieldName] = array(
                             'name' => $fieldName,
                             'type' => $fieldType,
-                        ];
+                        );
 
                         continue;
                     }
@@ -186,10 +284,10 @@ class DoctrineProvider
                         $fieldName = $association['fieldName'];
                         $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
 
-                        $inputFields[$fieldName] = [
+                        $inputFields[$fieldName] = array(
                             'name' => $fieldName,
                             'type' => Type::listOf($fieldType),
-                        ];
+                        );
                     }
                 }
 
@@ -202,16 +300,52 @@ class DoctrineProvider
             $this->inputTypes[$name] = new InputObjectType($inputConfig);
             $this->inputTypesToName[$inputConfig['name']] = $name;
         }
+
+        $inputQueryFilterConfig = [
+            'name' => $config['name'].'__QueryFilter',
+            'fields' => function () use ($entityMetaType, $queryFilterFields, $class) {
+
+                foreach ($entityMetaType->getAssociationMappings() as $association) {
+
+                    if ($association['type'] === ClassMetadataInfo::MANY_TO_ONE || $association['type'] === ClassMetadataInfo::ONE_TO_ONE) {
+                        $fieldName = $association['fieldName'];
+                        $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
+
+                        // Define the input properties
+                        $queryFilterFields[$fieldName] = array(
+                            'name' => $fieldName,
+                            'type' => $fieldType,
+                        );
+
+                    }
+
+                }
+
+                return $queryFilterFields;
+
+            },
+        ];
+
+        // Instantiate the query filter type
+        if (count($queryFilterFields) > 0) {
+            $this->inputQueryFilterTypes[$name] = new InputObjectType($inputQueryFilterConfig);
+        }
+
     }
 
-    private function getGraphName(ClassMetadataInfo $entityMetaType)
+    private function getGraphName(ClassMetadataInfo $entityMetaType): string
     {
         $doctrineClass = $entityMetaType->getName();
 
         return str_replace('\\', '__', $doctrineClass);
     }
 
-    public function storeTypeName($className, $name)
+    private function getNiceName(ClassMetadataInfo $entityMetaType): ?string
+    {
+        return $this->niceNameMap[$this->getGraphName($entityMetaType)] ?? null;
+    }
+
+    public function storeTypeName($className, $name): void
     {
         $key = str_replace('\\', '__', $className);
 
@@ -259,14 +393,249 @@ class DoctrineProvider
         return $this->doctrineToName[$key];
     }
 
-    private function hasSubClasses($entityMetaType)
+    private function hasSubClasses($entityMetaType): bool
     {
         return !(count($entityMetaType->subClasses) === 0);
     }
 
     public function getGraphQlType($className)
     {
-        return $this->getType($this->getGraphName($this->em->getClassMetadata($className)));
+        return $this->getType($this->getNiceName($this->em->getClassMetadata($className)));
+    }
+
+    public function getGraphQlQueries(): array
+    {
+        $queries = [];
+
+        foreach ($this->metadataRegistry->getAll() as $metadata) {
+            if ($metadata->getDriver() !== CoreShopResourceBundle::DRIVER_DOCTRINE_ORM) {
+                continue;
+            }
+
+            $className = $metadata->getClass('model');
+            $niceName = ucfirst($metadata->getApplicationName()) . ucfirst(str_replace('_', '', ucwords($metadata->getName(), '_')));
+
+            $queries[$niceName . '__List'] = $this->getGraphQlQuery($niceName, $className);
+        }
+
+        return $queries;
+    }
+
+    public function getGraphQlQuery($niceName, $className): array
+    {
+        $graphType = $this->getGraphQlType($className);
+        $inputType = $this->getQueryFilterType($graphType->name);
+        $args = [];
+
+        if ($inputType !== null)
+        {
+            foreach ($inputType->getFields() as $field) {
+                $args[$field->name] = array('name' => $field->name, 'type' => $field->getType());
+            }
+        }
+
+        $pageInfoType = $this->getType(GraphPageInfo::NAME);
+        $outputTypeName = $niceName.'__List';
+
+        if ($this->getType($outputTypeName) === null) {
+            $outputType = GraphResultList::getType($outputTypeName, $graphType, $pageInfoType);
+
+            $this->addType($outputTypeName, $outputType);
+        }
+        else {
+            $outputType = $this->getType($outputTypeName);
+        }
+
+        return array(
+            'name' => $outputTypeName,
+            'type' => $outputType,
+            'args' => $args,
+            'resolve' => function ($root, $args, $context, $info) use ($className, $graphType) {
+                $em = $this->em;
+
+                $qb = $em->getRepository($className)->createQueryBuilder('e');
+                $inputType = $this->getQueryFilterType($graphType->name);
+                $identifiers = $this->getTypeIdentifiers($graphType->name);
+
+                // Add the appropriate DQL clauses required for pagination based
+                // on the supplied args. Args get removed once used.
+                $filteredArgs = GraphPageInfo::paginateQuery($qb, $identifiers, $args);
+                $filteredArgs = GraphPageInfo::sortQuery($qb, $identifiers, $filteredArgs);
+
+                $joinCount = 0;
+
+                foreach ($filteredArgs as $name => $values)
+                {
+                    $fields = $inputType->getFields();
+                    $fieldType = $fields[$name]->getType();
+
+                    if ($fieldType instanceof JsonType)
+                    {
+                        foreach ($values as $filter)
+                        {
+                            foreach ($filter as $path => $valueInfo)
+                            {
+                                $value = $valueInfo['value'];
+                                $valueType = $valueInfo['type'];
+
+                                if ($valueType === 'text') {
+                                    $value = '\''.$value.'\'';
+                                }
+
+                                //$qb->andWhere("CAST(e." . $name . ", 'mortgage', 'boolean') = true");
+                                $qb->andWhere("JSON_PATH_EQUALS(e.".$name.", '".$path."', '".$valueType."') = ".$value);
+                            }
+                        }
+                    }
+                    elseif ($fieldType instanceof InputObjectType)
+                    {
+                        if ($fieldType->name === FilterString::NAME)
+                        {
+                            if (isset($values['in']))
+                            {
+                                $qb->andWhere($qb->expr()->in('e.'.$name, ':'.$name));
+                                $qb->setParameter($name, $values['in']);
+                            }
+                            elseif (isset($values['equals']))
+                            {
+                                $qb->andWhere($qb->expr()->eq('e.'.$name, ':'.$name));
+                                $qb->setParameter($name, $values['equals']);
+                            }
+                            elseif (isset($values['startsWith']))
+                            {
+                                $qb->andWhere($qb->expr()->like('e.'.$name, ':'.$name));
+                                $qb->setParameter($name, $values['startsWith'].'%');
+                            }
+                            elseif (isset($values['endsWith']))
+                            {
+                                $qb->andWhere($qb->expr()->like('e.'.$name, ':'.$name));
+                                $qb->setParameter($name, '%'.$values['endsWith']);
+
+                            }
+                            elseif (isset($values['contains']))
+                            {
+                                $qb->andWhere($qb->expr()->like('e.'.$name, ':'.$name));
+                                $qb->setParameter($name, '%'.$values['contains'].'%');
+                            }
+                        }
+                        elseif ($fieldType->name === FilterDateTime::NAME)
+                        {
+                            if (isset($values['equals']))
+                            {
+                                $qb->andWhere($qb->expr()->eq('e.'.$name, ':'.$name));
+                                $qb->setParameter($name, $values['equals']);
+                            }
+                            elseif (isset($values['greater']))
+                            {
+                                $qb->andWhere('e.'.$name.' > :'.$name);
+                                $qb->setParameter($name, $values['greater']);
+                            }
+                            elseif (isset($values['less']))
+                            {
+                                $qb->andWhere('e.'.$name.' < :'.$name);
+                                $qb->setParameter($name, $values['less']);
+                            }
+                            elseif (isset($values['greaterOrEquals']))
+                            {
+                                $qb->andWhere('e.'.$name.' >= :'.$name);
+                                $qb->setParameter($name, $values['greaterOrEquals']);
+                            }
+                            elseif (isset($values['lessOrEquals']))
+                            {
+                                $qb->andWhere('e.'.$name.' <= :'.$name);
+                                $qb->setParameter($name, $values['lessOrEquals']);
+                            }
+                            elseif (isset($values['between'], $values['between']['from'], $values['between']['to'])) {
+                                $qb->andWhere('e.'.$name.' BETWEEN :from AND :to');
+                                $qb->setParameter('from', $values['between']['from']);
+                                $qb->setParameter('to', $values['between']['to']);
+                            }
+                        }
+                        elseif (strpos($fieldType->name, FilterNumber::NAME) === 0)
+                        {
+                            if (isset($values['in']))
+                            {
+                                $qb->andWhere($qb->expr()->in('e.'.$name, ':'.$name));
+                                $qb->setParameter($name, $values['in']);
+                            }
+                            elseif (isset($values['equals']))
+                            {
+                                $qb->andWhere($qb->expr()->eq('e.'.$name, ':'.$name));
+                                $qb->setParameter($name, $values['equals']);
+                            }
+                            elseif (isset($values['greater']))
+                            {
+                                $qb->andWhere('e.'.$name.' > :'.$name);
+                                $qb->setParameter($name, $values['greater']);
+                            }
+                            elseif (isset($values['less']))
+                            {
+                                $qb->andWhere('e.'.$name.' < :'.$name);
+                                $qb->setParameter($name, $values['less']);
+                            }
+                            elseif (isset($values['greaterOrEquals']))
+                            {
+                                $qb->andWhere('e.'.$name.' >= :'.$name);
+                                $qb->setParameter($name, $values['greaterOrEquals']);
+                            }
+                            elseif (isset($values['lessOrEquals']))
+                            {
+                                $qb->andWhere('e.'.$name.' <= :'.$name);
+                                $qb->setParameter($name, $values['lessOrEquals']);
+                            }
+                        }
+                        else
+                        {
+                            $typeClass = $this->getTypeClass($this->getInputTypeKey($fieldType->name));
+
+                            if ($typeClass !== null)
+                            {
+                                $alias = 'e'.$joinCount;
+                                $qb->addSelect($alias)->leftJoin('e.'.$name, $alias);
+
+                                foreach ($values as $associatedField => $associatedValue)
+                                {
+                                    $qb->andWhere(
+                                        $qb->expr()->eq(
+                                            $alias.'.'.$associatedField, ':'.$associatedField
+                                        )
+                                    );
+                                    $qb->setParameter($associatedField, $associatedValue);
+                                }
+
+                                $joinCount++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if ($fieldType instanceof ListOfType && $fieldType->ofType instanceof BooleanType)
+                        {
+                            $updatedValues = [];
+
+                            foreach ($values as $value) {
+                                $updatedValues[] = ($value !== true ? 'false' : 'true');
+                            }
+
+                            $values = $updatedValues;
+                        }
+
+                        $qb->andWhere($qb->expr()->in('e.'.$name, ':'.$name));
+                        $qb->setParameter($name, $values);
+                    }
+                }
+
+                $query = $qb->getQuery();
+                $query->setHint("doctrine.includeMetaColumns", true);
+
+                $dataList = $query->getResult();
+
+                return new GraphResultList(
+                    $dataList,
+                    $args
+                );
+            },
+        );
     }
 
     public function getType($typeName)
@@ -278,7 +647,16 @@ class DoctrineProvider
         return null;
     }
 
-    private function hasParentClasses($entityMetaType)
+    public function getQueryFilterType($typeName)
+    {
+        if (isset($this->inputQueryFilterTypes[$typeName])) {
+            return $this->inputQueryFilterTypes[$typeName];
+        }
+
+        return null;
+    }
+
+    private function hasParentClasses($entityMetaType): bool
     {
         return !(count($entityMetaType->parentClasses) === 0);
     }
@@ -292,7 +670,7 @@ class DoctrineProvider
         return null;
     }
 
-    public function addType($typeName, $type)
+    public function addType($typeName, $type): void
     {
         $this->types[$typeName] = $type;
     }
@@ -300,11 +678,6 @@ class DoctrineProvider
     public function getTypes()
     {
         return $this->types;
-    }
-
-    public function getTypeKeys()
-    {
-        return array_keys($this->types);
     }
 
     public function getInputTypeKey($inputName)
@@ -315,35 +688,6 @@ class DoctrineProvider
     public function getTypeIdentifiers($typeName)
     {
         return $this->identifierFields[$typeName];
-    }
-
-    public function initBuffer($bufferType, $key)
-    {
-        if (!isset($this->dataBuffers[$key])) {
-            $this->dataBuffers[$key] = new $bufferType();
-        }
-
-        return $this->dataBuffers[$key];
-    }
-
-    public function getDoctrineType($type)
-    {
-        return $this->doctrineMetadata[$type];
-    }
-
-    public function getManager()
-    {
-        return $this->em;
-    }
-
-    public function getRepository($class)
-    {
-        return $this->em->getRepository($class);
-    }
-
-    public function clearBuffers()
-    {
-        $this->dataBuffers = [];
     }
 
     public function getTypeClass($graphName)
