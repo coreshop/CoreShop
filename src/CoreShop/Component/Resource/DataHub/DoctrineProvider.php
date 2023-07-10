@@ -45,6 +45,7 @@ use PHPStan\Type\BooleanType;
 class DoctrineProvider
 {
     public const JSON = 'Json';
+
     public const ARRAY = 'Array';
 
     /** @var Type[] */
@@ -64,6 +65,7 @@ class DoctrineProvider
      * @var array
      */
     private $typeClass = [];
+
     /**
      * @var array
      */
@@ -98,15 +100,17 @@ class DoctrineProvider
 
     private $niceNameMap = [];
 
-    public function __construct(EntityManagerInterface $entityManager, RegistryInterface $metadataRegistry)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        RegistryInterface $metadataRegistry,
+    ) {
         $this->em = $entityManager;
         $this->metadataRegistry = $metadataRegistry;
 
         $this->types[GraphPageInfo::NAME] = GraphPageInfo::getType();
         $this->types[GraphSortField::NAME] = GraphSortField::getType();
         $this->types[FilterString::NAME] = FilterString::getType();
-        $this->types[FilterNumber::NAME.'_int'] = FilterNumber::getType(Type::int());
+        $this->types[FilterNumber::NAME . '_int'] = FilterNumber::getType(Type::int());
         $this->types[FilterDateTimeBetween::NAME] = FilterDateTimeBetween::getType($this->getType('datetime'));
         $this->types[FilterDateTime::NAME] = FilterDateTime::getType($this->getType('datetime'), $this->getType(FilterDateTimeBetween::NAME));
 
@@ -161,49 +165,49 @@ class DoctrineProvider
 
             $resolver = new DoctrineField($fieldName, $fieldType);
             $fields[$fieldName] = $resolver->getDefinition();
-            $inputFields[$fieldName] = array(
+            $inputFields[$fieldName] = [
                 'name' => $fieldName,
                 'type' => $fieldType,
-            );
+            ];
 
-            $filterFields[$fieldName] = array(
+            $filterFields[$fieldName] = [
                 'name' => $fieldName,
                 'type' => Type::listOf($fieldType),
-            );
+            ];
 
             // Define the top level query filters
             if ($fieldType instanceof StringType) {
-                $queryFilterFields[$fieldName] = array(
+                $queryFilterFields[$fieldName] = [
                     'name' => $fieldName,
                     'type' => $this->getType(FilterString::NAME),
-                );
+                ];
             } elseif ($fieldType instanceof DateTimeType) {
-                $queryFilterFields[$fieldName] = array(
+                $queryFilterFields[$fieldName] = [
                     'name' => $fieldName,
                     'type' => $this->getType(FilterDateTime::NAME),
-                );
+                ];
             } elseif ($fieldType instanceof BigIntType) {
-                $queryFilterFields[$fieldName] = array(
+                $queryFilterFields[$fieldName] = [
                     'name' => $fieldName,
-                    'type' => $this->getType(FilterNumber::NAME.'_bigint'),
-                );
+                    'type' => $this->getType(FilterNumber::NAME . '_bigint'),
+                ];
             } elseif ($fieldType instanceof IntType) {
-                $queryFilterFields[$fieldName] = array(
+                $queryFilterFields[$fieldName] = [
                     'name' => $fieldName,
-                    'type' => $this->getType(FilterNumber::NAME.'_int'),
-                );
+                    'type' => $this->getType(FilterNumber::NAME . '_int'),
+                ];
             } else {
-                $queryFilterFields[$fieldName] = array(
+                $queryFilterFields[$fieldName] = [
                     'name' => $fieldName,
                     'type' => Type::listOf($fieldType),
-                );
+                ];
             }
 
             // Define the input properties
-            $inputFields[$fieldName] = array(
+            $inputFields[$fieldName] = [
                 'name' => $fieldName,
                 'type' => $fieldType,
-            );
+            ];
         }
 
         $config['fields'] = function () use ($entityMetaType, $fields) {
@@ -232,7 +236,7 @@ class DoctrineProvider
 
         if ($this->hasSubClasses($entityMetaType)) {
             $interfaceConfig = $config;
-            $interfaceKey = $name.'__Interface';
+            $interfaceKey = $name . '__Interface';
             $interfaceConfig['name'] .= '__Interface';
             $interfaceConfig['resolveType'] = function ($value) use ($entityMetaType) {
                 $column = $entityMetaType->discriminatorColumn['fieldName'];
@@ -254,7 +258,7 @@ class DoctrineProvider
             foreach ($entityMetaType->parentClasses as $parent) {
                 $parentName = $this->getTypeName($parent);
 
-                $interfaces[] = $this->getType($parentName.'__Interface');
+                $interfaces[] = $this->getType($parentName . '__Interface');
             }
 
             if (count($interfaces) > 0) {
@@ -265,17 +269,17 @@ class DoctrineProvider
         $this->types[$name] = new ObjectType($config);
 
         $inputConfig = [
-            'name' => $config['name'].'__Input',
+            'name' => $config['name'] . '__Input',
             'fields' => function () use ($entityMetaType, $inputFields) {
                 foreach ($entityMetaType->getAssociationMappings() as $association) {
                     if ($association['type'] === ClassMetadataInfo::MANY_TO_ONE || $association['type'] === ClassMetadataInfo::ONE_TO_ONE) {
                         $fieldName = $association['fieldName'];
                         $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
 
-                        $inputFields[$fieldName] = array(
+                        $inputFields[$fieldName] = [
                             'name' => $fieldName,
                             'type' => $fieldType,
-                        );
+                        ];
 
                         continue;
                     }
@@ -284,10 +288,10 @@ class DoctrineProvider
                         $fieldName = $association['fieldName'];
                         $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
 
-                        $inputFields[$fieldName] = array(
+                        $inputFields[$fieldName] = [
                             'name' => $fieldName,
                             'type' => Type::listOf($fieldType),
-                        );
+                        ];
                     }
                 }
 
@@ -302,27 +306,22 @@ class DoctrineProvider
         }
 
         $inputQueryFilterConfig = [
-            'name' => $config['name'].'__QueryFilter',
+            'name' => $config['name'] . '__QueryFilter',
             'fields' => function () use ($entityMetaType, $queryFilterFields, $class) {
-
                 foreach ($entityMetaType->getAssociationMappings() as $association) {
-
                     if ($association['type'] === ClassMetadataInfo::MANY_TO_ONE || $association['type'] === ClassMetadataInfo::ONE_TO_ONE) {
                         $fieldName = $association['fieldName'];
                         $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
 
                         // Define the input properties
-                        $queryFilterFields[$fieldName] = array(
+                        $queryFilterFields[$fieldName] = [
                             'name' => $fieldName,
                             'type' => $fieldType,
-                        );
-
+                        ];
                     }
-
                 }
 
                 return $queryFilterFields;
-
             },
         ];
 
@@ -330,7 +329,6 @@ class DoctrineProvider
         if (count($queryFilterFields) > 0) {
             $this->inputQueryFilterTypes[$name] = new InputObjectType($inputQueryFilterConfig);
         }
-
     }
 
     private function getGraphName(ClassMetadataInfo $entityMetaType): string
@@ -427,26 +425,24 @@ class DoctrineProvider
         $inputType = $this->getQueryFilterType($graphType->name);
         $args = [];
 
-        if ($inputType !== null)
-        {
+        if ($inputType !== null) {
             foreach ($inputType->getFields() as $field) {
-                $args[$field->name] = array('name' => $field->name, 'type' => $field->getType());
+                $args[$field->name] = ['name' => $field->name, 'type' => $field->getType()];
             }
         }
 
         $pageInfoType = $this->getType(GraphPageInfo::NAME);
-        $outputTypeName = $niceName.'__List';
+        $outputTypeName = $niceName . '__List';
 
         if ($this->getType($outputTypeName) === null) {
             $outputType = GraphResultList::getType($outputTypeName, $graphType, $pageInfoType);
 
             $this->addType($outputTypeName, $outputType);
-        }
-        else {
+        } else {
             $outputType = $this->getType($outputTypeName);
         }
 
-        return array(
+        return [
             'name' => $outputTypeName,
             'type' => $outputType,
             'args' => $args,
@@ -464,153 +460,105 @@ class DoctrineProvider
 
                 $joinCount = 0;
 
-                foreach ($filteredArgs as $name => $values)
-                {
+                foreach ($filteredArgs as $name => $values) {
                     $fields = $inputType->getFields();
                     $fieldType = $fields[$name]->getType();
 
-                    if ($fieldType instanceof JsonType)
-                    {
-                        foreach ($values as $filter)
-                        {
-                            foreach ($filter as $path => $valueInfo)
-                            {
+                    if ($fieldType instanceof JsonType) {
+                        foreach ($values as $filter) {
+                            foreach ($filter as $path => $valueInfo) {
                                 $value = $valueInfo['value'];
                                 $valueType = $valueInfo['type'];
 
                                 if ($valueType === 'text') {
-                                    $value = '\''.$value.'\'';
+                                    $value = '\'' . $value . '\'';
                                 }
 
                                 //$qb->andWhere("CAST(e." . $name . ", 'mortgage', 'boolean') = true");
-                                $qb->andWhere("JSON_PATH_EQUALS(e.".$name.", '".$path."', '".$valueType."') = ".$value);
+                                $qb->andWhere('JSON_PATH_EQUALS(e.' . $name . ", '" . $path . "', '" . $valueType . "') = " . $value);
                             }
                         }
-                    }
-                    elseif ($fieldType instanceof InputObjectType)
-                    {
-                        if ($fieldType->name === FilterString::NAME)
-                        {
-                            if (isset($values['in']))
-                            {
-                                $qb->andWhere($qb->expr()->in('e.'.$name, ':'.$name));
+                    } elseif ($fieldType instanceof InputObjectType) {
+                        if ($fieldType->name === FilterString::NAME) {
+                            if (isset($values['in'])) {
+                                $qb->andWhere($qb->expr()->in('e.' . $name, ':' . $name));
                                 $qb->setParameter($name, $values['in']);
-                            }
-                            elseif (isset($values['equals']))
-                            {
-                                $qb->andWhere($qb->expr()->eq('e.'.$name, ':'.$name));
+                            } elseif (isset($values['equals'])) {
+                                $qb->andWhere($qb->expr()->eq('e.' . $name, ':' . $name));
                                 $qb->setParameter($name, $values['equals']);
+                            } elseif (isset($values['startsWith'])) {
+                                $qb->andWhere($qb->expr()->like('e.' . $name, ':' . $name));
+                                $qb->setParameter($name, $values['startsWith'] . '%');
+                            } elseif (isset($values['endsWith'])) {
+                                $qb->andWhere($qb->expr()->like('e.' . $name, ':' . $name));
+                                $qb->setParameter($name, '%' . $values['endsWith']);
+                            } elseif (isset($values['contains'])) {
+                                $qb->andWhere($qb->expr()->like('e.' . $name, ':' . $name));
+                                $qb->setParameter($name, '%' . $values['contains'] . '%');
                             }
-                            elseif (isset($values['startsWith']))
-                            {
-                                $qb->andWhere($qb->expr()->like('e.'.$name, ':'.$name));
-                                $qb->setParameter($name, $values['startsWith'].'%');
-                            }
-                            elseif (isset($values['endsWith']))
-                            {
-                                $qb->andWhere($qb->expr()->like('e.'.$name, ':'.$name));
-                                $qb->setParameter($name, '%'.$values['endsWith']);
-
-                            }
-                            elseif (isset($values['contains']))
-                            {
-                                $qb->andWhere($qb->expr()->like('e.'.$name, ':'.$name));
-                                $qb->setParameter($name, '%'.$values['contains'].'%');
-                            }
-                        }
-                        elseif ($fieldType->name === FilterDateTime::NAME)
-                        {
-                            if (isset($values['equals']))
-                            {
-                                $qb->andWhere($qb->expr()->eq('e.'.$name, ':'.$name));
+                        } elseif ($fieldType->name === FilterDateTime::NAME) {
+                            if (isset($values['equals'])) {
+                                $qb->andWhere($qb->expr()->eq('e.' . $name, ':' . $name));
                                 $qb->setParameter($name, $values['equals']);
-                            }
-                            elseif (isset($values['greater']))
-                            {
-                                $qb->andWhere('e.'.$name.' > :'.$name);
+                            } elseif (isset($values['greater'])) {
+                                $qb->andWhere('e.' . $name . ' > :' . $name);
                                 $qb->setParameter($name, $values['greater']);
-                            }
-                            elseif (isset($values['less']))
-                            {
-                                $qb->andWhere('e.'.$name.' < :'.$name);
+                            } elseif (isset($values['less'])) {
+                                $qb->andWhere('e.' . $name . ' < :' . $name);
                                 $qb->setParameter($name, $values['less']);
-                            }
-                            elseif (isset($values['greaterOrEquals']))
-                            {
-                                $qb->andWhere('e.'.$name.' >= :'.$name);
+                            } elseif (isset($values['greaterOrEquals'])) {
+                                $qb->andWhere('e.' . $name . ' >= :' . $name);
                                 $qb->setParameter($name, $values['greaterOrEquals']);
-                            }
-                            elseif (isset($values['lessOrEquals']))
-                            {
-                                $qb->andWhere('e.'.$name.' <= :'.$name);
+                            } elseif (isset($values['lessOrEquals'])) {
+                                $qb->andWhere('e.' . $name . ' <= :' . $name);
                                 $qb->setParameter($name, $values['lessOrEquals']);
-                            }
-                            elseif (isset($values['between'], $values['between']['from'], $values['between']['to'])) {
-                                $qb->andWhere('e.'.$name.' BETWEEN :from AND :to');
+                            } elseif (isset($values['between'], $values['between']['from'], $values['between']['to'])) {
+                                $qb->andWhere('e.' . $name . ' BETWEEN :from AND :to');
                                 $qb->setParameter('from', $values['between']['from']);
                                 $qb->setParameter('to', $values['between']['to']);
                             }
-                        }
-                        elseif (strpos($fieldType->name, FilterNumber::NAME) === 0)
-                        {
-                            if (isset($values['in']))
-                            {
-                                $qb->andWhere($qb->expr()->in('e.'.$name, ':'.$name));
+                        } elseif (strpos($fieldType->name, FilterNumber::NAME) === 0) {
+                            if (isset($values['in'])) {
+                                $qb->andWhere($qb->expr()->in('e.' . $name, ':' . $name));
                                 $qb->setParameter($name, $values['in']);
-                            }
-                            elseif (isset($values['equals']))
-                            {
-                                $qb->andWhere($qb->expr()->eq('e.'.$name, ':'.$name));
+                            } elseif (isset($values['equals'])) {
+                                $qb->andWhere($qb->expr()->eq('e.' . $name, ':' . $name));
                                 $qb->setParameter($name, $values['equals']);
-                            }
-                            elseif (isset($values['greater']))
-                            {
-                                $qb->andWhere('e.'.$name.' > :'.$name);
+                            } elseif (isset($values['greater'])) {
+                                $qb->andWhere('e.' . $name . ' > :' . $name);
                                 $qb->setParameter($name, $values['greater']);
-                            }
-                            elseif (isset($values['less']))
-                            {
-                                $qb->andWhere('e.'.$name.' < :'.$name);
+                            } elseif (isset($values['less'])) {
+                                $qb->andWhere('e.' . $name . ' < :' . $name);
                                 $qb->setParameter($name, $values['less']);
-                            }
-                            elseif (isset($values['greaterOrEquals']))
-                            {
-                                $qb->andWhere('e.'.$name.' >= :'.$name);
+                            } elseif (isset($values['greaterOrEquals'])) {
+                                $qb->andWhere('e.' . $name . ' >= :' . $name);
                                 $qb->setParameter($name, $values['greaterOrEquals']);
-                            }
-                            elseif (isset($values['lessOrEquals']))
-                            {
-                                $qb->andWhere('e.'.$name.' <= :'.$name);
+                            } elseif (isset($values['lessOrEquals'])) {
+                                $qb->andWhere('e.' . $name . ' <= :' . $name);
                                 $qb->setParameter($name, $values['lessOrEquals']);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             $typeClass = $this->getTypeClass($this->getInputTypeKey($fieldType->name));
 
-                            if ($typeClass !== null)
-                            {
-                                $alias = 'e'.$joinCount;
-                                $qb->addSelect($alias)->leftJoin('e.'.$name, $alias);
+                            if ($typeClass !== null) {
+                                $alias = 'e' . $joinCount;
+                                $qb->addSelect($alias)->leftJoin('e.' . $name, $alias);
 
-                                foreach ($values as $associatedField => $associatedValue)
-                                {
+                                foreach ($values as $associatedField => $associatedValue) {
                                     $qb->andWhere(
                                         $qb->expr()->eq(
-                                            $alias.'.'.$associatedField, ':'.$associatedField
-                                        )
+                                            $alias . '.' . $associatedField,
+                                            ':' . $associatedField,
+                                        ),
                                     );
                                     $qb->setParameter($associatedField, $associatedValue);
                                 }
 
-                                $joinCount++;
+                                ++$joinCount;
                             }
                         }
-                    }
-                    else
-                    {
-                        if ($fieldType instanceof ListOfType && $fieldType->ofType instanceof BooleanType)
-                        {
+                    } else {
+                        if ($fieldType instanceof ListOfType && $fieldType->ofType instanceof BooleanType) {
                             $updatedValues = [];
 
                             foreach ($values as $value) {
@@ -620,22 +568,22 @@ class DoctrineProvider
                             $values = $updatedValues;
                         }
 
-                        $qb->andWhere($qb->expr()->in('e.'.$name, ':'.$name));
+                        $qb->andWhere($qb->expr()->in('e.' . $name, ':' . $name));
                         $qb->setParameter($name, $values);
                     }
                 }
 
                 $query = $qb->getQuery();
-                $query->setHint("doctrine.includeMetaColumns", true);
+                $query->setHint('doctrine.includeMetaColumns', true);
 
                 $dataList = $query->getResult();
 
                 return new GraphResultList(
                     $dataList,
-                    $args
+                    $args,
                 );
             },
-        );
+        ];
     }
 
     public function getType($typeName)

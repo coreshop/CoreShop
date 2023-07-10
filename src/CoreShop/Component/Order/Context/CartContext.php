@@ -19,11 +19,6 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Context;
 
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\OrderInvoiceStates;
-use CoreShop\Component\Order\OrderPaymentStates;
-use CoreShop\Component\Order\OrderSaleStates;
-use CoreShop\Component\Order\OrderShipmentStates;
-use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 final class CartContext implements CartContextInterface
