@@ -12,6 +12,20 @@
 
 declare(strict_types=1);
 
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Component\Resource\DataHub\Filter;
 
 use GraphQL\Type\Definition\InputObjectType;
@@ -19,33 +33,33 @@ use GraphQL\Type\Definition\Type;
 
 class FilterString
 {
-    const NAME = 'filterstring';
+    public const NAME = 'filterstring';
 
     public static function getType()
     {
-        $filterFields = array(
-            array(
+        $filterFields = [
+            [
                 'name' => 'contains',
                 'type' => Type::string(),
-            ),
-            array(
+            ],
+            [
                 'name' => 'equals',
                 'type' => Type::string(),
-            ),
-            array(
+            ],
+            [
                 'name' => 'startsWith',
                 'type' => Type::string(),
-            ),
-            array(
+            ],
+            [
                 'name' => 'endsWith',
                 'type' => Type::string(),
-            ),
-            array(
+            ],
+            [
                 'name' => 'in',
                 'type' => Type::listOf(Type::string()),
-            ),
-        );
+            ],
+        ];
 
-        return new InputObjectType(array('name' => self::NAME, 'fields' => $filterFields));
+        return new InputObjectType(['name' => self::NAME, 'fields' => $filterFields]);
     }
 }

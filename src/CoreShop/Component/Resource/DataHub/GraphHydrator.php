@@ -12,6 +12,20 @@
 
 declare(strict_types=1);
 
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Component\Resource\DataHub;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -20,15 +34,15 @@ class GraphHydrator
 {
     public $em;
 
-    public function __construct($em)
-    {
+    public function __construct(
+        $em,
+    ) {
         $this->em = $em;
     }
 
     public function hydrate(?array $data, string $entityType): ?GraphEntity
     {
-        if ($data === null)
-        {
+        if ($data === null) {
             return null;
         }
 
@@ -36,15 +50,12 @@ class GraphHydrator
         $class = $this->em->getClassMetadata($entityType);
         $discriminatorColumn = null;
 
-        if (count($class->subClasses) > 0)
-        {
+        if (count($class->subClasses) > 0) {
             $discriminatorColumn = $class->discriminatorColumn['name'];
             $className = $class->discriminatorMap[$data[$discriminatorColumn]];
 
             $instanceType = $this->em->getClassMetadata($className);
-        }
-        else
-            {
+        } else {
             $instanceType = $class;
         }
 
@@ -80,7 +91,7 @@ class GraphHydrator
     {
         // Generate the unique id
         if ($class->isIdentifierComposite) {
-            $id = array();
+            $id = [];
 
             foreach ($class->identifier as $fieldName) {
                 $id[$fieldName] = isset($class->associationMappings[$fieldName])
@@ -89,11 +100,11 @@ class GraphHydrator
             }
         } else {
             $fieldName = $class->identifier[0];
-            $id = array(
+            $id = [
                 $fieldName => isset($class->associationMappings[$fieldName])
                     ? $data[$class->associationMappings[$fieldName]['joinColumns'][0]['name']]
                     : $data[$fieldName],
-            );
+            ];
         }
 
         return $id;

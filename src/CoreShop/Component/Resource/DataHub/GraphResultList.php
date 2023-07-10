@@ -12,6 +12,20 @@
 
 declare(strict_types=1);
 
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Component\Resource\DataHub;
 
 use GraphQL\Type\Definition\ObjectType;
@@ -20,12 +34,14 @@ use GraphQL\Type\Definition\Type;
 class GraphResultList
 {
     public $totalCount;
+
     public $items;
+
     public $pageInfo;
 
     public function __construct(
         array $dataList,
-        array $args
+        array $args,
     ) {
         $cnt = 0;
 
@@ -37,12 +53,10 @@ class GraphResultList
             $maxResults = $args['first'];
         }
 
-        if ($dataList !== null)
-        {
-            foreach ($dataList as $result)
-            {
+        if ($dataList !== null) {
+            foreach ($dataList as $result) {
                 if ($maxResults === null || $cnt < $maxResults) {
-                    $cnt++;
+                    ++$cnt;
                 } else {
                     $hasMore = true;
                 }
@@ -57,20 +71,20 @@ class GraphResultList
 
     public static function getType(string $name, $listType, $pageInfoType)
     {
-        $resultFields = array();
-        $resultFields[] = array(
+        $resultFields = [];
+        $resultFields[] = [
             'name' => 'totalCount',
             'type' => Type::int(),
-        );
-        $resultFields[] = array(
+        ];
+        $resultFields[] = [
             'name' => 'items',
             'type' => Type::listOf($listType),
-        );
-        $resultFields[] = array(
+        ];
+        $resultFields[] = [
             'name' => 'pageInfo',
             'type' => $pageInfoType,
-        );
+        ];
 
-        return new ObjectType(array('name' => $name, 'fields' => $resultFields));
+        return new ObjectType(['name' => $name, 'fields' => $resultFields]);
     }
 }

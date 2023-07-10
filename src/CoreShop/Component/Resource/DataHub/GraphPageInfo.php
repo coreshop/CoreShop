@@ -12,6 +12,20 @@
 
 declare(strict_types=1);
 
+/*
+ * CoreShop
+ *
+ * This source file is available under two different licenses:
+ *  - GNU General Public License version 3 (GPLv3)
+ *  - CoreShop Commercial License (CCL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ * @copyright  Copyright (c) CoreShop GmbH (https://www.coreshop.org)
+ * @license    https://www.coreshop.org/license     GPLv3 and CCL
+ *
+ */
+
 namespace CoreShop\Component\Resource\DataHub;
 
 use Doctrine\ORM\QueryBuilder;
@@ -20,51 +34,49 @@ use GraphQL\Type\Definition\Type;
 
 class GraphPageInfo
 {
-    const NAME = 'PageInfo';
+    public const NAME = 'PageInfo';
 
     public $cursor;
 
     public static function getType(): ObjectType
     {
-        $pageFields = array(
-            array(
+        $pageFields = [
+            [
                 'name' => 'hasMore',
                 'type' => Type::boolean(),
-            ),
-        );
+            ],
+        ];
 
-        return new ObjectType(array('name' => self::NAME, 'fields' => $pageFields));
+        return new ObjectType(['name' => self::NAME, 'fields' => $pageFields]);
     }
 
     public static function getQueryFilters($provider): array
     {
-        $filterFields = array();
+        $filterFields = [];
 
-        $filterFields['first'] = array('name' => 'first', 'type' => Type::int());
-        $filterFields['after'] = array('name' => 'after', 'type' => Type::string());
-        $filterFields['offset'] = array('name' => 'offset', 'type' => Type::int());
+        $filterFields['first'] = ['name' => 'first', 'type' => Type::int()];
+        $filterFields['after'] = ['name' => 'after', 'type' => Type::string()];
+        $filterFields['offset'] = ['name' => 'offset', 'type' => Type::int()];
 
         $sortFieldType = $provider->getType(GraphSortField::NAME);
 
-        $filterFields['sort'] = array('name' => 'sort', 'type' => Type::listOf($sortFieldType));
+        $filterFields['sort'] = ['name' => 'sort', 'type' => Type::listOf($sortFieldType)];
 
         return $filterFields;
     }
 
     public static function getFilters(): array
     {
-        $filterFields = array();
+        $filterFields = [];
 
-        $filterFields['first'] = array('name' => 'first', 'type' => Type::int());
+        $filterFields['first'] = ['name' => 'first', 'type' => Type::int()];
 
         return $filterFields;
-
     }
 
     public static function paginateQuery(QueryBuilder $queryBuilder, array $identifiers, array $args): array
     {
         if (array_key_exists('first', $args)) {
-
             $maxResults = $args['first'];
             $queryBuilder->setMaxResults($maxResults + 1);
 
@@ -74,23 +86,19 @@ class GraphPageInfo
         $hasOffset = false;
 
         if (array_key_exists('offset', $args)) {
-
             $queryBuilder->setFirstResult($args['offset']);
 
             unset($args['offset']);
 
             $hasOffset = true;
-
         }
 
         if (array_key_exists('after', $args)) {
-
             if (!$hasOffset) {
                 static::addAfter($queryBuilder, $identifiers, $args['after']);
             }
 
             unset($args['after']);
-
         }
 
         return $args;
@@ -102,16 +110,14 @@ class GraphPageInfo
 
         // Handle the first argument.
         if (array_key_exists('sort', $args)) {
-
             foreach ($args['sort'] as $sortField) {
-
-                $sortDirection = strtolower((isset($sortField['order']) ? $sortField['order'] : 'asc'));
+                $sortDirection = strtolower(($sortField['order'] ?? 'asc'));
 
                 if (!($sortDirection === 'asc' || $sortDirection === 'desc')) {
                     $sortDirection = 'asc';
                 }
 
-                $queryBuilder->addOrderBy('e.'.$sortField['field'], $sortField['order']);
+                $queryBuilder->addOrderBy('e.' . $sortField['field'], $sortField['order']);
             }
 
             unset($args['sort']);
@@ -119,10 +125,9 @@ class GraphPageInfo
             $hasOrderBy = true;
         }
 
-        if (!$hasOrderBy)
-        {
+        if (!$hasOrderBy) {
             foreach ($identifiers as $id) {
-                $queryBuilder->addOrderBy('e.'.$id, 'ASC');
+                $queryBuilder->addOrderBy('e.' . $id, 'ASC');
             }
         }
 
@@ -144,9 +149,9 @@ class GraphPageInfo
         $nextValues = array_slice($values, 1, count($values) - 1);
 
         if (count($nextIdentifiers) !== 0) {
-            $identifierString = 'e.'.$identifiers[0].' >= \''.$values[0].'\' AND ( e.'.$identifiers[0].' > \''.$values[0].'\' OR ('.static::generateQuery($nextIdentifiers, $nextValues).'))';
+            $identifierString = 'e.' . $identifiers[0] . ' >= \'' . $values[0] . '\' AND ( e.' . $identifiers[0] . ' > \'' . $values[0] . '\' OR (' . static::generateQuery($nextIdentifiers, $nextValues) . '))';
         } else {
-            $identifierString = 'e.'.$identifiers[0].' > \''.$values[0].'\'';
+            $identifierString = 'e.' . $identifiers[0] . ' > \'' . $values[0] . '\'';
         }
 
         return $identifierString;
