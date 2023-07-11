@@ -263,7 +263,9 @@ final class ProductContext implements Context
      */
     public function theProductHasTaxRuleGroup(ProductInterface $product, TaxRuleGroupInterface $taxRuleGroup): void
     {
-        $product->setTaxRule($taxRuleGroup);
+        $store = $this->sharedStorage->get('store');
+
+        $product->setStoreValuesOfType('taxRule', $taxRuleGroup, $store);
 
         $this->saveProduct($product);
     }
