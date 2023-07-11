@@ -976,27 +976,6 @@
                                         "visibleGridView": false,
                                         "visibleSearch": false
                                     },
-                                    {
-                                        "fieldtype": "coreShopTaxRuleGroup",
-                                        "allowEmpty": true,
-                                        "options": null,
-                                        "width": "",
-                                        "defaultValue": null,
-                                        "name": "taxRule",
-                                        "title": "coreshop.product.tax_rule",
-                                        "tooltip": "",
-                                        "mandatory": false,
-                                        "noteditable": false,
-                                        "index": false,
-                                        "locked": false,
-                                        "style": "",
-                                        "permissions": null,
-                                        "datatype": "data",
-                                        "relationType": false,
-                                        "invisible": false,
-                                        "visibleGridView": false,
-                                        "visibleSearch": false
-                                    }
                                 ],
                                 "locked": false
                             }

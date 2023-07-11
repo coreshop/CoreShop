@@ -16,17 +16,15 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Component\Order\Model;
+namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
-use CoreShop\Component\Currency\Model\Money;
-use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-interface PurchasableInterface extends ResourceInterface
+final class PublicPass implements CompilerPassInterface
 {
-    public function getId(): ?int;
-
-    public function getName(?string $language = null): ?string;
-
-    public function getWholesaleBuyingPrice(): ?Money;
+    public function process(ContainerBuilder $container): void
+    {
+        $container->getDefinition('form.factory')->setPublic(true);
+    }
 }
