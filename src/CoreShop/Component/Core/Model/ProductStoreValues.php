@@ -31,7 +31,7 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
 {
     use StoreAwareTrait;
 
-    protected ?int $id;
+    protected ?int $id = null;
     protected int $price = 0;
     protected ?TaxRuleGroupInterface $taxRule = null;
     protected ?ProductInterface $product = null;
