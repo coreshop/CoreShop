@@ -16,27 +16,37 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\MessengerBundle\EventListener;
+namespace CoreShop\Bundle\MenuBundle\EventListener;
 
 use Pimcore\Event\BundleManager\PathsEvent;
 use Pimcore\Event\BundleManagerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Routing\RouterInterface;
 
-final class AdminJavascriptListener implements EventSubscriberInterface
+class MenuAdminListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents(): array
+    public function __construct(
+        private RouterInterface $router,
+    ) {
+    }
+
+    public static function getSubscribedEvents()
     {
         return [
-            BundleManagerEvents::JS_PATHS => 'getAdminJavascript',
+            BundleManagerEvents::JS_PATHS => 'addJsFiles',
         ];
     }
 
-    public function getAdminJavascript(PathsEvent $event): void
+    public function addJSFiles(PathsEvent $event)
     {
         $event->setPaths(
-            array_merge($event->getPaths(), [
-                '/bundles/coreshopmessenger/pimcore/js/resource.js',
-            ]),
+            array_merge(
+                $event->getPaths(),
+                [
+                    '/bundles/coreshopmenu/pimcore/js/menu.js',
+                    $this->router->generate('coreshop_menu', ['type' => 'coreshop.coreshop']),
+                ],
+            ),
         );
     }
 }
