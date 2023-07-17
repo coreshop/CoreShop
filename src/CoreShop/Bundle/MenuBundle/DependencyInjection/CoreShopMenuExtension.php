@@ -35,6 +35,12 @@ final class CoreShopMenuExtension extends AbstractPimcoreExtension
 
         $loader->load('services.yml');
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (!array_key_exists('CoreShopCoreBundle', $bundles)) {
+            $loader->load('services/menu.yml');
+        }
+
         $container
             ->registerForAutoconfiguration(MenuBuilderInterface::class)
             ->addTag(MenuBuilderPass::MENU_BUILDER_TAG)
