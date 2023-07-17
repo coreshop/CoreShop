@@ -27,7 +27,7 @@
     "coreshop/index": "^3.0",
     "coreshop/registry": "^3.0",
     "coreshop/resource-bundle": "^3.0",
-    "coreshop/menu-bundle": "^3.0",
+    "coreshop/menu-bundle": "^3.1",
     "pimcore/pimcore": "^10.5"
   },
   "conflict": {
