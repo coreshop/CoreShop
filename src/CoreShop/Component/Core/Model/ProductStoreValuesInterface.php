@@ -35,7 +35,7 @@ interface ProductStoreValuesInterface extends ResourceInterface, StoreAwareInter
 
     public function getTaxRule(): ?TaxRuleGroupInterface;
 
-    public function setTaxRule(?TaxRuleGroupInterface $taxRuleGroup): void;
+    public function setTaxRule(?TaxRuleGroupInterface $taxRule): void;
 
     public function addProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice): void;
 
