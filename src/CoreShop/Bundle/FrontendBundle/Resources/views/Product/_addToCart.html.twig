@@ -1,5 +1,5 @@
+{% if form %}
 {% form_theme form '@CoreShopFrontend/Form/theme.html.twig' %}
-
 {{ form_start(form, {'action': path('coreshop_cart_add', {'product': product.id})}) }}
     {{ form_errors(form) }}
 
@@ -20,4 +20,4 @@
 
     {{ form_row(form._token) }}
 {{ form_end(form, {'render_rest': false}) }}
-
+{% endif %}

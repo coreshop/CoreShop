@@ -64,8 +64,19 @@ class StorageListController extends AbstractController
 
     public function addItemAction(Request $request): Response
     {
-        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s', strtoupper($this->identifier)));
-        $this->denyAccessUnlessGranted(sprintf('CORESHOP_%s_ADD_ITEM', strtoupper($this->identifier)));
+        $privilege = sprintf('CORESHOP_%s', strtoupper($this->identifier));
+        $privilegeAdd = sprintf('CORESHOP_%s_ADD_ITEM', strtoupper($this->identifier));
+        if ($request->isMethod('GET') && !($this->isGranted($privilege) && $this->isGranted($privilegeAdd))) {
+            return $this->render(
+                $this->getParameterFromRequest($request, 'template', $this->templateAddToList),
+                [
+                    'form' => null,
+                    'product' => null,
+                ],
+            );
+        }
+        $this->denyAccessUnlessGranted($privilege);
+        $this->denyAccessUnlessGranted($privilegeAdd);
 
         $redirect = $this->getParameterFromRequest($request, '_redirect', $this->generateUrl($this->summaryRoute));
         $product = $this->productRepository->find($this->getParameterFromRequest($request, 'product'));
