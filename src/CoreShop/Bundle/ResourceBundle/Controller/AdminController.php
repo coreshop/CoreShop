@@ -38,7 +38,7 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstra
      *
      * based on Symfony\Component\HttpFoundation\Request::get
      */
-    protected function getParameterFromRequest(Request $request, string $key, $default = null)
+    protected function getParameterFromRequest(Request $request, string $key, $default = null): mixed
     {
         if ($request !== $result = $request->attributes->get($key, $request)) {
             return $result;
