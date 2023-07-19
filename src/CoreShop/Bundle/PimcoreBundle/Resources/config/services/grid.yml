@@ -1,6 +1,7 @@
 services:
     _defaults:
         public: true
+        autowire: true
 
     CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController:
         tags:
