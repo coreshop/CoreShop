@@ -16,13 +16,13 @@ declare(strict_types=1);
  *
  */
 
-namespace CoreShop\Bundle\MessengerBundle\Menu;
+namespace CoreShop\Bundle\MenuBundle;
 
 use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 
-class IndexMenuBuilder implements MenuBuilderInterface
+class CoreShopMenuBuilder implements MenuBuilderInterface
 {
     public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type): void
     {
@@ -38,14 +38,5 @@ class IndexMenuBuilder implements MenuBuilderInterface
                 </svg>
             ',
         ]);
-
-        $menuItem
-            ->addChild('coreshop_messenger')
-            ->setLabel('coreshop_messenger')
-            ->setAttribute('permission', 'coreshop_permission_messenger')
-            ->setAttribute('iconCls', 'coreshop_nav_icon_messenger')
-            ->setAttribute('resource', 'coreshop.messenger')
-            ->setAttribute('function', 'list')
-        ;
     }
 }

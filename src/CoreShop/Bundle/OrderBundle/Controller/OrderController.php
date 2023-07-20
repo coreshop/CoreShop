@@ -608,7 +608,7 @@ class OrderController extends PimcoreController
                 'avatar' => $avatar,
                 'user' => $user ? $user->getName() : null,
                 'description' => $note->getDescription(),
-                'title' => $note->getTitle(),
+                'title' => $note->getDescription(),
                 'data' => $note->getData(),
             ];
         }
