@@ -21,7 +21,6 @@ namespace CoreShop\Bundle\MenuBundle\EventListener;
 use Pimcore\Event\BundleManager\PathsEvent;
 use Pimcore\Event\BundleManagerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 class PimcoreAdminListener implements EventSubscriberInterface
 {
