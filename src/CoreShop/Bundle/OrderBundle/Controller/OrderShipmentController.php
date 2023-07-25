@@ -235,7 +235,7 @@ class OrderShipmentController extends PimcoreController
                 new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
                 new SubscribedService('coreshop.renderer.order.pdf', OrderDocumentRendererInterface::class, attributes: new Autowire(service: 'coreshop.renderer.order.pdf')),
                 new SubscribedService('coreshop.repository.order_shipment', OrderShipmentRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_shipment')),
-                new SubscribedService('coreshop.order.shipment.processable', ProcessableInterface::class, attributes: new Autowire('coreshop.order.shipment.processable')),
+                new SubscribedService('coreshop.order.shipment.processable', ProcessableInterface::class, attributes: new Autowire(service: 'coreshop.order.shipment.processable')),
                 new SubscribedService('coreshop.factory.order_shipment', FactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.order_shipment')),
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
                 new SubscribedService(OrderToShipmentTransformer::class, OrderToShipmentTransformer::class),
