@@ -20,6 +20,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
@@ -36,9 +37,12 @@ use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\DataLoader;
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Security\User\TokenStorageUserResolver;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,9 +50,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 
+
 class OrderCreationController extends PimcoreController
 {
     protected AddressFormatterInterface $addressFormatter;
+
+
 
     public function getCustomerDetailsAction(
         Request $request,
@@ -169,7 +176,7 @@ class OrderCreationController extends PimcoreController
             'shipping' => $this->getDataForObject($cart->getShippingAddress()),
             'billing' => $this->getDataForObject($cart->getInvoiceAddress()),
         ];
-
+        $this->addressFormatter=$this->container->get('CoreShop\Component\Address\Formatter\AddressFormatter');
         if ($cart->getShippingAddress() instanceof AddressInterface && $cart->getShippingAddress()->getCountry() instanceof CountryInterface
         ) {
             $jsonCart['address_shipping_formatted'] = $this->addressFormatter->formatAddress($cart->getShippingAddress());
@@ -306,7 +313,8 @@ class OrderCreationController extends PimcoreController
 
     public function setAddressFormatter(AddressFormatterInterface $addressFormatter): void
     {
-        $this->addressFormatter = $addressFormatter;
+        $this->addressFormatter=$this->container->get('CoreShop\Component\Address\Formatter\AddressFormatter');
+        //$this->addressFormatter = $addressFormatter;
     }
 
     protected function getPermission(): string
@@ -318,6 +326,8 @@ class OrderCreationController extends PimcoreController
     {
         return parent::getSubscribedServices() + [
                 new SubscribedService('Pimcore\Security\User\TokenStorageUserResolver', TokenStorageUserResolver::class, attributes: new Autowire(service:'Pimcore\Security\User\TokenStorageUserResolver')),
+                new SubscribedService('CoreShop\Component\Address\Formatter\AddressFormatter', TokenStorageUserResolver::class, attributes: new Autowire(service:'CoreShop\Component\Address\Formatter\AddressFormatter')),
+
             ];
     }
 }
