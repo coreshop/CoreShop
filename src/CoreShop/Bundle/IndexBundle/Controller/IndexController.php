@@ -24,8 +24,10 @@ use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use Pimcore\Model\DataObject;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class IndexController extends ResourceController
 {
@@ -44,8 +46,9 @@ class IndexController extends ResourceController
         return $this->viewHandler->handle($typesObject);
     }
 
-    public function getConfigAction(ServiceRegistry $indexInterpreterRegistry): Response
+    public function getConfigAction(): Response
     {
+        $indexInterpreterRegistry = $this->container->get('coreshop.registry.index.interpreter');
         $interpreters = $this->getInterpreterTypes();
         $interpretersResult = [];
 
@@ -396,6 +399,13 @@ class IndexController extends ResourceController
         }
 
         return $definition;
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+            new SubscribedService('coreshop.registry.index.interpreter', ServiceRegistry::class, attributes: new Autowire(service: 'coreshop.registry.index.interpreter')),
+        ];
     }
 
     /**

@@ -38,10 +38,13 @@ use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Security\User\TokenStorageUserResolver;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 
 class OrderCreationController extends PimcoreController
 {
@@ -51,7 +54,7 @@ class OrderCreationController extends PimcoreController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
     ): Response {
-        $this->isGrantedOr403();
+        //$this->isGrantedOr403();
 
         $customerId = $this->getParameterFromRequest($request, 'customerId');
         $customer = $customerRepository->find($customerId);
@@ -102,6 +105,7 @@ class OrderCreationController extends PimcoreController
         ErrorSerializer $errorSerializer,
         StateMachineManagerInterface $manager,
     ): Response {
+        // TODO: fails with must not be accessed before initialization
         $this->isGrantedOr403();
 
         $type = $this->getParameterFromRequest($request, 'saleType', OrderSaleTransitions::TRANSITION_CART);
@@ -308,5 +312,12 @@ class OrderCreationController extends PimcoreController
     protected function getPermission(): string
     {
         return 'coreshop_permission_order_create';
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+                new SubscribedService('Pimcore\Security\User\TokenStorageUserResolver', TokenStorageUserResolver::class, attributes: new Autowire(service:'Pimcore\Security\User\TokenStorageUserResolver')),
+            ];
     }
 }

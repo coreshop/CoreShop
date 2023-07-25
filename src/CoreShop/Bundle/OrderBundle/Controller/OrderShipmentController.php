@@ -231,15 +231,15 @@ class OrderShipmentController extends PimcoreController
     public static function getSubscribedServices(): array
     {
         return parent::getSubscribedServices() + [
+                new SubscribedService('coreshop.state_machine_manager', StateMachineManagerInterface::class),
                 new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
-                new SubscribedService('coreshop.renderer.order.pdf', OrderDocumentRendererInterface::class, attributes: new Autowire('coreshop.renderer.order.pdf')),
-                new SubscribedService('coreshop.repository.order_shipment', OrderShipmentRepositoryInterface::class, attributes: new Autowire('coreshop.repository.order_shipment')),
+                new SubscribedService('coreshop.renderer.order.pdf', OrderDocumentRendererInterface::class, attributes: new Autowire(service: 'coreshop.renderer.order.pdf')),
+                new SubscribedService('coreshop.repository.order_shipment', OrderShipmentRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_shipment')),
                 new SubscribedService('coreshop.order.shipment.processable', ProcessableInterface::class, attributes: new Autowire('coreshop.order.shipment.processable')),
-                new SubscribedService('coreshop.factory.order_shipment', FactoryInterface::class, attributes: new Autowire('coreshop.factory.order_shipment')),
+                new SubscribedService('coreshop.factory.order_shipment', FactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.order_shipment')),
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
                 new SubscribedService(OrderToShipmentTransformer::class, OrderToShipmentTransformer::class),
                 new SubscribedService(ErrorSerializer::class, ErrorSerializer::class),
-                new SubscribedService(StateMachineManagerInterface::class, StateMachineManagerInterface::class),
             ];
     }
 }

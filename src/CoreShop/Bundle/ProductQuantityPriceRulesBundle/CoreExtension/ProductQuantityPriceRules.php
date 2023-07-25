@@ -516,7 +516,7 @@ class ProductQuantityPriceRules extends Data implements
      */
     private function getFormFactory()
     {
-        return $this->getContainer()->get('form.factory');
+        return $this->getContainer()->get('coreshop.form.factory');
     }
 
     /**
