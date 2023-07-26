@@ -198,7 +198,7 @@ class CartController extends FrontendController
     {
         if ($request->isMethod('GET') && !($this->isGranted('CORESHOP_CART') && $this->isGranted('CORESHOP_CART_ADD_ITEM'))) {
             return $this->render(
-                $this->getParameterFromRequest($request, 'template', $this->templateConfigurator->findTemplate('Product/_addToCart.html')),
+                $this->getParameterFromRequest($request, 'template', $this->getTemplateConfigurator()->findTemplate('Product/_addToCart.html')),
                 [
                     'form' => null,
                     'product' => null,
