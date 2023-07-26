@@ -37,8 +37,8 @@ final class ValidAttributesValidator extends ConstraintValidator
          */
         Assert::isInstanceOf($constraint, ValidAttributes::class);
 
-        $allowedAttributeGroups = $value->getVariantParent()->getAllowedAttributeGroups();
-        $attributes = $value->getAttributes();
+        $allowedAttributeGroups = $value->getVariantParent()->getAllowedAttributeGroups() ?? [];
+        $attributes = $value->getAttributes() ?? [];
 
         if (count($allowedAttributeGroups) !== count($attributes)) {
             $this->context->buildViolation($constraint->message)->addViolation();
