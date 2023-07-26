@@ -50,6 +50,7 @@ use CoreShop\Bundle\VariantBundle\CoreShopVariantBundle;
 use CoreShop\Bundle\WishlistBundle\CoreShopWishlistBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Pimcore\Bundle\CustomReportsBundle\PimcoreCustomReportsBundle;
+use Pimcore\Bundle\NewsletterBundle\PimcoreNewsletterBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -101,6 +102,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Compose
         $collection->addBundle(new CoreShopWishlistBundle(), 1500);
         $collection->addBundle(new CoreShopClassDefinitionPatchBundle(), 1400);
         $collection->addBundle(new PimcoreCustomReportsBundle(), 10);
+        $collection->addBundle(new PimcoreNewsletterBundle(), 10);
     }
 
     public function getPackageName(): string
