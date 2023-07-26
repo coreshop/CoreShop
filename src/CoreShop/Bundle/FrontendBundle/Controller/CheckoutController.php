@@ -289,14 +289,16 @@ class CheckoutController extends FrontendController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() +
+        return array_merge(
+            parent::getSubscribedServices(),
             [
                 'coreshop.checkout_manager.factory' => CheckoutManagerFactoryInterface::class,
                 'coreshop.repository.order' => OrderRepositoryInterface::class,
                 'event_dispatcher' => EventDispatcherInterface::class,
                 TrackerInterface::class => TrackerInterface::class,
                 StateMachineManagerInterface::class,
-            ];
+            ],
+        );
     }
 
     protected function getCheckoutManagerFactory(): CheckoutManagerFactoryInterface

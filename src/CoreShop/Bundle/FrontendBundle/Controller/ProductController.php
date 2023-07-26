@@ -89,11 +89,11 @@ class ProductController extends FrontendController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
            'coreshop.repository.product' => ProductRepositoryInterface::class,
             StoreContextInterface::class => StoreContextInterface::class,
             TrackerInterface::class => TrackerInterface::class,
-        ];
+        ]);
     }
 
     protected function getProductByRequest(Request $request): ?PurchasableInterface

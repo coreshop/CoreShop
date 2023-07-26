@@ -814,11 +814,12 @@ class OrderController extends PimcoreController
     public static function getSubscribedServices(): array
     {
         /** @psalm-suppress ArgumentTypeCoercion */
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
                 'event_dispatcher' => EventDispatcherInterface::class,
                 new SubscribedService(
+                    'CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface',
                     WorkflowStateInfoManagerInterface::class,
-                    WorkflowStateInfoManagerInterface::class,
+                    attributes: new Autowire(service: 'CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'),
                 ),
                 new SubscribedService(
                     'coreshop.order.invoice.processable',
@@ -842,6 +843,6 @@ class OrderController extends PimcoreController
                 new SubscribedService('coreshop.repository.order_shipment', OrderShipmentRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_shipment')),
                 new SubscribedService('coreshop.repository.payment', PaymentRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.payment')),
                 HistoryLogger::class,
-            ];
+            ]);
     }
 }

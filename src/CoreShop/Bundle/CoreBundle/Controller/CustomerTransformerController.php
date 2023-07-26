@@ -261,10 +261,10 @@ class CustomerTransformerController extends AdminController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
             new SubscribedService('coreshop.repository.customer', CustomerRepositoryInterface::class),
             new SubscribedService('coreshop.repository.company', CompanyRepositoryInterface::class),
             CustomerTransformHelperInterface::class,
-        ];
+        ]);
     }
 }

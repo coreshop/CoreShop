@@ -403,9 +403,9 @@ class IndexController extends ResourceController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
             new SubscribedService('coreshop.registry.index.interpreter', ServiceRegistry::class, attributes: new Autowire(service: 'coreshop.registry.index.interpreter')),
-        ];
+        ]);
     }
 
     /**
