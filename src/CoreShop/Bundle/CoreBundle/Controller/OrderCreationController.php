@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController as BaseOrderCreationController;
+use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
@@ -146,9 +147,10 @@ class OrderCreationController extends BaseOrderCreationController
     public static function getSubscribedServices(): array
     {
         return parent::getSubscribedServices() + [
-                new SubscribedService( 'CoreShop\Component\Shipping\Resolver\CarriersResolverInterface', CarriersResolver::class, attributes: new Autowire('CoreShop\Component\Shipping\Resolver\CarriersResolverInterface')),
-            TaxedShippingCalculatorInterface::class,
-            CartContextResolverInterface::class,
+                new SubscribedService('CoreShop\Component\Address\Formatter\AddressFormatterInterface', AddressFormatterInterface::class, attributes: new Autowire(service:'CoreShop\Component\Address\Formatter\AddressFormatterInterface')),
+                new SubscribedService('CoreShop\Component\Shipping\Resolver\CarriersResolverInterface', CarriersResolver::class, attributes: new Autowire(service: 'CoreShop\Component\Shipping\Resolver\CarriersResolverInterface')),
+                new SubscribedService('CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface', TaxedShippingCalculatorInterface::class, attributes: new Autowire(service: 'CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface')),
+                new SubscribedService('CoreShop\Component\Order\Cart\CartContextResolverInterface', CartContextResolverInterface::class, attributes: new Autowire(service: 'CoreShop\Component\Order\Cart\CartContextResolverInterface')),
         ];
     }
 }

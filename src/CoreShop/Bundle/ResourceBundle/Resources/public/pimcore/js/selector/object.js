@@ -12,16 +12,26 @@
 
 pimcore.registerNS('coreshop.selector.object');
 coreshop.selector.object = Class.create(pimcore.bundle.search.element.selector.object, {
+    fieldObject: {},
+    gridType: 'object',
+
+    initStore: function () {
+        return 0; // dummy
+    },
+
+    getTabTitle: function() {
+        return "object_search";
+    },
     getForm: function () {
-        var i;
+        let i;
 
         //set "Home" object ID for search grid column configuration
-        this.object  = new Object();
+        this.object  = {};
         this.object.id = 1;
 
         this.searchType = "search";
 
-        var compositeConfig = {
+        const compositeConfig = {
             xtype: "toolbar",
             items: [{
                 xtype: "textfield",
