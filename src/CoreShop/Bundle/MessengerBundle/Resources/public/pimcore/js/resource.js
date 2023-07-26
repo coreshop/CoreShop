@@ -13,27 +13,28 @@
 
 pimcore.registerNS('coreshop.messenger.resource');
 
-coreshop.messenger.resource = Class.create(coreshop.resource, {
-    initialize: function () {
-        coreshop.broker.fireEvent('resource.register', 'coreshop.messenger', this);
-    },
+if (coreshop.resource !== undefined) {
+    coreshop.messenger.resource = Class.create(coreshop.resource, {
+        initialize: function () {
+            coreshop.broker.fireEvent('resource.register', 'coreshop.messenger', this);
+        },
 
-    openResource: function(item) {
-        if (item === 'list') {
-            this.openList();
-        }
-    },
+        openResource: function (item) {
+            if (item === 'list') {
+                this.openList();
+            }
+        },
 
-    openList: function() {
-        try {
-            pimcore.globalmanager.get('coreshop_messenger_list').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_messenger_list', new coreshop.messenger.list());
-        }
-    },
-});
+        openList: function () {
+            try {
+                pimcore.globalmanager.get('coreshop_messenger_list').activate();
+            } catch (e) {
+                pimcore.globalmanager.add('coreshop_messenger_list', new coreshop.messenger.list());
+            }
+        },
+    });
 
-coreshop.broker.addListener('pimcore.ready', function() {
-    new coreshop.messenger.resource();
-});
+    coreshop.broker.addListener('pimcore.ready', function () {
+        new coreshop.messenger.resource();
+    });
+}

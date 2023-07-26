@@ -42,6 +42,10 @@ class NotCombinableConditionChecker extends AbstractConditionChecker
                 continue;
             }
 
+            if (null === $rule->getCartPriceRule()) {
+                continue;
+            }
+
             if (in_array($rule->getCartPriceRule()->getId(), $notCombinableIds)) {
                 return false;
             }
