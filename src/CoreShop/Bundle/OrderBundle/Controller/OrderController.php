@@ -823,12 +823,12 @@ class OrderController extends PimcoreController
                 new SubscribedService(
                     'coreshop.order.invoice.processable',
                     ProcessableInterface::class,
-                    attributes: new Autowire('coreshop.order.invoice.processable'),
+                    attributes: new Autowire(service: 'coreshop.order.invoice.processable'),
                 ),
                 new SubscribedService(
                     'coreshop.order.shipment.processable',
                     ProcessableInterface::class,
-                    attributes: new Autowire('coreshop.order.shipment.processable'),
+                    attributes: new Autowire(service: 'coreshop.order.shipment.processable'),
                 ),
                 new SubscribedService(
                     'workflows',
@@ -838,9 +838,9 @@ class OrderController extends PimcoreController
                 new SubscribedService('jms_serializer', SerializerInterface::class),
                 AddressFormatterInterface::class,
                 NoteServiceInterface::class,
-                new SubscribedService('coreshop.repository.order_invoice', OrderInvoiceRepositoryInterface::class, attributes: new Autowire('coreshop.repository.order_invoice')),
-                new SubscribedService('coreshop.repository.order_shipment', OrderShipmentRepositoryInterface::class, attributes: new Autowire('coreshop.repository.order_shipment')),
-                new SubscribedService('coreshop.repository.payment', PaymentRepositoryInterface::class, attributes: new Autowire('coreshop.repository.payment')),
+                new SubscribedService('coreshop.repository.order_invoice', OrderInvoiceRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_invoice')),
+                new SubscribedService('coreshop.repository.order_shipment', OrderShipmentRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_shipment')),
+                new SubscribedService('coreshop.repository.payment', PaymentRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.payment')),
                 HistoryLogger::class,
             ];
     }

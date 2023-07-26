@@ -109,7 +109,6 @@ final class HttpFoundationRequestHandler implements RequestHandlerInterface
                 $data = $params ?: $files;
             }
         }
-
         /** @psalm-suppress InvalidScalarArgument */
         $form->submit($data, 'PATCH' !== $method);
     }

@@ -235,14 +235,14 @@ class OrderInvoiceController extends PimcoreController
     public static function getSubscribedServices(): array
     {
         return parent::getSubscribedServices() + [
-                new SubscribedService('coreshop.repository.order', ProcessableInterface::class, attributes: new Autowire('coreshop.repository.order')),
+                new SubscribedService('coreshop.repository.order', ProcessableInterface::class, attributes: new Autowire(service:'coreshop.repository.order')),
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
                 new SubscribedService(ErrorSerializer::class, ErrorSerializer::class),
-                new SubscribedService('coreshop.order.invoice.processable', NoteServiceInterface::class),
-                new SubscribedService('coreshop.renderer.order.pdf', OrderDocumentRendererInterface::class, attributes: new Autowire('coreshop.renderer.order.pdf')),
-                new SubscribedService('coreshop.factory.order_invoice', FactoryInterface::class, attributes: new Autowire('coreshop.factory.order_invoice')),
-                new SubscribedService('coreshop.order.transformer.order_to_invoice', OrderDocumentTransformerInterface::class, attributes: new Autowire('coreshop.order.transformer.order_to_invoice')),
-                new SubscribedService('coreshop.repository.order_invoice', OrderInvoiceRepositoryInterface::class),
+                new SubscribedService('coreshop.order.invoice.processable', NoteServiceInterface::class, attributes: new Autowire(service:'coreshop.order.invoice.processable')),
+                new SubscribedService('coreshop.renderer.order.pdf', OrderDocumentRendererInterface::class, attributes: new Autowire(service:'coreshop.renderer.order.pdf')),
+                new SubscribedService('coreshop.factory.order_invoice', FactoryInterface::class, attributes: new Autowire(service:'coreshop.factory.order_invoice')),
+                new SubscribedService('coreshop.order.transformer.order_to_invoice', OrderDocumentTransformerInterface::class, attributes: new Autowire('@CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer')),
+                new SubscribedService('coreshop.repository.order_invoice', OrderInvoiceRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.order_invoice')),
                 new SubscribedService(StateMachineManagerInterface::class, StateMachineManagerInterface::class),
             ];
     }

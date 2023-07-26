@@ -33,6 +33,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
 use Pimcore\Model\DataObject\Traits\SimpleComparisonTrait;
+use Symfony\Component\Form\FormFactoryInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -53,6 +54,7 @@ class ProductSpecificPriceRules extends Data implements
 
     public string $fieldtype = 'coreShopProductSpecificPriceRules';
 
+    //private $formFactory;
     /**
      * @var int
      */
@@ -423,12 +425,9 @@ class ProductSpecificPriceRules extends Data implements
         return $this->getContainer()->get('coreshop.repository.factory.product_specific_price_rule');
     }
 
-    /**
-     * @return \Symfony\Component\Form\FormFactoryInterface
-     */
-    private function getFormFactory()
+    private function getFormFactory(): FormFactoryInterface
     {
-        return $this->getContainer()->get('form.factory');
+        return $this->getContainer()->get('coreshop.form.factory');
     }
 
     /**

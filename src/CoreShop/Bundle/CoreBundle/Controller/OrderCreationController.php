@@ -25,7 +25,10 @@ use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
+use CoreShop\Component\Shipping\Resolver\CarriersResolver;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
 use Webmozart\Assert\Assert;
 
 class OrderCreationController extends BaseOrderCreationController
@@ -143,7 +146,7 @@ class OrderCreationController extends BaseOrderCreationController
     public static function getSubscribedServices(): array
     {
         return parent::getSubscribedServices() + [
-            CarriersResolverInterface::class,
+                new SubscribedService( 'CoreShop\Component\Shipping\Resolver\CarriersResolverInterface', CarriersResolver::class, attributes: new Autowire('CoreShop\Component\Shipping\Resolver\CarriersResolverInterface')),
             TaxedShippingCalculatorInterface::class,
             CartContextResolverInterface::class,
         ];
