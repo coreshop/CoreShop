@@ -82,8 +82,8 @@ class ReportsController extends AdminController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
             new SubscribedService('coreshop.registry.reports', ServiceRegistryInterface::class, attributes: new Autowire('coreshop.registry.reports')),
-        ];
+        ]);
     }
 }

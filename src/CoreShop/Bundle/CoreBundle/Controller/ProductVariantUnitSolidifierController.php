@@ -164,10 +164,10 @@ class ProductVariantUnitSolidifierController extends AdminController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
             new SubscribedService('coreshop.repository.product', ProductRepositoryInterface::class),
             ProductQuantityPriceRulesCloner::class,
             ProductUnitDefinitionsCloner::class,
-        ];
+        ]);
     }
 }

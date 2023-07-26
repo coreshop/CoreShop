@@ -66,8 +66,8 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstra
      */
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
                 new SubscribedService('Pimcore\Security\User\TokenStorageUserResolver', TokenStorageUserResolver::class, attributes: new Autowire(service:'Pimcore\Security\User\TokenStorageUserResolver')),
-            ];
+            ]);
     }
 }

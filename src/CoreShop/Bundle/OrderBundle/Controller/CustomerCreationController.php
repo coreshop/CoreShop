@@ -117,8 +117,8 @@ class CustomerCreationController extends PimcoreController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
-            ];
+            ]);
     }
 }

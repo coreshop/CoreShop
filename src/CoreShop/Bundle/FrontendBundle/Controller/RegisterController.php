@@ -151,14 +151,16 @@ class RegisterController extends FrontendController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() +
+        return array_merge(
+            parent::getSubscribedServices(),
             [
                 new SubscribedService('coreshop.factory.customer', FactoryInterface::class, attributes: new Autowire(service: 'coreshop.factory.customer')),
                 new SubscribedService('coreshop.repository.user', RepositoryInterface::class, attributes: new Autowire(service: 'coreshop.repository.user')),
                 new SubscribedService('coreshop.context.locale', LocaleContextInterface::class),
                 new SubscribedService(CustomerManagerInterface::class, CustomerManagerInterface::class),
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
-            ];
+            ],
+        );
     }
 
     protected function getCustomer(): ?CustomerInterface

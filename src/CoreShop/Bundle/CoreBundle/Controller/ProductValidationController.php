@@ -105,8 +105,8 @@ class ProductValidationController extends AdminController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
             new SubscribedService('coreshop.repository.stack.product', StackRepositoryInterface::class, attributes: new Autowire(service:'coreshop.repository.stack.product')),
-        ];
+        ]);
     }
 }

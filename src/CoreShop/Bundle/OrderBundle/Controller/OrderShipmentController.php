@@ -230,7 +230,7 @@ class OrderShipmentController extends PimcoreController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [
+        return array_merge(parent::getSubscribedServices(), [
                 new SubscribedService('coreshop.state_machine_manager', StateMachineManagerInterface::class),
                 new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
                 new SubscribedService('coreshop.renderer.order.pdf', OrderDocumentRendererInterface::class, attributes: new Autowire(service: 'coreshop.renderer.order.pdf')),
@@ -240,6 +240,6 @@ class OrderShipmentController extends PimcoreController
                 new SubscribedService('event_dispatcher', EventDispatcherInterface::class),
                 new SubscribedService(OrderToShipmentTransformer::class, OrderToShipmentTransformer::class),
                 new SubscribedService(ErrorSerializer::class, ErrorSerializer::class),
-            ];
+            ]);
     }
 }

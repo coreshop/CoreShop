@@ -126,7 +126,8 @@ class PaymentController extends AbstractController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() +
+        return array_merge(
+            parent::getSubscribedServices(),
             [
                 OrderPaymentProviderInterface::class => OrderPaymentProviderInterface::class,
                 new SubscribedService('coreshop.repository.order', OrderRepositoryInterface::class),
@@ -134,7 +135,8 @@ class PaymentController extends AbstractController
                 ResolveNextRouteFactoryInterface::class => ResolveNextRouteFactoryInterface::class,
                 ConfirmOrderFactoryInterface::class => ConfirmOrderFactoryInterface::class,
                 new SubscribedService('payum', Payum::class),
-            ];
+            ],
+        );
     }
 
     private function provideTokenBasedOnPayment(PaymentInterface $payment): TokenInterface
