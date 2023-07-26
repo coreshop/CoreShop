@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use Pimcore\Security\User\TokenStorageUserResolver;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 
@@ -30,6 +32,7 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstra
         \Psr\Container\ContainerInterface $container,
         protected ViewHandlerInterface $viewHandler,
     ) {
+        $this->tokenResolver = $container->get('Pimcore\Security\User\TokenStorageUserResolver');
         $this->container = $container;
     }
 
@@ -63,6 +66,8 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstra
      */
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices();
+        return parent::getSubscribedServices() + [
+                new SubscribedService('Pimcore\Security\User\TokenStorageUserResolver', TokenStorageUserResolver::class, attributes: new Autowire(service:'Pimcore\Security\User\TokenStorageUserResolver')),
+            ];
     }
 }
