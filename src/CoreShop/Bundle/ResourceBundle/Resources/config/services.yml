@@ -19,36 +19,36 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
-            - { name: jms_serializer.handler, type: relation, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: relation, direction: deserialization, format: json, method: deserializeRelation}
-            - { name: jms_serializer.handler, type: relation<?>, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: relation<?>, direction: deserialization, format: json, method: deserializeRelation}
+            - { name: jms_serializer.handler, type: relation, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: relation, direction: deserialization, format: json, method: deserializeRelation }
+            - { name: jms_serializer.handler, type: relation<?>, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: relation<?>, direction: deserialization, format: json, method: deserializeRelation }
 
     CoreShop\Bundle\ResourceBundle\Serialization\PimcoreObjectHandler:
         tags:
-            - { name: jms_serializer.handler, type: pimcoreObject, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreObject, direction: deserialization, format: json, method: deserializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreObject<?>, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreObject<?>, direction: deserialization, format: json, method: deserializeRelation}
+            - { name: jms_serializer.handler, type: pimcoreObject, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreObject, direction: deserialization, format: json, method: deserializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreObject<?>, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreObject<?>, direction: deserialization, format: json, method: deserializeRelation }
 
     CoreShop\Bundle\ResourceBundle\Serialization\PimcoreDocumentHandler:
         tags:
-            - { name: jms_serializer.handler, type: pimcoreDocument, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreDocument, direction: deserialization, format: json, method: deserializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreDocument<?>, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreDocument<?>, direction: deserialization, format: json, method: deserializeRelation}
+            - { name: jms_serializer.handler, type: pimcoreDocument, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreDocument, direction: deserialization, format: json, method: deserializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreDocument<?>, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreDocument<?>, direction: deserialization, format: json, method: deserializeRelation }
 
     CoreShop\Bundle\ResourceBundle\Serialization\PimcoreAssetHandler:
-         tags:
-             - { name: jms_serializer.handler, type: pimcoreAsset, direction: serialization, format: json, method: serializeRelation}
-             - { name: jms_serializer.handler, type: pimcoreAsset, direction: deserialization, format: json, method: deserializeRelation}
-             - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: serialization, format: json, method: serializeRelation}
-             - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: deserialization, format: json, method: deserializeRelation}
+        tags:
+            - { name: jms_serializer.handler, type: pimcoreAsset, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreAsset, direction: deserialization, format: json, method: deserializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: deserialization, format: json, method: deserializeRelation }
 
     CoreShop\Bundle\ResourceBundle\Serialization\PimcoreSiteHandler:
         tags:
-            - { name: jms_serializer.handler, type: pimcoreSite, direction: serialization, format: json, method: serializeRelation}
-            - { name: jms_serializer.handler, type: pimcoreSite, direction: deserialization, format: json, method: deserializeRelation}
+            - { name: jms_serializer.handler, type: pimcoreSite, direction: serialization, format: json, method: serializeRelation }
+            - { name: jms_serializer.handler, type: pimcoreSite, direction: deserialization, format: json, method: deserializeRelation }
 
     CoreShop\Bundle\ResourceBundle\Serialization\CarbonHandler:
         tags:
@@ -61,7 +61,10 @@ services:
 
     CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController:
         arguments:
+            $container: '@service_container'
             $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandler'
+        calls:
+            - [ 'setPimcoreSerializer', [ '@pimcore.serializer' ] ]
         tags:
             - { name: container.service_subscriber }
 
