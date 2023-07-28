@@ -19,18 +19,19 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ClassDefinitionPatchBundle\Console;
 
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
 final class ConsoleDiffer
 {
     public function __construct(
-        private Differ $differ,
         private ColorConsoleDiffFormatter $colorConsoleDiffFormatter,
     ) {
     }
 
     public function diff(string $old, string $new): string
     {
-        $diff = $this->differ->diff($old, $new);
+        $differ = new Differ(new UnifiedDiffOutputBuilder());
+        $diff = $differ->diff($old, $new);
 
         return $this->colorConsoleDiffFormatter->format($diff);
     }

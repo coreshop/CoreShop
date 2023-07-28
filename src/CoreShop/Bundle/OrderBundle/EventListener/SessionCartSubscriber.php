@@ -69,7 +69,7 @@ final class SessionCartSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (0 !== $cart->getId() && null !== $cart->getStore()) {
+        if (0 !== $cart->getId() && null !== $cart->getId() && null !== $cart->getStore()) {
             $session = $request->getSession();
 
             $session->set(

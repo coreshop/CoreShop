@@ -101,7 +101,7 @@
                                         "fieldtype": "urlSlug",
                                         "width": "",
                                         "domainLabelWidth": null,
-                                        "action": "CoreShop\\Bundle\\FrontendBundle\\Controller\\CategoryController:detailSlugAction",
+                                        "action": "CoreShop\\Bundle\\FrontendBundle\\Controller\\CategoryController::detailSlugAction",
                                         "availableSites": [],
                                         "name": "slug",
                                         "title": "coreshop.category.slug",

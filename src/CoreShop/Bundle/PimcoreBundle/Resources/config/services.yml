@@ -10,6 +10,7 @@ parameters:
 services:
     _defaults:
         public: true
+        autowire: true
 
     CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface: '@CoreShop\Component\Pimcore\DataObject\ClassInstaller'
     CoreShop\Component\Pimcore\DataObject\ClassInstaller: ~

@@ -10,11 +10,9 @@ services:
         arguments:
             - '@CoreShop\Bundle\ClassDefinitionPatchBundle\Patches'
 
-    SebastianBergmann\Diff\Differ: ~
     CoreShop\Bundle\ClassDefinitionPatchBundle\Console\ColorConsoleDiffFormatter:
     CoreShop\Bundle\ClassDefinitionPatchBundle\Console\ConsoleDiffer:
         arguments:
-            - '@SebastianBergmann\Diff\Differ'
             - '@CoreShop\Bundle\ClassDefinitionPatchBundle\Console\ColorConsoleDiffFormatter'
 
     CoreShop\Bundle\ClassDefinitionPatchBundle\Command\PatchCommand:

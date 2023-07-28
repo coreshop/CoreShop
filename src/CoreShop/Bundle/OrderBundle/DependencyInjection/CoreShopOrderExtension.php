@@ -50,6 +50,10 @@ final class CoreShopOrderExtension extends AbstractModelExtension
         $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $configs['resources'], $container);
         $this->registerPimcoreModels('coreshop', $configs['pimcore'], $container);
 
+//        if (class_exists(PimcoreDataHubBundle::class)) {
+//            $this->registerDependantBundles('coreshop', [PimcoreDataHubBundle::class], $container);
+//        }
+
         if (array_key_exists('pimcore_admin', $configs)) {
             $this->registerPimcoreResources('coreshop', $configs['pimcore_admin'], $container);
         }

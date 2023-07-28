@@ -28,7 +28,7 @@ class ResourceSettingsController extends AdminController
 {
     public function getNicePathAction(Request $request): Response
     {
-        $targets = $this->decodeJson($this->getParameterFromRequest($request, 'targets'));
+        $targets = json_decode($this->getParameterFromRequest($request, 'targets'), true);
         $result = [];
 
         foreach ($targets as $target) {

@@ -8,10 +8,13 @@ CoreShop will automatically cancel orders older than `20` days.
 
 #### Change Orders Expiration Date
 ```yml
-core_shop_order:
-    expiration:
+core_shop_storage_list:
+    list:
         order:
-            days: 30
+            expiration:
+                params:
+                    order:
+                        days: 30
 ```
 
 ## Expired Carts
@@ -24,12 +27,16 @@ If you want to remove older carts, just enable it via configuration:
 
 #### Change Cart Expiration Date
 ```yml
-core_shop_order:
-    expiration:
-        cart:
-            days: 20
-            anonymous: true
-            customer: true
+core_shop_storage_list:
+    list:
+        order:
+            expiration:
+                params:
+                    cart:
+                        days: 20
+                        params:
+                            anonymous: true
+                            customer: false
 ```
 
 ## Expired Wishlists

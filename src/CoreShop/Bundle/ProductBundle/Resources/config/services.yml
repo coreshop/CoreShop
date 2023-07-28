@@ -131,3 +131,6 @@ services:
             - '@coreshop.manager.product_specific_price_rule'
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: onPostDelete }
+
+
+

@@ -3,6 +3,8 @@ CoreShop\Component\Order\Model\OrderShipment:
     xml_root_name: order_shipment
     virtual_properties:
         id:
+            serialized_name: id
+            exp: object.getId()
             type: integer
             groups: [Detailed]
         documentType:

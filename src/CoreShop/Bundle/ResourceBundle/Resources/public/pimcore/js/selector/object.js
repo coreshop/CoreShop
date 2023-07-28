@@ -53,7 +53,7 @@ coreshop.selector.object = Class.create(pimcore.bundle.search.element.selector.o
         var selectedClassStore = [];
         for (i=0; i<possibleClassRestrictions.length; i++) {
             if(in_array(possibleClassRestrictions[i], this.parent.classes )) {
-                filterClassStore.push([possibleClassRestrictions[i], ts(possibleClassRestrictions[i])]);
+                filterClassStore.push([possibleClassRestrictions[i], t(possibleClassRestrictions[i])]);
                 selectedClassStore.push(possibleClassRestrictions[i]);
             }
         }
