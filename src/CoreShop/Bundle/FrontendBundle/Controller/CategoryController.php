@@ -260,6 +260,8 @@ class CategoryController extends FrontendController
             ConfigurationServiceInterface::class,
             PaginatorInterface::class,
             TrackerInterface::class,
+            FilteredListingFactoryInterface::class,
+            FilterProcessorInterface::class,
             new SubscribedService('coreshop.repository.product', ProductRepositoryInterface::class),
         ];
     }
