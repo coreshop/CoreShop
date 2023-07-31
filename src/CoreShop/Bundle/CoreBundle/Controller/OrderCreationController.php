@@ -146,7 +146,7 @@ class OrderCreationController extends BaseOrderCreationController
     public static function getSubscribedServices(): array
     {
         return parent::getSubscribedServices() + [
-                new SubscribedService( 'CoreShop\Component\Shipping\Resolver\CarriersResolverInterface', CarriersResolver::class, attributes: new Autowire('CoreShop\Component\Shipping\Resolver\CarriersResolverInterface')),
+                new SubscribedService('CoreShop\Component\Shipping\Resolver\CarriersResolverInterface', CarriersResolver::class, attributes: new Autowire('CoreShop\Component\Shipping\Resolver\CarriersResolverInterface')),
             TaxedShippingCalculatorInterface::class,
             CartContextResolverInterface::class,
         ];
