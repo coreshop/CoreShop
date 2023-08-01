@@ -134,7 +134,7 @@ class CategoryController extends FrontendController
             $orderDirection = $category->getFilter()->getOrderDirection();
             $orderKey = $category->getFilter()->getOrderKey();
 
-            $sortKey = (empty($orderKey) ? $this->getParameter('defaultSortName') : $orderKey) . '_' . (empty($orderDirection) ? $this->getParameter('defaultSortDirection') : $orderDirection);
+            $sortKey = (empty($orderKey) ? $this->getParameter('coreshop.frontend.category.default_sort_name') : $orderKey) . '_' . (empty($orderDirection) ? $this->getParameter('coreshop.frontend.category.default_sort_direction') : $orderDirection);
             $sort = $this->getParameterFromRequest($request, 'sort', $sortKey);
             $sortParsed = $this->parseSorting($sort);
 
@@ -157,7 +157,7 @@ class CategoryController extends FrontendController
             $viewParameters['conditions'] = $preparedConditions;
         } else {
             //Classic Listing Mode
-            $sort = $this->getParameterFromRequest($request, 'sort', $this->getParameter('defaultSortName') . '_' . $this->getParameter('defaultSortDirection'));
+            $sort = $this->getParameterFromRequest($request, 'sort', $this->getParameter('coreshop.frontend.category.default_sort_name') . '_' . $this->getParameter('coreshop.frontend.category.default_sort_direction'));
             $sortParsed = $this->parseSorting($sort);
 
             $categories = [$category];
@@ -196,7 +196,7 @@ class CategoryController extends FrontendController
         $viewParameters['type'] = $type;
         $viewParameters['perPageAllowed'] = $allowedPerPage;
         $viewParameters['sort'] = $sort;
-        $viewParameters['validSortElements'] = $this->getParameter('validSortProperties');
+        $viewParameters['validSortElements'] = $this->getParameter('coreshop.frontend.category.valid_sort_options');
 
         foreach ($paginator as $product) {
             $this->container->get(TrackerInterface::class)->trackProductImpression($product);
@@ -240,7 +240,7 @@ class CategoryController extends FrontendController
         $name = $sortString[0];
         $direction = $sortString[1];
 
-        if (in_array($name, $this->getParameter('validSortProperties')) && in_array($direction, ['desc', 'asc'])) {
+        if (in_array($name, $this->getParameter('coreshop.frontend.category.valid_sort_options')) && in_array($direction, ['desc', 'asc'])) {
             return [
                 'name' => $name,
                 'direction' => $direction,
@@ -257,6 +257,10 @@ class CategoryController extends FrontendController
             new SubscribedService('defaultSortName', 'string', attributes: new Autowire('%coreshop.frontend.category.default_sort_name%')),
             new SubscribedService('defaultSortDirection', 'string', attributes: new Autowire('%coreshop.frontend.category.default_sort_direction%')),
             'coreshop.repository.category' => CategoryRepositoryInterface::class,
+            ConfigurationServiceInterface::class,
+            PaginatorInterface::class,
+            TrackerInterface::class,
+            new SubscribedService('coreshop.repository.product', ProductRepositoryInterface::class),
         ];
     }
 

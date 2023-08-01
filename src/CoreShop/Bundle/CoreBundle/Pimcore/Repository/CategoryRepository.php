@@ -102,7 +102,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     {
         if (method_exists($category, 'getChildrenSortBy')) {
             $list->setOrderKey(
-                sprintf('%s ASC', $category->getChildrenSortBy()),
+                sprintf('`%s` ASC', $category->getChildrenSortBy()),
                 false,
             );
         } else {

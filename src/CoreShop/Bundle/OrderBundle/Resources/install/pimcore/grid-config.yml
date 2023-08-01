@@ -243,6 +243,8 @@ grid_config:
                             visibleSearch: false
                         width: 224
             onlyDirectChildren: false
+            shareGlobally: true
+            setAsFavourite: true
             pageSize: 25
 
     order_de:
@@ -1045,4 +1047,6 @@ grid_config:
                         key: '#5a65a6bced8d0'
                     isOperator: true
             onlyDirectChildren: false
+            shareGlobally: true
+            setAsFavourite: true
             pageSize: 25

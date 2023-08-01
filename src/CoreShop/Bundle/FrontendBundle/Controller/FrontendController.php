@@ -27,7 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class FrontendController extends AbstractController
+abstract class FrontendController extends AbstractController
 {
     public function __construct(
         \Psr\Container\ContainerInterface $container,

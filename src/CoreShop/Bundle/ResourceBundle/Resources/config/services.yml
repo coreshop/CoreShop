@@ -10,6 +10,8 @@ services:
     _defaults:
         public: true
 
+    coreshop.form.factory: '@form.factory'
+
     CoreShop\Component\Resource\Metadata\RegistryInterface: '@CoreShop\Component\Resource\Metadata\Registry'
     CoreShop\Component\Resource\Metadata\Registry: ~
 

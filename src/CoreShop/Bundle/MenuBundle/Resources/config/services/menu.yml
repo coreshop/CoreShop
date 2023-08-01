@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Bundle\MenuBundle\CoreShopMenuBuilder:
+        tags:
+            - { name: coreshop.menu, type: coreshop, menu: coreshop }
+
+    CoreShop\Bundle\MenuBundle\EventListener\MenuAdminListener:
+        arguments:
+            - '@router'
+        tags:
+            - { name: kernel.event_subscriber }
