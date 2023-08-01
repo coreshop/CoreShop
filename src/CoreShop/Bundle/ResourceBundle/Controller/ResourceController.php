@@ -28,6 +28,7 @@ use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\DataObject;
 use Pimcore\Security\User\User;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -37,18 +38,20 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ResourceController extends AdminController
 {
     public function __construct(
-        ContainerInterface $container,
-        protected MetadataInterface $metadata,
-        protected RepositoryInterface $repository,
-        protected FactoryInterface $factory,
-        protected ObjectManager $manager,
-        ViewHandler $viewHandler,
-        protected EventDispatcherInterface $eventDispatcher,
+        ContainerInterface                     $container,
+        protected MetadataInterface            $metadata,
+        protected RepositoryInterface          $repository,
+        protected FactoryInterface             $factory,
+        protected ObjectManager                $manager,
+        ViewHandler                            $viewHandler,
+        protected EventDispatcherInterface     $eventDispatcher,
         protected ResourceFormFactoryInterface $resourceFormFactory,
-        protected ErrorSerializer $formErrorSerializer,
-        protected TokenStorageInterface $tokenStorage,
-    ) {
-        parent::__construct($container, $viewHandler);
+        protected ErrorSerializer              $formErrorSerializer,
+        protected TokenStorageInterface        $tokenStorage,
+        ParameterBagInterface                  $parameterBag
+    )
+    {
+        parent::__construct($container, $viewHandler, $parameterBag);
     }
 
     /**
@@ -86,7 +89,7 @@ class ResourceController extends AdminController
     {
         $this->isGrantedOr403();
 
-        $resources = $this->findOr404((int) $this->getParameterFromRequest($request, 'id'));
+        $resources = $this->findOr404((int)$this->getParameterFromRequest($request, 'id'));
 
         return $this->viewHandler->handle(['data' => $resources, 'success' => true], ['group' => 'Detailed']);
     }

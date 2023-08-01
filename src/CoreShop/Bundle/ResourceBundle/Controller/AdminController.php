@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 
@@ -28,9 +29,16 @@ class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminAbstra
 {
     public function __construct(
         \Psr\Container\ContainerInterface $container,
-        protected ViewHandlerInterface $viewHandler,
-    ) {
+        protected ViewHandlerInterface    $viewHandler,
+        protected ParameterBagInterface   $parameterBag,
+    )
+    {
         $this->container = $container;
+    }
+
+    protected function getParameter(string $name): array|bool|string|int|float|\UnitEnum|null
+    {
+        return $this->parameterBag->get($name);
     }
 
     /**

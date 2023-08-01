@@ -61,10 +61,15 @@ services:
         decoration_priority: 256
         public: false
 
-    CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController:
+    CoreShop\Bundle\ResourceBundle\Controller\AdminController:
+        abstract: true
         arguments:
-            $container: '@service_container'
-            $viewHandler: '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandler'
+            - '@service_container'
+            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+            - '@Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface'
+
+    CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController:
+        parent: CoreShop\Bundle\ResourceBundle\Controller\AdminController
         calls:
             - [ 'setPimcoreSerializer', [ '@pimcore.serializer' ] ]
         tags:
