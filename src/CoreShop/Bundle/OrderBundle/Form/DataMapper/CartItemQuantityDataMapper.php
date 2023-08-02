@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Form\DataMapper;
 
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\DataMapperInterface;
 
 /**
@@ -40,13 +41,10 @@ class CartItemQuantityDataMapper implements DataMapperInterface
     public function mapFormsToData($forms, &$viewData): void
     {
         $formsOtherThanQuantity = [];
-        $quantityForm = null;
 
         //First map all the other fields, then map quantity.
         foreach ($forms as $form) {
             if ('quantity' === $form->getName()) {
-                $quantityForm = $form;
-
                 $targetQuantity = $form->getData();
                 $this->cartItemQuantityModifier->modify($viewData, (float) $targetQuantity);
 
@@ -57,12 +55,7 @@ class CartItemQuantityDataMapper implements DataMapperInterface
         }
 
         if (!empty($formsOtherThanQuantity)) {
-            $this->propertyPathDataMapper->mapFormsToData($formsOtherThanQuantity, $viewData);
-        }
-
-        if (null !== $quantityForm) {
-            $targetQuantity = $quantityForm->getData();
-            $this->cartItemQuantityModifier->modify($viewData, (float) $targetQuantity);
+            $this->propertyPathDataMapper->mapFormsToData(new ArrayCollection($formsOtherThanQuantity), $viewData);
         }
     }
 }
