@@ -80,8 +80,8 @@ class ResourceController extends AdminController
 
     public function listAction(Request $request): JsonResponse
     {
-        $start = $request->get('start', 0);
-        $limit = $request->get('limit', 25);
+        $start = $request->query->get('start', 0);
+        $limit = $request->query->get('limit', 25);
 
         // TODO: use start and limit as soon as Admin UI has pagination
         $data = $this->repository->findAll();
